@@ -52,6 +52,20 @@ LEAGUE_AVG_RATING = 114.0
 LEAGUE_AVG_PACE = 99.0
 PLAYOFF_MARGIN_RMSE = 11.5
 
+# Guardrail thresholds: real playoff edges past three games are rare; large
+# moneyline "edges" on +200 dogs are almost always model overconfidence after
+# the favorite has already shown what it does to the dog in Games 1 and 2.
+BET_EDGE_THRESHOLD = 0.045
+LEAN_EDGE_THRESHOLD = 0.025
+BET_PROB_FLOOR = 0.55
+LEAN_PROB_FLOOR = 0.51
+MAX_TRUSTED_EDGE = 0.18
+SPREAD_AGREEMENT_GAP_LEAN = 5.0
+SPREAD_AGREEMENT_GAP_BET = 3.5
+DOG_BET_PROB_FLOOR = 0.60
+BIG_DOG_ODDS_THRESHOLD = 200
+MAX_DOG_EDGE_FOR_BET = 0.12
+
 
 def _clamp(value: float, low: float, high: float) -> float:
     return max(low, min(high, value))
@@ -618,35 +632,37 @@ def predict_playoff_margin(
 
     series_points = 0.0
     if series_context.get("is_game_1"):
-        series_points += 0.4
+        series_points += 0.3
     if series_context.get("is_game_2"):
         if series_context.get("home_trailing"):
-            series_points += 0.9
+            series_points += 0.5
         if series_context.get("away_trailing"):
-            series_points -= 0.9
+            series_points -= 0.5
+    # 0-2 down at home historically loses Game 3 ~55% of the time despite
+    # the defending crowd, so the comeback bonus is shaved and capped.
     if series_context.get("game_number") in (3, 4):
         if series_context.get("home_wins") == 0 and series_context.get("away_wins") == 2:
-            series_points += 1.1
+            series_points += 0.4
         if series_context.get("away_wins") == 0 and series_context.get("home_wins") == 2:
-            series_points -= 1.1
+            series_points -= 0.4
     if series_context.get("home_elimination"):
-        series_points += 1.4
+        series_points += 0.8
     if series_context.get("away_elimination"):
-        series_points -= 1.4
+        series_points -= 0.8
     if series_context.get("home_closeout"):
-        series_points += 0.6
+        series_points += 0.4
     if series_context.get("away_closeout"):
-        series_points -= 0.6
+        series_points -= 0.4
 
     repeat_matchups = int(series_context.get("repeat_matchups", 0) or 0)
     coaching = 0.0
     if repeat_matchups:
         if series_context.get("home_trailing"):
-            coaching += min(1.1, repeat_matchups * 0.28)
+            coaching += min(0.6, repeat_matchups * 0.15)
         if series_context.get("away_trailing"):
-            coaching -= min(1.1, repeat_matchups * 0.28)
+            coaching -= min(0.6, repeat_matchups * 0.15)
         h2h_margin = float(h2h.get("point_diff", 0.0) or 0.0)
-        coaching += _clamp(h2h_margin * 0.04 * min(repeat_matchups, 4), -1.0, 1.0)
+        coaching += _clamp(h2h_margin * 0.025 * min(repeat_matchups, 4), -0.6, 0.6)
 
     rest_diff = _stat(home_stats, "rest_days", 1.0) - _stat(away_stats, "rest_days", 1.0)
     rest = _clamp(rest_diff * 0.55, -1.6, 1.6)
@@ -784,38 +800,40 @@ def _build_adjustments(
     series_adj = 0.0
     series_notes: list[str] = []
     if series_context.get("is_game_1"):
-        series_adj += 0.006
+        series_adj += 0.004
         series_notes.append("Game 1 prep edge to home team")
     if series_context.get("is_game_2"):
         if series_context.get("home_trailing"):
-            series_adj += 0.014
+            series_adj += 0.008
             series_notes.append(f"{home_name} Game 2 adjustment while trailing")
         if series_context.get("away_trailing"):
-            series_adj -= 0.014
+            series_adj -= 0.008
             series_notes.append(f"{away_name} Game 2 adjustment while trailing")
+    # The 0-2 home comeback bump used to push thin baselines past the BET
+    # threshold for big underdogs; capped tighter so it can only LEAN.
     if series_context.get("game_number") in (3, 4):
         if series_context.get("home_wins") == 0 and series_context.get("away_wins") == 2:
-            series_adj += 0.018
-            series_notes.append(f"{home_name} down 0-2 returning home")
+            series_adj += 0.006
+            series_notes.append(f"{home_name} down 0-2 returning home (capped)")
         if series_context.get("away_wins") == 0 and series_context.get("home_wins") == 2:
-            series_adj -= 0.018
-            series_notes.append(f"{away_name} down 0-2 returning home next")
+            series_adj -= 0.006
+            series_notes.append(f"{away_name} down 0-2 returning home next (capped)")
     if series_context.get("home_elimination"):
-        series_adj += 0.024
+        series_adj += 0.012
         series_notes.append(f"{home_name} elimination urgency")
     if series_context.get("away_elimination"):
-        series_adj -= 0.024
+        series_adj -= 0.012
         series_notes.append(f"{away_name} elimination urgency")
     if series_context.get("home_closeout"):
-        series_adj += 0.010
+        series_adj += 0.006
         series_notes.append(f"{home_name} closeout chance")
     if series_context.get("away_closeout"):
-        series_adj -= 0.010
+        series_adj -= 0.006
         series_notes.append(f"{away_name} closeout chance")
     if abs(series_adj) >= 0.004:
         adjustments.append({
             "label": "Series state",
-            "value": _clamp(series_adj, -0.035, 0.035),
+            "value": _clamp(series_adj, -0.020, 0.020),
             "reason": "; ".join(series_notes),
         })
 
@@ -824,20 +842,20 @@ def _build_adjustments(
     coaching_notes: list[str] = []
     if repeated:
         if series_context.get("home_trailing"):
-            coaching_adj += min(0.018, repeated * 0.0045)
+            coaching_adj += min(0.010, repeated * 0.0025)
             coaching_notes.append(f"{home_name} adjustment opportunity after repeated matchups")
         if series_context.get("away_trailing"):
-            coaching_adj -= min(0.018, repeated * 0.0045)
+            coaching_adj -= min(0.010, repeated * 0.0025)
             coaching_notes.append(f"{away_name} adjustment opportunity after repeated matchups")
         h2h_margin = float(h2h.get("point_diff", 0.0) or 0.0)
         if abs(h2h_margin) >= 2.5:
-            h2h_adj = _clamp(h2h_margin * 0.0012 * min(repeated, 4), -0.014, 0.014)
+            h2h_adj = _clamp(h2h_margin * 0.0008 * min(repeated, 4), -0.010, 0.010)
             coaching_adj += h2h_adj
             coaching_notes.append(f"regular-season matchup margin {h2h_margin:+.1f}")
     if abs(coaching_adj) >= 0.004:
         adjustments.append({
             "label": "Coaching/repeated-matchup adjustment",
-            "value": _clamp(coaching_adj, -0.030, 0.030),
+            "value": _clamp(coaching_adj, -0.018, 0.018),
             "reason": "; ".join(coaching_notes),
         })
 
@@ -856,7 +874,13 @@ def extremize_probability(raw_prob: float) -> float:
     if abs(raw - 0.50) < 1e-9:
         return 0.50
     confidence_term = raw * (1.0 - raw) * 4.0
-    directional_shift = math.copysign(abs(raw - 0.50) * confidence_term, raw - 0.50)
+    # Damp the shift inside the noisy 50%-58% band so a small base-rate
+    # advantage doesn't get amplified into a confident-looking pick.
+    shift_strength = 0.55 if abs(raw - 0.50) <= 0.08 else 0.85
+    directional_shift = math.copysign(
+        abs(raw - 0.50) * confidence_term * shift_strength,
+        raw - 0.50,
+    )
     return _clamp(raw + directional_shift, 0.03, 0.97)
 
 
@@ -888,6 +912,145 @@ def _verify_roster(team_name: str, season: str) -> tuple[bool, str]:
     if not roster:
         return False, "NBA API roster lookup returned no players"
     return True, f"{len(roster)} active roster entries fetched from NBA API"
+
+
+def _market_pick_spread(market: dict[str, Any], pick_team: str, home_name: str, away_name: str) -> float | None:
+    """Return the market spread *for the picked team's perspective* if known."""
+    if not market:
+        return None
+    if pick_team == home_name and market.get("home_spread") is not None:
+        try:
+            return float(market.get("home_spread"))
+        except (TypeError, ValueError):
+            return None
+    if pick_team == away_name and market.get("away_spread") is not None:
+        try:
+            return float(market.get("away_spread"))
+        except (TypeError, ValueError):
+            return None
+    if market.get("home_spread") is not None:
+        try:
+            home = float(market.get("home_spread"))
+        except (TypeError, ValueError):
+            return None
+        return -home if pick_team == away_name else home
+    return None
+
+
+def evaluate_playoff_decision(
+    pick_team: str,
+    pick_prob: float,
+    pick_odds: int,
+    edge: float,
+    predicted_spread: float,
+    market: dict[str, Any],
+    home_name: str,
+    away_name: str,
+    injuries: dict[str, list[dict[str, Any]]] | None,
+    series_context: dict[str, Any],
+    adjustments: list[dict[str, Any]],
+) -> dict[str, Any]:
+    """Classify a playoff pick as BET, LEAN, or PASS with explicit reasons.
+
+    The pre-patch model fired BETs whenever the moneyline edge exceeded 3% and
+    the model spread did not strictly disagree with the pick side. That gate
+    let large +200 dog edges and 0-2-down comeback narratives slip through
+    even when the model's own spread layer was nowhere near the market line.
+    These guardrails layer real-money sanity checks on top of that signal.
+    """
+    reasons: list[str] = []
+
+    # Rule: never trust an outsized edge unconditionally — clamp the BET path.
+    if edge >= MAX_TRUSTED_EDGE:
+        reasons.append(f"edge {edge*100:.1f}% above {MAX_TRUSTED_EDGE*100:.0f}% trust ceiling — likely model overconfidence")
+
+    # Rule: minimum win-probability floor so 50.x% picks can't BET on +odds.
+    if pick_prob < BET_PROB_FLOOR:
+        reasons.append(f"pick prob {pick_prob*100:.1f}% < {BET_PROB_FLOOR*100:.0f}% BET floor")
+
+    # Rule: spread layer must broadly agree with the market line.
+    market_pick_spread = _market_pick_spread(market, pick_team, home_name, away_name)
+    spread_gap: float | None = None
+    if market_pick_spread is not None:
+        # Convention: predicted_spread is home margin. Convert to pick-perspective.
+        pick_predicted = predicted_spread if pick_team == home_name else -predicted_spread
+        # Market spread sign convention: a -4.5 favorite covers if margin >= 4.5.
+        # We compare model margin vs (-market_spread) implied margin.
+        market_implied_margin = -market_pick_spread
+        spread_gap = pick_predicted - market_implied_margin
+        if abs(spread_gap) >= SPREAD_AGREEMENT_GAP_LEAN:
+            reasons.append(
+                f"model margin {pick_predicted:+.1f} disagrees with market line ({market_pick_spread:+.1f}) by {spread_gap:+.1f} pts"
+            )
+
+    # Rule: dog-bet sanity — long dogs need stronger, not weaker, conviction.
+    is_big_dog = pick_odds >= BIG_DOG_ODDS_THRESHOLD
+    if is_big_dog:
+        if pick_prob < DOG_BET_PROB_FLOOR:
+            reasons.append(
+                f"dog at +{pick_odds} needs >= {DOG_BET_PROB_FLOOR*100:.0f}% conviction; we have {pick_prob*100:.1f}%"
+            )
+        if edge > MAX_DOG_EDGE_FOR_BET:
+            reasons.append(f"dog edge {edge*100:.1f}% above {MAX_DOG_EDGE_FOR_BET*100:.0f}% sanity ceiling")
+
+    # Rule: 0-2 home comeback at Game 3 historically flips into a sweep more
+    # often than not; do not let the residual context bonuses force a BET.
+    in_sweep_window = (
+        series_context.get("game_number") in (3, 4)
+        and (
+            (series_context.get("home_wins") == 0 and series_context.get("away_wins") == 2)
+            or (series_context.get("away_wins") == 0 and series_context.get("home_wins") == 2)
+        )
+    )
+    if in_sweep_window and pick_prob < 0.58:
+        reasons.append("comeback-from-0-2 narrative — capped at LEAN unless model has >=58% conviction")
+
+    # Rule: empty injury feed leaves the model running blind on availability.
+    if not injuries:
+        reasons.append("injury feed unavailable — capped at LEAN")
+
+    # Rule: adjustment stack should not exceed +/-12 pp; bigger means we are
+    # piling small assumptions on top of a thin baseline.
+    adjustment_total = sum(float(item.get("value") or 0.0) for item in adjustments or [])
+    if abs(adjustment_total) > 0.12:
+        reasons.append(f"adjustment stack {adjustment_total*100:+.1f}% > 12% — too many compounding assumptions")
+
+    # Decision tree.
+    decision = "PASS"
+    if not reasons and edge >= BET_EDGE_THRESHOLD and pick_prob >= BET_PROB_FLOOR:
+        if (
+            spread_gap is None
+            or abs(spread_gap) <= SPREAD_AGREEMENT_GAP_BET
+        ):
+            decision = "BET"
+        else:
+            decision = "LEAN"
+            reasons.append("spread gap inside lean band but outside bet band")
+    elif edge >= LEAN_EDGE_THRESHOLD and pick_prob >= LEAN_PROB_FLOOR:
+        # Allow LEAN even when reasons exist, unless the spread is wildly off
+        # or we have no win-prob conviction at all.
+        if (
+            spread_gap is None
+            or abs(spread_gap) <= SPREAD_AGREEMENT_GAP_LEAN
+        ) and pick_prob >= 0.50:
+            decision = "LEAN"
+
+    if decision == "BET":
+        confidence = "High" if edge >= 0.06 and pick_prob >= 0.58 else "Medium"
+    elif decision == "LEAN":
+        confidence = "Medium"
+    else:
+        confidence = "Low"
+
+    return {
+        "decision": decision,
+        "confidence": confidence,
+        "reasons": reasons,
+        "spread_gap": None if spread_gap is None else round(spread_gap, 2),
+        "market_pick_spread": market_pick_spread,
+        "adjustment_total": round(adjustment_total, 4),
+        "is_big_dog": is_big_dog,
+    }
 
 
 def run_playoff_game(
@@ -1002,11 +1165,30 @@ def run_playoff_game(
     edge = pick_prob - market_prob
     spread_team = home_name if predicted_spread >= 0 else away_name
     spread_disagrees = spread_team != pick_team and abs(predicted_spread) >= 0.5
-    decision = "BET" if edge > 0.03 and not spread_disagrees else "PASS"
+
+    guardrail = evaluate_playoff_decision(
+        pick_team=pick_team,
+        pick_prob=pick_prob,
+        pick_odds=pick_odds,
+        edge=edge,
+        predicted_spread=predicted_spread,
+        market=market,
+        home_name=home_name,
+        away_name=away_name,
+        injuries=injuries,
+        series_context=series_context,
+        adjustments=adjustments,
+    )
+    decision = guardrail["decision"]
+    if spread_disagrees and decision == "BET":
+        decision = "LEAN"
+        guardrail["reasons"].append(
+            f"moneyline points to {pick_team} but margin layer projects {spread_team} by {abs(predicted_spread):.2f}"
+        )
+        guardrail["decision"] = decision
+
     units = _quarter_kelly_units(edge, pick_odds) if decision == "BET" else 0.0
-    confidence = "High" if edge >= 0.06 and abs(sum(float(item["value"]) for item in adjustments)) <= 0.16 else "Medium"
-    if decision == "PASS" or not injuries:
-        confidence = "Low" if not injuries else "Medium"
+    confidence = guardrail["confidence"]
 
     print("**Game Context:**")
     print(f"- {game.get('away_display') or away_name} at {game.get('home_display') or home_name}")
@@ -1070,16 +1252,21 @@ def run_playoff_game(
 
     print("\n**Edge And Decision:**")
     print(f"**Edge:** {pick_team} {edge*100:+.1f}%")
-    print("**Minimum threshold:** 3.0%")
+    print(f"**BET threshold:** {BET_EDGE_THRESHOLD*100:.1f}% edge AND {BET_PROB_FLOOR*100:.0f}% pick prob (dogs need {DOG_BET_PROB_FLOOR*100:.0f}%); LEAN at {LEAN_EDGE_THRESHOLD*100:.1f}% edge.")
+    if guardrail.get("market_pick_spread") is not None:
+        print(
+            f"**Spread cross-check:** model {('home' if pick_team == home_name else 'away')}-margin "
+            f"vs market {pick_team} {guardrail['market_pick_spread']:+.1f}; gap {guardrail.get('spread_gap'):+.2f} pts."
+        )
     if decision == "BET":
         print(f"**Decision: BET on {pick_team}**")
         print(f"**Stake:** {units:.2f} units (quarter Kelly, 2u cap)")
+    elif decision == "LEAN":
+        print(f"**Decision: LEAN {pick_team}** (no stake — context favors but guardrails block a full BET)")
     else:
         print("**Decision: PASS**")
-        if spread_disagrees:
-            print(f"**Reason:** Moneyline probability points to {pick_team}, but the spread layer projects {spread_team} by {abs(predicted_spread):.2f}.")
-        else:
-            print("**Reason:** Edge is too small or verification confidence is not strong enough.")
+    for reason in guardrail.get("reasons") or []:
+        print(f"- Guardrail: {reason}")
 
     print("\n**Confidence And Honesty:**")
     print(f"- Confidence: {confidence}")
@@ -1117,6 +1304,12 @@ def run_playoff_game(
         "total_components": {key: round(float(value), 3) for key, value in total_components.items()},
         "series_status": game.get("series_status"),
         "game_id": game.get("game_id"),
+        "guardrail_reasons": list(guardrail.get("reasons") or []),
+        "guardrail_spread_gap": guardrail.get("spread_gap"),
+        "guardrail_market_pick_spread": guardrail.get("market_pick_spread"),
+        "guardrail_adjustment_total_pp": round(float(guardrail.get("adjustment_total") or 0.0) * 100.0, 2),
+        "is_big_dog": guardrail.get("is_big_dog", False),
+        "confidence": confidence,
     }
     print(f"PICK_JSON: {json.dumps(pick, sort_keys=True)}")
     return pick
