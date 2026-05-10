@@ -160,18 +160,15 @@ def build_game_context(game: WNBAGame) -> dict:
 # ---------------------------------------------------------------------------
 
 def get_confidence_label(win_prob: float) -> str:
-    """Bucket a home win probability into Low / Medium / High.
-
-    The thresholds are intentionally asymmetric around the home side; callers
-    who want the away-team label should pass ``1 - win_prob``.
-    """
+    """Bucket the favored team's win probability into Low / Medium / High."""
     try:
         p = float(win_prob)
     except (TypeError, ValueError):
         return "Low"
-    if p >= 0.70:
+    favorite_prob = max(p, 1.0 - p)
+    if favorite_prob >= 0.72:
         return "High"
-    if p >= 0.60:
+    if favorite_prob >= 0.64:
         return "Medium"
     return "Low"
 
@@ -180,22 +177,14 @@ def get_confidence_label(win_prob: float) -> str:
 # Section 3 — Pick Gate Logic
 # ---------------------------------------------------------------------------
 
-def should_generate_spread_pick(result: dict) -> bool:
-    """True when the projected margin and win prob clear their edge thresholds.
-
-    We accept either side of the market: a win_prob >= 0.62 fires a home pick,
-    <= 0.38 fires an away pick. The margin is a symmetric |x| >= 3.5 check.
-    """
-    if not isinstance(result, dict):
-        return False
-    try:
-        margin = float(result.get("adjusted_margin"))
-        win_prob = float(result.get("win_prob"))
-    except (TypeError, ValueError):
-        return False
-    if abs(margin) < 3.5:
-        return False
-    return win_prob >= 0.62 or win_prob <= 0.38
+def should_generate_spread_pick(
+    result: dict,
+    home_stats: dict | None = None,
+    away_stats: dict | None = None,
+    context: dict | None = None,
+) -> bool:
+    """True when the projected side clears WNBA moneyline guardrails."""
+    return assess_spread_edge(result, home_stats, away_stats, context)["decision"] != "PASS"
 
 
 def should_generate_totals_pick(result: dict, market_total: float | None) -> bool:
@@ -211,11 +200,125 @@ def should_generate_totals_pick(result: dict, market_total: float | None) -> boo
         return False
 
 
+def _has_rating_baseline(stats: dict | None) -> bool:
+    """True when a team has the season-level rating needed for a real baseline."""
+    stats = stats or {}
+    return stats.get("NRtg") is not None
+
+
+def _present_factor_count(stats: dict | None) -> int:
+    stats = stats or {}
+    return sum(1 for field in _FOUR_FACTOR_FIELDS if stats.get(field) is not None)
+
+
+def _games_sample(stats: dict | None) -> int:
+    """Best-effort completed-game sample from season or rolling fields."""
+    stats = stats or {}
+    samples: list[int] = []
+
+    try:
+        wins = stats.get("W")
+        losses = stats.get("L")
+        if wins is not None and losses is not None:
+            samples.append(int(float(wins)) + int(float(losses)))
+    except (TypeError, ValueError):
+        pass
+
+    try:
+        rolling = stats.get("rolling_games_used")
+        if rolling is not None:
+            samples.append(int(float(rolling)))
+    except (TypeError, ValueError):
+        pass
+
+    return max(samples) if samples else 0
+
+
+def _favorite_probability(win_prob: float) -> float:
+    return max(win_prob, 1.0 - win_prob)
+
+
+def assess_spread_edge(
+    result: dict,
+    home_stats: dict | None = None,
+    away_stats: dict | None = None,
+    context: dict | None = None,
+) -> dict:
+    """Classify a WNBA moneyline edge as BET, LEAN, or PASS.
+
+    WNBA early-season/preseason data can look decisive when the model only has
+    home court, rest, B2B, and injury context. Those inputs are useful tie-
+    breakers, not a betting thesis by themselves, so partial-baseline games are
+    capped at LEAN and usually PASS unless the edge is extreme.
+    """
+    if not isinstance(result, dict):
+        return {"decision": "PASS", "confidence_label": "Low", "reasons": ["invalid result"]}
+
+    try:
+        margin = float(result.get("adjusted_margin"))
+        win_prob = float(result.get("win_prob"))
+    except (TypeError, ValueError):
+        return {"decision": "PASS", "confidence_label": "Low", "reasons": ["missing margin/probability"]}
+
+    abs_margin = abs(margin)
+    favorite_prob = _favorite_probability(win_prob)
+    home_has_rating = _has_rating_baseline(home_stats)
+    away_has_rating = _has_rating_baseline(away_stats)
+    has_full_baseline = home_has_rating and away_has_rating
+    min_games = min(_games_sample(home_stats), _games_sample(away_stats))
+    min_factor_fields = min(_present_factor_count(home_stats), _present_factor_count(away_stats))
+
+    reasons: list[str] = []
+    if not has_full_baseline:
+        reasons.append("no two-team NRtg baseline")
+    if min_games and min_games < 3:
+        reasons.append(f"thin completed-game sample ({min_games})")
+    if min_factor_fields < 4 and not has_full_baseline:
+        reasons.append("incomplete four-factor matchup data")
+    if result.get("projected_total") is None:
+        reasons.append("total unavailable")
+
+    if has_full_baseline:
+        if abs_margin >= 6.5 and favorite_prob >= 0.70:
+            decision = "BET"
+        elif abs_margin >= 4.75 and favorite_prob >= 0.64:
+            decision = "LEAN"
+        else:
+            decision = "PASS"
+    else:
+        # Context-only or mostly context-only cards should not become BETs.
+        if abs_margin >= 8.0 and favorite_prob >= 0.76 and min_factor_fields >= 4:
+            decision = "LEAN"
+            reasons.append("partial baseline capped at LEAN")
+        else:
+            decision = "PASS"
+
+    label_by_decision = {
+        "BET": "High",
+        "LEAN": "Medium",
+        "PASS": "Low",
+    }
+    return {
+        "decision": decision,
+        "confidence_label": label_by_decision[decision],
+        "favorite_probability": round(favorite_prob, 4),
+        "abs_margin": round(abs_margin, 2),
+        "has_full_baseline": has_full_baseline,
+        "min_games": min_games,
+        "min_factor_fields": min_factor_fields,
+        "reasons": reasons,
+    }
+
+
 # ---------------------------------------------------------------------------
 # Section 4 — Output Formatter
 # ---------------------------------------------------------------------------
 
-def format_pick_line(result: dict, market_total: float | None = None) -> str:
+def format_pick_line(
+    result: dict,
+    market_total: float | None = None,
+    confidence_label: str | None = None,
+) -> str:
     """Render a single-line pick string consumable by pickgraderserver.
 
     Format (must match exactly — the server UI parses it positionally):
@@ -252,7 +355,7 @@ Proj Margin: {home} +{margin} | Total: {total} | Conf: {confidence}
         except (TypeError, ValueError):
             total_str = "N/A"
 
-    confidence = get_confidence_label(win_prob)
+    confidence = confidence_label or result.get("confidence_label") or get_confidence_label(win_prob)
 
     return (
         f"WNBA | {away} @ {home} | Home Win {win_pct}% | "
@@ -271,22 +374,26 @@ _FOUR_FACTOR_FIELDS = (
 
 
 def _has_usable_stats(stats: dict | None) -> bool:
-    """A team profile is usable if it has NRtg or at least one Four Factor field."""
+    """A team profile is usable if it has ratings or a real factor sample."""
     if not stats:
         return False
     if stats.get("NRtg") is not None:
         return True
-    return any(stats.get(f) is not None for f in _FOUR_FACTOR_FIELDS)
+    return _present_factor_count(stats) >= 4
 
 
-def generate_wnba_picks(market_totals: dict = None, echo: bool = True) -> list[dict]:
+def generate_wnba_picks(
+    market_totals: dict = None,
+    echo: bool = True,
+    date_str: str | None = None,
+) -> list[dict]:
     """Produce a pick dict for every today's WNBA game that clears an edge gate.
 
     Returns a list of pick dicts (possibly empty). Each entry also carries a
     pre-formatted ``output_line`` so downstream consumers don't need to know
     the format string.
     """
-    games = get_todays_wnba_games()
+    games = get_todays_wnba_games(date_str)
     if not games:
         if echo:
             print("[WNBA] No games today — no picks generated.")
@@ -322,17 +429,25 @@ def generate_wnba_picks(market_totals: dict = None, echo: bool = True) -> list[d
             market_totals.get(game.espn_game_id) if market_totals else None
         )
 
-        spread_pick = should_generate_spread_pick(result)
+        guardrail = assess_spread_edge(result, home_stats, away_stats, context)
+        result["confidence_label"] = guardrail["confidence_label"]
+
+        spread_pick = guardrail["decision"] != "PASS"
         totals_pick = should_generate_totals_pick(result, market_total)
 
         if not spread_pick and not totals_pick:
             if echo:
+                reasons = "; ".join(guardrail["reasons"]) or "edge below threshold"
                 print(
-                    f"[WNBA] PASS — edge below threshold for {away_abbr} @ {home_abbr}"
+                    f"[WNBA] PASS — {reasons} for {away_abbr} @ {home_abbr}"
                 )
             continue
 
-        output_line = format_pick_line(result, market_total)
+        output_line = format_pick_line(
+            result,
+            market_total,
+            confidence_label=guardrail["confidence_label"],
+        )
         pick = {
             "league": "WNBA",
             "home": home_abbr,
@@ -343,7 +458,9 @@ def generate_wnba_picks(market_totals: dict = None, echo: bool = True) -> list[d
             "market_total": market_total,
             "spread_pick": spread_pick,
             "totals_pick": totals_pick,
-            "confidence": get_confidence_label(result["win_prob"]),
+            "decision": guardrail["decision"],
+            "confidence": guardrail["confidence_label"],
+            "guardrail_reasons": guardrail["reasons"],
             "data_quality": result["data_quality"],
             "output_line": output_line,
         }
@@ -362,12 +479,12 @@ if __name__ == "__main__":
     picks = generate_wnba_picks()
 
     if not picks:
-        # Off-season path: synthesize a known-edge scenario so we can still
+        # Off-season path: synthesize guardrail scenarios so we can still
         # exercise the full formatter + gate stack without live games.
-        print("[WNBA] Off-season test: running synthetic pick for IND vs MIN.")
+        print("[WNBA] Off-season test: running synthetic guardrail checks.")
 
-        home_stats = get_team_stats("IND") or {}
-        away_stats = get_team_stats("MIN") or {}
+        home_stats = {"NRtg": 8.0, "ORtg": 108.0, "DRtg": 100.0, "Pace": 70.0, "W": 8, "L": 3}
+        away_stats = {"NRtg": -2.0, "ORtg": 101.0, "DRtg": 103.0, "Pace": 69.0, "W": 4, "L": 7}
 
         synthetic_context = {
             "home_injury_penalty": 0.0,
@@ -385,10 +502,9 @@ if __name__ == "__main__":
 
         print(format_pick_line(synthetic_result))
 
-        assert should_generate_spread_pick(synthetic_result), (
-            "Synthetic IND vs MIN pick should fire: Collier Out + MIN road "
-            "B2B should push the home margin above 3.5 even on partial "
-            "stats via the home-court + B2B + injury contextual stack.\n"
+        assert should_generate_spread_pick(synthetic_result, home_stats, away_stats, synthetic_context), (
+            "Synthetic IND vs MIN pick should fire only when a real two-team "
+            "ratings baseline supports the context stack.\n"
             f"  result={synthetic_result}"
         )
 

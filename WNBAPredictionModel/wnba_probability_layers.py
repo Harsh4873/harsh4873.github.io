@@ -28,12 +28,14 @@ import math
 WNBA_LEAGUE_AVG_PACE = 70.0        # possessions per 40 min, league average
 WNBA_LEAGUE_AVG_PPG  = 82.0        # league average points per game
 WNBA_MARGIN_CAP      = 18.0        # max absolute projected margin (points)
-WNBA_LOGISTIC_K      = 0.175       # logistic scaling constant
-WNBA_HOME_ADVANTAGE  = 2.0         # home court points added to home margin
-WNBA_B2B_PENALTY     = 2.5         # points deducted for road B2B team
-WNBA_REST_BONUS      = 1.2         # points per 2+ extra rest days advantage
-WNBA_FORM_WEIGHT     = 0.15        # weight on last-5 NRtg delta
-WNBA_INJURY_SCALE    = 12.0        # points per unit of injury penalty delta
+WNBA_LOGISTIC_K      = 0.165       # logistic scaling constant
+WNBA_HOME_ADVANTAGE  = 1.4         # home court points added to home margin
+WNBA_B2B_PENALTY     = 1.25        # points deducted for road B2B team
+WNBA_REST_BONUS      = 0.6         # points per 2+ extra rest days advantage
+WNBA_FORM_WEIGHT     = 0.06        # weight on last-5 NRtg delta
+WNBA_INJURY_SCALE    = 7.0         # points per unit of injury penalty delta
+WNBA_INJURY_ADJ_CAP  = 2.25        # max injury-delta points in either direction
+WNBA_FORM_ADJ_CAP    = 2.0         # max recent-form points in either direction
 
 
 # ---------------------------------------------------------------------------
@@ -161,7 +163,7 @@ def compute_four_factors_adjustment(home_stats: dict, away_stats: dict) -> float
     tuned for WNBA point units. Any None field contributes 0 — we degrade
     gracefully rather than raising.
 
-    Clamped to ±8.0: Four Factors refine the NRtg margin, they should not
+    Clamped to ±5.0: Four Factors refine the NRtg margin, they should not
     dominate it.
     """
     home_stats = home_stats or {}
@@ -179,10 +181,10 @@ def compute_four_factors_adjustment(home_stats: dict, away_stats: dict) -> float
         + (FTR_diff * 0.15 * 10)
     )
 
-    if adj > 8.0:
-        adj = 8.0
-    elif adj < -8.0:
-        adj = -8.0
+    if adj > 5.0:
+        adj = 5.0
+    elif adj < -5.0:
+        adj = -5.0
     return adj
 
 
@@ -248,7 +250,12 @@ def compute_contextual_adjustments(
     try:
         hi = float(home_inj) if home_inj is not None else 0.0
         ai = float(away_inj) if away_inj is not None else 0.0
-        adj += (ai - hi) * WNBA_INJURY_SCALE
+        injury_adj = (ai - hi) * WNBA_INJURY_SCALE
+        if injury_adj > WNBA_INJURY_ADJ_CAP:
+            injury_adj = WNBA_INJURY_ADJ_CAP
+        elif injury_adj < -WNBA_INJURY_ADJ_CAP:
+            injury_adj = -WNBA_INJURY_ADJ_CAP
+        adj += injury_adj
     except (TypeError, ValueError):
         pass
 
@@ -257,7 +264,12 @@ def compute_contextual_adjustments(
     away_l5 = context.get("away_last5_NRtg")
     if home_l5 is not None and away_l5 is not None:
         try:
-            adj += (float(home_l5) - float(away_l5)) * WNBA_FORM_WEIGHT
+            form_adj = (float(home_l5) - float(away_l5)) * WNBA_FORM_WEIGHT
+            if form_adj > WNBA_FORM_ADJ_CAP:
+                form_adj = WNBA_FORM_ADJ_CAP
+            elif form_adj < -WNBA_FORM_ADJ_CAP:
+                form_adj = -WNBA_FORM_ADJ_CAP
+            adj += form_adj
         except (TypeError, ValueError):
             pass
 

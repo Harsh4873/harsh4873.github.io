@@ -286,9 +286,9 @@ def merge_schedules(
 # Public API
 # ---------------------------------------------------------------------------
 
-def get_todays_wnba_games() -> list[WNBAGame]:
-    """Fetch and merge today's WNBA games from ESPN + BDL."""
-    today = datetime.date.today().isoformat()  # "YYYY-MM-DD"
+def get_todays_wnba_games(date_str: str | None = None) -> list[WNBAGame]:
+    """Fetch and merge WNBA games for *date_str* or today from ESPN + BDL."""
+    today = date_str or datetime.date.today().isoformat()  # "YYYY-MM-DD"
 
     espn_games = fetch_espn_schedule(today)
     bdl_games = fetch_bdl_schedule(today, today)

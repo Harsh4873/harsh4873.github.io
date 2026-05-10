@@ -3516,6 +3516,8 @@ def run_nba_props_model(
 
 def run_wnba_model(date_str: str | None = None) -> dict[str, Any]:
     """Execute the WNBA model and return parsed picks."""
+    target_iso, _ = _parse_model_date_arg(date_str)
+
     if not os.path.exists(WNBA_MODEL_DIR):
         return {"ok": False, "error": "WNBA model directory not found"}
 
@@ -3526,14 +3528,14 @@ def run_wnba_model(date_str: str | None = None) -> dict[str, Any]:
             "raw_lines": 0,
             "note": "No WNBA picks today — off-season or no edge found.",
         }
-        _save_admin_picks_doc("wnba", result)
+        _save_admin_picks_doc("wnba", result, target_iso)
         return result
 
     python_bin = _resolve_python_bin(os.path.join(BASE_DIR, ".venv", "bin", "python"))
     script = """
 from wnba_picks import generate_wnba_picks
 
-picks = generate_wnba_picks(echo=False) or []
+picks = generate_wnba_picks(echo=False, date_str={date_arg!r}) or []
 if picks:
     for pick in picks:
         line = str(pick.get("output_line", "")).strip()
@@ -3541,7 +3543,7 @@ if picks:
             print(line)
 else:
     print("[WNBA] No picks generated today.")
-"""
+""".format(date_arg=target_iso)
 
     try:
         proc = _subprocess_run(
@@ -3566,7 +3568,7 @@ else:
                     "raw_lines": len(output.split("\n")),
                     "note": note,
                 }
-                _save_admin_picks_doc("wnba", result)
+                _save_admin_picks_doc("wnba", result, target_iso)
                 return result
             tail = " | ".join((output.strip().splitlines() or ["no output"])[-12:])
             return {
@@ -3576,7 +3578,7 @@ else:
             }
 
         result = {"ok": True, "picks": picks, "raw_lines": len(output.split("\n"))}
-        _save_admin_picks_doc("wnba", result)
+        _save_admin_picks_doc("wnba", result, target_iso)
         return result
     except subprocess.TimeoutExpired:
         return {"ok": False, "error": "WNBA model timed out (4 min limit)"}
