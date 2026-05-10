@@ -34,6 +34,19 @@ from mlb_inning_fetcher import (  # noqa: E402
     safe_int,
 )
 
+try:
+    from mlb_first_five_environment import (  # noqa: E402
+        blend_park_run_delta,
+        parse_wind,
+        wind_run_delta,
+    )
+except ImportError:
+    from .mlb_first_five_environment import (  # noqa: E402
+        blend_park_run_delta,
+        parse_wind,
+        wind_run_delta,
+    )
+
 
 LEAGUE_TEAM_F5_RUNS = 2.25
 LEAGUE_F5_TOTAL = LEAGUE_TEAM_F5_RUNS * 2.0
@@ -136,17 +149,38 @@ def _project_game(game: dict[str, Any], model_date: str) -> dict[str, Any]:
 
     venue_profile = _venue_f5_profile(venue_id, model_date)
 
+    # Blend the learned per-venue F5 delta with the static park-factor prior
+    # (helps when the learned sample is thin, e.g. early-season).
+    park_blend = blend_park_run_delta(
+        learned_delta=safe_float(venue_profile.get("run_delta_per_team"), 0.0),
+        learned_games=safe_int(venue_profile.get("games"), 0),
+        venue_id=venue_id,
+    )
+    # Wind signal from the live-feed weather string.
+    wind_string = ((game.get("weather") or {}).get("wind") or "")
+    parsed_wind = parse_wind(wind_string)
+    wind_delta = wind_run_delta(wind_string)
+    environment_profile = {
+        **venue_profile,
+        "park_blend": park_blend,
+        "park_run_delta_per_team": park_blend["final_delta"],
+        "wind_run_delta_per_team": wind_delta,
+        "wind_mph": parsed_wind.get("mph", 0.0),
+        "wind_direction": parsed_wind.get("direction") or "",
+        "weather_raw": wind_string,
+    }
+
     away_runs, away_factors = _project_team_runs(
         offense_profile=away_team_profile,
         opposing_pitcher_profile=home_pitcher_profile,
         lineup_delta=away_lineup_delta,
-        venue_profile=venue_profile,
+        venue_profile=environment_profile,
     )
     home_runs, home_factors = _project_team_runs(
         offense_profile=home_team_profile,
         opposing_pitcher_profile=away_pitcher_profile,
         lineup_delta=home_lineup_delta,
-        venue_profile=venue_profile,
+        venue_profile=environment_profile,
     )
 
     total_runs = _clamp(away_runs + home_runs, 2.0, 8.5)
@@ -192,7 +226,7 @@ def _project_game(game: dict[str, Any], model_date: str) -> dict[str, Any]:
             "home_offense": home_factors,
             "away_pitcher": away_pitcher_profile,
             "home_pitcher": home_pitcher_profile,
-            "venue": venue_profile,
+            "venue": environment_profile,
             "away_lineup_matchup": away_lineup_delta,
             "home_lineup_matchup": home_lineup_delta,
         },
@@ -231,7 +265,16 @@ def _project_team_runs(
     projected += 0.05 * (offense_prior - LEAGUE_TEAM_F5_RUNS)
     projected += _sample_weight(offense_profile.get("venue_games"), 8, 0.07) * (offense_venue - offense_current)
     projected += safe_float(lineup_delta.get("run_delta"), 0.0)
-    projected += safe_float(venue_profile.get("run_delta_per_team"), 0.0)
+    # Park delta — prefers the blended (learned + static) value when set,
+    # falls back to the legacy learned-only field for older callers.
+    park_delta = safe_float(
+        venue_profile.get("park_run_delta_per_team"),
+        safe_float(venue_profile.get("run_delta_per_team"), 0.0),
+    )
+    projected += park_delta
+    # Wind delta — already in F5 runs/team units, capped at ±0.45.
+    wind_delta = safe_float(venue_profile.get("wind_run_delta_per_team"), 0.0)
+    projected += wind_delta
 
     factors = {
         "projected_runs": round(_clamp(projected, 0.55, 5.25), 2),
@@ -246,6 +289,10 @@ def _project_team_runs(
         "pitcher_venue_f5_allowed": venue_pitcher,
         "lineup_delta": safe_float(lineup_delta.get("run_delta"), 0.0),
         "venue_delta": safe_float(venue_profile.get("run_delta_per_team"), 0.0),
+        "park_run_delta_per_team": park_delta,
+        "wind_run_delta_per_team": wind_delta,
+        "wind_mph": safe_float(venue_profile.get("wind_mph"), 0.0),
+        "wind_direction": str(venue_profile.get("wind_direction") or ""),
     }
     return factors["projected_runs"], factors
 

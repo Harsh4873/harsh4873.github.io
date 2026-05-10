@@ -167,6 +167,69 @@ def test_burnt_bullpen_lowers_late_inning_scoreless_probability():
         )
 
 
+def test_pitch_weighted_fatigue_distinguishes_loogy_from_closer():
+    """Reliever pitch counts in the boxscore should weight fatigue:
+    a 25-pitch closer outing produces ~1 unit of unavailability;
+    a 5-pitch LOOGY outing produces ~0.2 units."""
+    from models.mlb_inning.mlb_inning_bullpen import _reliever_loads_from_feed
+
+    # Synthetic boxscore feed shaped like the live MLB API.
+    feed = {
+        "liveData": {
+            "boxscore": {
+                "teams": {
+                    "home": {
+                        "team": {"id": 147},
+                        "pitchers": [10000, 10001, 10002, 10003],  # SP + 3 RP
+                        "players": {
+                            "ID10000": {"stats": {"pitching": {"pitchesThrown": 95}}},  # SP
+                            "ID10001": {"stats": {"pitching": {"pitchesThrown": 5}}},   # LOOGY
+                            "ID10002": {"stats": {"pitching": {"pitchesThrown": 25}}},  # closer
+                            "ID10003": {"stats": {"pitching": {"pitchesThrown": 18}}},  # setup
+                        },
+                    },
+                    "away": {"team": {"id": 999}},
+                },
+            },
+        },
+    }
+
+    loads = _reliever_loads_from_feed(feed, team_id=147)
+    # Starter (10000) NOT included.
+    assert 10000 not in loads
+    # All 3 relievers present with pitches as floats.
+    assert loads[10001] == 5.0
+    assert loads[10002] == 25.0
+    assert loads[10003] == 18.0
+
+
+def test_parallel_bullpen_fetch_returns_same_workload_per_team(monkeypatch):
+    """fetch_bullpen_workloads_parallel should produce identical output
+    to fetch_bullpen_workload called sequentially, just faster."""
+    from models.mlb_inning import mlb_inning_bullpen as bp
+
+    # Stub the per-team fetcher so the test doesn't hit the network.
+    def fake_workload(team_id, target_date, lookback_games=2):
+        return {
+            "lookback_games": lookback_games,
+            "games_inspected": 1,
+            "recently_used_pitcher_ids": [team_id * 10],
+            "back_to_back_arms": [],
+            "yesterday_used_pitcher_ids": [team_id * 10],
+            "high_leverage_used_pitcher_ids": [],
+            "light_use_pitcher_ids": [team_id * 10],
+            "unavailable_today": [],
+            "effective_unavailable_count": 0.4,
+            "fatigue_index": 0.05,
+        }
+
+    monkeypatch.setattr(bp, "fetch_bullpen_workload", fake_workload)
+    parallel_results = bp.fetch_bullpen_workloads_parallel([147, 147, 121, 158], "2026-05-15")
+    assert set(parallel_results.keys()) == {147, 121, 158}  # de-duplicated
+    for tid, payload in parallel_results.items():
+        assert payload == fake_workload(tid, "2026-05-15")
+
+
 def test_inning_9_excluded_from_picks():
     """The 9th inning never gets emitted because the home half is unplayed
     when the home team is leading entering the bottom of the 9th."""
