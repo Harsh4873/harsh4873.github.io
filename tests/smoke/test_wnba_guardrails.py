@@ -92,6 +92,59 @@ def test_wnba_h2h_signal_empty_returns_no_shift():
     assert signal["evidence_weight"] == 0.0
 
 
+def test_wnba_units_scale_with_conviction():
+    """Higher projected margins and stronger probabilities should produce
+    materially larger stake recommendations than borderline picks."""
+    from WNBAPredictionModel.wnba_picks import assess_spread_edge
+
+    home = {"NRtg": 8.0, "ORtg": 108.0, "DRtg": 100.0, "Pace": 70.0, "W": 8, "L": 3}
+    away = {"NRtg": -2.0, "ORtg": 101.0, "DRtg": 103.0, "Pace": 69.0, "W": 4, "L": 7}
+    base_ctx = {
+        "home_rest_days": 3,
+        "away_rest_days": 1,
+        "away_is_b2b": False,
+        "home_injury_penalty": 0.0,
+        "away_injury_penalty": 0.1,
+    }
+
+    big = assess_spread_edge(
+        {"adjusted_margin": 11.0, "win_prob": 0.78, "projected_total": 162.0,
+         "h2h_signal": {"games": 2}},
+        home, away, base_ctx,
+    )
+    small = assess_spread_edge(
+        {"adjusted_margin": 5.0, "win_prob": 0.66, "projected_total": 162.0,
+         "h2h_signal": {"games": 0}},
+        home, away, base_ctx,
+    )
+    pass_pick = assess_spread_edge(
+        {"adjusted_margin": 1.0, "win_prob": 0.54, "projected_total": 162.0,
+         "h2h_signal": {"games": 0}},
+        home, away, base_ctx,
+    )
+
+    assert big["decision"] == "BET"
+    assert small["decision"] == "LEAN"
+    assert pass_pick["decision"] == "PASS"
+    assert big["units"] > small["units"] > 0.0
+    assert pass_pick["units"] == 0.0
+    # Stakes stay inside the [0.25, 1.75] envelope.
+    assert 0.25 <= big["units"] <= 1.75
+    assert 0.25 <= small["units"] <= 1.75
+
+
+def test_wnba_total_falls_back_to_ppg_when_ortg_missing():
+    """When ORtg is unavailable but rolling_pts / pts_per_game exist, the
+    projected total should still be emitted instead of None."""
+    from WNBAPredictionModel.wnba_probability_layers import compute_projected_total
+
+    home = {"Pace": 72.0, "rolling_pts": 84.0}
+    away = {"Pace": 70.0, "pts_per_game": 78.5}
+    total = compute_projected_total(home, away)
+    assert total is not None
+    assert 130.0 <= total <= 185.0
+
+
 def test_wnba_h2h_lifts_predicted_margin():
     """End-to-end: passing two blowout wins as h2h_games shifts the
     adjusted margin and win prob in the home team's favor compared to

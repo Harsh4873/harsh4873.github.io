@@ -3917,20 +3917,12 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
     <div class="model-status" id="status-nba-compare" style="margin-bottom:12px;"></div>
     <div class="model-status" id="status-mlb-compare" style="margin-bottom:12px;"></div>
     <div class="models-grid">
-      <div class="model-card" id="model-card-mlb">
-        <div class="model-card-icon">&#9918;</div>
-        <div class="model-card-title">MLB Model</div>
-        <div class="model-card-desc">Runs the champion MLB pipeline for today's games. Uses the legacy 2023-24 artifact set so the MLB Model stays the betting default while the challenger is tracked separately.</div>
-        <span data-model-timestamp="mlb" class="model-timestamp-badge" style="display:none;"></span>
-        <button class="model-run-btn" id="btn-run-mlb" onclick="runModel('mlb')">RUN MLB MODEL</button>
-        <div class="model-status" id="status-mlb"></div>
-      </div>
       <div class="model-card" id="model-card-mlb-new">
         <div class="model-card-icon">&#9918;</div>
-        <div class="model-card-title">MLB New</div>
-        <div class="model-card-desc">Runs the 2024-25 challenger MLB artifacts side-by-side against the champion so you can compare live ROI before promoting it.</div>
+        <div class="model-card-title">MLB Model</div>
+        <div class="model-card-desc">Runs the current MLB moneyline pipeline using the 2024-25 artifacts.</div>
         <span data-model-timestamp="mlb_new" class="model-timestamp-badge" style="display:none;"></span>
-        <button class="model-run-btn" id="btn-run-mlb-new" onclick="runModel('mlb-new')">RUN MLB NEW</button>
+        <button class="model-run-btn" id="btn-run-mlb-new" onclick="runModel('mlb-new')">RUN MLB MODEL</button>
         <div class="model-status" id="status-mlb-new"></div>
       </div>
       <div class="model-card" id="model-card-mlb-inning">
@@ -8997,9 +8989,30 @@ function render() {
   const rankingSources = [...new Set(rankedPicks.map(p => getRankingSourceKey(p)))];
   const stats = rankingSources.map(s=>getSourceStats(s, rankedPicks)).filter(s=>s&&s.eligible);
   stats.sort((a,b)=>b.composite-a.composite);
-  const visibleRankingSources = getVisibleRankingSources(stats.map(s => s.source));
+  // Source chooser shows the union of (eligible-in-leaderboard) ∪ (known
+  // model sources) so users can opt in/out of, e.g., MLB First Five before
+  // it has 3 graded picks. Stubs render with a 0-0 record badge.
+  const KNOWN_PICKLEDGER_SOURCES = [
+    'MLB Model', 'MLB First Five', 'MLB Inning',
+    'NBA New', 'NBA Playoffs', 'NBA Model', 'NBA Props Model',
+    'WNBA Model', 'IPL Model',
+    'SportyTrader', 'SportsGambler', 'Cannon Analytics',
+  ];
+  const knownStatsSources = new Set(stats.map(s => s.source));
+  const chooserStats = [...stats];
+  KNOWN_PICKLEDGER_SOURCES.forEach(name => {
+    if (knownStatsSources.has(name)) return;
+    chooserStats.push({
+      source: name,
+      wins: 0, losses: 0, pending: 0, count: 0,
+      acc: 0, accScore: 0, roi: 0, roiScore: 0, netUnits: 0,
+      consistencyScore: 0, composite: 0, eligible: false,
+    });
+  });
+  chooserStats.sort((a, b) => (b.composite - a.composite) || String(a.source).localeCompare(String(b.source)));
+  const visibleRankingSources = getVisibleRankingSources(chooserStats.map(s => s.source));
   const visibleStats = stats.filter(s => visibleRankingSources.has(s.source));
-  renderSourceChooser(stats, visibleRankingSources);
+  renderSourceChooser(chooserStats, visibleRankingSources);
   const lb = document.getElementById('leaderboard');
   if(!stats.length) lb.innerHTML='<div class="empty-state" style="grid-column:1/-1">Need 3+ decided picks per source to rank</div>';
   else if(!visibleStats.length) lb.innerHTML='<div class="empty-state" style="grid-column:1/-1">Choose at least one source to show rankings</div>';
@@ -9400,10 +9413,9 @@ const NBA_MODEL_SOURCE_LABELS = {
   'nba-old': 'NBA OLD',
   'nba-new': 'NBA New',
 };
-const MLB_COMPARISON_MODELS = new Set(['mlb', 'mlb-new']);
+const MLB_COMPARISON_MODELS = new Set();
 const MLB_MODEL_SOURCE_LABELS = {
-  mlb: 'MLB Model',
-  'mlb-new': 'MLB NEW',
+  'mlb-new': 'MLB Model',
 };
 let pendingNbaComparisonPicks = {
   'nba-old': [],
@@ -10396,11 +10408,11 @@ async function _runMlbVariantModel(model, dateStr) {
   );
   const result = await _runAsyncModelRequest(
     model,
-    model === 'mlb-new' ? '/run-mlb-new-model' : '/run-mlb-model',
+    '/run-mlb-new-model',
     {
       async: true,
       date: dateStr,
-      fallbackModelKey: model === 'mlb-new' ? 'mlb_new' : 'mlb',
+      fallbackModelKey: 'mlb_new',
       fallbackDateStr: dateStr,
     }
   );
@@ -11076,11 +11088,6 @@ async function runModel(model, eventOrOptions = {}) {
     date: _getTodayIsoDate ? _getTodayIsoDate() : getFirestoreDateKey(),
     force_refresh: forceRefresh,
   };
-  if (model === 'mlb') {
-    endpoint = '/run-mlb-model';
-    body.fallbackModelKey = 'mlb';
-    body.fallbackDateStr = body.date;
-  }
   if (model === 'mlb-inning') {
     endpoint = '/run-mlb-inning-model';
     body.fallbackModelKey = 'mlb_inning';
@@ -11718,23 +11725,15 @@ window.addEventListener('firestorePicksLoaded', function(e) {
 (function() {
   const STORAGE_KEY = 'pickledger_visible_models';
   const CATALOG_KEY = 'pickledger_visible_models_catalog';
+  // Legacy catalog kept on this list so anything NEW (or anything previously
+  // hidden but still active) gets re-added to the visible set on next load.
+  // Bumping the entries here is how we force MLB First Five and the renamed
+  // MLB Model card back into a stale localStorage that hid them.
   const LEGACY_MODEL_IDS = [
-    'model-card-mlb',
-    'model-card-mlb-new',
-    'model-card-mlb-first-five',
-    'model-card-ipl',
-    'model-card-nba-new',
-    'model-card-nba-playoffs',
-    'model-card-nba-old',
-    'model-card-nba-props',
-    'model-card-sportytrader',
-    'model-card-sportsgambler',
-    'model-card-cannon-analytics',
-    'model-card-wnba',
+    'model-card-mlb-old-stub-removed-2026-05',
   ];
   const ALL_MODELS = [
-    { id: 'model-card-mlb',              icon: '\u26BE', name: 'MLB Model',                     desc: 'Pitcher-based MLB predictions' },
-    { id: 'model-card-mlb-new',          icon: '\u26BE', name: 'MLB New',                       desc: '2024-25 MLB challenger artifacts' },
+    { id: 'model-card-mlb-new',          icon: '\u26BE', name: 'MLB Model',                     desc: 'Current MLB moneyline pipeline (2024-25 artifacts)' },
     { id: 'model-card-mlb-inning',       icon: '\u26BE', name: 'MLB Inning',                    desc: 'Least likely run-scoring innings' },
     { id: 'model-card-mlb-first-five',   icon: '\u26BE', name: 'MLB First Five',                desc: 'F5 side and total model' },
     { id: 'model-card-ipl',              icon: '\u{1F3DF}', name: 'IPL Model',                  desc: 'Cached IPL winner + fantasy XI' },

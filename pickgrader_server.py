@@ -2617,7 +2617,13 @@ def _parse_nba_playoffs_output(output: str) -> list[dict[str, Any]]:
 
 
 def _parse_wnba_output(output: str) -> list[dict[str, Any]]:
-    """Parse WNBA model output lines into the shared pick payload shape."""
+    """Parse WNBA model output lines into the shared pick payload shape.
+
+    Prefers PICK_JSON lines (structured payload, includes units / h2h /
+    guardrail reasons) over the human-readable WNBA | ... pipe lines.
+    Both formats appear in the runner output; PICK_JSON is the source of
+    truth and the pipe-line is a UI-friendly fallback only.
+    """
     picks: list[dict[str, Any]] = []
     seen_matchups: set[str] = set()
     decision_by_confidence = {
@@ -2625,6 +2631,23 @@ def _parse_wnba_output(output: str) -> list[dict[str, Any]]:
         "MEDIUM": "LEAN",
         "LOW": "PASS",
     }
+
+    json_payloads_by_matchup: dict[str, dict[str, Any]] = {}
+    for raw_line in output.splitlines():
+        line = str(raw_line or "").strip()
+        if not line.startswith("PICK_JSON:"):
+            continue
+        try:
+            payload = json.loads(line.split("PICK_JSON:", 1)[1].strip())
+        except json.JSONDecodeError:
+            continue
+        if not isinstance(payload, dict):
+            continue
+        home_p = str(payload.get("home") or "").strip()
+        away_p = str(payload.get("away") or "").strip()
+        if not home_p or not away_p:
+            continue
+        json_payloads_by_matchup[f"{away_p} @ {home_p}"] = payload
 
     for raw_line in output.splitlines():
         line = str(raw_line or "").strip()
@@ -2683,15 +2706,30 @@ def _parse_wnba_output(output: str) -> list[dict[str, Any]]:
             f"Conf: {confidence_label}"
         )
 
+        json_payload = json_payloads_by_matchup.get(matchup) or {}
+        units_value: float = 1.0
+        try:
+            raw_units = json_payload.get("units")
+            if raw_units is not None:
+                units_value = float(raw_units)
+        except (TypeError, ValueError):
+            units_value = 1.0
+        # PASS decisions emit zero stake even if a stale value sneaks in.
+        json_decision = str(json_payload.get("decision") or "").upper() or decision
+        if json_decision == "PASS":
+            units_value = 0.0
+        h2h_games_value = int(json_payload.get("h2h_games", 0) or 0)
+        guardrail_reasons_value = list(json_payload.get("guardrail_reasons") or [])
+
         picks.append({
             "source": "WNBA Model",
             "pick": f"{favorite_team} ML ({matchup})",
             "sport": "WNBA",
             "league": "WNBA",
             "odds": None,
-            "units": 1,
+            "units": units_value,
             "probability": round(favorite_probability, 4),
-            "decision": decision,
+            "decision": json_decision or decision,
             "team": favorite_team,
             "away_team": away_team,
             "home_team": home_team,
@@ -2701,6 +2739,8 @@ def _parse_wnba_output(output: str) -> list[dict[str, Any]]:
             "projected_total": projected_total,
             "confidence": round(favorite_probability * 100, 1),
             "confidence_label": confidence_label,
+            "h2h_games": h2h_games_value,
+            "guardrail_reasons": guardrail_reasons_value,
             "notes": notes,
         })
         seen_matchups.add(matchup)
@@ -3533,6 +3573,7 @@ def run_wnba_model(date_str: str | None = None) -> dict[str, Any]:
 
     python_bin = _resolve_python_bin(os.path.join(BASE_DIR, ".venv", "bin", "python"))
     script = """
+import json
 from wnba_picks import generate_wnba_picks
 
 picks = generate_wnba_picks(echo=False, date_str={date_arg!r}) or []
@@ -3541,6 +3582,12 @@ if picks:
         line = str(pick.get("output_line", "")).strip()
         if line:
             print(line)
+        # Also emit a structured PICK_JSON line so downstream parsing keeps
+        # units, h2h evidence count, and guardrail reasons that the
+        # human-readable pipe-line cannot represent.
+        print("PICK_JSON: " + json.dumps({{
+            k: v for k, v in pick.items() if k != "output_line"
+        }}, default=str, sort_keys=True))
 else:
     print("[WNBA] No picks generated today.")
 """.format(date_arg=target_iso)
@@ -3680,12 +3727,23 @@ def _mlb_inning_pick_rows(payload: dict[str, Any]) -> list[dict[str, Any]]:
             except (TypeError, ValueError):
                 probability_f = None
             confidence = str(pick.get("confidence") or "").strip() or "Low"
-            if confidence.upper() == "HIGH":
+            # Prefer the model's explicit decision; fall back to confidence
+            # mapping for older payloads that don't carry one.
+            explicit_decision = str(pick.get("decision") or "").strip().upper()
+            if explicit_decision in {"BET", "LEAN", "PASS"}:
+                decision = explicit_decision
+            elif confidence.upper() == "HIGH":
                 decision = "BET"
             elif confidence.upper() == "MEDIUM":
                 decision = "LEAN"
             else:
                 decision = "PASS"
+            edge_pp = pick.get("edge_pp")
+            try:
+                edge_value = float(edge_pp) if edge_pp is not None else None
+            except (TypeError, ValueError):
+                edge_value = None
+            baseline_value = pick.get("baseline")
             rows.append({
                 "source": "MLB Inning",
                 "pick": f"Inning {inning} - No Run Scored" if inning else str(pick.get("label") or "No Run Scored"),
@@ -3706,11 +3764,17 @@ def _mlb_inning_pick_rows(payload: dict[str, Any]) -> list[dict[str, Any]]:
                 "odds": None,
                 "assumed_odds": -110,
                 "probability": probability_f,
-                "edge": None,
+                "edge": edge_value,
+                "edge_pp": edge_value,
+                "baseline_probability": baseline_value,
                 "decision": decision,
                 "confidence": confidence,
                 "model_prediction": f"{probability_f * 100:.1f}%" if probability_f is not None else None,
-                "notes": f"Top no-run inning candidate. Full table: {json.dumps(filtered_full_table, sort_keys=True)}",
+                "notes": (
+                    f"Top no-run inning candidate (edge {edge_value:+.1f}pp vs baseline)."
+                    if edge_value is not None
+                    else "Top no-run inning candidate."
+                ) + f" Full table: {json.dumps(filtered_full_table, sort_keys=True)}",
             })
     return rows
 

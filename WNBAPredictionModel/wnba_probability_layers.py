@@ -363,6 +363,35 @@ def compute_contextual_adjustments(
 # Section 7 — Projected Total
 # ---------------------------------------------------------------------------
 
+def _ppg_fallback(stats: dict | None) -> float | None:
+    """Best-effort scoring estimate when ORtg is missing.
+
+    Tries last-N rolling pts → season pts → ORtg×pace surrogate. Returns
+    None only when nothing usable exists; downstream callers should treat
+    that as 'missing' rather than a zero.
+    """
+    stats = stats or {}
+    for key in ("rolling_pts", "pts_per_game", "PPG", "PTS_avg", "season_pts"):
+        value = stats.get(key)
+        if value is None:
+            continue
+        try:
+            number = float(value)
+        except (TypeError, ValueError):
+            continue
+        if 50.0 <= number <= 130.0:
+            return number
+    rolling_pts = stats.get("rolling_avg_pts") or (stats.get("rolling") or {}).get("pts")
+    if rolling_pts is not None:
+        try:
+            number = float(rolling_pts)
+        except (TypeError, ValueError):
+            return None
+        if 50.0 <= number <= 130.0:
+            return number
+    return None
+
+
 def compute_projected_total(
     home_stats: dict,
     away_stats: dict,
@@ -372,12 +401,13 @@ def compute_projected_total(
     """
     Project total points scored in the game.
 
-    Formula:
+    Preferred formula:
         projected = (home_ORtg + away_ORtg) * blended_pace / 100
         projected -= (home_inj + away_inj) * WNBA_LEAGUE_AVG_PPG
 
-    Returns None if either team is missing its offensive rating — the
-    caller should treat that as "total unavailable" rather than a zero.
+    When either ORtg is missing, fall back to direct points-per-game
+    averages so we always emit a usable total (was previously returning
+    None which made the picks UI render "Total: N/A").
 
     Clamped to [130.0, 185.0]. Anything outside this range indicates a
     data problem upstream — we refuse to emit an obviously broken total.
@@ -385,19 +415,33 @@ def compute_projected_total(
     home_stats = home_stats or {}
     away_stats = away_stats or {}
 
-    home_ortg = home_stats.get("ORtg")
-    away_ortg = away_stats.get("ORtg")
-    if home_ortg is None or away_ortg is None:
-        return None
-
-    try:
-        home_ortg = float(home_ortg)
-        away_ortg = float(away_ortg)
-    except (TypeError, ValueError):
-        return None
+    home_ortg_raw = home_stats.get("ORtg")
+    away_ortg_raw = away_stats.get("ORtg")
+    home_ortg: float | None = None
+    away_ortg: float | None = None
+    if home_ortg_raw is not None:
+        try:
+            home_ortg = float(home_ortg_raw)
+        except (TypeError, ValueError):
+            home_ortg = None
+    if away_ortg_raw is not None:
+        try:
+            away_ortg = float(away_ortg_raw)
+        except (TypeError, ValueError):
+            away_ortg = None
 
     blended_pace = blend_pace(home_stats.get("Pace"), away_stats.get("Pace"))
-    projected = (home_ortg + away_ortg) * blended_pace / 100.0
+
+    if home_ortg is not None and away_ortg is not None:
+        projected = (home_ortg + away_ortg) * blended_pace / 100.0
+    else:
+        # PPG fallback path — keeps a usable total when ORtg is missing
+        # (early WNBA season, partial data, etc.).
+        home_pts = _ppg_fallback(home_stats)
+        away_pts = _ppg_fallback(away_stats)
+        if home_pts is None or away_pts is None:
+            return None
+        projected = home_pts + away_pts
 
     try:
         hi = float(home_injury_penalty) if home_injury_penalty is not None else 0.0

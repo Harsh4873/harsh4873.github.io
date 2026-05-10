@@ -246,13 +246,49 @@ def _favorite_probability(win_prob: float) -> float:
     return max(win_prob, 1.0 - win_prob)
 
 
+def _units_for_conviction(
+    decision: str,
+    abs_margin: float,
+    favorite_prob: float,
+    has_full_baseline: bool,
+    h2h_games: int,
+) -> float:
+    """Conviction-based stake — replaces the old flat 1u sizing.
+
+    Scales with both projected margin and favorite-prob, then bumps for
+    real H2H evidence and shrinks for partial baselines. Range is
+    [0.25, 1.75] units; a PASS is 0.0.
+    """
+    if str(decision or "").upper() == "PASS":
+        return 0.0
+
+    # Margin-driven base: each point of projected margin past 4 adds ~0.10u
+    # up to a 12-pt cap (1.0u from margin alone).
+    margin_units = max(0.0, min(1.0, (abs_margin - 4.0) * 0.10))
+    # Probability-driven add: each percentage point of favorite-prob past
+    # 60% adds 0.025u up to 90% (0.75u from probability alone).
+    prob_units = max(0.0, min(0.75, (favorite_prob - 0.60) * 2.5))
+
+    units = 0.30 + margin_units * 0.55 + prob_units * 0.55
+    if str(decision).upper() == "LEAN":
+        units *= 0.55  # leans are smaller stakes
+    if not has_full_baseline:
+        units *= 0.55  # discount partial-baseline picks regardless of decision
+    if h2h_games >= 2:
+        units *= 1.10  # small boost when we have matchup evidence
+    elif h2h_games == 1:
+        units *= 1.04
+    return round(max(0.25, min(1.75, units)), 2)
+
+
 def assess_spread_edge(
     result: dict,
     home_stats: dict | None = None,
     away_stats: dict | None = None,
     context: dict | None = None,
 ) -> dict:
-    """Classify a WNBA moneyline edge as BET, LEAN, or PASS.
+    """Classify a WNBA moneyline edge as BET, LEAN, or PASS with conviction-
+    based unit sizing.
 
     WNBA early-season/preseason data can look decisive when the model only has
     home court, rest, B2B, and injury context. Those inputs are useful tie-
@@ -260,13 +296,13 @@ def assess_spread_edge(
     capped at LEAN and usually PASS unless the edge is extreme.
     """
     if not isinstance(result, dict):
-        return {"decision": "PASS", "confidence_label": "Low", "reasons": ["invalid result"]}
+        return {"decision": "PASS", "confidence_label": "Low", "units": 0.0, "reasons": ["invalid result"]}
 
     try:
         margin = float(result.get("adjusted_margin"))
         win_prob = float(result.get("win_prob"))
     except (TypeError, ValueError):
-        return {"decision": "PASS", "confidence_label": "Low", "reasons": ["missing margin/probability"]}
+        return {"decision": "PASS", "confidence_label": "Low", "units": 0.0, "reasons": ["missing margin/probability"]}
 
     abs_margin = abs(margin)
     favorite_prob = _favorite_probability(win_prob)
@@ -275,6 +311,8 @@ def assess_spread_edge(
     has_full_baseline = home_has_rating and away_has_rating
     min_games = min(_games_sample(home_stats), _games_sample(away_stats))
     min_factor_fields = min(_present_factor_count(home_stats), _present_factor_count(away_stats))
+    h2h_signal = result.get("h2h_signal") or {}
+    h2h_games = int(h2h_signal.get("games", 0) or 0)
 
     reasons: list[str] = []
     if not has_full_baseline:
@@ -301,6 +339,14 @@ def assess_spread_edge(
         else:
             decision = "PASS"
 
+    units = _units_for_conviction(
+        decision=decision,
+        abs_margin=abs_margin,
+        favorite_prob=favorite_prob,
+        has_full_baseline=has_full_baseline,
+        h2h_games=h2h_games,
+    )
+
     label_by_decision = {
         "BET": "High",
         "LEAN": "Medium",
@@ -309,11 +355,13 @@ def assess_spread_edge(
     return {
         "decision": decision,
         "confidence_label": label_by_decision[decision],
+        "units": units,
         "favorite_probability": round(favorite_prob, 4),
         "abs_margin": round(abs_margin, 2),
         "has_full_baseline": has_full_baseline,
         "min_games": min_games,
         "min_factor_fields": min_factor_fields,
+        "h2h_games": h2h_games,
         "reasons": reasons,
     }
 
@@ -468,6 +516,8 @@ def generate_wnba_picks(
             "totals_pick": totals_pick,
             "decision": guardrail["decision"],
             "confidence": guardrail["confidence_label"],
+            "units": guardrail.get("units", 0.0),
+            "h2h_games": guardrail.get("h2h_games", 0),
             "guardrail_reasons": guardrail["reasons"],
             "data_quality": result["data_quality"],
             "output_line": output_line,
