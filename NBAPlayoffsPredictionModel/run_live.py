@@ -307,6 +307,219 @@ def fetch_h2h_context(home_team: str, away_abbr: str, season: str, as_of_date: s
     }
 
 
+def fetch_series_history(
+    home_team: str,
+    away_abbr: str,
+    season: str,
+    as_of_date: str,
+    home_abbr: str | None = None,
+) -> list[dict[str, Any]]:
+    """Fetch playoff games already played in the current series.
+
+    Returns a list of {date, is_home_for_target, margin_for_target, score_for_target,
+    score_against_target} ordered earliest-first, from the perspective of
+    ``home_team``. An empty list means Game 1 of the series (or that the API
+    lookup failed — the caller should treat both as 'no in-series evidence').
+
+    Tries the NBA API first; falls back to ESPN scoreboard scans for the
+    11 days preceding ``as_of_date`` because the NBA API can lag a round
+    behind during the playoffs.
+    """
+    games_via_nba = _fetch_series_history_nba(home_team, away_abbr, season, as_of_date)
+    if games_via_nba:
+        return games_via_nba
+    if not home_abbr:
+        return []
+    return _fetch_series_history_espn(home_abbr, away_abbr, as_of_date)
+
+
+def _fetch_series_history_nba(
+    home_team: str,
+    away_abbr: str,
+    season: str,
+    as_of_date: str,
+) -> list[dict[str, Any]]:
+    team_id = get_team_id(home_team)
+    if not team_id:
+        return []
+
+    try:
+        finder = leaguegamefinder.LeagueGameFinder(
+            team_id_nullable=team_id,
+            season_nullable=season,
+            season_type_nullable="Playoffs",
+            league_id_nullable="00",
+        )
+        frame = finder.get_data_frames()[0]
+    except Exception:
+        return []
+
+    if frame.empty or "MATCHUP" not in frame.columns:
+        return []
+
+    frame = frame.copy()
+    frame["GAME_DATE"] = pd.to_datetime(frame["GAME_DATE"])
+    target_dt = pd.Timestamp(dt.date.fromisoformat(as_of_date))
+    frame = frame[frame["GAME_DATE"] < target_dt]
+    opponent = str(away_abbr or "").upper()
+    if not opponent:
+        return []
+    series = frame[frame["MATCHUP"].astype(str).str.upper().str.contains(opponent, regex=False)]
+    if series.empty:
+        return []
+
+    series = series.sort_values("GAME_DATE", ascending=True)
+    games: list[dict[str, Any]] = []
+    for _, row in series.iterrows():
+        matchup_text = str(row.get("MATCHUP") or "")
+        is_home = " VS " in matchup_text.upper()
+        try:
+            margin = float(row.get("PLUS_MINUS"))
+            pts = float(row.get("PTS"))
+        except (TypeError, ValueError):
+            continue
+        games.append({
+            "date": row["GAME_DATE"].date().isoformat(),
+            "is_home_for_target": is_home,
+            "margin_for_target": margin,
+            "score_for_target": pts,
+            "score_against_target": pts - margin,
+            "result": str(row.get("WL") or ""),
+        })
+    return games
+
+
+def _fetch_series_history_espn(
+    home_abbr: str,
+    away_abbr: str,
+    as_of_date: str,
+) -> list[dict[str, Any]]:
+    """Scan ESPN's postseason scoreboard for the 11 days before ``as_of_date``
+    looking for completed games between ``home_abbr`` and ``away_abbr``."""
+    home = str(home_abbr or "").upper()
+    away = str(away_abbr or "").upper()
+    if not home or not away:
+        return []
+    try:
+        target = dt.date.fromisoformat(as_of_date)
+    except ValueError:
+        return []
+
+    games: list[dict[str, Any]] = []
+    seen_ids: set[str] = set()
+    for offset in range(1, 12):
+        scan_date = (target - dt.timedelta(days=offset)).strftime("%Y%m%d")
+        url = f"{ESPN_SCOREBOARD_URL}?dates={scan_date}&seasontype=3"
+        try:
+            payload = _request_json(url)
+        except Exception:
+            continue
+        for event in payload.get("events", []) or []:
+            event_id = str(event.get("id") or "")
+            if event_id in seen_ids:
+                continue
+            comp = (event.get("competitions") or [{}])[0] or {}
+            status = ((comp.get("status") or {}).get("type") or {})
+            if not status.get("completed"):
+                continue
+            home_side = next((c for c in comp.get("competitors", []) if c.get("homeAway") == "home"), {})
+            away_side = next((c for c in comp.get("competitors", []) if c.get("homeAway") == "away"), {})
+            home_e = str((home_side.get("team") or {}).get("abbreviation") or "").upper()
+            away_e = str((away_side.get("team") or {}).get("abbreviation") or "").upper()
+            if {home_e, away_e} != {home, away}:
+                continue
+            try:
+                home_score = float(home_side.get("score"))
+                away_score = float(away_side.get("score"))
+            except (TypeError, ValueError):
+                continue
+            target_is_home_in_event = (home_e == home)
+            if target_is_home_in_event:
+                margin_for_target = home_score - away_score
+                score_for_target = home_score
+                score_against_target = away_score
+            else:
+                margin_for_target = away_score - home_score
+                score_for_target = away_score
+                score_against_target = home_score
+            games.append({
+                "date": (target - dt.timedelta(days=offset)).isoformat(),
+                "is_home_for_target": target_is_home_in_event,
+                "margin_for_target": margin_for_target,
+                "score_for_target": score_for_target,
+                "score_against_target": score_against_target,
+                "result": "W" if margin_for_target > 0 else "L",
+            })
+            seen_ids.add(event_id)
+
+    games.sort(key=lambda g: g["date"])
+    return games
+
+
+def compute_series_form_signal(
+    series_results: list[dict[str, Any]],
+    base_rmse: float,
+) -> dict[str, Any]:
+    """Derive a Bayesian-style update from prior games in the current series.
+
+    The pre-patch model fired a BET on Lakers ML (+295) at home in Game 3 of
+    the OKC/LAL semifinal because its base rate was season-stats only — it
+    treated the matchup as if Games 1 and 2 had not happened. In reality
+    Lakers had lost the first two games by 18 each, which is the strongest
+    possible signal that the model's season-derived view was wrong for this
+    specific matchup. Series form is therefore weighted as the dominant
+    in-context input, with weight scaling as sqrt(games) and capped at 55%
+    so a Game 7 sample doesn't crowd out everything else.
+    """
+    if not series_results:
+        return {
+            "games": 0,
+            "avg_margin": 0.0,
+            "max_abs_margin": 0.0,
+            "implied_prob_for_home": None,
+            "evidence_weight": 0.0,
+            "margin_shift": 0.0,
+            "rmse_inflation": 0.0,
+            "note": "no prior games in this series",
+        }
+
+    margins = [float(g.get("margin_for_target") or 0.0) for g in series_results]
+    games = len(margins)
+    avg_margin = sum(margins) / games if games else 0.0
+    max_abs_margin = max((abs(m) for m in margins), default=0.0)
+
+    # Predictive variance for the next game = base + sampling error of the
+    # mean estimate, so a 2-game sample is wider than a 5-game sample. This
+    # keeps small samples from producing 5%-or-95% certainty.
+    predictive_stdev = max(base_rmse * math.sqrt(1.0 + 1.0 / max(games, 1)), 1.0)
+    implied_prob = _clamp(_normal_cdf(avg_margin / predictive_stdev), 0.03, 0.97)
+
+    # Evidence weight grows with sqrt(games) — diminishing returns past 3-4
+    # games. Capped so it can never crowd out the season-stats baseline.
+    evidence_weight = min(0.50, 0.16 * math.sqrt(games))
+    # Direct margin contribution — ~45% of the observed series margin is
+    # treated as evidence about the matchup-true scoring margin.
+    margin_shift = avg_margin * 0.45
+    # Inflate margin RMSE if blowouts have occurred — the matchup is more
+    # variable than a typical regular-season game.
+    rmse_inflation = max(0.0, (max_abs_margin - 12.0) * 0.20)
+
+    return {
+        "games": games,
+        "avg_margin": avg_margin,
+        "max_abs_margin": max_abs_margin,
+        "implied_prob_for_home": implied_prob,
+        "evidence_weight": evidence_weight,
+        "margin_shift": margin_shift,
+        "rmse_inflation": rmse_inflation,
+        "predictive_stdev": predictive_stdev,
+        "note": (
+            f"home avg margin {avg_margin:+.1f} over {games} game(s); "
+            f"biggest |margin| {max_abs_margin:.0f}; predictive stdev {predictive_stdev:.1f}"
+        ),
+    }
+
+
 def _rank_lookup(all_team_stats: dict[str, dict[str, Any]]) -> dict[str, int]:
     unique: dict[str, dict[str, Any]] = {}
     for key, payload in all_team_stats.items():
@@ -443,6 +656,7 @@ def calculate_base_rate(
     last20_context: dict[str, dict[str, float]],
     ranks: dict[str, int],
     h2h: dict[str, Any],
+    series_form: dict[str, Any] | None = None,
 ) -> tuple[float, list[str]]:
     season_win_pct = _safe_pct(home_stats.get("win_pct"))
     last20 = last20_context.get(home_team, {})
@@ -465,6 +679,18 @@ def calculate_base_rate(
         f"last-20 win% {last20_win_pct*100:.1f}% x30%",
         f"H2H/seed component {h2h_seed_component*100:.1f}% x30% ({h2h.get('note')}; {seed_note})",
     ]
+
+    # Bayesian update from in-series games. The series itself is direct
+    # evidence about the matchup that season stats cannot capture.
+    if series_form and series_form.get("games", 0) > 0 and series_form.get("implied_prob_for_home") is not None:
+        evidence_weight = float(series_form.get("evidence_weight", 0.0) or 0.0)
+        prior_base = base
+        base = (prior_base * (1.0 - evidence_weight)) + (float(series_form["implied_prob_for_home"]) * evidence_weight)
+        notes.append(
+            f"series-form blend (weight {evidence_weight*100:.0f}%, "
+            f"implied home {series_form['implied_prob_for_home']*100:.1f}%): {series_form.get('note', '')}"
+        )
+
     return _clamp(base, 0.05, 0.95), notes
 
 
@@ -599,13 +825,15 @@ def _playoff_expected_rating(team_stats: Any, opponent_stats: Any, halfcourt_wei
 
 
 def _home_court_points(home_name: str, series_context: dict[str, Any]) -> float:
-    points = 4.6 if not _home_is_altitude(home_name) else 5.6
+    # Modern NBA playoff home-court is ~3.0-3.5 pts per Inpredictable / 538
+    # tracking; the pre-patch 4.6 inflated home favorites and home dogs alike.
+    points = 3.5 if not _home_is_altitude(home_name) else 4.2
     if series_context.get("is_game_7"):
-        points += 1.1
+        points += 0.7
     elif series_context.get("home_elimination") or series_context.get("home_closeout"):
-        points += 0.6
+        points += 0.4
     if series_context.get("is_game_1"):
-        points += 0.3
+        points += 0.2
     return points
 
 
@@ -616,6 +844,7 @@ def predict_playoff_margin(
     series_context: dict[str, Any],
     h2h: dict[str, Any],
     injury_profile: dict[str, Any],
+    series_form: dict[str, Any] | None = None,
 ) -> tuple[float, dict[str, float]]:
     home_stats = home_team.team_stats
     away_stats = away_team.team_stats
@@ -630,39 +859,28 @@ def predict_playoff_margin(
     net_diff = _stat(home_stats, "net_rating", 0.0) - _stat(away_stats, "net_rating", 0.0)
     star_minutes = _clamp(net_diff * 0.09, -2.2, 2.2)
 
+    # Series state bonuses are tiny tie-breakers now — the in-series margin
+    # signal carries the real "what's actually happening in this series"
+    # information, so we don't double-count "down 0-2 home comeback" hopes.
     series_points = 0.0
     if series_context.get("is_game_1"):
         series_points += 0.3
-    if series_context.get("is_game_2"):
-        if series_context.get("home_trailing"):
-            series_points += 0.5
-        if series_context.get("away_trailing"):
-            series_points -= 0.5
-    # 0-2 down at home historically loses Game 3 ~55% of the time despite
-    # the defending crowd, so the comeback bonus is shaved and capped.
-    if series_context.get("game_number") in (3, 4):
-        if series_context.get("home_wins") == 0 and series_context.get("away_wins") == 2:
-            series_points += 0.4
-        if series_context.get("away_wins") == 0 and series_context.get("home_wins") == 2:
-            series_points -= 0.4
     if series_context.get("home_elimination"):
-        series_points += 0.8
+        series_points += 0.6
     if series_context.get("away_elimination"):
-        series_points -= 0.8
+        series_points -= 0.6
     if series_context.get("home_closeout"):
-        series_points += 0.4
+        series_points += 0.3
     if series_context.get("away_closeout"):
-        series_points -= 0.4
+        series_points -= 0.3
 
     repeat_matchups = int(series_context.get("repeat_matchups", 0) or 0)
     coaching = 0.0
     if repeat_matchups:
         if series_context.get("home_trailing"):
-            coaching += min(0.6, repeat_matchups * 0.15)
+            coaching += min(0.4, repeat_matchups * 0.10)
         if series_context.get("away_trailing"):
-            coaching -= min(0.6, repeat_matchups * 0.15)
-        h2h_margin = float(h2h.get("point_diff", 0.0) or 0.0)
-        coaching += _clamp(h2h_margin * 0.025 * min(repeat_matchups, 4), -0.6, 0.6)
+            coaching -= min(0.4, repeat_matchups * 0.10)
 
     rest_diff = _stat(home_stats, "rest_days", 1.0) - _stat(away_stats, "rest_days", 1.0)
     rest = _clamp(rest_diff * 0.55, -1.6, 1.6)
@@ -675,7 +893,23 @@ def predict_playoff_margin(
         pace_control = -0.7 if net_diff <= 0 else -0.25
 
     injury = float(injury_profile.get("margin_delta", 0.0) or 0.0)
-    margin = scoring_margin + home_court + star_minutes + series_points + coaching + rest + pace_control + injury
+
+    # Direct in-series margin evidence — the dominant signal once the series
+    # has had at least one game. We use 55% of the avg series margin as the
+    # best estimate of the matchup-specific advantage.
+    series_margin_signal = float((series_form or {}).get("margin_shift", 0.0) or 0.0)
+
+    margin = (
+        scoring_margin
+        + home_court
+        + star_minutes
+        + series_points
+        + coaching
+        + rest
+        + pace_control
+        + injury
+        + series_margin_signal
+    )
     return _clamp(margin, -26.0, 26.0), {
         "scoring_margin": scoring_margin,
         "home_court": home_court,
@@ -685,6 +919,7 @@ def predict_playoff_margin(
         "rest": rest,
         "pace_control": pace_control,
         "injury": injury,
+        "series_form_margin": series_margin_signal,
         "home_expected_rating": home_rating,
         "away_expected_rating": away_rating,
     }
@@ -797,43 +1032,30 @@ def _build_adjustments(
             "reason": f"playoff minutes shift toward top-end quality; net rating gap {net_diff:+.1f}",
         })
 
+    # Series-state probability adjustments here are intentionally tiny —
+    # the in-series margin signal already reflects what's actually happening
+    # in the matchup, so we don't double-add narrative bonuses for it.
     series_adj = 0.0
     series_notes: list[str] = []
     if series_context.get("is_game_1"):
         series_adj += 0.004
         series_notes.append("Game 1 prep edge to home team")
-    if series_context.get("is_game_2"):
-        if series_context.get("home_trailing"):
-            series_adj += 0.008
-            series_notes.append(f"{home_name} Game 2 adjustment while trailing")
-        if series_context.get("away_trailing"):
-            series_adj -= 0.008
-            series_notes.append(f"{away_name} Game 2 adjustment while trailing")
-    # The 0-2 home comeback bump used to push thin baselines past the BET
-    # threshold for big underdogs; capped tighter so it can only LEAN.
-    if series_context.get("game_number") in (3, 4):
-        if series_context.get("home_wins") == 0 and series_context.get("away_wins") == 2:
-            series_adj += 0.006
-            series_notes.append(f"{home_name} down 0-2 returning home (capped)")
-        if series_context.get("away_wins") == 0 and series_context.get("home_wins") == 2:
-            series_adj -= 0.006
-            series_notes.append(f"{away_name} down 0-2 returning home next (capped)")
     if series_context.get("home_elimination"):
-        series_adj += 0.012
+        series_adj += 0.008
         series_notes.append(f"{home_name} elimination urgency")
     if series_context.get("away_elimination"):
-        series_adj -= 0.012
+        series_adj -= 0.008
         series_notes.append(f"{away_name} elimination urgency")
     if series_context.get("home_closeout"):
-        series_adj += 0.006
+        series_adj += 0.004
         series_notes.append(f"{home_name} closeout chance")
     if series_context.get("away_closeout"):
-        series_adj -= 0.006
+        series_adj -= 0.004
         series_notes.append(f"{away_name} closeout chance")
-    if abs(series_adj) >= 0.004:
+    if abs(series_adj) >= 0.003:
         adjustments.append({
             "label": "Series state",
-            "value": _clamp(series_adj, -0.020, 0.020),
+            "value": _clamp(series_adj, -0.012, 0.012),
             "reason": "; ".join(series_notes),
         })
 
@@ -842,20 +1064,15 @@ def _build_adjustments(
     coaching_notes: list[str] = []
     if repeated:
         if series_context.get("home_trailing"):
-            coaching_adj += min(0.010, repeated * 0.0025)
+            coaching_adj += min(0.006, repeated * 0.0015)
             coaching_notes.append(f"{home_name} adjustment opportunity after repeated matchups")
         if series_context.get("away_trailing"):
-            coaching_adj -= min(0.010, repeated * 0.0025)
+            coaching_adj -= min(0.006, repeated * 0.0015)
             coaching_notes.append(f"{away_name} adjustment opportunity after repeated matchups")
-        h2h_margin = float(h2h.get("point_diff", 0.0) or 0.0)
-        if abs(h2h_margin) >= 2.5:
-            h2h_adj = _clamp(h2h_margin * 0.0008 * min(repeated, 4), -0.010, 0.010)
-            coaching_adj += h2h_adj
-            coaching_notes.append(f"regular-season matchup margin {h2h_margin:+.1f}")
-    if abs(coaching_adj) >= 0.004:
+    if abs(coaching_adj) >= 0.003:
         adjustments.append({
             "label": "Coaching/repeated-matchup adjustment",
-            "value": _clamp(coaching_adj, -0.018, 0.018),
+            "value": _clamp(coaching_adj, -0.012, 0.012),
             "reason": "; ".join(coaching_notes),
         })
 
@@ -1110,6 +1327,14 @@ def run_playoff_game(
     )
 
     h2h = fetch_h2h_context(home_name, game.get("away_abbr", ""), season, ctx.date)
+    series_history = fetch_series_history(
+        home_name,
+        game.get("away_abbr", ""),
+        season,
+        ctx.date,
+        home_abbr=game.get("home_abbr"),
+    )
+    series_form = compute_series_form_signal(series_history, PLAYOFF_MARGIN_RMSE)
     base_rate, base_notes = calculate_base_rate(
         home_name,
         away_name,
@@ -1117,6 +1342,7 @@ def run_playoff_game(
         last20_context,
         ranks,
         h2h,
+        series_form,
     )
     injury_profile = _playoff_injury_profile(home_name, away_name, injuries)
     adjustments, home_inj_reason, away_inj_reason = _build_adjustments(
@@ -1138,8 +1364,10 @@ def run_playoff_game(
         series_context,
         h2h,
         injury_profile,
+        series_form,
     )
-    margin_prob = _clamp(_normal_cdf(predicted_spread / PLAYOFF_MARGIN_RMSE), 0.03, 0.97)
+    effective_margin_rmse = PLAYOFF_MARGIN_RMSE + float(series_form.get("rmse_inflation", 0.0) or 0.0)
+    margin_prob = _clamp(_normal_cdf(predicted_spread / max(effective_margin_rmse, 1.0)), 0.03, 0.97)
     raw_prob = _clamp((adjusted_base_prob * 0.52) + (margin_prob * 0.48), 0.03, 0.97)
     final_home_prob = extremize_probability(raw_prob)
     home_market_prob, away_market_prob = remove_vig(home_ml, away_ml)
@@ -1208,6 +1436,7 @@ def run_playoff_game(
     print(f"- Pace: {away_name} {away_team.team_stats.pace:.1f} vs {home_name} {home_team.team_stats.pace:.1f}; playoff pace {tempo_context.get('playoff_pace', 0.0):.1f} after {tempo_context.get('pace_drag', 0.0):.1f}-possession playoff drag")
     print(f"- Playoff style: halfcourt weight {tempo_context.get('halfcourt_weight', 0.0):.2f}; dictating side {tempo_context.get('dictating_side')}")
     print(f"- H2H: {h2h.get('note')}")
+    print(f"- Series form: {series_form.get('note')} (evidence weight {float(series_form.get('evidence_weight') or 0.0)*100:.0f}%, RMSE inflation +{float(series_form.get('rmse_inflation') or 0.0):.1f})")
     print(f"- Injuries: {home_name}: {home_inj_reason}; {away_name}: {away_inj_reason}")
     print(f"- Rest days: {away_name} {away_team.team_stats.rest_days:.0f} vs {home_name} {home_team.team_stats.rest_days:.0f}")
 
@@ -1310,6 +1539,20 @@ def run_playoff_game(
         "guardrail_adjustment_total_pp": round(float(guardrail.get("adjustment_total") or 0.0) * 100.0, 2),
         "is_big_dog": guardrail.get("is_big_dog", False),
         "confidence": confidence,
+        "series_form": {
+            "games": int(series_form.get("games", 0) or 0),
+            "avg_margin": round(float(series_form.get("avg_margin", 0.0) or 0.0), 2),
+            "max_abs_margin": round(float(series_form.get("max_abs_margin", 0.0) or 0.0), 2),
+            "implied_prob_for_home": (
+                round(float(series_form.get("implied_prob_for_home")), 4)
+                if series_form.get("implied_prob_for_home") is not None
+                else None
+            ),
+            "evidence_weight": round(float(series_form.get("evidence_weight", 0.0) or 0.0), 4),
+            "margin_shift": round(float(series_form.get("margin_shift", 0.0) or 0.0), 2),
+            "rmse_inflation": round(float(series_form.get("rmse_inflation", 0.0) or 0.0), 2),
+        },
+        "effective_margin_rmse": round(effective_margin_rmse, 2),
     }
     print(f"PICK_JSON: {json.dumps(pick, sort_keys=True)}")
     return pick

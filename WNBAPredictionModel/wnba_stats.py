@@ -597,6 +597,114 @@ def get_rolling_stats(team_abbr: str, n: int = 10, season: int = 2026) -> dict:
     return compute_rolling_stats(game_logs, n=n)
 
 
+def _opponent_bdl_id_from_log(row: dict) -> int | None:
+    """Best-effort opponent team_id pull from a BDL game log row."""
+    if not isinstance(row, dict):
+        return None
+    for key in ("opp_team_id", "opponent_team_id"):
+        if key in row:
+            try:
+                return int(row[key])
+            except (TypeError, ValueError):
+                pass
+    for container_name in ("opponent", "opp"):
+        container = row.get(container_name)
+        if isinstance(container, dict):
+            for key in ("id", "team_id", "bdl_id"):
+                if key in container:
+                    try:
+                        return int(container[key])
+                    except (TypeError, ValueError):
+                        pass
+    game = row.get("game")
+    if isinstance(game, dict):
+        try:
+            home_id = int((game.get("home_team") or {}).get("id"))
+            away_id = int((game.get("visitor_team") or {}).get("id"))
+        except (TypeError, ValueError):
+            return None
+        my_id = row.get("team", {}).get("id") if isinstance(row.get("team"), dict) else None
+        if my_id is None:
+            return None
+        try:
+            my_id = int(my_id)
+        except (TypeError, ValueError):
+            return None
+        return away_id if my_id == home_id else home_id
+    return None
+
+
+def _location_from_log(row: dict) -> str | None:
+    """Return 'home', 'away', or None for a BDL game log row."""
+    if not isinstance(row, dict):
+        return None
+    raw = row.get("location") or row.get("home_away")
+    if isinstance(raw, str):
+        text = raw.strip().lower()
+        if text in {"home", "away"}:
+            return text
+    game = row.get("game")
+    if isinstance(game, dict) and isinstance(row.get("team"), dict):
+        try:
+            my_id = int(row["team"].get("id"))
+            home_id = int((game.get("home_team") or {}).get("id"))
+        except (TypeError, ValueError):
+            return None
+        return "home" if my_id == home_id else "away"
+    return None
+
+
+def get_h2h_history(
+    home_abbr: str,
+    away_abbr: str,
+    season: int = 2026,
+    as_of_date: str | None = None,
+) -> list[dict]:
+    """Return prior-this-season H2H games from the home team's perspective.
+
+    Each entry: {date, is_home_for_target (bool), margin_for_target (int)}.
+    Returns [] if game logs aren't available or the matchup hasn't happened
+    yet — callers must treat both as 'no signal'.
+    """
+    if not home_abbr or not away_abbr:
+        return []
+    home_team = WNBA_TEAM_MAP.get(home_abbr.strip().upper())
+    away_team = WNBA_TEAM_MAP.get(away_abbr.strip().upper())
+    if not home_team or not away_team:
+        return []
+    away_id = away_team.get("bdl_id")
+    if away_id is None:
+        return []
+
+    logs = fetch_bdl_team_game_logs(home_team.get("bdl_id"), season=season)
+    if not logs:
+        return []
+
+    cutoff = (as_of_date or "").strip()
+    games: list[dict] = []
+    for row in logs:
+        date = _extract_date(row)
+        if cutoff and date and date >= cutoff:
+            continue
+        opp_id = _opponent_bdl_id_from_log(row)
+        if opp_id != int(away_id):
+            continue
+        try:
+            pts = float(row.get("pts"))
+            opp_pts = float(_pick_opponent_value(row, "pts"))
+        except (TypeError, ValueError):
+            continue
+        location = _location_from_log(row)
+        is_home = location == "home"
+        games.append({
+            "date": date,
+            "is_home_for_target": is_home,
+            "margin_for_target": pts - opp_pts,
+        })
+    games.sort(key=lambda g: g.get("date") or "")
+    return games
+
+
 def _fmt(value: float | int | None) -> str:
     if value is None:
         return " n/a "

@@ -141,6 +141,88 @@ def test_spread_disagreement_blocks_bet():
     assert result["decision"] != "BET"
 
 
+def test_series_form_signal_with_two_blowout_losses():
+    """Lakers were down 0-2 to OKC by 18 in each game. The series-form
+    signal should drag the home team's implied probability well below 50%
+    and shift the margin estimate strongly in OKC's favor."""
+    from NBAPlayoffsPredictionModel.run_live import (
+        compute_series_form_signal,
+        PLAYOFF_MARGIN_RMSE,
+    )
+
+    history = [
+        {"date": "2026-05-05", "is_home_for_target": False, "margin_for_target": -18.0},
+        {"date": "2026-05-07", "is_home_for_target": False, "margin_for_target": -18.0},
+    ]
+    signal = compute_series_form_signal(history, PLAYOFF_MARGIN_RMSE)
+
+    assert signal["games"] == 2
+    assert signal["avg_margin"] == -18.0
+    assert signal["implied_prob_for_home"] is not None
+    # Two -18 results, with predictive variance widened by sqrt(1.5) for the
+    # 2-game sample, imply a Game 3 home win prob in the 8-15% range.
+    assert 0.05 < signal["implied_prob_for_home"] < 0.16
+    # Evidence weight scales with sqrt(games); 2 games ≈ 0.226.
+    assert 0.20 < signal["evidence_weight"] < 0.27
+    # Margin shift uses 45% of avg margin = -8.1.
+    assert -8.5 < signal["margin_shift"] < -7.5
+    # RMSE inflation kicks in once any individual game margin exceeds 12.
+    assert signal["rmse_inflation"] > 0.0
+
+
+def test_series_form_no_history_returns_zero_signal():
+    from NBAPlayoffsPredictionModel.run_live import (
+        compute_series_form_signal,
+        PLAYOFF_MARGIN_RMSE,
+    )
+
+    signal = compute_series_form_signal([], PLAYOFF_MARGIN_RMSE)
+    assert signal["games"] == 0
+    assert signal["evidence_weight"] == 0.0
+    assert signal["implied_prob_for_home"] is None
+    assert signal["margin_shift"] == 0.0
+    assert signal["rmse_inflation"] == 0.0
+
+
+def test_series_form_pulls_lakers_base_rate_down():
+    """Re-running the calculate_base_rate for the Lakers Game 3 scenario
+    with series form should produce a much lower probability than the
+    pre-patch base rate, demonstrating the model is now learning from
+    the prior series games."""
+    from NBAPlayoffsPredictionModel.run_live import (
+        calculate_base_rate,
+        compute_series_form_signal,
+        PLAYOFF_MARGIN_RMSE,
+    )
+
+    home_stats = {
+        "win_pct": 0.55,
+        "recent_10_win_pct": 0.55,
+    }
+    last20_context = {"Lakers": {"last20_win_pct": 0.55, "last20_point_diff": 1.0}}
+    ranks = {"Lakers": 8, "Thunder": 1}
+    h2h = {"home_win_pct": 0.40, "games": 4, "point_diff": -6.0, "note": "Lakers 1-3 vs OKC RS"}
+
+    base_no_series, _ = calculate_base_rate(
+        "Lakers", "Thunder", home_stats, last20_context, ranks, h2h, None
+    )
+
+    series_form = compute_series_form_signal(
+        [
+            {"date": "2026-05-05", "is_home_for_target": False, "margin_for_target": -18.0},
+            {"date": "2026-05-07", "is_home_for_target": False, "margin_for_target": -18.0},
+        ],
+        PLAYOFF_MARGIN_RMSE,
+    )
+    base_with_series, notes = calculate_base_rate(
+        "Lakers", "Thunder", home_stats, last20_context, ranks, h2h, series_form
+    )
+
+    # Series form should pull Lakers' base rate well below the season-only rate.
+    assert base_with_series < base_no_series - 0.05
+    assert any("series-form blend" in note for note in notes)
+
+
 def test_missing_injury_feed_caps_at_lean():
     """An empty injury feed leaves the model running blind on availability;
     even a good-looking edge should drop to LEAN."""

@@ -22,6 +22,7 @@ try:
     )
     from .wnba_stats import (
         get_all_team_stats,
+        get_h2h_history,
         get_rolling_stats,
         get_team_stats,
     )
@@ -38,6 +39,7 @@ except ImportError:
     )
     from wnba_stats import (
         get_all_team_stats,
+        get_h2h_history,
         get_rolling_stats,
         get_team_stats,
     )
@@ -144,6 +146,11 @@ def build_game_context(game: WNBAGame) -> dict:
     except Exception:
         away_injury_penalty = None
 
+    try:
+        h2h_games = get_h2h_history(home_abbr, away_abbr, as_of_date=game_date)
+    except Exception:
+        h2h_games = []
+
     return {
         "home_rest_days": home_rest_days,
         "away_rest_days": away_rest_days,
@@ -152,6 +159,7 @@ def build_game_context(game: WNBAGame) -> dict:
         "away_injury_penalty": away_injury_penalty,
         "home_last5_NRtg": _last5_nrtg(home_abbr),
         "away_last5_NRtg": _last5_nrtg(away_abbr),
+        "h2h_games": h2h_games,
     }
 
 

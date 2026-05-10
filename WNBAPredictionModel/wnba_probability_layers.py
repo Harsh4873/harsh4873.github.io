@@ -36,6 +36,9 @@ WNBA_FORM_WEIGHT     = 0.06        # weight on last-5 NRtg delta
 WNBA_INJURY_SCALE    = 7.0         # points per unit of injury penalty delta
 WNBA_INJURY_ADJ_CAP  = 2.25        # max injury-delta points in either direction
 WNBA_FORM_ADJ_CAP    = 2.0         # max recent-form points in either direction
+WNBA_H2H_MARGIN_COEF = 0.40        # fraction of avg H2H margin treated as evidence
+WNBA_H2H_ADJ_CAP     = 3.5         # max H2H points in either direction
+WNBA_H2H_BASE_RMSE   = 11.0        # WNBA per-game margin sigma (regular season)
 
 
 # ---------------------------------------------------------------------------
@@ -192,6 +195,79 @@ def compute_four_factors_adjustment(home_stats: dict, away_stats: dict) -> float
 # Section 6 — Contextual Modifiers
 # ---------------------------------------------------------------------------
 
+def compute_h2h_signal(
+    h2h_games: list[dict] | None,
+    base_rmse: float = WNBA_H2H_BASE_RMSE,
+) -> dict:
+    """Bayesian-style update from this season's prior matchups.
+
+    WNBA teams play each other 3-4 times per regular season. The pre-patch
+    model had no input that captured "what has actually happened in this
+    matchup so far" — it relied on season averages, last-5 form (general),
+    rest, B2B, and injuries. This signal converts the avg margin from prior
+    H2H games into a small point-shift the home team gets, capped to keep a
+    1-2 game sample from dominating the season-stats baseline.
+
+    Each ``h2h_games`` entry must look like:
+        {"date": "YYYY-MM-DD", "is_home_for_target": bool,
+         "margin_for_target": float}
+
+    where ``margin_for_target`` is points scored minus points allowed *for the
+    home team of the upcoming game* in that prior matchup.
+    """
+    games = list(h2h_games or [])
+    if not games:
+        return {
+            "games": 0,
+            "avg_margin": 0.0,
+            "max_abs_margin": 0.0,
+            "evidence_weight": 0.0,
+            "margin_shift": 0.0,
+            "note": "no prior H2H games this season",
+        }
+
+    margins = []
+    for game in games:
+        try:
+            margins.append(float(game.get("margin_for_target")))
+        except (TypeError, ValueError):
+            continue
+    if not margins:
+        return {
+            "games": 0,
+            "avg_margin": 0.0,
+            "max_abs_margin": 0.0,
+            "evidence_weight": 0.0,
+            "margin_shift": 0.0,
+            "note": "H2H entries unparsable",
+        }
+
+    games_n = len(margins)
+    avg_margin = sum(margins) / games_n
+    max_abs_margin = max(abs(m) for m in margins)
+
+    # Evidence weight scales with sqrt(games) but stays modest because the
+    # WNBA season is short — never let H2H dominate the season-stats prior.
+    evidence_weight = min(0.40, 0.14 * math.sqrt(games_n))
+    margin_shift = avg_margin * WNBA_H2H_MARGIN_COEF
+    if margin_shift > WNBA_H2H_ADJ_CAP:
+        margin_shift = WNBA_H2H_ADJ_CAP
+    elif margin_shift < -WNBA_H2H_ADJ_CAP:
+        margin_shift = -WNBA_H2H_ADJ_CAP
+
+    return {
+        "games": games_n,
+        "avg_margin": avg_margin,
+        "max_abs_margin": max_abs_margin,
+        "evidence_weight": evidence_weight,
+        "margin_shift": margin_shift,
+        "note": (
+            f"home avg H2H margin {avg_margin:+.1f} over {games_n} game(s); "
+            f"biggest |margin| {max_abs_margin:.0f}"
+        ),
+    }
+
+
 def compute_contextual_adjustments(
     home_abbr: str,
     away_abbr: str,
@@ -209,6 +285,7 @@ def compute_contextual_adjustments(
         away_injury_penalty            : float in [0, 0.45]
         home_last5_NRtg                : float, last-5-game net rating
         away_last5_NRtg                : float, last-5-game net rating
+        h2h_games                      : list of prior H2H games this season
 
     Components:
         + WNBA_HOME_ADVANTAGE                              (always)
@@ -216,6 +293,7 @@ def compute_contextual_adjustments(
         + WNBA_B2B_PENALTY if away team is on a B2B        (tired road team helps home)
         + (away_inj − home_inj) * WNBA_INJURY_SCALE        (away injuries help home)
         + (home_last5 − away_last5) * WNBA_FORM_WEIGHT     (recent form delta)
+        + H2H margin shift (capped)                        (matchup-specific evidence)
     """
     context = context or {}
 
@@ -272,6 +350,11 @@ def compute_contextual_adjustments(
             adj += form_adj
         except (TypeError, ValueError):
             pass
+
+    # H2H matchup signal — direct evidence about how this matchup actually
+    # plays out. Stays small until 2+ games are in the bag.
+    h2h_signal = compute_h2h_signal(context.get("h2h_games"))
+    adj += float(h2h_signal["margin_shift"])
 
     return adj
 
@@ -369,6 +452,7 @@ def calculate_wnba_matchup(
 
     ff_adj = compute_four_factors_adjustment(home_stats, away_stats)
     ctx_adj = compute_contextual_adjustments(home_abbr, away_abbr, context)
+    h2h_signal = compute_h2h_signal(context.get("h2h_games"))
 
     adjusted_margin = base_margin + ff_adj + ctx_adj
     if adjusted_margin > WNBA_MARGIN_CAP:
@@ -400,6 +484,7 @@ def calculate_wnba_matchup(
         "base_margin": round(base_margin, 2),
         "four_factors_adj": round(ff_adj, 2),
         "contextual_adj": round(ctx_adj, 2),
+        "h2h_signal": h2h_signal,
         "data_quality": data_quality,
     }
 
