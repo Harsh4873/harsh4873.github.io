@@ -145,6 +145,181 @@ def test_wnba_total_falls_back_to_ppg_when_ortg_missing():
     assert 130.0 <= total <= 185.0
 
 
+def test_wnba_market_vig_removal_and_kelly():
+    """Vig-removed two-sided ML should sum to 1.0; Kelly stake scales
+    with edge and decimal odds."""
+    from WNBAPredictionModel.wnba_market import (
+        american_to_implied,
+        remove_vig,
+        quarter_kelly_units,
+    )
+
+    # -120 / +110 → raw 0.5455 + 0.4762 = 1.0217; vig-removed sums to 1.0.
+    h, a = remove_vig(-120, 110)
+    assert abs((h + a) - 1.0) < 1e-9
+    assert h > a  # favorite > dog
+
+    # -110 ≈ 52.4% raw implied
+    assert abs(american_to_implied(-110) - 0.5238) < 1e-3
+    # +200 ≈ 33.3%
+    assert abs(american_to_implied(200) - 0.3333) < 1e-3
+
+    # Quarter-Kelly: 5% edge at +100 (b=1) → 0.05/1/4 = 0.0125u → rounds to 0.01
+    assert quarter_kelly_units(0.05, 100) == 0.01
+    # 10% edge at -110 (b≈0.909) → 0.10/0.909/4 ≈ 0.0275 → rounds to 0.03
+    units = quarter_kelly_units(0.10, -110)
+    assert 0.02 < units < 0.05
+    # Negative edge always returns 0u.
+    assert quarter_kelly_units(-0.05, -110) == 0.0
+
+
+def test_wnba_compute_edge_uses_market_prob_for_pick_side():
+    """compute_edge_units should hand back the market price for the picked
+    side and the difference vs the model probability for that side."""
+    from WNBAPredictionModel.wnba_market import (
+        EdgeAssessment,
+        MarketOdds,
+        compute_edge_units,
+    )
+
+    market = MarketOdds(
+        home_team_nickname="Mystics",
+        away_team_nickname="Liberty",
+        home_ml=140,
+        away_ml=-160,
+        spread_home=3.5,
+        spread_away=-3.5,
+        total_line=158.5,
+        fetched_at="2026-06-15T18:00:00Z",
+    )
+    # Model thinks home is 50%; market says home is ~42% (vig-removed).
+    # Edge for home pick = +0.08
+    home = compute_edge_units(True, 0.50, market)
+    assert home.market_pick_odds == 140
+    assert home.market_pick_prob is not None and home.market_pick_prob < 0.50
+    assert home.edge is not None and home.edge > 0.05
+    assert home.kelly_units is not None and home.kelly_units > 0
+
+    # Picking the away team at 50% model prob — market says away ~58%, so edge
+    # is negative, Kelly units = 0.
+    away = compute_edge_units(False, 0.50, market)
+    assert away.edge is not None and away.edge < 0
+    assert away.kelly_units == 0.0
+
+
+def test_wnba_decision_uses_real_edge_when_market_present():
+    """When SportsLine odds are available, BET requires real 3% market
+    edge; without them, the older internal-only thresholds apply."""
+    from WNBAPredictionModel.wnba_market import EdgeAssessment
+    from WNBAPredictionModel.wnba_picks import assess_spread_edge
+
+    home = {"NRtg": 8.0, "ORtg": 108.0, "DRtg": 100.0, "Pace": 70.0, "W": 8, "L": 3}
+    away = {"NRtg": -2.0, "ORtg": 101.0, "DRtg": 103.0, "Pace": 69.0, "W": 4, "L": 7}
+    base_ctx = {
+        "home_rest_days": 3, "away_rest_days": 1, "away_is_b2b": False,
+        "home_injury_penalty": 0.0, "away_injury_penalty": 0.0,
+    }
+    base_result = {
+        "adjusted_margin": 7.0, "win_prob": 0.71, "projected_total": 162.0,
+        "h2h_signal": {"games": 1},
+    }
+
+    bet_market = EdgeAssessment(market_pick_odds=-180, market_pick_prob=0.62, edge=0.07, kelly_units=0.40)
+    pass_market = EdgeAssessment(market_pick_odds=-260, market_pick_prob=0.72, edge=-0.01, kelly_units=0.0)
+
+    bet = assess_spread_edge(base_result, home, away, base_ctx, market_edge=bet_market)
+    pass_pick = assess_spread_edge(base_result, home, away, base_ctx, market_edge=pass_market)
+
+    assert bet["decision"] == "BET"
+    assert bet["has_market_price"] is True
+    assert bet["market_pick_odds"] == -180
+    assert bet["units"] > 0.0
+
+    # Same model output, but now market disagrees — should not be a BET
+    assert pass_pick["decision"] == "PASS"
+    assert pass_pick["units"] == 0.0
+
+
+def test_wnba_lineup_quality_downgrades_bet_when_starter_out():
+    """A BET with 1 starter Out should drop to LEAN; 2+ Out should drop
+    to PASS even if the model edge is large."""
+    from WNBAPredictionModel.wnba_lineup_quality import LineupQuality
+    from WNBAPredictionModel.wnba_market import EdgeAssessment
+    from WNBAPredictionModel.wnba_picks import assess_spread_edge
+
+    home = {"NRtg": 8.0, "ORtg": 108.0, "DRtg": 100.0, "Pace": 70.0, "W": 8, "L": 3}
+    away = {"NRtg": -2.0, "ORtg": 101.0, "DRtg": 103.0, "Pace": 69.0, "W": 4, "L": 7}
+    base_ctx = {
+        "home_rest_days": 3, "away_rest_days": 1, "away_is_b2b": False,
+        "home_injury_penalty": 0.0, "away_injury_penalty": 0.0,
+    }
+    big_edge_market = EdgeAssessment(market_pick_odds=-150, market_pick_prob=0.60, edge=0.08, kelly_units=0.50)
+    base_result = {
+        "adjusted_margin": 8.0, "win_prob": 0.72, "projected_total": 162.0,
+        "h2h_signal": {"games": 1},
+    }
+
+    one_out = LineupQuality(
+        starters_total=5, starters_healthy=4,
+        starters_questionable=[],
+        starters_out=["Star Player"],
+        minutes_restriction_penalty=0.0,
+        lineup_uncertainty_penalty=0.06,
+    )
+    two_out = LineupQuality(
+        starters_total=5, starters_healthy=3,
+        starters_questionable=[],
+        starters_out=["Star A", "Star B"],
+        minutes_restriction_penalty=0.0,
+        lineup_uncertainty_penalty=0.12,
+    )
+
+    one = assess_spread_edge(base_result, home, away, base_ctx, market_edge=big_edge_market, pick_team_lineup=one_out)
+    two = assess_spread_edge(base_result, home, away, base_ctx, market_edge=big_edge_market, pick_team_lineup=two_out)
+
+    # The big-edge BET should drop to LEAN with one star out.
+    assert one["decision"] == "LEAN"
+    assert any("OUT" in r for r in one["reasons"])
+    # And to PASS with two starters out.
+    assert two["decision"] == "PASS"
+    assert two["units"] == 0.0
+
+
+def test_wnba_lineup_quality_module_classifies_questionable_vs_out():
+    """get_lineup_quality should tally Out vs Questionable from the injury
+    report and produce both a minutes-restriction and uncertainty penalty."""
+    from WNBAPredictionModel.wnba_lineup_quality import get_lineup_quality
+
+    # Build a synthetic injury report keyed by normalized name (the way
+    # wnba_injuries normalizes them).
+    report = {
+        "caitlin clark": {
+            "team_abbr": "IND",
+            "status": "Out",
+            "player_name": "Caitlin Clark",
+        },
+    }
+    quality = get_lineup_quality("IND", report)
+
+    assert quality.starters_total >= 1
+    assert "Caitlin Clark" in quality.starters_out
+    assert quality.lineup_uncertainty_penalty > 0.0
+
+    # Questionable star bumps minutes-restriction penalty, not lineup
+    # uncertainty penalty.
+    report_q = {
+        "caitlin clark": {
+            "team_abbr": "IND",
+            "status": "Questionable",
+            "player_name": "Caitlin Clark",
+        },
+    }
+    quality_q = get_lineup_quality("IND", report_q)
+    assert "Caitlin Clark" in quality_q.starters_questionable
+    assert quality_q.minutes_restriction_penalty > 0.0
+    assert quality_q.lineup_uncertainty_penalty == 0.0
+
+
 def test_wnba_h2h_lifts_predicted_margin():
     """End-to-end: passing two blowout wins as h2h_games shifts the
     adjusted margin and win prob in the home team's favor compared to

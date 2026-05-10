@@ -30,6 +30,13 @@ try:
         get_injury_report,
         get_team_injury_penalty,
     )
+    from .wnba_lineup_quality import LineupQuality, get_lineup_quality
+    from .wnba_market import (
+        EdgeAssessment,
+        MarketOdds,
+        compute_edge_units,
+        lookup_market_odds,
+    )
 except ImportError:
     from wnba_probability_layers import calculate_wnba_matchup
     from wnba_schedule import (
@@ -46,6 +53,13 @@ except ImportError:
     from wnba_injuries import (
         get_injury_report,
         get_team_injury_penalty,
+    )
+    from wnba_lineup_quality import LineupQuality, get_lineup_quality
+    from wnba_market import (
+        EdgeAssessment,
+        MarketOdds,
+        compute_edge_units,
+        lookup_market_odds,
     )
 
 
@@ -151,15 +165,35 @@ def build_game_context(game: WNBAGame) -> dict:
     except Exception:
         h2h_games = []
 
+    # Starter / minutes-restriction signal — separate from the broad team
+    # injury penalty so a "Questionable star" carries weight even when the
+    # raw pts_share×status_weight number is small.
+    try:
+        injury_report = get_injury_report()
+    except Exception:
+        injury_report = {}
+    home_lineup = get_lineup_quality(home_abbr, injury_report)
+    away_lineup = get_lineup_quality(away_abbr, injury_report)
+
+    # Fold the minutes-restriction penalty into the same scaler the
+    # contextual layer uses for raw team injuries — extra weight on the
+    # side whose key players are likely on a restriction.
+    home_inj_total = (home_injury_penalty or 0.0) + home_lineup.minutes_restriction_penalty
+    away_inj_total = (away_injury_penalty or 0.0) + away_lineup.minutes_restriction_penalty
+
     return {
         "home_rest_days": home_rest_days,
         "away_rest_days": away_rest_days,
         "away_is_b2b": away_is_b2b,
-        "home_injury_penalty": home_injury_penalty,
-        "away_injury_penalty": away_injury_penalty,
+        "home_injury_penalty": home_inj_total,
+        "away_injury_penalty": away_inj_total,
         "home_last5_NRtg": _last5_nrtg(home_abbr),
         "away_last5_NRtg": _last5_nrtg(away_abbr),
         "h2h_games": h2h_games,
+        # Surface the lineup snapshots so the picks payload + assess_spread_edge
+        # can read them without re-deriving.
+        "home_lineup_quality": home_lineup,
+        "away_lineup_quality": away_lineup,
     }
 
 
@@ -246,6 +280,9 @@ def _favorite_probability(win_prob: float) -> float:
     return max(win_prob, 1.0 - win_prob)
 
 
+MARKET_EDGE_BET_THRESHOLD = 0.030   # 3% vig-removed edge required for BET
+MARKET_EDGE_LEAN_THRESHOLD = 0.015  # 1.5% edge qualifies for LEAN
+
 def _units_for_conviction(
     decision: str,
     abs_margin: float,
@@ -253,11 +290,12 @@ def _units_for_conviction(
     has_full_baseline: bool,
     h2h_games: int,
 ) -> float:
-    """Conviction-based stake — replaces the old flat 1u sizing.
+    """Conviction-based stake when no real market edge is available.
 
-    Scales with both projected margin and favorite-prob, then bumps for
-    real H2H evidence and shrinks for partial baselines. Range is
-    [0.25, 1.75] units; a PASS is 0.0.
+    Used as a fallback only — when SportsLine has odds for the matchup
+    we hand off to ``wnba_market.quarter_kelly_units`` which sizes
+    against the actual market price. Range is [0.25, 1.75] units; a
+    PASS is 0.0.
     """
     if str(decision or "").upper() == "PASS":
         return 0.0
@@ -286,14 +324,20 @@ def assess_spread_edge(
     home_stats: dict | None = None,
     away_stats: dict | None = None,
     context: dict | None = None,
+    market_edge: "EdgeAssessment | None" = None,
+    pick_team_lineup: "LineupQuality | None" = None,
 ) -> dict:
-    """Classify a WNBA moneyline edge as BET, LEAN, or PASS with conviction-
-    based unit sizing.
+    """Classify a WNBA moneyline edge as BET, LEAN, or PASS.
 
-    WNBA early-season/preseason data can look decisive when the model only has
-    home court, rest, B2B, and injury context. Those inputs are useful tie-
-    breakers, not a betting thesis by themselves, so partial-baseline games are
-    capped at LEAN and usually PASS unless the edge is extreme.
+    When real SportsLine odds are available the decision is anchored on
+    the vig-removed market edge (BET ≥ 3% edge AND favorite prob ≥ 60%).
+    When no market data exists, falls back to the older
+    margin-+-probability-only thresholds.
+
+    The starter-quality signal from ``pick_team_lineup`` downgrades any
+    BET to a LEAN when a key player is OUT or DOUBTFUL — a star-out
+    matchup is not the time to be at full stake even if the model edge
+    looks great.
     """
     if not isinstance(result, dict):
         return {"decision": "PASS", "confidence_label": "Low", "units": 0.0, "reasons": ["invalid result"]}
@@ -313,6 +357,7 @@ def assess_spread_edge(
     min_factor_fields = min(_present_factor_count(home_stats), _present_factor_count(away_stats))
     h2h_signal = result.get("h2h_signal") or {}
     h2h_games = int(h2h_signal.get("games", 0) or 0)
+    has_market = market_edge is not None and market_edge.edge is not None
 
     reasons: list[str] = []
     if not has_full_baseline:
@@ -323,8 +368,28 @@ def assess_spread_edge(
         reasons.append("incomplete four-factor matchup data")
     if result.get("projected_total") is None:
         reasons.append("total unavailable")
+    if not has_market:
+        reasons.append("no SportsLine market price found")
 
-    if has_full_baseline:
+    if has_market:
+        # Real-edge path: anchor on vig-removed edge first, fall back to
+        # margin/probability magnitude as a sanity check.
+        edge = float(market_edge.edge or 0.0)
+        if (
+            edge >= MARKET_EDGE_BET_THRESHOLD
+            and favorite_prob >= 0.60
+            and abs_margin >= 4.5
+        ):
+            decision = "BET"
+        elif edge >= MARKET_EDGE_LEAN_THRESHOLD and favorite_prob >= 0.55:
+            decision = "LEAN"
+        else:
+            decision = "PASS"
+        if not has_full_baseline and decision == "BET":
+            decision = "LEAN"
+            reasons.append("partial baseline capped at LEAN")
+    elif has_full_baseline:
+        # Internal-only path (no market): old thresholds.
         if abs_margin >= 6.5 and favorite_prob >= 0.70:
             decision = "BET"
         elif abs_margin >= 4.75 and favorite_prob >= 0.64:
@@ -332,20 +397,55 @@ def assess_spread_edge(
         else:
             decision = "PASS"
     else:
-        # Context-only or mostly context-only cards should not become BETs.
         if abs_margin >= 8.0 and favorite_prob >= 0.76 and min_factor_fields >= 4:
             decision = "LEAN"
             reasons.append("partial baseline capped at LEAN")
         else:
             decision = "PASS"
 
-    units = _units_for_conviction(
-        decision=decision,
-        abs_margin=abs_margin,
-        favorite_prob=favorite_prob,
-        has_full_baseline=has_full_baseline,
-        h2h_games=h2h_games,
-    )
+    # Starter-quality downgrade: a key player Out/Doubtful turns any
+    # BET into a LEAN. Multiple key players out can knock LEAN to PASS.
+    starters_out_count = 0
+    starters_questionable_count = 0
+    if pick_team_lineup is not None:
+        starters_out_count = len(pick_team_lineup.starters_out)
+        starters_questionable_count = len(pick_team_lineup.starters_questionable)
+        if starters_out_count >= 1 and decision == "BET":
+            decision = "LEAN"
+            reasons.append(
+                f"key starter(s) OUT ({', '.join(pick_team_lineup.starters_out)}) — capped at LEAN"
+            )
+        if starters_out_count >= 2 and decision == "LEAN":
+            decision = "PASS"
+            reasons.append("two or more key starters OUT — too much lineup risk")
+        if starters_questionable_count >= 1 and decision == "BET":
+            reasons.append(
+                f"questionable starter(s) ({', '.join(pick_team_lineup.starters_questionable)}) — minutes restriction risk"
+            )
+
+    # Stake sizing: prefer Kelly against the real market price when
+    # available; fall back to conviction-based sizing otherwise.
+    if decision == "PASS":
+        units = 0.0
+    elif has_market and market_edge.kelly_units is not None:
+        units = float(market_edge.kelly_units or 0.0)
+        if decision == "LEAN":
+            units = round(min(units, 1.0) * 0.6, 2)
+        if not has_full_baseline:
+            units = round(units * 0.65, 2)
+        if starters_out_count >= 1:
+            units = round(units * 0.5, 2)
+        if starters_questionable_count >= 1:
+            units = round(units * 0.85, 2)
+        units = max(0.0, min(2.0, units))
+    else:
+        units = _units_for_conviction(
+            decision=decision,
+            abs_margin=abs_margin,
+            favorite_prob=favorite_prob,
+            has_full_baseline=has_full_baseline,
+            h2h_games=h2h_games,
+        )
 
     label_by_decision = {
         "BET": "High",
@@ -355,13 +455,26 @@ def assess_spread_edge(
     return {
         "decision": decision,
         "confidence_label": label_by_decision[decision],
-        "units": units,
+        "units": round(units, 2),
         "favorite_probability": round(favorite_prob, 4),
         "abs_margin": round(abs_margin, 2),
         "has_full_baseline": has_full_baseline,
+        "has_market_price": has_market,
+        "market_edge": (round(market_edge.edge, 4) if has_market else None),
+        "market_pick_odds": (market_edge.market_pick_odds if has_market else None),
+        "market_pick_prob": (market_edge.market_pick_prob if has_market else None),
         "min_games": min_games,
         "min_factor_fields": min_factor_fields,
         "h2h_games": h2h_games,
+        "starters_out": (
+            list(pick_team_lineup.starters_out) if pick_team_lineup else []
+        ),
+        "starters_questionable": (
+            list(pick_team_lineup.starters_questionable) if pick_team_lineup else []
+        ),
+        "starters_total": (
+            pick_team_lineup.starters_total if pick_team_lineup else 0
+        ),
         "reasons": reasons,
     }
 
@@ -485,7 +598,34 @@ def generate_wnba_picks(
             market_totals.get(game.espn_game_id) if market_totals else None
         )
 
-        guardrail = assess_spread_edge(result, home_stats, away_stats, context)
+        # Picked side determines which moneyline price + lineup snapshot
+        # the edge math operates on.
+        pick_team_is_home = float(result.get("win_prob", 0.5)) >= 0.5
+        pick_team_abbr = home_abbr if pick_team_is_home else away_abbr
+        market_odds = lookup_market_odds(home_abbr, away_abbr)
+        pick_team_lineup = (
+            context.get("home_lineup_quality") if pick_team_is_home else context.get("away_lineup_quality")
+        )
+
+        model_pick_prob = (
+            float(result.get("win_prob") or 0.5)
+            if pick_team_is_home
+            else 1.0 - float(result.get("win_prob") or 0.5)
+        )
+        market_edge = compute_edge_units(
+            pick_team_is_home=pick_team_is_home,
+            model_pick_prob=model_pick_prob,
+            market=market_odds,
+        )
+
+        guardrail = assess_spread_edge(
+            result,
+            home_stats,
+            away_stats,
+            context,
+            market_edge=market_edge,
+            pick_team_lineup=pick_team_lineup,
+        )
         result["confidence_label"] = guardrail["confidence_label"]
 
         spread_pick = guardrail["decision"] != "PASS"
@@ -508,16 +648,25 @@ def generate_wnba_picks(
             "league": "WNBA",
             "home": home_abbr,
             "away": away_abbr,
+            "pick_team": pick_team_abbr,
             "win_prob": result["win_prob"],
+            "model_pick_prob": round(model_pick_prob, 4),
             "adjusted_margin": result["adjusted_margin"],
             "projected_total": result["projected_total"],
             "market_total": market_total,
+            "market_pick_odds": guardrail.get("market_pick_odds"),
+            "market_pick_prob": guardrail.get("market_pick_prob"),
+            "market_edge": guardrail.get("market_edge"),
+            "has_market_price": guardrail.get("has_market_price", False),
             "spread_pick": spread_pick,
             "totals_pick": totals_pick,
             "decision": guardrail["decision"],
             "confidence": guardrail["confidence_label"],
             "units": guardrail.get("units", 0.0),
             "h2h_games": guardrail.get("h2h_games", 0),
+            "starters_out": guardrail.get("starters_out", []),
+            "starters_questionable": guardrail.get("starters_questionable", []),
+            "starters_total": guardrail.get("starters_total", 0),
             "guardrail_reasons": guardrail["reasons"],
             "data_quality": result["data_quality"],
             "output_line": output_line,

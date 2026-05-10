@@ -18,6 +18,10 @@ SL_MLB_SPREAD = "https://www.sportsline.com/mlb/odds/picks-against-the-spread/"
 SL_MLB_TOTAL = "https://www.sportsline.com/mlb/odds/over-under/"
 SL_MLB_ML = "https://www.sportsline.com/mlb/odds/money-line/"
 
+SL_WNBA_SPREAD = "https://www.sportsline.com/wnba/odds/picks-against-the-spread/"
+SL_WNBA_TOTAL = "https://www.sportsline.com/wnba/odds/over-under/"
+SL_WNBA_ML = "https://www.sportsline.com/wnba/odds/money-line/"
+
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
     "AppleWebKit/537.36 (KHTML, like Gecko) "
@@ -37,6 +41,11 @@ SPORTSLINE_URLS = {
         "spread": SL_MLB_SPREAD,
         "total": SL_MLB_TOTAL,
         "ml": SL_MLB_ML,
+    },
+    "WNBA": {
+        "spread": SL_WNBA_SPREAD,
+        "total": SL_WNBA_TOTAL,
+        "ml": SL_WNBA_ML,
     },
 }
 
@@ -564,5 +573,17 @@ if __name__ == "__main__":
         raise SystemExit(1)
     save_odds_to_db(mlb_odds, "MLB")
     time.sleep(3)
+
+    # WNBA is in-season May-Sept. Off-season runs return zero rows from
+    # SportsLine; treat that as an expected empty result instead of an
+    # error so the daily cron can keep firing year-round.
+    wnba_odds = fetch_all_odds("WNBA")
+    if wnba_odds:
+        if not _validate_market_rows("WNBA"):
+            print("WNBA SportsLine returned rows but no usable markets — skipping save.")
+        else:
+            save_odds_to_db(wnba_odds, "WNBA")
+    else:
+        print("WNBA: no SportsLine rows today (likely off-season).")
 
     _print_recent_rows()

@@ -2720,13 +2720,24 @@ def _parse_wnba_output(output: str) -> list[dict[str, Any]]:
             units_value = 0.0
         h2h_games_value = int(json_payload.get("h2h_games", 0) or 0)
         guardrail_reasons_value = list(json_payload.get("guardrail_reasons") or [])
+        market_pick_odds_value = json_payload.get("market_pick_odds")
+        try:
+            market_pick_odds_value = (
+                int(market_pick_odds_value) if market_pick_odds_value is not None else None
+            )
+        except (TypeError, ValueError):
+            market_pick_odds_value = None
 
         picks.append({
             "source": "WNBA Model",
             "pick": f"{favorite_team} ML ({matchup})",
             "sport": "WNBA",
             "league": "WNBA",
-            "odds": None,
+            "odds": market_pick_odds_value,
+            "market_pick_odds": market_pick_odds_value,
+            "market_pick_prob": json_payload.get("market_pick_prob"),
+            "market_edge": json_payload.get("market_edge"),
+            "has_market_price": bool(json_payload.get("has_market_price", False)),
             "units": units_value,
             "probability": round(favorite_probability, 4),
             "decision": json_decision or decision,
@@ -2740,6 +2751,9 @@ def _parse_wnba_output(output: str) -> list[dict[str, Any]]:
             "confidence": round(favorite_probability * 100, 1),
             "confidence_label": confidence_label,
             "h2h_games": h2h_games_value,
+            "starters_out": list(json_payload.get("starters_out") or []),
+            "starters_questionable": list(json_payload.get("starters_questionable") or []),
+            "starters_total": int(json_payload.get("starters_total", 0) or 0),
             "guardrail_reasons": guardrail_reasons_value,
             "notes": notes,
         })
