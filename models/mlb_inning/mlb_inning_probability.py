@@ -5,9 +5,11 @@ from typing import Any
 try:
     from mlb_inning_history import MLB_AVG_SCORELESS
     from mlb_inning_fetcher import DEFAULT_PITCHER, safe_float
+    from mlb_inning_bullpen import compute_fatigue_shift
 except ImportError:
     from .mlb_inning_history import MLB_AVG_SCORELESS
     from .mlb_inning_fetcher import DEFAULT_PITCHER, safe_float
+    from .mlb_inning_bullpen import compute_fatigue_shift
 
 
 THREAT_BASELINE = 0.270
@@ -164,26 +166,50 @@ def _starter_scoreless_rate_for_inning(pitcher: dict[str, Any], inning: int) -> 
 
 
 def _bullpen_scoreless_rate(opposing_pitcher: dict[str, Any], inning: int) -> float:
-    """Bullpen scoreless rate fallback for late innings (7-9)."""
+    """Bullpen scoreless rate fallback for late innings (7-9), with a
+    fatigue shrink when the team's top arms are likely unavailable.
+
+    The clean per-inning bullpen rate is computed first (per-inning table,
+    flat fallback, or league baseline). Then ``team_bullpen.fatigue_index``
+    — produced by ``mlb_inning_bullpen.fetch_bullpen_workload`` — applies a
+    downward shift up to 12pp at full fatigue. A manager who burned 4 of
+    8 arms in the last two days can't run them today and gets stuck with
+    mop-up arms in the 7th-9th, so the team's late-inning scoreless rate
+    drops materially.
+    """
     bullpen = (opposing_pitcher or {}).get("team_bullpen") or {}
+    base_rate = MLB_AVG_SCORELESS[inning]
+
     if isinstance(bullpen, dict):
         per_inning = bullpen.get("scoreless_rate_by_inning") or {}
+        per_inning_value: float | None = None
         for key in (inning, str(inning)):
             value = per_inning.get(key)
             if value is None:
                 continue
             try:
-                return _clamp(float(value), 0.05, 0.98)
+                per_inning_value = _clamp(float(value), 0.05, 0.98)
+                break
             except (TypeError, ValueError):
                 continue
-        flat = bullpen.get("scoreless_rate")
-        if flat is not None:
-            try:
-                return _clamp(float(flat), 0.05, 0.98)
-            except (TypeError, ValueError):
-                pass
-    # League-average late-inning baseline.
-    return MLB_AVG_SCORELESS[inning]
+
+        if per_inning_value is not None:
+            base_rate = per_inning_value
+        else:
+            flat = bullpen.get("scoreless_rate")
+            if flat is not None:
+                try:
+                    base_rate = _clamp(float(flat), 0.05, 0.98)
+                except (TypeError, ValueError):
+                    pass
+
+        # Fatigue shrink — relievers used yesterday or back-to-back are
+        # unavailable today, forcing the manager into worse arms.
+        fatigue_shift = compute_fatigue_shift(bullpen.get("fatigue_index"))
+        if fatigue_shift > 0:
+            base_rate -= fatigue_shift
+
+    return _clamp(base_rate, 0.05, 0.98)
 
 
 def _venue_factor(game: dict[str, Any]) -> float:

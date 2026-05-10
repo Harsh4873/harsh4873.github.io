@@ -161,6 +161,28 @@ def fetch_todays_games(target_date: str | date | None = None) -> list[dict[str, 
         if not away_pitcher.get("id"):
             away_pitcher = _recent_starter(away_team_id, game_date) or away_pitcher
 
+        # Attach each team's bullpen-fatigue workload so the probability
+        # layer can shrink late-inning scoreless rates when the manager has
+        # already burned his top arms in the last 1-2 days.
+        try:
+            from mlb_inning_bullpen import fetch_bullpen_workload
+        except ImportError:
+            from .mlb_inning_bullpen import fetch_bullpen_workload
+        home_pitcher = {
+            **home_pitcher,
+            "team_bullpen": {
+                **((home_pitcher or {}).get("team_bullpen") or {}),
+                **fetch_bullpen_workload(home_team_id, game_date),
+            },
+        }
+        away_pitcher = {
+            **away_pitcher,
+            "team_bullpen": {
+                **((away_pitcher or {}).get("team_bullpen") or {}),
+                **fetch_bullpen_workload(away_team_id, game_date),
+            },
+        }
+
         home_lineup = _lineup_from_feed(feed, "home")
         away_lineup = _lineup_from_feed(feed, "away")
         if len(home_lineup) < 9:

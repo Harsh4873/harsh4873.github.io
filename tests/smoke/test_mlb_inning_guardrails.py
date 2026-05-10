@@ -105,6 +105,68 @@ def test_late_innings_use_bullpen_not_starter():
         )
 
 
+def test_bullpen_fatigue_shift_is_linear_and_clamped():
+    """Fatigue shift converts a [0, 1] index into a 0-12pp scoreless-rate
+    drop. 0.5 fatigue ≈ 6pp shift; >=1.0 caps at MAX_FATIGUE_SHIFT_PP."""
+    from models.mlb_inning.mlb_inning_bullpen import (
+        compute_fatigue_shift,
+        MAX_FATIGUE_SHIFT_PP,
+    )
+
+    assert compute_fatigue_shift(0.0) == 0.0
+    assert compute_fatigue_shift(None) == 0.0
+    assert compute_fatigue_shift(1.0) == MAX_FATIGUE_SHIFT_PP
+    assert compute_fatigue_shift(2.0) == MAX_FATIGUE_SHIFT_PP   # clamped
+    halfway = compute_fatigue_shift(0.5)
+    assert abs(halfway - MAX_FATIGUE_SHIFT_PP * 0.5) < 1e-9
+
+
+def test_burnt_bullpen_lowers_late_inning_scoreless_probability():
+    """Same fresh-bullpen baseline; one team has 4 of 8 arms unavailable
+    today (fatigue_index 0.50), the other is fully rested. Late-inning
+    scoreless probability should be visibly lower for the burnt pen."""
+    from models.mlb_inning.mlb_inning_probability import compute_inning_probabilities
+
+    histories = {
+        "Yankees": {i: {"scoreless_rate": 0.74} for i in range(1, 10)},
+        "Red Sox": {i: {"scoreless_rate": 0.74} for i in range(1, 10)},
+    }
+    fresh = _stub_game(
+        home_pitcher={
+            "name": "Home SP", "era": 4.20,
+            "team_bullpen": {"scoreless_rate": 0.78, "fatigue_index": 0.0},
+        },
+        away_pitcher={
+            "name": "Away SP", "era": 4.20,
+            "team_bullpen": {"scoreless_rate": 0.78, "fatigue_index": 0.0},
+        },
+    )
+    burnt = _stub_game(
+        home_pitcher={
+            "name": "Home SP", "era": 4.20,
+            "team_bullpen": {"scoreless_rate": 0.78, "fatigue_index": 0.50},
+        },
+        away_pitcher={
+            "name": "Away SP", "era": 4.20,
+            "team_bullpen": {"scoreless_rate": 0.78, "fatigue_index": 0.50},
+        },
+    )
+
+    fresh_pp = compute_inning_probabilities(fresh, histories, _stub_threats())
+    burnt_pp = compute_inning_probabilities(burnt, histories, _stub_threats())
+
+    # Late innings (7, 8) should differ — burnt pen lower; early innings
+    # (1-6) shouldn't change because they don't consult the bullpen rate.
+    for late in (7, 8):
+        assert burnt_pp["full_inning_table"][str(late)] < fresh_pp["full_inning_table"][str(late)], (
+            f"burnt-pen inning {late} should be less scoreless than fresh-pen"
+        )
+    for early in (1, 5):
+        assert burnt_pp["full_inning_table"][str(early)] == fresh_pp["full_inning_table"][str(early)], (
+            f"early inning {early} shouldn't depend on bullpen fatigue"
+        )
+
+
 def test_inning_9_excluded_from_picks():
     """The 9th inning never gets emitted because the home half is unplayed
     when the home team is leading entering the bottom of the 9th."""
