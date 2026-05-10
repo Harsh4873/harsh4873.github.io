@@ -41,10 +41,16 @@ LEAGUE_ERA = 4.20
 LEAGUE_WHIP = 1.30
 LEAGUE_OPS_ALLOWED = 0.730
 LINEUP_THREAT_BASELINE = (DEFAULT_BATTER["obp"] * 0.58) + (DEFAULT_BATTER["slg"] * 0.42)
-F5_SIDE_SIGMA = 2.05
+F5_SIDE_SIGMA = 3.10
 F5_TOTAL_SIGMA = 1.85
 ASSUMED_PRICE = -110
 ASSUMED_BREAKEVEN = 0.5238
+TOTAL_BET_GAP = 0.65
+TOTAL_LEAN_GAP = 0.50
+SIDE_BET_MARGIN = 0.90
+SIDE_LEAN_MARGIN = 0.55
+SIDE_MIN_STARTER_SAMPLE = 5
+TOTAL_MIN_STARTER_SAMPLE = 2
 
 
 def run_mlb_first_five_model(target_date: str | date | None = None) -> list[dict[str, Any]]:
@@ -159,6 +165,7 @@ def _project_game(game: dict[str, Any], model_date: str) -> dict[str, Any]:
         ),
         _total_pick(total_runs),
     ]
+    _apply_pick_guardrails(top_picks, away_pitcher_profile, home_pitcher_profile)
     top_picks.sort(key=lambda pick: (_decision_rank(pick.get("decision")), -safe_float(pick.get("edge_pct"), -99.0)))
 
     game_projection = {
@@ -422,10 +429,10 @@ def _lineup_matchup_delta(lineup: list[dict[str, Any]], pitcher: dict[str, Any],
 
         current_threat, current_pa = _weighted_threat(current_threats, fallback_threat)
         older_threat, older_pa = _weighted_threat(older_threats, fallback_threat)
-        current_weight = min(0.58, current_pa / 12.0) if current_pa else 0.0
-        older_weight = min(0.28, older_pa / 36.0) if older_pa else 0.0
-        if current_weight + older_weight > 0.68:
-            scale = 0.68 / (current_weight + older_weight)
+        current_weight = min(0.35, current_pa / 20.0) if current_pa else 0.0
+        older_weight = min(0.15, older_pa / 60.0) if older_pa else 0.0
+        if current_weight + older_weight > 0.45:
+            scale = 0.45 / (current_weight + older_weight)
             current_weight *= scale
             older_weight *= scale
 
@@ -438,7 +445,7 @@ def _lineup_matchup_delta(lineup: list[dict[str, Any]], pitcher: dict[str, Any],
         weights.append(lineup_weight)
 
     threat_score = _weighted_average(threat_values, weights, LINEUP_THREAT_BASELINE)
-    run_delta = _clamp((threat_score - LINEUP_THREAT_BASELINE) * 3.35, -0.48, 0.48)
+    run_delta = _clamp((threat_score - LINEUP_THREAT_BASELINE) * 2.35, -0.25, 0.25)
     return {
         "run_delta": round(run_delta, 3),
         "threat_score": round(threat_score, 4),
@@ -478,7 +485,7 @@ def _venue_f5_profile(venue_id: int, model_date: str) -> dict[str, Any]:
     f5_total = _shrunk_mean(records[-60:], LEAGUE_F5_TOTAL, 24)
     profile = {
         "f5_total": f5_total,
-        "run_delta_per_team": round(_clamp((f5_total - LEAGUE_F5_TOTAL) / 2.0, -0.35, 0.35), 3),
+        "run_delta_per_team": round(_clamp((f5_total - LEAGUE_F5_TOTAL) / 2.0, -0.18, 0.18), 3),
         "games": len(records[-60:]),
     }
     cache_set(cache_key, profile)
@@ -511,6 +518,7 @@ def _side_pick(
         "decision": _decision(probability, edge_pct),
         "confidence": _confidence(probability, edge_pct),
         "assumed_odds": ASSUMED_PRICE,
+        "projected_margin": round(diff, 2),
         "model_prediction": f"{team} +{diff:.2f} F5 runs",
     }
 
@@ -525,6 +533,7 @@ def _total_pick(total_runs: float) -> dict[str, Any]:
         line = _half_line_above(total_runs)
         probability = _clamp(_normal_cdf((line - total_runs) / F5_TOTAL_SIGMA), 0.05, 0.95)
     edge_pct = (probability - ASSUMED_BREAKEVEN) * 100.0
+    projection_gap = abs(total_runs - line)
     return {
         "market": "f5_total",
         "pick": f"{side} {line:.1f} F5",
@@ -535,6 +544,7 @@ def _total_pick(total_runs: float) -> dict[str, Any]:
         "confidence": _confidence(probability, edge_pct),
         "assumed_odds": ASSUMED_PRICE,
         "vegas_line": line,
+        "projection_gap": round(projection_gap, 2),
         "model_prediction": f"{total_runs:.2f} F5 total",
     }
 
@@ -666,6 +676,9 @@ def _batter_vs_pitcher_splits(batter_id: int, pitcher_id: int) -> list[dict[str,
         return []
     splits: list[dict[str, Any]] = []
     for stat_group in payload.get("stats") or []:
+        display_name = str(((stat_group.get("type") or {}).get("displayName")) or "")
+        if display_name.lower() == "vsplayertotal":
+            continue
         splits.extend(stat_group.get("splits") or [])
     return splits
 
@@ -767,6 +780,54 @@ def _sample_weight(sample: Any, full_sample: float, max_weight: float) -> float:
     return min(max_weight, max_weight * (safe_float(sample, 0.0) / max(1.0, full_sample)))
 
 
+def _apply_pick_guardrails(
+    picks: list[dict[str, Any]],
+    away_pitcher_profile: dict[str, Any],
+    home_pitcher_profile: dict[str, Any],
+) -> None:
+    min_starts = min(
+        safe_int(away_pitcher_profile.get("current_starts")),
+        safe_int(home_pitcher_profile.get("current_starts")),
+    )
+    for pick in picks:
+        probability = safe_float(pick.get("probability"), 0.0)
+        edge_pct = safe_float(pick.get("edge_pct"), -99.0)
+        market = str(pick.get("market") or "")
+
+        if market == "f5_total":
+            gap = safe_float(pick.get("projection_gap"), 0.0)
+            reasons: list[str] = []
+            if min_starts < TOTAL_MIN_STARTER_SAMPLE and gap < 1.20:
+                reasons.append("thin starter sample")
+            if gap < TOTAL_LEAN_GAP:
+                reasons.append("projection too close to F5 line")
+                pick["decision"] = "PASS"
+            elif gap < TOTAL_BET_GAP or reasons:
+                pick["decision"] = "LEAN" if probability >= 0.55 and edge_pct > 2.0 else "PASS"
+            else:
+                pick["decision"] = _decision(probability, edge_pct)
+            if reasons or gap < TOTAL_BET_GAP:
+                pick["guardrail"] = ", ".join(reasons or ["line gap below bet threshold"])
+            pick["confidence"] = _confidence_for_decision(pick["decision"], probability, edge_pct)
+            continue
+
+        if market == "f5_side":
+            margin = safe_float(pick.get("projected_margin"), 0.0)
+            reasons = []
+            if min_starts < SIDE_MIN_STARTER_SAMPLE:
+                reasons.append("thin starter sample")
+            if margin < SIDE_LEAN_MARGIN:
+                reasons.append("margin too small")
+                pick["decision"] = "PASS"
+            elif margin < SIDE_BET_MARGIN or reasons:
+                pick["decision"] = "LEAN" if probability >= 0.56 and edge_pct > 3.0 else "PASS"
+            else:
+                pick["decision"] = "BET" if probability >= 0.60 and edge_pct >= 7.0 else _decision(probability, edge_pct)
+            if reasons or margin < SIDE_BET_MARGIN:
+                pick["guardrail"] = ", ".join(reasons or ["margin below bet threshold"])
+            pick["confidence"] = _confidence_for_decision(pick["decision"], probability, edge_pct)
+
+
 def _decision(probability: float, edge_pct: float) -> str:
     if probability >= 0.56 and edge_pct >= 3.2:
         return "BET"
@@ -779,6 +840,14 @@ def _confidence(probability: float, edge_pct: float) -> str:
     if probability >= 0.60 or edge_pct >= 7.5:
         return "High"
     if probability >= 0.56 or edge_pct >= 3.2:
+        return "Medium"
+    return "Low"
+
+
+def _confidence_for_decision(decision: str, probability: float, edge_pct: float) -> str:
+    if str(decision or "").upper() == "BET":
+        return _confidence(probability, edge_pct)
+    if str(decision or "").upper() == "LEAN":
         return "Medium"
     return "Low"
 
