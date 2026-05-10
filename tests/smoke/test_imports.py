@@ -39,6 +39,7 @@ def test_locked_runtime_imports_still_resolve(monkeypatch):
         ("NBAPlayerBettingModel.run_props", (REPO_ROOT / "NBAPlayerBettingModel", REPO_ROOT)),
         ("NBAPlayoffsPredictionModel.run_live", (REPO_ROOT,)),
         ("models.mlb_inning.mlb_inning_model", (REPO_ROOT,)),
+        ("models.mlb_first_five.mlb_first_five_model", (REPO_ROOT,)),
         ("ipl.run_api", (REPO_ROOT,)),
         ("scripts.firebase_writer", (REPO_ROOT,)),
         ("scripts.seed_record", (REPO_ROOT,)),

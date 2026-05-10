@@ -13,7 +13,7 @@ https://harsh4873.github.io/PickLedgerPro/
 | Frontend    | Single-page HTML/CSS/JS app (`index.html`) deployed via GitHub Pages  |
 | Data Backend| Firebase Firestore (picks, user data, cached feeds)                   |
 | Local Agent | `pickgrader_server.py` — local HTTP server for admin model runs       |
-| Models      | Python: NBA, NBA Playoffs, MLB, WNBA, IPL                             |
+| Models      | Python: NBA, NBA Playoffs, MLB, MLB First Five, WNBA, IPL             |
 | Automation  | GitHub Actions: MLB daily Cannon refresh, model training, Pages deploy|
 
 ## Repository Structure
@@ -34,6 +34,8 @@ PickLedgerPro/
 ├── NBAPlayoffsPredictionModel/ # NBA Playoffs model
 ├── NBAPlayerBettingModel/      # NBA player props model
 ├── MLBPredictionModel/         # MLB moneyline + totals model
+├── models/mlb_first_five/      # MLB first-five side + total model
+├── models/mlb_inning/          # MLB no-run inning model
 ├── WNBAPredictionModel/        # WNBA prediction model
 ├── ipl/                        # IPL fantasy/win-prediction model
 ├── docs/                       # Deployment & infra documentation

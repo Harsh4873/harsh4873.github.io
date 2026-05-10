@@ -1267,6 +1267,7 @@ def run_daily_model_caches_to_firestore(date_str: str | None = None) -> dict[str
         "mlb_old": (run_mlb_model, (date_iso, "old")),
         "mlb_new": (run_mlb_model, (date_iso, "new")),
         "mlb_inning": (run_mlb_inning_model, (date_iso,)),
+        "mlb_first_five": (run_mlb_first_five_model, (date_iso,)),
     }
     if IPL_AVAILABLE:
         model_jobs["ipl"] = (_run_ipl_model_subprocess, (None, None, None, None, None, LEDGER_DB_FILE))
@@ -1305,6 +1306,7 @@ def run_daily_model_caches_to_firestore(date_str: str | None = None) -> dict[str
         "mlb_old": results.get("mlb_old", {}),
         "mlb_new": results.get("mlb_new", {}),
         "mlb_inning": results.get("mlb_inning", {}),
+        "mlb_first_five": results.get("mlb_first_five", {}),
         "ipl": results.get("ipl", {}),
         "props_games": props_games,
     }
@@ -1551,6 +1553,7 @@ def get_games(scoreboard: dict[str, Any], completed_only: bool) -> list[dict[str
                     "raw": c,
                     "score": int(c.get("score", "0")),
                     "homeAway": c.get("homeAway", ""),
+                    "linescores": c.get("linescores") or c.get("lineScores") or [],
                 })
             except (ValueError, TypeError):
                 valid = False
@@ -1595,12 +1598,73 @@ def parse_nba_player_prop_pick(pick_text: str) -> dict[str, Any] | None:
     }
 
 
+def pick_matchup_from_fields(pick: dict[str, Any] | None) -> tuple[str, str] | None:
+    if not isinstance(pick, dict):
+        return None
+    away = str(pick.get("away_team") or "").strip()
+    home = str(pick.get("home_team") or "").strip()
+    if away and home:
+        return away, home
+    matchup_text = str(pick.get("matchup") or pick.get("game") or "").strip()
+    if not matchup_text:
+        return None
+    parts = re.split(r"\s+(?:vs|@)\s+", matchup_text, flags=re.IGNORECASE)
+    if len(parts) != 2:
+        return None
+    return parts[0].strip(), parts[1].strip()
+
+
+def parse_mlb_no_run_inning_pick(pick_text: str) -> int | None:
+    m = re.search(
+        r"\binning\s+([1-9])\s*[-–—:]?\s*no\s+runs?\s+scored\b",
+        str(pick_text or "").strip(),
+        flags=re.IGNORECASE,
+    )
+    if not m:
+        return None
+    try:
+        return int(m.group(1))
+    except (TypeError, ValueError):
+        return None
+
+
+def parse_mlb_first_five_total_pick(pick_text: str) -> tuple[str, float] | None:
+    m = re.search(
+        r"\b(over|under)\s+(\d+(?:\.\d+)?)\s*(?:f5|first\s*five)\b",
+        str(pick_text or "").strip(),
+        flags=re.IGNORECASE,
+    )
+    if not m:
+        return None
+    try:
+        return m.group(1).lower(), float(m.group(2))
+    except (TypeError, ValueError):
+        return None
+
+
+def parse_mlb_first_five_side_pick(pick_text: str) -> str | None:
+    head = str(pick_text or "").split("(", 1)[0].strip()
+    m = re.search(r"^(.*?)\s+(?:f5|first\s*five)\s+ml\b", head, flags=re.IGNORECASE)
+    if not m:
+        return None
+    team = m.group(1).strip()
+    return team or None
+
+
+def is_mlb_first_five_pick(pick: dict[str, Any], pick_text: str) -> bool:
+    market = str(pick.get("market") or "").strip().lower()
+    if market in {"f5_side", "f5_total", "first_five", "first-five"}:
+        return True
+    lower = str(pick_text or "").lower()
+    return bool(re.search(r"\bf5\b|first\s*five", lower))
+
+
 def find_game_for_pick(
     games: list[dict[str, Any]],
     pick_text: str,
     pick: dict[str, Any] | None = None,
 ) -> dict[str, Any] | None:
-    matchup = parse_matchup(pick_text)
+    matchup = pick_matchup_from_fields(pick) or parse_matchup(pick_text)
     if matchup:
         team_a, team_b = matchup
         for game in games:
@@ -1628,6 +1692,109 @@ def find_game_for_pick(
         return matches[0]
 
     return None
+
+
+def _linescore_entry_runs(entry: Any) -> int | None:
+    if not isinstance(entry, dict):
+        return None
+    for key in ("value", "score", "runs"):
+        value = entry.get(key)
+        if value in (None, ""):
+            continue
+        try:
+            return int(float(value))
+        except (TypeError, ValueError):
+            continue
+    display = str(entry.get("displayValue") or "").strip()
+    m = re.match(r"^-?\d+", display)
+    if not m:
+        return None
+    try:
+        return int(m.group(0))
+    except ValueError:
+        return None
+
+
+def _competitor_inning_runs(comp: dict[str, Any], inning: int) -> int | None:
+    if inning < 1:
+        return None
+    raw = comp.get("raw") if isinstance(comp, dict) else {}
+    linescores = comp.get("linescores") if isinstance(comp, dict) else None
+    if not isinstance(linescores, list):
+        linescores = (raw or {}).get("linescores") or (raw or {}).get("lineScores") or []
+    if not isinstance(linescores, list) or len(linescores) < inning:
+        return None
+    return _linescore_entry_runs(linescores[inning - 1])
+
+
+def grade_mlb_no_run_inning_pick(pick: dict[str, Any], game: dict[str, Any]) -> str:
+    inning = parse_mlb_no_run_inning_pick(str(pick.get("pick", "")))
+    if inning is None:
+        return "pending"
+    if inning >= 9:
+        return "pending"
+    runs: list[int] = []
+    for comp in game.get("competitors", []):
+        inning_runs = _competitor_inning_runs(comp, inning)
+        if inning_runs is None:
+            return "pending"
+        runs.append(inning_runs)
+    if len(runs) != 2:
+        return "pending"
+    return "win" if sum(runs) == 0 else "loss"
+
+
+def _competitor_first_five_runs(comp: dict[str, Any]) -> int | None:
+    runs: list[int] = []
+    for inning in range(1, 6):
+        inning_runs = _competitor_inning_runs(comp, inning)
+        if inning_runs is None:
+            return None
+        runs.append(inning_runs)
+    return sum(runs)
+
+
+def resolve_team_first_five_score(
+    game: dict[str, Any],
+    team_text: str,
+    pick: dict[str, Any] | None = None,
+) -> tuple[int, int] | None:
+    comps = game["competitors"]
+    for idx, c in enumerate(comps):
+        if _match_pick_team_to_competitor(team_text, c["raw"], pick):
+            team_runs = _competitor_first_five_runs(c)
+            opp_runs = _competitor_first_five_runs(comps[1 - idx])
+            if team_runs is None or opp_runs is None:
+                return None
+            return team_runs, opp_runs
+    return None
+
+
+def grade_mlb_first_five_pick(pick: dict[str, Any], game: dict[str, Any]) -> str:
+    pick_text = str(pick.get("pick", ""))
+    total_pick = parse_mlb_first_five_total_pick(pick_text)
+    if total_pick is not None:
+        side, line = total_pick
+        scores = [_competitor_first_five_runs(comp) for comp in game.get("competitors", [])]
+        if len(scores) != 2 or any(score is None for score in scores):
+            return "pending"
+        total = int(scores[0]) + int(scores[1])
+        if abs(total - line) < 1e-9:
+            return "push"
+        if side == "over":
+            return "win" if total > line else "loss"
+        return "win" if total < line else "loss"
+
+    team_label = str(pick.get("team") or "").strip() or (parse_mlb_first_five_side_pick(pick_text) or "")
+    if not team_label:
+        return "pending"
+    resolved = resolve_team_first_five_score(game, team_label, pick)
+    if resolved is None:
+        return "pending"
+    team_score, opp_score = resolved
+    if team_score == opp_score:
+        return "push"
+    return "win" if team_score > opp_score else "loss"
 
 
 def resolve_team_score(
@@ -1726,6 +1893,12 @@ def grade_pick(pick: dict[str, Any], game: dict[str, Any]) -> str:
     lower = head.lower()
 
     total_points = game["competitors"][0]["score"] + game["competitors"][1]["score"]
+
+    if str(pick.get("sport", "")).upper() == "MLB" and parse_mlb_no_run_inning_pick(pick_text) is not None:
+        return grade_mlb_no_run_inning_pick(pick, game)
+
+    if str(pick.get("sport", "")).upper() == "MLB" and is_mlb_first_five_pick(pick, pick_text):
+        return grade_mlb_first_five_pick(pick, game)
 
     # Full-game totals (Over/Under X)
     m_total = re.search(r"\b(over|under)\s+(\d+(?:\.\d+)?)\b", lower)
@@ -2028,6 +2201,7 @@ NBA_PLAYOFFS_MODEL_DIR = os.path.join(BASE_DIR, "NBAPlayoffsPredictionModel")
 WNBA_MODEL_DIR = os.path.join(BASE_DIR, "WNBAPredictionModel")
 MLB_MODEL_DIR = os.path.join(BASE_DIR, "MLBPredictionModel")
 MLB_INNING_MODEL_DIR = os.path.join(BASE_DIR, "models", "mlb_inning")
+MLB_FIRST_FIVE_MODEL_DIR = os.path.join(BASE_DIR, "models", "mlb_first_five")
 NBA_PROPS_MODEL_DIR = os.path.join(BASE_DIR, "NBAPlayerBettingModel")
 IPL_MODEL_RUNNER = os.path.join(BASE_DIR, "ipl", "run_api.py")
 IPL_AVAILABLE = os.path.exists(IPL_MODEL_RUNNER)
@@ -3473,14 +3647,31 @@ def _mlb_inning_pick_rows(payload: dict[str, Any]) -> list[dict[str, Any]]:
     for game in payload.get("picks") or []:
         if not isinstance(game, dict):
             continue
+        game_id = str(game.get("game_id") or "").strip()
+        game_start_time = str(game.get("game_start_time") or game.get("start_time") or "").strip()
+        game_order = game.get("game_order", 0)
         matchup = str(game.get("matchup") or "").strip()
         away_team = str(game.get("away_team") or "").strip()
         home_team = str(game.get("home_team") or "").strip()
         full_table = game.get("full_inning_table") if isinstance(game.get("full_inning_table"), dict) else {}
-        for pick in game.get("top_2_picks") or []:
+        filtered_full_table = {
+            str(key): value
+            for key, value in full_table.items()
+            if str(key).isdigit() and int(str(key)) < 9
+        }
+        top_picks = sorted(
+            [pick for pick in game.get("top_2_picks") or [] if isinstance(pick, dict)],
+            key=lambda item: int(item.get("inning")) if str(item.get("inning") or "").isdigit() else 99,
+        )
+        for pick in top_picks:
             if not isinstance(pick, dict):
                 continue
-            inning = int(pick.get("inning") or 0)
+            try:
+                inning = int(pick.get("inning") or 0)
+            except (TypeError, ValueError):
+                inning = 0
+            if inning >= 9:
+                continue
             probability = pick.get("probability_scoreless")
             try:
                 probability_f = float(probability)
@@ -3499,11 +3690,17 @@ def _mlb_inning_pick_rows(payload: dict[str, Any]) -> list[dict[str, Any]]:
                 "sport": "MLB",
                 "league": "MLB",
                 "date": date_str,
+                "start_time": game_start_time or None,
+                "game_start_time": game_start_time or None,
+                "game_order": game_order,
+                "game_id": game_id,
                 "game": matchup,
                 "matchup": matchup,
                 "home_team": home_team,
                 "away_team": away_team,
                 "team": "",
+                "market": "no_run_inning",
+                "inning": inning,
                 "odds": None,
                 "assumed_odds": -110,
                 "probability": probability_f,
@@ -3511,7 +3708,7 @@ def _mlb_inning_pick_rows(payload: dict[str, Any]) -> list[dict[str, Any]]:
                 "decision": decision,
                 "confidence": confidence,
                 "model_prediction": f"{probability_f * 100:.1f}%" if probability_f is not None else None,
-                "notes": f"Top no-run inning candidate. Full table: {json.dumps(full_table, sort_keys=True)}",
+                "notes": f"Top no-run inning candidate. Full table: {json.dumps(filtered_full_table, sort_keys=True)}",
             })
     return rows
 
@@ -3574,6 +3771,132 @@ def run_mlb_inning_model(date_str: str | None = None) -> dict[str, Any]:
         return result
     except subprocess.TimeoutExpired:
         return {"ok": False, "error": "MLB Inning model timed out (10 min limit)"}
+    except Exception as exc:
+        return {"ok": False, "error": str(exc)}
+
+
+def _mlb_first_five_pick_rows(payload: dict[str, Any]) -> list[dict[str, Any]]:
+    date_str = str(payload.get("date") or datetime.now().strftime("%Y-%m-%d"))
+    rows: list[dict[str, Any]] = []
+    for game in payload.get("picks") or []:
+        if not isinstance(game, dict):
+            continue
+        game_id = str(game.get("game_id") or "").strip()
+        game_start_time = str(game.get("game_start_time") or game.get("start_time") or "").strip()
+        game_order = game.get("game_order", 0)
+        matchup = str(game.get("matchup") or "").strip()
+        away_team = str(game.get("away_team") or "").strip()
+        home_team = str(game.get("home_team") or "").strip()
+        projection = game.get("projected_first_five") if isinstance(game.get("projected_first_five"), dict) else {}
+        game_notes = str(game.get("notes") or "").strip()
+        top_picks = sorted(
+            [pick for pick in game.get("top_picks") or [] if isinstance(pick, dict)],
+            key=lambda item: {"BET": 0, "LEAN": 1, "PASS": 2}.get(str(item.get("decision") or "").upper(), 3),
+        )
+        for pick in top_picks:
+            probability = pick.get("probability")
+            try:
+                probability_f = float(probability)
+            except (TypeError, ValueError):
+                probability_f = None
+            edge = pick.get("edge_pct")
+            try:
+                edge_f = float(edge)
+            except (TypeError, ValueError):
+                edge_f = None
+            market = str(pick.get("market") or "f5").strip()
+            row_notes = (
+                f"{game_notes} Projection: {away_team} {projection.get('away_runs')}, "
+                f"{home_team} {projection.get('home_runs')}; total {projection.get('total_runs')}."
+            ).strip()
+            rows.append({
+                "source": "MLB First Five",
+                "pick": str(pick.get("pick") or "").strip() or "First Five projection",
+                "sport": "MLB",
+                "league": "MLB",
+                "date": date_str,
+                "start_time": game_start_time or None,
+                "game_start_time": game_start_time or None,
+                "game_order": game_order,
+                "game_id": game_id,
+                "game": matchup,
+                "matchup": matchup,
+                "home_team": home_team,
+                "away_team": away_team,
+                "team": str(pick.get("team") or "").strip(),
+                "market": market,
+                "line": pick.get("vegas_line"),
+                "odds": None,
+                "assumed_odds": pick.get("assumed_odds", -110),
+                "probability": probability_f,
+                "edge": edge_f,
+                "decision": str(pick.get("decision") or "PASS").upper(),
+                "confidence": str(pick.get("confidence") or "").strip() or "Low",
+                "model_prediction": pick.get("model_prediction"),
+                "notes": row_notes,
+            })
+    return rows
+
+
+def run_mlb_first_five_model(date_str: str | None = None) -> dict[str, Any]:
+    """Execute the MLB first-five model and return F5 side/total projections."""
+    if not os.path.exists(os.path.join(MLB_FIRST_FIVE_MODEL_DIR, "mlb_first_five_model.py")):
+        return {"ok": False, "error": f"MLB First Five model not found at {MLB_FIRST_FIVE_MODEL_DIR}"}
+
+    date_iso, _ = _parse_model_date_arg(date_str)
+    python_bin = _resolve_python_bin(os.path.join(BASE_DIR, ".venv", "bin", "python"))
+    try:
+        requested_date = datetime.strptime(date_iso, "%Y-%m-%d").date()
+        output = ""
+        payload: dict[str, Any] = {}
+        picks: list[dict[str, Any]] = []
+        used_date_iso = date_iso
+
+        for offset_days in range(3):
+            candidate_date = requested_date + timedelta(days=offset_days)
+            candidate_iso = candidate_date.strftime("%Y-%m-%d")
+            output = _run_script(
+                python_bin,
+                "mlb_first_five_model.py",
+                MLB_FIRST_FIVE_MODEL_DIR,
+                timeout=900,
+                extra_args=["--date", candidate_iso],
+            )
+            if "Traceback (most recent call last)" in output or "ModuleNotFoundError" in output:
+                tail = " | ".join((output.strip().splitlines() or ["no output"])[-12:])
+                return {"ok": False, "error": f"MLB First Five runtime failed ({tail})"}
+
+            output_path = os.path.join(MLB_FIRST_FIVE_MODEL_DIR, "mlb_first_five_output.json")
+            with open(output_path, encoding="utf-8") as fh:
+                payload = json.load(fh)
+            picks = _mlb_first_five_pick_rows(payload)
+            used_date_iso = str(payload.get("date") or candidate_iso)
+            if picks:
+                break
+
+        rolled_note = ""
+        if used_date_iso != date_iso and picks:
+            rolled_note = f" Requested slate {date_iso} had no eligible pre-game picks, so MLB First Five used {used_date_iso}."
+        result = {
+            "ok": True,
+            "date": used_date_iso,
+            "requested_date": date_iso,
+            "model": "MLBFirstFive",
+            "picks": picks,
+            "games": payload.get("picks", []),
+            "raw_lines": len(output.split("\n")),
+            "note": (
+                f"MLB First Five processed {len(payload.get('picks', []))} game(s), "
+                f"returned {len(picks)} side/total row(s).{rolled_note}"
+            ),
+        }
+        doc_saved = _save_admin_picks_doc("mlb_first_five", result, date_iso)
+        if used_date_iso != date_iso:
+            doc_saved = _save_admin_picks_doc("mlb_first_five", result, used_date_iso) or doc_saved
+        result["firebase_saved"] = doc_saved
+        return result
+    except subprocess.TimeoutExpired:
+        return {"ok": False, "error": "MLB First Five model timed out (15 min limit)"}
     except Exception as exc:
         return {"ok": False, "error": str(exc)}
 
@@ -3841,6 +4164,7 @@ def _public_endpoints() -> list[str]:
         "/run-mlb-model",
         "/run-mlb-new-model",
         "/run-mlb-inning-model",
+        "/run-mlb-first-five-model",
         "/run-cannon-daily",
         "/api/ipl",
         "/ask-opus",
@@ -4362,6 +4686,15 @@ class Handler(BaseHTTPRequestHandler):
                 self._send_json(200, {"ok": True, "job_id": job_id, "status": "running"})
             else:
                 result = run_mlb_inning_model(date_str)
+                self._send_json(200, result)
+
+        elif path == "/run-mlb-first-five-model":
+            print(f"[route] /run-mlb-first-five-model date={date_str!r} async={async_mode}")
+            if async_mode:
+                job_id = _launch_job(run_mlb_first_five_model, date_str)
+                self._send_json(200, {"ok": True, "job_id": job_id, "status": "running"})
+            else:
+                result = run_mlb_first_five_model(date_str)
                 self._send_json(200, result)
 
         elif path == "/run-cannon-daily":

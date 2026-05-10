@@ -3941,6 +3941,14 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
         <button class="model-run-btn" id="btn-run-mlb-inning" onclick="runModel('mlb-inning')">RUN MLB INNING</button>
         <div class="model-status" id="status-mlb-inning"></div>
       </div>
+      <div class="model-card" id="model-card-mlb-first-five">
+        <div class="model-card-icon">&#9918;</div>
+        <div class="model-card-title">MLB First Five</div>
+        <div class="model-card-desc">Projects F5 side and total spots from current-year starter form, same-season opponent history, lineup BvP, prior seasons, and venue run environment.</div>
+        <span data-model-timestamp="mlb_first_five" class="model-timestamp-badge" style="display:none;"></span>
+        <button class="model-run-btn" id="btn-run-mlb-first-five" onclick="runModel('mlb-first-five')">RUN MLB FIRST FIVE</button>
+        <div class="model-status" id="status-mlb-first-five"></div>
+      </div>
       <div class="model-card" id="model-card-ipl">
         <div class="model-card-icon">&#127951;</div>
         <div class="model-card-title">IPL Model</div>
@@ -4115,6 +4123,7 @@ const MODEL_FIREBASE_KEY_ALIASES = {
   mlb: ['mlb', 'mlb_old', 'mlb-old'],
   'mlb-new': ['mlb_new', 'mlb-new', 'mlbNew'],
   'mlb-inning': ['mlb_inning', 'mlb-inning', 'mlbInning'],
+  'mlb-first-five': ['mlb_first_five', 'mlb-first-five', 'mlbFirstFive'],
   ipl: ['ipl'],
   sportytrader: ['sportytrader'],
   sportsgambler: ['sportsgambler'],
@@ -9708,7 +9717,7 @@ async function loadModelTimestamps() {
     const data = typeof snap.data === 'function' ? snap.data() : null;
     if (!data || typeof data !== 'object') return;
 
-    for (const key of ['nba', 'nba_new', 'nba_playoffs', 'wnba', 'mlb', 'mlb_new', 'mlb_inning', 'ipl', 'props']) {
+    for (const key of ['nba', 'nba_new', 'nba_playoffs', 'wnba', 'mlb', 'mlb_new', 'mlb_inning', 'mlb_first_five', 'ipl', 'props']) {
       const rawTs = data[`${key}_ts`];
       if (!rawTs) continue;
       const badge = document.querySelector(`[data-model-timestamp="${key}"]`);
@@ -9812,6 +9821,7 @@ function _resetModelButton(model) {
     mlb: 'RUN MLB MODEL',
     'mlb-new': 'RUN MLB NEW',
     'mlb-inning': 'RUN MLB INNING',
+    'mlb-first-five': 'RUN MLB FIRST FIVE',
     'nba-new': 'RUN NBA NEW',
     'nba-playoffs': 'RUN NBA PLAYOFFS',
     'nba-old': 'RUN NBA MODEL',
@@ -11077,6 +11087,12 @@ async function runModel(model, eventOrOptions = {}) {
     body.fallbackDateStr = body.date;
     body.pollTimeoutMs = MODEL_FORCE_REFRESH_TIMEOUT_MS;
   }
+  if (model === 'mlb-first-five') {
+    endpoint = '/run-mlb-first-five-model';
+    body.fallbackModelKey = 'mlb_first_five';
+    body.fallbackDateStr = body.date;
+    body.pollTimeoutMs = 900000;
+  }
   if (model === 'wnba') {
     endpoint = '/api/run-wnba-model';
     body.fallbackModelKey = 'wnba';
@@ -11190,7 +11206,8 @@ function renderModelResults(picks, options = {}) {
     'MLB MODEL': 3,
     'MLB NEW': 4,
     'MLB INNING': 5,
-    'CANNON ANALYTICS': 6,
+    'MLB FIRST FIVE': 6,
+    'CANNON ANALYTICS': 7,
   };
   // Keep backend variants distinct so they do not collapse.
   // 'MLB MODEL' is the single champion label; 'MLB NEW' is the challenger.
@@ -11206,6 +11223,7 @@ function renderModelResults(picks, options = {}) {
     'MLB NEW': 'MLB NEW',
     MLBNEW: 'MLB NEW',
     'MLB INNING': 'MLB Inning',
+    'MLB FIRST FIVE': 'MLB First Five',
     'CANNON ANALYTICS': 'Cannon Analytics',
   };
   const sorted = picks.map((pick, index) => ({ pick, index })).sort((a, b) => {
@@ -11213,7 +11231,10 @@ function renderModelResults(picks, options = {}) {
     const bSource = String(b.pick.source || '').toUpperCase();
     const rankDiff = (sourceRank[aSource] ?? 50) - (sourceRank[bSource] ?? 50);
     if (rankDiff) return rankDiff;
-    if (aSource === 'MLB INNING' && bSource === 'MLB INNING') {
+    if (
+      (aSource === 'MLB INNING' && bSource === 'MLB INNING') ||
+      (aSource === 'MLB FIRST FIVE' && bSource === 'MLB FIRST FIVE')
+    ) {
       return _compareMlbInningModelResults(a, b);
     }
     const pickDiff = String(a.pick.pick || '').localeCompare(String(b.pick.pick || ''));
@@ -11700,6 +11721,7 @@ window.addEventListener('firestorePicksLoaded', function(e) {
   const LEGACY_MODEL_IDS = [
     'model-card-mlb',
     'model-card-mlb-new',
+    'model-card-mlb-first-five',
     'model-card-ipl',
     'model-card-nba-new',
     'model-card-nba-playoffs',
@@ -11714,6 +11736,7 @@ window.addEventListener('firestorePicksLoaded', function(e) {
     { id: 'model-card-mlb',              icon: '\u26BE', name: 'MLB Model',                     desc: 'Pitcher-based MLB predictions' },
     { id: 'model-card-mlb-new',          icon: '\u26BE', name: 'MLB New',                       desc: '2024-25 MLB challenger artifacts' },
     { id: 'model-card-mlb-inning',       icon: '\u26BE', name: 'MLB Inning',                    desc: 'Least likely run-scoring innings' },
+    { id: 'model-card-mlb-first-five',   icon: '\u26BE', name: 'MLB First Five',                desc: 'F5 side and total model' },
     { id: 'model-card-ipl',              icon: '\u{1F3DF}', name: 'IPL Model',                  desc: 'Cached IPL winner + fantasy XI' },
     { id: 'model-card-nba-new',          icon: '\u{1F3C0}', name: 'NBA New',                    desc: 'Refined NBA spread + calibration' },
     { id: 'model-card-nba-playoffs',     icon: '\u{1F3C6}', name: 'NBA Playoffs',               desc: 'Postseason-only verified moneyline model' },

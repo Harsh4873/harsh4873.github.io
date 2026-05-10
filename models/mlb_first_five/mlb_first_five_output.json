@@ -1,0 +1,1908 @@
+{
+  "date": "2026-05-10",
+  "generated_at": "2026-05-10T04:55:50.232656Z",
+  "model": "MLBFirstFive",
+  "picks": [
+    {
+      "game_id": "823868",
+      "game_start_time": "2026-05-10T16:15:00Z",
+      "game_order": 0,
+      "matchup": "Washington Nationals @ Miami Marlins",
+      "home_team": "Miami Marlins",
+      "away_team": "Washington Nationals",
+      "venue_id": 4169,
+      "venue_name": "loanDepot park",
+      "home_pitcher": "Sandy Alcantara",
+      "away_pitcher": "Cade Cavalli",
+      "projected_first_five": {
+        "away_runs": 2.71,
+        "home_runs": 2.81,
+        "total_runs": 5.52,
+        "home_lead_probability": 0.5195,
+        "away_lead_probability": 0.4805
+      },
+      "top_picks": [
+        {
+          "market": "f5_side",
+          "pick": "Miami Marlins F5 ML",
+          "team": "Miami Marlins",
+          "probability": 0.5195,
+          "edge_pct": -0.43,
+          "decision": "PASS",
+          "confidence": "Low",
+          "assumed_odds": -110,
+          "model_prediction": "Miami Marlins +0.10 F5 runs"
+        },
+        {
+          "market": "f5_total",
+          "pick": "Over 5.5 F5",
+          "team": "",
+          "probability": 0.5043,
+          "edge_pct": -1.95,
+          "decision": "PASS",
+          "confidence": "Low",
+          "assumed_odds": -110,
+          "vegas_line": 5.5,
+          "model_prediction": "5.52 F5 total"
+        }
+      ],
+      "features": {
+        "away_offense": {
+          "projected_runs": 2.71,
+          "team_current_f5_runs": 2.433,
+          "team_recent_f5_runs": 2.958,
+          "team_prior_f5_runs": 2.33,
+          "team_venue_f5_runs": 3.025,
+          "pitcher_current_f5_allowed": 2.375,
+          "pitcher_recent_f5_allowed": 3.0,
+          "pitcher_current_vs_opponent": 2.138,
+          "pitcher_prior_vs_opponent": 4.0,
+          "pitcher_venue_f5_allowed": 2.2,
+          "lineup_delta": 0.001,
+          "venue_delta": 0.067
+        },
+        "home_offense": {
+          "projected_runs": 2.81,
+          "team_current_f5_runs": 2.241,
+          "team_recent_f5_runs": 2.5,
+          "team_prior_f5_runs": 2.432,
+          "team_venue_f5_runs": 2.222,
+          "pitcher_current_f5_allowed": 3.0,
+          "pitcher_recent_f5_allowed": 3.333,
+          "pitcher_current_vs_opponent": 2.491,
+          "pitcher_prior_vs_opponent": 2.098,
+          "pitcher_venue_f5_allowed": 2.368,
+          "lineup_delta": 0.112,
+          "venue_delta": 0.067
+        },
+        "away_pitcher": {
+          "name": "Cade Cavalli",
+          "stat_expected": 2.491,
+          "current_f5_allowed": 3.0,
+          "recent_f5_allowed": 3.333,
+          "prior_f5_allowed": 2.653,
+          "current_vs_opponent": 2.491,
+          "prior_vs_opponent": 2.098,
+          "venue_f5_allowed": 2.368,
+          "current_starts": 8,
+          "recent_starts": 6,
+          "prior_starts": 10,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 2,
+          "venue_starts": 1
+        },
+        "home_pitcher": {
+          "name": "Sandy Alcantara",
+          "stat_expected": 2.138,
+          "current_f5_allowed": 2.375,
+          "recent_f5_allowed": 3.0,
+          "prior_f5_allowed": 3.118,
+          "current_vs_opponent": 2.138,
+          "prior_vs_opponent": 4.0,
+          "venue_f5_allowed": 2.2,
+          "current_starts": 8,
+          "recent_starts": 6,
+          "prior_starts": 30,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 3,
+          "venue_starts": 5
+        },
+        "venue": {
+          "f5_total": 4.633,
+          "run_delta_per_team": 0.067,
+          "games": 60
+        },
+        "away_lineup_matchup": {
+          "run_delta": 0.001,
+          "threat_score": 0.3498,
+          "current_bvp_pa": 0,
+          "older_bvp_pa": 25,
+          "sampled_batters": 9
+        },
+        "home_lineup_matchup": {
+          "run_delta": 0.112,
+          "threat_score": 0.3828,
+          "current_bvp_pa": 0,
+          "older_bvp_pa": 22,
+          "sampled_batters": 9
+        }
+      },
+      "notes": "F5 projection Washington Nationals 2.71, Miami Marlins 2.81 (total 5.52). BvP PA away/home: 0+25/0+22; venue F5 total 4.63 over 60 games."
+    },
+    {
+      "game_id": "824845",
+      "game_start_time": "2026-05-10T17:35:00Z",
+      "game_order": 1,
+      "matchup": "Athletics @ Baltimore Orioles",
+      "home_team": "Baltimore Orioles",
+      "away_team": "Athletics",
+      "venue_id": 2,
+      "venue_name": "Oriole Park at Camden Yards",
+      "home_pitcher": "Chris Bassitt",
+      "away_pitcher": "Luis Severino",
+      "projected_first_five": {
+        "away_runs": 3.24,
+        "home_runs": 3.17,
+        "total_runs": 6.41,
+        "home_lead_probability": 0.4864,
+        "away_lead_probability": 0.5136
+      },
+      "top_picks": [
+        {
+          "market": "f5_total",
+          "pick": "Over 5.5 F5",
+          "team": "",
+          "probability": 0.6886,
+          "edge_pct": 16.48,
+          "decision": "BET",
+          "confidence": "High",
+          "assumed_odds": -110,
+          "vegas_line": 5.5,
+          "model_prediction": "6.41 F5 total"
+        },
+        {
+          "market": "f5_side",
+          "pick": "Athletics F5 ML",
+          "team": "Athletics",
+          "probability": 0.5136,
+          "edge_pct": -1.02,
+          "decision": "PASS",
+          "confidence": "Low",
+          "assumed_odds": -110,
+          "model_prediction": "Athletics +0.07 F5 runs"
+        }
+      ],
+      "features": {
+        "away_offense": {
+          "projected_runs": 3.24,
+          "team_current_f5_runs": 3.492,
+          "team_recent_f5_runs": 2.958,
+          "team_prior_f5_runs": 2.599,
+          "team_venue_f5_runs": 3.125,
+          "pitcher_current_f5_allowed": 2.714,
+          "pitcher_recent_f5_allowed": 2.5,
+          "pitcher_current_vs_opponent": 3.049,
+          "pitcher_prior_vs_opponent": 3.2,
+          "pitcher_venue_f5_allowed": 3.75,
+          "lineup_delta": 0.243,
+          "venue_delta": 0.216
+        },
+        "home_offense": {
+          "projected_runs": 3.17,
+          "team_current_f5_runs": 2.213,
+          "team_recent_f5_runs": 2.417,
+          "team_prior_f5_runs": 2.465,
+          "team_venue_f5_runs": 2.139,
+          "pitcher_current_f5_allowed": 2.625,
+          "pitcher_recent_f5_allowed": 2.333,
+          "pitcher_current_vs_opponent": 2.35,
+          "pitcher_prior_vs_opponent": 7.333,
+          "pitcher_venue_f5_allowed": 2.35,
+          "lineup_delta": 0.181,
+          "venue_delta": 0.216
+        },
+        "away_pitcher": {
+          "name": "Luis Severino",
+          "stat_expected": 2.35,
+          "current_f5_allowed": 2.625,
+          "recent_f5_allowed": 2.333,
+          "prior_f5_allowed": 2.973,
+          "current_vs_opponent": 2.35,
+          "prior_vs_opponent": 7.333,
+          "venue_f5_allowed": 2.35,
+          "current_starts": 8,
+          "recent_starts": 6,
+          "prior_starts": 30,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 3,
+          "venue_starts": 0
+        },
+        "home_pitcher": {
+          "name": "Chris Bassitt",
+          "stat_expected": 3.049,
+          "current_f5_allowed": 2.714,
+          "recent_f5_allowed": 2.5,
+          "prior_f5_allowed": 2.372,
+          "current_vs_opponent": 3.049,
+          "prior_vs_opponent": 3.2,
+          "venue_f5_allowed": 3.75,
+          "current_starts": 7,
+          "recent_starts": 6,
+          "prior_starts": 30,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 5,
+          "venue_starts": 4
+        },
+        "venue": {
+          "f5_total": 4.933,
+          "run_delta_per_team": 0.216,
+          "games": 60
+        },
+        "away_lineup_matchup": {
+          "run_delta": 0.243,
+          "threat_score": 0.4218,
+          "current_bvp_pa": 0,
+          "older_bvp_pa": 51,
+          "sampled_batters": 9
+        },
+        "home_lineup_matchup": {
+          "run_delta": 0.181,
+          "threat_score": 0.4035,
+          "current_bvp_pa": 0,
+          "older_bvp_pa": 37,
+          "sampled_batters": 9
+        }
+      },
+      "notes": "F5 projection Athletics 3.24, Baltimore Orioles 3.17 (total 6.41). BvP PA away/home: 0+51/0+37; venue F5 total 4.93 over 60 games."
+    },
+    {
+      "game_id": "824765",
+      "game_start_time": "2026-05-10T17:35:00Z",
+      "game_order": 2,
+      "matchup": "Tampa Bay Rays @ Boston Red Sox",
+      "home_team": "Boston Red Sox",
+      "away_team": "Tampa Bay Rays",
+      "venue_id": 3,
+      "venue_name": "Fenway Park",
+      "home_pitcher": "Payton Tolle",
+      "away_pitcher": "Nick Martinez",
+      "projected_first_five": {
+        "away_runs": 1.73,
+        "home_runs": 1.8,
+        "total_runs": 3.53,
+        "home_lead_probability": 0.5136,
+        "away_lead_probability": 0.4864
+      },
+      "top_picks": [
+        {
+          "market": "f5_total",
+          "pick": "Under 4.5 F5",
+          "team": "",
+          "probability": 0.7,
+          "edge_pct": 17.62,
+          "decision": "BET",
+          "confidence": "High",
+          "assumed_odds": -110,
+          "vegas_line": 4.5,
+          "model_prediction": "3.53 F5 total"
+        },
+        {
+          "market": "f5_side",
+          "pick": "Boston Red Sox F5 ML",
+          "team": "Boston Red Sox",
+          "probability": 0.5136,
+          "edge_pct": -1.02,
+          "decision": "PASS",
+          "confidence": "Low",
+          "assumed_odds": -110,
+          "model_prediction": "Boston Red Sox +0.07 F5 runs"
+        }
+      ],
+      "features": {
+        "away_offense": {
+          "projected_runs": 1.73,
+          "team_current_f5_runs": 1.966,
+          "team_recent_f5_runs": 2.083,
+          "team_prior_f5_runs": 2.714,
+          "team_venue_f5_runs": 1.925,
+          "pitcher_current_f5_allowed": 1.267,
+          "pitcher_recent_f5_allowed": 1.3,
+          "pitcher_current_vs_opponent": 1.2,
+          "pitcher_prior_vs_opponent": 1.2,
+          "pitcher_venue_f5_allowed": 0.85,
+          "lineup_delta": -0.154,
+          "venue_delta": 0.216
+        },
+        "home_offense": {
+          "projected_runs": 1.8,
+          "team_current_f5_runs": 2.3,
+          "team_recent_f5_runs": 2.333,
+          "team_prior_f5_runs": 2.696,
+          "team_venue_f5_runs": 2.639,
+          "pitcher_current_f5_allowed": 0.714,
+          "pitcher_recent_f5_allowed": 0.833,
+          "pitcher_current_vs_opponent": 1.418,
+          "pitcher_prior_vs_opponent": 1.251,
+          "pitcher_venue_f5_allowed": 1.313,
+          "lineup_delta": -0.005,
+          "venue_delta": 0.216
+        },
+        "away_pitcher": {
+          "name": "Nick Martinez",
+          "stat_expected": 1.418,
+          "current_f5_allowed": 0.714,
+          "recent_f5_allowed": 0.833,
+          "prior_f5_allowed": 2.384,
+          "current_vs_opponent": 1.418,
+          "prior_vs_opponent": 1.251,
+          "venue_f5_allowed": 1.313,
+          "current_starts": 7,
+          "recent_starts": 6,
+          "prior_starts": 30,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 1,
+          "venue_starts": 1
+        },
+        "home_pitcher": {
+          "name": "Payton Tolle",
+          "stat_expected": 1.2,
+          "current_f5_allowed": 1.267,
+          "recent_f5_allowed": 1.3,
+          "prior_f5_allowed": 1.53,
+          "current_vs_opponent": 1.2,
+          "prior_vs_opponent": 1.2,
+          "venue_f5_allowed": 0.85,
+          "current_starts": 3,
+          "recent_starts": 3,
+          "prior_starts": 3,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 0,
+          "venue_starts": 2
+        },
+        "venue": {
+          "f5_total": 4.933,
+          "run_delta_per_team": 0.216,
+          "games": 60
+        },
+        "away_lineup_matchup": {
+          "run_delta": -0.154,
+          "threat_score": 0.3035,
+          "current_bvp_pa": 0,
+          "older_bvp_pa": 1,
+          "sampled_batters": 9
+        },
+        "home_lineup_matchup": {
+          "run_delta": -0.005,
+          "threat_score": 0.3479,
+          "current_bvp_pa": 0,
+          "older_bvp_pa": 29,
+          "sampled_batters": 9
+        }
+      },
+      "notes": "F5 projection Tampa Bay Rays 1.73, Boston Red Sox 1.8 (total 3.53). BvP PA away/home: 0+1/0+29; venue F5 total 4.93 over 60 games."
+    },
+    {
+      "game_id": "823463",
+      "game_start_time": "2026-05-10T17:35:00Z",
+      "game_order": 3,
+      "matchup": "Colorado Rockies @ Philadelphia Phillies",
+      "home_team": "Philadelphia Phillies",
+      "away_team": "Colorado Rockies",
+      "venue_id": 2681,
+      "venue_name": "Citizens Bank Park",
+      "home_pitcher": "Cristopher S\u00e1nchez",
+      "away_pitcher": "Tomoyuki Sugano",
+      "projected_first_five": {
+        "away_runs": 2.31,
+        "home_runs": 2.13,
+        "total_runs": 4.44,
+        "home_lead_probability": 0.465,
+        "away_lead_probability": 0.535
+      },
+      "top_picks": [
+        {
+          "market": "f5_side",
+          "pick": "Colorado Rockies F5 ML",
+          "team": "Colorado Rockies",
+          "probability": 0.535,
+          "edge_pct": 1.12,
+          "decision": "PASS",
+          "confidence": "Low",
+          "assumed_odds": -110,
+          "model_prediction": "Colorado Rockies +0.18 F5 runs"
+        },
+        {
+          "market": "f5_total",
+          "pick": "Under 4.5 F5",
+          "team": "",
+          "probability": 0.5129,
+          "edge_pct": -1.09,
+          "decision": "PASS",
+          "confidence": "Low",
+          "assumed_odds": -110,
+          "vegas_line": 4.5,
+          "model_prediction": "4.44 F5 total"
+        }
+      ],
+      "features": {
+        "away_offense": {
+          "projected_runs": 2.31,
+          "team_current_f5_runs": 2.839,
+          "team_recent_f5_runs": 2.625,
+          "team_prior_f5_runs": 2.048,
+          "team_venue_f5_runs": 2.025,
+          "pitcher_current_f5_allowed": 2.0,
+          "pitcher_recent_f5_allowed": 2.5,
+          "pitcher_current_vs_opponent": 1.85,
+          "pitcher_prior_vs_opponent": 1.4,
+          "pitcher_venue_f5_allowed": 1.333,
+          "lineup_delta": 0.068,
+          "venue_delta": 0.125
+        },
+        "home_offense": {
+          "projected_runs": 2.13,
+          "team_current_f5_runs": 2.367,
+          "team_recent_f5_runs": 1.833,
+          "team_prior_f5_runs": 2.489,
+          "team_venue_f5_runs": 2.917,
+          "pitcher_current_f5_allowed": 1.714,
+          "pitcher_recent_f5_allowed": 1.833,
+          "pitcher_current_vs_opponent": 1.325,
+          "pitcher_prior_vs_opponent": 1.975,
+          "pitcher_venue_f5_allowed": 1.975,
+          "lineup_delta": 0.025,
+          "venue_delta": 0.125
+        },
+        "away_pitcher": {
+          "name": "Tomoyuki Sugano",
+          "stat_expected": 1.975,
+          "current_f5_allowed": 1.714,
+          "recent_f5_allowed": 1.833,
+          "prior_f5_allowed": 2.645,
+          "current_vs_opponent": 1.325,
+          "prior_vs_opponent": 1.975,
+          "venue_f5_allowed": 1.975,
+          "current_starts": 7,
+          "recent_starts": 6,
+          "prior_starts": 30,
+          "current_vs_opponent_starts": 1,
+          "prior_vs_opponent_starts": 0,
+          "venue_starts": 0
+        },
+        "home_pitcher": {
+          "name": "Cristopher S\u00e1nchez",
+          "stat_expected": 1.85,
+          "current_f5_allowed": 2.0,
+          "recent_f5_allowed": 2.5,
+          "prior_f5_allowed": 1.439,
+          "current_vs_opponent": 1.85,
+          "prior_vs_opponent": 1.4,
+          "venue_f5_allowed": 1.333,
+          "current_starts": 8,
+          "recent_starts": 6,
+          "prior_starts": 30,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 5,
+          "venue_starts": 6
+        },
+        "venue": {
+          "f5_total": 4.75,
+          "run_delta_per_team": 0.125,
+          "games": 60
+        },
+        "away_lineup_matchup": {
+          "run_delta": 0.068,
+          "threat_score": 0.3697,
+          "current_bvp_pa": 0,
+          "older_bvp_pa": 22,
+          "sampled_batters": 9
+        },
+        "home_lineup_matchup": {
+          "run_delta": 0.025,
+          "threat_score": 0.357,
+          "current_bvp_pa": 18,
+          "older_bvp_pa": 3,
+          "sampled_batters": 9
+        }
+      },
+      "notes": "F5 projection Colorado Rockies 2.31, Philadelphia Phillies 2.13 (total 4.44). BvP PA away/home: 0+22/18+3; venue F5 total 4.75 over 60 games."
+    },
+    {
+      "game_id": "822819",
+      "game_start_time": "2026-05-10T17:37:00Z",
+      "game_order": 4,
+      "matchup": "Los Angeles Angels @ Toronto Blue Jays",
+      "home_team": "Toronto Blue Jays",
+      "away_team": "Los Angeles Angels",
+      "venue_id": 14,
+      "venue_name": "Rogers Centre",
+      "home_pitcher": "Spencer Miles",
+      "away_pitcher": "Jos\u00e9 Soriano",
+      "projected_first_five": {
+        "away_runs": 2.3,
+        "home_runs": 1.86,
+        "total_runs": 4.16,
+        "home_lead_probability": 0.415,
+        "away_lead_probability": 0.585
+      },
+      "top_picks": [
+        {
+          "market": "f5_side",
+          "pick": "Los Angeles Angels F5 ML",
+          "team": "Los Angeles Angels",
+          "probability": 0.585,
+          "edge_pct": 6.12,
+          "decision": "BET",
+          "confidence": "Medium",
+          "assumed_odds": -110,
+          "model_prediction": "Los Angeles Angels +0.44 F5 runs"
+        },
+        {
+          "market": "f5_total",
+          "pick": "Under 4.5 F5",
+          "team": "",
+          "probability": 0.5729,
+          "edge_pct": 4.91,
+          "decision": "BET",
+          "confidence": "Medium",
+          "assumed_odds": -110,
+          "vegas_line": 4.5,
+          "model_prediction": "4.16 F5 total"
+        }
+      ],
+      "features": {
+        "away_offense": {
+          "projected_runs": 2.3,
+          "team_current_f5_runs": 2.569,
+          "team_recent_f5_runs": 2.458,
+          "team_prior_f5_runs": 2.326,
+          "team_venue_f5_runs": 1.525,
+          "pitcher_current_f5_allowed": 1.921,
+          "pitcher_recent_f5_allowed": 1.921,
+          "pitcher_current_vs_opponent": 1.921,
+          "pitcher_prior_vs_opponent": 1.921,
+          "pitcher_venue_f5_allowed": 1.921,
+          "lineup_delta": 0.06,
+          "venue_delta": 0.167
+        },
+        "home_offense": {
+          "projected_runs": 1.86,
+          "team_current_f5_runs": 2.625,
+          "team_recent_f5_runs": 2.375,
+          "team_prior_f5_runs": 2.672,
+          "team_venue_f5_runs": 2.833,
+          "pitcher_current_f5_allowed": 1.125,
+          "pitcher_recent_f5_allowed": 1.5,
+          "pitcher_current_vs_opponent": 0.487,
+          "pitcher_prior_vs_opponent": 2.077,
+          "pitcher_venue_f5_allowed": 1.461,
+          "lineup_delta": -0.071,
+          "venue_delta": 0.167
+        },
+        "away_pitcher": {
+          "name": "Jos\u00e9 Soriano",
+          "stat_expected": 1.461,
+          "current_f5_allowed": 1.125,
+          "recent_f5_allowed": 1.5,
+          "prior_f5_allowed": 2.811,
+          "current_vs_opponent": 0.487,
+          "prior_vs_opponent": 2.077,
+          "venue_f5_allowed": 1.461,
+          "current_starts": 8,
+          "recent_starts": 6,
+          "prior_starts": 30,
+          "current_vs_opponent_starts": 1,
+          "prior_vs_opponent_starts": 1,
+          "venue_starts": 0
+        },
+        "home_pitcher": {
+          "name": "Spencer Miles",
+          "stat_expected": 1.921,
+          "current_f5_allowed": 1.921,
+          "recent_f5_allowed": 1.921,
+          "prior_f5_allowed": 1.921,
+          "current_vs_opponent": 1.921,
+          "prior_vs_opponent": 1.921,
+          "venue_f5_allowed": 1.921,
+          "current_starts": 0,
+          "recent_starts": 0,
+          "prior_starts": 0,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 0,
+          "venue_starts": 0
+        },
+        "venue": {
+          "f5_total": 4.833,
+          "run_delta_per_team": 0.167,
+          "games": 60
+        },
+        "away_lineup_matchup": {
+          "run_delta": 0.06,
+          "threat_score": 0.3672,
+          "current_bvp_pa": 3,
+          "older_bvp_pa": 0,
+          "sampled_batters": 9
+        },
+        "home_lineup_matchup": {
+          "run_delta": -0.071,
+          "threat_score": 0.3282,
+          "current_bvp_pa": 13,
+          "older_bvp_pa": 22,
+          "sampled_batters": 9
+        }
+      },
+      "notes": "F5 projection Los Angeles Angels 2.3, Toronto Blue Jays 1.86 (total 4.16). BvP PA away/home: 3+0/13+22; venue F5 total 4.83 over 60 games."
+    },
+    {
+      "game_id": "824520",
+      "game_start_time": "2026-05-10T17:40:00Z",
+      "game_order": 5,
+      "matchup": "Houston Astros @ Cincinnati Reds",
+      "home_team": "Cincinnati Reds",
+      "away_team": "Houston Astros",
+      "venue_id": 2602,
+      "venue_name": "Great American Ball Park",
+      "home_pitcher": "Andrew Abbott",
+      "away_pitcher": "Kai-Wei Teng",
+      "projected_first_five": {
+        "away_runs": 3.14,
+        "home_runs": 2.2,
+        "total_runs": 5.34,
+        "home_lead_probability": 0.3233,
+        "away_lead_probability": 0.6767
+      },
+      "top_picks": [
+        {
+          "market": "f5_side",
+          "pick": "Houston Astros F5 ML",
+          "team": "Houston Astros",
+          "probability": 0.6767,
+          "edge_pct": 15.29,
+          "decision": "BET",
+          "confidence": "High",
+          "assumed_odds": -110,
+          "model_prediction": "Houston Astros +0.94 F5 runs"
+        },
+        {
+          "market": "f5_total",
+          "pick": "Over 4.5 F5",
+          "team": "",
+          "probability": 0.6751,
+          "edge_pct": 15.13,
+          "decision": "BET",
+          "confidence": "High",
+          "assumed_odds": -110,
+          "vegas_line": 4.5,
+          "model_prediction": "5.34 F5 total"
+        }
+      ],
+      "features": {
+        "away_offense": {
+          "projected_runs": 3.14,
+          "team_current_f5_runs": 2.613,
+          "team_recent_f5_runs": 2.875,
+          "team_prior_f5_runs": 2.378,
+          "team_venue_f5_runs": 2.1,
+          "pitcher_current_f5_allowed": 2.875,
+          "pitcher_recent_f5_allowed": 3.333,
+          "pitcher_current_vs_opponent": 2.68,
+          "pitcher_prior_vs_opponent": 1.608,
+          "pitcher_venue_f5_allowed": 3.4,
+          "lineup_delta": 0.181,
+          "venue_delta": 0.225
+        },
+        "home_offense": {
+          "projected_runs": 2.2,
+          "team_current_f5_runs": 2.578,
+          "team_recent_f5_runs": 2.292,
+          "team_prior_f5_runs": 2.537,
+          "team_venue_f5_runs": 2.417,
+          "pitcher_current_f5_allowed": 1.937,
+          "pitcher_recent_f5_allowed": 2.143,
+          "pitcher_current_vs_opponent": 1.524,
+          "pitcher_prior_vs_opponent": 1.524,
+          "pitcher_venue_f5_allowed": 1.524,
+          "lineup_delta": -0.104,
+          "venue_delta": 0.225
+        },
+        "away_pitcher": {
+          "name": "Kai-Wei Teng",
+          "stat_expected": 1.524,
+          "current_f5_allowed": 1.937,
+          "recent_f5_allowed": 2.143,
+          "prior_f5_allowed": 2.349,
+          "current_vs_opponent": 1.524,
+          "prior_vs_opponent": 1.524,
+          "venue_f5_allowed": 1.524,
+          "current_starts": 1,
+          "recent_starts": 1,
+          "prior_starts": 7,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 0,
+          "venue_starts": 0
+        },
+        "home_pitcher": {
+          "name": "Andrew Abbott",
+          "stat_expected": 2.68,
+          "current_f5_allowed": 2.875,
+          "recent_f5_allowed": 3.333,
+          "prior_f5_allowed": 1.94,
+          "current_vs_opponent": 2.68,
+          "prior_vs_opponent": 1.608,
+          "venue_f5_allowed": 3.4,
+          "current_starts": 8,
+          "recent_starts": 6,
+          "prior_starts": 30,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 1,
+          "venue_starts": 5
+        },
+        "venue": {
+          "f5_total": 4.95,
+          "run_delta_per_team": 0.225,
+          "games": 60
+        },
+        "away_lineup_matchup": {
+          "run_delta": 0.181,
+          "threat_score": 0.4033,
+          "current_bvp_pa": 0,
+          "older_bvp_pa": 9,
+          "sampled_batters": 9
+        },
+        "home_lineup_matchup": {
+          "run_delta": -0.104,
+          "threat_score": 0.3185,
+          "current_bvp_pa": 0,
+          "older_bvp_pa": 2,
+          "sampled_batters": 9
+        }
+      },
+      "notes": "F5 projection Houston Astros 3.14, Cincinnati Reds 2.2 (total 5.34). BvP PA away/home: 0+9/0+2; venue F5 total 4.95 over 60 games."
+    },
+    {
+      "game_id": "824440",
+      "game_start_time": "2026-05-10T17:40:00Z",
+      "game_order": 6,
+      "matchup": "Minnesota Twins @ Cleveland Guardians",
+      "home_team": "Cleveland Guardians",
+      "away_team": "Minnesota Twins",
+      "venue_id": 5,
+      "venue_name": "Progressive Field",
+      "home_pitcher": "Gavin Williams",
+      "away_pitcher": "Andrew Morris",
+      "projected_first_five": {
+        "away_runs": 1.9,
+        "home_runs": 2.47,
+        "total_runs": 4.37,
+        "home_lead_probability": 0.6095,
+        "away_lead_probability": 0.3905
+      },
+      "top_picks": [
+        {
+          "market": "f5_side",
+          "pick": "Cleveland Guardians F5 ML",
+          "team": "Cleveland Guardians",
+          "probability": 0.6095,
+          "edge_pct": 8.57,
+          "decision": "BET",
+          "confidence": "High",
+          "assumed_odds": -110,
+          "model_prediction": "Cleveland Guardians +0.57 F5 runs"
+        },
+        {
+          "market": "f5_total",
+          "pick": "Under 4.5 F5",
+          "team": "",
+          "probability": 0.528,
+          "edge_pct": 0.42,
+          "decision": "PASS",
+          "confidence": "Low",
+          "assumed_odds": -110,
+          "vegas_line": 4.5,
+          "model_prediction": "4.37 F5 total"
+        }
+      ],
+      "features": {
+        "away_offense": {
+          "projected_runs": 1.9,
+          "team_current_f5_runs": 2.705,
+          "team_recent_f5_runs": 2.708,
+          "team_prior_f5_runs": 2.462,
+          "team_venue_f5_runs": 1.825,
+          "pitcher_current_f5_allowed": 1.75,
+          "pitcher_recent_f5_allowed": 1.833,
+          "pitcher_current_vs_opponent": 1.867,
+          "pitcher_prior_vs_opponent": 1.69,
+          "pitcher_venue_f5_allowed": 1.375,
+          "lineup_delta": -0.076,
+          "venue_delta": -0.025
+        },
+        "home_offense": {
+          "projected_runs": 2.47,
+          "team_current_f5_runs": 2.571,
+          "team_recent_f5_runs": 2.542,
+          "team_prior_f5_runs": 2.173,
+          "team_venue_f5_runs": 2.361,
+          "pitcher_current_f5_allowed": 2.57,
+          "pitcher_recent_f5_allowed": 2.57,
+          "pitcher_current_vs_opponent": 2.57,
+          "pitcher_prior_vs_opponent": 2.57,
+          "pitcher_venue_f5_allowed": 2.57,
+          "lineup_delta": 0.032,
+          "venue_delta": -0.025
+        },
+        "away_pitcher": {
+          "name": "Andrew Morris",
+          "stat_expected": 2.57,
+          "current_f5_allowed": 2.57,
+          "recent_f5_allowed": 2.57,
+          "prior_f5_allowed": 2.57,
+          "current_vs_opponent": 2.57,
+          "prior_vs_opponent": 2.57,
+          "venue_f5_allowed": 2.57,
+          "current_starts": 0,
+          "recent_starts": 0,
+          "prior_starts": 0,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 0,
+          "venue_starts": 0
+        },
+        "home_pitcher": {
+          "name": "Gavin Williams",
+          "stat_expected": 1.867,
+          "current_f5_allowed": 1.75,
+          "recent_f5_allowed": 1.833,
+          "prior_f5_allowed": 1.805,
+          "current_vs_opponent": 1.867,
+          "prior_vs_opponent": 1.69,
+          "venue_f5_allowed": 1.375,
+          "current_starts": 8,
+          "recent_starts": 6,
+          "prior_starts": 30,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 7,
+          "venue_starts": 8
+        },
+        "venue": {
+          "f5_total": 4.45,
+          "run_delta_per_team": -0.025,
+          "games": 60
+        },
+        "away_lineup_matchup": {
+          "run_delta": -0.076,
+          "threat_score": 0.3268,
+          "current_bvp_pa": 0,
+          "older_bvp_pa": 55,
+          "sampled_batters": 9
+        },
+        "home_lineup_matchup": {
+          "run_delta": 0.032,
+          "threat_score": 0.359,
+          "current_bvp_pa": 2,
+          "older_bvp_pa": 0,
+          "sampled_batters": 9
+        }
+      },
+      "notes": "F5 projection Minnesota Twins 1.9, Cleveland Guardians 2.47 (total 4.37). BvP PA away/home: 0+55/2+0; venue F5 total 4.45 over 60 games."
+    },
+    {
+      "game_id": "824605",
+      "game_start_time": "2026-05-10T18:10:00Z",
+      "game_order": 7,
+      "matchup": "Seattle Mariners @ Chicago White Sox",
+      "home_team": "Chicago White Sox",
+      "away_team": "Seattle Mariners",
+      "venue_id": 4,
+      "venue_name": "Rate Field",
+      "home_pitcher": "Davis Martin",
+      "away_pitcher": "Logan Gilbert",
+      "projected_first_five": {
+        "away_runs": 1.63,
+        "home_runs": 2.22,
+        "total_runs": 3.85,
+        "home_lead_probability": 0.6133,
+        "away_lead_probability": 0.3867
+      },
+      "top_picks": [
+        {
+          "market": "f5_total",
+          "pick": "Under 4.5 F5",
+          "team": "",
+          "probability": 0.6373,
+          "edge_pct": 11.35,
+          "decision": "BET",
+          "confidence": "High",
+          "assumed_odds": -110,
+          "vegas_line": 4.5,
+          "model_prediction": "3.85 F5 total"
+        },
+        {
+          "market": "f5_side",
+          "pick": "Chicago White Sox F5 ML",
+          "team": "Chicago White Sox",
+          "probability": 0.6133,
+          "edge_pct": 8.95,
+          "decision": "BET",
+          "confidence": "High",
+          "assumed_odds": -110,
+          "model_prediction": "Chicago White Sox +0.59 F5 runs"
+        }
+      ],
+      "features": {
+        "away_offense": {
+          "projected_runs": 1.63,
+          "team_current_f5_runs": 2.742,
+          "team_recent_f5_runs": 2.333,
+          "team_prior_f5_runs": 2.619,
+          "team_venue_f5_runs": 2.225,
+          "pitcher_current_f5_allowed": 1.0,
+          "pitcher_recent_f5_allowed": 0.667,
+          "pitcher_current_vs_opponent": 1.452,
+          "pitcher_prior_vs_opponent": 1.89,
+          "pitcher_venue_f5_allowed": 2.0,
+          "lineup_delta": -0.139,
+          "venue_delta": 0.058
+        },
+        "home_offense": {
+          "projected_runs": 2.22,
+          "team_current_f5_runs": 3.049,
+          "team_recent_f5_runs": 2.917,
+          "team_prior_f5_runs": 2.324,
+          "team_venue_f5_runs": 2.639,
+          "pitcher_current_f5_allowed": 1.75,
+          "pitcher_recent_f5_allowed": 1.5,
+          "pitcher_current_vs_opponent": 2.356,
+          "pitcher_prior_vs_opponent": 1.0,
+          "pitcher_venue_f5_allowed": 2.356,
+          "lineup_delta": 0.106,
+          "venue_delta": 0.058
+        },
+        "away_pitcher": {
+          "name": "Logan Gilbert",
+          "stat_expected": 2.356,
+          "current_f5_allowed": 1.75,
+          "recent_f5_allowed": 1.5,
+          "prior_f5_allowed": 1.985,
+          "current_vs_opponent": 2.356,
+          "prior_vs_opponent": 1.0,
+          "venue_f5_allowed": 2.356,
+          "current_starts": 8,
+          "recent_starts": 6,
+          "prior_starts": 30,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 3,
+          "venue_starts": 0
+        },
+        "home_pitcher": {
+          "name": "Davis Martin",
+          "stat_expected": 1.452,
+          "current_f5_allowed": 1.0,
+          "recent_f5_allowed": 0.667,
+          "prior_f5_allowed": 2.79,
+          "current_vs_opponent": 1.452,
+          "prior_vs_opponent": 1.89,
+          "venue_f5_allowed": 2.0,
+          "current_starts": 7,
+          "recent_starts": 6,
+          "prior_starts": 30,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 2,
+          "venue_starts": 8
+        },
+        "venue": {
+          "f5_total": 4.617,
+          "run_delta_per_team": 0.058,
+          "games": 60
+        },
+        "away_lineup_matchup": {
+          "run_delta": -0.139,
+          "threat_score": 0.3079,
+          "current_bvp_pa": 0,
+          "older_bvp_pa": 37,
+          "sampled_batters": 9
+        },
+        "home_lineup_matchup": {
+          "run_delta": 0.106,
+          "threat_score": 0.3811,
+          "current_bvp_pa": 0,
+          "older_bvp_pa": 9,
+          "sampled_batters": 9
+        }
+      },
+      "notes": "F5 projection Seattle Mariners 1.63, Chicago White Sox 2.22 (total 3.85). BvP PA away/home: 0+37/0+9; venue F5 total 4.62 over 60 games."
+    },
+    {
+      "game_id": "823793",
+      "game_start_time": "2026-05-10T18:10:00Z",
+      "game_order": 8,
+      "matchup": "New York Yankees @ Milwaukee Brewers",
+      "home_team": "Milwaukee Brewers",
+      "away_team": "New York Yankees",
+      "venue_id": 32,
+      "venue_name": "American Family Field",
+      "home_pitcher": "Logan Henderson",
+      "away_pitcher": "Carlos Rod\u00f3n",
+      "projected_first_five": {
+        "away_runs": 2.44,
+        "home_runs": 2.41,
+        "total_runs": 4.85,
+        "home_lead_probability": 0.4942,
+        "away_lead_probability": 0.5058
+      },
+      "top_picks": [
+        {
+          "market": "f5_total",
+          "pick": "Over 4.5 F5",
+          "team": "",
+          "probability": 0.575,
+          "edge_pct": 5.12,
+          "decision": "BET",
+          "confidence": "Medium",
+          "assumed_odds": -110,
+          "vegas_line": 4.5,
+          "model_prediction": "4.85 F5 total"
+        },
+        {
+          "market": "f5_side",
+          "pick": "New York Yankees F5 ML",
+          "team": "New York Yankees",
+          "probability": 0.5058,
+          "edge_pct": -1.8,
+          "decision": "PASS",
+          "confidence": "Low",
+          "assumed_odds": -110,
+          "model_prediction": "New York Yankees +0.03 F5 runs"
+        }
+      ],
+      "features": {
+        "away_offense": {
+          "projected_runs": 2.44,
+          "team_current_f5_runs": 2.262,
+          "team_recent_f5_runs": 2.625,
+          "team_prior_f5_runs": 3.211,
+          "team_venue_f5_runs": 2.0,
+          "pitcher_current_f5_allowed": 1.949,
+          "pitcher_recent_f5_allowed": 1.962,
+          "pitcher_current_vs_opponent": 1.923,
+          "pitcher_prior_vs_opponent": 1.923,
+          "pitcher_venue_f5_allowed": 1.212,
+          "lineup_delta": -0.017,
+          "venue_delta": 0.308
+        },
+        "home_offense": {
+          "projected_runs": 2.41,
+          "team_current_f5_runs": 3.0,
+          "team_recent_f5_runs": 2.417,
+          "team_prior_f5_runs": 3.031,
+          "team_venue_f5_runs": 3.5,
+          "pitcher_current_f5_allowed": 1.756,
+          "pitcher_recent_f5_allowed": 1.756,
+          "pitcher_current_vs_opponent": 1.756,
+          "pitcher_prior_vs_opponent": 1.151,
+          "pitcher_venue_f5_allowed": 1.756,
+          "lineup_delta": 0.007,
+          "venue_delta": 0.308
+        },
+        "away_pitcher": {
+          "name": "Carlos Rod\u00f3n",
+          "stat_expected": 1.756,
+          "current_f5_allowed": 1.756,
+          "recent_f5_allowed": 1.756,
+          "prior_f5_allowed": 1.915,
+          "current_vs_opponent": 1.756,
+          "prior_vs_opponent": 1.151,
+          "venue_f5_allowed": 1.756,
+          "current_starts": 0,
+          "recent_starts": 0,
+          "prior_starts": 30,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 2,
+          "venue_starts": 0
+        },
+        "home_pitcher": {
+          "name": "Logan Henderson",
+          "stat_expected": 1.923,
+          "current_f5_allowed": 1.949,
+          "recent_f5_allowed": 1.962,
+          "prior_f5_allowed": 1.624,
+          "current_vs_opponent": 1.923,
+          "prior_vs_opponent": 1.923,
+          "venue_f5_allowed": 1.212,
+          "current_starts": 2,
+          "recent_starts": 2,
+          "prior_starts": 5,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 0,
+          "venue_starts": 2
+        },
+        "venue": {
+          "f5_total": 5.117,
+          "run_delta_per_team": 0.308,
+          "games": 60
+        },
+        "away_lineup_matchup": {
+          "run_delta": -0.017,
+          "threat_score": 0.3442,
+          "current_bvp_pa": 0,
+          "older_bvp_pa": 2,
+          "sampled_batters": 9
+        },
+        "home_lineup_matchup": {
+          "run_delta": 0.007,
+          "threat_score": 0.3516,
+          "current_bvp_pa": 0,
+          "older_bvp_pa": 46,
+          "sampled_batters": 9
+        }
+      },
+      "notes": "F5 projection New York Yankees 2.44, Milwaukee Brewers 2.41 (total 4.85). BvP PA away/home: 0+2/0+46; venue F5 total 5.12 over 60 games."
+    },
+    {
+      "game_id": "822902",
+      "game_start_time": "2026-05-10T18:35:00Z",
+      "game_order": 9,
+      "matchup": "Chicago Cubs @ Texas Rangers",
+      "home_team": "Texas Rangers",
+      "away_team": "Chicago Cubs",
+      "venue_id": 5325,
+      "venue_name": "Globe Life Field",
+      "home_pitcher": "Jacob deGrom",
+      "away_pitcher": "Jameson Taillon",
+      "projected_first_five": {
+        "away_runs": 1.62,
+        "home_runs": 2.32,
+        "total_runs": 3.94,
+        "home_lead_probability": 0.6336,
+        "away_lead_probability": 0.3664
+      },
+      "top_picks": [
+        {
+          "market": "f5_side",
+          "pick": "Texas Rangers F5 ML",
+          "team": "Texas Rangers",
+          "probability": 0.6336,
+          "edge_pct": 10.98,
+          "decision": "BET",
+          "confidence": "High",
+          "assumed_odds": -110,
+          "model_prediction": "Texas Rangers +0.70 F5 runs"
+        },
+        {
+          "market": "f5_total",
+          "pick": "Under 4.5 F5",
+          "team": "",
+          "probability": 0.6189,
+          "edge_pct": 9.51,
+          "decision": "BET",
+          "confidence": "High",
+          "assumed_odds": -110,
+          "vegas_line": 4.5,
+          "model_prediction": "3.94 F5 total"
+        }
+      ],
+      "features": {
+        "away_offense": {
+          "projected_runs": 1.62,
+          "team_current_f5_runs": 3.206,
+          "team_recent_f5_runs": 3.25,
+          "team_prior_f5_runs": 2.893,
+          "team_venue_f5_runs": 2.1,
+          "pitcher_current_f5_allowed": 1.429,
+          "pitcher_recent_f5_allowed": 1.167,
+          "pitcher_current_vs_opponent": 1.77,
+          "pitcher_prior_vs_opponent": 1.77,
+          "pitcher_venue_f5_allowed": 1.125,
+          "lineup_delta": -0.01,
+          "venue_delta": -0.341
+        },
+        "home_offense": {
+          "projected_runs": 2.32,
+          "team_current_f5_runs": 2.881,
+          "team_recent_f5_runs": 2.125,
+          "team_prior_f5_runs": 2.575,
+          "team_venue_f5_runs": 2.722,
+          "pitcher_current_f5_allowed": 2.714,
+          "pitcher_recent_f5_allowed": 3.167,
+          "pitcher_current_vs_opponent": 2.2,
+          "pitcher_prior_vs_opponent": 3.64,
+          "pitcher_venue_f5_allowed": 2.2,
+          "lineup_delta": 0.063,
+          "venue_delta": -0.341
+        },
+        "away_pitcher": {
+          "name": "Jameson Taillon",
+          "stat_expected": 2.2,
+          "current_f5_allowed": 2.714,
+          "recent_f5_allowed": 3.167,
+          "prior_f5_allowed": 1.973,
+          "current_vs_opponent": 2.2,
+          "prior_vs_opponent": 3.64,
+          "venue_f5_allowed": 2.2,
+          "current_starts": 7,
+          "recent_starts": 6,
+          "prior_starts": 30,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 2,
+          "venue_starts": 0
+        },
+        "home_pitcher": {
+          "name": "Jacob deGrom",
+          "stat_expected": 1.77,
+          "current_f5_allowed": 1.429,
+          "recent_f5_allowed": 1.167,
+          "prior_f5_allowed": 1.722,
+          "current_vs_opponent": 1.77,
+          "prior_vs_opponent": 1.77,
+          "venue_f5_allowed": 1.125,
+          "current_starts": 7,
+          "recent_starts": 6,
+          "prior_starts": 30,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 0,
+          "venue_starts": 8
+        },
+        "venue": {
+          "f5_total": 3.817,
+          "run_delta_per_team": -0.341,
+          "games": 60
+        },
+        "away_lineup_matchup": {
+          "run_delta": -0.01,
+          "threat_score": 0.3465,
+          "current_bvp_pa": 0,
+          "older_bvp_pa": 15,
+          "sampled_batters": 9
+        },
+        "home_lineup_matchup": {
+          "run_delta": 0.063,
+          "threat_score": 0.3681,
+          "current_bvp_pa": 0,
+          "older_bvp_pa": 37,
+          "sampled_batters": 9
+        }
+      },
+      "notes": "F5 projection Chicago Cubs 1.62, Texas Rangers 2.32 (total 3.94). BvP PA away/home: 0+15/0+37; venue F5 total 3.82 over 60 games."
+    },
+    {
+      "game_id": "823221",
+      "game_start_time": "2026-05-10T20:05:00Z",
+      "game_order": 10,
+      "matchup": "Pittsburgh Pirates @ San Francisco Giants",
+      "home_team": "San Francisco Giants",
+      "away_team": "Pittsburgh Pirates",
+      "venue_id": 2395,
+      "venue_name": "Oracle Park",
+      "home_pitcher": "Tyler Mahle",
+      "away_pitcher": "Bubba Chandler",
+      "projected_first_five": {
+        "away_runs": 2.76,
+        "home_runs": 2.68,
+        "total_runs": 5.44,
+        "home_lead_probability": 0.4844,
+        "away_lead_probability": 0.5156
+      },
+      "top_picks": [
+        {
+          "market": "f5_total",
+          "pick": "Over 4.5 F5",
+          "team": "",
+          "probability": 0.6943,
+          "edge_pct": 17.05,
+          "decision": "BET",
+          "confidence": "High",
+          "assumed_odds": -110,
+          "vegas_line": 4.5,
+          "model_prediction": "5.44 F5 total"
+        },
+        {
+          "market": "f5_side",
+          "pick": "Pittsburgh Pirates F5 ML",
+          "team": "Pittsburgh Pirates",
+          "probability": 0.5156,
+          "edge_pct": -0.82,
+          "decision": "PASS",
+          "confidence": "Low",
+          "assumed_odds": -110,
+          "model_prediction": "Pittsburgh Pirates +0.08 F5 runs"
+        }
+      ],
+      "features": {
+        "away_offense": {
+          "projected_runs": 2.76,
+          "team_current_f5_runs": 2.581,
+          "team_recent_f5_runs": 2.75,
+          "team_prior_f5_runs": 2.189,
+          "team_venue_f5_runs": 2.025,
+          "pitcher_current_f5_allowed": 2.429,
+          "pitcher_recent_f5_allowed": 2.333,
+          "pitcher_current_vs_opponent": 2.592,
+          "pitcher_prior_vs_opponent": 2.592,
+          "pitcher_venue_f5_allowed": 2.0,
+          "lineup_delta": 0.026,
+          "venue_delta": 0.35
+        },
+        "home_offense": {
+          "projected_runs": 2.68,
+          "team_current_f5_runs": 2.302,
+          "team_recent_f5_runs": 1.583,
+          "team_prior_f5_runs": 2.568,
+          "team_venue_f5_runs": 2.833,
+          "pitcher_current_f5_allowed": 2.571,
+          "pitcher_recent_f5_allowed": 2.833,
+          "pitcher_current_vs_opponent": 2.476,
+          "pitcher_prior_vs_opponent": 2.476,
+          "pitcher_venue_f5_allowed": 2.476,
+          "lineup_delta": -0.121,
+          "venue_delta": 0.35
+        },
+        "away_pitcher": {
+          "name": "Bubba Chandler",
+          "stat_expected": 2.476,
+          "current_f5_allowed": 2.571,
+          "recent_f5_allowed": 2.833,
+          "prior_f5_allowed": 2.464,
+          "current_vs_opponent": 2.476,
+          "prior_vs_opponent": 2.476,
+          "venue_f5_allowed": 2.476,
+          "current_starts": 7,
+          "recent_starts": 6,
+          "prior_starts": 4,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 0,
+          "venue_starts": 0
+        },
+        "home_pitcher": {
+          "name": "Tyler Mahle",
+          "stat_expected": 2.592,
+          "current_f5_allowed": 2.429,
+          "recent_f5_allowed": 2.333,
+          "prior_f5_allowed": 1.524,
+          "current_vs_opponent": 2.592,
+          "prior_vs_opponent": 2.592,
+          "venue_f5_allowed": 2.0,
+          "current_starts": 7,
+          "recent_starts": 6,
+          "prior_starts": 24,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 0,
+          "venue_starts": 4
+        },
+        "venue": {
+          "f5_total": 5.233,
+          "run_delta_per_team": 0.35,
+          "games": 60
+        },
+        "away_lineup_matchup": {
+          "run_delta": 0.026,
+          "threat_score": 0.3571,
+          "current_bvp_pa": 0,
+          "older_bvp_pa": 23,
+          "sampled_batters": 9
+        },
+        "home_lineup_matchup": {
+          "run_delta": -0.121,
+          "threat_score": 0.3131,
+          "current_bvp_pa": 0,
+          "older_bvp_pa": 0,
+          "sampled_batters": 9
+        }
+      },
+      "notes": "F5 projection Pittsburgh Pirates 2.76, San Francisco Giants 2.68 (total 5.44). BvP PA away/home: 0+23/0+0; venue F5 total 5.23 over 60 games."
+    },
+    {
+      "game_id": "825085",
+      "game_start_time": "2026-05-10T20:10:00Z",
+      "game_order": 11,
+      "matchup": "New York Mets @ Arizona Diamondbacks",
+      "home_team": "Arizona Diamondbacks",
+      "away_team": "New York Mets",
+      "venue_id": 15,
+      "venue_name": "Chase Field",
+      "home_pitcher": "Eduardo Rodriguez",
+      "away_pitcher": "Huascar Brazob\u00e1n",
+      "projected_first_five": {
+        "away_runs": 2.51,
+        "home_runs": 2.05,
+        "total_runs": 4.56,
+        "home_lead_probability": 0.4112,
+        "away_lead_probability": 0.5888
+      },
+      "top_picks": [
+        {
+          "market": "f5_side",
+          "pick": "New York Mets F5 ML",
+          "team": "New York Mets",
+          "probability": 0.5888,
+          "edge_pct": 6.5,
+          "decision": "BET",
+          "confidence": "Medium",
+          "assumed_odds": -110,
+          "model_prediction": "New York Mets +0.46 F5 runs"
+        },
+        {
+          "market": "f5_total",
+          "pick": "Over 4.5 F5",
+          "team": "",
+          "probability": 0.5129,
+          "edge_pct": -1.09,
+          "decision": "PASS",
+          "confidence": "Low",
+          "assumed_odds": -110,
+          "vegas_line": 4.5,
+          "model_prediction": "4.56 F5 total"
+        }
+      ],
+      "features": {
+        "away_offense": {
+          "projected_runs": 2.51,
+          "team_current_f5_runs": 2.121,
+          "team_recent_f5_runs": 1.875,
+          "team_prior_f5_runs": 2.717,
+          "team_venue_f5_runs": 1.625,
+          "pitcher_current_f5_allowed": 1.571,
+          "pitcher_recent_f5_allowed": 1.833,
+          "pitcher_current_vs_opponent": 1.27,
+          "pitcher_prior_vs_opponent": 4.0,
+          "pitcher_venue_f5_allowed": 2.25,
+          "lineup_delta": 0.059,
+          "venue_delta": 0.35
+        },
+        "home_offense": {
+          "projected_runs": 2.05,
+          "team_current_f5_runs": 2.803,
+          "team_recent_f5_runs": 2.208,
+          "team_prior_f5_runs": 2.984,
+          "team_venue_f5_runs": 3.222,
+          "pitcher_current_f5_allowed": 1.11,
+          "pitcher_recent_f5_allowed": 0.999,
+          "pitcher_current_vs_opponent": 1.332,
+          "pitcher_prior_vs_opponent": 0.799,
+          "pitcher_venue_f5_allowed": 1.332,
+          "lineup_delta": -0.027,
+          "venue_delta": 0.35
+        },
+        "away_pitcher": {
+          "name": "Huascar Brazob\u00e1n",
+          "stat_expected": 1.332,
+          "current_f5_allowed": 1.11,
+          "recent_f5_allowed": 0.999,
+          "prior_f5_allowed": 1.082,
+          "current_vs_opponent": 1.332,
+          "prior_vs_opponent": 0.799,
+          "venue_f5_allowed": 1.332,
+          "current_starts": 1,
+          "recent_starts": 1,
+          "prior_starts": 3,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 1,
+          "venue_starts": 0
+        },
+        "home_pitcher": {
+          "name": "Eduardo Rodriguez",
+          "stat_expected": 1.811,
+          "current_f5_allowed": 1.571,
+          "recent_f5_allowed": 1.833,
+          "prior_f5_allowed": 2.894,
+          "current_vs_opponent": 1.27,
+          "prior_vs_opponent": 4.0,
+          "venue_f5_allowed": 2.25,
+          "current_starts": 7,
+          "recent_starts": 6,
+          "prior_starts": 30,
+          "current_vs_opponent_starts": 1,
+          "prior_vs_opponent_starts": 3,
+          "venue_starts": 8
+        },
+        "venue": {
+          "f5_total": 5.333,
+          "run_delta_per_team": 0.35,
+          "games": 60
+        },
+        "away_lineup_matchup": {
+          "run_delta": 0.059,
+          "threat_score": 0.3671,
+          "current_bvp_pa": 17,
+          "older_bvp_pa": 71,
+          "sampled_batters": 9
+        },
+        "home_lineup_matchup": {
+          "run_delta": -0.027,
+          "threat_score": 0.3412,
+          "current_bvp_pa": 3,
+          "older_bvp_pa": 15,
+          "sampled_batters": 9
+        }
+      },
+      "notes": "F5 projection New York Mets 2.51, Arizona Diamondbacks 2.05 (total 4.56). BvP PA away/home: 17+71/3+15; venue F5 total 5.33 over 60 games."
+    },
+    {
+      "game_id": "823305",
+      "game_start_time": "2026-05-10T20:10:00Z",
+      "game_order": 12,
+      "matchup": "St. Louis Cardinals @ San Diego Padres",
+      "home_team": "San Diego Padres",
+      "away_team": "St. Louis Cardinals",
+      "venue_id": 2680,
+      "venue_name": "Petco Park",
+      "home_pitcher": "Walker Buehler",
+      "away_pitcher": "Kyle Leahy",
+      "projected_first_five": {
+        "away_runs": 2.74,
+        "home_runs": 2.6,
+        "total_runs": 5.34,
+        "home_lead_probability": 0.4728,
+        "away_lead_probability": 0.5272
+      },
+      "top_picks": [
+        {
+          "market": "f5_total",
+          "pick": "Over 4.5 F5",
+          "team": "",
+          "probability": 0.6751,
+          "edge_pct": 15.13,
+          "decision": "BET",
+          "confidence": "High",
+          "assumed_odds": -110,
+          "vegas_line": 4.5,
+          "model_prediction": "5.34 F5 total"
+        },
+        {
+          "market": "f5_side",
+          "pick": "St. Louis Cardinals F5 ML",
+          "team": "St. Louis Cardinals",
+          "probability": 0.5272,
+          "edge_pct": 0.34,
+          "decision": "PASS",
+          "confidence": "Low",
+          "assumed_odds": -110,
+          "model_prediction": "St. Louis Cardinals +0.14 F5 runs"
+        }
+      ],
+      "features": {
+        "away_offense": {
+          "projected_runs": 2.74,
+          "team_current_f5_runs": 2.183,
+          "team_recent_f5_runs": 2.708,
+          "team_prior_f5_runs": 2.296,
+          "team_venue_f5_runs": 2.4,
+          "pitcher_current_f5_allowed": 2.571,
+          "pitcher_recent_f5_allowed": 2.5,
+          "pitcher_current_vs_opponent": 2.675,
+          "pitcher_prior_vs_opponent": 3.605,
+          "pitcher_venue_f5_allowed": 1.25,
+          "lineup_delta": -0.015,
+          "venue_delta": 0.3
+        },
+        "home_offense": {
+          "projected_runs": 2.6,
+          "team_current_f5_runs": 2.371,
+          "team_recent_f5_runs": 2.125,
+          "team_prior_f5_runs": 2.624,
+          "team_venue_f5_runs": 3.278,
+          "pitcher_current_f5_allowed": 1.857,
+          "pitcher_recent_f5_allowed": 1.833,
+          "pitcher_current_vs_opponent": 2.722,
+          "pitcher_prior_vs_opponent": 2.722,
+          "pitcher_venue_f5_allowed": 2.722,
+          "lineup_delta": 0.072,
+          "venue_delta": 0.3
+        },
+        "away_pitcher": {
+          "name": "Kyle Leahy",
+          "stat_expected": 2.722,
+          "current_f5_allowed": 1.857,
+          "recent_f5_allowed": 1.833,
+          "prior_f5_allowed": 2.552,
+          "current_vs_opponent": 2.722,
+          "prior_vs_opponent": 2.722,
+          "venue_f5_allowed": 2.722,
+          "current_starts": 7,
+          "recent_starts": 6,
+          "prior_starts": 1,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 0,
+          "venue_starts": 0
+        },
+        "home_pitcher": {
+          "name": "Walker Buehler",
+          "stat_expected": 2.675,
+          "current_f5_allowed": 2.571,
+          "recent_f5_allowed": 2.5,
+          "prior_f5_allowed": 2.808,
+          "current_vs_opponent": 2.675,
+          "prior_vs_opponent": 3.605,
+          "venue_f5_allowed": 1.25,
+          "current_starts": 7,
+          "recent_starts": 6,
+          "prior_starts": 30,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 1,
+          "venue_starts": 4
+        },
+        "venue": {
+          "f5_total": 5.1,
+          "run_delta_per_team": 0.3,
+          "games": 60
+        },
+        "away_lineup_matchup": {
+          "run_delta": -0.015,
+          "threat_score": 0.3449,
+          "current_bvp_pa": 0,
+          "older_bvp_pa": 8,
+          "sampled_batters": 9
+        },
+        "home_lineup_matchup": {
+          "run_delta": 0.072,
+          "threat_score": 0.371,
+          "current_bvp_pa": 0,
+          "older_bvp_pa": 13,
+          "sampled_batters": 9
+        }
+      },
+      "notes": "F5 projection St. Louis Cardinals 2.74, San Diego Padres 2.6 (total 5.34). BvP PA away/home: 0+8/0+13; venue F5 total 5.10 over 60 games."
+    },
+    {
+      "game_id": "823954",
+      "game_start_time": "2026-05-10T20:10:00Z",
+      "game_order": 13,
+      "matchup": "Atlanta Braves @ Los Angeles Dodgers",
+      "home_team": "Los Angeles Dodgers",
+      "away_team": "Atlanta Braves",
+      "venue_id": 22,
+      "venue_name": "UNIQLO Field at Dodger Stadium",
+      "home_pitcher": "Justin Wrobleski",
+      "away_pitcher": "Bryce Elder",
+      "projected_first_five": {
+        "away_runs": 1.46,
+        "home_runs": 2.08,
+        "total_runs": 3.54,
+        "home_lead_probability": 0.6188,
+        "away_lead_probability": 0.3812
+      },
+      "top_picks": [
+        {
+          "market": "f5_total",
+          "pick": "Under 4.5 F5",
+          "team": "",
+          "probability": 0.6981,
+          "edge_pct": 17.43,
+          "decision": "BET",
+          "confidence": "High",
+          "assumed_odds": -110,
+          "vegas_line": 4.5,
+          "model_prediction": "3.54 F5 total"
+        },
+        {
+          "market": "f5_side",
+          "pick": "Los Angeles Dodgers F5 ML",
+          "team": "Los Angeles Dodgers",
+          "probability": 0.6188,
+          "edge_pct": 9.5,
+          "decision": "BET",
+          "confidence": "High",
+          "assumed_odds": -110,
+          "model_prediction": "Los Angeles Dodgers +0.62 F5 runs"
+        }
+      ],
+      "features": {
+        "away_offense": {
+          "projected_runs": 1.46,
+          "team_current_f5_runs": 3.206,
+          "team_recent_f5_runs": 3.292,
+          "team_prior_f5_runs": 2.328,
+          "team_venue_f5_runs": 2.425,
+          "pitcher_current_f5_allowed": 0.541,
+          "pitcher_recent_f5_allowed": 0.4,
+          "pitcher_current_vs_opponent": 1.244,
+          "pitcher_prior_vs_opponent": 1.244,
+          "pitcher_venue_f5_allowed": 1.5,
+          "lineup_delta": -0.099,
+          "venue_delta": -0.009
+        },
+        "home_offense": {
+          "projected_runs": 2.08,
+          "team_current_f5_runs": 3.574,
+          "team_recent_f5_runs": 2.958,
+          "team_prior_f5_runs": 2.718,
+          "team_venue_f5_runs": 2.667,
+          "pitcher_current_f5_allowed": 1.5,
+          "pitcher_recent_f5_allowed": 1.667,
+          "pitcher_current_vs_opponent": 1.473,
+          "pitcher_prior_vs_opponent": 2.6,
+          "pitcher_venue_f5_allowed": 1.473,
+          "lineup_delta": 0.009,
+          "venue_delta": -0.009
+        },
+        "away_pitcher": {
+          "name": "Bryce Elder",
+          "stat_expected": 1.473,
+          "current_f5_allowed": 1.5,
+          "recent_f5_allowed": 1.667,
+          "prior_f5_allowed": 3.093,
+          "current_vs_opponent": 1.473,
+          "prior_vs_opponent": 2.6,
+          "venue_f5_allowed": 1.473,
+          "current_starts": 8,
+          "recent_starts": 6,
+          "prior_starts": 30,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 5,
+          "venue_starts": 0
+        },
+        "home_pitcher": {
+          "name": "Justin Wrobleski",
+          "stat_expected": 1.244,
+          "current_f5_allowed": 0.541,
+          "recent_f5_allowed": 0.4,
+          "prior_f5_allowed": 2.691,
+          "current_vs_opponent": 1.244,
+          "prior_vs_opponent": 1.244,
+          "venue_f5_allowed": 1.5,
+          "current_starts": 5,
+          "recent_starts": 5,
+          "prior_starts": 8,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 0,
+          "venue_starts": 4
+        },
+        "venue": {
+          "f5_total": 4.483,
+          "run_delta_per_team": -0.009,
+          "games": 60
+        },
+        "away_lineup_matchup": {
+          "run_delta": -0.099,
+          "threat_score": 0.3199,
+          "current_bvp_pa": 0,
+          "older_bvp_pa": 8,
+          "sampled_batters": 9
+        },
+        "home_lineup_matchup": {
+          "run_delta": 0.009,
+          "threat_score": 0.3521,
+          "current_bvp_pa": 0,
+          "older_bvp_pa": 35,
+          "sampled_batters": 9
+        }
+      },
+      "notes": "F5 projection Atlanta Braves 1.46, Los Angeles Dodgers 2.08 (total 3.54). BvP PA away/home: 0+8/0+35; venue F5 total 4.48 over 60 games."
+    },
+    {
+      "game_id": "824113",
+      "game_start_time": "2026-05-10T23:20:00Z",
+      "game_order": 14,
+      "matchup": "Detroit Tigers @ Kansas City Royals",
+      "home_team": "Kansas City Royals",
+      "away_team": "Detroit Tigers",
+      "venue_id": 7,
+      "venue_name": "Kauffman Stadium",
+      "home_pitcher": "Noah Cameron",
+      "away_pitcher": "Brenan Hanifee",
+      "projected_first_five": {
+        "away_runs": 2.5,
+        "home_runs": 1.38,
+        "total_runs": 3.88,
+        "home_lead_probability": 0.2924,
+        "away_lead_probability": 0.7076
+      },
+      "top_picks": [
+        {
+          "market": "f5_side",
+          "pick": "Detroit Tigers F5 ML",
+          "team": "Detroit Tigers",
+          "probability": 0.7076,
+          "edge_pct": 18.38,
+          "decision": "BET",
+          "confidence": "High",
+          "assumed_odds": -110,
+          "model_prediction": "Detroit Tigers +1.12 F5 runs"
+        },
+        {
+          "market": "f5_total",
+          "pick": "Under 4.5 F5",
+          "team": "",
+          "probability": 0.6312,
+          "edge_pct": 10.74,
+          "decision": "BET",
+          "confidence": "High",
+          "assumed_odds": -110,
+          "vegas_line": 4.5,
+          "model_prediction": "3.88 F5 total"
+        }
+      ],
+      "features": {
+        "away_offense": {
+          "projected_runs": 2.5,
+          "team_current_f5_runs": 2.344,
+          "team_recent_f5_runs": 2.167,
+          "team_prior_f5_runs": 2.701,
+          "team_venue_f5_runs": 2.05,
+          "pitcher_current_f5_allowed": 3.0,
+          "pitcher_recent_f5_allowed": 3.0,
+          "pitcher_current_vs_opponent": 2.779,
+          "pitcher_prior_vs_opponent": 2.779,
+          "pitcher_venue_f5_allowed": 1.375,
+          "lineup_delta": 0.032,
+          "venue_delta": -0.075
+        },
+        "home_offense": {
+          "projected_runs": 1.38,
+          "team_current_f5_runs": 2.0,
+          "team_recent_f5_runs": 1.958,
+          "team_prior_f5_runs": 2.396,
+          "team_venue_f5_runs": 2.611,
+          "pitcher_current_f5_allowed": 0.899,
+          "pitcher_recent_f5_allowed": 0.899,
+          "pitcher_current_vs_opponent": 0.899,
+          "pitcher_prior_vs_opponent": 0.899,
+          "pitcher_venue_f5_allowed": 0.899,
+          "lineup_delta": -0.036,
+          "venue_delta": -0.075
+        },
+        "away_pitcher": {
+          "name": "Brenan Hanifee",
+          "stat_expected": 0.899,
+          "current_f5_allowed": 0.899,
+          "recent_f5_allowed": 0.899,
+          "prior_f5_allowed": 0.73,
+          "current_vs_opponent": 0.899,
+          "prior_vs_opponent": 0.899,
+          "venue_f5_allowed": 0.899,
+          "current_starts": 0,
+          "recent_starts": 0,
+          "prior_starts": 3,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 0,
+          "venue_starts": 0
+        },
+        "home_pitcher": {
+          "name": "Noah Cameron",
+          "stat_expected": 2.779,
+          "current_f5_allowed": 3.0,
+          "recent_f5_allowed": 3.0,
+          "prior_f5_allowed": 1.707,
+          "current_vs_opponent": 2.779,
+          "prior_vs_opponent": 2.779,
+          "venue_f5_allowed": 1.375,
+          "current_starts": 6,
+          "recent_starts": 6,
+          "prior_starts": 24,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 0,
+          "venue_starts": 8
+        },
+        "venue": {
+          "f5_total": 4.35,
+          "run_delta_per_team": -0.075,
+          "games": 60
+        },
+        "away_lineup_matchup": {
+          "run_delta": 0.032,
+          "threat_score": 0.3589,
+          "current_bvp_pa": 0,
+          "older_bvp_pa": 0,
+          "sampled_batters": 9
+        },
+        "home_lineup_matchup": {
+          "run_delta": -0.036,
+          "threat_score": 0.3387,
+          "current_bvp_pa": 0,
+          "older_bvp_pa": 33,
+          "sampled_batters": 9
+        }
+      },
+      "notes": "F5 projection Detroit Tigers 2.5, Kansas City Royals 1.38 (total 3.88). BvP PA away/home: 0+0/0+33; venue F5 total 4.35 over 60 games."
+    }
+  ],
+  "method": {
+    "market": "first_five",
+    "weighting": {
+      "current_pitcher_form": "primary",
+      "current_pitcher_vs_opponent": "highest matchup override",
+      "batter_vs_pitcher": "lineup weighted with current-season PA first",
+      "older_years": "shrunken prior-season pitcher/team context",
+      "venue": "park run environment plus team venue experience"
+    },
+    "assumed_price": -110
+  }
+}

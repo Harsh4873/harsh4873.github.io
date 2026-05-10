@@ -149,6 +149,7 @@ def fetch_todays_games(target_date: str | date | None = None) -> list[dict[str, 
             continue
 
         game_data = feed.get("gameData") or {}
+        venue_raw = game_data.get("venue") or schedule_game.get("venue") or {}
         probable_pitchers = game_data.get("probablePitchers") or {}
         home_pitcher_raw = probable_pitchers.get("home") or ((teams.get("home") or {}).get("probablePitcher") or {})
         away_pitcher_raw = probable_pitchers.get("away") or ((teams.get("away") or {}).get("probablePitcher") or {})
@@ -171,11 +172,15 @@ def fetch_todays_games(target_date: str | date | None = None) -> list[dict[str, 
             {
                 "game_id": str(game_id),
                 "game_date": game_date,
+                "game_start_time": str(schedule_game.get("gameDate") or ""),
+                "game_order": len(games),
                 "status": status,
                 "home_team": home_team_name,
                 "away_team": away_team_name,
                 "home_team_id": home_team_id,
                 "away_team_id": away_team_id,
+                "venue_id": safe_int(venue_raw.get("id")),
+                "venue_name": str(venue_raw.get("name") or ""),
                 "home_pitcher": home_pitcher,
                 "away_pitcher": away_pitcher,
                 "home_lineup": home_lineup[:9],

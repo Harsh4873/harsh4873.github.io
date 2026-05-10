@@ -26,7 +26,7 @@ couplings visible before the next cleanup pass.
 | `pickledger.db` | repo root | Looked up as `pickledger.db` or `../pickledger.db` by backend helpers. |
 | `scripts/grader_loop.py` | `scripts/` | Hardcoded by `scripts/com.pickledger.grader.plist`. |
 | `scripts/firebase_writer.py`, `scripts/seed_record.py` | `scripts/` | Load `.env.local` relative to the repo root; `seed_record.py` preserves the admin recovery floor. |
-| `MLBPredictionModel/`, `NBAPredictionModel/`, `WNBAPredictionModel/`, `NBAPlayerBettingModel/`, `NBAPlayoffsPredictionModel/`, `ipl/`, `models/mlb_inning/` | repo root | Imported or launched by exact path/name from the backend and frontend. |
+| `MLBPredictionModel/`, `NBAPredictionModel/`, `WNBAPredictionModel/`, `NBAPlayerBettingModel/`, `NBAPlayoffsPredictionModel/`, `ipl/`, `models/mlb_inning/`, `models/mlb_first_five/` | repo root | Imported or launched by exact path/name from the backend and frontend. |
 | `MLBPredictionModel/Report1.tex`, `NBAPredictionModel/Report1.tex`, related `compile.sh` files | model directories | The compile scripts run LaTeX in place and copy PDFs back inside the same model directory. |
 | `MLBPredictionModel/artifacts/*_new.joblib` | `MLBPredictionModel/artifacts/` | The backend exposes old and new MLB variants separately even when some artifacts are byte-identical. |
 
@@ -38,7 +38,7 @@ change requires a different shape, dual-read and dual-write first, then migrate.
 | Path | Shape | Readers | Writers |
 | --- | --- | --- | --- |
 | `/picks/latest` | Latest shared picks payload with JSON-encoded `picks`, `date`, `model`, `timestamp`, `games_evaluated`, and optional `notes`. | `index.html` model-results banner and local smoke tests. | `scripts/firebase_writer.py` via Admin SDK. |
-| `/admin_picks/{date}` | Per-date model cache fields such as `nba`, `nba_new`, `nba_old`, `nba_playoffs`, `wnba`, `mlb`, `mlb_old`, `mlb_new`, `mlb_inning`, `props`, `ipl`, and matching `*_ts` timestamps. | `index.html` model cards and daily results views. | `pickgrader_server.py` model runner helpers via Admin SDK. |
+| `/admin_picks/{date}` | Per-date model cache fields such as `nba`, `nba_new`, `nba_old`, `nba_playoffs`, `wnba`, `mlb`, `mlb_old`, `mlb_new`, `mlb_inning`, `mlb_first_five`, `props`, `ipl`, and matching `*_ts` timestamps. | `index.html` model cards and daily results views. | `pickgrader_server.py` model runner helpers via Admin SDK. |
 | `/users/{uid}` | Owner-only user document. Key fields include `record: {wins, losses, pushes}`, `ledger`, `picks`, `results`, `startTimes`, `savedAt`, `lastSynced`, and `lastGraded`. | `index.html`, background grader, smoke tests. | Authenticated client for the owner, plus Admin SDK grading writes. |
 | `/users/{uid}/record/summary` | Legacy record summary retained for migration/backward compatibility. | `index.html` fallback loader, `scripts/seed_record.py`. | `scripts/seed_record.py` recovery path. |
 

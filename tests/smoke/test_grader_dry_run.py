@@ -147,3 +147,55 @@ def test_grade_pick_moneyline_result_without_network():
     }
 
     assert pickgrader_server.grade_pick(pick, game) == "win"
+
+
+def test_grade_mlb_first_five_markets_without_network():
+    import pickgrader_server
+
+    game = {
+        "competitors": [
+            {
+                "raw": {
+                    "team": {
+                        "displayName": "Boston Red Sox",
+                        "shortDisplayName": "Red Sox",
+                        "name": "Red Sox",
+                        "abbreviation": "BOS",
+                    }
+                },
+                "score": 4,
+                "homeAway": "home",
+                "linescores": [
+                    {"value": 1}, {"value": 0}, {"value": 1}, {"value": 0}, {"value": 0},
+                    {"value": 2}, {"value": 0}, {"value": 0}, {"value": 0},
+                ],
+            },
+            {
+                "raw": {
+                    "team": {
+                        "displayName": "Tampa Bay Rays",
+                        "shortDisplayName": "Rays",
+                        "name": "Rays",
+                        "abbreviation": "TB",
+                    }
+                },
+                "score": 3,
+                "homeAway": "away",
+                "linescores": [
+                    {"value": 0}, {"value": 0}, {"value": 0}, {"value": 1}, {"value": 0},
+                    {"value": 0}, {"value": 1}, {"value": 1}, {"value": 0},
+                ],
+            },
+        ],
+        "startTime": "2026-05-10T17:35:00Z",
+        "eventId": "mlb-f5-smoke",
+    }
+
+    assert pickgrader_server.grade_pick(
+        {"sport": "MLB", "pick": "Boston Red Sox F5 ML", "team": "Boston Red Sox", "market": "f5_side"},
+        game,
+    ) == "win"
+    assert pickgrader_server.grade_pick(
+        {"sport": "MLB", "pick": "Under 4.5 F5", "market": "f5_total"},
+        game,
+    ) == "win"
