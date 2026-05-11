@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import pandas as pd
+import sqlite3
 
 
 def test_ipl_no_market_priority_units_and_lean_tier():
@@ -83,6 +84,72 @@ def test_ipl_fantasy_xi_enforces_dream11_role_and_team_caps():
         assert limits[0] <= summary["role_counts"][role] <= limits[1]
 
 
+def test_ipl_fantasy_xi_dedupes_player_aliases_before_selection():
+    from ipl.models.fantasy_selector import _select_valid_fantasy_xi
+
+    rows = [
+        {
+            "player_name": "K L Rahul",
+            "team": "Team A",
+            "role": "Wicket-Keeper",
+            "adjusted_score": 120,
+            "fantasy_probability_pct": 100,
+        },
+        {
+            "player_name": "KL Rahul",
+            "team": "Team A",
+            "role": "Wicket-Keeper",
+            "adjusted_score": 118,
+            "fantasy_probability_pct": 98,
+        },
+    ]
+    for idx in range(3):
+        rows.append(
+            {
+                "player_name": f"Batter {idx}",
+                "team": "Team B" if idx < 2 else "Team A",
+                "role": "Batsman",
+                "adjusted_score": 90 - idx,
+                "fantasy_probability_pct": 90 - idx,
+            }
+        )
+    for idx in range(2):
+        rows.append(
+            {
+                "player_name": f"AllRounder {idx}",
+                "team": "Team B",
+                "role": "All-Rounder",
+                "adjusted_score": 80 - idx,
+                "fantasy_probability_pct": 80 - idx,
+            }
+        )
+    for idx in range(5):
+        rows.append(
+            {
+                "player_name": f"Bowler {idx}",
+                "team": "Team B" if idx < 3 else "Team A",
+                "role": "Bowler",
+                "adjusted_score": 70 - idx,
+                "fantasy_probability_pct": 70 - idx,
+            }
+        )
+    rows.append(
+        {
+            "player_name": "Reserve Keeper",
+            "team": "Team B",
+            "role": "Wicket-Keeper",
+            "adjusted_score": 55,
+            "fantasy_probability_pct": 55,
+        }
+    )
+
+    selected = _select_valid_fantasy_xi(pd.DataFrame(rows), max_per_team=7)
+    selected_names = set(selected["player_name"])
+
+    assert len(selected) == 11
+    assert not {"K L Rahul", "KL Rahul"}.issubset(selected_names)
+
+
 def test_ipl_matchup_and_bowling_opportunity_factors_move_scores():
     from ipl.models.fantasy_selector import _add_matchup_and_opportunity_factors
 
@@ -137,6 +204,54 @@ def test_ipl_matchup_and_bowling_opportunity_factors_move_scores():
     assert by_name.loc["Full Quota Bowler", "matchup_factor"] > 1.0
     assert by_name.loc["Full Quota Bowler", "bowling_opportunity_factor"] > 1.0
     assert by_name.loc["Unused Bowler", "bowling_opportunity_factor"] < 1.0
+
+
+def test_ipl_matchup_aggregates_after_team_alias_canonicalization(tmp_path):
+    from ipl.models.fantasy_selector import _load_matchup_aggregates
+
+    db_path = tmp_path / "ipl_aliases.db"
+    with sqlite3.connect(db_path) as con:
+        con.execute(
+            """
+            CREATE TABLE ipl_deliveries (
+                match_id TEXT,
+                innings INTEGER,
+                over INTEGER,
+                ball INTEGER,
+                batting_team TEXT,
+                bowling_team TEXT,
+                striker TEXT,
+                non_striker TEXT,
+                bowler TEXT,
+                runs_off_bat INTEGER,
+                extras INTEGER,
+                wides INTEGER,
+                noballs INTEGER,
+                byes INTEGER,
+                legbyes INTEGER,
+                penalty INTEGER,
+                wicket_type TEXT,
+                player_dismissed TEXT,
+                other_wicket_type TEXT,
+                other_player_dismissed TEXT
+            )
+            """
+        )
+        rows = [
+            ("m1", 1, 0, 1, "Delhi Capitals", "Kings XI Punjab", "KL Rahul", "", "Bowler A", 4, 0, 0, 0, 0, 0, 0, "", None, "", None),
+            ("m2", 1, 0, 1, "Delhi Capitals", "Punjab Kings", "KL Rahul", "", "Bowler B", 6, 0, 0, 0, 0, 0, 0, "", None, "", None),
+        ]
+        con.executemany(
+            "INSERT INTO ipl_deliveries VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            rows,
+        )
+        matchup = _load_matchup_aggregates(con, ["KL Rahul"])
+
+    rahul = matchup.loc[matchup["history_player_name"] == "KL Rahul"]
+    assert len(rahul) == 1
+    assert rahul.iloc[0]["opponent_team"] == "Punjab Kings"
+    assert rahul.iloc[0]["h2h_batting_balls"] == 2
+    assert rahul.iloc[0]["h2h_batting_runs"] == 10
 
 
 def test_ipl_api_payload_surfaces_market_units_and_constraints(monkeypatch, tmp_path):

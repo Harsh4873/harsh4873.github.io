@@ -171,6 +171,13 @@ def _player_key(name: str) -> str:
     return " ".join(_player_tokens(name))
 
 
+def _player_identity_key(name: str) -> str:
+    tokens = _player_tokens(name)
+    if len(tokens) >= 3 and all(len(token) == 1 for token in tokens[:-1]):
+        return f"{''.join(tokens[:-1])} {tokens[-1]}"
+    return " ".join(tokens)
+
+
 def _player_prefix(name: str) -> str:
     tokens = _player_tokens(name)
     if not tokens:
@@ -551,6 +558,19 @@ def _load_matchup_aggregates(
         if not frame.empty:
             frame["history_player_name"] = frame["history_player_name"].map(_normalize_text)
             frame["opponent_team"] = frame["opponent_team"].map(_canonical_team)
+            numeric_columns = [
+                column
+                for column in frame.columns
+                if column not in {"history_player_name", "opponent_team"}
+            ]
+            frame[numeric_columns] = frame[numeric_columns].apply(pd.to_numeric, errors="coerce").fillna(0.0)
+            frame = frame.groupby(["history_player_name", "opponent_team"], as_index=False)[
+                numeric_columns
+            ].sum()
+            if "h2h_batting_balls" in frame.columns:
+                batting = frame
+            else:
+                bowling = frame
 
     if batting.empty and bowling.empty:
         return pd.DataFrame(columns=columns)
@@ -751,6 +771,12 @@ def _select_valid_fantasy_xi(
     max_per_team: int = 7,
 ) -> pd.DataFrame:
     frame = ranked.copy().reset_index(drop=True)
+    frame["_player_identity_key"] = frame["player_name"].map(_player_identity_key)
+    frame = frame.sort_values(
+        ["adjusted_score", "fantasy_probability_pct", "player_name"],
+        ascending=[False, False, True],
+        kind="mergesort",
+    ).drop_duplicates(subset=["_player_identity_key"], keep="first").reset_index(drop=True)
     if len(frame) < 11:
         raise ValueError(f"Expected at least 11 candidate players, found {len(frame)}")
 
@@ -815,7 +841,7 @@ def _select_valid_fantasy_xi(
         selected = frame.head(11).copy()
     else:
         selected = frame.loc[list(best[1])].copy()
-    return selected.drop(columns=["_role_key"], errors="ignore").sort_values(
+    return selected.drop(columns=["_role_key", "_player_identity_key"], errors="ignore").sort_values(
         ["adjusted_score", "fantasy_probability_pct", "player_name"],
         ascending=[False, False, True],
         kind="mergesort",
@@ -960,6 +986,8 @@ def get_match_player_pool(
     pool = pool.dropna(subset=["player_name", "team"]).drop_duplicates(
         subset=["player_name"], keep="first"
     )
+    pool["_player_identity_key"] = pool["player_name"].map(_player_identity_key)
+    pool = pool.drop_duplicates(subset=["team", "_player_identity_key"], keep="first")
 
     counts = pool.groupby("team")["player_name"].nunique().to_dict()
     if counts.get(team1_name, 0) == 0:

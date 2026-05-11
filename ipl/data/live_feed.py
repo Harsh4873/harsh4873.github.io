@@ -821,7 +821,7 @@ def _dedupe_live_players(entries: Any) -> list[dict[str, Any]]:
         player_name = _normalize_text(entry.get("player_name"))
         if not player_name:
             continue
-        key = player_name.lower()
+        key = _player_identity_key(player_name)
         if key not in deduped:
             deduped[key] = {
                 "player_name": player_name,
@@ -873,7 +873,18 @@ def _match_existing_player(
     for row in candidates:
         if _token_prefix_match(row["player_name"], live_text):
             return row
+    live_identity = _player_identity_key(live_text)
+    for row in candidates:
+        if _player_identity_key(row["player_name"]) == live_identity:
+            return row
     return None
+
+
+def _player_identity_key(name: str) -> str:
+    tokens = re.findall(r"[a-z0-9]+", str(name or "").lower())
+    if len(tokens) >= 3 and all(len(token) == 1 for token in tokens[:-1]):
+        return f"{''.join(tokens[:-1])} {tokens[-1]}"
+    return " ".join(tokens)
 
 
 def _token_prefix_match(left: str, right: str) -> bool:
