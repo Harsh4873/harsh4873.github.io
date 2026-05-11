@@ -2029,166 +2029,484 @@
   .search-highlight { background: rgba(0,229,160,0.2); color: var(--accent); border-radius: 2px; padding: 0 2px; }
   body[data-theme="light"] .search-highlight { background: rgba(0,168,112,0.15); }
 
-  /* Models Tab */
-  .models-workbench { --wheel-size: min(76vw, 760px); }
-  .model-command-bar { display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; margin-bottom: 20px; flex-wrap: wrap; }
-  .model-command-copy { max-width: 620px; }
-  .model-command-eyebrow { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--accent3); letter-spacing: 1.4px; text-transform: uppercase; margin-bottom: 8px; }
-  .model-command-title { font-family: 'Bebas Neue', sans-serif; font-size: 42px; letter-spacing: 1.4px; line-height: 0.96; color: var(--text); }
-  .model-command-subtitle { margin-top: 10px; color: var(--muted); font-size: 13px; line-height: 1.65; max-width: 560px; }
-  .model-compare-strip { display: flex; gap: 12px; flex-wrap: wrap; min-height: 26px; margin-bottom: 8px; }
-  .model-compare-strip .model-status { margin: 0; min-height: 0; }
-  .model-wheel-stage {
-    position: relative;
-    min-height: 700px;
+  /* Models Tab — Prediction Console */
+  .models-console { display: grid; gap: 22px; }
+  .models-headline {
     display: grid;
-    place-items: center;
-    margin: 4px auto 26px;
-    isolation: isolate;
+    grid-template-columns: 1fr auto;
+    gap: 18px;
+    align-items: end;
   }
-  .model-wheel-ring {
-    position: absolute;
-    width: var(--wheel-size);
-    height: var(--wheel-size);
-    max-width: 760px;
-    max-height: 760px;
-    border-radius: 50%;
-    border: 1px solid rgba(77,166,255,0.18);
-    background:
-      conic-gradient(from 120deg, rgba(0,229,160,0.20), rgba(77,166,255,0.14), rgba(255,215,0,0.10), rgba(255,69,96,0.10), rgba(0,229,160,0.20));
-    opacity: 0.72;
-    z-index: 0;
+  .models-headline-copy { max-width: 620px; }
+  .models-headline-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--accent3);
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
   }
-  .model-wheel-ring::before,
-  .model-wheel-ring::after {
+  .models-headline-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    letter-spacing: 1.4px;
+    line-height: 0.96;
+    color: var(--text);
+  }
+  .models-headline-subtitle {
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.65;
+    max-width: 560px;
+  }
+  .models-headline-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .models-headline-actions .model-chooser-dropdown {
+    left: auto;
+    right: 0;
+  }
+
+  .models-pulse-strip {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: linear-gradient(180deg, rgba(77,166,255,0.07), rgba(0,229,160,0.03));
+    overflow: hidden;
+  }
+  .models-pulse-strip::before {
     content: '';
     position: absolute;
-    inset: 12%;
-    border-radius: 50%;
-    border: 1px solid rgba(255,255,255,0.06);
-  }
-  .model-wheel-ring::after {
-    inset: 28%;
-    border-style: dashed;
-    border-color: rgba(0,229,160,0.14);
-  }
-  .models-grid {
-    position: absolute;
     inset: 0;
-    display: block;
-    max-width: 920px;
-    width: min(100%, 920px);
-    margin: 0 auto;
+    background:
+      radial-gradient(circle at 8% 20%, rgba(0,229,160,0.12), transparent 42%),
+      radial-gradient(circle at 92% 80%, rgba(77,166,255,0.12), transparent 42%);
     pointer-events: none;
-    z-index: 2;
   }
-  .model-card {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 154px;
-    min-height: 112px;
-    padding: 13px 12px 12px;
-    background: rgba(19,25,32,0.90);
-    border: 1px solid rgba(255,255,255,0.09);
-    border-radius: 8px;
+  .pulse-stat {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px 18px;
+    border-right: 1px solid rgba(255,255,255,0.06);
+  }
+  .pulse-stat:last-child { border-right: none; }
+  .pulse-stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .pulse-stat-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 30px;
+    line-height: 1;
+    color: var(--text);
+    letter-spacing: 0.5px;
+  }
+  .pulse-stat-value.is-warn { color: var(--accent3); }
+  .pulse-stat-value.is-bad { color: var(--danger); }
+  .pulse-stat-value.is-good { color: var(--accent); }
+  .pulse-stat-value-small {
+    font-size: 18px;
+    line-height: 1.15;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+  .pulse-stat-detail {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .pulse-stat-suggest .pulse-stat-value {
+    color: var(--accent);
     cursor: pointer;
-    transform: translate(-50%, -50%) translate(var(--model-x, 0px), var(--model-y, 0px));
-    transition: border-color 0.2s, box-shadow 0.2s, transform 0.25s, background-color 0.2s, opacity 0.2s;
-    pointer-events: auto;
+    text-decoration: underline dashed rgba(0,229,160,0.35);
+    text-underline-offset: 4px;
+  }
+  .pulse-stat-suggest .pulse-stat-value:focus-visible {
+    outline: 2px solid var(--accent3);
+    outline-offset: 2px;
+  }
+  .pulse-stat-suggest.is-idle .pulse-stat-value {
+    color: var(--muted);
+    cursor: default;
+    text-decoration: none;
+  }
+
+  .model-compare-strip {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    min-height: 18px;
+  }
+  .model-compare-strip .model-status { margin: 0; min-height: 0; }
+  .model-compare-strip:empty { display: none; }
+
+  .models-workbench-grid {
+    display: grid;
+    grid-template-columns: minmax(280px, 340px) 1fr;
+    gap: 22px;
+    align-items: stretch;
+  }
+  .models-rail {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 18px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--card);
+    align-self: start;
+    position: sticky;
+    top: 16px;
+    max-height: calc(100vh - 32px);
+    overflow-y: auto;
+  }
+  .models-rail::-webkit-scrollbar { width: 6px; }
+  .models-rail::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 3px; }
+  .models-rail #model-wheel-orbit {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .models-rail-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .models-rail-group + .models-rail-group {
+    padding-top: 14px;
+    border-top: 1px dashed rgba(255,255,255,0.06);
+  }
+  .models-rail-group.is-empty { display: none; }
+  .models-rail-group-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .models-rail-group-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+  }
+  .models-rail-group-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--accent3);
+    letter-spacing: 0.6px;
+  }
+  .models-rail-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  /* Model card = rail row */
+  .model-card {
+    position: relative;
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    grid-template-rows: auto auto;
+    column-gap: 11px;
+    row-gap: 1px;
+    align-items: center;
+    padding: 10px 30px 10px 14px;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 11px;
+    cursor: pointer;
+    transition: border-color 0.18s, background-color 0.18s;
     user-select: none;
   }
-  .model-card:hover,
-  .model-card.is-active {
-    border-color: rgba(0,229,160,0.72);
-    background: rgba(16,31,38,0.96);
-    box-shadow: 0 16px 42px rgba(0,0,0,0.24), 0 0 0 1px rgba(0,229,160,0.12);
-  }
-  .model-card.is-active {
-    transform: translate(-50%, -50%) translate(var(--model-x, 0px), var(--model-y, 0px)) scale(1.06);
-  }
-  .model-card:focus-visible { outline: 2px solid var(--accent3); outline-offset: 4px; }
   .model-card::before {
     content: '';
     position: absolute;
-    top: 9px;
-    right: 9px;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: var(--muted);
-    box-shadow: 0 0 0 3px rgba(90,112,133,0.14);
+    background: rgba(255,255,255,0.18);
+    box-shadow: 0 0 0 3px rgba(255,255,255,0.04);
+    transition: background 0.18s, box-shadow 0.18s, transform 0.18s;
   }
-  .model-card.is-active::before,
-  .model-card.has-status-ok::before { background: var(--accent); box-shadow: 0 0 0 3px rgba(0,229,160,0.14); }
-  .model-card.has-status-running::before { background: var(--accent3); box-shadow: 0 0 0 3px rgba(77,166,255,0.16); }
-  .model-card.has-status-error::before { background: var(--danger); box-shadow: 0 0 0 3px rgba(255,69,96,0.14); }
-  .model-card-icon { font-size: 23px; line-height: 1; margin-bottom: 8px; }
-  .models-grid .model-card .model-card-title { font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0; color: var(--text); margin: 0 14px 4px 0; line-height: 1.2; }
-  .models-grid .model-card .model-card-desc { font-size: 10px; color: var(--muted); line-height: 1.45; margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  .model-card-kicker { display: block; margin-bottom: 6px; font-family: 'DM Mono', monospace; font-size: 9px; color: var(--accent3); letter-spacing: 0.7px; text-transform: uppercase; }
+  .model-card::after {
+    content: '';
+    position: absolute;
+    left: -1px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 22px;
+    border-radius: 0 3px 3px 0;
+    background: transparent;
+    transition: background 0.18s;
+  }
+  .model-card:hover {
+    border-color: rgba(255,255,255,0.14);
+    background: rgba(255,255,255,0.025);
+  }
+  .model-card.is-active {
+    border-color: rgba(0,229,160,0.40);
+    background: rgba(0,229,160,0.07);
+  }
+  .model-card.is-active::after { background: var(--accent); }
+  .model-card:focus-visible {
+    outline: 2px solid var(--accent3);
+    outline-offset: 2px;
+  }
+  .model-card.has-status-ok::before { background: var(--accent); box-shadow: 0 0 0 3px rgba(0,229,160,0.20); }
+  .model-card.has-status-running::before {
+    background: var(--accent3);
+    box-shadow: 0 0 0 3px rgba(77,166,255,0.20);
+    animation: modelDotPulse 1.3s ease-in-out infinite;
+  }
+  .model-card.has-status-error::before { background: var(--danger); box-shadow: 0 0 0 3px rgba(255,69,96,0.22); }
+  @keyframes modelDotPulse {
+    0%, 100% { transform: translateY(-50%) scale(1); opacity: 1; }
+    50% { transform: translateY(-50%) scale(1.35); opacity: 0.6; }
+  }
+  .model-card-icon {
+    grid-row: 1 / span 2;
+    grid-column: 1;
+    font-size: 18px;
+    line-height: 1;
+    text-align: center;
+    align-self: center;
+    margin: 0;
+  }
+  .model-card-kicker { display: none; }
+  .models-rail .model-card .model-card-title {
+    grid-row: 1;
+    grid-column: 2;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .models-rail .model-card .model-card-desc {
+    grid-row: 2;
+    grid-column: 2;
+    font-size: 10px;
+    color: var(--muted);
+    margin: 0;
+    line-height: 1.35;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   .model-card-actions { display: none; }
-  .model-card .model-status { display: none; }
-  .model-focus-panel {
+  .model-card > .model-status { display: none; }
+  .model-card .model-timestamp-badge { display: none !important; }
+
+  /* The focused stage on the right */
+  .model-stage {
     position: relative;
-    z-index: 3;
-    width: min(420px, calc(100vw - 44px));
-    min-height: 408px;
-    padding: 26px;
-    border: 1px solid rgba(255,255,255,0.10);
-    border-radius: 8px;
-    background: linear-gradient(180deg, rgba(19,25,32,0.97), rgba(10,14,19,0.98));
-    box-shadow: 0 28px 70px rgba(0,0,0,0.32);
+    padding: 28px 30px 26px;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background:
+      radial-gradient(circle at 95% -15%, rgba(0,229,160,0.10), transparent 55%),
+      radial-gradient(circle at -10% 115%, rgba(77,166,255,0.10), transparent 55%),
+      var(--card);
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    text-align: center;
+    gap: 18px;
+    min-height: 460px;
+    overflow: hidden;
   }
-  .model-focus-topline { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .model-stage > * { position: relative; z-index: 1; }
+  .model-stage-meta-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .model-stage-pill,
   .model-focus-pill {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     min-height: 24px;
-    padding: 5px 9px;
+    padding: 5px 10px;
     border-radius: 999px;
     border: 1px solid rgba(255,255,255,0.10);
+    background: rgba(255,255,255,0.025);
     color: var(--muted);
     font-family: 'DM Mono', monospace;
     font-size: 10px;
-    letter-spacing: 0.7px;
+    letter-spacing: 0.8px;
     text-transform: uppercase;
   }
-  .model-focus-icon { font-size: 46px; line-height: 1; margin-bottom: 12px; }
-  .model-focus-title { font-family: 'Bebas Neue', sans-serif; font-size: 42px; line-height: 0.95; letter-spacing: 1px; color: var(--text); }
-  .model-focus-desc { margin: 14px auto 0; max-width: 330px; color: var(--muted); font-size: 13px; line-height: 1.65; }
+  .model-stage-pill-soft {
+    border-color: rgba(255,255,255,0.06);
+    color: var(--muted);
+  }
+  .model-stage-pill-freshness {
+    border-color: rgba(0,229,160,0.30);
+    color: var(--accent);
+    background: rgba(0,229,160,0.08);
+  }
+  .model-stage-pill-freshness.is-stale {
+    border-color: rgba(255,69,96,0.32);
+    color: var(--danger);
+    background: rgba(255,69,96,0.08);
+  }
+  .model-stage-pill-freshness.is-warn {
+    border-color: rgba(255,215,0,0.34);
+    color: #ffd866;
+    background: rgba(255,215,0,0.07);
+  }
+  .model-stage-pill-freshness.is-running {
+    border-color: rgba(77,166,255,0.32);
+    color: var(--accent3);
+    background: rgba(77,166,255,0.08);
+  }
+  .model-stage-headline {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 18px;
+    align-items: center;
+  }
+  .model-stage-icon {
+    width: 78px;
+    height: 78px;
+    display: grid;
+    place-items: center;
+    font-size: 40px;
+    line-height: 1;
+    border-radius: 18px;
+    border: 1px solid rgba(0,229,160,0.30);
+    background: rgba(0,229,160,0.06);
+  }
+  .model-stage-headline-text { min-width: 0; }
+  .model-stage-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 46px;
+    line-height: 0.95;
+    letter-spacing: 1px;
+    color: var(--text);
+    margin: 0;
+  }
+  .model-stage-desc {
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .model-stage-insight,
   .model-focus-insight {
-    margin: 18px auto 0;
-    padding: 12px 13px;
+    padding: 14px 16px;
     border-left: 2px solid var(--accent3);
     background: rgba(77,166,255,0.07);
     color: var(--text);
-    text-align: left;
-    font-size: 12px;
-    line-height: 1.55;
+    font-size: 13px;
+    line-height: 1.6;
+    border-radius: 0 10px 10px 0;
+    margin: 0;
   }
-  .model-focus-controls { margin-top: 22px; display: flex; flex-direction: column; gap: 10px; }
+  .model-stage-timestamp,
+  .model-focus-timestamp { min-height: 0; }
+  .model-stage-timestamp:empty,
+  .model-focus-timestamp:empty { display: none; }
+  .model-stage-extra,
   .model-focus-extra { display: none; gap: 8px; }
-  .model-focus-extra.active { display: grid; grid-template-columns: 1fr auto; align-items: center; }
-  .model-focus-status { margin-top: 12px; min-height: 18px; text-align: center; }
-  .model-focus-timestamp { min-height: 20px; margin-top: 10px; }
-  .model-timestamp-badge {
+  .model-stage-extra.active,
+  .model-focus-extra.active {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    align-items: center;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .model-stage-extra.active .model-league-select,
+  .model-focus-extra.active .model-league-select { margin: 0; }
+  .model-stage-run {
+    margin-top: 6px;
+    padding: 16px;
+    font-size: 17px;
+    letter-spacing: 1.4px;
+  }
+  .model-stage-status {
+    min-height: 18px;
+    margin-top: 0;
+    text-align: left;
+  }
+  .model-stage-shortcut {
+    margin-top: auto;
+    padding-top: 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    border-top: 1px dashed rgba(255,255,255,0.06);
+  }
+  .model-stage-shortcut kbd {
     display: inline-block;
+    padding: 1px 6px;
+    margin-right: 4px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text);
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 4px;
+  }
+  .model-stage-timestamp .model-timestamp-badge,
+  .model-focus-timestamp .model-timestamp-badge {
+    display: inline-block !important;
     font-size: 0.72rem;
     color: #a0aec0;
     background: rgba(255,255,255,0.06);
     border: 1px solid rgba(255,255,255,0.1);
     border-radius: 999px;
     padding: 2px 10px;
-    margin-bottom: 8px;
     letter-spacing: 0.02em;
   }
-  .model-run-btn { width: 100%; padding: 12px; background: transparent; border: 1px solid var(--accent); border-radius: 8px; color: var(--accent); font-family: 'Bebas Neue', sans-serif; font-size: 15px; letter-spacing: 1.2px; cursor: pointer; transition: all 0.2s; }
+
+  .model-run-btn {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    color: var(--accent);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 15px;
+    letter-spacing: 1.2px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
   .model-run-btn:hover { background: var(--accent); color: var(--bg); }
   .model-run-btn:disabled { opacity: 0.4; cursor: not-allowed; }
   .model-run-btn:disabled:hover { background: transparent; color: var(--accent); }
@@ -2208,7 +2526,6 @@
   .cannon-sp { color: var(--muted); font-size: 11px; max-width: 110px; overflow: hidden; text-overflow: ellipsis; }
   .cannon-ev-pos { color: var(--win); font-weight: 600; }
   .cannon-ev-neg { color: var(--danger); font-weight: 600; }
-  .model-status.ok { color: var(--accent); }
   .model-sport-select { display: flex; gap: 14px; margin-bottom: 12px; font-size: 12px; color: var(--muted); font-family: 'DM Mono', monospace; }
   .model-sport-select label { display: flex; align-items: center; gap: 4px; cursor: pointer; }
   .model-sport-select input[type="checkbox"] { accent-color: var(--accent); }
@@ -2220,98 +2537,168 @@
   .model-controls-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
   .model-league-select { width: 100%; margin: 10px 0 8px; padding: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-family: 'DM Mono', monospace; font-size: 11px; }
   .model-date-input { min-width: 160px; padding: 10px 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: 'DM Mono', monospace; font-size: 11px; }
-  .model-inline-btn { width: auto; padding: 10px 14px; font-size: 13px; letter-spacing: 1px; }
+  .model-inline-btn { width: auto; padding: 9px 14px; font-size: 12px; letter-spacing: 1px; }
   .model-result-bet { color: var(--accent); font-weight: 500; }
   .model-result-pass { color: var(--muted); }
   .model-result-group-row td { padding: 12px 14px 8px; border-bottom: 1px solid var(--border); font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 1px; color: var(--accent3); background: rgba(77,166,255,0.06); }
   body[data-theme="light"] .model-result-group-row td { background: rgba(37,99,235,0.05); }
 
-  body[data-theme="light"] .model-command-title,
-  body[data-theme="light"] .model-focus-title {
+  /* Light theme overrides for the console */
+  body[data-theme="light"] .models-headline-title,
+  body[data-theme="light"] .model-stage-title {
     font-family: 'Fraunces', serif;
     font-weight: 700;
     letter-spacing: -0.5px;
   }
-  body[data-theme="light"] .model-command-title { font-size: 42px; }
-  body[data-theme="light"] .model-wheel-ring {
-    border-color: rgba(37,99,235,0.14);
+  body[data-theme="light"] .models-pulse-strip {
+    background: linear-gradient(180deg, rgba(37,99,235,0.05), rgba(11,157,116,0.025));
+    border-color: var(--border);
+  }
+  body[data-theme="light"] .models-pulse-strip::before {
     background:
-      conic-gradient(from 120deg, rgba(11,157,116,0.16), rgba(37,99,235,0.13), rgba(171,132,0,0.10), rgba(217,59,89,0.08), rgba(11,157,116,0.16));
+      radial-gradient(circle at 8% 20%, rgba(11,157,116,0.10), transparent 42%),
+      radial-gradient(circle at 92% 80%, rgba(37,99,235,0.10), transparent 42%);
   }
-  body[data-theme="light"] .models-grid .model-card {
-    background: rgba(255,255,255,0.94);
+  body[data-theme="light"] .pulse-stat { border-right-color: rgba(15,25,35,0.08); }
+  body[data-theme="light"] .pulse-stat-value.is-good { color: #0b9d74; }
+  body[data-theme="light"] .pulse-stat-suggest .pulse-stat-value { color: #0b9d74; text-decoration-color: rgba(11,157,116,0.42); }
+  body[data-theme="light"] .pulse-stat-suggest.is-idle .pulse-stat-value { color: var(--muted); }
+  body[data-theme="light"] .models-rail {
+    background: var(--card);
+    border-color: var(--border);
+  }
+  body[data-theme="light"] .models-rail-group + .models-rail-group {
+    border-top-color: rgba(15,25,35,0.08);
+  }
+  body[data-theme="light"] .models-rail .model-card {
+    background: transparent;
     border-color: rgba(15,25,35,0.10);
-    border-radius: 8px;
+    border-radius: 12px;
+    box-shadow: none;
   }
-  body[data-theme="light"] .models-grid .model-card:hover,
-  body[data-theme="light"] .models-grid .model-card.is-active {
-    background: #fff;
+  body[data-theme="light"] .models-rail .model-card:hover {
+    background: rgba(0,0,0,0.025);
+    border-color: rgba(15,25,35,0.18);
+    box-shadow: none;
+  }
+  body[data-theme="light"] .models-rail .model-card.is-active {
+    background: rgba(11,157,116,0.08);
     border-color: rgba(11,157,116,0.42);
-    box-shadow: 0 14px 38px rgba(15,25,40,0.12), 0 0 0 1px rgba(11,157,116,0.08);
+    box-shadow: none;
   }
-  body[data-theme="light"] .model-focus-panel {
-    background: rgba(255,255,255,0.97);
+  body[data-theme="light"] .model-card::before {
+    background: rgba(15,25,35,0.16);
+    box-shadow: 0 0 0 3px rgba(15,25,35,0.03);
+  }
+  body[data-theme="light"] .models-rail .model-card .model-card-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+    font-size: 16px;
+    margin: 0;
+  }
+  body[data-theme="light"] .models-rail .model-card .model-card-desc {
+    font-size: 11px;
+    line-height: 1.45;
+  }
+  body[data-theme="light"] .model-stage {
+    background:
+      radial-gradient(circle at 95% -15%, rgba(11,157,116,0.10), transparent 55%),
+      radial-gradient(circle at -10% 115%, rgba(37,99,235,0.10), transparent 55%),
+      var(--card);
+    border-color: var(--border);
+    box-shadow: 0 24px 60px rgba(15,25,40,0.10);
+  }
+  body[data-theme="light"] .model-stage-pill,
+  body[data-theme="light"] .model-focus-pill {
     border-color: rgba(15,25,35,0.10);
-    box-shadow: 0 24px 60px rgba(15,25,40,0.12);
+    background: rgba(255,255,255,0.50);
   }
-  body[data-theme="light"] .model-focus-pill,
-  body[data-theme="light"] .model-focus-insight {
-    border-color: rgba(15,25,35,0.10);
+  body[data-theme="light"] .model-stage-pill-freshness {
+    border-color: rgba(11,157,116,0.34);
+    color: #0b9d74;
+    background: rgba(11,157,116,0.08);
   }
+  body[data-theme="light"] .model-stage-pill-freshness.is-stale {
+    border-color: rgba(217,59,89,0.32);
+    color: #b3243f;
+    background: rgba(217,59,89,0.08);
+  }
+  body[data-theme="light"] .model-stage-pill-freshness.is-warn {
+    border-color: rgba(171,132,0,0.40);
+    color: #856b09;
+    background: rgba(255,215,0,0.16);
+  }
+  body[data-theme="light"] .model-stage-insight,
   body[data-theme="light"] .model-focus-insight {
     background: rgba(37,99,235,0.06);
   }
-
-  @media (max-width: 980px) {
-    .model-wheel-stage {
-      min-height: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-      align-items: stretch;
-    }
-    .model-wheel-ring { display: none; }
-    .model-focus-panel {
-      order: 1;
-      width: 100%;
-      min-height: 0;
-    }
-    .models-grid {
-      order: 2;
-      position: static;
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-      width: 100%;
-      max-width: none;
-      pointer-events: auto;
-    }
-    .model-card,
-    .model-card.is-active {
-      position: relative;
-      top: auto;
-      left: auto;
-      width: 100%;
-      min-height: 96px;
-      transform: none;
-    }
+  body[data-theme="light"] .model-stage-icon {
+    border-color: rgba(11,157,116,0.30);
+    background: rgba(11,157,116,0.06);
+  }
+  body[data-theme="light"] .model-stage-extra.active,
+  body[data-theme="light"] .model-focus-extra.active {
+    background: rgba(15,25,35,0.03);
+    border-color: rgba(15,25,35,0.08);
+  }
+  body[data-theme="light"] .model-stage-shortcut {
+    border-top-color: rgba(15,25,35,0.10);
+  }
+  body[data-theme="light"] .model-stage-shortcut kbd {
+    background: rgba(15,25,35,0.05);
+    border-color: rgba(15,25,35,0.10);
+  }
+  body[data-theme="light"] .model-run-btn {
+    border-radius: 999px;
+    padding: 12px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+  }
+  body[data-theme="light"] .model-stage-run {
+    font-size: 14px;
+    padding: 16px;
+  }
+  body[data-theme="light"] .model-date-input {
+    background: rgba(255,255,255,0.78);
+    backdrop-filter: blur(10px);
   }
 
+  @media (max-width: 980px) {
+    .models-workbench-grid { grid-template-columns: 1fr; }
+    .models-rail {
+      position: static;
+      max-height: none;
+      order: 2;
+    }
+    .model-stage {
+      order: 1;
+      min-height: 0;
+    }
+    .models-headline { grid-template-columns: 1fr; }
+    .models-headline-actions { justify-content: flex-start; }
+    .models-headline-actions .model-chooser-dropdown { left: 0; right: auto; }
+  }
   @media (max-width: 620px) {
-    .model-command-title,
-    body[data-theme="light"] .model-command-title {
-      font-size: 34px;
+    .models-headline-title,
+    body[data-theme="light"] .models-headline-title { font-size: 34px; }
+    .model-stage-title,
+    body[data-theme="light"] .model-stage-title { font-size: 34px; }
+    .model-stage { padding: 22px 20px; }
+    .model-stage-headline { grid-template-columns: 1fr; text-align: left; gap: 12px; }
+    .model-stage-icon { width: 64px; height: 64px; font-size: 32px; }
+    .pulse-stat {
+      padding: 12px 16px;
+      border-right: none;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
     }
-    .model-focus-title,
-    body[data-theme="light"] .model-focus-title {
-      font-size: 34px;
-    }
-    .models-grid { grid-template-columns: 1fr; }
+    .pulse-stat:last-child { border-bottom: none; }
+    body[data-theme="light"] .pulse-stat { border-bottom-color: rgba(15,25,35,0.08); }
     .model-results-actions,
-    .model-focus-extra.active {
-      grid-template-columns: 1fr;
-      flex-direction: column;
-    }
+    .model-stage-extra.active,
+    .model-focus-extra.active { grid-template-columns: 1fr; flex-direction: column; }
   }
 
   body[data-theme="light"] .panel,
@@ -4135,160 +4522,246 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
 
   <!-- MODELS TAB -->
   <div id="tab-models" class="tab-content">
-    <div class="models-workbench">
-      <div class="model-command-bar">
-        <div class="model-command-copy">
-          <div class="model-command-eyebrow">Model Lab</div>
-          <div class="model-command-title">Prediction Engines</div>
-          <div class="model-command-subtitle">One clean surface for live model runs, cache-aware feeds, and pick output without leaving the page.</div>
+    <div class="models-console">
+      <div class="models-headline">
+        <div class="models-headline-copy">
+          <div class="models-headline-eyebrow">Model Lab</div>
+          <div class="models-headline-title">Prediction Console</div>
+          <div class="models-headline-subtitle">Pick a model from the rail, fire it from the stage. Status, freshness, and output stay on one surface.</div>
         </div>
-        <div class="model-chooser-wrap" id="model-chooser-wrap">
-          <div class="model-chooser-trigger" id="model-chooser-trigger">
-            <span class="model-chooser-icon">&#9881;</span>
-            <span class="model-chooser-label">Visible Models</span>
-            <span class="model-chooser-count" id="model-chooser-count">0</span>
-            <span class="model-chooser-caret">&#9660;</span>
+        <div class="models-headline-actions">
+          <div class="model-chooser-wrap" id="model-chooser-wrap">
+            <div class="model-chooser-trigger" id="model-chooser-trigger">
+              <span class="model-chooser-icon">&#9881;</span>
+              <span class="model-chooser-label">Visible Models</span>
+              <span class="model-chooser-count" id="model-chooser-count">0</span>
+              <span class="model-chooser-caret">&#9660;</span>
+            </div>
+            <div class="model-chooser-dropdown" id="model-chooser-dropdown"></div>
           </div>
-          <div class="model-chooser-dropdown" id="model-chooser-dropdown"></div>
         </div>
       </div>
+
+      <div class="models-pulse-strip">
+        <div class="pulse-stat">
+          <div class="pulse-stat-label">Active</div>
+          <div class="pulse-stat-value" id="lab-stat-active">0</div>
+          <div class="pulse-stat-detail" id="lab-stat-active-detail">visible models</div>
+        </div>
+        <div class="pulse-stat">
+          <div class="pulse-stat-label">Ready</div>
+          <div class="pulse-stat-value is-good" id="lab-stat-ready">0</div>
+          <div class="pulse-stat-detail" id="lab-stat-ready-detail">picks loaded</div>
+        </div>
+        <div class="pulse-stat">
+          <div class="pulse-stat-label">Running</div>
+          <div class="pulse-stat-value" id="lab-stat-running">0</div>
+          <div class="pulse-stat-detail" id="lab-stat-running-detail">idle</div>
+        </div>
+        <div class="pulse-stat">
+          <div class="pulse-stat-label">Issues</div>
+          <div class="pulse-stat-value" id="lab-stat-errors">0</div>
+          <div class="pulse-stat-detail" id="lab-stat-errors-detail">no errors</div>
+        </div>
+        <div class="pulse-stat pulse-stat-suggest" id="lab-stat-suggest">
+          <div class="pulse-stat-label">Suggested Next</div>
+          <div class="pulse-stat-value pulse-stat-value-small" id="lab-stat-next" role="button" tabindex="0" onclick="selectSuggestedModel()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectSuggestedModel();}">&mdash;</div>
+          <div class="pulse-stat-detail" id="lab-stat-next-detail">scanning models</div>
+        </div>
+      </div>
+
       <div class="model-compare-strip">
         <div class="model-status" id="status-nba-compare"></div>
         <div class="model-status" id="status-mlb-compare"></div>
       </div>
-      <div class="model-wheel-stage" id="model-wheel-stage">
-        <div class="model-wheel-ring" aria-hidden="true"></div>
-        <div class="models-grid" id="model-wheel-orbit">
-          <div class="model-card is-active" id="model-card-mlb-new" role="button" tabindex="0" data-model-key="mlb-new" data-run-action="runModel" data-run-label="RUN MLB MODEL" data-category="Core Slate" data-insight="Slate-wide read: calibrated MLB moneyline output with the current artifact set. Best first run when the baseball board is open.">
-            <div class="model-card-icon">&#9918;</div>
-            <span class="model-card-kicker">Core Slate</span>
-            <div class="model-card-title">MLB Model</div>
-            <div class="model-card-desc">Moneyline pipeline</div>
-            <span data-model-timestamp="mlb_new" class="model-timestamp-badge" style="display:none;"></span>
-            <div class="model-card-actions"><button class="model-run-btn" id="btn-run-mlb-new" onclick="runModel('mlb-new')">RUN MLB MODEL</button></div>
-            <div class="model-status" id="status-mlb-new"></div>
-          </div>
-          <div class="model-card" id="model-card-mlb-inning" role="button" tabindex="0" data-model-key="mlb-inning" data-run-action="runModel" data-run-label="RUN MLB INNING" data-category="Micro Edge" data-insight="Inning pressure view: isolates the lowest run-expectancy pockets instead of asking the full game to carry the bet.">
-            <div class="model-card-icon">&#9918;</div>
-            <span class="model-card-kicker">Micro Edge</span>
-            <div class="model-card-title">MLB Inning</div>
-            <div class="model-card-desc">No-run inning spots</div>
-            <span data-model-timestamp="mlb_inning" class="model-timestamp-badge" style="display:none;"></span>
-            <div class="model-card-actions"><button class="model-run-btn" id="btn-run-mlb-inning" onclick="runModel('mlb-inning')">RUN MLB INNING</button></div>
-            <div class="model-status" id="status-mlb-inning"></div>
-          </div>
-          <div class="model-card" id="model-card-mlb-first-five" role="button" tabindex="0" data-model-key="mlb-first-five" data-run-action="runModel" data-run-label="RUN MLB FIRST FIVE" data-category="Starter Window" data-insight="Starter-first lens: useful when bullpen noise is muddy but the first-five matchup has a clean shape.">
-            <div class="model-card-icon">&#9918;</div>
-            <span class="model-card-kicker">Starter Window</span>
-            <div class="model-card-title">MLB First Five</div>
-            <div class="model-card-desc">F5 side and total</div>
-            <span data-model-timestamp="mlb_first_five" class="model-timestamp-badge" style="display:none;"></span>
-            <div class="model-card-actions"><button class="model-run-btn" id="btn-run-mlb-first-five" onclick="runModel('mlb-first-five')">RUN MLB FIRST FIVE</button></div>
-            <div class="model-status" id="status-mlb-first-five"></div>
-          </div>
-          <div class="model-card" id="model-card-ipl" role="button" tabindex="0" data-model-key="ipl" data-run-action="runModel" data-run-label="RUN IPL MODEL" data-category="Cricket" data-insight="Compact IPL payload: winner read plus fantasy XI, optimized for quickly turning one match into a lineup view.">
-            <div class="model-card-icon">&#127951;</div>
-            <span class="model-card-kicker">Cricket</span>
-            <div class="model-card-title">IPL Model</div>
-            <div class="model-card-desc">Winner and fantasy XI</div>
-            <span data-model-timestamp="ipl" class="model-timestamp-badge" style="display:none;"></span>
-            <div class="model-card-actions"><button class="model-run-btn" id="btn-run-ipl" onclick="runModel('ipl')">RUN IPL MODEL</button></div>
-            <div class="model-status" id="status-ipl"></div>
-          </div>
-          <div class="model-card" id="model-card-nba-new" role="button" tabindex="0" data-model-key="nba-new" data-run-action="runModel" data-run-label="RUN NBA NEW" data-category="Calibrated NBA" data-insight="Refined NBA read: spread layer, form, rest, injury signal, and calibration all route to the same existing runner.">
-            <div class="model-card-icon">&#127936;</div>
-            <span class="model-card-kicker">Calibrated NBA</span>
-            <div class="model-card-title">NBA New</div>
-            <div class="model-card-desc">Spread calibration</div>
-            <span data-model-timestamp="nba_new" class="model-timestamp-badge" style="display:none;"></span>
-            <div class="model-card-actions"><button class="model-run-btn" id="btn-run-nba-new" onclick="runModel('nba-new', event)" title="Shift-click to force refresh from the local backend">RUN NBA NEW</button></div>
-            <div class="model-status" id="status-nba-new"></div>
-          </div>
-          <div class="model-card" id="model-card-nba-playoffs" role="button" tabindex="0" data-model-key="nba-playoffs" data-run-action="runModel" data-run-label="RUN NBA PLAYOFFS" data-category="Postseason" data-insight="Playoff-only guardrails keep regular-season assumptions out of postseason moneyline calls.">
-            <div class="model-card-icon">&#127942;</div>
-            <span class="model-card-kicker">Postseason</span>
-            <div class="model-card-title">NBA Playoffs</div>
-            <div class="model-card-desc">Playoff moneylines</div>
-            <span data-model-timestamp="nba_playoffs" class="model-timestamp-badge" style="display:none;"></span>
-            <div class="model-card-actions"><button class="model-run-btn" id="btn-run-nba-playoffs" onclick="runModel('nba-playoffs', event)" title="Shift-click to force refresh from the local backend">RUN NBA PLAYOFFS</button></div>
-            <div class="model-status" id="status-nba-playoffs"></div>
-          </div>
-          <div class="model-card" id="model-card-nba-old" role="button" tabindex="0" data-model-key="nba-old" data-run-action="runModel" data-run-label="RUN NBA MODEL" data-category="Legacy Compare" data-insight="Legacy confidence path: still valuable as a comparison rail against the newer NBA calibration layer.">
-            <div class="model-card-icon">&#128220;</div>
-            <span class="model-card-kicker">Legacy Compare</span>
-            <div class="model-card-title">NBA Model</div>
-            <div class="model-card-desc">Original NBA path</div>
-            <span data-model-timestamp="nba" class="model-timestamp-badge" style="display:none;"></span>
-            <div class="model-card-actions"><button class="model-run-btn" id="btn-run-nba-old" onclick="runModel('nba-old', event)" title="Shift-click to force refresh from the local backend">RUN NBA MODEL</button></div>
-            <div class="model-status" id="status-nba-old"></div>
-          </div>
-          <div class="model-card" id="model-card-nba-props" role="button" tabindex="0" data-model-key="nba-props" data-run-action="runModel" data-run-label="RUN PROPS MODEL" data-category="Player Props" data-insight="Player-level lens: points, rebounds, assists, and Kelly sizing when the team market is not the whole story.">
-            <div class="model-card-icon">&#127919;</div>
-            <span class="model-card-kicker">Player Props</span>
-            <div class="model-card-title">NBA Props</div>
-            <div class="model-card-desc">PRA model</div>
-            <span data-model-timestamp="props" class="model-timestamp-badge" style="display:none;"></span>
-            <div class="model-card-actions"><button class="model-run-btn" id="btn-run-nba-props" onclick="runModel('nba-props')">RUN PROPS MODEL</button></div>
-            <div class="model-status" id="status-nba-props"></div>
-          </div>
-          <div class="model-card" id="model-card-sportytrader" role="button" tabindex="0" data-model-key="sportytrader" data-run-action="runModel" data-run-label="SYNC SPORTYTRADER NOW" data-category="External Feed" data-insight="Market texture feed: live admin sync when available, cached Firebase reads everywhere else.">
-            <div class="model-card-icon">&#127936;</div>
-            <span class="model-card-kicker">External Feed</span>
-            <div class="model-card-title">SportyTrader</div>
-            <div class="model-card-desc" id="model-desc-sportytrader">Admin account can run a live local sync. Other users read cached Firebase data only.</div>
-            <div class="model-status" id="sportytrader-sync-meta">Last sync: never</div>
-            <div class="model-card-actions"><button class="model-run-btn" id="btn-run-sportytrader" onclick="runModel('sportytrader')">SYNC SPORTYTRADER NOW</button></div>
-            <div class="model-status" id="status-sportytrader"></div>
-          </div>
-          <div class="model-card" id="model-card-sportsgambler" role="button" tabindex="0" data-model-key="sportsgambler" data-run-action="runModel" data-run-label="SYNC SPORTSGAMBLER NOW" data-category="External Feed" data-insight="A second market-opinion rail for NBA and MLB, kept separate so source overlap stays visible.">
-            <div class="model-card-icon">&#127921;</div>
-            <span class="model-card-kicker">External Feed</span>
-            <div class="model-card-title">SportsGambler</div>
-            <div class="model-card-desc" id="model-desc-sportsgambler">Admin account can run a live local sync. Other users read cached Firebase data only.</div>
-            <div class="model-status" id="sportsgambler-sync-meta">Last sync: never</div>
-            <div class="model-card-actions"><button class="model-run-btn" id="btn-run-sportsgambler" onclick="runModel('sportsgambler')">SYNC SPORTSGAMBLER NOW</button></div>
-            <div class="model-status" id="status-sportsgambler"></div>
-          </div>
-          <div class="model-card" id="model-card-cannon-analytics" role="button" tabindex="0" data-model-key="cannon-analytics" data-run-action="cannon" data-run-label="LOAD CANNON PICKS" data-category="MLB Feed" data-insight="Projection board: team run estimates, fair prices, EV, and injected Cannon picks in the shared results table.">
-            <div class="model-card-icon">&#128371;</div>
-            <span class="model-card-kicker">MLB Feed</span>
-            <div class="model-card-title">Cannon Analytics</div>
-            <div class="model-card-desc">Daily projections and EV</div>
-            <span class="model-timestamp-badge" style="display:none;"></span>
-            <div class="model-card-actions"><button class="model-run-btn" id="btn-run-cannon" onclick="loadCannonDailyPicks()">LOAD CANNON PICKS</button></div>
-            <div class="model-status" id="status-cannon-analytics"></div>
-          </div>
-          <div class="model-card" id="model-card-wnba" role="button" tabindex="0" data-model-key="wnba" data-run-action="runModel" data-run-label="RUN WNBA MODEL" data-category="WNBA" data-insight="WNBA live slate runner with off-season-safe empty states, feeding the same pick table as the rest of the stack.">
-            <div class="model-card-icon">&#127936;</div>
-            <span class="model-card-kicker">WNBA</span>
-            <div class="model-card-title">WNBA Model</div>
-            <div class="model-card-desc">Live WNBA picks</div>
-            <span data-model-timestamp="wnba" class="model-timestamp-badge" style="display:none;"></span>
-            <div class="model-card-actions"><button class="model-run-btn" id="btn-run-wnba" onclick="runModel('wnba')">RUN WNBA MODEL</button></div>
-            <div class="model-status" id="status-wnba"></div>
-          </div>
-        </div>
-        <div class="model-focus-panel" id="model-focus-panel">
-          <div class="model-focus-topline">
-            <span class="model-focus-pill" id="model-focus-category">Core Slate</span>
-            <span class="model-focus-pill"><span id="model-focus-count">12</span>&nbsp;visible</span>
-          </div>
-          <div class="model-focus-icon" id="model-focus-icon">&#9918;</div>
-          <div class="model-focus-title" id="model-focus-title">MLB Model</div>
-          <div class="model-focus-desc" id="model-focus-desc">Moneyline pipeline</div>
-          <div class="model-focus-insight" id="model-focus-insight">Slate-wide read: calibrated MLB moneyline output with the current artifact set. Best first run when the baseball board is open.</div>
-          <div class="model-focus-timestamp" id="model-focus-timestamp"></div>
-          <div class="model-focus-controls">
-            <div class="model-focus-extra" id="model-focus-props-extra">
-              <select id="nba-props-game-select" class="model-league-select">
-                <option value="">No games found in DB yet</option>
-              </select>
-              <button class="model-run-btn model-inline-btn" id="btn-refresh-nba-props-games" onclick="loadNbaPropsGames()">REFRESH GAMES</button>
+
+      <div class="models-workbench-grid">
+        <aside class="models-rail">
+          <div id="model-wheel-orbit">
+            <div class="models-rail-group" data-rail-group="MLB">
+              <div class="models-rail-group-head">
+                <span class="models-rail-group-label">MLB</span>
+                <span class="models-rail-group-count" data-group-count></span>
+              </div>
+              <div class="models-rail-list">
+                <div class="model-card is-active" id="model-card-mlb-new" role="button" tabindex="0" data-model-key="mlb-new" data-run-action="runModel" data-run-label="RUN MLB MODEL" data-category="Core Slate" data-insight="Slate-wide read: calibrated MLB moneyline output with the current artifact set. Best first run when the baseball board is open.">
+                  <div class="model-card-icon">&#9918;</div>
+                  <span class="model-card-kicker">Core Slate</span>
+                  <div class="model-card-title">MLB Model</div>
+                  <div class="model-card-desc">Moneyline pipeline</div>
+                  <span data-model-timestamp="mlb_new" class="model-timestamp-badge" style="display:none;"></span>
+                  <div class="model-card-actions"><button class="model-run-btn" id="btn-run-mlb-new" onclick="runModel('mlb-new')">RUN MLB MODEL</button></div>
+                  <div class="model-status" id="status-mlb-new"></div>
+                </div>
+                <div class="model-card" id="model-card-mlb-inning" role="button" tabindex="0" data-model-key="mlb-inning" data-run-action="runModel" data-run-label="RUN MLB INNING" data-category="Micro Edge" data-insight="Inning pressure view: isolates the lowest run-expectancy pockets instead of asking the full game to carry the bet.">
+                  <div class="model-card-icon">&#9918;</div>
+                  <span class="model-card-kicker">Micro Edge</span>
+                  <div class="model-card-title">MLB Inning</div>
+                  <div class="model-card-desc">No-run inning spots</div>
+                  <span data-model-timestamp="mlb_inning" class="model-timestamp-badge" style="display:none;"></span>
+                  <div class="model-card-actions"><button class="model-run-btn" id="btn-run-mlb-inning" onclick="runModel('mlb-inning')">RUN MLB INNING</button></div>
+                  <div class="model-status" id="status-mlb-inning"></div>
+                </div>
+                <div class="model-card" id="model-card-mlb-first-five" role="button" tabindex="0" data-model-key="mlb-first-five" data-run-action="runModel" data-run-label="RUN MLB FIRST FIVE" data-category="Starter Window" data-insight="Starter-first lens: useful when bullpen noise is muddy but the first-five matchup has a clean shape.">
+                  <div class="model-card-icon">&#9918;</div>
+                  <span class="model-card-kicker">Starter Window</span>
+                  <div class="model-card-title">MLB First Five</div>
+                  <div class="model-card-desc">F5 side and total</div>
+                  <span data-model-timestamp="mlb_first_five" class="model-timestamp-badge" style="display:none;"></span>
+                  <div class="model-card-actions"><button class="model-run-btn" id="btn-run-mlb-first-five" onclick="runModel('mlb-first-five')">RUN MLB FIRST FIVE</button></div>
+                  <div class="model-status" id="status-mlb-first-five"></div>
+                </div>
+                <div class="model-card" id="model-card-cannon-analytics" role="button" tabindex="0" data-model-key="cannon-analytics" data-run-action="cannon" data-run-label="LOAD CANNON PICKS" data-category="MLB Feed" data-insight="Projection board: team run estimates, fair prices, EV, and injected Cannon picks in the shared results table.">
+                  <div class="model-card-icon">&#128371;</div>
+                  <span class="model-card-kicker">MLB Feed</span>
+                  <div class="model-card-title">Cannon Analytics</div>
+                  <div class="model-card-desc">Daily projections and EV</div>
+                  <span class="model-timestamp-badge" style="display:none;"></span>
+                  <div class="model-card-actions"><button class="model-run-btn" id="btn-run-cannon" onclick="loadCannonDailyPicks()">LOAD CANNON PICKS</button></div>
+                  <div class="model-status" id="status-cannon-analytics"></div>
+                </div>
+              </div>
             </div>
-            <button class="model-run-btn model-focus-run-btn" id="model-focus-run" onclick="runSelectedModel(event)">RUN MLB MODEL</button>
+
+            <div class="models-rail-group" data-rail-group="NBA">
+              <div class="models-rail-group-head">
+                <span class="models-rail-group-label">NBA</span>
+                <span class="models-rail-group-count" data-group-count></span>
+              </div>
+              <div class="models-rail-list">
+                <div class="model-card" id="model-card-nba-new" role="button" tabindex="0" data-model-key="nba-new" data-run-action="runModel" data-run-label="RUN NBA NEW" data-category="Calibrated NBA" data-insight="Refined NBA read: spread layer, form, rest, injury signal, and calibration all route to the same existing runner.">
+                  <div class="model-card-icon">&#127936;</div>
+                  <span class="model-card-kicker">Calibrated NBA</span>
+                  <div class="model-card-title">NBA New</div>
+                  <div class="model-card-desc">Spread calibration</div>
+                  <span data-model-timestamp="nba_new" class="model-timestamp-badge" style="display:none;"></span>
+                  <div class="model-card-actions"><button class="model-run-btn" id="btn-run-nba-new" onclick="runModel('nba-new', event)" title="Shift-click to force refresh from the local backend">RUN NBA NEW</button></div>
+                  <div class="model-status" id="status-nba-new"></div>
+                </div>
+                <div class="model-card" id="model-card-nba-playoffs" role="button" tabindex="0" data-model-key="nba-playoffs" data-run-action="runModel" data-run-label="RUN NBA PLAYOFFS" data-category="Postseason" data-insight="Playoff-only guardrails keep regular-season assumptions out of postseason moneyline calls.">
+                  <div class="model-card-icon">&#127942;</div>
+                  <span class="model-card-kicker">Postseason</span>
+                  <div class="model-card-title">NBA Playoffs</div>
+                  <div class="model-card-desc">Playoff moneylines</div>
+                  <span data-model-timestamp="nba_playoffs" class="model-timestamp-badge" style="display:none;"></span>
+                  <div class="model-card-actions"><button class="model-run-btn" id="btn-run-nba-playoffs" onclick="runModel('nba-playoffs', event)" title="Shift-click to force refresh from the local backend">RUN NBA PLAYOFFS</button></div>
+                  <div class="model-status" id="status-nba-playoffs"></div>
+                </div>
+                <div class="model-card" id="model-card-nba-old" role="button" tabindex="0" data-model-key="nba-old" data-run-action="runModel" data-run-label="RUN NBA MODEL" data-category="Legacy Compare" data-insight="Legacy confidence path: still valuable as a comparison rail against the newer NBA calibration layer.">
+                  <div class="model-card-icon">&#128220;</div>
+                  <span class="model-card-kicker">Legacy Compare</span>
+                  <div class="model-card-title">NBA Model</div>
+                  <div class="model-card-desc">Original NBA path</div>
+                  <span data-model-timestamp="nba" class="model-timestamp-badge" style="display:none;"></span>
+                  <div class="model-card-actions"><button class="model-run-btn" id="btn-run-nba-old" onclick="runModel('nba-old', event)" title="Shift-click to force refresh from the local backend">RUN NBA MODEL</button></div>
+                  <div class="model-status" id="status-nba-old"></div>
+                </div>
+                <div class="model-card" id="model-card-nba-props" role="button" tabindex="0" data-model-key="nba-props" data-run-action="runModel" data-run-label="RUN PROPS MODEL" data-category="Player Props" data-insight="Player-level lens: points, rebounds, assists, and Kelly sizing when the team market is not the whole story.">
+                  <div class="model-card-icon">&#127919;</div>
+                  <span class="model-card-kicker">Player Props</span>
+                  <div class="model-card-title">NBA Props</div>
+                  <div class="model-card-desc">PRA model</div>
+                  <span data-model-timestamp="props" class="model-timestamp-badge" style="display:none;"></span>
+                  <div class="model-card-actions"><button class="model-run-btn" id="btn-run-nba-props" onclick="runModel('nba-props')">RUN PROPS MODEL</button></div>
+                  <div class="model-status" id="status-nba-props"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="models-rail-group" data-rail-group="WNBA">
+              <div class="models-rail-group-head">
+                <span class="models-rail-group-label">WNBA</span>
+                <span class="models-rail-group-count" data-group-count></span>
+              </div>
+              <div class="models-rail-list">
+                <div class="model-card" id="model-card-wnba" role="button" tabindex="0" data-model-key="wnba" data-run-action="runModel" data-run-label="RUN WNBA MODEL" data-category="WNBA" data-insight="WNBA live slate runner with off-season-safe empty states, feeding the same pick table as the rest of the stack.">
+                  <div class="model-card-icon">&#127936;</div>
+                  <span class="model-card-kicker">WNBA</span>
+                  <div class="model-card-title">WNBA Model</div>
+                  <div class="model-card-desc">Live WNBA picks</div>
+                  <span data-model-timestamp="wnba" class="model-timestamp-badge" style="display:none;"></span>
+                  <div class="model-card-actions"><button class="model-run-btn" id="btn-run-wnba" onclick="runModel('wnba')">RUN WNBA MODEL</button></div>
+                  <div class="model-status" id="status-wnba"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="models-rail-group" data-rail-group="Cricket">
+              <div class="models-rail-group-head">
+                <span class="models-rail-group-label">Cricket</span>
+                <span class="models-rail-group-count" data-group-count></span>
+              </div>
+              <div class="models-rail-list">
+                <div class="model-card" id="model-card-ipl" role="button" tabindex="0" data-model-key="ipl" data-run-action="runModel" data-run-label="RUN IPL MODEL" data-category="Cricket" data-insight="Compact IPL payload: winner read plus fantasy XI, optimized for quickly turning one match into a lineup view.">
+                  <div class="model-card-icon">&#127951;</div>
+                  <span class="model-card-kicker">Cricket</span>
+                  <div class="model-card-title">IPL Model</div>
+                  <div class="model-card-desc">Winner and fantasy XI</div>
+                  <span data-model-timestamp="ipl" class="model-timestamp-badge" style="display:none;"></span>
+                  <div class="model-card-actions"><button class="model-run-btn" id="btn-run-ipl" onclick="runModel('ipl')">RUN IPL MODEL</button></div>
+                  <div class="model-status" id="status-ipl"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="models-rail-group" data-rail-group="Feeds">
+              <div class="models-rail-group-head">
+                <span class="models-rail-group-label">Market Feeds</span>
+                <span class="models-rail-group-count" data-group-count></span>
+              </div>
+              <div class="models-rail-list">
+                <div class="model-card" id="model-card-sportytrader" role="button" tabindex="0" data-model-key="sportytrader" data-run-action="runModel" data-run-label="SYNC SPORTYTRADER NOW" data-category="External Feed" data-insight="Market texture feed: live admin sync when available, cached Firebase reads everywhere else.">
+                  <div class="model-card-icon">&#127936;</div>
+                  <span class="model-card-kicker">External Feed</span>
+                  <div class="model-card-title">SportyTrader</div>
+                  <div class="model-card-desc" id="model-desc-sportytrader">Admin account can run a live local sync. Other users read cached Firebase data only.</div>
+                  <div class="model-status" id="sportytrader-sync-meta">Last sync: never</div>
+                  <div class="model-card-actions"><button class="model-run-btn" id="btn-run-sportytrader" onclick="runModel('sportytrader')">SYNC SPORTYTRADER NOW</button></div>
+                  <div class="model-status" id="status-sportytrader"></div>
+                </div>
+                <div class="model-card" id="model-card-sportsgambler" role="button" tabindex="0" data-model-key="sportsgambler" data-run-action="runModel" data-run-label="SYNC SPORTSGAMBLER NOW" data-category="External Feed" data-insight="A second market-opinion rail for NBA and MLB, kept separate so source overlap stays visible.">
+                  <div class="model-card-icon">&#127921;</div>
+                  <span class="model-card-kicker">External Feed</span>
+                  <div class="model-card-title">SportsGambler</div>
+                  <div class="model-card-desc" id="model-desc-sportsgambler">Admin account can run a live local sync. Other users read cached Firebase data only.</div>
+                  <div class="model-status" id="sportsgambler-sync-meta">Last sync: never</div>
+                  <div class="model-card-actions"><button class="model-run-btn" id="btn-run-sportsgambler" onclick="runModel('sportsgambler')">SYNC SPORTSGAMBLER NOW</button></div>
+                  <div class="model-status" id="status-sportsgambler"></div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="model-status model-focus-status" id="model-focus-status"></div>
-        </div>
+        </aside>
+
+        <section class="model-stage" id="model-stage">
+          <div class="model-stage-meta-row">
+            <span class="model-stage-pill" id="model-focus-category">Core Slate</span>
+            <span class="model-stage-pill model-stage-pill-soft"><span id="model-focus-count">0</span>&nbsp;visible</span>
+            <span class="model-stage-pill model-stage-pill-freshness" id="model-stage-freshness">No run yet</span>
+          </div>
+          <div class="model-stage-headline">
+            <div class="model-stage-icon" id="model-focus-icon">&#9918;</div>
+            <div class="model-stage-headline-text">
+              <div class="model-stage-title" id="model-focus-title">MLB Model</div>
+              <div class="model-stage-desc" id="model-focus-desc">Moneyline pipeline</div>
+            </div>
+          </div>
+          <div class="model-stage-insight model-focus-insight" id="model-focus-insight">Slate-wide read: calibrated MLB moneyline output with the current artifact set. Best first run when the baseball board is open.</div>
+          <div class="model-stage-timestamp model-focus-timestamp" id="model-focus-timestamp"></div>
+          <div class="model-stage-extra model-focus-extra" id="model-focus-props-extra">
+            <select id="nba-props-game-select" class="model-league-select">
+              <option value="">No games found in DB yet</option>
+            </select>
+            <button class="model-run-btn model-inline-btn" id="btn-refresh-nba-props-games" onclick="loadNbaPropsGames()">REFRESH GAMES</button>
+          </div>
+          <button class="model-run-btn model-stage-run model-focus-run-btn" id="model-focus-run" onclick="runSelectedModel(event)">RUN MLB MODEL</button>
+          <div class="model-status model-stage-status model-focus-status" id="model-focus-status"></div>
+          <div class="model-stage-shortcut">
+            <span><kbd>&uarr;</kbd><kbd>&darr;</kbd> navigate</span>
+            <span><kbd>Enter</kbd> run</span>
+            <span><kbd>R</kbd> suggested next</span>
+          </div>
+        </section>
       </div>
     </div>
     <div id="model-results-section" class="model-results-shell" style="display:none;">
@@ -10025,8 +10498,10 @@ async function loadModelTimestamps() {
         ? `Last updated: Today at ${timeStr}`
         : `Last updated: ${parsed.toLocaleDateString()} ${timeStr}`;
       badge.style.display = 'inline-block';
+      badge.dataset.tsMs = String(parsed.getTime());
     }
     if (typeof refreshModelFocusFromSelected === 'function') refreshModelFocusFromSelected();
+    if (typeof refreshLabPulseStats === 'function') refreshLabPulseStats();
   } catch (_err) {
     // Timestamp badges are decorative only.
   }
@@ -12010,10 +12485,10 @@ window.addEventListener('firestorePicksLoaded', function(e) {
   });
 })();
 
-// ── Model Wheel ──
+// ── Model Console ──
 let selectedModelCardId = 'model-card-mlb-new';
 let modelStatusObserver = null;
-let modelWheelResizeTimer = null;
+let suggestedModelCardId = null;
 
 function getModelWheelCards(options = {}) {
   const cards = Array.from(document.querySelectorAll('#model-wheel-orbit .model-card'));
@@ -12048,6 +12523,25 @@ function getModelCardState(card) {
   return '';
 }
 
+function getModelCardLastRunMs(card) {
+  if (!card) return 0;
+  const badge = card.querySelector('.model-timestamp-badge');
+  if (!badge) return 0;
+  const ms = Number(badge.dataset.tsMs || 0);
+  return Number.isFinite(ms) && ms > 0 ? ms : 0;
+}
+
+function formatRelativeAge(ms) {
+  if (!ms || ms < 0) return '';
+  const minutes = Math.floor(ms / 60000);
+  if (minutes < 1) return 'just now';
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  return `${days}d ago`;
+}
+
 function refreshModelCardStatusClasses() {
   getModelWheelCards().forEach(card => {
     card.classList.remove('has-status-running', 'has-status-error', 'has-status-ok');
@@ -12056,9 +12550,162 @@ function refreshModelCardStatusClasses() {
   });
 }
 
+function refreshRailGroupCounts() {
+  document.querySelectorAll('#model-wheel-orbit .models-rail-group').forEach(group => {
+    const cards = Array.from(group.querySelectorAll('.model-card'));
+    const visible = cards.filter(c => !c.classList.contains('model-hidden')).length;
+    const countEl = group.querySelector('[data-group-count]');
+    if (countEl) countEl.textContent = visible ? `${visible}` : '';
+    group.classList.toggle('is-empty', visible === 0);
+  });
+}
+
+function computeSuggestedNextCard() {
+  const cards = getModelWheelCards({ visibleOnly: true });
+  if (!cards.length) return { card: null, reason: 'no models visible' };
+
+  const errorCard = cards.find(c => getModelCardState(c) === 'error');
+  if (errorCard) {
+    const title = errorCard.querySelector('.model-card-title')?.textContent || 'Model';
+    return { card: errorCard, reason: `${title} hit an error — retry` };
+  }
+
+  const runningCard = cards.find(c => getModelCardState(c) === 'running');
+  if (runningCard) {
+    const title = runningCard.querySelector('.model-card-title')?.textContent || 'Model';
+    return { card: null, reason: `${title} is running` };
+  }
+
+  const neverRun = cards.filter(c => !getModelCardLastRunMs(c));
+  if (neverRun.length) {
+    const top = neverRun[0];
+    const title = top.querySelector('.model-card-title')?.textContent || 'Model';
+    return { card: top, reason: `${title} — no recent run` };
+  }
+
+  const withTs = cards
+    .map(c => ({ card: c, ms: getModelCardLastRunMs(c) }))
+    .filter(x => x.ms)
+    .sort((a, b) => a.ms - b.ms);
+  if (withTs.length) {
+    const stalest = withTs[0];
+    const ageMs = Date.now() - stalest.ms;
+    if (ageMs > 4 * 3600000) {
+      const title = stalest.card.querySelector('.model-card-title')?.textContent || 'Model';
+      return { card: stalest.card, reason: `${title} — last ${formatRelativeAge(ageMs)}` };
+    }
+  }
+
+  return { card: null, reason: 'all caught up' };
+}
+
+function refreshLabPulseStats() {
+  const cards = getModelWheelCards({ visibleOnly: true });
+  const active = cards.length;
+  let ready = 0;
+  let running = 0;
+  let errors = 0;
+  cards.forEach(c => {
+    const s = getModelCardState(c);
+    if (s === 'ok') ready++;
+    else if (s === 'running') running++;
+    else if (s === 'error') errors++;
+  });
+
+  const set = (id, value) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = String(value);
+  };
+  set('lab-stat-active', active);
+  set('lab-stat-ready', ready);
+  set('lab-stat-running', running);
+  set('lab-stat-errors', errors);
+
+  const runDetail = document.getElementById('lab-stat-running-detail');
+  if (runDetail) runDetail.textContent = running ? 'live now' : 'idle';
+  const runVal = document.getElementById('lab-stat-running');
+  if (runVal) runVal.classList.toggle('is-warn', running > 0);
+
+  const errDetail = document.getElementById('lab-stat-errors-detail');
+  if (errDetail) errDetail.textContent = errors ? 'need attention' : 'no errors';
+  const errVal = document.getElementById('lab-stat-errors');
+  if (errVal) errVal.classList.toggle('is-bad', errors > 0);
+
+  const readyDetail = document.getElementById('lab-stat-ready-detail');
+  if (readyDetail) {
+    readyDetail.textContent = ready
+      ? (ready === active ? 'all loaded' : `of ${active} loaded`)
+      : 'picks loaded';
+  }
+
+  const suggestion = computeSuggestedNextCard();
+  suggestedModelCardId = suggestion.card ? suggestion.card.id : null;
+  const nextEl = document.getElementById('lab-stat-next');
+  const nextDetail = document.getElementById('lab-stat-next-detail');
+  const suggestWrap = document.getElementById('lab-stat-suggest');
+  if (suggestWrap) suggestWrap.classList.toggle('is-idle', !suggestion.card);
+  if (nextEl) {
+    if (suggestion.card) {
+      const title = suggestion.card.querySelector('.model-card-title')?.textContent || 'Model';
+      nextEl.textContent = title;
+      nextEl.setAttribute('aria-label', `Select suggested next model: ${title}`);
+    } else {
+      nextEl.textContent = errors ? 'Fix errors' : (running ? 'Running…' : 'All caught up');
+      nextEl.removeAttribute('aria-label');
+    }
+  }
+  if (nextDetail) nextDetail.textContent = suggestion.reason;
+}
+
+function selectSuggestedModel() {
+  if (!suggestedModelCardId) return;
+  const card = document.getElementById(suggestedModelCardId);
+  if (!card) return;
+  selectModelCard(card);
+  try {
+    card.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  } catch (_e) {
+    card.scrollIntoView();
+  }
+  card.focus({ preventScroll: true });
+}
+
+function updateStageFreshnessPill(card) {
+  const pill = document.getElementById('model-stage-freshness');
+  if (!pill) return;
+  pill.classList.remove('is-stale', 'is-warn', 'is-running');
+  if (!card) {
+    pill.textContent = '—';
+    return;
+  }
+  const state = getModelCardState(card);
+  if (state === 'running') {
+    pill.textContent = 'Running now';
+    pill.classList.add('is-running');
+    return;
+  }
+  if (state === 'error') {
+    pill.textContent = 'Last run failed';
+    pill.classList.add('is-stale');
+    return;
+  }
+  const ms = getModelCardLastRunMs(card);
+  if (!ms) {
+    pill.textContent = 'No recent run';
+    pill.classList.add('is-warn');
+    return;
+  }
+  const age = Date.now() - ms;
+  pill.textContent = `Updated ${formatRelativeAge(age)}`;
+  if (age > 12 * 3600000) pill.classList.add('is-stale');
+  else if (age > 4 * 3600000) pill.classList.add('is-warn');
+}
+
 function syncModelFocusStatus(model) {
   refreshModelCardStatusClasses();
+  refreshLabPulseStats();
   const card = getSelectedModelCard();
+  updateStageFreshnessPill(card);
   if (!card) return;
   const key = String(card.dataset.modelKey || '').trim();
   const action = String(card.dataset.runAction || '').trim();
@@ -12070,7 +12717,7 @@ function syncModelFocusStatus(model) {
   if (!focusStatus || !statusEl) return;
   const state = getModelCardState(card);
   focusStatus.textContent = statusEl.textContent || '';
-  focusStatus.className = 'model-status model-focus-status' + (state ? ' ' + state : '');
+  focusStatus.className = 'model-status model-stage-status model-focus-status' + (state ? ' ' + state : '');
 }
 
 function setModelFocusButtonState(model, isRunning, label) {
@@ -12091,6 +12738,8 @@ function refreshModelFocusFromSelected() {
   const countEl = document.getElementById('model-focus-count');
   if (countEl) countEl.textContent = String(visibleCards.length);
 
+  refreshRailGroupCounts();
+
   if (!card) {
     ['model-focus-category', 'model-focus-title', 'model-focus-desc', 'model-focus-insight', 'model-focus-timestamp', 'model-focus-status'].forEach(id => {
       const el = document.getElementById(id);
@@ -12102,6 +12751,8 @@ function refreshModelFocusFromSelected() {
       focusRun.disabled = true;
       focusRun.textContent = 'NO MODEL SELECTED';
     }
+    updateStageFreshnessPill(null);
+    refreshLabPulseStats();
     return;
   }
 
@@ -12148,41 +12799,20 @@ function refreshModelFocusFromSelected() {
     focusRun.disabled = runButton ? runButton.disabled : false;
     focusRun.textContent = runButton && runButton.textContent ? runButton.textContent : (card.dataset.runLabel || 'RUN MODEL');
   }
+  updateStageFreshnessPill(card);
+  refreshLabPulseStats();
   syncModelFocusStatus();
 }
 
-function layoutModelWheel() {
-  const stage = document.getElementById('model-wheel-stage');
-  if (!stage) return;
-  const cards = getModelWheelCards({ visibleOnly: true });
-  if (window.matchMedia && window.matchMedia('(max-width: 980px)').matches) {
-    cards.forEach(card => {
-      card.style.removeProperty('--model-x');
-      card.style.removeProperty('--model-y');
-      card.style.zIndex = card.classList.contains('is-active') ? '4' : '2';
-    });
-    return;
-  }
-  const ringSize = Math.min(stage.clientWidth || 760, 760, Math.max((stage.clientHeight || 700) - 40, 420));
-  const radius = Math.min(342, Math.max(286, ringSize * 0.45));
-  const startAngle = -90;
-  const count = Math.max(cards.length, 1);
-  cards.forEach((card, index) => {
-    const angle = (startAngle + (360 / count) * index) * Math.PI / 180;
-    const x = Math.cos(angle) * radius;
-    const y = Math.sin(angle) * radius;
-    card.style.setProperty('--model-x', x.toFixed(1) + 'px');
-    card.style.setProperty('--model-y', y.toFixed(1) + 'px');
-    card.style.zIndex = card.classList.contains('is-active') ? '4' : '2';
-  });
-}
+// Backwards-compat stub: the old orbital wheel layout call no longer
+// positions cards, but other code still calls this name.
+function layoutModelWheel() {}
 
 function selectModelCard(cardOrId) {
   const card = typeof cardOrId === 'string' ? document.getElementById(cardOrId) : cardOrId;
   if (!card || card.classList.contains('model-hidden')) return;
   selectedModelCardId = card.id;
   refreshModelFocusFromSelected();
-  layoutModelWheel();
 }
 
 function afterModelVisibilityChanged() {
@@ -12192,7 +12822,6 @@ function afterModelVisibilityChanged() {
     if (next) selectedModelCardId = next.id;
   }
   refreshModelFocusFromSelected();
-  layoutModelWheel();
 }
 
 async function runSelectedModel(event) {
@@ -12227,6 +12856,52 @@ function observeModelStatusChanges() {
   });
 }
 
+function _modelsTabIsActive() {
+  const tab = document.getElementById('tab-models');
+  return !!tab && tab.classList.contains('active');
+}
+
+function _moveSelectionByOffset(offset) {
+  const visible = getModelWheelCards({ visibleOnly: true });
+  if (!visible.length) return;
+  const current = getSelectedModelCard();
+  const idx = current ? visible.indexOf(current) : -1;
+  const nextIdx = (idx < 0 ? 0 : (idx + offset + visible.length) % visible.length);
+  const next = visible[nextIdx];
+  if (next) {
+    selectModelCard(next);
+    try {
+      next.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    } catch (_e) {
+      next.scrollIntoView();
+    }
+  }
+}
+
+function _modelsKeydownHandler(event) {
+  if (!_modelsTabIsActive()) return;
+  const tag = (event.target && event.target.tagName) || '';
+  if (/^(INPUT|TEXTAREA|SELECT)$/.test(tag) || (event.target && event.target.isContentEditable)) return;
+  if (event.metaKey || event.ctrlKey || event.altKey) return;
+  if (event.key === 'ArrowDown' || event.key === 'ArrowRight') {
+    event.preventDefault();
+    _moveSelectionByOffset(1);
+  } else if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') {
+    event.preventDefault();
+    _moveSelectionByOffset(-1);
+  } else if (event.key === 'Enter') {
+    if (event.target && event.target.closest && event.target.closest('.model-card')) return;
+    const focusRun = document.getElementById('model-focus-run');
+    if (!focusRun || focusRun.disabled) return;
+    event.preventDefault();
+    runSelectedModel(event);
+  } else if (event.key === 'r' || event.key === 'R') {
+    if (!suggestedModelCardId) return;
+    event.preventDefault();
+    selectSuggestedModel();
+  }
+}
+
 function initModelWheel() {
   const cards = getModelWheelCards();
   cards.forEach(card => {
@@ -12241,11 +12916,9 @@ function initModelWheel() {
     });
   });
   observeModelStatusChanges();
+  refreshRailGroupCounts();
   afterModelVisibilityChanged();
-  window.addEventListener('resize', () => {
-    clearTimeout(modelWheelResizeTimer);
-    modelWheelResizeTimer = setTimeout(layoutModelWheel, 80);
-  });
+  document.addEventListener('keydown', _modelsKeydownHandler);
 }
 
 if (document.readyState === 'loading') {
