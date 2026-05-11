@@ -322,8 +322,9 @@ def fetch_series_history(
     lookup failed — the caller should treat both as 'no in-series evidence').
 
     Tries the NBA API first; falls back to ESPN scoreboard scans for the
-    11 days preceding ``as_of_date`` because the NBA API can lag a round
-    behind during the playoffs.
+    18 days preceding ``as_of_date`` (long enough to cover even a Finals
+    Game 1→Game 7 stretch) because the NBA API can lag a round behind
+    during the playoffs.
     """
     games_via_nba = _fetch_series_history_nba(home_team, away_abbr, season, as_of_date)
     if games_via_nba:
@@ -389,13 +390,25 @@ def _fetch_series_history_nba(
     return games
 
 
+SERIES_HISTORY_ESPN_LOOKBACK_DAYS = 18  # Finals Game 1→7 spans up to 17 days
+SERIES_HISTORY_MAX_GAMES = 6  # max prior games in a best-of-7 (game 7 is the cap)
+
+
 def _fetch_series_history_espn(
     home_abbr: str,
     away_abbr: str,
     as_of_date: str,
+    max_lookback_days: int = SERIES_HISTORY_ESPN_LOOKBACK_DAYS,
 ) -> list[dict[str, Any]]:
-    """Scan ESPN's postseason scoreboard for the 11 days before ``as_of_date``
-    looking for completed games between ``home_abbr`` and ``away_abbr``."""
+    """Scan ESPN's postseason scoreboard for completed games between
+    ``home_abbr`` and ``away_abbr`` in the prior ``max_lookback_days``.
+
+    Default 18 days covers the worst-case Finals series (Game 1 → Game 7
+    can stretch 16-17 days when ABC asks for an off-day extension between
+    every game). Earlier rounds compress to ~10 days, so the loop short-
+    circuits as soon as we have ``SERIES_HISTORY_MAX_GAMES`` (6) prior
+    games — enough to fully describe a best-of-7 series before Game 7.
+    """
     home = str(home_abbr or "").upper()
     away = str(away_abbr or "").upper()
     if not home or not away:
@@ -407,7 +420,10 @@ def _fetch_series_history_espn(
 
     games: list[dict[str, Any]] = []
     seen_ids: set[str] = set()
-    for offset in range(1, 12):
+    # range(1, N+1) so offset=1 is yesterday and offset=18 is 18 days back.
+    for offset in range(1, max_lookback_days + 1):
+        if len(games) >= SERIES_HISTORY_MAX_GAMES:
+            break
         scan_date = (target - dt.timedelta(days=offset)).strftime("%Y%m%d")
         url = f"{ESPN_SCOREBOARD_URL}?dates={scan_date}&seasontype=3"
         try:

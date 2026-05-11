@@ -223,6 +223,18 @@ def test_series_form_pulls_lakers_base_rate_down():
     assert any("series-form blend" in note for note in notes)
 
 
+def test_espn_fallback_lookback_window_covers_finals():
+    """The ESPN scoreboard fallback should scan ≥14 days back so a Finals
+    Game 1 → Game 7 stretch (which can span 17 days) doesn't lose history."""
+    from NBAPlayoffsPredictionModel.run_live import (
+        SERIES_HISTORY_ESPN_LOOKBACK_DAYS,
+        SERIES_HISTORY_MAX_GAMES,
+    )
+
+    assert SERIES_HISTORY_ESPN_LOOKBACK_DAYS >= 14
+    assert SERIES_HISTORY_MAX_GAMES == 6   # max prior games before Game 7
+
+
 def test_missing_injury_feed_caps_at_lean():
     """An empty injury feed leaves the model running blind on availability;
     even a good-looking edge should drop to LEAN."""

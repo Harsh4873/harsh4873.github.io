@@ -3107,21 +3107,34 @@ def _parse_mlb_output(output: str, source_label: str = "MLB Model") -> list[dict
                     _edge_prob = _prob - _implied_prob
                     _q = 1 - _prob
                     _k = max((_b * _prob - _q) / _b, 0.0)
-                    _kf = round(_k * 0.25 * 100, 2)
+                    # Quarter-Kelly stake in units (was previously stored as
+                    # `kelly` percentage but `units` was flat 1u — fixed so
+                    # stake actually scales with edge).
+                    _kelly_units = round(min(1.5, _k * 0.25), 2)
+                    _decision = (
+                        'BET' if _edge_prob >= 0.05
+                        else ('LEAN' if _edge_prob >= 0.03 else 'PASS')
+                    )
+                    if _decision == 'PASS':
+                        _stake_units = 0.0
+                    elif _decision == 'LEAN':
+                        _stake_units = round(_kelly_units * 0.6, 2)
+                    else:
+                        _stake_units = _kelly_units
                     ou_pick = {
                         "source": source_label,
                         "pick": pick_label,
                         "sport": league,
                         "odds": _odds_price,
-                        "units": 1,
+                        "units": _stake_units,
                         "probability": _prob,
                         "prob": _prob,
                         "edge": round(_edge_prob * 100, 2),
                         "vegas": vegas_total,
                         "model_prediction": round(float(predicted_total), 1),
                         "direction": direction,
-                        "kelly": _kf,
-                        "decision": 'BET' if _edge_prob >= 0.05 else ('LEAN' if _edge_prob >= 0.03 else 'PASS'),
+                        "kelly": round(_k * 0.25 * 100, 2),  # kept for back-compat
+                        "decision": _decision,
                         "market_type": "totals",
                         "selection": direction,
                         "line": vegas_total,
@@ -3150,31 +3163,82 @@ def _parse_mlb_output(output: str, source_label: str = "MLB Model") -> list[dict
             short_b = _shorten_mlb_name(team_b)
             ml_home, ml_away = _sl_get_ml(team_b, team_a, "MLB")
 
-            # Pipe format odds are model-derived (not market), so edge vs those
-            # odds is always ~0.  Instead, compare model prob vs a generic 50%
-            # market (flat -110 each side) — BET when model gives 55%+ to one side.
+            # Pick the favored side from the model.
             if prob_a >= prob_b:
                 bet_team = short_a
                 bet_prob = prob_a
                 bet_odds = odds_a
-                edge = (prob_a - 0.50) * 100  # edge vs 50/50 market
+                bet_team_is_away = True
             else:
                 bet_team = short_b
                 bet_prob = prob_b
                 bet_odds = odds_b
-                edge = (prob_b - 0.50) * 100
+                bet_team_is_away = False
 
             matchup = f"{short_a} vs {short_b}"
-            decision = "BET" if bet_prob >= 0.55 else "PASS"
+            market_pick_odds = ml_away if bet_team_is_away else ml_home
+
+            # Real edge math when SportsLine has both sides of the moneyline:
+            # vig-remove → compute true edge → quarter-Kelly stake.
+            decision = "PASS"
+            units_value: float = 0.0
+            edge_val: float | None = None
+            market_pick_prob_val: float | None = None
+
+            if ml_home is not None and ml_away is not None:
+                _raw_h = (
+                    abs(ml_home) / (abs(ml_home) + 100) if ml_home < 0
+                    else 100 / (ml_home + 100)
+                )
+                _raw_a = (
+                    abs(ml_away) / (abs(ml_away) + 100) if ml_away < 0
+                    else 100 / (ml_away + 100)
+                )
+                _denom = (_raw_h + _raw_a) or 1.0
+                market_pick_prob = (_raw_a / _denom) if bet_team_is_away else (_raw_h / _denom)
+                edge_val = round((bet_prob - market_pick_prob) * 100, 2)
+                market_pick_prob_val = round(market_pick_prob, 4)
+
+                if edge_val >= 4.0 and bet_prob >= 0.55:
+                    decision = "BET"
+                elif edge_val >= 2.0 and bet_prob >= 0.52:
+                    decision = "LEAN"
+                else:
+                    decision = "PASS"
+
+                if decision != "PASS" and market_pick_odds is not None:
+                    _b = (
+                        100.0 / abs(market_pick_odds) if market_pick_odds < 0
+                        else market_pick_odds / 100.0
+                    )
+                    if _b > 0:
+                        _kelly = max(
+                            (_b * bet_prob - (1 - bet_prob)) / _b,
+                            0.0,
+                        ) * 0.25  # quarter-Kelly
+                        units_value = round(min(1.5, _kelly), 2)
+                        if decision == "LEAN":
+                            units_value = round(units_value * 0.6, 2)
+            else:
+                # No market price — sliding stake on model conviction alone.
+                if bet_prob < 0.55:
+                    decision = "PASS"
+                    units_value = 0.0
+                else:
+                    scaled = 0.25 + (bet_prob - 0.55) * 6.25  # 55%->0.25, 75%->1.5
+                    units_value = round(min(1.5, max(0.25, scaled)), 2)
+                    decision = "LEAN" if bet_prob < 0.62 else "BET"
+                edge_val = round((bet_prob - 0.50) * 100, 2)  # vs 50% baseline
 
             picks.append({
                 "source": source_label,
                 "pick": f"{bet_team} ML ({matchup})",
                 "sport": "MLB",
-                "odds": ml_away if bet_team == short_a else ml_home,
-                "units": 1,
+                "odds": market_pick_odds,
+                "units": units_value,
                 "probability": bet_prob,
-                "edge": edge,
+                "market_pick_prob": market_pick_prob_val,
+                "edge": edge_val,
                 "decision": decision,
                 "market_type": "h2h",
                 "team": bet_team,

@@ -275,6 +275,11 @@ def _project_team_runs(
     # Wind delta — already in F5 runs/team units, capped at ±0.45.
     wind_delta = safe_float(venue_profile.get("wind_run_delta_per_team"), 0.0)
     projected += wind_delta
+    # Pitcher rest — short-rest starters yield more F5 runs; extra-long
+    # layoffs add a small rust bump. The modifier is in runs scored
+    # AGAINST the opposing pitcher, so we add it to this team's projection.
+    rest_modifier = safe_float(opposing_pitcher_profile.get("rest_runs_modifier"), 0.0)
+    projected += rest_modifier
 
     factors = {
         "projected_runs": round(_clamp(projected, 0.55, 5.25), 2),
@@ -287,6 +292,9 @@ def _project_team_runs(
         "pitcher_current_vs_opponent": current_vs_opponent,
         "pitcher_prior_vs_opponent": prior_vs_opponent,
         "pitcher_venue_f5_allowed": venue_pitcher,
+        "pitcher_rest_days": opposing_pitcher_profile.get("rest_days"),
+        "pitcher_rest_runs_modifier": rest_modifier,
+        "pitcher_rest_label": str(opposing_pitcher_profile.get("rest_label") or ""),
         "lineup_delta": safe_float(lineup_delta.get("run_delta"), 0.0),
         "venue_delta": safe_float(venue_profile.get("run_delta_per_team"), 0.0),
         "park_run_delta_per_team": park_delta,
@@ -406,6 +414,9 @@ def _pitcher_f5_profile(
             if len(venue_records) >= 8:
                 break
 
+    rest_days = _pitcher_rest_days(current_records, model_date)
+    rest_runs_modifier, rest_label = _pitcher_rest_runs_modifier(rest_days)
+
     profile = {
         "name": str(pitcher.get("name") or "TBD"),
         "stat_expected": _pitcher_stat_expected(pitcher),
@@ -421,9 +432,69 @@ def _pitcher_f5_profile(
         "current_vs_opponent_starts": len(current_vs_opponent),
         "prior_vs_opponent_starts": len(prior_vs_records),
         "venue_starts": len(venue_records),
+        "rest_days": rest_days,
+        "rest_runs_modifier": rest_runs_modifier,
+        "rest_label": rest_label,
     }
     cache_set(cache_key, profile)
     return profile
+
+
+def _pitcher_rest_days(current_records: list[dict[str, Any]], model_date: str) -> int | None:
+    """Days between this pitcher's last start and the model date.
+
+    Convention: ``rest_days = days_between_starts - 1`` (i.e. 4 days rest =
+    5 days between starts, which is the normal modern MLB cycle). Returns
+    ``None`` when there's no prior start in the current-season log.
+    """
+    if not current_records:
+        return None
+    try:
+        target = datetime.strptime(str(model_date)[:10], "%Y-%m-%d").date()
+    except ValueError:
+        return None
+
+    last_start_date = None
+    for record in reversed(current_records):  # records are date-ascending
+        raw_date = str(record.get("date") or "")[:10]
+        if not raw_date:
+            continue
+        try:
+            last_start_date = datetime.strptime(raw_date, "%Y-%m-%d").date()
+            break
+        except ValueError:
+            continue
+    if last_start_date is None or last_start_date >= target:
+        return None
+    return max(0, (target - last_start_date).days - 1)
+
+
+def _pitcher_rest_runs_modifier(rest_days: int | None) -> tuple[float, str]:
+    """Translate days-rest into a per-team F5 runs-allowed adjustment.
+
+    Empirical splits from MLB starter performance by rest:
+      - 0-2 days rest → emergency / opener territory; +0.30 runs allowed
+      - 3 days rest  → "short rest"; +0.20 runs allowed
+      - 4-6 days     → normal modern cycle; 0
+      - 7-9 days     → mild rust / long layoff; +0.05 runs allowed
+      - 10+ days     → IL return or skip; +0.15 runs allowed
+      - None         → first start of season / unknown; 0 (no signal)
+
+    Returned adj is in F5 runs/team units (positive = MORE runs scored
+    AGAINST this pitcher). The picks layer adds it to the opposing
+    team's projected_runs.
+    """
+    if rest_days is None:
+        return 0.0, "rest unknown"
+    if rest_days <= 2:
+        return 0.30, f"emergency/opener ({rest_days}d rest) +0.30"
+    if rest_days == 3:
+        return 0.20, f"short rest ({rest_days}d) +0.20"
+    if rest_days <= 6:
+        return 0.0, f"normal rest ({rest_days}d)"
+    if rest_days <= 9:
+        return 0.05, f"long layoff ({rest_days}d) +0.05"
+    return 0.15, f"extended layoff ({rest_days}d) +0.15"
 
 
 def _lineup_matchup_delta(lineup: list[dict[str, Any]], pitcher: dict[str, Any], model_date: str) -> dict[str, Any]:
