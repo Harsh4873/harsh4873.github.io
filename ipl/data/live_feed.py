@@ -5,7 +5,7 @@ import os
 import re
 import sqlite3
 import sys
-from datetime import date, datetime, timezone
+from datetime import date, datetime, time, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
@@ -93,7 +93,7 @@ TARGET_LIST_KEYS = {
 
 def fetch_today_matches(db_path) -> list[dict]:
     del db_path
-    today = datetime.now().astimezone().date()
+    now = datetime.now(timezone.utc)
     last_error: Exception | None = None
 
     for url in SCHEDULE_URLS:
@@ -117,7 +117,7 @@ def fetch_today_matches(db_path) -> list[dict]:
             ]
             if not records:
                 continue
-            return _serialize_schedule_records(_select_schedule_records(records, today))
+            return _serialize_schedule_records(_select_schedule_records(records, now))
         except Exception as exc:  # pragma: no cover - network dependent
             last_error = exc
 
@@ -371,6 +371,7 @@ def run_live_feed_update(db_path) -> list[dict]:
                 "team2": match["team2"],
                 "venue": match["venue"],
                 "match_date": match["match_date"],
+                "match_start_utc": match.get("match_start_utc"),
                 "team1_available": summary["team1_available"],
                 "team2_available": summary["team2_available"],
                 "live_feed_success": summary["live_feed_success"],
@@ -431,6 +432,62 @@ def _parse_match_date(value: Any) -> date | None:
         return None
 
 
+def _parse_date_only(value: Any) -> date | None:
+    text = _normalize_text(value)
+    if not text:
+        return None
+    for fmt in DATE_FORMATS:
+        try:
+            return datetime.strptime(text, fmt).date()
+        except ValueError:
+            continue
+    try:
+        return datetime.fromisoformat(text[:10]).date()
+    except ValueError:
+        return None
+
+
+def _parse_match_time(value: Any) -> time | None:
+    text = _normalize_text(value).upper().replace("IST", "").replace("GMT", "").strip()
+    if not text:
+        return None
+    match = re.search(r"(\d{1,2}):(\d{2})", text)
+    if not match:
+        return None
+    hour = int(match.group(1))
+    minute = int(match.group(2))
+    if hour > 23 or minute > 59:
+        return None
+    return time(hour=hour, minute=minute)
+
+
+def _parse_match_start_utc(entry: dict[str, Any]) -> datetime | None:
+    gmt_date = _parse_date_only(_first_non_empty(entry, ("GMTMatchDate", "gmt_match_date")))
+    gmt_time = _parse_match_time(_first_non_empty(entry, ("GMTMatchTime", "gmt_match_time")))
+    if gmt_date is not None and gmt_time is not None:
+        return datetime.combine(gmt_date, gmt_time, tzinfo=timezone.utc)
+
+    commence_text = _normalize_text(
+        _first_non_empty(entry, ("MATCH_COMMENCE_START_DATE", "match_start", "start_time"))
+    )
+    if commence_text:
+        try:
+            parsed = datetime.fromisoformat(commence_text.replace("Z", "+00:00"))
+            if parsed.tzinfo is None:
+                # Official IPL feeds publish this field in India local time.
+                parsed = parsed.replace(tzinfo=timezone(timedelta(hours=5, minutes=30)))
+            return parsed.astimezone(timezone.utc)
+        except ValueError:
+            pass
+
+    match_date = _parse_match_date(_first_non_empty(entry, ("MatchDate", "date", "StartDate")))
+    match_time = _parse_match_time(_first_non_empty(entry, ("MatchTime", "time")))
+    if match_date is not None and match_time is not None:
+        india_tz = timezone(timedelta(hours=5, minutes=30))
+        return datetime.combine(match_date, match_time, tzinfo=india_tz).astimezone(timezone.utc)
+    return None
+
+
 def _extract_schedule_entries(payload: Any) -> list[dict[str, Any]]:
     if isinstance(payload, list):
         return [row for row in payload if isinstance(row, dict)]
@@ -444,6 +501,7 @@ def _extract_schedule_entries(payload: Any) -> list[dict[str, Any]]:
 
 
 def _normalize_schedule_entry(entry: dict[str, Any]) -> dict[str, Any]:
+    match_start_utc = _parse_match_start_utc(entry)
     return {
         "match_id": _normalize_text(_first_non_empty(entry, ("MatchID", "matchId", "id"))),
         "team1": _normalize_team_name(
@@ -478,29 +536,81 @@ def _normalize_schedule_entry(entry: dict[str, Any]) -> dict[str, Any]:
         "match_date": _parse_match_date(
             _first_non_empty(entry, ("MatchDate", "date", "StartDate", "MATCH_COMMENCE_START_DATE"))
         ),
+        "match_start_utc": match_start_utc,
         "status": _normalize_text(_first_non_empty(entry, ("MatchStatus", "status"))),
     }
 
 
 def _select_schedule_records(
     records: list[dict[str, Any]],
-    today: date,
+    now: datetime | date,
 ) -> list[dict[str, Any]]:
-    today_records = [record for record in records if record["match_date"] == today]
-    if today_records:
-        return today_records
+    if isinstance(now, datetime):
+        now_utc = now.astimezone(timezone.utc) if now.tzinfo else now.replace(tzinfo=timezone.utc)
+        today = now_utc.date()
+    else:
+        today = now
+        now_utc = datetime.combine(today, time.min, tzinfo=timezone.utc)
 
-    future_dates = sorted({record["match_date"] for record in records if record["match_date"] > today})
+    def _sort_key(record: dict[str, Any]) -> tuple[datetime, str]:
+        start = record.get("match_start_utc")
+        if isinstance(start, datetime):
+            start_utc = start.astimezone(timezone.utc) if start.tzinfo else start.replace(tzinfo=timezone.utc)
+        else:
+            start_utc = datetime.combine(record["match_date"], time.min, tzinfo=timezone.utc)
+        return start_utc, str(record.get("match_id") or "")
+
+    future_records = [
+        record
+        for record in records
+        if not _is_completed_schedule_status(record.get("status"))
+        and isinstance(record.get("match_start_utc"), datetime)
+        and (
+            record["match_start_utc"].astimezone(timezone.utc)
+            if record["match_start_utc"].tzinfo
+            else record["match_start_utc"].replace(tzinfo=timezone.utc)
+        )
+        >= now_utc
+    ]
+    if future_records:
+        first_record = min(future_records, key=_sort_key)
+        target_date = first_record["match_date"]
+        return sorted(
+            [record for record in future_records if record["match_date"] == target_date],
+            key=_sort_key,
+        )
+
+    future_dates = sorted(
+        {
+            record["match_date"]
+            for record in records
+            if record["match_date"] > today
+            and not _is_completed_schedule_status(record.get("status"))
+        }
+    )
     if future_dates:
         target_date = future_dates[0]
-        return [record for record in records if record["match_date"] == target_date]
+        return sorted(
+            [
+                record
+                for record in records
+                if record["match_date"] == target_date
+                and not _is_completed_schedule_status(record.get("status"))
+            ],
+            key=_sort_key,
+        )
 
     past_dates = sorted({record["match_date"] for record in records if record["match_date"] < today})
     if past_dates:
         target_date = past_dates[-1]
-        return [record for record in records if record["match_date"] == target_date]
+        return sorted([record for record in records if record["match_date"] == target_date], key=_sort_key)
 
-    return records
+    return sorted(records, key=_sort_key)
+
+
+def _is_completed_schedule_status(value: Any) -> bool:
+    status = _normalize_text(value).lower().replace(" ", "")
+    return status in {"post", "completed", "complete", "result", "abandoned", "cancelled", "canceled"}
 
 
 def _serialize_schedule_records(records: list[dict[str, Any]]) -> list[dict]:
@@ -511,6 +621,11 @@ def _serialize_schedule_records(records: list[dict[str, Any]]) -> list[dict]:
             "team2": record["team2"],
             "venue": record["venue"],
             "match_date": record["match_date"].isoformat(),
+            "match_start_utc": (
+                record["match_start_utc"].astimezone(timezone.utc).isoformat()
+                if isinstance(record.get("match_start_utc"), datetime)
+                else None
+            ),
             "status": record["status"],
         }
         for record in records
