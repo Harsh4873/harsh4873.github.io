@@ -489,7 +489,35 @@ def calculate_layer2_situational(
     else:
         adj -= 0.005
         reasons.append("Road travel context -0.5%")
-        
+
+    # 6. Cross-country travel + altitude — only applied for the home team's
+    # row so the signal isn't double-counted across both passes. The sign
+    # is from the picked team's perspective: if `team` is the home team,
+    # the bonus is positive; if `team` is the visitor, we negate it.
+    if use_advanced_fatigue:
+        try:
+            from venue_environment import (
+                altitude_home_bonus,
+                travel_fatigue_adjustment,
+            )
+        except ImportError:
+            from .venue_environment import (
+                altitude_home_bonus,
+                travel_fatigue_adjustment,
+            )
+        home_name = game_ctx.home_team.name
+        away_name = game_ctx.away_team.name
+        travel_adj, travel_reason = travel_fatigue_adjustment(home_name, away_name)
+        if travel_adj:
+            signed = travel_adj if team.is_home else -travel_adj
+            adj += signed
+            reasons.append(travel_reason if team.is_home else f"Eastbound travel cost {signed*100:+.1f}%")
+        alt_adj, alt_reason = altitude_home_bonus(home_name)
+        if alt_adj:
+            signed = alt_adj if team.is_home else -alt_adj
+            adj += signed
+            reasons.append(alt_reason if team.is_home else f"Altitude road disadvantage {signed*100:+.1f}%")
+
     # Cap total situational adjustment at ±15% (0.15)
     adj = max(-0.15, min(0.15, adj))
     

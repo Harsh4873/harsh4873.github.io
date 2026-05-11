@@ -131,6 +131,45 @@ def _sl_get_spread(home, away, league='NBA'):
         return None, None, None
 
 
+def _nba_fatigue_multiplier(home_team: str, away_team: str, winner: str) -> float | None:
+    """Return a stake multiplier (≤ 1.0) when the picked team is on a
+    fatigue flag (B2B 2nd leg, 3-in-4-nights, or 4-in-5).
+
+    Scans the most recent NBA model stdout line of the form:
+      **Rest:** [Heat B2B] vs [Magic Rested]
+    captured via the per-process buffer below. Returns None if not found.
+    """
+    rest_text = _NBA_REST_LINE_BUFFER.get((home_team, away_team)) or ""
+    if not rest_text:
+        return None
+    away_label, home_label = "", ""
+    rest_match = re.search(
+        r"\*\*Rest:\*\*\s*\[([^\]]+)\]\s*vs\s*\[([^\]]+)\]",
+        rest_text,
+    )
+    if not rest_match:
+        return None
+    away_label = rest_match.group(1).strip()
+    home_label = rest_match.group(2).strip()
+
+    # Picked team is the winner; identify which side label belongs to it.
+    winner_token = (winner or "").split()[-1].lower()
+    home_token = (home_team or "").split()[-1].lower()
+    picked_label = home_label if winner_token == home_token else away_label
+
+    label_lower = picked_label.lower()
+    if "b2b" in label_lower:
+        return 0.55  # picked team on 2nd of B2B → 0.55x stake
+    if "3-in-4" in label_lower or "4-in-5" in label_lower or "5-in-7" in label_lower:
+        return 0.75  # heavy schedule density → 0.75x stake
+    return 1.0
+
+
+# Per-NBA-output rest line buffer keyed by (home_team, away_team). Populated
+# inside _parse_nba_output as it iterates the stdout.
+_NBA_REST_LINE_BUFFER: dict[tuple[str, str], str] = {}
+
+
 def _ou_probability(model_total: float, vegas_line: float, rmse: float) -> float:
     """
     Derive P(under) or P(over) from model point estimate using normal CDF.
@@ -2384,6 +2423,9 @@ def _parse_nba_output(output: str, source_label: str = "NBA Model") -> list[dict
     lines = output.split("\n")
     current_away = ""
     current_home = ""
+    # Reset the per-output rest buffer so a stale line from a previous run
+    # can't bleed into this parse.
+    _NBA_REST_LINE_BUFFER.clear()
 
     for i, line in enumerate(lines):
         # Pick up game header: "GAME: Grizzlies @ Pistons (7:30 pm ET)"
@@ -2395,6 +2437,10 @@ def _parse_nba_output(output: str, source_label: str = "NBA Model") -> list[dict
 
         if not current_away or not current_home:
             continue
+
+        # Buffer the most recent **Rest:** line for fatigue lookups later.
+        if "**Rest:**" in line:
+            _NBA_REST_LINE_BUFFER[(current_home, current_away)] = line
 
         # Extract winner from either the legacy block or the new projection-only block.
         winner = ""
@@ -2468,16 +2514,16 @@ def _parse_nba_output(output: str, source_label: str = "NBA Model") -> list[dict
                 sl_spread_home, sl_spread_away, sl_spread_odds = _sl_get_spread(
                     current_home, current_away, 'NBA'
                 )
-                if sl_spread_home is not None:
-                    # Pick the Vegas spread for the selected model team.
-                    team_last = winner.split()[-1].lower()
-                    home_last = current_home.split()[-1].lower()
-                    winner_is_home = team_last == home_last
-                    vegas_spread = sl_spread_home if winner_is_home else sl_spread_away
-                    if vegas_spread is None:
-                        _append_unique(pick)
-                        continue
+                team_last = winner.split()[-1].lower()
+                home_last = current_home.split()[-1].lower()
+                winner_is_home = team_last == home_last
 
+                vegas_spread = None
+                if sl_spread_home is not None:
+                    vegas_spread = sl_spread_home if winner_is_home else sl_spread_away
+
+                if vegas_spread is not None:
+                    # Real spread market — same edge math as before.
                     _sp_odds = sl_spread_odds if sl_spread_odds else -110
                     _implied = (abs(_sp_odds) / (abs(_sp_odds) + 100)) if _sp_odds < 0 \
                                else (100 / (_sp_odds + 100))
@@ -2514,6 +2560,84 @@ def _parse_nba_output(output: str, source_label: str = "NBA Model") -> list[dict
                         pick["decision"] = "LEAN"
                     else:
                         pick["decision"] = "PASS"
+                else:
+                    # Spread missing — try moneyline market before defaulting.
+                    sl_ml_home, sl_ml_away = _sl_get_ml(current_home, current_away, 'NBA')
+                    if sl_ml_home is not None and sl_ml_away is not None:
+                        # Vig-removed two-sided ML, then edge vs the side we picked.
+                        _ml_pick_odds = sl_ml_home if winner_is_home else sl_ml_away
+                        _raw_home = (abs(sl_ml_home) / (abs(sl_ml_home) + 100)) if sl_ml_home < 0 \
+                                    else (100 / (sl_ml_home + 100))
+                        _raw_away = (abs(sl_ml_away) / (abs(sl_ml_away) + 100)) if sl_ml_away < 0 \
+                                    else (100 / (sl_ml_away + 100))
+                        _denom = _raw_home + _raw_away if (_raw_home + _raw_away) > 0 else 1.0
+                        _ml_pick_implied = (
+                            (_raw_home / _denom) if winner_is_home else (_raw_away / _denom)
+                        )
+                        _model_pick_prob = (
+                            float(prob) if winner_is_home else (1.0 - float(prob))
+                        ) if prob is not None else 0.5
+                        _ml_edge_val = round((_model_pick_prob - _ml_pick_implied) * 100, 2)
+
+                        # Quarter-Kelly on the ML; capped at 5%.
+                        _ml_b = (
+                            100.0 / abs(_ml_pick_odds) if _ml_pick_odds < 0
+                            else _ml_pick_odds / 100.0
+                        )
+                        _ml_kf = round(
+                            min(
+                                max((_ml_b * _model_pick_prob - (1 - _model_pick_prob)) / max(_ml_b, 1e-9), 0.0) * 0.25,
+                                0.05,
+                            ) * 100,
+                            2,
+                        )
+
+                        pick["pick"] = f"{winner} ML ({matchup})"
+                        pick["odds"] = int(_ml_pick_odds)
+                        pick["market_line"] = None
+                        pick["vegas"] = None
+                        pick["probability"] = _model_pick_prob
+                        pick["prob"] = _model_pick_prob
+                        pick["market_pick_prob"] = round(_ml_pick_implied, 4)
+                        pick["edge"] = _ml_edge_val
+                        pick["units"] = _ml_kf
+                        if _ml_edge_val >= 4.0 and _model_pick_prob >= 0.55:
+                            pick["decision"] = "BET"
+                        elif _ml_edge_val >= 2.0 and _model_pick_prob >= 0.52:
+                            pick["decision"] = "LEAN"
+                        else:
+                            pick["decision"] = "PASS"
+                            pick["units"] = 0
+                    else:
+                        # No market data at all — replace flat 1u with a
+                        # conviction-based fallback so big-edge picks aren't
+                        # the same stake as toss-ups.
+                        _conv_prob = float(prob) if prob is not None else 0.5
+                        _winner_prob = (
+                            _conv_prob if winner_is_home else (1.0 - _conv_prob)
+                        )
+                        pick["probability"] = _winner_prob
+                        pick["prob"] = _winner_prob
+                        # Sliding stake: 0.25u at 55% prob, ~1.5u at 75% prob.
+                        if _winner_prob < 0.55:
+                            pick["units"] = 0.0
+                            pick["decision"] = "PASS"
+                        else:
+                            scaled = 0.25 + (_winner_prob - 0.55) * 6.25  # 55%->0.25, 75%->1.5
+                            pick["units"] = round(min(1.5, max(0.25, scaled)), 2)
+                            pick["decision"] = "LEAN" if _winner_prob < 0.62 else "BET"
+                        pick["edge"] = None
+                        pick["odds"] = None
+
+                # B2B / fatigue stake reduction — applied last so it scales
+                # whatever stake size the market or fallback produced.
+                fatigue_mult = _nba_fatigue_multiplier(current_home, current_away, winner)
+                if fatigue_mult is not None and fatigue_mult < 1.0 and pick.get("units"):
+                    try:
+                        pick["units"] = round(float(pick["units"]) * fatigue_mult, 2)
+                    except (TypeError, ValueError):
+                        pass
+                    pick["fatigue_multiplier"] = fatigue_mult
             _append_unique(pick)
 
         # Over/Under decision: "**O/U Decision: BET OVER**"
