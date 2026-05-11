@@ -110,8 +110,12 @@
   }
 
   /* Theme toggle */
-  .theme-toggle { display: flex; align-items: center; gap: 7px; background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 5px 10px 5px 8px; cursor: pointer; transition: border-color 0.2s, background-color 0.3s; user-select: none; }
-  .theme-toggle:hover { border-color: var(--accent); }
+  .theme-toggle,
+  .mobile-mode-toggle { display: flex; align-items: center; gap: 7px; background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 5px 10px 5px 8px; color: var(--muted); cursor: pointer; transition: border-color 0.2s, background-color 0.3s, color 0.2s; user-select: none; }
+  .theme-toggle:hover,
+  .mobile-mode-toggle:hover { border-color: var(--accent); color: var(--text); }
+  .mobile-mode-toggle { padding: 5px 9px 5px 8px; gap: 6px; }
+  .mobile-phone-icon { width: 14px; height: 14px; flex: 0 0 auto; color: currentColor; }
   .refresh-btn { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 6px 12px; color: var(--muted); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; cursor: pointer; transition: border-color 0.2s, color 0.2s, opacity 0.2s; }
   .refresh-btn:hover { border-color: var(--accent); color: var(--text); }
   .refresh-btn:disabled { opacity: 0.65; cursor: wait; }
@@ -124,7 +128,14 @@
   body[data-theme="light"] .toggle-track { background: var(--accent); }
   .toggle-thumb { width: 12px; height: 12px; background: var(--muted); border-radius: 50%; position: absolute; top: 3px; left: 3px; transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), background-color 0.3s; }
   body[data-theme="light"] .toggle-thumb { transform: translateX(16px); background: #fff; }
+  .mobile-toggle-track { width: 30px; height: 16px; background: var(--border); border-radius: 999px; position: relative; flex-shrink: 0; transition: background-color 0.3s; }
+  .mobile-toggle-thumb { width: 10px; height: 10px; background: var(--muted); border-radius: 50%; position: absolute; top: 3px; left: 3px; transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), background-color 0.3s; }
+  body.mobile-app-mode .mobile-mode-toggle { border-color: rgba(0,229,160,0.42); color: var(--text); }
+  body.mobile-app-mode .mobile-toggle-track { background: var(--accent); }
+  body.mobile-app-mode .mobile-toggle-thumb { transform: translateX(14px); background: #fff; }
+  body.mobile-app-mode #mobile-mode-label { color: var(--accent); }
   body[data-theme="light"] .theme-toggle,
+  body[data-theme="light"] .mobile-mode-toggle,
   body[data-theme="light"] .refresh-btn,
   body[data-theme="light"] .filter-btn,
   body[data-theme="light"] .filter-more-btn,
@@ -3297,6 +3308,528 @@
     font-variant-numeric: tabular-nums;
   }
   .pick-model-pred { text-align: center; min-width: 80px; }
+
+  /* Mobile app view */
+  body.mobile-app-mode {
+    --mobile-shell: 430px;
+  }
+  body.mobile-app-mode .container,
+  body[data-theme="light"].mobile-app-mode .container {
+    width: min(100%, var(--mobile-shell));
+    max-width: var(--mobile-shell);
+    padding: 14px 12px calc(28px + env(safe-area-inset-bottom));
+  }
+  body.mobile-app-mode header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px 12px;
+    align-items: start;
+    padding-bottom: 14px;
+    margin-bottom: 12px;
+  }
+  body[data-theme="light"].mobile-app-mode header {
+    align-items: start;
+    margin-bottom: 14px;
+    padding: 6px 0 16px;
+  }
+  body.mobile-app-mode header > div:first-child { min-width: 0; }
+  body.mobile-app-mode .logo-title {
+    font-size: 32px;
+    letter-spacing: 1.8px;
+  }
+  body[data-theme="light"].mobile-app-mode .logo-title {
+    font-size: 34px;
+    letter-spacing: -0.3px;
+  }
+  body.mobile-app-mode .logo-sub {
+    margin-top: 5px;
+    font-size: 9px;
+    letter-spacing: 1.2px;
+    line-height: 1.25;
+  }
+  body.mobile-app-mode .header-right {
+    min-width: 0;
+    align-items: flex-end;
+    gap: 7px;
+  }
+  body.mobile-app-mode .header-controls {
+    max-width: 212px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  body.mobile-app-mode .theme-toggle,
+  body.mobile-app-mode .mobile-mode-toggle {
+    min-height: 34px;
+    padding: 5px 8px;
+  }
+  body.mobile-app-mode .theme-toggle .toggle-label,
+  body.mobile-app-mode .mobile-mode-toggle .toggle-label {
+    display: none;
+  }
+  body.mobile-app-mode #refresh-btn {
+    order: 6;
+    width: 100%;
+    min-height: 32px;
+    padding: 6px 10px;
+    font-size: 9px;
+  }
+  body.mobile-app-mode #sync-status {
+    order: 7;
+    width: 100%;
+    margin-left: 0 !important;
+    text-align: right;
+  }
+  body.mobile-app-mode .header-profile-trigger {
+    gap: 0;
+    padding: 4px;
+    border-radius: 50%;
+  }
+  body.mobile-app-mode .header-profile-avatar {
+    width: 28px;
+    height: 28px;
+  }
+  body.mobile-app-mode .header-profile-name,
+  body.mobile-app-mode .header-profile-caret {
+    display: none;
+  }
+  body.mobile-app-mode .header-profile-dropdown {
+    min-width: min(220px, calc(100vw - 24px));
+  }
+  body.mobile-app-mode .refresh-status {
+    max-width: 212px;
+    font-size: 9px;
+    line-height: 1.35;
+  }
+  body.mobile-app-mode .header-stat-val {
+    font-size: 26px;
+    line-height: 0.95;
+  }
+  body[data-theme="light"].mobile-app-mode .header-stat-val {
+    font-size: 30px;
+  }
+  body.mobile-app-mode .header-stat-label {
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+  body.mobile-app-mode .tabs {
+    gap: 6px;
+    margin: 0 -12px 16px;
+    padding: 0 12px 10px;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--border);
+    scrollbar-width: none;
+  }
+  body.mobile-app-mode .tabs::-webkit-scrollbar { display: none; }
+  body[data-theme="light"].mobile-app-mode .tabs {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+  body.mobile-app-mode .tab {
+    flex: 0 0 auto;
+    padding: 10px 13px;
+    border-radius: 999px;
+    font-size: 15px;
+    line-height: 1;
+    letter-spacing: 0.8px;
+    white-space: nowrap;
+  }
+  body.mobile-app-mode .tab.active {
+    background: rgba(0,229,160,0.1);
+  }
+  body.mobile-app-mode .tab.active::after { display: none; }
+
+  body.mobile-app-mode .section-title,
+  body[data-theme="light"].mobile-app-mode .section-title {
+    margin-bottom: 12px;
+    font-size: 30px;
+    line-height: 1.05;
+  }
+  body.mobile-app-mode .panel {
+    padding: 16px;
+    border-radius: 16px;
+    margin-bottom: 18px;
+  }
+  body.mobile-app-mode .stats-grid,
+  body.mobile-app-mode .home-summary-grid,
+  body.mobile-app-mode .trend-summary-grid,
+  body.mobile-app-mode .daily-stats-strip,
+  body.mobile-app-mode .models-pulse-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  body.mobile-app-mode .stats-grid { margin-bottom: 18px; }
+  body.mobile-app-mode .stat-box,
+  body.mobile-app-mode .home-summary-card,
+  body.mobile-app-mode .trend-summary-box,
+  body.mobile-app-mode .daily-stat {
+    padding: 14px;
+    border-radius: 14px;
+  }
+  body.mobile-app-mode .stat-box-val,
+  body.mobile-app-mode .trend-summary-val,
+  body.mobile-app-mode .daily-stat-val {
+    font-size: 31px;
+  }
+  body.mobile-app-mode .leaderboard,
+  body.mobile-app-mode .sport-board,
+  body.mobile-app-mode .trend-board,
+  body.mobile-app-mode .parlay-grid,
+  body.mobile-app-mode .daily-podium,
+  body.mobile-app-mode .daily-slate-grid,
+  body.mobile-app-mode .home-feed-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  body.mobile-app-mode .source-card,
+  body.mobile-app-mode .sport-card,
+  body.mobile-app-mode .trend-game-card,
+  body.mobile-app-mode .parlay-card,
+  body.mobile-app-mode .daily-podium-card,
+  body.mobile-app-mode .daily-slate-card {
+    padding: 16px;
+    border-radius: 16px;
+  }
+  body.mobile-app-mode .source-card.rank-1::before {
+    top: 8px;
+    right: 8px;
+    font-size: 8px;
+  }
+  body.mobile-app-mode .card-name,
+  body.mobile-app-mode .sport-name,
+  body.mobile-app-mode .trend-game-name {
+    font-size: 25px;
+    line-height: 1.05;
+  }
+
+  body.mobile-app-mode .home-shell { gap: 12px; }
+  body.mobile-app-mode .home-hero {
+    padding: 18px;
+    border-radius: 18px;
+  }
+  body.mobile-app-mode .home-hero-row {
+    flex-direction: column;
+    gap: 14px;
+  }
+  body.mobile-app-mode .home-hero-copy {
+    max-width: 100%;
+  }
+  body.mobile-app-mode .home-title {
+    font-size: 38px;
+    line-height: 1;
+    letter-spacing: 1px;
+  }
+  body.mobile-app-mode .home-sub {
+    font-size: 13px;
+    line-height: 1.45;
+  }
+  body.mobile-app-mode .home-hero-actions {
+    width: 100%;
+    min-width: 0;
+    align-items: stretch;
+  }
+  body.mobile-app-mode .home-hero-chips {
+    justify-content: flex-start;
+  }
+  body.mobile-app-mode .home-hero-chip {
+    min-height: 30px;
+    padding: 6px 10px;
+    font-size: 10px;
+  }
+  body.mobile-app-mode .home-toggle-btn {
+    width: 100%;
+    min-height: 42px;
+    padding: 0 14px;
+  }
+  body.mobile-app-mode .home-filter-shell {
+    padding: 14px;
+    border-radius: 18px;
+  }
+  body.mobile-app-mode .home-filter-head {
+    align-items: stretch;
+    gap: 12px;
+  }
+  body.mobile-app-mode .home-filter-title {
+    font-size: 27px;
+  }
+  body.mobile-app-mode .home-date-wrap {
+    width: 100%;
+    min-width: 0;
+    margin-left: 0;
+  }
+  body.mobile-app-mode .home-date-trigger {
+    padding: 12px;
+    border-radius: 16px;
+    gap: 10px;
+  }
+  body.mobile-app-mode .home-date-trigger-value {
+    font-size: 31px;
+  }
+  body.mobile-app-mode .home-date-trigger-meta {
+    min-height: 28px;
+    padding: 6px 9px;
+    font-size: 9px;
+  }
+  body.mobile-app-mode .home-date-popover {
+    left: 0;
+    right: auto;
+    width: min(calc(100vw - 24px), 406px);
+    padding: 14px;
+    border-radius: 18px;
+  }
+  body.mobile-app-mode .home-calendar-grid,
+  body.mobile-app-mode .home-date-weekdays {
+    gap: 5px;
+  }
+  body.mobile-app-mode .home-calendar-day {
+    min-height: 48px;
+    padding: 7px 6px;
+    border-radius: 12px;
+  }
+  body.mobile-app-mode .home-calendar-day-num {
+    font-size: 21px;
+  }
+  body.mobile-app-mode .home-calendar-day-count {
+    min-width: 20px;
+    height: 20px;
+    padding: 0 5px;
+    font-size: 9px;
+  }
+
+  body.mobile-app-mode .pick-feed { gap: 18px; }
+  body.mobile-app-mode .home-feed-section-title,
+  body.mobile-app-mode .pulse-log-title {
+    font-size: 29px;
+  }
+  body.mobile-app-mode .home-feed-section-head,
+  body.mobile-app-mode .pulse-log-head {
+    align-items: flex-start;
+    gap: 10px;
+  }
+  body.mobile-app-mode .pulse-log {
+    padding: 16px;
+    border-radius: 16px;
+  }
+  body.mobile-app-mode .home-feed-row,
+  body.mobile-app-mode .pulse-log-row {
+    grid-template-columns: 42px minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    gap: 7px 10px;
+    padding: 10px;
+  }
+  body.mobile-app-mode .home-feed-row-pick,
+  body.mobile-app-mode .pulse-log-pick {
+    white-space: normal;
+    font-size: 13px;
+  }
+  body.mobile-app-mode .home-feed-row-pl,
+  body.mobile-app-mode .home-feed-row-control,
+  body.mobile-app-mode .pulse-log-pl,
+  body.mobile-app-mode .pulse-log-control {
+    grid-column: 2;
+    justify-self: stretch;
+    min-width: 0;
+    text-align: left;
+  }
+  body.mobile-app-mode .home-feed-row-control .result-select,
+  body.mobile-app-mode .pulse-log-control .result-select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  body.mobile-app-mode .filter-bar {
+    flex-wrap: nowrap;
+    gap: 7px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+  }
+  body.mobile-app-mode .filter-bar::-webkit-scrollbar { display: none; }
+  body.mobile-app-mode .filter-btn {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    font-size: 10px;
+  }
+  body.mobile-app-mode .filter-dropdown {
+    left: 0;
+    right: auto;
+    min-width: min(406px, calc(100vw - 24px));
+  }
+
+  body.mobile-app-mode .search-input {
+    padding: 13px 15px 13px 40px;
+    border-radius: 14px;
+    font-size: 14px;
+  }
+  body.mobile-app-mode .search-card {
+    padding: 15px;
+    border-radius: 14px;
+  }
+  body.mobile-app-mode .search-card-pick {
+    min-width: 0;
+    flex-basis: 100%;
+    font-size: 14px;
+  }
+  body.mobile-app-mode .search-card-row {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  body.mobile-app-mode .trend-head,
+  body.mobile-app-mode .daily-section-head {
+    margin-bottom: 12px;
+  }
+  body.mobile-app-mode .trend-title,
+  body.mobile-app-mode .daily-section-title {
+    font-size: 28px;
+  }
+  body.mobile-app-mode .trend-game-head,
+  body.mobile-app-mode .trend-market-row,
+  body.mobile-app-mode .parlay-header,
+  body.mobile-app-mode .daily-slate-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  body.mobile-app-mode .trend-market-signal,
+  body.mobile-app-mode .parlay-meta {
+    text-align: left;
+  }
+  body.mobile-app-mode .daily-hero {
+    padding: 18px;
+    border-radius: 18px;
+  }
+  body.mobile-app-mode .daily-hero-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  body.mobile-app-mode .daily-clock-wrap {
+    min-width: 0;
+    text-align: left;
+  }
+  body.mobile-app-mode .daily-title {
+    font-size: 38px;
+    letter-spacing: 1px;
+  }
+  body.mobile-app-mode .daily-clock {
+    font-size: 30px;
+  }
+  body.mobile-app-mode .daily-podium-rank {
+    font-size: 92px;
+  }
+  body.mobile-app-mode .daily-ranking-row {
+    grid-template-columns: 32px minmax(0, 1fr) auto auto;
+    gap: 8px;
+    padding: 10px 11px;
+  }
+  body.mobile-app-mode .daily-ranking-row.header {
+    display: none;
+  }
+  body.mobile-app-mode .daily-ranking-source {
+    font-size: 18px;
+  }
+  body.mobile-app-mode .daily-ranking-metric {
+    font-size: 11px;
+  }
+  body.mobile-app-mode .daily-ranking-bar-wrap {
+    width: 42px;
+  }
+  body.mobile-app-mode .daily-slate-pick {
+    grid-template-columns: 1fr auto;
+    gap: 7px 10px;
+  }
+  body.mobile-app-mode .daily-slate-source,
+  body.mobile-app-mode .daily-slate-text {
+    grid-column: 1 / -1;
+    max-width: 100%;
+  }
+
+  body.mobile-app-mode .models-console {
+    gap: 14px;
+  }
+  body.mobile-app-mode .models-headline,
+  body.mobile-app-mode .models-workbench-grid {
+    grid-template-columns: 1fr;
+  }
+  body.mobile-app-mode .models-headline-title,
+  body[data-theme="light"].mobile-app-mode .models-headline-title,
+  body.mobile-app-mode .model-stage-title,
+  body[data-theme="light"].mobile-app-mode .model-stage-title {
+    font-size: 32px;
+  }
+  body.mobile-app-mode .models-headline-actions,
+  body.mobile-app-mode .model-results-actions,
+  body.mobile-app-mode .model-stage-extra.active,
+  body.mobile-app-mode .model-focus-extra.active {
+    flex-direction: column;
+    grid-template-columns: 1fr;
+  }
+  body.mobile-app-mode .models-rail {
+    position: static;
+    order: 2;
+    max-height: none;
+    padding: 14px;
+    border-radius: 14px;
+  }
+  body.mobile-app-mode .model-stage {
+    order: 1;
+    min-height: 0;
+    padding: 18px;
+    border-radius: 16px;
+  }
+  body.mobile-app-mode .model-stage-headline {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    text-align: left;
+  }
+  body.mobile-app-mode .model-stage-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 14px;
+    font-size: 30px;
+  }
+  body.mobile-app-mode .model-run-btn,
+  body.mobile-app-mode .model-stage-run {
+    width: 100%;
+  }
+  body.mobile-app-mode .model-chooser-dropdown {
+    left: 0;
+    right: auto;
+    min-width: min(406px, calc(100vw - 24px));
+  }
+
+  body.mobile-app-mode .table-wrap {
+    margin: 0 -2px;
+    -webkit-overflow-scrolling: touch;
+  }
+  body.mobile-app-mode table {
+    min-width: 720px;
+    font-size: 12px;
+  }
+  body.mobile-app-mode th,
+  body.mobile-app-mode td {
+    padding: 9px 10px;
+  }
+  body.mobile-app-mode .empty-state {
+    padding: 28px 16px;
+    font-size: 12px;
+  }
+
+  @media (max-width: 460px) {
+    body.mobile-app-mode .container,
+    body[data-theme="light"].mobile-app-mode .container {
+      width: 100%;
+      max-width: none;
+    }
+    body.mobile-app-mode .header-controls,
+    body.mobile-app-mode .refresh-status {
+      max-width: 196px;
+    }
+    body.mobile-app-mode .logo-title { font-size: 30px; }
+    body[data-theme="light"].mobile-app-mode .logo-title { font-size: 31px; }
+  }
 </style>
 <!-- Firebase SDK -->
 <script type="module">
@@ -4369,6 +4902,14 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
           <div class="toggle-track"><div class="toggle-thumb"></div></div>
           <span class="toggle-icon">&#9728;&#65039;</span>
           <span class="toggle-label" id="theme-label">DARK</span>
+        </button>
+        <button id="mobile-mode-toggle" class="mobile-mode-toggle" onclick="toggleMobileMode()" aria-label="Toggle mobile app view" aria-pressed="false" title="Mobile app view">
+          <svg class="mobile-phone-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="7" y="2.75" width="10" height="18.5" rx="2.4" stroke="currentColor" stroke-width="1.7"></rect>
+            <path d="M10 5.2h4M11 18.2h2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path>
+          </svg>
+          <div class="mobile-toggle-track"><div class="mobile-toggle-thumb"></div></div>
+          <span class="toggle-label" id="mobile-mode-label">DESK</span>
         </button>
         <button id="refresh-btn" class="refresh-btn" onclick="refreshAutoGrades()" aria-label="Auto-grade picks">REFRESH</button>
         <span id="sync-status" style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-left:8px;"></span>
@@ -10154,6 +10695,23 @@ function toggleTheme() {
   else { document.body.setAttribute('data-theme','light'); localStorage.setItem('pickledger_theme','light'); document.getElementById('theme-label').textContent='LIGHT'; }
 }
 
+const MOBILE_MODE_KEY = 'pickledger_mobile_mode';
+function applyMobileMode(enabled) {
+  document.body.classList.toggle('mobile-app-mode', enabled);
+  const btn = document.getElementById('mobile-mode-toggle');
+  const label = document.getElementById('mobile-mode-label');
+  if (btn) btn.setAttribute('aria-pressed', enabled ? 'true' : 'false');
+  if (label) label.textContent = enabled ? 'MOBILE' : 'DESK';
+}
+function initMobileMode() {
+  applyMobileMode(localStorage.getItem(MOBILE_MODE_KEY) === 'mobile');
+}
+function toggleMobileMode() {
+  const enabled = !document.body.classList.contains('mobile-app-mode');
+  localStorage.setItem(MOBILE_MODE_KEY, enabled ? 'mobile' : 'desktop');
+  applyMobileMode(enabled);
+}
+
 // ── Models Tab ──
 let pendingModelPicks = [];
 let pendingIplPrediction = null;
@@ -12336,6 +12894,7 @@ function disableDeprecatedSyncButtons() {
 }
 
 initTheme();
+initMobileMode();
 initializeNbaModelDate();
 initSportyTraderSyncMeta();
 initSportsgamblerSyncMeta();
