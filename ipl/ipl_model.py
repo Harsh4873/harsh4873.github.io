@@ -113,6 +113,7 @@ def run_ipl_model(
                 "player_name": p["player_name"],
                 "team": p["team"],
                 "role": p["role"],
+                "adjusted_score": round(float(p.get("adjusted_score", 0.0)), 1),
                 "fantasy_probability_pct": round(p["fantasy_probability_pct"], 1),
                 "selection_baseline_pct": round(p["selection_baseline_pct"], 1),
                 "priority_edge_pct": round(p["priority_edge_pct"], 1),

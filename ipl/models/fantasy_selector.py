@@ -49,10 +49,10 @@ TEAM_ALIASES = {
     "Royal Challengers Bangalore": "Royal Challengers Bengaluru",
 }
 ROLE_WEIGHTS = {
-    "Wicket-Keeper": 1.08,
-    "All-Rounder": 1.12,
+    "Wicket-Keeper": 1.00,
+    "All-Rounder": 1.06,
     "Batsman": 1.00,
-    "Bowler": 0.96,
+    "Bowler": 0.98,
 }
 ROLE_ENCODING = {
     "Wicket-Keeper": 3,
@@ -82,6 +82,18 @@ LEAN_PRIORITY_EDGE_PCT = 2.0
 BET_PRIORITY_EDGE_PCT = 4.0
 MIN_CONTEST_UNITS = 0.25
 MAX_CONTEST_UNITS = 1.5
+MODEL_POINT_WEIGHT_FLOOR = 0.20
+MODEL_POINT_WEIGHT_RANGE = 0.20
+MODEL_POINT_SAMPLE_MATCHES = 20.0
+RECENT_FORM_WEIGHT = 0.60
+CAREER_FORM_WEIGHT = 0.40
+EXPERIENCE_FACTOR_FLOOR = 0.72
+LOW_SAMPLE_CAP_MATCHES = 6.0
+LOW_SAMPLE_CAP_BASE_POINTS = 26.0
+LOW_SAMPLE_CAP_POINTS_PER_MATCH = 2.5
+FAVORED_TEAM_FACTOR = 1.03
+UNDERDOG_TEAM_FACTOR = 0.97
+TOSS_ROLE_FACTOR = 1.02
 
 try:
     import joblib
@@ -178,6 +190,18 @@ def _player_identity_key(name: str) -> str:
     return " ".join(tokens)
 
 
+def _has_leading_initial_history_match(
+    current_tokens: list[str],
+    candidate_tokens: list[str],
+) -> bool:
+    return (
+        len(current_tokens) >= 2
+        and len(candidate_tokens) > len(current_tokens)
+        and candidate_tokens[-len(current_tokens) :] == current_tokens
+        and all(len(token) <= 2 for token in candidate_tokens[: -len(current_tokens)])
+    )
+
+
 def _player_prefix(name: str) -> str:
     tokens = _player_tokens(name)
     if not tokens:
@@ -247,10 +271,12 @@ def _resolve_history_names(pool: pd.DataFrame, con: sqlite3.Connection) -> pd.Da
         current_prefix = _player_prefix(player_name)
         current_first = current_prefix[:1]
 
-        scored_candidates: list[tuple[int, int, int, str]] = []
+        scored_candidates: list[tuple[int, int, int, int, str]] = []
         for candidate in candidates_by_last.get(last_name, []):
+            candidate_tokens = _player_tokens(candidate)
             candidate_prefix = _player_prefix(candidate)
-            if current_first and candidate_prefix[:1] != current_first:
+            leading_initial_match = _has_leading_initial_history_match(tokens, candidate_tokens)
+            if not leading_initial_match and current_first and candidate_prefix[:1] != current_first:
                 continue
             overlap = sum(
                 1
@@ -263,6 +289,7 @@ def _resolve_history_names(pool: pd.DataFrame, con: sqlite3.Connection) -> pd.Da
             scored_candidates.append(
                 (
                     same_team_matches,
+                    1 if leading_initial_match else 0,
                     exact_prefix,
                     overlap * 100 + total_matches,
                     candidate,
@@ -271,7 +298,7 @@ def _resolve_history_names(pool: pd.DataFrame, con: sqlite3.Connection) -> pd.Da
 
         if scored_candidates:
             scored_candidates.sort(reverse=True)
-            resolved_names.append(scored_candidates[0][3])
+            resolved_names.append(scored_candidates[0][4])
         else:
             resolved_names.append(None)
 
@@ -706,6 +733,93 @@ def _add_matchup_and_opportunity_factors(snapshot: pd.DataFrame) -> pd.DataFrame
     opportunity_factor = np.where(bowling_roles & partial_quota, 1.02, opportunity_factor)
     opportunity_factor = np.where(bowling_roles & no_recent_overs, 0.95, opportunity_factor)
     result["bowling_opportunity_factor"] = opportunity_factor
+    return result
+
+
+def _numeric_column(frame: pd.DataFrame, column: str, default: float = 0.0) -> pd.Series:
+    if column not in frame.columns:
+        return pd.Series(default, index=frame.index, dtype=float)
+    return pd.to_numeric(frame[column], errors="coerce").fillna(default).astype(float)
+
+
+def _add_stabilized_point_estimates(
+    scoring: pd.DataFrame,
+    predicted_points: np.ndarray,
+) -> pd.DataFrame:
+    result = scoring.copy()
+    result["predicted_points"] = pd.Series(predicted_points, index=result.index).astype(float)
+
+    runs = _numeric_column(result, "avg_runs_last5")
+    fours = _numeric_column(result, "avg_fours_last5")
+    sixes = _numeric_column(result, "avg_sixes_last5")
+    wickets = _numeric_column(result, "avg_wickets_last5")
+    strike_rate = _numeric_column(result, "avg_sr_last5")
+    economy = _numeric_column(result, "avg_economy_last5")
+    career_points = _numeric_column(result, "avg_fantasy_points").clip(lower=0.0, upper=95.0)
+    matches_total = _numeric_column(result, "matches_played_total")
+
+    batting_points = runs + fours + (sixes * 2.0)
+    bowling_points = wickets * 25.0
+    strike_rate_points = np.select(
+        [
+            (batting_points >= 10.0) & (strike_rate > 170.0),
+            (batting_points >= 10.0) & (strike_rate > 150.0),
+            (batting_points >= 10.0) & (strike_rate >= 130.0),
+            (batting_points >= 10.0) & (strike_rate < 70.0) & (strike_rate > 0.0),
+        ],
+        [6.0, 4.0, 2.0, -2.0],
+        default=0.0,
+    )
+    economy_points = np.select(
+        [
+            (wickets > 0.0) & (economy > 0.0) & (economy < 6.0),
+            (wickets > 0.0) & (economy > 10.0),
+        ],
+        [2.0, -2.0],
+        default=0.0,
+    )
+    recent_form_points = pd.Series(
+        batting_points + bowling_points + strike_rate_points + economy_points,
+        index=result.index,
+    ).clip(lower=0.0, upper=95.0)
+
+    empirical_points = pd.Series(
+        np.where(
+            matches_total > 0.0,
+            (recent_form_points * RECENT_FORM_WEIGHT) + (career_points * CAREER_FORM_WEIGHT),
+            recent_form_points,
+        ),
+        index=result.index,
+    ).clip(lower=0.0, upper=95.0)
+    sample_ratio = (matches_total / MODEL_POINT_SAMPLE_MATCHES).clip(lower=0.0, upper=1.0)
+    model_weight = MODEL_POINT_WEIGHT_FLOOR + (MODEL_POINT_WEIGHT_RANGE * sample_ratio)
+    stabilized_points = (
+        result["predicted_points"] * model_weight
+        + empirical_points * (1.0 - model_weight)
+    ).clip(lower=0.0, upper=95.0)
+
+    low_sample_cap = (
+        LOW_SAMPLE_CAP_BASE_POINTS
+        + matches_total.clip(lower=0.0, upper=LOW_SAMPLE_CAP_MATCHES)
+        * LOW_SAMPLE_CAP_POINTS_PER_MATCH
+    )
+    stabilized_points = pd.Series(
+        np.where(
+            matches_total < LOW_SAMPLE_CAP_MATCHES,
+            np.minimum(stabilized_points, low_sample_cap),
+            stabilized_points,
+        ),
+        index=result.index,
+    )
+    experience_factor = (
+        EXPERIENCE_FACTOR_FLOOR
+        + ((1.0 - EXPERIENCE_FACTOR_FLOOR) * sample_ratio)
+    ).clip(lower=EXPERIENCE_FACTOR_FLOOR, upper=1.0)
+
+    result["recent_form_points"] = recent_form_points
+    result["empirical_points"] = empirical_points
+    result["stabilized_points"] = stabilized_points
+    result["experience_factor"] = experience_factor
     return result
 
 
@@ -1280,7 +1394,7 @@ def rank_match_players(
     scoring["role_encoded"] = scoring["role"].map(ROLE_ENCODING).fillna(1).astype(int)
     model_input = scoring[feature_list].apply(pd.to_numeric, errors="coerce").fillna(medians)
     predicted_points = model.predict(model_input)
-    scoring["predicted_points"] = predicted_points
+    scoring = _add_stabilized_point_estimates(scoring, predicted_points)
 
     from ipl.models.win_predictor import predict_winner
 
@@ -1304,18 +1418,23 @@ def rank_match_players(
         & (scoring["toss_team_flag"] == 0)
         & (scoring["toss_bat_flag"] == 1)
     )
-    toss_factor = np.where(batter_boost | bowler_boost, 1.03, toss_factor)
+    toss_factor = np.where(batter_boost | bowler_boost, TOSS_ROLE_FACTOR, toss_factor)
     scoring["toss_factor"] = toss_factor
-    scoring["win_factor"] = np.where(scoring["team"] == predicted_winner, 1.06, 0.94)
+    scoring["win_factor"] = np.where(
+        scoring["team"] == predicted_winner,
+        FAVORED_TEAM_FACTOR,
+        UNDERDOG_TEAM_FACTOR,
+    )
 
     scoring["adjusted_score"] = (
-        scoring["predicted_points"]
+        scoring["stabilized_points"]
         * scoring["role_weight"]
         * scoring["venue_factor"]
         * scoring["toss_factor"]
         * scoring["win_factor"]
         * scoring["matchup_factor"]
         * scoring["bowling_opportunity_factor"]
+        * scoring["experience_factor"]
     )
 
     min_score = float(scoring["adjusted_score"].min())
@@ -1421,6 +1540,7 @@ def run_match_fantasy_model(
                 "player_name": row.player_name,
                 "team": row.team,
                 "role": row.role,
+                "adjusted_score": float(row.adjusted_score),
                 "fantasy_probability_pct": float(row.fantasy_probability_pct),
                 "selection_baseline_pct": float(row.selection_baseline_pct),
                 "priority_edge_pct": float(row.priority_edge_pct),

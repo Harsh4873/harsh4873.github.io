@@ -150,6 +150,87 @@ def test_ipl_fantasy_xi_dedupes_player_aliases_before_selection():
     assert not {"K L Rahul", "KL Rahul"}.issubset(selected_names)
 
 
+def test_ipl_history_resolver_matches_extra_leading_initials(tmp_path):
+    from ipl.models.fantasy_selector import _resolve_history_names
+
+    db_path = tmp_path / "ipl_history_alias.db"
+    with sqlite3.connect(db_path) as con:
+        con.execute(
+            """
+            CREATE TABLE ipl_player_match_features (
+                player_name TEXT,
+                player_team TEXT
+            )
+            """
+        )
+        con.executemany(
+            "INSERT INTO ipl_player_match_features VALUES (?, ?)",
+            [
+                ("B Sai Sudharsan", "Gujarat Titans"),
+                ("B Sai Sudharsan", "Gujarat Titans"),
+                ("R Sai Kishore", "Gujarat Titans"),
+            ],
+        )
+        pool = pd.DataFrame(
+            [
+                {
+                    "player_name": "Sai Sudharsan",
+                    "team": "Gujarat Titans",
+                    "role": "Batsman",
+                    "is_overseas": 0,
+                }
+            ]
+        )
+        resolved = _resolve_history_names(pool, con)
+
+    assert resolved.loc[0, "history_player_name"] == "B Sai Sudharsan"
+
+
+def test_ipl_stabilized_points_do_not_let_fringe_wk_jump_star_batter():
+    from ipl.models.fantasy_selector import _add_stabilized_point_estimates
+
+    frame = pd.DataFrame(
+        [
+            {
+                "player_name": "Fringe Keeper",
+                "role": "Wicket-Keeper",
+                "avg_runs_last5": 10.5,
+                "avg_sr_last5": 111.8,
+                "avg_wickets_last5": 0.0,
+                "avg_economy_last5": 0.0,
+                "avg_fours_last5": 0.5,
+                "avg_sixes_last5": 1.0,
+                "matches_played_total": 5,
+                "avg_fantasy_points": 14.2,
+            },
+            {
+                "player_name": "Proven Opener",
+                "role": "Batsman",
+                "avg_runs_last5": 26.4,
+                "avg_sr_last5": 137.4,
+                "avg_wickets_last5": 0.0,
+                "avg_economy_last5": 0.0,
+                "avg_fours_last5": 3.6,
+                "avg_sixes_last5": 1.0,
+                "matches_played_total": 44,
+                "avg_fantasy_points": 41.2,
+            },
+        ]
+    )
+
+    adjusted = _add_stabilized_point_estimates(frame, pd.Series([46.0, 30.0]).to_numpy())
+    by_name = adjusted.set_index("player_name")
+
+    assert (
+        by_name.loc["Fringe Keeper", "predicted_points"]
+        > by_name.loc["Proven Opener", "predicted_points"]
+    )
+    assert (
+        by_name.loc["Fringe Keeper", "stabilized_points"]
+        < by_name.loc["Proven Opener", "stabilized_points"]
+    )
+
+
 def test_ipl_matchup_and_bowling_opportunity_factors_move_scores():
     from ipl.models.fantasy_selector import _add_matchup_and_opportunity_factors
 
