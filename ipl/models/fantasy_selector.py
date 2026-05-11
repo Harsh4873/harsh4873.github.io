@@ -62,6 +62,26 @@ ROLE_ENCODING = {
 }
 BATTER_ROLES = {"Batsman", "Wicket-Keeper", "All-Rounder"}
 BOWLER_ROLES = {"Bowler", "All-Rounder"}
+BOWLER_CREDIT_WICKET_TYPES = {
+    "bowled",
+    "caught",
+    "caught and bowled",
+    "hit wicket",
+    "lbw",
+    "stumped",
+}
+DREAM11_ROLE_LIMITS = {
+    "Wicket-Keeper": (1, 4),
+    "Batsman": (3, 6),
+    "All-Rounder": (1, 4),
+    "Bowler": (3, 6),
+}
+ROLE_ORDER = ("Wicket-Keeper", "Batsman", "All-Rounder", "Bowler")
+NO_MARKET_SOURCE = "none_wired"
+LEAN_PRIORITY_EDGE_PCT = 2.0
+BET_PRIORITY_EDGE_PCT = 4.0
+MIN_CONTEST_UNITS = 0.25
+MAX_CONTEST_UNITS = 1.5
 
 try:
     import joblib
@@ -129,6 +149,14 @@ def _parse_dates(series: pd.Series) -> pd.Series:
 
 def _table_columns(con: sqlite3.Connection, table_name: str) -> set[str]:
     return {row[1] for row in con.execute(f"PRAGMA table_info({table_name})").fetchall()}
+
+
+def _table_exists(con: sqlite3.Connection, table_name: str) -> bool:
+    row = con.execute(
+        "SELECT 1 FROM sqlite_master WHERE type='table' AND name=? LIMIT 1",
+        (table_name,),
+    ).fetchone()
+    return row is not None
 
 
 def _placeholders(count: int) -> str:
@@ -450,6 +478,350 @@ def _load_venue_aggregates(
     )
 
 
+def _load_matchup_aggregates(
+    con: sqlite3.Connection,
+    player_names: list[str],
+) -> pd.DataFrame:
+    columns = [
+        "history_player_name",
+        "opponent_team",
+        "h2h_batting_balls",
+        "h2h_batting_runs",
+        "h2h_batting_dismissals",
+        "h2h_bowling_balls",
+        "h2h_bowling_runs",
+        "h2h_bowling_wickets",
+    ]
+    if not player_names or not _table_exists(con, "ipl_deliveries"):
+        return pd.DataFrame(columns=columns)
+
+    wicket_types = tuple(sorted(BOWLER_CREDIT_WICKET_TYPES))
+    wicket_placeholders = _placeholders(len(wicket_types))
+    batting = pd.read_sql_query(
+        f"""
+        SELECT
+            striker AS history_player_name,
+            bowling_team AS opponent_team,
+            SUM(CASE WHEN COALESCE(wides, 0) = 0 THEN 1 ELSE 0 END) AS h2h_batting_balls,
+            SUM(COALESCE(runs_off_bat, 0)) AS h2h_batting_runs,
+            SUM(
+                CASE
+                    WHEN player_dismissed = striker
+                     AND LOWER(COALESCE(wicket_type, '')) IN ({wicket_placeholders})
+                    THEN 1 ELSE 0
+                END
+            ) AS h2h_batting_dismissals
+        FROM ipl_deliveries
+        WHERE striker IN ({_placeholders(len(player_names))})
+          AND bowling_team IS NOT NULL
+        GROUP BY striker, bowling_team
+        """,
+        con,
+        params=wicket_types + tuple(player_names),
+    )
+    bowling = pd.read_sql_query(
+        f"""
+        SELECT
+            bowler AS history_player_name,
+            batting_team AS opponent_team,
+            SUM(
+                CASE
+                    WHEN COALESCE(wides, 0) = 0 AND COALESCE(noballs, 0) = 0
+                    THEN 1 ELSE 0
+                END
+            ) AS h2h_bowling_balls,
+            SUM(COALESCE(runs_off_bat, 0) + COALESCE(wides, 0) + COALESCE(noballs, 0)) AS h2h_bowling_runs,
+            SUM(
+                CASE
+                    WHEN player_dismissed IS NOT NULL
+                     AND LOWER(COALESCE(wicket_type, '')) IN ({wicket_placeholders})
+                    THEN 1 ELSE 0
+                END
+            ) AS h2h_bowling_wickets
+        FROM ipl_deliveries
+        WHERE bowler IN ({_placeholders(len(player_names))})
+          AND batting_team IS NOT NULL
+        GROUP BY bowler, batting_team
+        """,
+        con,
+        params=wicket_types + tuple(player_names),
+    )
+
+    for frame in (batting, bowling):
+        if not frame.empty:
+            frame["history_player_name"] = frame["history_player_name"].map(_normalize_text)
+            frame["opponent_team"] = frame["opponent_team"].map(_canonical_team)
+
+    if batting.empty and bowling.empty:
+        return pd.DataFrame(columns=columns)
+    if batting.empty:
+        matchup = bowling
+    elif bowling.empty:
+        matchup = batting
+    else:
+        matchup = batting.merge(
+            bowling,
+            on=["history_player_name", "opponent_team"],
+            how="outer",
+        )
+    for column in columns:
+        if column not in matchup.columns:
+            matchup[column] = 0.0
+    return matchup[columns]
+
+
+def _load_bowling_opportunity(
+    con: sqlite3.Connection,
+    player_names: list[str],
+) -> pd.DataFrame:
+    columns = ["history_player_name", "last_match_overs", "last_match_balls_bowled"]
+    if not player_names or not _table_exists(con, "ipl_player_match_features"):
+        return pd.DataFrame(columns=columns)
+
+    rows = pd.read_sql_query(
+        f"""
+        SELECT
+            f.player_name AS history_player_name,
+            f.match_id,
+            m.date,
+            f.overs_bowled,
+            f.balls_bowled
+        FROM ipl_player_match_features f
+        JOIN ipl_matches m
+          ON m.match_id = f.match_id
+        WHERE f.player_name IN ({_placeholders(len(player_names))})
+        """,
+        con,
+        params=tuple(player_names),
+    )
+    if rows.empty:
+        return pd.DataFrame(columns=columns)
+
+    rows["date"] = _parse_dates(rows["date"])
+    rows = rows.dropna(subset=["date"]).sort_values(["history_player_name", "date", "match_id"])
+    latest = rows.groupby("history_player_name", as_index=False).tail(1).copy()
+    latest["history_player_name"] = latest["history_player_name"].map(_normalize_text)
+    latest["last_match_overs"] = pd.to_numeric(latest["overs_bowled"], errors="coerce").fillna(0.0)
+    latest["last_match_balls_bowled"] = pd.to_numeric(
+        latest["balls_bowled"], errors="coerce"
+    ).fillna(0.0)
+    return latest[columns].reset_index(drop=True)
+
+
+def _add_matchup_and_opportunity_factors(snapshot: pd.DataFrame) -> pd.DataFrame:
+    result = snapshot.copy()
+    matchup_cols = [
+        "h2h_batting_balls",
+        "h2h_batting_runs",
+        "h2h_batting_dismissals",
+        "h2h_bowling_balls",
+        "h2h_bowling_runs",
+        "h2h_bowling_wickets",
+        "last_match_overs",
+        "last_match_balls_bowled",
+    ]
+    for column in matchup_cols:
+        if column not in result.columns:
+            result[column] = 0.0
+        else:
+            result[column] = pd.to_numeric(result[column], errors="coerce").fillna(0.0)
+
+    batting_balls = result["h2h_batting_balls"].clip(lower=0.0)
+    bowling_balls = result["h2h_bowling_balls"].clip(lower=0.0)
+    batting_rpb = np.divide(
+        result["h2h_batting_runs"],
+        batting_balls,
+        out=np.full(len(result), 1.15, dtype=float),
+        where=batting_balls.to_numpy(dtype=float) > 0,
+    )
+    batting_dismissal_rate = np.divide(
+        result["h2h_batting_dismissals"],
+        batting_balls,
+        out=np.full(len(result), 0.045, dtype=float),
+        where=batting_balls.to_numpy(dtype=float) > 0,
+    )
+    bowling_rpb = np.divide(
+        result["h2h_bowling_runs"],
+        bowling_balls,
+        out=np.full(len(result), 1.15, dtype=float),
+        where=bowling_balls.to_numpy(dtype=float) > 0,
+    )
+    bowling_wicket_rate = np.divide(
+        result["h2h_bowling_wickets"],
+        bowling_balls,
+        out=np.full(len(result), 0.045, dtype=float),
+        where=bowling_balls.to_numpy(dtype=float) > 0,
+    )
+
+    batting_delta = np.clip(
+        ((batting_rpb - 1.15) * 0.08) - ((batting_dismissal_rate - 0.045) * 0.90),
+        -0.08,
+        0.08,
+    )
+    bowling_delta = np.clip(
+        ((1.15 - bowling_rpb) * 0.05) + ((bowling_wicket_rate - 0.045) * 1.10),
+        -0.08,
+        0.08,
+    )
+    role = result["role"].fillna("")
+    batting_role = role.isin(BATTER_ROLES).to_numpy(dtype=float)
+    bowling_role = role.isin(BOWLER_ROLES).to_numpy(dtype=float)
+    role_denominator = np.maximum(batting_role + bowling_role, 1.0)
+    blended_delta = ((batting_delta * batting_role) + (bowling_delta * bowling_role)) / role_denominator
+    evidence = np.minimum(1.0, np.sqrt((batting_balls + bowling_balls).to_numpy(dtype=float) / 72.0))
+    result["matchup_evidence_balls"] = (batting_balls + bowling_balls).astype(float)
+    result["matchup_factor"] = np.clip(1.0 + (blended_delta * evidence), 0.92, 1.08)
+
+    opportunity_factor = np.ones(len(result), dtype=float)
+    bowling_roles = role.isin(BOWLER_ROLES).to_numpy(dtype=bool)
+    full_quota = (result["last_match_overs"] >= 3.5).to_numpy(dtype=bool)
+    partial_quota = (
+        (result["last_match_overs"] >= 2.0) & (result["last_match_overs"] < 3.5)
+    ).to_numpy(dtype=bool)
+    no_recent_overs = (
+        (result["last_match_overs"] == 0)
+        & (result["matches_played_total"] > 0)
+    ).to_numpy(dtype=bool)
+    opportunity_factor = np.where(bowling_roles & full_quota, 1.06, opportunity_factor)
+    opportunity_factor = np.where(bowling_roles & partial_quota, 1.02, opportunity_factor)
+    opportunity_factor = np.where(bowling_roles & no_recent_overs, 0.95, opportunity_factor)
+    result["bowling_opportunity_factor"] = opportunity_factor
+    return result
+
+
+def decision_from_priority_edge(priority_edge_pct: float | int | None) -> str:
+    try:
+        edge = float(priority_edge_pct)
+    except (TypeError, ValueError):
+        return "PASS"
+    if edge >= BET_PRIORITY_EDGE_PCT:
+        return "BET"
+    if edge >= LEAN_PRIORITY_EDGE_PCT:
+        return "LEAN"
+    return "PASS"
+
+
+def contest_units_from_priority_edge(priority_edge_pct: float | int | None) -> float:
+    if decision_from_priority_edge(priority_edge_pct) == "PASS":
+        return 0.0
+    edge = max(float(priority_edge_pct), LEAN_PRIORITY_EDGE_PCT)
+    curve = min(1.0, (edge - LEAN_PRIORITY_EDGE_PCT) / 28.0)
+    units = MIN_CONTEST_UNITS + (curve * (MAX_CONTEST_UNITS - MIN_CONTEST_UNITS))
+    if decision_from_priority_edge(priority_edge_pct) == "LEAN":
+        units *= 0.60
+    return round(min(MAX_CONTEST_UNITS, max(MIN_CONTEST_UNITS, units)), 2)
+
+
+def _role_name(value: Any) -> str:
+    role = _normalize_role(value) or "Batsman"
+    return role if role in DREAM11_ROLE_LIMITS else "Batsman"
+
+
+def _role_counts(frame: pd.DataFrame) -> dict[str, int]:
+    counts = frame["role"].map(_role_name).value_counts().to_dict()
+    return {role: int(counts.get(role, 0)) for role in ROLE_ORDER}
+
+
+def _lineup_constraints_summary(
+    selected: pd.DataFrame,
+    max_per_team: int = 7,
+) -> dict[str, Any]:
+    role_counts = _role_counts(selected)
+    team_counts = {str(team): int(count) for team, count in selected["team"].value_counts().items()}
+    role_limits = {
+        role: {"min": limits[0], "max": limits[1]}
+        for role, limits in DREAM11_ROLE_LIMITS.items()
+    }
+    role_ok = all(
+        limits[0] <= role_counts.get(role, 0) <= limits[1]
+        for role, limits in DREAM11_ROLE_LIMITS.items()
+    )
+    team_ok = all(count <= max_per_team for count in team_counts.values())
+    return {
+        "role_counts": role_counts,
+        "role_limits": role_limits,
+        "team_counts": team_counts,
+        "max_per_team": max_per_team,
+        "satisfied": bool(role_ok and team_ok and len(selected) == 11),
+    }
+
+
+def _select_valid_fantasy_xi(
+    ranked: pd.DataFrame,
+    max_per_team: int = 7,
+) -> pd.DataFrame:
+    frame = ranked.copy().reset_index(drop=True)
+    if len(frame) < 11:
+        raise ValueError(f"Expected at least 11 candidate players, found {len(frame)}")
+
+    frame["_role_key"] = frame["role"].map(_role_name)
+    teams = sorted(str(team) for team in frame["team"].dropna().unique())
+    team_index = {team: index for index, team in enumerate(teams)}
+    role_index = {role: index for index, role in enumerate(ROLE_ORDER)}
+
+    available_role_counts = frame["_role_key"].value_counts().to_dict()
+    role_minimums = tuple(
+        min(DREAM11_ROLE_LIMITS[role][0], int(available_role_counts.get(role, 0)))
+        for role in ROLE_ORDER
+    )
+    role_maximums = tuple(
+        min(DREAM11_ROLE_LIMITS[role][1], int(available_role_counts.get(role, 0)))
+        for role in ROLE_ORDER
+    )
+
+    # State = (players, role_counts_tuple, team_counts_tuple); value = (score, indices)
+    zero_roles = tuple(0 for _ in ROLE_ORDER)
+    zero_teams = tuple(0 for _ in teams)
+    states: dict[tuple[int, tuple[int, ...], tuple[int, ...]], tuple[float, tuple[int, ...]]] = {
+        (0, zero_roles, zero_teams): (0.0, ())
+    }
+
+    for idx, row in frame.iterrows():
+        role_pos = role_index[str(row["_role_key"])]
+        team_pos = team_index[str(row["team"])]
+        score = float(row["adjusted_score"])
+        next_states = dict(states)
+        for (count, role_counts, team_counts), (total_score, indices) in states.items():
+            if count >= 11:
+                continue
+            if role_counts[role_pos] >= role_maximums[role_pos]:
+                continue
+            if team_counts[team_pos] >= max_per_team:
+                continue
+
+            new_role_counts = list(role_counts)
+            new_team_counts = list(team_counts)
+            new_role_counts[role_pos] += 1
+            new_team_counts[team_pos] += 1
+            new_key = (count + 1, tuple(new_role_counts), tuple(new_team_counts))
+            new_score = total_score + score
+            previous = next_states.get(new_key)
+            if previous is None or new_score > previous[0]:
+                next_states[new_key] = (new_score, indices + (idx,))
+        states = next_states
+
+    best: tuple[float, tuple[int, ...]] | None = None
+    for (count, role_counts, team_counts), candidate in states.items():
+        if count != 11:
+            continue
+        if any(role_counts[index] < role_minimums[index] for index in range(len(ROLE_ORDER))):
+            continue
+        if any(team_count > max_per_team for team_count in team_counts):
+            continue
+        if best is None or candidate[0] > best[0]:
+            best = candidate
+
+    if best is None:
+        selected = frame.head(11).copy()
+    else:
+        selected = frame.loc[list(best[1])].copy()
+    return selected.drop(columns=["_role_key"], errors="ignore").sort_values(
+        ["adjusted_score", "fantasy_probability_pct", "player_name"],
+        ascending=[False, False, True],
+        kind="mergesort",
+    ).reset_index(drop=True)
+
+
 def _load_role_lookup(con: sqlite3.Connection) -> dict[str, int]:
     rows = con.execute(
         """
@@ -642,6 +1014,8 @@ def build_prematch_player_snapshot(
         rolling = _load_latest_rolling(con, history_names)
         career = _load_career_aggregates(con, history_names)
         venue_history = _load_venue_aggregates(con, history_names, venue_name)
+        matchup_history = _load_matchup_aggregates(con, history_names)
+        bowling_opportunity = _load_bowling_opportunity(con, history_names)
     finally:
         con.close()
 
@@ -666,6 +1040,16 @@ def build_prematch_player_snapshot(
     )
     snapshot = snapshot.merge(
         venue_history.rename(columns={"player_name": "history_player_name"}),
+        on="history_player_name",
+        how="left",
+    )
+    snapshot = snapshot.merge(
+        matchup_history,
+        on=["history_player_name", "opponent_team"],
+        how="left",
+    )
+    snapshot = snapshot.merge(
+        bowling_opportunity,
         on="history_player_name",
         how="left",
     )
@@ -720,6 +1104,8 @@ def build_prematch_player_snapshot(
     for column in zero_fill:
         snapshot[column] = snapshot[column].fillna(0.0)
 
+    snapshot = _add_matchup_and_opportunity_factors(snapshot)
+
     return snapshot[
         [
             "player_name",
@@ -759,6 +1145,17 @@ def build_prematch_player_snapshot(
             "venue_matches",
             "venue_avg_fantasy_points",
             "role_weight",
+            "h2h_batting_balls",
+            "h2h_batting_runs",
+            "h2h_batting_dismissals",
+            "h2h_bowling_balls",
+            "h2h_bowling_runs",
+            "h2h_bowling_wickets",
+            "matchup_evidence_balls",
+            "matchup_factor",
+            "last_match_overs",
+            "last_match_balls_bowled",
+            "bowling_opportunity_factor",
         ]
     ].reset_index(drop=True)
 
@@ -889,6 +1286,8 @@ def rank_match_players(
         * scoring["venue_factor"]
         * scoring["toss_factor"]
         * scoring["win_factor"]
+        * scoring["matchup_factor"]
+        * scoring["bowling_opportunity_factor"]
     )
 
     min_score = float(scoring["adjusted_score"].min())
@@ -900,9 +1299,25 @@ def rank_match_players(
             100.0 * (scoring["adjusted_score"] - min_score) / (max_score - min_score)
         )
     scoring["fantasy_probability_pct"] = scoring["fantasy_probability_pct"].clip(0.0, 100.0)
-    scoring["decision"] = np.where(scoring["fantasy_probability_pct"] >= 40.0, "BET", "PASS")
-    scoring["captain_candidate_score"] = scoring["adjusted_score"]
-    scoring["vice_captain_candidate_score"] = scoring["adjusted_score"] * 0.92
+    ordered_for_baseline = scoring.sort_values(
+        ["adjusted_score", "fantasy_probability_pct", "player_name"],
+        ascending=[False, False, True],
+        kind="mergesort",
+    ).reset_index(drop=True)
+    if len(ordered_for_baseline) > 11:
+        replacement_probability = float(ordered_for_baseline.loc[11, "fantasy_probability_pct"])
+    else:
+        replacement_probability = float(ordered_for_baseline["fantasy_probability_pct"].min())
+    scoring["selection_baseline_pct"] = replacement_probability
+    scoring["priority_edge_pct"] = scoring["fantasy_probability_pct"] - replacement_probability
+    scoring["decision"] = scoring["priority_edge_pct"].map(decision_from_priority_edge)
+    scoring["units"] = scoring["priority_edge_pct"].map(contest_units_from_priority_edge)
+    scoring["market_source"] = NO_MARKET_SOURCE
+    scoring["has_market_price"] = False
+    scoring["market_probability_pct"] = None
+    scoring["market_edge_pct"] = None
+    scoring["captain_candidate_score"] = scoring["adjusted_score"] * 2.0
+    scoring["vice_captain_candidate_score"] = scoring["adjusted_score"] * 1.5
 
     return scoring[
         [
@@ -911,7 +1326,18 @@ def rank_match_players(
             "role",
             "adjusted_score",
             "fantasy_probability_pct",
+            "selection_baseline_pct",
+            "priority_edge_pct",
             "decision",
+            "units",
+            "market_source",
+            "has_market_price",
+            "market_probability_pct",
+            "market_edge_pct",
+            "matchup_evidence_balls",
+            "matchup_factor",
+            "last_match_overs",
+            "bowling_opportunity_factor",
             "captain_candidate_score",
             "vice_captain_candidate_score",
         ]
@@ -931,92 +1357,59 @@ def run_match_fantasy_model(
     db_path: str | Path,
 ) -> dict[str, Any]:
     ranked = rank_match_players(team1, team2, venue, toss_winner, toss_decision, db_path)
-
-    def _ordered(frame: pd.DataFrame, decision: str) -> pd.DataFrame:
-        subset = frame.loc[frame["decision"] == decision].copy()
-        return subset.sort_values(
-            ["adjusted_score", "fantasy_probability_pct", "player_name"],
-            ascending=[False, False, True],
-            kind="mergesort",
-        ).reset_index(drop=True)
-
-    def _enforce_team_cap(
-        selected: pd.DataFrame,
-        remaining: pd.DataFrame,
-        max_per_team: int = 7,
-    ) -> pd.DataFrame:
-        selected = selected.copy().reset_index(drop=True)
-        remaining = remaining.copy().reset_index(drop=True)
-        while True:
-            counts = selected["team"].value_counts()
-            overfull = [team_name for team_name, count in counts.items() if count > max_per_team]
-            if not overfull:
-                break
-            over_team = overfull[0]
-            replacement_pool = remaining.loc[remaining["team"] != over_team].sort_values(
-                ["adjusted_score", "fantasy_probability_pct", "player_name"],
-                ascending=[False, False, True],
-                kind="mergesort",
-            )
-            if replacement_pool.empty:
-                raise ValueError(f"Unable to enforce max {max_per_team} players from one team")
-
-            drop_idx = (
-                selected.loc[selected["team"] == over_team]
-                .sort_values(
-                    ["adjusted_score", "fantasy_probability_pct", "player_name"],
-                    ascending=[True, True, False],
-                    kind="mergesort",
-                )
-                .index[0]
-            )
-            replacement = replacement_pool.iloc[0]
-            selected = selected.drop(index=drop_idx).reset_index(drop=True)
-            remaining = remaining.drop(index=replacement.name).reset_index(drop=True)
-            selected = pd.concat([selected, replacement.to_frame().T], ignore_index=True)
-        return selected
-
-    bet_rows = _ordered(ranked, "BET")
-    pass_rows = _ordered(ranked, "PASS")
-
-    selected = bet_rows.head(11).copy()
-    extra_bet = bet_rows.iloc[len(selected) :].copy()
-    if len(selected) < 11:
-        fill_rows = pass_rows.head(11 - len(selected)).copy()
-        selected = pd.concat([selected, fill_rows], ignore_index=True)
-        remaining = pd.concat([extra_bet, pass_rows.iloc[len(fill_rows) :].copy()], ignore_index=True)
-    else:
-        remaining = pd.concat([extra_bet, pass_rows], ignore_index=True)
-
-    selected = _enforce_team_cap(selected, remaining, max_per_team=7)
-    selected = selected.sort_values(
-        ["adjusted_score", "fantasy_probability_pct", "player_name"],
-        ascending=[False, False, True],
-        kind="mergesort",
-    ).reset_index(drop=True)
+    selected = _select_valid_fantasy_xi(ranked, max_per_team=7)
 
     if len(selected) != 11:
         raise ValueError(f"Fantasy selector returned {len(selected)} players instead of 11")
     team_counts = selected["team"].value_counts().to_dict()
     if any(count > 7 for count in team_counts.values()):
         raise ValueError(f"Max-7 team rule violated: {team_counts}")
+    lineup_constraints = _lineup_constraints_summary(selected, max_per_team=7)
 
     selected["captain"] = False
     selected["vice_captain"] = False
     selected.loc[selected.index[0], "captain"] = True
     selected.loc[selected.index[1], "vice_captain"] = True
+    selected["captain_multiplier"] = 1.0
+    selected.loc[selected["captain"], "captain_multiplier"] = 2.0
+    selected.loc[selected["vice_captain"], "captain_multiplier"] = 1.5
+    selected["captaincy_boost_points"] = selected["adjusted_score"] * (
+        selected["captain_multiplier"] - 1.0
+    )
 
     return {
         "match": f"{_canonical_team(team1)} vs {_canonical_team(team2)}",
+        "market": {
+            "has_market": False,
+            "source": NO_MARKET_SOURCE,
+            "note": (
+                "No Dream11/MyTeam11 ownership, salary, contest-cost, or player-prop "
+                "market source is wired; IPL fantasy sizing uses model priority only."
+            ),
+        },
+        "lineup_constraints": lineup_constraints,
         "selected_players": [
             {
                 "player_name": row.player_name,
                 "team": row.team,
                 "role": row.role,
                 "fantasy_probability_pct": float(row.fantasy_probability_pct),
+                "selection_baseline_pct": float(row.selection_baseline_pct),
+                "priority_edge_pct": float(row.priority_edge_pct),
                 "decision": row.decision,
+                "units": float(row.units),
+                "market_source": row.market_source,
+                "has_market_price": bool(row.has_market_price),
+                "market_probability_pct": row.market_probability_pct,
+                "market_edge_pct": row.market_edge_pct,
+                "matchup_evidence_balls": float(row.matchup_evidence_balls),
+                "matchup_factor": float(row.matchup_factor),
+                "last_match_overs": float(row.last_match_overs),
+                "bowling_opportunity_factor": float(row.bowling_opportunity_factor),
                 "captain": bool(row.captain),
                 "vice_captain": bool(row.vice_captain),
+                "captain_multiplier": float(row.captain_multiplier),
+                "captaincy_boost_points": float(row.captaincy_boost_points),
             }
             for row in selected.itertuples(index=False)
         ],

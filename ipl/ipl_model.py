@@ -106,15 +106,30 @@ def run_ipl_model(
         "team1_win_prob": round(team1_win_prob, 4),
         "team2_win_prob": round(team2_win_prob, 4),
         "confidence": confidence,
+        "market": fantasy.get("market", {}),
+        "lineup_constraints": fantasy.get("lineup_constraints", {}),
         "selected_players": [
             {
                 "player_name": p["player_name"],
                 "team": p["team"],
                 "role": p["role"],
                 "fantasy_probability_pct": round(p["fantasy_probability_pct"], 1),
+                "selection_baseline_pct": round(p["selection_baseline_pct"], 1),
+                "priority_edge_pct": round(p["priority_edge_pct"], 1),
                 "decision": p["decision"],
+                "units": round(p["units"], 2),
+                "market_source": p["market_source"],
+                "has_market_price": p["has_market_price"],
+                "market_probability_pct": p["market_probability_pct"],
+                "market_edge_pct": p["market_edge_pct"],
+                "matchup_evidence_balls": round(p["matchup_evidence_balls"], 1),
+                "matchup_factor": round(p["matchup_factor"], 3),
+                "last_match_overs": round(p["last_match_overs"], 1),
+                "bowling_opportunity_factor": round(p["bowling_opportunity_factor"], 3),
                 "is_captain": p["captain"],
                 "is_vice_captain": p["vice_captain"],
+                "captain_multiplier": p["captain_multiplier"],
+                "captaincy_boost_points": round(p["captaincy_boost_points"], 2),
             }
             for p in players
         ],
@@ -147,7 +162,8 @@ def format_ipl_output(result: dict[str, Any]) -> str:
             emoji = "⬜"
         lines.append(
             f"{emoji} {player['player_name']} | {player['team']} | {player['role']} | "
-            f"{player['fantasy_probability_pct']:.1f}% | {player['decision']}"
+            f"{player['fantasy_probability_pct']:.1f}% | edge {player['priority_edge_pct']:+.1f} | "
+            f"{player['decision']} | {player['units']:.2f}u"
         )
 
     return "\n".join(lines)
