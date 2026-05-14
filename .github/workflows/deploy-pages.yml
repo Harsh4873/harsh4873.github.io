@@ -32,6 +32,7 @@ jobs:
           rm -rf _site
           mkdir -p _site/ipl _site/data
           cp index.html _site/
+          cp favicon.svg _site/
           cp .nojekyll _site/
           cp ipl/ipl_styles.css _site/ipl/
           cp ipl/ipl_frontend.js _site/ipl/
