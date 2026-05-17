@@ -268,7 +268,33 @@ def _write_cache(path: str, profiles: dict) -> None:
         json.dump(payload, file_obj, indent=2)
 
 
+def _parse_ratings_rows(rows) -> dict:
+    ratings = {}
+    for row in rows:
+        team_name = _extract_team_name_from_row(row).replace("*", "").strip()
+        team_abbr = BBREF_NAME_MAP.get(team_name)
+        if team_abbr is None:
+            continue
+        ratings[team_abbr] = {
+            "ORtg": _safe_float(_extract_stat_text(row, "off_rtg", "ORtg")),
+            "DRtg": _safe_float(_extract_stat_text(row, "def_rtg", "DRtg")),
+            "NRtg": _safe_float(_extract_stat_text(row, "net_rtg", "NRtg")),
+            "Pace": _safe_float(_extract_stat_text(row, "pace", "Pace")),
+            "W":    _safe_int(_extract_stat_text(row, "wins", "W")),
+            "L":    _safe_int(_extract_stat_text(row, "losses", "L")),
+            "MOV":  _safe_float(_extract_stat_text(row, "mov", "MOV")),
+        }
+    return ratings
+
+
 def scrape_bball_ref_ratings(season: int = 2026) -> dict:
+    """Pull team ratings from BBRef, preferring the dedicated ratings page.
+
+    Recent WNBA seasons are sometimes served only through the main season
+    page's ``advanced-team`` table — the dedicated ``{season}_ratings.html``
+    URL 404s for a while after the season opens. We fall back to that table
+    so early-season runs still get NRtg / ORtg / DRtg / Pace.
+    """
     try:
         time.sleep(2)
         response = requests.get(
@@ -277,34 +303,35 @@ def scrape_bball_ref_ratings(season: int = 2026) -> dict:
             timeout=20,
         )
         response.raise_for_status()
-
         soup = BeautifulSoup(response.text, "html.parser")
         table = _find_table(soup, ["ratings"])
         if table is None:
             raise ValueError("ratings table not found")
-
         rows = table.find_all("tr", attrs={"data-row-index": True})
-        ratings = {}
-
-        for row in rows:
-            team_name = _extract_team_name_from_row(row).replace("*", "").strip()
-            team_abbr = BBREF_NAME_MAP.get(team_name)
-            if team_abbr is None:
-                continue
-
-            ratings[team_abbr] = {
-                "ORtg": _safe_float(_extract_stat_text(row, "off_rtg", "ORtg")),
-                "DRtg": _safe_float(_extract_stat_text(row, "def_rtg", "DRtg")),
-                "NRtg": _safe_float(_extract_stat_text(row, "net_rtg", "NRtg")),
-                "Pace": _safe_float(_extract_stat_text(row, "pace", "Pace")),
-                "W": _safe_int(_extract_stat_text(row, "wins", "W")),
-                "L": _safe_int(_extract_stat_text(row, "losses", "L")),
-                "MOV": _safe_float(_extract_stat_text(row, "mov", "MOV")),
-            }
-
-        return ratings
+        ratings = _parse_ratings_rows(rows)
+        if ratings:
+            return ratings
+        raise ValueError("ratings table empty")
     except Exception as e:
-        print(f"[WNBA] BBRef ratings scrape failed: {e}")
+        print(f"[WNBA] BBRef ratings page unavailable ({e}); falling back to advanced-team.")
+
+    try:
+        time.sleep(2)
+        response = requests.get(
+            BBREF_SEASON_URL.format(season=season),
+            headers={"User-Agent": BBREF_USER_AGENT},
+            timeout=20,
+        )
+        response.raise_for_status()
+        soup = BeautifulSoup(response.text, "html.parser")
+        table = _find_table(soup, ["advanced-team", "advanced_team"])
+        if table is None:
+            raise ValueError("advanced-team table not found")
+        tbody = table.find("tbody") or table
+        rows = [r for r in tbody.find_all("tr") if "thead" not in (r.get("class") or [])]
+        return _parse_ratings_rows(rows)
+    except Exception as e:
+        print(f"[WNBA] BBRef advanced-team fallback failed: {e}")
         return {}
 
 

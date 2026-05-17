@@ -338,15 +338,23 @@ TEAM_ABBREVIATION_ALIASES = {
     "NOP": {"NO"},
     "NO": {"NOP"},
     "GSW": {"GS"},
-    "GS": {"GSW"},
+    "GS": {"GSW", "GSV"},
+    "GSV": {"GS"},
     "PHX": {"PHO"},
     "PHO": {"PHX"},
     "SAS": {"SA"},
     "SA": {"SAS"},
     "NYK": {"NY"},
-    "NY": {"NYK"},
+    "NY": {"NYK", "NYL"},
+    "NYL": {"NY"},
     "BKN": {"BRK"},
     "BRK": {"BKN"},
+    "CON": {"CONN"},
+    "CONN": {"CON"},
+    "LV": {"LVA"},
+    "LVA": {"LV"},
+    "LA": {"LAS"},
+    "LAS": {"LA"},
 }
 _ledger_state_lock = threading.Lock()
 _firestore_client_lock = threading.Lock()
@@ -2740,6 +2748,85 @@ def _parse_nba_playoffs_output(output: str) -> list[dict[str, Any]]:
     return picks
 
 
+WNBA_TEAM_NAME_ALIASES = {
+    "ATL": "Atlanta Dream",
+    "ATLANTA": "Atlanta Dream",
+    "DREAM": "Atlanta Dream",
+    "ATLANTA DREAM": "Atlanta Dream",
+    "CHI": "Chicago Sky",
+    "CHICAGO": "Chicago Sky",
+    "SKY": "Chicago Sky",
+    "CHICAGO SKY": "Chicago Sky",
+    "CON": "Connecticut Sun",
+    "CONN": "Connecticut Sun",
+    "CONNECTICUT": "Connecticut Sun",
+    "SUN": "Connecticut Sun",
+    "CONNECTICUT SUN": "Connecticut Sun",
+    "DAL": "Dallas Wings",
+    "DALLAS": "Dallas Wings",
+    "WINGS": "Dallas Wings",
+    "DALLAS WINGS": "Dallas Wings",
+    "GSV": "Golden State Valkyries",
+    "GS": "Golden State Valkyries",
+    "GOLDEN STATE": "Golden State Valkyries",
+    "VALKYRIES": "Golden State Valkyries",
+    "GOLDEN STATE VALKYRIES": "Golden State Valkyries",
+    "IND": "Indiana Fever",
+    "INDIANA": "Indiana Fever",
+    "FEVER": "Indiana Fever",
+    "INDIANA FEVER": "Indiana Fever",
+    "LA": "Los Angeles Sparks",
+    "LAS": "Los Angeles Sparks",
+    "LOS ANGELES": "Los Angeles Sparks",
+    "SPARKS": "Los Angeles Sparks",
+    "LOS ANGELES SPARKS": "Los Angeles Sparks",
+    "LV": "Las Vegas Aces",
+    "LVA": "Las Vegas Aces",
+    "LAS VEGAS": "Las Vegas Aces",
+    "ACES": "Las Vegas Aces",
+    "LAS VEGAS ACES": "Las Vegas Aces",
+    "MIN": "Minnesota Lynx",
+    "MINNESOTA": "Minnesota Lynx",
+    "LYNX": "Minnesota Lynx",
+    "MINNESOTA LYNX": "Minnesota Lynx",
+    "NY": "New York Liberty",
+    "NYL": "New York Liberty",
+    "NEW YORK": "New York Liberty",
+    "LIBERTY": "New York Liberty",
+    "NEW YORK LIBERTY": "New York Liberty",
+    "PHX": "Phoenix Mercury",
+    "PHO": "Phoenix Mercury",
+    "PHOENIX": "Phoenix Mercury",
+    "MERCURY": "Phoenix Mercury",
+    "PHOENIX MERCURY": "Phoenix Mercury",
+    "POR": "Portland Fire",
+    "PORTLAND": "Portland Fire",
+    "FIRE": "Portland Fire",
+    "PORTLAND FIRE": "Portland Fire",
+    "SEA": "Seattle Storm",
+    "SEATTLE": "Seattle Storm",
+    "STORM": "Seattle Storm",
+    "SEATTLE STORM": "Seattle Storm",
+    "TOR": "Toronto Tempo",
+    "TORONTO": "Toronto Tempo",
+    "TEMPO": "Toronto Tempo",
+    "TORONTO TEMPO": "Toronto Tempo",
+    "WAS": "Washington Mystics",
+    "WSH": "Washington Mystics",
+    "WASHINGTON": "Washington Mystics",
+    "MYSTICS": "Washington Mystics",
+    "WASHINGTON MYSTICS": "Washington Mystics",
+}
+
+
+def _wnba_team_display_name(value: Any) -> str:
+    raw = str(value or "").strip()
+    if not raw:
+        return ""
+    key = re.sub(r"[^A-Za-z0-9]+", " ", raw).upper().strip()
+    return WNBA_TEAM_NAME_ALIASES.get(key, raw)
+
+
 def _parse_wnba_output(output: str) -> list[dict[str, Any]]:
     """Parse WNBA model output lines into the shared pick payload shape.
 
@@ -2767,8 +2854,8 @@ def _parse_wnba_output(output: str) -> list[dict[str, Any]]:
             continue
         if not isinstance(payload, dict):
             continue
-        home_p = str(payload.get("home") or "").strip()
-        away_p = str(payload.get("away") or "").strip()
+        home_p = _wnba_team_display_name(payload.get("home") or payload.get("home_abbr"))
+        away_p = _wnba_team_display_name(payload.get("away") or payload.get("away_abbr"))
         if not home_p or not away_p:
             continue
         json_payloads_by_matchup[f"{away_p} @ {home_p}"] = payload
@@ -2798,20 +2885,23 @@ def _parse_wnba_output(output: str) -> list[dict[str, Any]]:
         if not matchup_m or not win_pct_m or not margin_m or not conf_m:
             continue
 
-        away_team = matchup_m.group(1).strip()
-        home_team = matchup_m.group(2).strip()
+        away_team = _wnba_team_display_name(matchup_m.group(1).strip())
+        home_team = _wnba_team_display_name(matchup_m.group(2).strip())
+        matchup = f"{away_team} @ {home_team}"
+        if matchup in seen_matchups:
+            continue
 
         try:
             home_win_probability = float(win_pct_m.group(1)) / 100.0
         except (TypeError, ValueError):
             continue
 
-        margin_team = margin_m.group(1).strip()
+        margin_team = _wnba_team_display_name(margin_m.group(1).strip())
         try:
             margin_value = abs(float(margin_m.group(2)))
         except (TypeError, ValueError):
             margin_value = 0.0
-        signed_margin = margin_value if margin_team == home_team else -margin_value
+        signed_margin = margin_value if normalize(margin_team) == normalize(home_team) else -margin_value
 
         projected_total = None
         if total_m and total_m.group(1).upper() != "N/A":

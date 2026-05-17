@@ -41,6 +41,9 @@ Thumbs.db
 # Recovery snapshots
 .recovery/
 
+# Local agent worktrees/cache
+.claude/
+
 # Python bytecode (at any depth)
 **/__pycache__/
 *.pyd

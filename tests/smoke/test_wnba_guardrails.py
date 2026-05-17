@@ -351,3 +351,102 @@ def test_wnba_h2h_lifts_predicted_margin():
     assert with_h2h["adjusted_margin"] > no_h2h["adjusted_margin"]
     assert with_h2h["win_prob"] > no_h2h["win_prob"]
     assert with_h2h["h2h_signal"]["games"] == 2
+
+
+def test_wnba_format_pick_line_uses_full_team_names():
+    from WNBAPredictionModel.wnba_picks import format_pick_line
+
+    line = format_pick_line(
+        {
+            "home_abbr": "POR",
+            "away_abbr": "NY",
+            "win_prob": 0.089,
+            "adjusted_margin": -14.1,
+            "projected_total": 140.1,
+        },
+        confidence_label="Low",
+    )
+
+    assert "New York Liberty @ Portland Fire" in line
+    assert "Proj Margin: New York Liberty +14.1" in line
+
+
+def test_wnba_generator_keeps_pass_games_visible(monkeypatch):
+    from WNBAPredictionModel import wnba_picks
+    from WNBAPredictionModel.wnba_schedule import WNBAGame
+
+    monkeypatch.setattr(
+        wnba_picks,
+        "get_todays_wnba_games",
+        lambda date_str=None: [
+            WNBAGame(
+                bdl_game_id=None,
+                espn_game_id="401000001",
+                home_abbr="DAL",
+                away_abbr="MIN",
+                date_str="2026-05-14",
+                start_time="20:00 ET",
+                status="scheduled",
+            )
+        ],
+    )
+    monkeypatch.setattr(wnba_picks, "get_all_team_stats", lambda: {})
+    monkeypatch.setattr(wnba_picks, "get_injury_report", lambda: {})
+    monkeypatch.setattr(wnba_picks, "get_team_stats", lambda abbr: {"NRtg": 0.0, "W": 2, "L": 2})
+    monkeypatch.setattr(wnba_picks, "build_game_context", lambda game: {})
+    monkeypatch.setattr(
+        wnba_picks,
+        "calculate_wnba_matchup",
+        lambda home, away, home_stats, away_stats, context: {
+            "home_abbr": home,
+            "away_abbr": away,
+            "win_prob": 0.52,
+            "adjusted_margin": 1.2,
+            "projected_total": 150.0,
+            "data_quality": "full",
+        },
+    )
+    monkeypatch.setattr(wnba_picks, "lookup_market_odds", lambda home, away: None)
+    monkeypatch.setattr(wnba_picks, "compute_edge_units", lambda **kwargs: None)
+    monkeypatch.setattr(
+        wnba_picks,
+        "assess_spread_edge",
+        lambda *args, **kwargs: {
+            "decision": "PASS",
+            "confidence_label": "Low",
+            "units": 0.0,
+            "reasons": ["edge below threshold"],
+            "has_market_price": False,
+            "h2h_games": 0,
+            "starters_out": [],
+            "starters_questionable": [],
+            "starters_total": 0,
+        },
+    )
+
+    picks = wnba_picks.generate_wnba_picks(echo=False, date_str="2026-05-14")
+
+    assert len(picks) == 1
+    assert picks[0]["decision"] == "PASS"
+    assert picks[0]["away_team"] == "Minnesota Lynx"
+    assert picks[0]["home_team"] == "Dallas Wings"
+    assert "Minnesota Lynx @ Dallas Wings" in picks[0]["output_line"]
+
+
+def test_wnba_parser_normalizes_short_teams_for_grading():
+    from pickgrader_server import _parse_wnba_output
+
+    output = "\n".join([
+        "WNBA | MIN @ DAL | Home Win 55.0% | Proj Margin: DAL +2.0 | Total: 150.0 | Conf: Low",
+        'PICK_JSON: {"home":"DAL","away":"MIN","decision":"PASS","units":0,"h2h_games":0}',
+    ])
+
+    picks = _parse_wnba_output(output)
+
+    assert len(picks) == 1
+    assert picks[0]["pick"] == "Dallas Wings ML (Minnesota Lynx @ Dallas Wings)"
+    assert picks[0]["team"] == "Dallas Wings"
+    assert picks[0]["away_team"] == "Minnesota Lynx"
+    assert picks[0]["home_team"] == "Dallas Wings"
+    assert picks[0]["decision"] == "PASS"
+    assert picks[0]["units"] == 0.0

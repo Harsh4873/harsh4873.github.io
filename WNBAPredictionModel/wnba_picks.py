@@ -37,6 +37,7 @@ try:
         compute_edge_units,
         lookup_market_odds,
     )
+    from .wnba_teams import get_team_by_abbr
 except ImportError:
     from wnba_probability_layers import calculate_wnba_matchup
     from wnba_schedule import (
@@ -61,6 +62,7 @@ except ImportError:
         compute_edge_units,
         lookup_market_odds,
     )
+    from wnba_teams import get_team_by_abbr
 
 
 # ---------------------------------------------------------------------------
@@ -280,6 +282,18 @@ def _favorite_probability(win_prob: float) -> float:
     return max(win_prob, 1.0 - win_prob)
 
 
+def _team_full_name(team_abbr: str) -> str:
+    """Return the canonical display name for a WNBA team abbreviation."""
+    abbr = str(team_abbr or "").strip().upper()
+    if not abbr:
+        return ""
+    try:
+        team = get_team_by_abbr(abbr)
+    except Exception:
+        return abbr
+    return str(team.get("full_name") or abbr).strip() or abbr
+
+
 MARKET_EDGE_BET_THRESHOLD = 0.030   # 3% vig-removed edge required for BET
 MARKET_EDGE_LEAN_THRESHOLD = 0.015  # 1.5% edge qualifies for LEAN
 
@@ -495,8 +509,10 @@ def format_pick_line(
         WNBA | {away} @ {home} | Home Win {win_pct}% | \
 Proj Margin: {home} +{margin} | Total: {total} | Conf: {confidence}
     """
-    home = result.get("home_abbr", "") or ""
-    away = result.get("away_abbr", "") or ""
+    home_abbr = result.get("home_abbr", "") or ""
+    away_abbr = result.get("away_abbr", "") or ""
+    home = _team_full_name(home_abbr)
+    away = _team_full_name(away_abbr)
 
     try:
         win_prob = float(result.get("win_prob") or 0.0)
@@ -556,7 +572,7 @@ def generate_wnba_picks(
     echo: bool = True,
     date_str: str | None = None,
 ) -> list[dict]:
-    """Produce a pick dict for every today's WNBA game that clears an edge gate.
+    """Produce a pick dict for every today's WNBA game the model can evaluate.
 
     Returns a list of pick dicts (possibly empty). Each entry also carries a
     pre-formatted ``output_line`` so downstream consumers don't need to know
@@ -578,6 +594,8 @@ def generate_wnba_picks(
     for game in games:
         home_abbr = game.home_abbr
         away_abbr = game.away_abbr
+        home_name = _team_full_name(home_abbr)
+        away_name = _team_full_name(away_abbr)
 
         home_stats = get_team_stats(home_abbr) or {}
         away_stats = get_team_stats(away_abbr) or {}
@@ -602,6 +620,7 @@ def generate_wnba_picks(
         # the edge math operates on.
         pick_team_is_home = float(result.get("win_prob", 0.5)) >= 0.5
         pick_team_abbr = home_abbr if pick_team_is_home else away_abbr
+        pick_team_name = home_name if pick_team_is_home else away_name
         market_odds = lookup_market_odds(home_abbr, away_abbr)
         pick_team_lineup = (
             context.get("home_lineup_quality") if pick_team_is_home else context.get("away_lineup_quality")
@@ -637,18 +656,25 @@ def generate_wnba_picks(
                 print(
                     f"[WNBA] PASS — {reasons} for {away_abbr} @ {home_abbr}"
                 )
-            continue
 
         output_line = format_pick_line(
             result,
             market_total,
             confidence_label=guardrail["confidence_label"],
         )
+        matchup = f"{away_name} @ {home_name}"
         pick = {
             "league": "WNBA",
-            "home": home_abbr,
-            "away": away_abbr,
-            "pick_team": pick_team_abbr,
+            "home": home_name,
+            "away": away_name,
+            "home_abbr": home_abbr,
+            "away_abbr": away_abbr,
+            "home_team": home_name,
+            "away_team": away_name,
+            "game": matchup,
+            "matchup": matchup,
+            "pick_team": pick_team_name,
+            "pick_team_abbr": pick_team_abbr,
             "win_prob": result["win_prob"],
             "model_pick_prob": round(model_pick_prob, 4),
             "adjusted_margin": result["adjusted_margin"],
