@@ -6,12 +6,12 @@ import { getFirestore, doc, getDoc, setDoc, updateDoc, increment, onSnapshot } f
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
 
   const firebaseConfig = {
-    apiKey: "AIzaSyATQK7NHNXIshlJIy7xT17z8Kr8fUWatLs",
-    authDomain: "pickledgerpro.firebaseapp.com",
-    projectId: "pickledgerpro",
-    storageBucket: "pickledgerpro.firebasestorage.app",
-    messagingSenderId: "285462656063",
-    appId: "1:285462656063:web:caa084d1daf04e04eab48a"
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_FIREBASE_APP_ID,
   };
 
   const app      = initializeApp(firebaseConfig);

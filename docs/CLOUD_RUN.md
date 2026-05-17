@@ -25,6 +25,27 @@ Store these in Google Secret Manager or Cloud Run environment settings, not in g
 
 The container defaults `PICKLEDGER_REQUIRE_AUTH=true`, so model routes require a signed-in Firebase user. Admin-only routes also require the user email to appear in `PICKLEDGER_ADMIN_EMAILS`.
 
+## Setting Up Environment Variables In Cloud Run
+
+Set these via the Cloud Run console under **Edit & Deploy > Variables & Secrets**, or use Secret Manager references. Do not put real values in this repo.
+
+- `FIREBASE_PROJECT_ID`: Firebase project id used by Firebase Admin SDK.
+- `FIREBASE_CLIENT_EMAIL`: Service-account client email for Firebase Admin SDK.
+- `FIREBASE_PRIVATE_KEY`: Service-account private key; Cloud Run should inject it as a secret.
+- `PICKLEDGER_ADMIN_EMAILS`: Comma-separated emails allowed to call admin-only routes.
+- `PICKLEDGER_REQUIRE_AUTH`: Keep `true` so backend model routes require Firebase sign-in.
+- `ENABLE_SPORTYTRADER_REMOTE`: Set `false` unless remote scraper dependencies/proxy are configured.
+
+Frontend builds also need these non-secret public Firebase Web config variables in GitHub Actions or the Pages environment:
+
+- `VITE_FIREBASE_API_KEY`
+- `VITE_FIREBASE_AUTH_DOMAIN`
+- `VITE_FIREBASE_PROJECT_ID`
+- `VITE_FIREBASE_STORAGE_BUCKET`
+- `VITE_FIREBASE_MESSAGING_SENDER_ID`
+- `VITE_FIREBASE_APP_ID`
+- `VITE_PICKLEDGER_BACKEND_URL`: HTTPS Cloud Run service URL for model requests.
+
 ## Deploy Shape
 
 ```bash

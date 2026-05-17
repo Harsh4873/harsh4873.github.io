@@ -1,5 +1,8 @@
 FROM python:3.11-slim
 
+# Secrets are injected at runtime via Cloud Run env vars or Secret Manager.
+# Never hardcode FIREBASE_PRIVATE_KEY or FIREBASE_CLIENT_EMAIL here.
+
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     OMP_NUM_THREADS=1 \
