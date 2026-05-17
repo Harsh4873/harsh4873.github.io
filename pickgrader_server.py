@@ -41,10 +41,11 @@ except Exception:
 
 try:
     import firebase_admin
-    from firebase_admin import credentials, firestore
+    from firebase_admin import auth as firebase_auth, credentials, firestore
     _FIREBASE_ADMIN_AVAILABLE = True
 except Exception:
     firebase_admin = None  # type: ignore[assignment]
+    firebase_auth = None  # type: ignore[assignment]
     credentials = None  # type: ignore[assignment]
     firestore = None  # type: ignore[assignment]
     _FIREBASE_ADMIN_AVAILABLE = False
@@ -314,6 +315,16 @@ IS_RENDER_RUNTIME = os.environ.get("RENDER", "").strip().lower() == "true"
 _sportytrader_env = os.environ.get("ENABLE_SPORTYTRADER_REMOTE", "true").strip().lower()
 ENABLE_SPORTYTRADER_REMOTE = _sportytrader_env not in {"0", "false", "no", "off"}
 PLAYWRIGHT_PROXY_CONFIGURED = bool(os.environ.get("PLAYWRIGHT_PROXY_SERVER", "").strip())
+_require_auth_env = os.environ.get("PICKLEDGER_REQUIRE_AUTH", "true").strip().lower()
+PICKLEDGER_REQUIRE_AUTH = _require_auth_env not in {"0", "false", "no", "off"}
+PICKLEDGER_ADMIN_EMAILS = {
+    email.strip().lower()
+    for email in os.environ.get(
+        "PICKLEDGER_ADMIN_EMAILS",
+        "hdav4873@gmail.com,hdav3228@gmail.com",
+    ).split(",")
+    if email.strip()
+}
 
 SPORT_TO_ESPNSLUG = {
     "NBA": ("basketball", "nba"),
@@ -4639,7 +4650,108 @@ def run_cannon_daily(date_str: str | None = None) -> dict[str, Any]:
     }
 
 
+SIGNED_IN_GET_ENDPOINTS = {
+    "/ipl",
+    "/job-status",
+    "/ledger-state",
+    "/nba-props-games",
+}
+
+ADMIN_GET_ENDPOINTS = {
+    "/refresh-nba-props-games",
+    "/sportytrader-feed",
+}
+
+SIGNED_IN_POST_ENDPOINTS = {
+    "/grade",
+    "/ledger-state",
+    "/picks",
+    "/run-mlb-first-five-model",
+    "/run-mlb-inning-model",
+    "/run-mlb-model",
+    "/run-mlb-new-model",
+    "/run-nba-model",
+    "/run-nba-old-model",
+    "/run-nba-playoffs-model",
+    "/run-nba-props-model",
+    "/run-wnba-model",
+}
+
+ADMIN_POST_ENDPOINTS = {
+    "/ask-opus",
+    "/refresh-nba-props-games",
+    "/run-cannon-daily",
+    "/run-sportsgambler",
+    "/run-sportsline-odds",
+    "/run-sportytrader",
+    "/save-admin-picks",
+}
+
+
+def _extract_bearer_token(header_value: str | None) -> str:
+    value = str(header_value or "").strip()
+    if not value:
+        return ""
+    parts = value.split(None, 1)
+    if len(parts) == 2 and parts[0].lower() == "bearer":
+        return parts[1].strip()
+    return ""
+
+
+def _ensure_firebase_auth_ready() -> tuple[bool, str]:
+    if not _FIREBASE_ADMIN_AVAILABLE or firebase_admin is None or firebase_auth is None:
+        return False, "firebase-admin is not installed"
+    try:
+        if firebase_admin._apps:
+            return True, ""
+    except Exception:
+        pass
+
+    if _init_admin_firestore() is not None:
+        return True, ""
+
+    try:
+        firebase_admin.initialize_app()
+        return True, ""
+    except Exception as exc:
+        return False, f"firebase admin unavailable: {exc}"
+
+
+def _verify_firebase_request(headers) -> tuple[dict[str, Any] | None, str]:
+    token = _extract_bearer_token(headers.get("Authorization"))
+    if not token:
+        return None, "missing bearer token"
+
+    ready, error = _ensure_firebase_auth_ready()
+    if not ready:
+        return None, error
+
+    try:
+        decoded = firebase_auth.verify_id_token(token)
+    except Exception as exc:
+        return None, f"invalid firebase token: {exc}"
+
+    uid = str(decoded.get("uid") or "").strip()
+    email = str(decoded.get("email") or "").strip().lower()
+    if not uid:
+        return None, "firebase token missing uid"
+    return {
+        "uid": uid,
+        "email": email,
+        "claims": decoded,
+    }, ""
+
+
+def _is_admin_user(user: dict[str, Any] | None) -> bool:
+    if not user:
+        return False
+    email = str(user.get("email") or "").strip().lower()
+    return bool(email and email in PICKLEDGER_ADMIN_EMAILS)
+
+
 class Handler(BaseHTTPRequestHandler):
+    auth_user: dict[str, Any] | None = None
+
     @staticmethod
     def _is_client_disconnect_error(exc: BaseException) -> bool:
         if isinstance(exc, (BrokenPipeError, ConnectionResetError)):
@@ -4679,6 +4791,33 @@ class Handler(BaseHTTPRequestHandler):
                 return
             raise
 
+    def _authorize_route(self, path: str, method: str) -> bool:
+        if not PICKLEDGER_REQUIRE_AUTH:
+            return True
+
+        method = method.upper()
+        admin_required = (
+            (method == "GET" and path in ADMIN_GET_ENDPOINTS)
+            or (method == "POST" and path in ADMIN_POST_ENDPOINTS)
+        )
+        signed_in_required = admin_required or (
+            (method == "GET" and path in SIGNED_IN_GET_ENDPOINTS)
+            or (method == "POST" and path in SIGNED_IN_POST_ENDPOINTS)
+        )
+        if not signed_in_required:
+            return True
+
+        user, error = _verify_firebase_request(self.headers)
+        if not user:
+            self._send_json(401, {"ok": False, "error": error or "sign-in required"})
+            return False
+        if admin_required and not _is_admin_user(user):
+            self._send_json(403, {"ok": False, "error": "admin access required"})
+            return False
+
+        self.auth_user = user
+        return True
+
     def do_OPTIONS(self) -> None:  # noqa: N802
         self.send_response(200)
         self._send_cors_headers()
@@ -4696,6 +4835,9 @@ class Handler(BaseHTTPRequestHandler):
             path = "/"
         elif path.startswith("/api/"):
             path = path[4:]
+
+        if not self._authorize_route(path, "GET"):
+            return
 
         if path == "/":
             self._send_json(200, {
@@ -4847,11 +4989,15 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_POST(self) -> None:  # noqa: N802
-        path = self.path
+        parsed = urlparse(self.path)
+        path = parsed.path or self.path
         if path == "/api":
             path = "/"
         elif path.startswith("/api/"):
             path = path[4:]
+
+        if not self._authorize_route(path, "POST"):
+            return
 
         content_type = str(self.headers.get("Content-Type", "")).lower()
         try:

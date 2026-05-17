@@ -10,9 +10,9 @@ https://harsh4873.github.io/PickLedgerPro/
 
 | Layer        | Stack                                                                 |
 |-------------|-----------------------------------------------------------------------|
-| Frontend    | Single-page HTML/CSS/JS app (`index.html`) deployed via GitHub Pages  |
+| Frontend    | Vite-built static app (`index.html`, `src/main.ts`, `src/styles/`) deployed via GitHub Pages |
 | Data Backend| Firebase Firestore (picks, user data, cached feeds)                   |
-| Local Agent | `pickgrader_server.py` — local HTTP server for admin model runs       |
+| Model API   | `pickgrader_server.py` — local or Cloud Run HTTP server for signed-in model runs |
 | Models      | Python: NBA, NBA Playoffs, MLB, MLB First Five, WNBA, IPL             |
 | Automation  | GitHub Actions: MLB daily Cannon refresh, model training, Pages deploy|
 
@@ -20,8 +20,9 @@ https://harsh4873.github.io/PickLedgerPro/
 
 ```text
 PickLedgerPro/
-├── index.html                  # Frontend SPA
-├── pickgrader_server.py        # Local admin backend server
+├── index.html                  # Frontend shell
+├── src/                        # Extracted TypeScript and CSS
+├── pickgrader_server.py        # Model/backend API server
 ├── runlive.py                  # Orchestrates model runs
 ├── requirements.txt            # Python dependencies
 ├── firestore.rules             # Firebase security rules
@@ -57,15 +58,23 @@ PickLedgerPro/
    python pickgrader_server.py
    ```
 
-4. For the UI, either open `index.html` locally or use the live GitHub Pages site.
+4. Install frontend dependencies and build the static app:
+
+   ```bash
+   npm ci
+   npm run build
+   ```
+
+5. For the UI, use the live GitHub Pages site or the built `dist/` artifact.
 
 ## Automation
 
 - **Cannon MLB Daily Refresh**: Regenerates `data/cannon_mlb_daily.json` on a schedule.
-- **Deploy to GitHub Pages**: Runs on each push to `main`.
+- **Deploy to GitHub Pages**: Builds Vite and deploys on each push to `main`.
 - **MLB Model Training**: Manual workflow dispatch in GitHub Actions.
 
 ## Notes
 
 - Do not commit `.env`, Firebase admin JSON, or any API keys.
-- Admin-only model run buttons in the UI require the local backend running on `127.0.0.1:8765`.
+- Model run buttons can call the hosted Cloud Run backend when `VITE_PICKLEDGER_BACKEND_URL` is configured.
+- Scraper/cache/admin-only actions still require an admin email configured through `PICKLEDGER_ADMIN_EMAILS`.

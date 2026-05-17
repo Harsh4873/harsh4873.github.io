@@ -21,7 +21,7 @@ couplings visible before the next cleanup pass.
 | `.env.local` | repo root | Loaded by `pickgrader_server.py`, `scripts/firebase_writer.py`, and `scripts/seed_record.py`. |
 | `.nojekyll` | repo root | Copied into the GitHub Pages build output by the Pages workflow. |
 | `requirements.txt` | repo root | The Docker image copies this exact file. |
-| `Dockerfile` | repo root | Render deploy entry point. |
+| `Dockerfile` | repo root | Cloud Run/backend container entry point. |
 | `data/` | repo root | Read by backend paths rooted at `BASE_DIR/data`; Pages also publishes selected files from here. |
 | `pickledger.db` | repo root | Looked up as `pickledger.db` or `../pickledger.db` by backend helpers. |
 | `scripts/grader_loop.py` | `scripts/` | Hardcoded by `scripts/com.pickledger.grader.plist`. |
@@ -91,7 +91,7 @@ Those strings are part of the frontend and Firestore contract.
 
 ## Refactor No-Touch List
 
-- Do not move `pickgrader_server.py`, `runlive.py`, or `index.html`.
+- Do not move `pickgrader_server.py`, `runlive.py`, or the root `index.html` entry shell.
 - Do not rename Firestore collections, documents, or record fields.
 - Do not rename `ipl/` unless every frontend, backend, workflow, and Firestore
   key is migrated with dual reads.

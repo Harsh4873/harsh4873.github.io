@@ -27,21 +27,31 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install frontend dependencies
+        run: npm ci
+
       - name: Build site artifact
+        env:
+          VITE_PICKLEDGER_BACKEND_URL: ${{ vars.PICKLEDGER_BACKEND_URL }}
         run: |
-          rm -rf _site
-          mkdir -p _site/ipl _site/data
-          cp index.html _site/
-          cp favicon.svg _site/
-          cp .nojekyll _site/
-          cp ipl/ipl_styles.css _site/ipl/
-          cp ipl/ipl_frontend.js _site/ipl/
-          cp data/cannon_mlb_daily.json _site/data/
+          npm run build
+          mkdir -p dist/ipl dist/data
+          cp .nojekyll dist/
+          cp CNAME dist/
+          cp ipl/ipl_styles.css dist/ipl/
+          cp ipl/ipl_frontend.js dist/ipl/
+          cp data/cannon_mlb_daily.json dist/data/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '_site'
+          path: 'dist'
 
       - name: Deploy to GitHub Pages
         id: deployment

@@ -4,6 +4,8 @@ logs/*.log
 !.env.example
 .env.local
 *.env.local
+node_modules/
+dist/
 
 # Python bytecode
 __pycache__/
