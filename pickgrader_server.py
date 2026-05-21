@@ -4321,13 +4321,21 @@ def run_sportytrader_scraper(
         errors: list[str] = []
 
         for sport_code in selected:
-            result = _invoke(sport_code)
+            try:
+                result = _invoke(sport_code)
+            except subprocess.TimeoutExpired:
+                errors.append(f"{sport_code}: timed out after {timeout_s}s")
+                continue
             output = (result.stdout or "") + (result.stderr or "")
             if result.returncode != 0 and _looks_like_playwright_browser_missing(output):
                 ok, install_msg = _ensure_playwright_browsers(python_bin, env)
                 if not ok:
                     return {"ok": False, "error": f"sportytrader: Playwright install failed ({install_msg})"}
-                result = _invoke(sport_code)
+                try:
+                    result = _invoke(sport_code)
+                except subprocess.TimeoutExpired:
+                    errors.append(f"{sport_code}: timed out after {timeout_s}s after Playwright install")
+                    continue
                 output = (result.stdout or "") + (result.stderr or "")
 
             picks: list[dict[str, Any]] = []
