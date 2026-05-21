@@ -4074,6 +4074,32 @@
     return typeof value === 'string' ? value.trim() : '';
   }
 
+  function normalizePickLedgerEmail(value) {
+    return String(value || '').trim().toLowerCase();
+  }
+
+  function isPickLedgerAdminEmail(value) {
+    return normalizePickLedgerEmail(value) === 'hdav4873@gmail.com';
+  }
+
+  function isPickLedgerAdminUser() {
+    return isPickLedgerAdminEmail(window._currentUser && window._currentUser.email);
+  }
+
+  function buildEmptyUserLedgerState() {
+    const savedAt = new Date().toISOString();
+    return {
+      addedPicks: [],
+      deletedPickIds: [],
+      deletedPickKeys: [],
+      results: {},
+      startTimes: {},
+      gameTimes: {},
+      savedAt,
+      lastSynced: savedAt,
+    };
+  }
+
   function getFirestoreUserDocCandidates(explicitUid) {
     const ids = [];
     const pushId = (value) => {
@@ -4081,9 +4107,8 @@
       if (id && !ids.includes(id)) ids.push(id);
     };
     pushId(explicitUid === undefined ? window._userUid : explicitUid);
-    const email = String(window._currentUser && window._currentUser.email || '').trim();
-    pushId(email);
-    if (email) pushId(email.toLowerCase());
+    const email = normalizePickLedgerEmail(window._currentUser && window._currentUser.email);
+    if (isPickLedgerAdminEmail(email)) pushId(email);
     return ids;
   }
 
@@ -4248,16 +4273,17 @@ function clearPendingRecordDelta() {
 }
 
 function shouldPersistDerivedRecordSummary(canonicalRecord, derivedRecord) {
-  // Per-category ratchet: persist when any axis of derived exceeds canonical.
-  // Never decrease canonical — picks can be deleted (e.g. slate resets) but
-  // their historical wins/losses/pushes remain part of the lifetime record.
+  if (!isPickLedgerAdminUser()) return false;
+  if (hasRecordSummaryData(canonicalRecord)) return false;
   if (!hasRecordSummaryData(derivedRecord)) return false;
   const merged = mergeRecordSummariesMaxPerCategory(canonicalRecord, derivedRecord);
   return !recordSummariesEqual(canonicalRecord, merged);
 }
 
 function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._userRecord) {
-  return mergeRecordSummariesMaxPerCategory(canonicalRecord, derivedRecord);
+  if (!isPickLedgerAdminUser()) return normalizeRecordSummary(null);
+  if (hasRecordSummaryData(canonicalRecord)) return normalizeRecordSummary(canonicalRecord);
+  return normalizeRecordSummary(derivedRecord);
 }
 
   function syncVisibleUserRecord(record, options = {}) {
@@ -4315,9 +4341,18 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
   }
 
   function syncRecordWithLedger() {
-    // Source the historical truth from the full results map (which retains
-    // entries even after picks are deleted from the active ledger), then
-    // ratchet the canonical UP per-category. Never decrease.
+    if (!isPickLedgerAdminUser()) {
+      const zeroRecord = normalizeRecordSummary(null);
+      updateRecordDisplays(zeroRecord);
+      window._userRecord = zeroRecord;
+      return;
+    }
+    const canonical = normalizeRecordSummary(window._userRecord);
+    if (hasRecordSummaryData(canonical)) {
+      updateRecordDisplays(canonical);
+      return;
+    }
+    // Fallback for an admin account with no saved canonical record yet.
     let resultsMap = {};
     try {
       if (typeof getResults === 'function') resultsMap = getResults();
@@ -4392,6 +4427,10 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
   }
 
   async function loadUserRecord(uid) {
+    if (!isPickLedgerAdminUser()) {
+      await resetNonAdminUserDoc(uid);
+      return normalizeRecordSummary(null);
+    }
     const primaryRef = doc(db, 'users', uid);
     const candidateIds = getFirestoreUserDocCandidates(uid);
     let zeroRecord = null;
@@ -4436,9 +4475,11 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
 
   window._saveUserRecordSummary = function(uid, record) {
     if (!uid) return Promise.resolve(null);
-    const requested = normalizeRecordSummary(record);
+    const requested = isPickLedgerAdminUser()
+      ? normalizeRecordSummary(record)
+      : normalizeRecordSummary(null);
     userRecordSaveChain = userRecordSaveChain.catch(() => {}).then(async () => {
-      const summary = mergeRecordSummariesMaxPerCategory(window._userRecord, requested);
+      const summary = requested;
       try {
         await setDoc(doc(db, 'users', uid), { record: summary }, { merge: true });
         window._userRecord = summary;
@@ -4563,9 +4604,25 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
   }
   window.focusHomeDateForIncomingLedgerState = focusHomeDateForIncomingLedgerState;
 
+  async function resetNonAdminUserDoc(uid) {
+    if (!uid || isPickLedgerAdminUser()) return;
+    const ref = doc(db, 'users', uid);
+    const emptyState = buildEmptyUserLedgerState();
+    try {
+      await saveUserLedgerDoc(ref, emptyState);
+      await setDoc(ref, { record: normalizeRecordSummary(null) }, { merge: true });
+    } catch (e) {
+      console.warn('[Firestore] non-admin ledger reset failed:', e.message);
+    }
+  }
+
   // ── Per-user picks in Firestore ───────────────────────────
   window._saveUserPicks = async function(uid, picksData) {
     if (!uid) return;
+    if (!isPickLedgerAdminUser()) {
+      await resetNonAdminUserDoc(uid);
+      return;
+    }
     try {
       const ref = doc(db, 'users', uid);
       const payload = picksData && typeof picksData === 'object' ? picksData : {};
@@ -4656,6 +4713,10 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
 
   window._loadUserPicks = async function(uid) {
     if (!uid) return null;
+    if (!isPickLedgerAdminUser()) {
+      await resetNonAdminUserDoc(uid);
+      return buildEmptyUserLedgerState();
+    }
     const normalizeLegacyLedgerState = normalizeFirestoreUserLedgerState;
     const mergeLedgerStates = (preferredState, fallbackState) => {
       const primary = preferredState && typeof preferredState === 'object' ? preferredState : null;
@@ -4823,6 +4884,10 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
   }
 
   async function applyRemoteLedgerState(remoteState, generation) {
+    if (!isPickLedgerAdminUser()) {
+      if (typeof window._clearLedgerLocalState === 'function') window._clearLedgerLocalState();
+      return false;
+    }
     if (!hasMeaningfulFirestoreLedgerState(remoteState)) return false;
     await waitForLedgerHelpers();
     if (generation !== window._authStateGeneration) return false;
@@ -6238,8 +6303,7 @@ function _coerceLedgerState(state) {
 }
 
 function isRankingsOwnerUser() {
-  const email = String(window._currentUser && window._currentUser.email || '').trim().toLowerCase();
-  return email === RANKINGS_OWNER_EMAIL;
+  return isPickLedgerAdminEmail(window._currentUser && window._currentUser.email);
 }
 
 function getPicksFromLedgerState(state) {
@@ -6288,6 +6352,7 @@ window._hasMeaningfulLocalState = hasMeaningfulLocalState;
 window.hasMeaningfulLocalState = hasMeaningfulLocalState;
 
 function shouldPreserveLocalLedgerState(localState, remoteState) {
+  if (!isPickLedgerAdminUser()) return false;
   const localTs = getLedgerSavedAtMs(localState);
   const remoteTs = getLedgerSavedAtMs(remoteState);
   if (!remoteTs) return true;
