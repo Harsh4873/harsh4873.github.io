@@ -4915,10 +4915,25 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
     }
   }
 
-  async function waitForLedgerHelpers() {
-    if (window._applyUserLedgerState && window._clearLedgerLocalState) return;
-    await new Promise((resolve) => {
-      window.addEventListener('pickledger:helpers-ready', resolve, { once: true });
+  async function waitForLedgerHelpers(options = {}) {
+    if (window._applyUserLedgerState && window._clearLedgerLocalState) return true;
+    const timeoutMs = Number.isFinite(options.timeoutMs) ? options.timeoutMs : 8000;
+    return new Promise((resolve) => {
+      let settled = false;
+      let timeoutId = null;
+      const finish = (ready) => {
+        if (settled) return;
+        settled = true;
+        if (timeoutId) clearTimeout(timeoutId);
+        resolve(ready);
+      };
+      window.addEventListener('pickledger:helpers-ready', () => finish(true), { once: true });
+      if (timeoutMs > 0) {
+        timeoutId = setTimeout(() => {
+          console.warn('[Auth] ledger helpers did not become ready before timeout');
+          finish(false);
+        }, timeoutMs);
+      }
     });
   }
 
@@ -5068,7 +5083,12 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
     window._currentUser = user || null;
     window._userUid = user ? user.uid : null;
     resolveAuthStateReady();
-    await waitForLedgerHelpers();
+    if (user && gate) {
+      gate.style.transition = 'opacity 0.3s';
+      gate.style.opacity = '0';
+      setTimeout(() => { gate.style.display = 'none'; }, 300);
+    }
+    const ledgerHelpersReady = await waitForLedgerHelpers({ timeoutMs: 8000 });
     if (currentGeneration !== window._authStateGeneration) return;
     if (typeof window.refreshAdminLiveControls === 'function') {
       window.refreshAdminLiveControls();
@@ -5091,6 +5111,19 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
       window._recordSummaryLoaded = true;
       const displayRecord = applyPendingRecordDeltas({ persist: true, uid: user.uid });
       updateProfilePanel(user, displayRecord);
+      if (!ledgerHelpersReady) {
+        syncVisibleUserRecord(getPreferredDisplayedRecord(null, window._userRecord));
+        refreshLedgerUi();
+        if (typeof loadCanonicalRankingsState === 'function') {
+          loadCanonicalRankingsState().then(() => {
+            if (typeof render === 'function') render();
+          }).catch(() => {});
+        }
+        if (typeof syncWithServer === 'function' && typeof setSyncStatus === 'function') {
+          syncWithServer().catch(() => setSyncStatus('offline'));
+        }
+        return;
+      }
 
       const localBeforeRemote = typeof window._buildLedgerStatePayload === 'function'
         ? window._buildLedgerStatePayload({ touchSavedAt: false })
