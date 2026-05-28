@@ -3226,6 +3226,27 @@
   .rankings-section-bar .section-title {
     margin-bottom: 0;
   }
+  .rankings-context {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin: 0 0 18px;
+    background: rgba(77,166,255,0.06);
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    line-height: 1.55;
+    letter-spacing: 0.35px;
+  }
+  .rankings-context strong {
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0;
+  }
+  body[data-theme="light"] .rankings-context {
+    background: rgba(77,166,255,0.08);
+  }
   .source-chooser-wrap {
     margin-left: auto;
   }
@@ -4086,6 +4107,8 @@
   function isPickLedgerAdminUser() {
     return isPickLedgerAdminEmail(window._currentUser && window._currentUser.email);
   }
+  window.isPickLedgerAdminEmail = isPickLedgerAdminEmail;
+  window.isPickLedgerAdminUser = isPickLedgerAdminUser;
 
   function buildEmptyUserLedgerState() {
     const savedAt = new Date().toISOString();
@@ -4160,7 +4183,7 @@
     const wins = Number(record && record.wins) || 0;
     const losses = Number(record && record.losses) || 0;
     const pushes = Number(record && record.pushes) || 0;
-    return pushes > 0 ? `${wins}-${losses}-${pushes}` : `${wins}-${losses}`;
+    return `${wins}-${losses}-${pushes}`;
   }
 
   function buildRecordSummaryFromPicks(picks) {
@@ -4274,7 +4297,6 @@ function clearPendingRecordDelta() {
 }
 
 function shouldPersistDerivedRecordSummary(canonicalRecord, derivedRecord) {
-  if (!isPickLedgerAdminUser()) return false;
   if (hasRecordSummaryData(canonicalRecord)) return false;
   if (!hasRecordSummaryData(derivedRecord)) return false;
   const merged = mergeRecordSummariesMaxPerCategory(canonicalRecord, derivedRecord);
@@ -4282,7 +4304,6 @@ function shouldPersistDerivedRecordSummary(canonicalRecord, derivedRecord) {
 }
 
 function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._userRecord) {
-  if (!isPickLedgerAdminUser()) return normalizeRecordSummary(null);
   if (hasRecordSummaryData(canonicalRecord)) return normalizeRecordSummary(canonicalRecord);
   return normalizeRecordSummary(derivedRecord);
 }
@@ -4342,18 +4363,12 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
   }
 
   function syncRecordWithLedger() {
-    if (!isPickLedgerAdminUser()) {
-      const zeroRecord = normalizeRecordSummary(null);
-      updateRecordDisplays(zeroRecord);
-      window._userRecord = zeroRecord;
-      return;
-    }
     const canonical = normalizeRecordSummary(window._userRecord);
     if (hasRecordSummaryData(canonical)) {
       updateRecordDisplays(canonical);
       return;
     }
-    // Fallback for an admin account with no saved canonical record yet.
+    // Fallback for an account with no saved canonical record yet.
     let resultsMap = {};
     try {
       if (typeof getResults === 'function') resultsMap = getResults();
@@ -4477,10 +4492,6 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
   });
 
   async function loadUserRecord(uid) {
-    if (!isPickLedgerAdminUser()) {
-      await resetNonAdminUserDoc(uid);
-      return normalizeRecordSummary(null);
-    }
     const primaryRef = doc(db, 'users', uid);
     const candidateIds = getFirestoreUserDocCandidates(uid);
     let zeroRecord = null;
@@ -4525,9 +4536,7 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
 
   window._saveUserRecordSummary = function(uid, record) {
     if (!uid) return Promise.resolve(null);
-    const requested = isPickLedgerAdminUser()
-      ? normalizeRecordSummary(record)
-      : normalizeRecordSummary(null);
+    const requested = normalizeRecordSummary(record);
     userRecordSaveChain = userRecordSaveChain.catch(() => {}).then(async () => {
       const summary = requested;
       try {
@@ -4655,7 +4664,7 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
   window.focusHomeDateForIncomingLedgerState = focusHomeDateForIncomingLedgerState;
 
   async function resetNonAdminUserDoc(uid) {
-    if (!uid || isPickLedgerAdminUser()) return;
+    if (!uid) return;
     const ref = doc(db, 'users', uid);
     const emptyState = buildEmptyUserLedgerState();
     try {
@@ -4669,10 +4678,6 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
   // ── Per-user picks in Firestore ───────────────────────────
   window._saveUserPicks = async function(uid, picksData) {
     if (!uid) return;
-    if (!isPickLedgerAdminUser()) {
-      await resetNonAdminUserDoc(uid);
-      return;
-    }
     try {
       const ref = doc(db, 'users', uid);
       const payload = picksData && typeof picksData === 'object' ? picksData : {};
@@ -4763,10 +4768,6 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
 
   window._loadUserPicks = async function(uid) {
     if (!uid) return null;
-    if (!isPickLedgerAdminUser()) {
-      await resetNonAdminUserDoc(uid);
-      return buildEmptyUserLedgerState();
-    }
     const normalizeLegacyLedgerState = normalizeFirestoreUserLedgerState;
     const mergeLedgerStates = (preferredState, fallbackState) => {
       const primary = preferredState && typeof preferredState === 'object' ? preferredState : null;
@@ -4949,10 +4950,6 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
   }
 
   async function applyRemoteLedgerState(remoteState, generation) {
-    if (!isPickLedgerAdminUser()) {
-      if (typeof window._clearLedgerLocalState === 'function') window._clearLedgerLocalState();
-      return false;
-    }
     if (!hasMeaningfulFirestoreLedgerState(remoteState)) return false;
     await waitForLedgerHelpers();
     if (generation !== window._authStateGeneration) return false;
@@ -5443,7 +5440,11 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
 
   <!-- RANKINGS TAB -->
   <div id="tab-rankings" class="tab-content">
-    <div class="section-title clean-title">Overall Stats</div>
+    <div class="section-title clean-title">Model Performance Overview</div>
+    <div class="rankings-context">
+      <strong>Global model results.</strong>
+      Rankings are built from the admin-tracked model ledger, so everyone sees the same source performance picture. Your Home, Search, Daily, and personal record stay private to your own account.
+    </div>
     <div class="stats-grid">
       <div class="stat-box"><div class="stat-box-val" id="stat-picks">0</div><div class="stat-box-label">TOTAL PICKS</div></div>
       <div class="stat-box"><div class="stat-box-val positive" id="stat-wins">0</div><div class="stat-box-label">WINS</div></div>
@@ -5454,10 +5455,10 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
       <div class="stat-box"><div class="stat-box-val" id="stat-units">+0u</div><div class="stat-box-label">NET UNITS</div></div>
       <div class="stat-box"><div class="stat-box-val" id="stat-roi">&mdash;</div><div class="stat-box-label">ROI</div></div>
     </div>
-    <div class="section-title clean-title">Sport Profitability</div>
+    <div class="section-title clean-title">Model Profitability By Sport</div>
     <div class="sport-board" id="sport-board"><div class="empty-state" style="grid-column:1/-1">No decided picks yet</div></div>
     <div class="rankings-section-bar">
-      <div class="section-title clean-title">Source Rankings</div>
+      <div class="section-title clean-title">Global Source Rankings</div>
       <div class="model-chooser-wrap source-chooser-wrap" id="source-chooser-wrap">
         <div class="model-chooser-trigger" id="source-chooser-trigger">
           <span class="model-chooser-icon">&#9881;</span>
@@ -5787,7 +5788,7 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
 const PICKS = [];
 
 // ── Engine ──
-const STORAGE_VERSION = '2026_03_20_mar19_results_fix_v3';
+const STORAGE_VERSION = '2026_05_28_full_ledger_reset_v1';
 const ADDED_PICKS_KEY = `pickledger_added_picks_${STORAGE_VERSION}`;
 const DELETED_PICKS_KEY = `pickledger_deleted_pick_ids_${STORAGE_VERSION}`;
 const DELETED_PICK_KEYS_KEY = `pickledger_deleted_pick_keys_${STORAGE_VERSION}`;
@@ -5809,11 +5810,14 @@ let homeSelectedDateKey = '';
 let homeCalendarMonthKey = '';
 let homeCalendarOpen = false;
 let homeDateFocusKey = '';
+let homeDateUserLocked = false;
 let currentDeploymentLedgerResetChanged = false;
 const LOOPBACK_HOST_RE = /^(?:localhost|127(?:\.\d{1,3}){3}|0\.0\.0\.0)$/i;
 const PICKLEDGER_MODE = 'firebase_direct';
 const RANKINGS_OWNER_EMAIL = 'hdav4873@gmail.com';
 const RANKINGS_STATE_UID = 'primary';
+const RANKINGS_COLLECTION = 'rankings';
+const RANKINGS_DOC_ID = 'primary';
 const ADMIN_BACKEND_STORAGE_KEY = 'pickledger_backend';
 const DEFAULT_ADMIN_BACKEND_URL = 'http://127.0.0.1:8765';
 const FALLBACK_ADMIN_BACKEND_URL = 'http://127.0.0.1:8767';
@@ -6386,7 +6390,10 @@ function _coerceLedgerState(state) {
 }
 
 function isRankingsOwnerUser() {
-  return isPickLedgerAdminEmail(window._currentUser && window._currentUser.email);
+  if (typeof window.isPickLedgerAdminEmail === 'function') {
+    return window.isPickLedgerAdminEmail(window._currentUser && window._currentUser.email);
+  }
+  return String(window._currentUser && window._currentUser.email || '').trim().toLowerCase() === RANKINGS_OWNER_EMAIL;
 }
 
 function getPicksFromLedgerState(state) {
@@ -6399,25 +6406,70 @@ function getPicksFromLedgerState(state) {
     });
 }
 
+async function loadSharedRankingsState() {
+  const db = window._firebaseDb;
+  const docFn = window._firebaseDoc;
+  const getDocFn = window._firebaseGetDoc;
+  if (!db || !docFn || !getDocFn || !window._currentUser) return null;
+  try {
+    const snap = await getDocFn(docFn(db, RANKINGS_COLLECTION, RANKINGS_DOC_ID));
+    const exists = typeof snap.exists === 'function' ? snap.exists() : !!snap.exists;
+    if (!exists) return null;
+    const state = _coerceLedgerState(snap.data() || {});
+    return hasMeaningfulLedgerData(state) ? state : null;
+  } catch (err) {
+    console.warn('[Rankings] shared rankings load failed:', err && err.message ? err.message : err);
+    return null;
+  }
+}
+
+async function saveSharedRankingsState(state) {
+  const db = window._firebaseDb;
+  const docFn = window._firebaseDoc;
+  const setDocFn = window._firebaseSetDoc;
+  const buildPayload = window.buildUserDocLedgerPayload;
+  if (!db || !docFn || !setDocFn || !buildPayload || !isRankingsOwnerUser()) return false;
+  const normalized = _coerceLedgerState(state);
+  try {
+    await setDocFn(docFn(db, RANKINGS_COLLECTION, RANKINGS_DOC_ID), {
+      ...buildPayload(normalized),
+      ownerEmail: RANKINGS_OWNER_EMAIL,
+      updatedAt: new Date().toISOString(),
+      description: 'Global model performance built from the admin-tracked PickLedger ledger.',
+    }, { merge: true });
+    return true;
+  } catch (err) {
+    console.warn('[Rankings] shared rankings save failed:', err && err.message ? err.message : err);
+    return false;
+  }
+}
+
 function getRankingsPicks() {
   if (hasMeaningfulLedgerData(rankingsLedgerState)) {
     return getPicksFromLedgerState(rankingsLedgerState);
   }
-  return getPicks();
+  return isRankingsOwnerUser() ? getPicks() : [];
 }
 
 async function loadCanonicalRankingsState() {
-  const localState = _coerceLedgerState(buildLedgerStatePayload());
-  if (isRankingsOwnerUser()) {
-    await loadAdminHistoricalRankingsState();
+  const sharedState = await loadSharedRankingsState();
+  if (sharedState) {
+    rankingsLedgerState = sharedState;
+    return rankingsLedgerState;
   }
-  rankingsLedgerState = getMergedRankingsLedgerState(localState);
+  if (isRankingsOwnerUser()) {
+    rankingsLedgerState = _coerceLedgerState(buildLedgerStatePayload());
+  } else {
+    rankingsLedgerState = _coerceLedgerState(null);
+  }
   return rankingsLedgerState;
 }
 
 async function pushCanonicalRankingsState(state) {
+  if (!isRankingsOwnerUser()) return false;
   const nextState = _coerceLedgerState(state && state.ledger ? state.ledger : state);
-  rankingsLedgerState = getMergedRankingsLedgerState(nextState);
+  rankingsLedgerState = nextState;
+  await saveSharedRankingsState(nextState);
   return true;
 }
 
@@ -6435,7 +6487,6 @@ window._hasMeaningfulLocalState = hasMeaningfulLocalState;
 window.hasMeaningfulLocalState = hasMeaningfulLocalState;
 
 function shouldPreserveLocalLedgerState(localState, remoteState) {
-  if (!isPickLedgerAdminUser()) return false;
   const localTs = getLedgerSavedAtMs(localState);
   const remoteTs = getLedgerSavedAtMs(remoteState);
   if (!remoteTs) return true;
@@ -6828,6 +6879,7 @@ async function refreshAutoGrades(silent = false) {
 
 function toggleShowSettled() {
   showSettled = !showSettled;
+  homeDateUserLocked = false;
   syncHomeSettledToggleButton();
   render();
 }
@@ -7700,20 +7752,35 @@ function persistHomeSelectedDate() {
   }
 }
 
-function ensureHomeSelectedDate(list) {
+function chooseDefaultHomeDateKey(entries, todayKey, options = {}) {
+  const keys = (Array.isArray(entries) ? entries : []).map((entry) => entry.key).filter(Boolean);
+  if (!keys.length) return todayKey;
+  if (keys.includes(todayKey)) return todayKey;
+  if (options.showSettled) {
+    const pastOrToday = keys.filter((key) => key <= todayKey);
+    return pastOrToday[pastOrToday.length - 1] || keys[keys.length - 1] || todayKey;
+  }
+  return keys.find((key) => key >= todayKey) || keys[keys.length - 1] || todayKey;
+}
+
+function ensureHomeSelectedDate(list, options = {}) {
   const entries = buildHomeDateEntries(list);
   const availableKeys = entries.map((entry) => entry.key);
   const todayKey = getTodayDateKey();
+  const selectedIsDate = Boolean(parseLocalDateKey(homeSelectedDateKey));
+  const defaultKey = chooseDefaultHomeDateKey(entries, todayKey, options);
   let resetSelection = false;
   if (homeDateFocusKey && availableKeys.includes(homeDateFocusKey)) {
     homeSelectedDateKey = homeDateFocusKey;
     homeDateFocusKey = '';
+    homeDateUserLocked = false;
     persistHomeSelectedDate();
     resetSelection = true;
-  } else if (!parseLocalDateKey(homeSelectedDateKey) || (availableKeys.length && !availableKeys.includes(homeSelectedDateKey))) {
-    homeSelectedDateKey = availableKeys.includes(todayKey)
-      ? todayKey
-      : (availableKeys[availableKeys.length - 1] || todayKey);
+  } else if (homeDateUserLocked && selectedIsDate) {
+    // Keep intentional clicks, even empty dates, so the calendar never snaps
+    // back to a stale slate while a user is inspecting another day.
+  } else if (!selectedIsDate || homeSelectedDateKey !== defaultKey) {
+    homeSelectedDateKey = defaultKey;
     persistHomeSelectedDate();
     resetSelection = true;
   } else if (homeDateFocusKey) {
@@ -7735,6 +7802,7 @@ function requestHomeDateFocusForPicks(picks) {
   if (!keys.length) return;
   const todayKey = getTodayDateKey();
   homeDateFocusKey = keys.includes(todayKey) ? todayKey : keys[keys.length - 1];
+  homeDateUserLocked = false;
   const selectedDate = parseLocalDateKey(homeDateFocusKey);
   if (selectedDate) homeCalendarMonthKey = getLocalMonthKey(selectedDate);
 }
@@ -7785,6 +7853,7 @@ function setHomeSelectedDateFromKey(key) {
   const dt = parseLocalDateKey(key);
   if (!dt) return;
   homeSelectedDateKey = getLocalDateKey(dt);
+  homeDateUserLocked = true;
   homeCalendarMonthKey = getLocalMonthKey(dt);
   homeCalendarOpen = false;
   persistHomeSelectedDate();
@@ -10909,13 +10978,12 @@ function renderSourceChooser(stats, visibleSet) {
 
 // ── Render ──
 function render() {
-  // Keep the rankings tab in sync with live grades. rankingsLedgerState
-  // is the source for getRankingsPicks(); without this refresh it only
-  // updates when the debounced ledger sync fires, so the leaderboard
-  // lags behind the header/home tab after a grade change.
-  if (typeof getMergedRankingsLedgerState === 'function' && typeof buildLedgerStatePayload === 'function') {
+  // Rankings are global model performance, not the viewer's private ledger.
+  // The admin account can preview its current ledger immediately before the
+  // debounced shared rankings save finishes; everyone else reads rankings/primary.
+  if (isRankingsOwnerUser() && typeof buildLedgerStatePayload === 'function') {
     try {
-      rankingsLedgerState = getMergedRankingsLedgerState(buildLedgerStatePayload());
+      rankingsLedgerState = _coerceLedgerState(buildLedgerStatePayload());
     } catch (_) { /* best-effort refresh */ }
   }
   let picks = getPicks();
@@ -11048,14 +11116,14 @@ function render() {
   syncHomeSettledToggleButton();
 
   // Home feed
-  const { entries: allDateEntries, todayKey } = ensureHomeSelectedDate(picks);
   let filteredByModeAndFilter = picks;
   if(activeFilter!=='ALL') filteredByModeAndFilter=picks.filter(p=>p.sport===activeFilter||p.source===activeFilter||getRankingSourceKey(p)===activeFilter);
   // settled mode: show only win/loss/push; default: show only pending
   if(showSettled) filteredByModeAndFilter=filteredByModeAndFilter.filter(p=>p.result!=='pending');
   else filteredByModeAndFilter=filteredByModeAndFilter.filter(p=>p.result==='pending');
 
-  const visibleDateEntries = buildHomeDateEntries(filteredByModeAndFilter);
+  const { entries: visibleDateEntries, todayKey } = ensureHomeSelectedDate(filteredByModeAndFilter, { showSettled });
+  const allDateEntries = buildHomeDateEntries(picks);
   const visibleDateCountMap = new Map(visibleDateEntries.map((entry) => [entry.key, entry.count]));
   const latestVisibleDateKey = visibleDateEntries[visibleDateEntries.length - 1]?.key
     || allDateEntries[allDateEntries.length - 1]?.key
