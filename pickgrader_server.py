@@ -4672,6 +4672,7 @@ ADMIN_GET_ENDPOINTS = {
 
 SIGNED_IN_POST_ENDPOINTS = {
     "/grade",
+    "/ipl",
     "/ledger-state",
     "/picks",
     "/run-mlb-first-five-model",
@@ -4689,8 +4690,8 @@ ADMIN_POST_ENDPOINTS = {
     "/ask-opus",
     "/refresh-nba-props-games",
     "/run-cannon-daily",
-    "/run-sportsgambler",
     "/run-sportsline-odds",
+    "/run-sportsgambler",
     "/run-sportytrader",
     "/save-admin-picks",
 }
@@ -4826,6 +4827,20 @@ class Handler(BaseHTTPRequestHandler):
         self.auth_user = user
         return True
 
+    def _resolve_authorized_ledger_uid(self, requested_uid: str) -> str | None:
+        requested = str(requested_uid or "").strip()
+        if not PICKLEDGER_REQUIRE_AUTH:
+            return requested
+
+        user_uid = str((self.auth_user or {}).get("uid") or "").strip()
+        if not requested:
+            return user_uid or None
+        if requested == user_uid or _is_admin_user(self.auth_user):
+            return requested
+
+        self._send_json(403, {"ok": False, "error": "cannot access another user's ledger"})
+        return None
+
     def do_OPTIONS(self) -> None:  # noqa: N802
         self.send_response(200)
         self._send_cors_headers()
@@ -4884,6 +4899,9 @@ class Handler(BaseHTTPRequestHandler):
             return
 
         if path == "/ledger-state":
+            ledger_uid = self._resolve_authorized_ledger_uid(ledger_uid)
+            if ledger_uid is None:
+                return
             if not ledger_uid:
                 self._send_json(400, {"ok": False, "error": "uid required"})
                 return
@@ -5032,7 +5050,6 @@ class Handler(BaseHTTPRequestHandler):
         game_id = body.get("game_id")
         game_label = body.get("game_label")
         ledger_uid = str(body.get("uid") or "").strip()
-        ledger_state_key = _ledger_state_key_for_uid(ledger_uid)
 
         if path == "/save-admin-picks":
             secret = str(body.get("secret", "") or "")
@@ -5068,9 +5085,13 @@ class Handler(BaseHTTPRequestHandler):
             return
 
         if path == "/ledger-state":
+            ledger_uid = self._resolve_authorized_ledger_uid(ledger_uid)
+            if ledger_uid is None:
+                return
             if not ledger_uid:
                 self._send_json(400, {"ok": False, "error": "uid required"})
                 return
+            ledger_state_key = _ledger_state_key_for_uid(ledger_uid)
             state = body.get("state", body)
             if not isinstance(state, dict):
                 self._send_json(400, {"ok": False, "error": "Invalid ledger state payload"})
@@ -5082,9 +5103,13 @@ class Handler(BaseHTTPRequestHandler):
             return
 
         if path == "/picks":
+            ledger_uid = self._resolve_authorized_ledger_uid(ledger_uid)
+            if ledger_uid is None:
+                return
             if not ledger_uid:
                 self._send_json(400, {"ok": False, "error": "uid required"})
                 return
+            ledger_state_key = _ledger_state_key_for_uid(ledger_uid)
             ok, entry, error = _save_pick_to_ledger(
                 body if isinstance(body, dict) else {},
                 ledger_state_key,
@@ -5096,9 +5121,13 @@ class Handler(BaseHTTPRequestHandler):
             return
 
         if path == "/grade" and "id" in body and "result" in body and "picks" not in body:
+            ledger_uid = self._resolve_authorized_ledger_uid(ledger_uid)
+            if ledger_uid is None:
+                return
             if not ledger_uid:
                 self._send_json(400, {"ok": False, "error": "uid required"})
                 return
+            ledger_state_key = _ledger_state_key_for_uid(ledger_uid)
             ok, normalized, error = _set_pick_result_in_ledger(
                 body.get("id"),
                 body.get("result"),

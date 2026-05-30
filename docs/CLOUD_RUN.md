@@ -7,9 +7,11 @@ The public model backend runs `pickgrader_server.py` in a container. GitHub Page
 - Service name: `pickledger-backend`
 - Runtime: Cloud Run container
 - Auth model: public Cloud Run ingress, Firebase ID token required by the app
+- Min instances: `0`
 - Concurrency: `1`
 - Max instances: `1` initially
 - Timeout: `600s`
+- Budget guardrail: create a small Google Cloud budget alert before sharing the service URL.
 
 ## Required Secrets / Env
 
@@ -53,8 +55,11 @@ gcloud run deploy pickledger-backend \
   --source . \
   --region us-central1 \
   --allow-unauthenticated \
+  --min-instances 0 \
   --concurrency 1 \
   --max-instances 1 \
+  --cpu 1 \
+  --memory 2Gi \
   --timeout 600 \
   --set-env-vars PICKLEDGER_REQUIRE_AUTH=true,ENABLE_SPORTYTRADER_REMOTE=false
 ```
@@ -64,5 +69,15 @@ After Cloud Run gives you the service URL, set the GitHub Pages build variable:
 ```text
 VITE_PICKLEDGER_BACKEND_URL=https://your-cloud-run-url
 ```
+
+## Safe 2-3 User Rollout
+
+1. Keep `min instances` at `0` so the service does not sit warm when nobody is using it.
+2. Keep `max instances` at `1` so a bug or repeated clicks cannot fan out into many containers.
+3. Keep `concurrency` at `1` so model runs happen one at a time.
+4. Set a budget alert, for example `$1` and `$5`, before sending the link to other users.
+5. If you need an immediate kill switch, set max instances to `0` or delete the Cloud Run service.
+
+Normal model routes require a signed-in Firebase user. Ledger routes are scoped to that user's Firebase UID unless the caller is an admin. Scraper/cache/admin routes require an email listed in `PICKLEDGER_ADMIN_EMAILS`.
 
 Production Pages still deploys only from `main`; `dev` is for review and validation.

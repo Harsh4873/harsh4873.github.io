@@ -3207,6 +3207,12 @@
   .rankings-section-bar .section-title {
     margin-bottom: 0;
   }
+  .rankings-section-bar .section-subtitle {
+    margin-top: 6px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.35;
+  }
   .source-chooser-wrap {
     margin-left: auto;
   }

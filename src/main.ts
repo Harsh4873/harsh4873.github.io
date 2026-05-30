@@ -801,11 +801,15 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
     if (!hasMeaningfulFirestoreLedgerState(remoteState)) return false;
     await waitForLedgerHelpers();
     if (generation !== window._authStateGeneration) return false;
-    const previousLocal = typeof window._buildLedgerStatePayload === 'function'
+    const uid = window.getLedgerSyncUid ? window.getLedgerSyncUid() : '';
+    const localCacheBelongsToUser = typeof window._ensureLocalLedgerOwnerForUid === 'function'
+      ? window._ensureLocalLedgerOwnerForUid(uid)
+      : false;
+    const previousLocal = localCacheBelongsToUser && typeof window._buildLedgerStatePayload === 'function'
       ? window._buildLedgerStatePayload({ touchSavedAt: false })
       : null;
     let stateToApply = remoteState;
-    const shouldKeepLocal = previousLocal &&
+    const shouldKeepLocal = localCacheBelongsToUser && previousLocal &&
       typeof window.hasMeaningfulLocalState === 'function' &&
       window.hasMeaningfulLocalState() &&
       (
@@ -823,7 +827,7 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
       }
     }
     focusHomeDateForIncomingLedgerState(stateToApply, previousLocal);
-    const restored = window._applyUserLedgerState(stateToApply);
+    const restored = window._applyUserLedgerState(stateToApply, { uid });
     if (!restored) return false;
     refreshLedgerUi();
     if (typeof window.syncRecordWithLedger === 'function') window.syncRecordWithLedger();
@@ -892,7 +896,10 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
   }
 
   window._signOut = async () => {
-    if (window._userUid && typeof window._saveUserPicks === 'function' && typeof window._buildLedgerStatePayload === 'function') {
+    const localLedgerMatchesUser = !window._userUid ||
+      typeof window._localLedgerBelongsToUid !== 'function' ||
+      window._localLedgerBelongsToUid(window._userUid);
+    if (localLedgerMatchesUser && window._userUid && typeof window._saveUserPicks === 'function' && typeof window._buildLedgerStatePayload === 'function') {
       await window._saveUserPicks(window._userUid, window._buildLedgerStatePayload());
     }
     if (window._userUid && typeof window._saveUserRecordSummary === 'function') {
@@ -903,7 +910,9 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
       k.startsWith('pickledger_deleted_pick_ids') ||
       k.startsWith('pickledger_deleted_pick_keys') ||
       k.startsWith('pickledger_results') ||
-      k.startsWith('pickledger_game_times')
+      k.startsWith('pickledger_game_times') ||
+      k.startsWith('pickledger_ledger_updated_at') ||
+      k.startsWith('pickledger_ledger_owner_uid')
     ).forEach(k => localStorage.removeItem(k));
     signOut(auth);
   };
@@ -952,10 +961,13 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
       const displayRecord = applyPendingRecordDeltas({ persist: true, uid: user.uid });
       updateProfilePanel(user, displayRecord);
 
-      const localBeforeRemote = typeof window._buildLedgerStatePayload === 'function'
+      const localCacheBelongsToUser = typeof window._ensureLocalLedgerOwnerForUid === 'function'
+        ? window._ensureLocalLedgerOwnerForUid(user.uid)
+        : false;
+      const localBeforeRemote = localCacheBelongsToUser && typeof window._buildLedgerStatePayload === 'function'
         ? window._buildLedgerStatePayload({ touchSavedAt: false })
         : null;
-      const hadLocalLedgerState = typeof window._hasMeaningfulLocalState === 'function'
+      const hadLocalLedgerState = localCacheBelongsToUser && typeof window._hasMeaningfulLocalState === 'function'
         ? window._hasMeaningfulLocalState()
         : false;
       const userPicks = await window._loadUserPicks(user.uid);
@@ -977,7 +989,7 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
           forcedResetChanged = Boolean(reset.changed);
         }
         focusHomeDateForIncomingLedgerState(ledgerToApply, localBeforeRemote);
-        window._applyUserLedgerState(ledgerToApply);
+        window._applyUserLedgerState(ledgerToApply, { uid: user.uid });
         localLedgerLoaded = hasMeaningfulLocalState();
         if ((shouldKeepLocal || forcedResetChanged) && localLedgerLoaded && typeof window.pushLedgerState === 'function') {
           window.pushLedgerState(true).catch(() => {});
@@ -990,7 +1002,7 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
           if (reset.changed) {
             forcedResetChanged = true;
             window._clearLedgerLocalState();
-            window._applyUserLedgerState(reset.state);
+            window._applyUserLedgerState(reset.state, { uid: user.uid });
           }
         }
         localLedgerLoaded = true;
@@ -1040,7 +1052,9 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
         k.startsWith('pickledger_deleted_pick_ids') ||
         k.startsWith('pickledger_deleted_pick_keys') ||
         k.startsWith('pickledger_results') ||
-        k.startsWith('pickledger_game_times')
+        k.startsWith('pickledger_game_times') ||
+        k.startsWith('pickledger_ledger_updated_at') ||
+        k.startsWith('pickledger_ledger_owner_uid')
       );
       signOutKeys.forEach(k => localStorage.removeItem(k));
       if (typeof render === 'function') render();
@@ -1078,6 +1092,7 @@ const DELETED_PICK_KEYS_KEY = `pickledger_deleted_pick_keys_${STORAGE_VERSION}`;
 const RESULTS_KEY = `pickledger_results_${STORAGE_VERSION}`;
 const GAME_TIMES_KEY = `pickledger_game_times_${STORAGE_VERSION}`;
 const LEDGER_UPDATED_AT_KEY = `pickledger_ledger_updated_at_${STORAGE_VERSION}`;
+const LEDGER_OWNER_UID_KEY = `pickledger_ledger_owner_uid_${STORAGE_VERSION}`;
 const HOME_DATE_STORAGE_KEY = `pickledger_home_date_${STORAGE_VERSION}`;
 const ONE_TIME_PROPS_CLEANUP_KEY = `pickledger_cleanup_nba_props_${STORAGE_VERSION}`;
 const FORCED_LEDGER_RESET_DATE_KEYS = ['2026-05-04'];
@@ -1098,6 +1113,8 @@ const LOOPBACK_HOST_RE = /^(?:localhost|127(?:\.\d{1,3}){3}|0\.0\.0\.0)$/i;
 const PICKLEDGER_MODE = 'firebase_direct';
 const RANKINGS_OWNER_EMAIL = 'hdav4873@gmail.com';
 const RANKINGS_STATE_UID = 'primary';
+const RANKINGS_COLLECTION = 'rankings';
+const RANKINGS_DOC_ID = 'primary';
 const ADMIN_BACKEND_STORAGE_KEY = 'pickledger_backend';
 const DEFAULT_ADMIN_BACKEND_URL = 'http://127.0.0.1:8765';
 const FALLBACK_ADMIN_BACKEND_URL = 'http://127.0.0.1:8767';
@@ -1159,23 +1176,35 @@ const ADMIN_BACKEND_URL = (() => {
     localStorage.setItem(ADMIN_BACKEND_STORAGE_KEY, queryOverride);
     return queryOverride;
   }
+  if (CONFIGURED_MODEL_BACKEND_URL && isAllowedBackendServer(CONFIGURED_MODEL_BACKEND_URL)) {
+    localStorage.setItem(ADMIN_BACKEND_STORAGE_KEY, CONFIGURED_MODEL_BACKEND_URL);
+    return CONFIGURED_MODEL_BACKEND_URL;
+  }
   const override = normalizeServerBase(localStorage.getItem(ADMIN_BACKEND_STORAGE_KEY));
   if (override && isAllowedBackendServer(override)) {
     return override;
   }
-  if (CONFIGURED_MODEL_BACKEND_URL && isAllowedBackendServer(CONFIGURED_MODEL_BACKEND_URL)) {
-    return CONFIGURED_MODEL_BACKEND_URL;
-  }
   return DEFAULT_ADMIN_BACKEND_URL;
 })();
+
+function getModelBackendCandidates() {
+  const candidates = [ADMIN_BACKEND_URL].filter(Boolean);
+  if (isLoopbackServer(ADMIN_BACKEND_URL) && FALLBACK_ADMIN_BACKEND_URL && !candidates.includes(FALLBACK_ADMIN_BACKEND_URL)) {
+    candidates.push(FALLBACK_ADMIN_BACKEND_URL);
+  }
+  return candidates;
+}
+
+function getModelBackendLabel(value = ADMIN_BACKEND_URL) {
+  return isLoopbackServer(value) ? 'local model backend' : 'cloud model backend';
+}
 
 const PICKLEDGER_NATIVE_FETCH = window.fetch.bind(window);
 window.fetch = async function pickledgerFetch(input, init = {}) {
   const targetUrl = typeof input === 'string'
     ? input
     : (input && typeof input === 'object' && 'url' in input ? input.url : '');
-  const shouldAttachAuth = targetUrl && [ADMIN_BACKEND_URL, FALLBACK_ADMIN_BACKEND_URL]
-    .filter(Boolean)
+  const shouldAttachAuth = targetUrl && getModelBackendCandidates()
     .some((backendUrl) => String(targetUrl).startsWith(backendUrl));
   if (!shouldAttachAuth) {
     return PICKLEDGER_NATIVE_FETCH(input, init);
@@ -1222,9 +1251,10 @@ async function checkAdminLocalBackendHealth(force = false) {
 
 function refreshAdminLiveControls() {
   const isAdmin = isAdminModelRunnerUser();
+  const backendLabel = getModelBackendLabel();
   const healthText = adminLocalBackendHealthy
     ? `Admin live sync enabled via ${ADMIN_BACKEND_URL}`
-    : 'Admin live sync needs the local backend on this Mac';
+    : `Admin live sync needs the ${backendLabel} online`;
   const configs = [
     {
       model: 'sportytrader',
@@ -1233,7 +1263,7 @@ function refreshAdminLiveControls() {
       nonAdminDesc: 'Live SportyTrader scraping is limited to the admin account. Other users read cached Firebase data only.',
       adminTitle: adminLocalBackendHealthy
         ? `Uses ${ADMIN_BACKEND_URL}/run-sportytrader`
-        : 'Admin account detected, but the local backend is offline',
+        : `Admin account detected, but the ${backendLabel} is offline`,
       nonAdminTitle: 'Only the admin account can run live SportyTrader syncs',
     },
     {
@@ -1243,7 +1273,7 @@ function refreshAdminLiveControls() {
       nonAdminDesc: 'Live SportsGambler scraping is limited to the admin account. Other users read cached Firebase data only.',
       adminTitle: adminLocalBackendHealthy
         ? `Uses ${ADMIN_BACKEND_URL}/run-sportsgambler`
-        : 'Admin account detected, but the local backend is offline',
+        : `Admin account detected, but the ${backendLabel} is offline`,
       nonAdminTitle: 'Only the admin account can run live SportsGambler syncs',
     },
   ];
@@ -1371,7 +1401,10 @@ async function loadAdminHistoricalRankingsState() {
 
 function getMergedRankingsLedgerState(localState) {
   const local = _coerceLedgerState(localState);
-  if (!isRankingsOwnerUser() || !hasMeaningfulLedgerData(adminHistoricalRankingsState)) {
+  if (!isRankingsOwnerUser()) {
+    return hasMeaningfulLedgerData(rankingsLedgerState) ? rankingsLedgerState : _coerceLedgerState(null);
+  }
+  if (!hasMeaningfulLedgerData(adminHistoricalRankingsState)) {
     return local;
   }
   return mergeLedgerStates(adminHistoricalRankingsState, local);
@@ -1646,9 +1679,63 @@ function getLocalLedgerSavedAt() {
   }
 }
 
+function getLocalLedgerOwnerUid() {
+  try {
+    return String(localStorage.getItem(LEDGER_OWNER_UID_KEY) || '').trim();
+  } catch {
+    return '';
+  }
+}
+
+function setLocalLedgerOwnerUid(uid) {
+  try {
+    const value = typeof uid === 'string' ? uid.trim() : '';
+    if (value) localStorage.setItem(LEDGER_OWNER_UID_KEY, value);
+    else localStorage.removeItem(LEDGER_OWNER_UID_KEY);
+  } catch {
+    // Ledger ownership is only a browser-cache guardrail.
+  }
+}
+
+function localLedgerBelongsToUid(uid) {
+  const value = typeof uid === 'string' ? uid.trim() : '';
+  return Boolean(value && getLocalLedgerOwnerUid() === value);
+}
+
+function ensureLocalLedgerOwnerForUid(uid) {
+  const value = typeof uid === 'string' ? uid.trim() : '';
+  if (!value) {
+    clearLedgerLocalState();
+    return false;
+  }
+  const owner = getLocalLedgerOwnerUid();
+  const hasLocalData = hasMeaningfulLocalState();
+  if (!owner) {
+    if (hasLocalData) {
+      clearLedgerLocalState();
+      setLocalLedgerOwnerUid(value);
+      return false;
+    }
+    setLocalLedgerOwnerUid(value);
+    return true;
+  }
+  if (owner !== value) {
+    clearLedgerLocalState();
+    setLocalLedgerOwnerUid(value);
+    return false;
+  }
+  return true;
+}
+
+function getLedgerOwnerUidOption(options = {}) {
+  const explicit = options.uid || options.ownerUid || window._userUid || '';
+  return typeof explicit === 'string' ? explicit.trim() : '';
+}
+
 function markLedgerLocalChanged(savedAt = new Date().toISOString()) {
   const value = String(savedAt || new Date().toISOString());
   try {
+    if (window._userUid) setLocalLedgerOwnerUid(window._userUid);
     localStorage.setItem(LEDGER_UPDATED_AT_KEY, value);
   } catch {
     // Local ledger still exists in memory if storage metadata cannot be written.
@@ -1716,25 +1803,64 @@ function getPicksFromLedgerState(state) {
     });
 }
 
+async function loadSharedRankingsState() {
+  if (!window._currentUser) return null;
+  try {
+    const snap = await getDoc(doc(db, RANKINGS_COLLECTION, RANKINGS_DOC_ID));
+    if (!snap.exists()) return null;
+    const state = _coerceLedgerState(snap.data() || {});
+    return hasMeaningfulLedgerData(state) ? state : null;
+  } catch (err) {
+    console.warn('[Rankings] shared rankings load failed:', err && err.message ? err.message : err);
+    return null;
+  }
+}
+
+async function saveSharedRankingsState(state) {
+  if (!isRankingsOwnerUser()) return false;
+  const normalized = _coerceLedgerState(state);
+  try {
+    await setDoc(doc(db, RANKINGS_COLLECTION, RANKINGS_DOC_ID), {
+      ...buildUserDocLedgerPayload(normalized),
+      ownerEmail: RANKINGS_OWNER_EMAIL,
+      updatedAt: new Date().toISOString(),
+      description: 'Global model performance built from the admin-tracked PickLedger ledger.',
+    }, { merge: true });
+    return true;
+  } catch (err) {
+    console.warn('[Rankings] shared rankings save failed:', err && err.message ? err.message : err);
+    return false;
+  }
+}
+
 function getRankingsPicks() {
   if (hasMeaningfulLedgerData(rankingsLedgerState)) {
     return getPicksFromLedgerState(rankingsLedgerState);
   }
-  return getPicks();
+  return isRankingsOwnerUser() ? getPicks() : [];
 }
 
 async function loadCanonicalRankingsState() {
-  const localState = _coerceLedgerState(buildLedgerStatePayload());
-  if (isRankingsOwnerUser()) {
-    await loadAdminHistoricalRankingsState();
+  const sharedState = await loadSharedRankingsState();
+  if (sharedState) {
+    rankingsLedgerState = sharedState;
+    return rankingsLedgerState;
   }
-  rankingsLedgerState = getMergedRankingsLedgerState(localState);
+  if (isRankingsOwnerUser()) {
+    const localState = _coerceLedgerState(buildLedgerStatePayload());
+    await loadAdminHistoricalRankingsState();
+    rankingsLedgerState = getMergedRankingsLedgerState(localState);
+  } else {
+    rankingsLedgerState = _coerceLedgerState(null);
+  }
   return rankingsLedgerState;
 }
 
 async function pushCanonicalRankingsState(state) {
+  if (!isRankingsOwnerUser()) return false;
   const nextState = _coerceLedgerState(state && state.ledger ? state.ledger : state);
   rankingsLedgerState = getMergedRankingsLedgerState(nextState);
+  await saveSharedRankingsState(rankingsLedgerState);
   return true;
 }
 
@@ -1789,9 +1915,12 @@ function clearLedgerLocalState() {
   localStorage.removeItem(RESULTS_KEY);
   localStorage.removeItem(GAME_TIMES_KEY);
   localStorage.removeItem(LEDGER_UPDATED_AT_KEY);
+  localStorage.removeItem(LEDGER_OWNER_UID_KEY);
 }
 
 function writeLedgerStateToLocalStorage(state, options = {}) {
+  const ownerUid = getLedgerOwnerUidOption(options);
+  if (ownerUid) setLocalLedgerOwnerUid(ownerUid);
   if (!state || typeof state !== 'object') return { hasAny: false };
   const mirrorResultsToServer = options.mirrorResultsToServer === true;
   const migratedState = migrateLedgerStateToStablePickKeys(state);
@@ -1828,23 +1957,31 @@ function writeLedgerStateToLocalStorage(state, options = {}) {
   return { hasAny: true };
 }
 
-function applyLedgerStateFromServer(state) {
-  const { hasAny } = writeLedgerStateToLocalStorage(state, { mirrorResultsToServer: true });
+function applyLedgerStateFromServer(state, options = {}) {
+  const uid = getLedgerOwnerUidOption(options);
+  if (uid) setLocalLedgerOwnerUid(uid);
+  const { hasAny } = writeLedgerStateToLocalStorage(state, { mirrorResultsToServer: true, uid });
   return hasAny;
 }
 
-function applyUserLedgerState(state) {
+function applyUserLedgerState(state, options = {}) {
+  const uid = getLedgerOwnerUidOption(options);
   clearLedgerLocalState();
-  const { hasAny } = writeLedgerStateToLocalStorage(state);
+  if (uid) setLocalLedgerOwnerUid(uid);
+  const { hasAny } = writeLedgerStateToLocalStorage(state, { uid });
   return hasAny;
 }
 
 window._clearLedgerLocalState = clearLedgerLocalState;
 window._applyUserLedgerState = applyUserLedgerState;
+window._ensureLocalLedgerOwnerForUid = ensureLocalLedgerOwnerForUid;
+window._localLedgerBelongsToUid = localLedgerBelongsToUid;
 
 async function pushLedgerState(force = false) {
   const uid = window.getLedgerSyncUid ? window.getLedgerSyncUid() : '';
   if (!window._authStateResolved || !uid) return;
+  if (!ensureLocalLedgerOwnerForUid(uid) && !hasMeaningfulLocalState()) return;
+  if (!localLedgerBelongsToUid(uid)) return;
   if (ledgerStateSyncInFlight && !force) return;
   ledgerStateSyncInFlight = true;
   try {
@@ -1878,6 +2015,7 @@ function scheduleLedgerStateSync(delayMs = 250) {
 
 function flushLedgerStateBeforeUnload() {
   if (!hasMeaningfulLocalState() || !window._userUid) return;
+  if (!localLedgerBelongsToUid(window._userUid)) return;
   pushLedgerState(true).catch(() => {});
 }
 
@@ -1889,6 +2027,7 @@ document.addEventListener('visibilitychange', () => {
 async function pullLedgerStateIfNeeded(options = {}) {
   const uid = window.getLedgerSyncUid ? window.getLedgerSyncUid(options.uid) : '';
   const expectedGeneration = Number.isInteger(options.expectedGeneration) ? options.expectedGeneration : null;
+  ensureLocalLedgerOwnerForUid(uid);
   if (hasMeaningfulLocalState() || !window._authStateResolved || !uid) return false;
   try {
     const data = await loadLedgerFromFirebase(uid);
@@ -1903,7 +2042,7 @@ async function pullLedgerStateIfNeeded(options = {}) {
     if (typeof window.focusHomeDateForIncomingLedgerState === 'function') {
       window.focusHomeDateForIncomingLedgerState(stateToApply, {});
     }
-    const restored = applyLedgerStateFromServer(stateToApply);
+    const restored = applyLedgerStateFromServer(stateToApply, { uid });
     if (restored) {
       if (forcedResetChanged && typeof pushLedgerState === 'function') {
         pushLedgerState(true).catch(() => {});
@@ -2058,7 +2197,7 @@ async function refreshAutoGrades(silent = false) {
         results: merged,
         startTimes: mergedTimes,
         gameTimes: mergedTimes,
-      });
+      }, { uid });
       if (picksBeforeRefresh.size > 0) {
         let recordDelta = window.normalizeRecordDelta(null);
         const picksAfterRefresh = typeof getPicks === 'function'
@@ -6229,7 +6368,7 @@ function render() {
   // is the source for getRankingsPicks(); without this refresh it only
   // updates when the debounced ledger sync fires, so the leaderboard
   // lags behind the header/home tab after a grade change.
-  if (typeof getMergedRankingsLedgerState === 'function' && typeof buildLedgerStatePayload === 'function') {
+  if (isRankingsOwnerUser() && typeof getMergedRankingsLedgerState === 'function' && typeof buildLedgerStatePayload === 'function') {
     try {
       rankingsLedgerState = getMergedRankingsLedgerState(buildLedgerStatePayload());
     } catch (_) { /* best-effort refresh */ }
@@ -7174,7 +7313,7 @@ async function loadCannonDailyPicks() {
     let liveSource = 'cache';
     let liveError = null;
 
-    // Admin + local backend available: scrape Cannon Analytics + SportsLine
+    // Admin + model backend available: scrape Cannon Analytics + SportsLine
     // LIVE for today's slate so each click pulls fresh data instead of the
     // cached JSON produced by the scheduled GitHub workflow.
     if (typeof isAdminModelRunnerUser === 'function' && isAdminModelRunnerUser()) {
@@ -7453,10 +7592,7 @@ async function _runAsyncModelRequest(model, endpoint, body) {
   const forceRefresh = !!(body && body.force_refresh);
   let backendError = null;
 
-  const backendCandidates = [ADMIN_BACKEND_URL];
-  if (FALLBACK_ADMIN_BACKEND_URL && !backendCandidates.includes(FALLBACK_ADMIN_BACKEND_URL)) {
-    backendCandidates.push(FALLBACK_ADMIN_BACKEND_URL);
-  }
+  const backendCandidates = getModelBackendCandidates();
 
   if (endpoint) {
     const backendHealthy = await checkAdminLocalBackendHealth();
@@ -7491,7 +7627,7 @@ async function _runAsyncModelRequest(model, endpoint, body) {
           const pollTimeoutMs = Number(body && body.pollTimeoutMs) || MODEL_FORCE_REFRESH_TIMEOUT_MS;
           const data = await _pollJob(launch.job_id, model, backendUrl, pollTimeoutMs);
           if (!data || !data.ok) {
-            throw new Error((data && data.error) || `Local backend polling failed via ${backendUrl}`);
+            throw new Error((data && data.error) || `Model backend polling failed via ${backendUrl}`);
           }
           return {
             ...data,
@@ -7505,7 +7641,7 @@ async function _runAsyncModelRequest(model, endpoint, body) {
         }
       }
     } else {
-      backendError = new Error('Local admin backend is offline');
+      backendError = new Error(`${getModelBackendLabel()} is offline`);
     }
   }
 
@@ -7513,7 +7649,7 @@ async function _runAsyncModelRequest(model, endpoint, body) {
     if (backendError) {
       throw new Error(`Force refresh failed before cache fallback: ${String(backendError && backendError.message ? backendError.message : backendError)}`);
     }
-    throw new Error('Force refresh requires the local admin backend.');
+    throw new Error(`Force refresh requires the ${getModelBackendLabel()}.`);
   }
 
   setModelStatus(model, 'Loading Firebase cache...', 'running');
@@ -7889,7 +8025,7 @@ async function _pollJob(jobId, model, baseUrl = ADMIN_BACKEND_URL, timeoutMs = 6
       } else if (model === 'sportsgambler') {
         setModelStatus(model, `Running SportsGambler scrape... ${Math.floor(elapsedMs / 1000)}s`, 'running');
       } else {
-        setModelStatus(model, `Waiting for local backend... ${Math.floor(elapsedMs / 1000)}s`, 'running');
+        setModelStatus(model, `Waiting for ${getModelBackendLabel(baseUrl)}... ${Math.floor(elapsedMs / 1000)}s`, 'running');
       }
     } catch (err) {
       consecutiveFailures += 1;
@@ -8089,7 +8225,7 @@ async function syncSportyTraderFromServer() {
   }
   const backendHealthy = await checkAdminLocalBackendHealth();
   if (!backendHealthy) {
-    throw new Error('Local admin backend is offline');
+    throw new Error(`${getModelBackendLabel()} is offline`);
   }
 
   const resp = await fetch(`${ADMIN_BACKEND_URL}/run-sportytrader`, {
@@ -8117,8 +8253,8 @@ async function syncSportyTraderFromServer() {
     meta: {
       updatedAt: new Date().toISOString(),
       date: _getTodayFeedDate(),
-      note: 'Synced from local backend',
-      from: 'local-backend',
+      note: `Synced from ${getModelBackendLabel()}`,
+      from: isLoopbackServer(ADMIN_BACKEND_URL) ? 'local-backend' : 'cloud-backend',
       leagues: 'nba,mlb',
     },
   };
@@ -8130,7 +8266,7 @@ async function syncSportsgamblerFromServer() {
   }
   const backendHealthy = await checkAdminLocalBackendHealth();
   if (!backendHealthy) {
-    throw new Error('Local admin backend is offline');
+    throw new Error(`${getModelBackendLabel()} is offline`);
   }
 
   const resp = await fetch(`${ADMIN_BACKEND_URL}/run-sportsgambler`, {
@@ -8158,8 +8294,8 @@ async function syncSportsgamblerFromServer() {
     meta: {
       updatedAt: new Date().toISOString(),
       date: _getTodayFeedDate(),
-      note: 'Synced from local backend',
-      from: 'local-backend',
+      note: `Synced from ${getModelBackendLabel()}`,
+      from: isLoopbackServer(ADMIN_BACKEND_URL) ? 'local-backend' : 'cloud-backend',
       leagues: 'nba,mlb',
     },
   };
@@ -8920,7 +9056,7 @@ render();
   if (isAdminModelRunnerUser()) {
     checkAdminLocalBackendHealth(true).catch(() => {});
   }
-  if (window._userUid && hasMeaningfulLocalState()) {
+  if (window._userUid && hasMeaningfulLocalState() && localLedgerBelongsToUid(window._userUid)) {
     scheduleLedgerStateSync();
     pushLedgerState(true);
   }
