@@ -1,56 +1,37 @@
 {
-  "date": "2026-05-16",
+  "date": "2026-05-28",
   "model": "MLBInning",
   "picks": [
     {
-      "game_id": "824278",
-      "game_start_time": "2026-05-16T17:10:00Z",
+      "game_id": "824272",
+      "game_start_time": "2026-05-28T17:10:00Z",
       "game_order": 0,
-      "matchup": "Detroit Tigers vs Toronto Blue Jays",
+      "matchup": "Detroit Tigers vs Los Angeles Angels",
       "home_team": "Detroit Tigers",
-      "away_team": "Toronto Blue Jays",
-      "home_pitcher": "Casey Mize",
-      "away_pitcher": "Mason Fluharty",
+      "away_team": "Los Angeles Angels",
+      "home_pitcher": "Jack Flaherty",
+      "away_pitcher": "Grayson Rodriguez",
       "venue_factor": 1.0,
-      "top_2_picks": [
-        {
-          "inning": 1,
-          "probability_scoreless": 0.472,
-          "baseline": 0.3844,
-          "edge_pp": 8.81,
-          "decision": "LEAN",
-          "confidence": "Medium",
-          "label": "Inning 1 - No Run Scored (47.2%, edge +8.8pp)"
-        },
-        {
-          "inning": 3,
-          "probability_scoreless": 0.563,
-          "baseline": 0.49,
-          "edge_pp": 7.28,
-          "decision": "BET",
-          "confidence": "Medium",
-          "label": "Inning 3 - No Run Scored (56.3%, edge +7.3pp)"
-        }
-      ],
+      "top_2_picks": [],
       "full_inning_table": {
-        "1": 0.472,
-        "2": 0.562,
-        "3": 0.563,
-        "4": 0.528,
-        "5": 0.54,
-        "6": 0.495,
-        "7": 0.457,
-        "8": 0.384
+        "1": 0.381,
+        "2": 0.458,
+        "3": 0.484,
+        "4": 0.412,
+        "5": 0.483,
+        "6": 0.455,
+        "7": 0.481,
+        "8": 0.375
       },
       "edge_table": {
-        "1": 0.0881,
-        "2": 0.0437,
-        "3": 0.0728,
-        "4": 0.0095,
-        "5": 0.0355,
-        "6": -0.0236,
-        "7": -0.0903,
-        "8": -0.1785
+        "1": -0.0036,
+        "2": -0.0605,
+        "3": -0.0055,
+        "4": -0.1065,
+        "5": -0.0209,
+        "6": -0.0632,
+        "7": -0.0666,
+        "8": -0.1875
       },
       "baseline_table": {
         "1": 0.3844,
@@ -64,115 +45,54 @@
       }
     },
     {
-      "game_id": "823060",
-      "game_start_time": "2026-05-16T18:15:00Z",
+      "game_id": "824595",
+      "game_start_time": "2026-05-28T18:10:00Z",
       "game_order": 1,
-      "matchup": "St. Louis Cardinals vs Kansas City Royals",
-      "home_team": "St. Louis Cardinals",
-      "away_team": "Kansas City Royals",
-      "home_pitcher": "Kyle Leahy",
-      "away_pitcher": "Noah Cameron",
+      "matchup": "Chicago White Sox vs Minnesota Twins",
+      "home_team": "Chicago White Sox",
+      "away_team": "Minnesota Twins",
+      "home_pitcher": "Davis Martin",
+      "away_pitcher": "Kendry Rojas",
       "venue_factor": 1.0,
       "top_2_picks": [
-        {
-          "inning": 1,
-          "probability_scoreless": 0.493,
-          "baseline": 0.3844,
-          "edge_pp": 10.82,
-          "decision": "LEAN",
-          "confidence": "Medium",
-          "label": "Inning 1 - No Run Scored (49.3%, edge +10.8pp)"
-        },
-        {
-          "inning": 5,
-          "probability_scoreless": 0.571,
-          "baseline": 0.5041,
-          "edge_pp": 6.69,
-          "decision": "LEAN",
-          "confidence": "Medium",
-          "label": "Inning 5 - No Run Scored (57.1%, edge +6.7pp)"
-        }
-      ],
-      "full_inning_table": {
-        "1": 0.493,
-        "2": 0.572,
-        "3": 0.511,
-        "4": 0.482,
-        "5": 0.571,
-        "6": 0.471,
-        "7": 0.4,
-        "8": 0.373
-      },
-      "edge_table": {
-        "1": 0.1082,
-        "2": 0.0538,
-        "3": 0.0213,
-        "4": -0.0366,
-        "5": 0.0669,
-        "6": -0.0477,
-        "7": -0.1476,
-        "8": -0.1896
-      },
-      "baseline_table": {
-        "1": 0.3844,
-        "2": 0.5184,
-        "3": 0.49,
-        "4": 0.5184,
-        "5": 0.5041,
-        "6": 0.5184,
-        "7": 0.5476,
-        "8": 0.5625
-      }
-    },
-    {
-      "game_id": "824359",
-      "game_start_time": "2026-05-16T19:10:00Z",
-      "game_order": 2,
-      "matchup": "Colorado Rockies vs Arizona Diamondbacks",
-      "home_team": "Colorado Rockies",
-      "away_team": "Arizona Diamondbacks",
-      "home_pitcher": "Tomoyuki Sugano",
-      "away_pitcher": "Eduardo Rodriguez",
-      "venue_factor": 1.0,
-      "top_2_picks": [
-        {
-          "inning": 3,
-          "probability_scoreless": 0.664,
-          "baseline": 0.49,
-          "edge_pp": 17.35,
-          "decision": "BET",
-          "confidence": "High",
-          "label": "Inning 3 - No Run Scored (66.4%, edge +17.3pp)"
-        },
         {
           "inning": 1,
           "probability_scoreless": 0.521,
           "baseline": 0.3844,
-          "edge_pp": 13.64,
+          "edge_pp": 13.69,
           "decision": "BET",
           "confidence": "Medium",
-          "label": "Inning 1 - No Run Scored (52.1%, edge +13.6pp)"
+          "label": "Inning 1 - No Run Scored (52.1%, edge +13.7pp)"
+        },
+        {
+          "inning": 6,
+          "probability_scoreless": 0.567,
+          "baseline": 0.5184,
+          "edge_pp": 4.89,
+          "decision": "LEAN",
+          "confidence": "Medium",
+          "label": "Inning 6 - No Run Scored (56.7%, edge +4.9pp)"
         }
       ],
       "full_inning_table": {
         "1": 0.521,
         "2": 0.533,
-        "3": 0.664,
-        "4": 0.498,
-        "5": 0.532,
-        "6": 0.609,
-        "7": 0.433,
-        "8": 0.438
+        "3": 0.51,
+        "4": 0.556,
+        "5": 0.466,
+        "6": 0.567,
+        "7": 0.399,
+        "8": 0.362
       },
       "edge_table": {
-        "1": 0.1364,
+        "1": 0.1369,
         "2": 0.0142,
-        "3": 0.1735,
-        "4": -0.0208,
-        "5": 0.0283,
-        "6": 0.0908,
-        "7": -0.1149,
-        "8": -0.1245
+        "3": 0.0202,
+        "4": 0.0373,
+        "5": -0.0377,
+        "6": 0.0489,
+        "7": -0.1488,
+        "8": -0.2007
       },
       "baseline_table": {
         "1": 0.3844,
@@ -186,167 +106,54 @@
       }
     },
     {
-      "game_id": "822737",
-      "game_start_time": "2026-05-16T20:05:00Z",
-      "game_order": 3,
-      "matchup": "Washington Nationals vs Baltimore Orioles",
-      "home_team": "Washington Nationals",
-      "away_team": "Baltimore Orioles",
-      "home_pitcher": "Cade Cavalli",
-      "away_pitcher": "Chris Bassitt",
-      "venue_factor": 1.0,
-      "top_2_picks": [
-        {
-          "inning": 1,
-          "probability_scoreless": 0.506,
-          "baseline": 0.3844,
-          "edge_pp": 12.19,
-          "decision": "BET",
-          "confidence": "Medium",
-          "label": "Inning 1 - No Run Scored (50.6%, edge +12.2pp)"
-        },
-        {
-          "inning": 2,
-          "probability_scoreless": 0.577,
-          "baseline": 0.5184,
-          "edge_pp": 5.91,
-          "decision": "LEAN",
-          "confidence": "Medium",
-          "label": "Inning 2 - No Run Scored (57.7%, edge +5.9pp)"
-        }
-      ],
-      "full_inning_table": {
-        "1": 0.506,
-        "2": 0.577,
-        "3": 0.52,
-        "4": 0.475,
-        "5": 0.465,
-        "6": 0.519,
-        "7": 0.342,
-        "8": 0.42
-      },
-      "edge_table": {
-        "1": 0.1219,
-        "2": 0.0591,
-        "3": 0.0297,
-        "4": -0.0432,
-        "5": -0.0393,
-        "6": 0.0009,
-        "7": -0.2056,
-        "8": -0.1424
-      },
-      "baseline_table": {
-        "1": 0.3844,
-        "2": 0.5184,
-        "3": 0.49,
-        "4": 0.5184,
-        "5": 0.5041,
-        "6": 0.5184,
-        "7": 0.5476,
-        "8": 0.5625
-      }
-    },
-    {
-      "game_id": "823382",
-      "game_start_time": "2026-05-16T20:05:00Z",
-      "game_order": 4,
-      "matchup": "Pittsburgh Pirates vs Philadelphia Phillies",
-      "home_team": "Pittsburgh Pirates",
-      "away_team": "Philadelphia Phillies",
-      "home_pitcher": "Bubba Chandler",
-      "away_pitcher": "Cristopher S\u00e1nchez",
+      "game_id": "824757",
+      "game_start_time": "2026-05-28T20:10:00Z",
+      "game_order": 2,
+      "matchup": "Boston Red Sox vs Atlanta Braves",
+      "home_team": "Boston Red Sox",
+      "away_team": "Atlanta Braves",
+      "home_pitcher": "Payton Tolle",
+      "away_pitcher": "Chris Sale",
       "venue_factor": 1.0,
       "top_2_picks": [
         {
           "inning": 3,
-          "probability_scoreless": 0.574,
+          "probability_scoreless": 0.674,
           "baseline": 0.49,
-          "edge_pp": 8.44,
+          "edge_pp": 18.37,
           "decision": "BET",
-          "confidence": "Medium",
-          "label": "Inning 3 - No Run Scored (57.4%, edge +8.4pp)"
-        }
-      ],
-      "full_inning_table": {
-        "1": 0.44,
-        "2": 0.54,
-        "3": 0.574,
-        "4": 0.54,
-        "5": 0.459,
-        "6": 0.504,
-        "7": 0.508,
-        "8": 0.388
-      },
-      "edge_table": {
-        "1": 0.0554,
-        "2": 0.0214,
-        "3": 0.0844,
-        "4": 0.0213,
-        "5": -0.045,
-        "6": -0.0143,
-        "7": -0.0398,
-        "8": -0.1747
-      },
-      "baseline_table": {
-        "1": 0.3844,
-        "2": 0.5184,
-        "3": 0.49,
-        "4": 0.5184,
-        "5": 0.5041,
-        "6": 0.5184,
-        "7": 0.5476,
-        "8": 0.5625
-      }
-    },
-    {
-      "game_id": "822981",
-      "game_start_time": "2026-05-16T20:10:00Z",
-      "game_order": 5,
-      "matchup": "Tampa Bay Rays vs Miami Marlins",
-      "home_team": "Tampa Bay Rays",
-      "away_team": "Miami Marlins",
-      "home_pitcher": "Nick Martinez",
-      "away_pitcher": "Sandy Alcantara",
-      "venue_factor": 1.0,
-      "top_2_picks": [
-        {
-          "inning": 1,
-          "probability_scoreless": 0.499,
-          "baseline": 0.3844,
-          "edge_pp": 11.46,
-          "decision": "LEAN",
-          "confidence": "Medium",
-          "label": "Inning 1 - No Run Scored (49.9%, edge +11.5pp)"
+          "confidence": "High",
+          "label": "Inning 3 - No Run Scored (67.4%, edge +18.4pp)"
         },
         {
-          "inning": 3,
-          "probability_scoreless": 0.56,
-          "baseline": 0.49,
-          "edge_pp": 6.98,
-          "decision": "LEAN",
+          "inning": 1,
+          "probability_scoreless": 0.543,
+          "baseline": 0.3844,
+          "edge_pp": 15.82,
+          "decision": "BET",
           "confidence": "Medium",
-          "label": "Inning 3 - No Run Scored (56.0%, edge +7.0pp)"
+          "label": "Inning 1 - No Run Scored (54.3%, edge +15.8pp)"
         }
       ],
       "full_inning_table": {
-        "1": 0.499,
-        "2": 0.535,
-        "3": 0.56,
+        "1": 0.543,
+        "2": 0.51,
+        "3": 0.674,
         "4": 0.521,
-        "5": 0.559,
-        "6": 0.479,
-        "7": 0.407,
-        "8": 0.363
+        "5": 0.532,
+        "6": 0.569,
+        "7": 0.469,
+        "8": 0.407
       },
       "edge_table": {
-        "1": 0.1146,
-        "2": 0.0169,
-        "3": 0.0698,
-        "4": 0.0029,
-        "5": 0.0547,
-        "6": -0.039,
-        "7": -0.1404,
-        "8": -0.1994
+        "1": 0.1582,
+        "2": -0.0085,
+        "3": 0.1837,
+        "4": 0.0024,
+        "5": 0.0283,
+        "6": 0.0502,
+        "7": -0.0782,
+        "8": -0.1557
       },
       "baseline_table": {
         "1": 0.3844,
@@ -360,96 +167,115 @@
       }
     },
     {
-      "game_id": "824435",
-      "game_start_time": "2026-05-16T22:10:00Z",
-      "game_order": 6,
-      "matchup": "Cleveland Guardians vs Cincinnati Reds",
-      "home_team": "Cleveland Guardians",
-      "away_team": "Cincinnati Reds",
-      "home_pitcher": "Joey Cantillo",
-      "away_pitcher": "Chris Paddack",
-      "venue_factor": 1.0,
-      "top_2_picks": [],
-      "full_inning_table": {
-        "1": 0.442,
-        "2": 0.507,
-        "3": 0.479,
-        "4": 0.507,
-        "5": 0.42,
-        "6": 0.463,
-        "7": 0.452,
-        "8": 0.391
-      },
-      "edge_table": {
-        "1": 0.0571,
-        "2": -0.0114,
-        "3": -0.0114,
-        "4": -0.0116,
-        "5": -0.0844,
-        "6": -0.0551,
-        "7": -0.0961,
-        "8": -0.1714
-      },
-      "baseline_table": {
-        "1": 0.3844,
-        "2": 0.5184,
-        "3": 0.49,
-        "4": 0.5184,
-        "5": 0.5041,
-        "6": 0.5184,
-        "7": 0.5476,
-        "8": 0.5625
-      }
-    },
-    {
-      "game_id": "824193",
-      "game_start_time": "2026-05-16T23:10:00Z",
-      "game_order": 7,
-      "matchup": "Houston Astros vs Texas Rangers",
-      "home_team": "Houston Astros",
-      "away_team": "Texas Rangers",
-      "home_pitcher": "Kai-Wei Teng",
-      "away_pitcher": "Jacob deGrom",
+      "game_id": "824834",
+      "game_start_time": "2026-05-28T22:35:00Z",
+      "game_order": 3,
+      "matchup": "Baltimore Orioles vs Toronto Blue Jays",
+      "home_team": "Baltimore Orioles",
+      "away_team": "Toronto Blue Jays",
+      "home_pitcher": "Chris Bassitt",
+      "away_pitcher": "Patrick Corbin",
       "venue_factor": 1.0,
       "top_2_picks": [
         {
           "inning": 1,
-          "probability_scoreless": 0.499,
+          "probability_scoreless": 0.561,
           "baseline": 0.3844,
-          "edge_pp": 11.41,
-          "decision": "LEAN",
-          "confidence": "Medium",
-          "label": "Inning 1 - No Run Scored (49.9%, edge +11.4pp)"
+          "edge_pp": 17.66,
+          "decision": "BET",
+          "confidence": "High",
+          "label": "Inning 1 - No Run Scored (56.1%, edge +17.7pp)"
         },
         {
           "inning": 2,
-          "probability_scoreless": 0.603,
+          "probability_scoreless": 0.584,
           "baseline": 0.5184,
-          "edge_pp": 8.45,
-          "decision": "BET",
+          "edge_pp": 6.56,
+          "decision": "LEAN",
           "confidence": "Medium",
-          "label": "Inning 2 - No Run Scored (60.3%, edge +8.5pp)"
+          "label": "Inning 2 - No Run Scored (58.4%, edge +6.6pp)"
         }
       ],
       "full_inning_table": {
-        "1": 0.499,
-        "2": 0.603,
-        "3": 0.499,
-        "4": 0.591,
-        "5": 0.487,
-        "6": 0.579,
-        "7": 0.468,
+        "1": 0.561,
+        "2": 0.584,
+        "3": 0.504,
+        "4": 0.504,
+        "5": 0.504,
+        "6": 0.482,
+        "7": 0.374,
+        "8": 0.48
+      },
+      "edge_table": {
+        "1": 0.1766,
+        "2": 0.0656,
+        "3": 0.0142,
+        "4": -0.0142,
+        "5": 0.0002,
+        "6": -0.0362,
+        "7": -0.1741,
+        "8": -0.0826
+      },
+      "baseline_table": {
+        "1": 0.3844,
+        "2": 0.5184,
+        "3": 0.49,
+        "4": 0.5184,
+        "5": 0.5041,
+        "6": 0.5184,
+        "7": 0.5476,
+        "8": 0.5625
+      }
+    },
+    {
+      "game_id": "823378",
+      "game_start_time": "2026-05-28T22:40:00Z",
+      "game_order": 4,
+      "matchup": "Pittsburgh Pirates vs Chicago Cubs",
+      "home_team": "Pittsburgh Pirates",
+      "away_team": "Chicago Cubs",
+      "home_pitcher": "Paul Skenes",
+      "away_pitcher": "Colin Rea",
+      "venue_factor": 1.0,
+      "top_2_picks": [
+        {
+          "inning": 3,
+          "probability_scoreless": 0.607,
+          "baseline": 0.49,
+          "edge_pp": 11.66,
+          "decision": "BET",
+          "confidence": "High",
+          "label": "Inning 3 - No Run Scored (60.7%, edge +11.7pp)"
+        },
+        {
+          "inning": 1,
+          "probability_scoreless": 0.5,
+          "baseline": 0.3844,
+          "edge_pp": 11.59,
+          "decision": "BET",
+          "confidence": "Medium",
+          "label": "Inning 1 - No Run Scored (50.0%, edge +11.6pp)"
+        }
+      ],
+      "full_inning_table": {
+        "1": 0.5,
+        "2": 0.514,
+        "3": 0.607,
+        "4": 0.502,
+        "5": 0.512,
+        "6": 0.488,
+        "7": 0.445,
         "8": 0.45
       },
       "edge_table": {
-        "1": 0.1141,
-        "2": 0.0845,
-        "3": 0.009,
-        "4": 0.0721,
-        "5": -0.0169,
-        "6": 0.0605,
-        "7": -0.0795,
-        "8": -0.1121
+        "1": 0.1159,
+        "2": -0.0046,
+        "3": 0.1166,
+        "4": -0.0161,
+        "5": 0.0081,
+        "6": -0.0299,
+        "7": -0.103,
+        "8": -0.1129
       },
       "baseline_table": {
         "1": 0.3844,
@@ -463,411 +289,54 @@
       }
     },
     {
-      "game_id": "824600",
-      "game_start_time": "2026-05-16T23:10:00Z",
-      "game_order": 8,
-      "matchup": "Chicago White Sox vs Chicago Cubs",
-      "home_team": "Chicago White Sox",
-      "away_team": "Chicago Cubs",
-      "home_pitcher": "Davis Martin",
-      "away_pitcher": "Jameson Taillon",
+      "game_id": "822896",
+      "game_start_time": "2026-05-29T00:05:00Z",
+      "game_order": 5,
+      "matchup": "Texas Rangers vs Houston Astros",
+      "home_team": "Texas Rangers",
+      "away_team": "Houston Astros",
+      "home_pitcher": "Nathan Eovaldi",
+      "away_pitcher": "Spencer Arrighetti",
       "venue_factor": 1.0,
       "top_2_picks": [
         {
-          "inning": 1,
-          "probability_scoreless": 0.544,
-          "baseline": 0.3844,
-          "edge_pp": 15.91,
-          "decision": "BET",
-          "confidence": "Medium",
-          "label": "Inning 1 - No Run Scored (54.4%, edge +15.9pp)"
-        }
-      ],
-      "full_inning_table": {
-        "1": 0.544,
-        "2": 0.477,
-        "3": 0.499,
-        "4": 0.508,
-        "5": 0.521,
-        "6": 0.532,
-        "7": 0.383,
-        "8": 0.389
-      },
-      "edge_table": {
-        "1": 0.1591,
-        "2": -0.0416,
-        "3": 0.0085,
-        "4": -0.0104,
-        "5": 0.0172,
-        "6": 0.014,
-        "7": -0.1642,
-        "8": -0.1733
-      },
-      "baseline_table": {
-        "1": 0.3844,
-        "2": 0.5184,
-        "3": 0.49,
-        "4": 0.5184,
-        "5": 0.5041,
-        "6": 0.5184,
-        "7": 0.5476,
-        "8": 0.5625
-      }
-    },
-    {
-      "game_id": "823706",
-      "game_start_time": "2026-05-16T23:10:00Z",
-      "game_order": 9,
-      "matchup": "Minnesota Twins vs Milwaukee Brewers",
-      "home_team": "Minnesota Twins",
-      "away_team": "Milwaukee Brewers",
-      "home_pitcher": "Connor Prielipp",
-      "away_pitcher": "Logan Henderson",
-      "venue_factor": 1.0,
-      "top_2_picks": [
-        {
-          "inning": 1,
-          "probability_scoreless": 0.521,
-          "baseline": 0.3844,
-          "edge_pp": 13.64,
-          "decision": "BET",
-          "confidence": "Medium",
-          "label": "Inning 1 - No Run Scored (52.1%, edge +13.6pp)"
-        },
-        {
-          "inning": 2,
-          "probability_scoreless": 0.591,
+          "inning": 6,
+          "probability_scoreless": 0.756,
           "baseline": 0.5184,
-          "edge_pp": 7.21,
-          "decision": "BET",
-          "confidence": "Medium",
-          "label": "Inning 2 - No Run Scored (59.1%, edge +7.2pp)"
-        }
-      ],
-      "full_inning_table": {
-        "1": 0.521,
-        "2": 0.591,
-        "3": 0.512,
-        "4": 0.486,
-        "5": 0.498,
-        "6": 0.547,
-        "7": 0.443,
-        "8": 0.437
-      },
-      "edge_table": {
-        "1": 0.1364,
-        "2": 0.0721,
-        "3": 0.0218,
-        "4": -0.0324,
-        "5": -0.0065,
-        "6": 0.0285,
-        "7": -0.1044,
-        "8": -0.125
-      },
-      "baseline_table": {
-        "1": 0.3844,
-        "2": 0.5184,
-        "3": 0.49,
-        "4": 0.5184,
-        "5": 0.5041,
-        "6": 0.5184,
-        "7": 0.5476,
-        "8": 0.5625
-      }
-    },
-    {
-      "game_id": "823139",
-      "game_start_time": "2026-05-16T23:15:00Z",
-      "game_order": 10,
-      "matchup": "Seattle Mariners vs San Diego Padres",
-      "home_team": "Seattle Mariners",
-      "away_team": "San Diego Padres",
-      "home_pitcher": "Logan Gilbert",
-      "away_pitcher": "Walker Buehler",
-      "venue_factor": 1.0,
-      "top_2_picks": [
-        {
-          "inning": 1,
-          "probability_scoreless": 0.505,
-          "baseline": 0.3844,
-          "edge_pp": 12.03,
-          "decision": "BET",
-          "confidence": "Medium",
-          "label": "Inning 1 - No Run Scored (50.5%, edge +12.0pp)"
-        },
-        {
-          "inning": 3,
-          "probability_scoreless": 0.54,
-          "baseline": 0.49,
-          "edge_pp": 4.96,
-          "decision": "LEAN",
-          "confidence": "Medium",
-          "label": "Inning 3 - No Run Scored (54.0%, edge +5.0pp)"
-        }
-      ],
-      "full_inning_table": {
-        "1": 0.505,
-        "2": 0.518,
-        "3": 0.54,
-        "4": 0.52,
-        "5": 0.475,
-        "6": 0.474,
-        "7": 0.436,
-        "8": 0.396
-      },
-      "edge_table": {
-        "1": 0.1203,
-        "2": -0.0001,
-        "3": 0.0496,
-        "4": 0.0015,
-        "5": -0.0288,
-        "6": -0.0441,
-        "7": -0.1119,
-        "8": -0.1666
-      },
-      "baseline_table": {
-        "1": 0.3844,
-        "2": 0.5184,
-        "3": 0.49,
-        "4": 0.5184,
-        "5": 0.5041,
-        "6": 0.5184,
-        "7": 0.5476,
-        "8": 0.5625
-      }
-    },
-    {
-      "game_id": "824924",
-      "game_start_time": "2026-05-16T23:15:00Z",
-      "game_order": 11,
-      "matchup": "Atlanta Braves vs Boston Red Sox",
-      "home_team": "Atlanta Braves",
-      "away_team": "Boston Red Sox",
-      "home_pitcher": "Bryce Elder",
-      "away_pitcher": "Payton Tolle",
-      "venue_factor": 1.0,
-      "top_2_picks": [
-        {
-          "inning": 1,
-          "probability_scoreless": 0.578,
-          "baseline": 0.3844,
-          "edge_pp": 19.37,
+          "edge_pp": 23.78,
           "decision": "BET",
           "confidence": "High",
-          "label": "Inning 1 - No Run Scored (57.8%, edge +19.4pp)"
+          "label": "Inning 6 - No Run Scored (75.6%, edge +23.8pp)"
         },
         {
           "inning": 3,
-          "probability_scoreless": 0.631,
+          "probability_scoreless": 0.676,
           "baseline": 0.49,
-          "edge_pp": 14.1,
+          "edge_pp": 18.59,
           "decision": "BET",
           "confidence": "High",
-          "label": "Inning 3 - No Run Scored (63.1%, edge +14.1pp)"
+          "label": "Inning 3 - No Run Scored (67.6%, edge +18.6pp)"
         }
       ],
       "full_inning_table": {
-        "1": 0.578,
-        "2": 0.486,
-        "3": 0.631,
-        "4": 0.52,
-        "5": 0.521,
-        "6": 0.653,
-        "7": 0.508,
-        "8": 0.464
-      },
-      "edge_table": {
-        "1": 0.1937,
-        "2": -0.0324,
-        "3": 0.141,
-        "4": 0.0014,
-        "5": 0.0172,
-        "6": 0.1345,
-        "7": -0.0393,
-        "8": -0.0985
-      },
-      "baseline_table": {
-        "1": 0.3844,
-        "2": 0.5184,
-        "3": 0.49,
-        "4": 0.5184,
-        "5": 0.5041,
-        "6": 0.5184,
-        "7": 0.5476,
-        "8": 0.5625
-      }
-    },
-    {
-      "game_id": "823627",
-      "game_start_time": "2026-05-16T23:15:00Z",
-      "game_order": 12,
-      "matchup": "New York Mets vs New York Yankees",
-      "home_team": "New York Mets",
-      "away_team": "New York Yankees",
-      "home_pitcher": "Huascar Brazob\u00e1n",
-      "away_pitcher": "Carlos Rod\u00f3n",
-      "venue_factor": 1.0,
-      "top_2_picks": [
-        {
-          "inning": 3,
-          "probability_scoreless": 0.559,
-          "baseline": 0.49,
-          "edge_pp": 6.95,
-          "decision": "LEAN",
-          "confidence": "Medium",
-          "label": "Inning 3 - No Run Scored (55.9%, edge +7.0pp)"
-        },
-        {
-          "inning": 5,
-          "probability_scoreless": 0.561,
-          "baseline": 0.5041,
-          "edge_pp": 5.7,
-          "decision": "LEAN",
-          "confidence": "Medium",
-          "label": "Inning 5 - No Run Scored (56.1%, edge +5.7pp)"
-        }
-      ],
-      "full_inning_table": {
-        "1": 0.449,
-        "2": 0.483,
-        "3": 0.559,
-        "4": 0.538,
-        "5": 0.561,
-        "6": 0.509,
-        "7": 0.42,
-        "8": 0.404
-      },
-      "edge_table": {
-        "1": 0.0641,
-        "2": -0.0357,
-        "3": 0.0695,
-        "4": 0.0196,
-        "5": 0.057,
-        "6": -0.0098,
-        "7": -0.1274,
-        "8": -0.1582
-      },
-      "baseline_table": {
-        "1": 0.3844,
-        "2": 0.5184,
-        "3": 0.49,
-        "4": 0.5184,
-        "5": 0.5041,
-        "6": 0.5184,
-        "7": 0.5476,
-        "8": 0.5625
-      }
-    },
-    {
-      "game_id": "824038",
-      "game_start_time": "2026-05-17T01:38:00Z",
-      "game_order": 13,
-      "matchup": "Los Angeles Angels vs Los Angeles Dodgers",
-      "home_team": "Los Angeles Angels",
-      "away_team": "Los Angeles Dodgers",
-      "home_pitcher": "Jos\u00e9 Soriano",
-      "away_pitcher": "Justin Wrobleski",
-      "venue_factor": 1.0,
-      "top_2_picks": [
-        {
-          "inning": 1,
-          "probability_scoreless": 0.488,
-          "baseline": 0.3844,
-          "edge_pp": 10.38,
-          "decision": "LEAN",
-          "confidence": "Medium",
-          "label": "Inning 1 - No Run Scored (48.8%, edge +10.4pp)"
-        },
-        {
-          "inning": 3,
-          "probability_scoreless": 0.591,
-          "baseline": 0.49,
-          "edge_pp": 10.09,
-          "decision": "BET",
-          "confidence": "High",
-          "label": "Inning 3 - No Run Scored (59.1%, edge +10.1pp)"
-        }
-      ],
-      "full_inning_table": {
-        "1": 0.488,
-        "2": 0.518,
-        "3": 0.591,
-        "4": 0.466,
-        "5": 0.579,
-        "6": 0.591,
-        "7": 0.46,
-        "8": 0.432
-      },
-      "edge_table": {
-        "1": 0.1038,
-        "2": -0.0,
-        "3": 0.1009,
-        "4": -0.052,
-        "5": 0.0748,
-        "6": 0.0725,
-        "7": -0.0877,
-        "8": -0.1307
-      },
-      "baseline_table": {
-        "1": 0.3844,
-        "2": 0.5184,
-        "3": 0.49,
-        "4": 0.5184,
-        "5": 0.5041,
-        "6": 0.5184,
-        "7": 0.5476,
-        "8": 0.5625
-      }
-    },
-    {
-      "game_id": "825007",
-      "game_start_time": "2026-05-17T01:40:00Z",
-      "game_order": 14,
-      "matchup": "Athletics vs San Francisco Giants",
-      "home_team": "Athletics",
-      "away_team": "San Francisco Giants",
-      "home_pitcher": "Luis Severino",
-      "away_pitcher": "Trevor McDonald",
-      "venue_factor": 1.0,
-      "top_2_picks": [
-        {
-          "inning": 1,
-          "probability_scoreless": 0.53,
-          "baseline": 0.3844,
-          "edge_pp": 14.6,
-          "decision": "BET",
-          "confidence": "Medium",
-          "label": "Inning 1 - No Run Scored (53.0%, edge +14.6pp)"
-        },
-        {
-          "inning": 3,
-          "probability_scoreless": 0.566,
-          "baseline": 0.49,
-          "edge_pp": 7.58,
-          "decision": "BET",
-          "confidence": "Medium",
-          "label": "Inning 3 - No Run Scored (56.6%, edge +7.6pp)"
-        }
-      ],
-      "full_inning_table": {
-        "1": 0.53,
-        "2": 0.509,
-        "3": 0.566,
-        "4": 0.579,
+        "1": 0.532,
+        "2": 0.567,
+        "3": 0.676,
+        "4": 0.51,
         "5": 0.499,
-        "6": 0.533,
-        "7": 0.39,
-        "8": 0.482
+        "6": 0.756,
+        "7": 0.463,
+        "8": 0.493
       },
       "edge_table": {
-        "1": 0.146,
-        "2": -0.0092,
-        "3": 0.0758,
-        "4": 0.0605,
+        "1": 0.1473,
+        "2": 0.0489,
+        "3": 0.1859,
+        "4": -0.0085,
         "5": -0.0051,
-        "6": 0.0142,
-        "7": -0.1576,
-        "8": -0.0807
+        "6": 0.2378,
+        "7": -0.0842,
+        "8": -0.0696
       },
       "baseline_table": {
         "1": 0.3844,
