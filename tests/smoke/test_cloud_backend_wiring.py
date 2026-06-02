@@ -16,7 +16,9 @@ def test_frontend_prefers_configured_cloud_backend_over_stale_local_override():
     assert "function getModelBackendCandidates()" in source
     assert "isLoopbackServer(ADMIN_BACKEND_URL)" in source
     assert "getModelBackendCandidates()" in source
-    assert "window._currentUser.getIdToken()" in source
+    assert "async function getBackendAuthUser()" in source
+    assert "(auth && auth.currentUser) || window._currentUser || null" in source
+    assert "await getBackendAuthToken()" in source
     assert "headers.set('Authorization', `Bearer ${token}`)" in source
 
 

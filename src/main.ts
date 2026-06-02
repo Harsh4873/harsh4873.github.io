@@ -1199,6 +1199,25 @@ function getModelBackendLabel(value = ADMIN_BACKEND_URL) {
   return isLoopbackServer(value) ? 'local model backend' : 'cloud model backend';
 }
 
+async function getBackendAuthUser() {
+  try {
+    if (window._authStateReady && typeof window._authStateReady.then === 'function') {
+      await window._authStateReady;
+    }
+  } catch {
+    // Keep backend calls moving; the request will receive a normal auth error if needed.
+  }
+  return (auth && auth.currentUser) || window._currentUser || null;
+}
+
+async function getBackendAuthToken() {
+  const user = await getBackendAuthUser();
+  if (user && typeof user.getIdToken === 'function') {
+    return user.getIdToken();
+  }
+  return '';
+}
+
 const PICKLEDGER_NATIVE_FETCH = window.fetch.bind(window);
 window.fetch = async function pickledgerFetch(input, init = {}) {
   const targetUrl = typeof input === 'string'
@@ -1213,9 +1232,9 @@ window.fetch = async function pickledgerFetch(input, init = {}) {
   const headers = new Headers(init && init.headers
     ? init.headers
     : (input instanceof Request ? input.headers : undefined));
-  if (!headers.has('Authorization') && window._currentUser && typeof window._currentUser.getIdToken === 'function') {
+  if (!headers.has('Authorization')) {
     try {
-      const token = await window._currentUser.getIdToken();
+      const token = await getBackendAuthToken();
       if (token) headers.set('Authorization', `Bearer ${token}`);
     } catch (err) {
       console.warn('[Auth] Failed to attach backend token:', err && err.message ? err.message : err);
@@ -1789,7 +1808,8 @@ function _coerceLedgerState(state) {
 }
 
 function isRankingsOwnerUser() {
-  const email = String(window._currentUser && window._currentUser.email || '').trim().toLowerCase();
+  const user = (auth && auth.currentUser) || window._currentUser || null;
+  const email = String(user && user.email || '').trim().toLowerCase();
   return email === RANKINGS_OWNER_EMAIL;
 }
 
@@ -1804,7 +1824,7 @@ function getPicksFromLedgerState(state) {
 }
 
 async function loadSharedRankingsState() {
-  if (!window._currentUser) return null;
+  if (!((auth && auth.currentUser) || window._currentUser)) return null;
   try {
     const snap = await getDoc(doc(db, RANKINGS_COLLECTION, RANKINGS_DOC_ID));
     if (!snap.exists()) return null;
