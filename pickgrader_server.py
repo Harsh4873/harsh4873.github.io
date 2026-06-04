@@ -223,6 +223,10 @@ _firebase_init_lock = threading.Lock()
 _firebase_db = None
 
 
+def _env_credential_value(name: str, default: str = "") -> str:
+    return str(os.getenv(name, default) or "").strip()
+
+
 def _init_admin_firestore():
     global _firebase_db
     if not _FIREBASE_ADMIN_AVAILABLE:
@@ -236,7 +240,7 @@ def _init_admin_firestore():
         "FIREBASE_PRIVATE_KEY",
         "FIREBASE_CLIENT_EMAIL",
     ]
-    if any(not os.getenv(name) for name in required):
+    if any(not _env_credential_value(name) for name in required):
         return None
 
     with _firebase_init_lock:
@@ -250,11 +254,11 @@ def _init_admin_firestore():
                 return _firebase_db
             cred = credentials.Certificate({
                 "type": "service_account",
-                "project_id": os.getenv("FIREBASE_PROJECT_ID"),
-                "private_key_id": os.getenv("FIREBASE_PRIVATE_KEY_ID", ""),
-                "private_key": os.getenv("FIREBASE_PRIVATE_KEY", "").replace("\\n", "\n"),
-                "client_email": os.getenv("FIREBASE_CLIENT_EMAIL"),
-                "client_id": os.getenv("FIREBASE_CLIENT_ID", ""),
+                "project_id": _env_credential_value("FIREBASE_PROJECT_ID"),
+                "private_key_id": _env_credential_value("FIREBASE_PRIVATE_KEY_ID"),
+                "private_key": _env_credential_value("FIREBASE_PRIVATE_KEY").replace("\\n", "\n"),
+                "client_email": _env_credential_value("FIREBASE_CLIENT_EMAIL"),
+                "client_id": _env_credential_value("FIREBASE_CLIENT_ID"),
                 "auth_uri": "https://accounts.google.com/o/oauth2/auth",
                 "token_uri": "https://oauth2.googleapis.com/token",
             })
