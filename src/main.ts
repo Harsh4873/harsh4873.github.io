@@ -6893,6 +6893,7 @@ const NBA_MODEL_SOURCE_LABELS = {
 };
 const MLB_COMPARISON_MODELS = new Set();
 const MLB_MODEL_SOURCE_LABELS = {
+  mlb: 'MLB OLD',
   'mlb-new': 'MLB Model',
 };
 let pendingNbaComparisonPicks = {
@@ -7019,12 +7020,13 @@ function _createTimeoutSignal(ms) {
   return controller.signal;
 }
 
-function _adminCacheDocDateCandidates(dateStr) {
+function _adminCacheDocDateCandidates(dateStr, options = {}) {
   const candidates = [];
   const requested = String(dateStr || '').trim();
   if (requested) candidates.push(requested);
   const todayUtc = new Date().toISOString().split('T')[0];
-  const useRecentFallback = !requested || requested === todayUtc;
+  const allowRecentFallback = !options || options.allowRecentFallback !== false;
+  const useRecentFallback = allowRecentFallback && (!requested || requested === todayUtc);
   const pushDate = (value) => {
     if (value && !candidates.includes(value)) candidates.push(value);
   };
@@ -7118,10 +7120,11 @@ async function getAdminPicksFromFirebase(modelKey, options = {}) {
   if (!db || !docFn || !getDocFn || !modelKey) return null;
   const dateStr = typeof options === 'string' ? options : (options && options.date ? options.date : '');
   const gameLabel = options && typeof options === 'object' ? String(options.gameLabel || '').trim() : '';
+  const allowRecentFallback = !(options && typeof options === 'object' && options.allowRecentFallback === false);
   const aliases = MODEL_FIREBASE_KEY_ALIASES[modelKey] || [modelKey];
   const normalizedAliases = aliases.map(value => String(value || '').trim().toLowerCase().replace(/[\s_]+/g, '-'));
 
-  for (const docId of _adminCacheDocDateCandidates(dateStr || getFirestoreDateKey())) {
+  for (const docId of _adminCacheDocDateCandidates(dateStr || getFirestoreDateKey(), { allowRecentFallback })) {
     try {
       const snap = await getDocFn(docFn(db, 'admin_picks', docId));
       const exists = typeof snap.exists === 'function' ? snap.exists() : !!snap.exists;
@@ -7721,7 +7724,11 @@ async function _runAsyncModelRequest(model, endpoint, body) {
   }
 
   setModelStatus(model, 'Loading Firebase cache...', 'running');
-  const result = await getAdminPicksFromFirebase(fallbackModelKey, { date: fallbackDate, gameLabel });
+  const result = await getAdminPicksFromFirebase(fallbackModelKey, {
+    date: fallbackDate,
+    gameLabel,
+    allowRecentFallback: false,
+  });
   if (result) {
     return result;
   }
@@ -7887,6 +7894,7 @@ async function _runNbaVariantModel(model, dateStr, options = {}) {
 
 async function _runMlbVariantModel(model, dateStr) {
   const label = formatModelRunDate(dateStr);
+  const isOldVariant = model === 'mlb';
   setModelStatus(
     model,
     isAdminModelRunnerUser()
@@ -7896,11 +7904,11 @@ async function _runMlbVariantModel(model, dateStr) {
   );
   const result = await _runAsyncModelRequest(
     model,
-    '/run-mlb-new-model',
+    isOldVariant ? '/run-mlb-model' : '/run-mlb-new-model',
     {
       async: true,
       date: dateStr,
-      fallbackModelKey: 'mlb_new',
+      fallbackModelKey: isOldVariant ? 'mlb_old' : 'mlb_new',
       fallbackDateStr: dateStr,
     }
   );
@@ -8605,6 +8613,18 @@ async function runModel(model, eventOrOptions = {}) {
     const gameSelect = document.getElementById('nba-props-game-select');
     const selectedGameLabel = String(gameSelect && gameSelect.value ? gameSelect.value : '').trim();
     if (selectedGameLabel) body.game_label = selectedGameLabel;
+  }
+  if (model === 'mlb') {
+    endpoint = '/run-mlb-model';
+    body.fallbackModelKey = 'mlb_old';
+    body.fallbackDateStr = body.date;
+    body.pollTimeoutMs = MODEL_FORCE_REFRESH_TIMEOUT_MS;
+  }
+  if (model === 'mlb-new') {
+    endpoint = '/run-mlb-new-model';
+    body.fallbackModelKey = 'mlb_new';
+    body.fallbackDateStr = body.date;
+    body.pollTimeoutMs = MODEL_FORCE_REFRESH_TIMEOUT_MS;
   }
 
   try {
