@@ -63,7 +63,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if git diff --quiet -- data/model_cache; then
+          if [ -z "$(git status --porcelain -- data/model_cache)" ]; then
             echo "No change in data/model_cache — skipping commit."
             exit 0
           fi
