@@ -7117,20 +7117,22 @@ async function getAdminPicksFromFirebase(modelKey, options = {}) {
   const db = window._firebaseDb;
   const docFn = window._firebaseDoc;
   const getDocFn = window._firebaseGetDoc;
-  if (!db || !docFn || !getDocFn || !modelKey) return null;
+  if (!modelKey) return null;
   const dateStr = typeof options === 'string' ? options : (options && options.date ? options.date : '');
   const gameLabel = options && typeof options === 'object' ? String(options.gameLabel || '').trim() : '';
   const allowRecentFallback = !(options && typeof options === 'object' && options.allowRecentFallback === false);
   const aliases = MODEL_FIREBASE_KEY_ALIASES[modelKey] || [modelKey];
   const normalizedAliases = aliases.map(value => String(value || '').trim().toLowerCase().replace(/[\s_]+/g, '-'));
+  const docCandidates = _adminCacheDocDateCandidates(dateStr || getFirestoreDateKey(), { allowRecentFallback });
 
-  for (const docId of _adminCacheDocDateCandidates(dateStr || getFirestoreDateKey(), { allowRecentFallback })) {
-    try {
-      const snap = await getDocFn(docFn(db, 'admin_picks', docId));
-      const exists = typeof snap.exists === 'function' ? snap.exists() : !!snap.exists;
-      if (!exists) continue;
-      const data = typeof snap.data === 'function' ? snap.data() : null;
-      if (!data || typeof data !== 'object') continue;
+  if (db && docFn && getDocFn) {
+    for (const docId of docCandidates) {
+      try {
+        const snap = await getDocFn(docFn(db, 'admin_picks', docId));
+        const exists = typeof snap.exists === 'function' ? snap.exists() : !!snap.exists;
+        if (!exists) continue;
+        const data = typeof snap.data === 'function' ? snap.data() : null;
+        if (!data || typeof data !== 'object') continue;
 
       const containers = [
         data,
@@ -7191,7 +7193,72 @@ async function getAdminPicksFromFirebase(modelKey, options = {}) {
         picks: _extractModelPicks({ payload, picks: Array.isArray(payload && payload.picks) ? payload.picks : Array.isArray(payload) ? payload : [] }),
       };
     } catch (_err) {
-      // Try the next date candidate.
+        // Try the next date candidate.
+      }
+    }
+  }
+
+  for (const docId of docCandidates) {
+    try {
+      const resp = await fetch(`./data/model_cache/${docId}.json?t=${Date.now()}`, { cache: 'no-store' });
+      if (!resp.ok) continue;
+      const data = await resp.json();
+      if (!data || typeof data !== 'object') continue;
+      const containers = [
+        data,
+        data.models && typeof data.models === 'object' ? data.models : null,
+        data.model_picks && typeof data.model_picks === 'object' ? data.model_picks : null,
+        data.picks && typeof data.picks === 'object' ? data.picks : null,
+        data.cache && typeof data.cache === 'object' ? data.cache : null,
+        data.caches && typeof data.caches === 'object' ? data.caches : null,
+      ].filter(Boolean);
+
+      let payload = null;
+      for (const container of containers) {
+        const entries = Object.entries(container);
+        for (const alias of aliases) {
+          if (!Object.prototype.hasOwnProperty.call(container, alias)) continue;
+          payload = _extractFirebaseModelPayload(container[alias], { gameLabel });
+          if (payload) break;
+        }
+        if (payload) break;
+        for (const alias of normalizedAliases) {
+          for (const [key, value] of entries) {
+            const normalizedKey = String(key || '').trim().toLowerCase().replace(/[\s_]+/g, '-');
+            if (normalizedKey !== alias) continue;
+            payload = _extractFirebaseModelPayload(value, { gameLabel });
+            if (payload) break;
+          }
+          if (payload) break;
+        }
+        if (payload) break;
+        for (const [key, value] of entries) {
+          const normalizedKey = String(key || '').trim().toLowerCase().replace(/[\s_]+/g, '-');
+          if (
+            normalizedAliases.some(alias =>
+              normalizedKey === alias ||
+              normalizedKey.startsWith(alias + '-') ||
+              normalizedKey.startsWith(alias + '_')
+            )
+          ) {
+            payload = _extractFirebaseModelPayload(value, { gameLabel });
+            if (payload) break;
+          }
+        }
+        if (payload) break;
+      }
+      if (!payload) continue;
+      return {
+        ok: true,
+        source: 'firebase_cache',
+        cache_source: 'static_json',
+        model: modelKey,
+        date: docId,
+        payload,
+        picks: _extractModelPicks({ payload, picks: Array.isArray(payload && payload.picks) ? payload.picks : Array.isArray(payload) ? payload : [] }),
+      };
+    } catch (_err) {
+      // Try the next static JSON cache candidate.
     }
   }
   return null;

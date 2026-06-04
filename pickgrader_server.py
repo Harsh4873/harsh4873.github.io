@@ -2298,6 +2298,14 @@ def _run_script(python_bin: str, script: str, cwd: str, timeout: int = 300, extr
     return result.stdout + result.stderr
 
 
+def _env_timeout_seconds(name: str, default: int) -> int:
+    try:
+        value = int(str(os.environ.get(name, "") or "").strip())
+    except ValueError:
+        return default
+    return value if value > 0 else default
+
+
 def _resolve_python_bin(preferred_path: str) -> str:
     """Use model-specific venv if present; otherwise use current interpreter."""
     if os.path.exists(preferred_path):
@@ -3945,13 +3953,14 @@ def run_mlb_model(date_str: str | None = None, variant: str = "old") -> dict[str
     python_bin = _resolve_python_bin(os.path.join(MLB_MODEL_DIR, "venv", "bin", "python"))
     source_label = "MLB NEW" if variant == "new" else "MLB OLD"
     cache_key = "mlb_new" if variant == "new" else "mlb_old"
+    timeout_s = _env_timeout_seconds("PICKLEDGER_MLB_MODEL_TIMEOUT_SECONDS", 300)
 
     try:
         output = _run_script(
             python_bin,
             "run_today.py",
             MLB_MODEL_DIR,
-            timeout=300,
+            timeout=timeout_s,
             extra_args=_mlb_model_extra_args(date_str, variant),
         )
         if (
@@ -3992,7 +4001,8 @@ def run_mlb_model(date_str: str | None = None, variant: str = "old") -> dict[str
             _save_admin_picks_doc(cache_key, result)
         return result
     except subprocess.TimeoutExpired:
-        return {"ok": False, "error": f"{source_label} timed out (5 min limit)"}
+        timeout_min = max(1, round(timeout_s / 60))
+        return {"ok": False, "error": f"{source_label} timed out ({timeout_min} min limit)"}
     except Exception as e:
         return {"ok": False, "error": str(e)}
 

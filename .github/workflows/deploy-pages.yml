@@ -52,7 +52,7 @@ jobs:
           cp CNAME dist/
           cp ipl/ipl_styles.css dist/ipl/
           cp ipl/ipl_frontend.js dist/ipl/
-          cp data/cannon_mlb_daily.json dist/data/
+          cp -R data/. dist/data/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
