@@ -344,24 +344,72 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
   const gate = document.getElementById('login-gate');
   const loginBtn = document.getElementById('login-google-btn');
   const loginErr = document.getElementById('login-error');
+  const loginBtnHtml = loginBtn ? loginBtn.innerHTML : '';
+  const SIGN_IN_POPUP_TIMEOUT_MS = 20000;
+
+  function formatAuthError(error) {
+    const code = error && error.code ? String(error.code) : '';
+    if (code === 'auth/unauthorized-domain') {
+      return 'This domain is not authorized in Firebase Auth.';
+    }
+    if (code === 'auth/operation-not-allowed') {
+      return 'Google sign-in is disabled in Firebase Auth.';
+    }
+    if (code === 'auth/configuration-not-found') {
+      return 'Firebase Auth is missing its project configuration.';
+    }
+    if (code === 'auth/invalid-api-key') {
+      return 'Firebase API key is invalid for this build.';
+    }
+    if (code === 'auth/popup-blocked') {
+      return 'Popup was blocked. Allow popups and try again.';
+    }
+    if (code === 'auth/popup-closed-by-user') {
+      return 'Google sign-in was closed before it finished.';
+    }
+    if (code === 'auth/network-request-failed') {
+      return 'Network error during Google sign-in. Try again.';
+    }
+    if (code === 'auth/popup-timeout') {
+      return 'Google sign-in did not finish. Try again.';
+    }
+    if (code) {
+      return `Sign-in failed (${code}). Try again.`;
+    }
+    return 'Sign-in failed. Try again.';
+  }
+
+  function restoreLoginButton(message) {
+    if (!loginBtn) return;
+    loginBtn.disabled = false;
+    loginBtn.innerHTML = loginBtnHtml;
+    if (loginErr) loginErr.textContent = message || 'Sign-in failed. Try again.';
+  }
+
+  function withSignInTimeout(promise) {
+    let timeoutId = null;
+    const timeout = new Promise((_, reject) => {
+      timeoutId = setTimeout(() => {
+        const err = new Error('Google sign-in popup timed out');
+        err.code = 'auth/popup-timeout';
+        reject(err);
+      }, SIGN_IN_POPUP_TIMEOUT_MS);
+    });
+    return Promise.race([promise, timeout]).finally(() => {
+      if (timeoutId) clearTimeout(timeoutId);
+    });
+  }
 
   if (loginBtn) {
     loginBtn.addEventListener('click', async () => {
       loginBtn.disabled = true;
       loginBtn.textContent = 'Signing in…';
+      if (loginErr) loginErr.textContent = '';
       try {
-        await signInWithPopup(auth, provider);
+        await withSignInTimeout(signInWithPopup(auth, provider));
       } catch (e) {
-        loginBtn.disabled = false;
-        loginBtn.innerHTML = `
-          <svg width="18" height="18" viewBox="0 0 18 18">
-            <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/>
-            <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/>
-            <path fill="#FBBC05" d="M3.964 10.706c-.18-.54-.282-1.117-.282-1.706s.102-1.166.282-1.706V4.962H.957C.347 6.175 0 7.55 0 9s.348 2.825.957 4.038l3.007-2.332z"/>
-            <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.962L3.964 7.294C4.672 5.167 6.656 3.58 9 3.58z"/>
-          </svg>
-          Sign in with Google`;
-        if (loginErr) loginErr.textContent = 'Sign-in failed. Try again.';
+        console.warn('[Auth] Google sign-in failed:', e);
+        restoreLoginButton(formatAuthError(e));
       }
     });
   }
