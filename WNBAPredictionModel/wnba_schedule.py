@@ -15,7 +15,12 @@ ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if ROOT_DIR not in sys.path:
     sys.path.insert(0, ROOT_DIR)
 
-from config import BDL_API_KEY
+try:
+    from config import BDL_API_KEY
+except ImportError:
+    BDL_API_KEY = None
+if not BDL_API_KEY:
+    BDL_API_KEY = os.getenv("BDL_API_KEY", "")
 try:
     from .wnba_teams import WNBA_TEAM_MAP, get_team_by_abbr
 except ImportError:

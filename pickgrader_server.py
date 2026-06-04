@@ -34,10 +34,19 @@ from urllib.error import URLError, HTTPError
 from urllib.parse import urlparse
 from urllib.request import Request, urlopen
 
+def _env_bool(name: str, default: bool) -> bool:
+    raw = os.environ.get(name)
+    if raw is None:
+        return default
+    return raw.strip().lower() not in {"0", "false", "no", "off"}
+
+
 try:
-    from config import RUN_WNBA
+    from config import RUN_WNBA as _CONFIG_RUN_WNBA
 except Exception:
-    RUN_WNBA = False
+    _CONFIG_RUN_WNBA = True
+
+RUN_WNBA = _env_bool("PICKLEDGER_RUN_WNBA", bool(_CONFIG_RUN_WNBA))
 
 try:
     import firebase_admin
@@ -1524,6 +1533,24 @@ def fetch_scoreboard(sport: str, league: str, yyyymmdd: str) -> dict[str, Any] |
         return None
 
 
+def _espn_event_count_for_date(sport_key: str, date_iso: str) -> int | None:
+    sport_key = str(sport_key or "").strip().upper()
+    if sport_key not in SPORT_TO_ESPNSLUG:
+        return None
+    try:
+        dt = datetime.strptime(str(date_iso), "%Y-%m-%d")
+    except ValueError:
+        return None
+    sport, league = SPORT_TO_ESPNSLUG[sport_key]
+    scoreboard = fetch_scoreboard(sport, league, dt.strftime("%Y%m%d"))
+    if not isinstance(scoreboard, dict):
+        return None
+    events = scoreboard.get("events")
+    if isinstance(events, list):
+        return len(events)
+    return None
+
+
 def fetch_event_summary(sport: str, league: str, event_id: str) -> dict[str, Any] | None:
     if not event_id:
         return None
@@ -2975,6 +3002,7 @@ def _parse_wnba_output(output: str) -> list[dict[str, Any]]:
             "market_pick_prob": json_payload.get("market_pick_prob"),
             "market_edge": json_payload.get("market_edge"),
             "has_market_price": bool(json_payload.get("has_market_price", False)),
+            "market_source": json_payload.get("market_source"),
             "units": units_value,
             "probability": round(favorite_probability, 4),
             "decision": json_decision or decision,
@@ -3644,6 +3672,17 @@ def run_nba_model(date_str: str | None = None, variant: str = "new") -> dict[str
             }
         return result
 
+    if _espn_event_count_for_date("NBA", target_iso) == 0:
+        result = {
+            "ok": True,
+            "picks": [],
+            "raw_lines": 0,
+            "note": f"No NBA games on ESPN scoreboard for {target_iso} ({source_label})",
+            "slate_games": 0,
+            "schedule_source": "ESPN scoreboard",
+        }
+        return _cache_result(result)
+
     try:
         output = _run_script(
             python_bin,
@@ -3746,12 +3785,25 @@ def run_nba_props_model(
 ) -> dict[str, Any]:
     """Execute the NBA props model and return parsed picks."""
     python_bin = _resolve_python_bin(os.path.join(NBA_PROPS_MODEL_DIR, "venv", "bin", "python"))
+    target_iso, _ = _parse_model_date_arg(date_str)
 
     extra = []
     if date_str:
         extra = [date_str]
     selected_game_id = str(game_id or "").strip()
     selected_game_label = str(game_label or "").strip()
+
+    if not selected_game_id and not selected_game_label and _espn_event_count_for_date("NBA", target_iso) == 0:
+        result = {
+            "ok": True,
+            "picks": [],
+            "raw_lines": 0,
+            "note": f"No NBA games on ESPN scoreboard for {target_iso} (NBA props)",
+            "slate_games": 0,
+            "schedule_source": "ESPN scoreboard",
+        }
+        _save_admin_picks_doc("props", result, target_iso)
+        return result
 
     if selected_game_label and not selected_game_id:
         try:

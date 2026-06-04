@@ -65,3 +65,21 @@ def test_rankings_are_global_admin_state_not_personal_fallback():
     assert "isRankingsOwnerUser() && typeof getMergedRankingsLedgerState" in source
     assert "match /rankings/{docId}" in rules
     assert "Global model performance from the admin-tracked ledger" in html
+
+
+def test_nba_model_short_circuits_empty_espn_slate(monkeypatch):
+    import pickgrader_server as server
+
+    def fail_run(*args, **kwargs):
+        raise AssertionError("NBA model runner should not execute for empty ESPN slate")
+
+    monkeypatch.setattr(server, "_espn_event_count_for_date", lambda sport, date: 0)
+    monkeypatch.setattr(server, "_run_script", fail_run)
+    monkeypatch.setattr(server, "_save_admin_picks_doc", lambda *args, **kwargs: True)
+
+    result = server.run_nba_model("2026-06-04", "new")
+
+    assert result["ok"] is True
+    assert result["picks"] == []
+    assert result["slate_games"] == 0
+    assert "No NBA games on ESPN scoreboard" in result["note"]

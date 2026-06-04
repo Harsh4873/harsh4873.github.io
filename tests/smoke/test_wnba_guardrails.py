@@ -406,7 +406,7 @@ def test_wnba_generator_keeps_pass_games_visible(monkeypatch):
             "data_quality": "full",
         },
     )
-    monkeypatch.setattr(wnba_picks, "lookup_market_odds", lambda home, away: None)
+    monkeypatch.setattr(wnba_picks, "lookup_market_odds", lambda *args, **kwargs: None)
     monkeypatch.setattr(wnba_picks, "compute_edge_units", lambda **kwargs: None)
     monkeypatch.setattr(
         wnba_picks,
@@ -450,3 +450,16 @@ def test_wnba_parser_normalizes_short_teams_for_grading():
     assert picks[0]["home_team"] == "Dallas Wings"
     assert picks[0]["decision"] == "PASS"
     assert picks[0]["units"] == 0.0
+
+
+def test_wnba_schedule_imports_without_local_config(monkeypatch):
+    import importlib
+    import sys
+
+    monkeypatch.delitem(sys.modules, "config", raising=False)
+    sys.modules.pop("WNBAPredictionModel.wnba_schedule", None)
+
+    module = importlib.import_module("WNBAPredictionModel.wnba_schedule")
+
+    assert module.BDL_API_KEY == ""
+    assert callable(module.fetch_espn_schedule)

@@ -621,7 +621,7 @@ def generate_wnba_picks(
         pick_team_is_home = float(result.get("win_prob", 0.5)) >= 0.5
         pick_team_abbr = home_abbr if pick_team_is_home else away_abbr
         pick_team_name = home_name if pick_team_is_home else away_name
-        market_odds = lookup_market_odds(home_abbr, away_abbr)
+        market_odds = lookup_market_odds(home_abbr, away_abbr, date_str=game.date_str)
         pick_team_lineup = (
             context.get("home_lineup_quality") if pick_team_is_home else context.get("away_lineup_quality")
         )
@@ -684,6 +684,7 @@ def generate_wnba_picks(
             "market_pick_prob": guardrail.get("market_pick_prob"),
             "market_edge": guardrail.get("market_edge"),
             "has_market_price": guardrail.get("has_market_price", False),
+            "market_source": market_odds.source if market_odds else None,
             "spread_pick": spread_pick,
             "totals_pick": totals_pick,
             "decision": guardrail["decision"],

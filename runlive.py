@@ -14,7 +14,16 @@ PROJECT_PYTHON = os.path.join(BASE_DIR, ".venv", "bin", "python")
 try:
     sys.path.insert(0, os.path.join(BASE_DIR, "WNBAPredictionModel"))
     from wnba_picks import generate_wnba_picks
-    from config import RUN_WNBA
+    try:
+        from config import RUN_WNBA as _CONFIG_RUN_WNBA
+    except ImportError:
+        _CONFIG_RUN_WNBA = True
+    RUN_WNBA = os.environ.get("PICKLEDGER_RUN_WNBA", str(_CONFIG_RUN_WNBA)).strip().lower() not in {
+        "0",
+        "false",
+        "no",
+        "off",
+    }
     WNBA_AVAILABLE = True
 except ImportError as e:
     print(f"[WNBA] Module not available: {e}")

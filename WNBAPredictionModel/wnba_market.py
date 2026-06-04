@@ -16,9 +16,12 @@ from __future__ import annotations
 
 import math
 import sqlite3
+import datetime
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
+
+import requests
 
 try:
     from .wnba_teams import WNBA_TEAM_MAP, get_team_by_abbr
@@ -27,10 +30,18 @@ except ImportError:
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+ESPN_SCOREBOARD_URL = "https://site.api.espn.com/apis/site/v2/sports/basketball/wnba/scoreboard"
 DB_CANDIDATES = [
     REPO_ROOT / "pickledger.db",
     REPO_ROOT / "NBAPredictionModel" / "pickledger.db",
 ]
+_ABBR_ALIASES = {
+    "GS": "GSV",
+    "LVA": "LV",
+    "NYL": "NY",
+    "PHO": "PHX",
+    "WSH": "WAS",
+}
 
 
 @dataclass
@@ -73,7 +84,121 @@ def _abbr_to_nickname_terms(abbr: str) -> list[str]:
     return [nickname, full_name]
 
 
-def lookup_market_odds(home_abbr: str, away_abbr: str) -> Optional[MarketOdds]:
+def _normalize_abbr(value: str | None) -> str:
+    raw = str(value or "").strip().upper()
+    return _ABBR_ALIASES.get(raw, raw)
+
+
+def _coerce_american(value: object) -> Optional[int]:
+    text = str(value or "").strip().replace("+", "")
+    if not text or text == "--":
+        return None
+    try:
+        return int(float(text))
+    except (TypeError, ValueError):
+        return None
+
+
+def _moneyline_from_side(side: object) -> Optional[int]:
+    if not isinstance(side, dict):
+        return None
+    close = side.get("close") if isinstance(side.get("close"), dict) else {}
+    open_ = side.get("open") if isinstance(side.get("open"), dict) else {}
+    return _coerce_american(close.get("odds") or open_.get("odds"))
+
+
+def _coerce_float(value: object) -> Optional[float]:
+    try:
+        if value is None:
+            return None
+        return float(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def _espn_date_key(date_str: str | None) -> str:
+    if not date_str:
+        return datetime.date.today().strftime("%Y%m%d")
+    try:
+        return datetime.date.fromisoformat(str(date_str)[:10]).strftime("%Y%m%d")
+    except ValueError:
+        return datetime.date.today().strftime("%Y%m%d")
+
+
+def _lookup_espn_market_odds(
+    home_abbr: str,
+    away_abbr: str,
+    date_str: str | None = None,
+) -> Optional[MarketOdds]:
+    """Fallback to ESPN scoreboard odds when SportsLine has no WNBA row."""
+    home_target = _normalize_abbr(home_abbr)
+    away_target = _normalize_abbr(away_abbr)
+    try:
+        resp = requests.get(
+            ESPN_SCOREBOARD_URL,
+            params={"dates": _espn_date_key(date_str)},
+            timeout=12,
+        )
+        resp.raise_for_status()
+        data = resp.json()
+    except (requests.RequestException, ValueError):
+        return None
+
+    for event in data.get("events", []) or []:
+        competitions = event.get("competitions") or []
+        competition = competitions[0] if competitions else {}
+        competitors = competition.get("competitors") or []
+        event_home = ""
+        event_away = ""
+        for comp in competitors:
+            team = comp.get("team") or {}
+            abbr = _normalize_abbr(team.get("abbreviation"))
+            if comp.get("homeAway") == "home":
+                event_home = abbr
+            elif comp.get("homeAway") == "away":
+                event_away = abbr
+        if event_home != home_target or event_away != away_target:
+            continue
+
+        odds_rows = competition.get("odds") or []
+        odds = odds_rows[0] if odds_rows else {}
+        moneyline = odds.get("moneyline") or {}
+        home_ml = _moneyline_from_side(moneyline.get("home"))
+        away_ml = _moneyline_from_side(moneyline.get("away"))
+        if home_ml is None and away_ml is None:
+            return None
+
+        spread = _coerce_float(odds.get("spread"))
+        total = _coerce_float(odds.get("overUnder"))
+        home_favorite = bool((odds.get("homeTeamOdds") or {}).get("favorite"))
+        away_favorite = bool((odds.get("awayTeamOdds") or {}).get("favorite"))
+        spread_home = None
+        spread_away = None
+        if spread is not None:
+            if home_favorite:
+                spread_home = spread
+                spread_away = -spread
+            elif away_favorite:
+                spread_away = spread
+                spread_home = -spread
+
+        provider = odds.get("provider") or {}
+        provider_name = str(provider.get("displayName") or provider.get("name") or "ESPN odds").strip()
+        return MarketOdds(
+            home_team_nickname=home_target,
+            away_team_nickname=away_target,
+            home_ml=home_ml,
+            away_ml=away_ml,
+            spread_home=spread_home,
+            spread_away=spread_away,
+            total_line=total,
+            fetched_at=None,
+            source=f"{provider_name} via ESPN",
+        )
+    return None
+
+
+def lookup_market_odds(home_abbr: str, away_abbr: str, date_str: str | None = None) -> Optional[MarketOdds]:
     """Find the most recent SportsLine WNBA row for this matchup.
 
     Returns None if no SportsLine row matches. Doesn't raise on DB issues.
@@ -82,7 +207,7 @@ def lookup_market_odds(home_abbr: str, away_abbr: str) -> Optional[MarketOdds]:
     away_terms = _abbr_to_nickname_terms(away_abbr)
     db_path = _db_path()
     if not db_path:
-        return None
+        return _lookup_espn_market_odds(home_abbr, away_abbr, date_str)
 
     try:
         conn = sqlite3.connect(str(db_path))
@@ -118,8 +243,8 @@ def lookup_market_odds(home_abbr: str, away_abbr: str) -> Optional[MarketOdds]:
         finally:
             conn.close()
     except sqlite3.Error:
-        return None
-    return None
+        pass
+    return _lookup_espn_market_odds(home_abbr, away_abbr, date_str)
 
 
 def american_to_implied(odds: int) -> float:
