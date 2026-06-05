@@ -34,6 +34,16 @@ def test_frontend_ledger_cache_is_scoped_to_firebase_uid():
     assert "k.startsWith('pickledger_ledger_owner_uid')" in source
 
 
+def test_frontend_loads_sportytrader_cache_before_live_sync():
+    source = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
+
+    sportytrader_block = source.index("if (model === 'sportytrader')")
+    cache_first = source.index("const loaded = await loadSportyTraderManualFeed()", sportytrader_block)
+    live_sync = source.index("const synced = await syncSportyTraderFromServer", sportytrader_block)
+
+    assert cache_first < live_sync
+
+
 def test_backend_cloud_routes_require_correct_auth_scope():
     source = (ROOT / "pickgrader_server.py").read_text(encoding="utf-8")
 
@@ -51,6 +61,33 @@ def test_cloud_run_docs_include_cost_guardrails():
     assert "--max-instances 1" in source
     assert "--concurrency 1" in source
     assert "budget alert" in source.lower()
+
+
+def test_cloud_backend_bakes_playwright_browsers_and_disables_runtime_install():
+    dockerfile = (ROOT / "Dockerfile").read_text(encoding="utf-8")
+    backend = (ROOT / "pickgrader_server.py").read_text(encoding="utf-8")
+    scraper = (ROOT / "scripts" / "scrapers" / "sportytrader_scraper.py").read_text(encoding="utf-8")
+
+    assert "PLAYWRIGHT_BROWSERS_PATH=/ms-playwright" in dockerfile
+    assert "PICKLEDGER_PLAYWRIGHT_RUNTIME_INSTALL=false" in dockerfile
+    assert "python -m playwright install chromium chromium-headless-shell" in dockerfile
+    assert "return \"0\"" not in backend
+    assert "return \"0\"" not in scraper
+
+
+def test_playwright_runtime_install_can_be_disabled(monkeypatch):
+    import pickgrader_server as server
+
+    def fail_run(*args, **kwargs):
+        raise AssertionError("runtime Playwright install should be skipped")
+
+    monkeypatch.setattr(server, "PLAYWRIGHT_RUNTIME_INSTALL_ALLOWED", False)
+    monkeypatch.setattr(server, "_subprocess_run", fail_run)
+
+    ok, message = server._ensure_playwright_browsers("/usr/local/bin/python", {})
+
+    assert ok is False
+    assert "runtime Playwright install disabled" in message
 
 
 def test_rankings_are_global_admin_state_not_personal_fallback():

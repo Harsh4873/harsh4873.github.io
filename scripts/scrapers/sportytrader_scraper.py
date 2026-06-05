@@ -22,10 +22,12 @@ def _default_playwright_browsers_path() -> str:
     darwin_cache = os.path.expanduser("~/Library/Caches/ms-playwright")
     if sys.platform == "darwin" and os.path.isdir(darwin_cache):
         return darwin_cache
-    return "0"
+    return ""
 
 
-os.environ["PLAYWRIGHT_BROWSERS_PATH"] = _default_playwright_browsers_path()
+_playwright_browsers_path = _default_playwright_browsers_path()
+if _playwright_browsers_path:
+    os.environ["PLAYWRIGHT_BROWSERS_PATH"] = _playwright_browsers_path
 
 from playwright.sync_api import TimeoutError as PwTimeout
 from playwright.sync_api import sync_playwright

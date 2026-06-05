@@ -8417,7 +8417,7 @@ function setSportyTraderSyncMeta(meta) {
   el.textContent = formatSportyTraderSyncMeta(meta);
 }
 
-async function syncSportyTraderFromServer() {
+async function syncSportyTraderFromServer(options = {}) {
   if (!isAdminModelRunnerUser()) {
     throw new Error('SportyTrader live sync is admin-only');
   }
@@ -8426,10 +8426,16 @@ async function syncSportyTraderFromServer() {
     throw new Error(`${getModelBackendLabel()} is offline`);
   }
 
+  const forceRefresh = !!(options && options.forceRefresh);
   const resp = await fetch(`${ADMIN_BACKEND_URL}/run-sportytrader`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ async: true, date: _getTodayDateStr(), sports: ['nba', 'mlb'] }),
+    body: JSON.stringify({
+      async: true,
+      date: _getTodayDateStr(),
+      sports: ['nba', 'mlb'],
+      force_refresh: forceRefresh,
+    }),
     signal: _createTimeoutSignal(MODEL_BACKEND_TIMEOUT_MS),
   });
   const launch = await resp.json().catch(() => ({}));
@@ -8451,8 +8457,12 @@ async function syncSportyTraderFromServer() {
     meta: {
       updatedAt: new Date().toISOString(),
       date: _getTodayFeedDate(),
-      note: `Synced from ${getModelBackendLabel()}`,
-      from: isLoopbackServer(ADMIN_BACKEND_URL) ? 'local-backend' : 'cloud-backend',
+      note: data.source === 'firebase_cache'
+        ? 'Loaded from scheduled SportyTrader cache'
+        : `Synced from ${getModelBackendLabel()}`,
+      from: data.source === 'firebase_cache'
+        ? (data.cache_source || 'firebase-cache')
+        : (isLoopbackServer(ADMIN_BACKEND_URL) ? 'local-backend' : 'cloud-backend'),
       leagues: 'nba,mlb',
     },
   };
@@ -8582,17 +8592,54 @@ async function runModel(model, eventOrOptions = {}) {
   setModelStatus(model, 'Loading Firebase cache...', 'running');
 
   if (model === 'sportytrader') {
+    if (!forceRefresh) {
+      try {
+        const loaded = await loadSportyTraderManualFeed();
+        _clearNbaComparisonResults();
+        _clearMlbComparisonResults();
+        pendingModelPicks = loaded.picks;
+        renderModelResults(loaded.picks, { meta: '' });
+        const meta = {
+          ...loaded.meta,
+          from: loaded.meta && loaded.meta.from ? loaded.meta.from : 'firebase-cache',
+          updatedAt: loaded.meta && loaded.meta.updatedAt ? loaded.meta.updatedAt : new Date().toISOString(),
+        };
+        saveSportyTraderCachedFeed({ picks: loaded.picks, meta });
+        setSportyTraderSyncMeta(meta);
+        setModelStatus(model, `Loaded ${loaded.picks.length} cached SportyTrader pick(s)`, 'ok');
+        _resetModelButton(model);
+        return;
+      } catch (_cacheErr) {
+        const cached = getSportyTraderCachedFeed();
+        if (cached && Array.isArray(cached.picks) && cached.picks.length) {
+          _clearNbaComparisonResults();
+          _clearMlbComparisonResults();
+          pendingModelPicks = cached.picks;
+          renderModelResults(cached.picks, { meta: '' });
+          setSportyTraderSyncMeta({ ...(cached.meta || {}), from: 'browser-cache' });
+          setModelStatus(model, `Using browser-cached SportyTrader feed (${cached.picks.length} pick(s))`, 'ok');
+          _resetModelButton(model);
+          return;
+        }
+      }
+    }
     let backendErr = '';
     try {
-      setModelStatus(model, 'Trying live SportyTrader sync...', 'running');
-      const synced = await syncSportyTraderFromServer();
+      setModelStatus(model, forceRefresh ? 'Force refreshing SportyTrader sync...' : 'No cached SportyTrader feed found; trying live sync...', 'running');
+      const synced = await syncSportyTraderFromServer({ forceRefresh });
       _clearNbaComparisonResults();
       _clearMlbComparisonResults();
       pendingModelPicks = synced.picks;
       renderModelResults(synced.picks, { meta: '' });
       saveSportyTraderCachedFeed({ picks: synced.picks, meta: synced.meta });
       setSportyTraderSyncMeta(synced.meta);
-      setModelStatus(model, `Synced ${synced.picks.length} pick(s) from SportyTrader`, 'ok');
+      setModelStatus(
+        model,
+        synced.meta && String(synced.meta.from || '').includes('cache')
+          ? `Loaded ${synced.picks.length} cached SportyTrader pick(s)`
+          : `Synced ${synced.picks.length} pick(s) from SportyTrader`,
+        'ok'
+      );
     } catch (e) {
       backendErr = String(e && e.message ? e.message : e);
       try {

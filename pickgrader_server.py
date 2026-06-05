@@ -325,6 +325,11 @@ except ValueError:
     PORT = 8765
 
 IS_RENDER_RUNTIME = os.environ.get("RENDER", "").strip().lower() == "true"
+IS_CLOUD_RUNTIME = IS_RENDER_RUNTIME or bool(os.environ.get("K_SERVICE", "").strip())
+PLAYWRIGHT_RUNTIME_INSTALL_ALLOWED = _env_bool(
+    "PICKLEDGER_PLAYWRIGHT_RUNTIME_INSTALL",
+    not IS_CLOUD_RUNTIME,
+)
 _sportytrader_env = os.environ.get("ENABLE_SPORTYTRADER_REMOTE", "true").strip().lower()
 ENABLE_SPORTYTRADER_REMOTE = _sportytrader_env not in {"0", "false", "no", "off"}
 PLAYWRIGHT_PROXY_CONFIGURED = bool(os.environ.get("PLAYWRIGHT_PROXY_SERVER", "").strip())
@@ -417,7 +422,7 @@ def _default_playwright_browsers_path() -> str:
     darwin_cache = os.path.expanduser("~/Library/Caches/ms-playwright")
     if sys.platform == "darwin" and os.path.isdir(darwin_cache):
         return darwin_cache
-    return "0"
+    return ""
 
 
 def normalize(text: str) -> str:
@@ -2365,6 +2370,8 @@ _MODEL_CACHE_KEY_ALIASES: dict[str, tuple[str, ...]] = {
     "mlb_inning": ("mlb_inning",),
     "mlb_first_five": ("mlb_first_five",),
     "ipl": ("ipl",),
+    "sportytrader": ("sportytrader",),
+    "sportsgambler": ("sportsgambler",),
 }
 
 
@@ -2582,6 +2589,12 @@ def _compact_error_text(output: str, max_lines: int = 14) -> str:
 def _ensure_playwright_browsers(python_bin: str, env: dict[str, str]) -> tuple[bool, str]:
     """Install Playwright Chromium browsers if missing in the current environment."""
     global _playwright_ready
+
+    if not PLAYWRIGHT_RUNTIME_INSTALL_ALLOWED:
+        return (
+            False,
+            "runtime Playwright install disabled; rebuild the backend image with Playwright browsers installed",
+        )
 
     with _playwright_install_lock:
         if _playwright_ready:
@@ -4526,7 +4539,9 @@ def run_sportytrader_scraper(
 
     timeout_s = 120
     env = os.environ.copy()
-    env.setdefault("PLAYWRIGHT_BROWSERS_PATH", _default_playwright_browsers_path())
+    browsers_path = _default_playwright_browsers_path()
+    if browsers_path:
+        env.setdefault("PLAYWRIGHT_BROWSERS_PATH", browsers_path)
 
     sport_map = {
         "nba": "nba",
@@ -5545,12 +5560,15 @@ class Handler(BaseHTTPRequestHandler):
             if not isinstance(sports, list):
                 sports = [league] if league else ["nba", "mlb"]
             print(f"[route] /run-sportytrader date={scrape_date!r} sports={sports} async={async_mode}")
-            if async_mode:
-                job_id = _launch_job(run_sportytrader_scraper, scrape_date, sports)
-                self._send_json(200, {"ok": True, "job_id": job_id, "status": "running"})
-            else:
-                result = run_sportytrader_scraper(scrape_date, sports)
-                self._send_json(200, result)
+            result = _cached_or_model_response(
+                "sportytrader",
+                scrape_date,
+                run_sportytrader_scraper,
+                (scrape_date, sports),
+                async_mode,
+                force_refresh,
+            )
+            self._send_json(200, result)
 
         elif path == "/run-sportsgambler":
             scrape_date = body.get("date")

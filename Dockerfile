@@ -10,7 +10,9 @@ ENV PYTHONUNBUFFERED=1 \
     MKL_NUM_THREADS=1 \
     NUMEXPR_NUM_THREADS=1 \
     MALLOC_ARENA_MAX=2 \
-    PICKLEDGER_REQUIRE_AUTH=true
+    PICKLEDGER_REQUIRE_AUTH=true \
+    PICKLEDGER_PLAYWRIGHT_RUNTIME_INSTALL=false \
+    PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
@@ -39,7 +41,7 @@ WORKDIR /app
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt \
-    && python -m playwright install chromium
+    && python -m playwright install chromium chromium-headless-shell
 
 COPY . .
 
