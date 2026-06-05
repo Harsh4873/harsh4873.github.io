@@ -230,6 +230,44 @@ def test_parallel_bullpen_fetch_returns_same_workload_per_team(monkeypatch):
         assert payload == fake_workload(tid, "2026-05-15")
 
 
+def test_team_histories_dedupe_unique_teams(monkeypatch):
+    """The slate-level history fetch should call each team once even when
+    teams appear in multiple games or both sides of a double-header."""
+    from models.mlb_inning import mlb_inning_history as hist
+
+    calls = []
+
+    def fake_history(team_id, team_name, target_date):
+        calls.append((team_id, team_name, target_date))
+        return hist._league_default_history()
+
+    monkeypatch.setattr(hist, "fetch_team_history", fake_history)
+    games = [
+        {
+            "game_date": "2026-05-15",
+            "away_team_id": 147,
+            "away_team": "New York Yankees",
+            "home_team_id": 111,
+            "home_team": "Boston Red Sox",
+        },
+        {
+            "game_date": "2026-05-15",
+            "away_team_id": 147,
+            "away_team": "New York Yankees",
+            "home_team_id": 111,
+            "home_team": "Boston Red Sox",
+        },
+    ]
+
+    result = hist.fetch_team_histories(games)
+
+    assert set(result) == {"New York Yankees", "Boston Red Sox"}
+    assert sorted(calls) == [
+        (111, "Boston Red Sox", "2026-05-15"),
+        (147, "New York Yankees", "2026-05-15"),
+    ]
+
+
 def test_inning_9_excluded_from_picks():
     """The 9th inning never gets emitted because the home half is unplayed
     when the home team is leading entering the bottom of the 9th."""

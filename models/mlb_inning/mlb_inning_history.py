@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import statistics
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from typing import Any
 
@@ -41,17 +41,39 @@ MLB_AVG_SCORELESS = {
     9: 0.760,
 }
 
+HISTORY_TEAM_MAX_WORKERS = 8
+
 
 def fetch_team_histories(games: list[dict[str, Any]], target_date: str | None = None) -> dict[str, dict[int, dict[str, float]]]:
     histories: dict[str, dict[int, dict[str, float]]] = {}
+    team_requests: list[tuple[int, str, str]] = []
+    seen_names: set[str] = set()
     for game in games:
         game_date = target_date or str(game.get("game_date") or "")
         for side in ("away", "home"):
             team_id = safe_int(game.get(f"{side}_team_id"))
             team_name = str(game.get(f"{side}_team") or "")
-            if not team_id or not team_name or team_name in histories:
+            if not team_id or not team_name or team_name in seen_names:
                 continue
-            histories[team_name] = fetch_team_history(team_id, team_name, game_date)
+            seen_names.add(team_name)
+            team_requests.append((team_id, team_name, game_date))
+
+    if not team_requests:
+        return histories
+
+    workers = max(1, min(HISTORY_TEAM_MAX_WORKERS, len(team_requests)))
+    with ThreadPoolExecutor(max_workers=workers) as executor:
+        future_to_team = {
+            executor.submit(fetch_team_history, team_id, team_name, game_date): team_name
+            for team_id, team_name, game_date in team_requests
+        }
+        for future in as_completed(future_to_team):
+            team_name = future_to_team[future]
+            try:
+                histories[team_name] = future.result()
+            except Exception as exc:
+                log_warning(f"{team_name} history lookup failed: {exc}; using league inning defaults")
+                histories[team_name] = _league_default_history()
     return histories
 
 

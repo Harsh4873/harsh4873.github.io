@@ -128,3 +128,43 @@ def test_mlb_totals_units_now_scale_with_kelly(monkeypatch):
         assert ou["units"] > 0
         # `kelly` field kept for back-compat reads as a percentage.
         assert ou["kelly"] >= 0
+
+
+def test_mlb_totals_emit_from_model_line_when_market_missing(monkeypatch):
+    """The MLB runner prints an OU line for every game. Even when the
+    SportsLine total lookup is unavailable during parsing, keep that row so
+    the cache still has side + total coverage for the slate."""
+    from pickgrader_server import _parse_mlb_output
+
+    _stub_sl_get_ml(monkeypatch, ml_home=None, ml_away=None)
+    _stub_sl_get_total(monkeypatch, total=None, odds=None)
+
+    output = "Padres|Giants|110|-130|0.48|0.52\nOU|UNDER|8.5|7.0\n"
+    picks = _parse_mlb_output(output, source_label="MLB Model")
+    ou_picks = [p for p in picks if p.get("market_type") == "totals"]
+
+    assert ou_picks
+    ou = ou_picks[0]
+    assert ou["line"] == 8.5
+    assert ou["market_total_source"] == "model_output"
+    assert ou["assumed_odds"] == -110
+    assert ou["direction"] == "Under"
+
+
+def test_mlb_totals_pass_rows_emit_from_model_line_when_market_missing(monkeypatch):
+    """PASS totals still need to be visible so the UI shows the full game
+    slate instead of looking like the model skipped games."""
+    from pickgrader_server import _parse_mlb_output
+
+    _stub_sl_get_ml(monkeypatch, ml_home=None, ml_away=None)
+    _stub_sl_get_total(monkeypatch, total=None, odds=None)
+
+    output = "Padres|Giants|110|-130|0.48|0.52\nOU|PASS|8.5|8.6\n"
+    picks = _parse_mlb_output(output, source_label="MLB Model")
+    ou_picks = [p for p in picks if p.get("market_type") == "totals"]
+
+    assert ou_picks
+    ou = ou_picks[0]
+    assert ou["decision"] == "PASS"
+    assert ou["units"] == 0.0
+    assert ou["line"] == 8.5

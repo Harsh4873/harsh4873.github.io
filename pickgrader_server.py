@@ -2333,6 +2333,14 @@ def _env_timeout_seconds(name: str, default: int) -> int:
     return value if value > 0 else default
 
 
+def _env_bounded_int(name: str, default: int, minimum: int, maximum: int) -> int:
+    try:
+        value = int(str(os.environ.get(name, "") or "").strip())
+    except ValueError:
+        value = default
+    return max(minimum, min(maximum, value))
+
+
 def _resolve_python_bin(preferred_path: str) -> str:
     """Use model-specific venv if present; otherwise use current interpreter."""
     if os.path.exists(preferred_path):
@@ -3224,6 +3232,8 @@ def _parse_mlb_output(output: str, source_label: str = "MLB Model") -> list[dict
             # O/U line: OU|OVER/UNDER/PASS|line|predicted_total
             if len(parts) >= 4 and parts[0] == "OU":
                 try:
+                    model_selection = str(parts[1] or "").strip().upper()
+                    output_total_line = float(parts[2])
                     predicted_total = float(parts[3])
                 except (ValueError, IndexError):
                     continue
@@ -3236,54 +3246,64 @@ def _parse_mlb_output(output: str, source_label: str = "MLB Model") -> list[dict
                 home_team = current_team_b
                 away_team = current_team_a
                 vegas_total, total_odds = _sl_get_total(home_team, away_team, league)
+                market_total_source = "sportsline"
                 if vegas_total is None:
-                    pass
+                    vegas_total = output_total_line
+                    total_odds = -110
+                    market_total_source = "model_output"
+                direction = (
+                    model_selection.title()
+                    if model_selection in {"OVER", "UNDER"}
+                    else ('Under' if predicted_total < vegas_total else 'Over')
+                )
+                pick_label = f"{direction} {vegas_total} ({away_team} vs {home_team})"
+                _odds_price = total_odds if total_odds else -110
+                _prob = _ou_probability(float(predicted_total), float(vegas_total), _MLB_TOTALS_RMSE)
+                _b = abs(_odds_price) / 100 if _odds_price > 0 else 100 / abs(_odds_price or 110)
+                _implied_prob = 1 / (1 + _b)
+                _edge_prob = _prob - _implied_prob
+                _q = 1 - _prob
+                _k = max((_b * _prob - _q) / _b, 0.0)
+                # Quarter-Kelly stake in units (was previously stored as
+                # `kelly` percentage but `units` was flat 1u — fixed so
+                # stake actually scales with edge).
+                _kelly_units = round(min(1.5, _k * 0.25), 2)
+                _decision = (
+                    'BET' if _edge_prob >= 0.05
+                    else ('LEAN' if _edge_prob >= 0.03 else 'PASS')
+                )
+                if model_selection == "PASS":
+                    _decision = "PASS"
+                if _decision == 'PASS':
+                    _stake_units = 0.0
+                elif _decision == 'LEAN':
+                    _stake_units = round(_kelly_units * 0.6, 2)
                 else:
-                    direction = 'Under' if predicted_total < vegas_total else 'Over'
-                    pick_label = f"{direction} {vegas_total} ({away_team} vs {home_team})"
-                    _odds_price = total_odds if total_odds else -110
-                    _prob = _ou_probability(float(predicted_total), float(vegas_total), _MLB_TOTALS_RMSE)
-                    _b = abs(_odds_price) / 100 if _odds_price > 0 else 100 / abs(_odds_price or 110)
-                    _implied_prob = 1 / (1 + _b)
-                    _edge_prob = _prob - _implied_prob
-                    _q = 1 - _prob
-                    _k = max((_b * _prob - _q) / _b, 0.0)
-                    # Quarter-Kelly stake in units (was previously stored as
-                    # `kelly` percentage but `units` was flat 1u — fixed so
-                    # stake actually scales with edge).
-                    _kelly_units = round(min(1.5, _k * 0.25), 2)
-                    _decision = (
-                        'BET' if _edge_prob >= 0.05
-                        else ('LEAN' if _edge_prob >= 0.03 else 'PASS')
-                    )
-                    if _decision == 'PASS':
-                        _stake_units = 0.0
-                    elif _decision == 'LEAN':
-                        _stake_units = round(_kelly_units * 0.6, 2)
-                    else:
-                        _stake_units = _kelly_units
-                    ou_pick = {
-                        "source": source_label,
-                        "pick": pick_label,
-                        "sport": league,
-                        "odds": _odds_price,
-                        "units": _stake_units,
-                        "probability": _prob,
-                        "prob": _prob,
-                        "edge": round(_edge_prob * 100, 2),
-                        "vegas": vegas_total,
-                        "model_prediction": round(float(predicted_total), 1),
-                        "direction": direction,
-                        "kelly": round(_k * 0.25 * 100, 2),  # kept for back-compat
-                        "decision": _decision,
-                        "market_type": "totals",
-                        "selection": direction,
-                        "line": vegas_total,
-                        "market_line": vegas_total,
-                        "away_team": away_team,
-                        "home_team": home_team,
-                    }
-                    picks.append(ou_pick)
+                    _stake_units = _kelly_units
+                ou_pick = {
+                    "source": source_label,
+                    "pick": pick_label,
+                    "sport": league,
+                    "odds": _odds_price,
+                    "assumed_odds": _odds_price if market_total_source == "model_output" else None,
+                    "units": _stake_units,
+                    "probability": _prob,
+                    "prob": _prob,
+                    "edge": round(_edge_prob * 100, 2),
+                    "vegas": vegas_total,
+                    "model_prediction": round(float(predicted_total), 1),
+                    "direction": direction,
+                    "kelly": round(_k * 0.25 * 100, 2),  # kept for back-compat
+                    "decision": _decision,
+                    "market_type": "totals",
+                    "selection": direction if model_selection != "PASS" else "PASS",
+                    "line": vegas_total,
+                    "market_line": vegas_total,
+                    "market_total_source": market_total_source,
+                    "away_team": away_team,
+                    "home_team": home_team,
+                }
+                picks.append(ou_pick)
                 continue
 
             # Moneyline line: TeamA|TeamB|OddsA|OddsB|ProbA|ProbB
@@ -4155,6 +4175,8 @@ def run_mlb_inning_model(date_str: str | None = None) -> dict[str, Any]:
 
     date_iso, _ = _parse_model_date_arg(date_str)
     python_bin = _resolve_python_bin(os.path.join(BASE_DIR, ".venv", "bin", "python"))
+    timeout_s = _env_timeout_seconds("PICKLEDGER_MLB_INNING_TIMEOUT_SECONDS", 240)
+    lookahead_days = _env_bounded_int("PICKLEDGER_MLB_INNING_LOOKAHEAD_DAYS", 0, 0, 2)
     try:
         requested_date = datetime.strptime(date_iso, "%Y-%m-%d").date()
         output = ""
@@ -4162,14 +4184,14 @@ def run_mlb_inning_model(date_str: str | None = None) -> dict[str, Any]:
         picks: list[dict[str, Any]] = []
         used_date_iso = date_iso
 
-        for offset_days in range(3):
+        for offset_days in range(lookahead_days + 1):
             candidate_date = requested_date + timedelta(days=offset_days)
             candidate_iso = candidate_date.strftime("%Y-%m-%d")
             output = _run_script(
                 python_bin,
                 "mlb_inning_model.py",
                 MLB_INNING_MODEL_DIR,
-                timeout=600,
+                timeout=timeout_s,
                 extra_args=["--date", candidate_iso],
             )
             if "Traceback (most recent call last)" in output or "ModuleNotFoundError" in output:
@@ -4205,7 +4227,8 @@ def run_mlb_inning_model(date_str: str | None = None) -> dict[str, Any]:
             _save_admin_picks_doc("mlb_inning", result, used_date_iso)
         return result
     except subprocess.TimeoutExpired:
-        return {"ok": False, "error": "MLB Inning model timed out (10 min limit)"}
+        timeout_min = max(1, round(timeout_s / 60))
+        return {"ok": False, "error": f"MLB Inning model timed out ({timeout_min} min limit)"}
     except Exception as exc:
         return {"ok": False, "error": str(exc)}
 
