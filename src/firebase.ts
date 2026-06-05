@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth';
+import { getAuth, getRedirectResult, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signInWithRedirect, signOut } from 'firebase/auth';
 import { doc, getDoc, getFirestore, increment, onSnapshot, setDoc, updateDoc } from 'firebase/firestore';
 
 declare global {
@@ -25,6 +25,7 @@ export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 export const provider = new GoogleAuthProvider();
+provider.setCustomParameters({ prompt: 'select_account' });
 
 window._firebaseDb = db;
 window._firebaseDoc = doc;
@@ -36,10 +37,12 @@ export {
   doc,
   getDoc,
   increment,
+  getRedirectResult,
   onAuthStateChanged,
   onSnapshot,
   setDoc,
   signInWithPopup,
+  signInWithRedirect,
   signOut,
   updateDoc,
 };

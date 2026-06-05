@@ -6,12 +6,14 @@ import {
   db,
   doc,
   getDoc,
+  getRedirectResult,
   increment,
   onAuthStateChanged,
   onSnapshot,
   provider,
   setDoc,
   signInWithPopup,
+  signInWithRedirect,
   signOut,
   updateDoc,
 } from './firebase';
@@ -346,11 +348,12 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
   const loginErr = document.getElementById('login-error');
   const loginBtnHtml = loginBtn ? loginBtn.innerHTML : '';
   const SIGN_IN_POPUP_TIMEOUT_MS = 20000;
+  const REDIRECT_SIGN_IN_PENDING_KEY = 'pickledger_google_redirect_pending';
 
   function formatAuthError(error) {
     const code = error && error.code ? String(error.code) : '';
     if (code === 'auth/unauthorized-domain') {
-      return 'This domain is not authorized in Firebase Auth.';
+      return 'This domain is not authorized in Firebase Auth. Add harsh.bet and www.harsh.bet to Firebase Auth authorized domains.';
     }
     if (code === 'auth/operation-not-allowed') {
       return 'Google sign-in is disabled in Firebase Auth.';
@@ -386,6 +389,44 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
     if (loginErr) loginErr.textContent = message || 'Sign-in failed. Try again.';
   }
 
+  function shouldFallbackToRedirect(error) {
+    const code = error && error.code ? String(error.code) : '';
+    return [
+      'auth/popup-blocked',
+      'auth/popup-closed-by-user',
+      'auth/popup-timeout',
+      'auth/cancelled-popup-request',
+      'auth/operation-not-supported-in-this-environment',
+      'auth/internal-error',
+    ].includes(code);
+  }
+
+  async function startRedirectSignIn(reason) {
+    if (loginErr) {
+      loginErr.textContent = reason || 'Opening Google sign-in in this tab…';
+    }
+    sessionStorage.setItem(REDIRECT_SIGN_IN_PENDING_KEY, '1');
+    await signInWithRedirect(auth, provider);
+  }
+
+  async function finishRedirectSignIn() {
+    const redirectWasPending = sessionStorage.getItem(REDIRECT_SIGN_IN_PENDING_KEY) === '1';
+    if (redirectWasPending && loginErr) {
+      loginErr.textContent = 'Finishing Google sign-in…';
+    }
+    try {
+      const result = await getRedirectResult(auth);
+      if (result && result.user && loginErr) {
+        loginErr.textContent = '';
+      }
+    } catch (e) {
+      console.warn('[Auth] Google redirect sign-in failed:', e);
+      restoreLoginButton(formatAuthError(e));
+    } finally {
+      sessionStorage.removeItem(REDIRECT_SIGN_IN_PENDING_KEY);
+    }
+  }
+
   function withSignInTimeout(promise) {
     let timeoutId = null;
     const timeout = new Promise((_, reject) => {
@@ -400,6 +441,10 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
     });
   }
 
+  finishRedirectSignIn().catch((e) => {
+    console.warn('[Auth] Google redirect result check failed:', e);
+  });
+
   if (loginBtn) {
     loginBtn.addEventListener('click', async () => {
       loginBtn.disabled = true;
@@ -408,7 +453,16 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
       try {
         await withSignInTimeout(signInWithPopup(auth, provider));
       } catch (e) {
-        console.warn('[Auth] Google sign-in failed:', e);
+        console.warn('[Auth] Google popup sign-in failed:', e);
+        if (shouldFallbackToRedirect(e)) {
+          try {
+            await startRedirectSignIn('Popup sign-in did not finish. Redirecting to Google sign-in…');
+          } catch (redirectError) {
+            console.warn('[Auth] Google redirect sign-in failed to start:', redirectError);
+            restoreLoginButton(formatAuthError(redirectError));
+          }
+          return;
+        }
         restoreLoginButton(formatAuthError(e));
       }
     });
