@@ -7807,9 +7807,10 @@ async function _runAsyncModelRequest(model, endpoint, body) {
             throw new Error(launch.error || `HTTP ${resp.status}`);
           }
           if (!launch.job_id) {
+            const directSource = launch.source || (isLoopbackServer(backendUrl) ? 'local_backend' : 'cloud_backend');
             return {
               ...launch,
-              source: isLoopbackServer(backendUrl) ? 'local_backend' : 'cloud_backend',
+              source: directSource,
               backend_url: backendUrl,
               picks: Array.isArray(launch.picks) ? launch.picks : [],
               note: String(launch.note || '').trim(),

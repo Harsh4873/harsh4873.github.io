@@ -15,7 +15,7 @@ on:
       models:
         description: "Comma-separated models, or all"
         required: false
-        default: "mlb_new,mlb_inning,mlb_first_five,wnba,nba,nba_old,nba_playoffs,nba_props"
+        default: "mlb_new,mlb_old,mlb_inning,mlb_first_five,wnba,nba,nba_old,nba_playoffs,nba_props"
 
 permissions:
   contents: write
@@ -59,7 +59,7 @@ jobs:
         run: |
           python scripts/refresh_model_cache.py \
             --date "${{ github.event.inputs.date || '' }}" \
-            --models "${{ github.event.inputs.models || 'mlb_new,mlb_inning,mlb_first_five,wnba,nba,nba_old,nba_playoffs,nba_props' }}" \
+            --models "${{ github.event.inputs.models || 'mlb_new,mlb_old,mlb_inning,mlb_first_five,wnba,nba,nba_old,nba_playoffs,nba_props' }}" \
             --max-workers 3
 
       - name: Commit cache JSON if changed

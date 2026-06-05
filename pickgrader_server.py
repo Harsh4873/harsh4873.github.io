@@ -2351,6 +2351,151 @@ def _resolve_python_bin(preferred_path: str) -> str:
     return sys.executable
 
 
+_MODEL_CACHE_KEY_ALIASES: dict[str, tuple[str, ...]] = {
+    "nba": ("nba", "nba_new"),
+    "nba_new": ("nba_new", "nba"),
+    "nba_old": ("nba_old",),
+    "nba_playoffs": ("nba_playoffs",),
+    "nba_props": ("nba_props", "props"),
+    "props": ("props", "nba_props"),
+    "wnba": ("wnba",),
+    "mlb": ("mlb", "mlb_old"),
+    "mlb_old": ("mlb_old", "mlb"),
+    "mlb_new": ("mlb_new",),
+    "mlb_inning": ("mlb_inning",),
+    "mlb_first_five": ("mlb_first_five",),
+    "ipl": ("ipl",),
+}
+
+
+def _normalized_model_cache_key(value: Any) -> str:
+    return re.sub(r"[\s-]+", "_", str(value or "").strip().lower())
+
+
+def _model_cache_aliases(model_key: str) -> tuple[str, ...]:
+    normalized = _normalized_model_cache_key(model_key)
+    aliases = _MODEL_CACHE_KEY_ALIASES.get(normalized, (normalized,))
+    seen: set[str] = set()
+    ordered: list[str] = []
+    for alias in aliases + (normalized,):
+        alias_norm = _normalized_model_cache_key(alias)
+        if alias_norm and alias_norm not in seen:
+            seen.add(alias_norm)
+            ordered.append(alias_norm)
+    return tuple(ordered)
+
+
+def _coerce_cached_model_payload(raw: Any) -> dict[str, Any] | None:
+    if isinstance(raw, str):
+        try:
+            raw = json.loads(raw)
+        except json.JSONDecodeError:
+            return None
+    if isinstance(raw, list):
+        return {"ok": True, "picks": raw}
+    if not isinstance(raw, dict):
+        return None
+    payload = dict(raw)
+    if payload.get("ok") is False:
+        return None
+    if "picks" not in payload and isinstance(payload.get("payload"), dict):
+        nested_picks = payload["payload"].get("picks")
+        if isinstance(nested_picks, list):
+            payload["picks"] = nested_picks
+    if "picks" not in payload and isinstance(payload.get("payload"), list):
+        payload["picks"] = payload["payload"]
+    if "picks" in payload and not isinstance(payload.get("picks"), list):
+        return None
+    if "picks" not in payload and "games" not in payload and "note" not in payload:
+        return None
+    payload.setdefault("ok", True)
+    payload.setdefault("picks", [])
+    return payload
+
+
+def _iter_model_cache_containers(doc_payload: dict[str, Any]):
+    yield doc_payload
+    for key in ("models", "model_picks", "picks", "cache", "caches"):
+        value = doc_payload.get(key)
+        if isinstance(value, dict):
+            yield value
+
+
+def _extract_cached_model_payload(doc_payload: dict[str, Any], model_key: str) -> dict[str, Any] | None:
+    aliases = _model_cache_aliases(model_key)
+    for container in _iter_model_cache_containers(doc_payload):
+        normalized_entries = {
+            _normalized_model_cache_key(key): value
+            for key, value in container.items()
+        }
+        for alias in aliases:
+            if alias not in normalized_entries:
+                continue
+            payload = _coerce_cached_model_payload(normalized_entries[alias])
+            if payload is not None:
+                return payload
+    return None
+
+
+def _load_static_model_cache(date_iso: str, model_key: str) -> dict[str, Any] | None:
+    path = os.path.join(BASE_DIR, "data", "model_cache", f"{date_iso}.json")
+    try:
+        with open(path, "r", encoding="utf-8") as handle:
+            doc_payload = json.load(handle)
+    except (OSError, json.JSONDecodeError):
+        return None
+    if not isinstance(doc_payload, dict):
+        return None
+    payload = _extract_cached_model_payload(doc_payload, model_key)
+    if payload is None:
+        return None
+    return _model_cache_response(payload, date_iso, model_key, "static_json")
+
+
+def _load_firestore_model_cache(date_iso: str, model_key: str) -> dict[str, Any] | None:
+    db = _init_admin_firestore()
+    if db is None:
+        return None
+    try:
+        snap = db.collection("admin_picks").document(date_iso).get()
+        exists = snap.exists() if callable(getattr(snap, "exists", None)) else bool(getattr(snap, "exists", False))
+        if not exists:
+            return None
+        doc_payload = snap.to_dict() if callable(getattr(snap, "to_dict", None)) else None
+    except Exception:
+        return None
+    if not isinstance(doc_payload, dict):
+        return None
+    payload = _extract_cached_model_payload(doc_payload, model_key)
+    if payload is None:
+        return None
+    return _model_cache_response(payload, date_iso, model_key, "firestore")
+
+
+def _model_cache_response(payload: dict[str, Any], date_iso: str, model_key: str, cache_source: str) -> dict[str, Any]:
+    response = dict(payload)
+    response["ok"] = True
+    response["source"] = "firebase_cache"
+    response["cache_source"] = cache_source
+    response["model"] = model_key
+    response["date"] = str(response.get("date") or date_iso)
+    response["cache_date"] = date_iso
+    response["cached"] = True
+    response.setdefault("picks", [])
+    note = str(response.get("note") or "").strip()
+    if not note:
+        response["note"] = f"Loaded {len(response.get('picks') or [])} cached pick(s) for {date_iso}."
+    return response
+
+
+def _load_cached_model_result(date_str: str | None, model_key: str) -> dict[str, Any] | None:
+    date_iso, _ = _parse_model_date_arg(date_str)
+    return (
+        _load_firestore_model_cache(date_iso, model_key)
+        or _load_static_model_cache(date_iso, model_key)
+    )
+
+
 def _run_ipl_model_subprocess(
     team1: str | None = None,
     team2: str | None = None,
@@ -4612,6 +4757,25 @@ def _launch_job(target_fn, *args) -> str:
     return job_id
 
 
+def _cached_or_model_response(
+    model_key: str,
+    date_str: str | None,
+    target_fn,
+    args: tuple[Any, ...],
+    async_mode: bool,
+    force_refresh: bool = False,
+) -> dict[str, Any]:
+    """Return a scheduled cache hit, or launch/run the model on a miss."""
+    if not force_refresh:
+        cached = _load_cached_model_result(date_str, model_key)
+        if cached is not None:
+            return cached
+    if async_mode:
+        job_id = _launch_job(target_fn, *args)
+        return {"ok": True, "job_id": job_id, "status": "running"}
+    return target_fn(*args)
+
+
 def _public_endpoints() -> list[str]:
     endpoints = [
         "/health",
@@ -5139,6 +5303,7 @@ class Handler(BaseHTTPRequestHandler):
         game_id = body.get("game_id")
         game_label = body.get("game_label")
         ledger_uid = str(body.get("uid") or "").strip()
+        force_refresh = bool(body.get("force_refresh") or body.get("forceRefresh"))
 
         if path == "/save-admin-picks":
             secret = str(body.get("secret", "") or "")
@@ -5250,82 +5415,109 @@ class Handler(BaseHTTPRequestHandler):
                 self._send_json(200, result)
 
         elif path == "/run-nba-model":
-            if async_mode:
-                job_id = _launch_job(run_nba_model, date_str, "new")
-                self._send_json(200, {"ok": True, "job_id": job_id, "status": "running"})
-            else:
-                result = run_nba_model(date_str, "new")
-                self._send_json(200, result)
+            result = _cached_or_model_response(
+                "nba_new",
+                date_str,
+                run_nba_model,
+                (date_str, "new"),
+                async_mode,
+                force_refresh,
+            )
+            self._send_json(200, result)
 
         elif path == "/run-nba-old-model":
-            if async_mode:
-                job_id = _launch_job(run_nba_model, date_str, "old")
-                self._send_json(200, {"ok": True, "job_id": job_id, "status": "running"})
-            else:
-                result = run_nba_model(date_str, "old")
-                self._send_json(200, result)
+            result = _cached_or_model_response(
+                "nba_old",
+                date_str,
+                run_nba_model,
+                (date_str, "old"),
+                async_mode,
+                force_refresh,
+            )
+            self._send_json(200, result)
 
         elif path == "/run-nba-playoffs-model":
-            if async_mode:
-                job_id = _launch_job(run_nba_playoffs_model, date_str)
-                self._send_json(200, {"ok": True, "job_id": job_id, "status": "running"})
-            else:
-                result = run_nba_playoffs_model(date_str)
-                self._send_json(200, result)
+            result = _cached_or_model_response(
+                "nba_playoffs",
+                date_str,
+                run_nba_playoffs_model,
+                (date_str,),
+                async_mode,
+                force_refresh,
+            )
+            self._send_json(200, result)
 
         elif path == "/run-wnba-model":
-            if async_mode:
-                job_id = _launch_job(run_wnba_model, date_str)
-                self._send_json(200, {"ok": True, "job_id": job_id, "status": "running"})
-            else:
-                result = run_wnba_model(date_str)
-                self._send_json(200, result)
+            result = _cached_or_model_response(
+                "wnba",
+                date_str,
+                run_wnba_model,
+                (date_str,),
+                async_mode,
+                force_refresh,
+            )
+            self._send_json(200, result)
 
         elif path == "/run-nba-props-model":
-            if async_mode:
-                job_id = _launch_job(run_nba_props_model, date_str, game_id, game_label)
-                self._send_json(200, {"ok": True, "job_id": job_id, "status": "running"})
-            else:
-                result = run_nba_props_model(date_str, game_id, game_label)
-                self._send_json(200, result)
+            result = _cached_or_model_response(
+                "props",
+                date_str,
+                run_nba_props_model,
+                (date_str, game_id, game_label),
+                async_mode,
+                force_refresh,
+            )
+            self._send_json(200, result)
 
         elif path == "/run-mlb-model":
-            if async_mode:
-                job_id = _launch_job(run_mlb_model, date_str, "old")
-                self._send_json(200, {"ok": True, "job_id": job_id, "status": "running"})
-            else:
-                result = run_mlb_model(date_str, "old")
-                self._send_json(200, result)
+            result = _cached_or_model_response(
+                "mlb_old",
+                date_str,
+                run_mlb_model,
+                (date_str, "old"),
+                async_mode,
+                force_refresh,
+            )
+            self._send_json(200, result)
 
         elif path == "/run-mlb-new-model":
             # Defensive log so a missing/miswired route shows up as the
             # actual HTTP path we took (helps diagnose the old
             # "MLB New only works after MLB Old has run once" report).
             print(f"[route] /run-mlb-new-model date={date_str!r} async={async_mode}")
-            if async_mode:
-                job_id = _launch_job(run_mlb_model, date_str, "new")
-                self._send_json(200, {"ok": True, "job_id": job_id, "status": "running"})
-            else:
-                result = run_mlb_model(date_str, "new")
-                self._send_json(200, result)
+            result = _cached_or_model_response(
+                "mlb_new",
+                date_str,
+                run_mlb_model,
+                (date_str, "new"),
+                async_mode,
+                force_refresh,
+            )
+            self._send_json(200, result)
 
         elif path == "/run-mlb-inning-model":
             print(f"[route] /run-mlb-inning-model date={date_str!r} async={async_mode}")
-            if async_mode:
-                job_id = _launch_job(run_mlb_inning_model, date_str)
-                self._send_json(200, {"ok": True, "job_id": job_id, "status": "running"})
-            else:
-                result = run_mlb_inning_model(date_str)
-                self._send_json(200, result)
+            result = _cached_or_model_response(
+                "mlb_inning",
+                date_str,
+                run_mlb_inning_model,
+                (date_str,),
+                async_mode,
+                force_refresh,
+            )
+            self._send_json(200, result)
 
         elif path == "/run-mlb-first-five-model":
             print(f"[route] /run-mlb-first-five-model date={date_str!r} async={async_mode}")
-            if async_mode:
-                job_id = _launch_job(run_mlb_first_five_model, date_str)
-                self._send_json(200, {"ok": True, "job_id": job_id, "status": "running"})
-            else:
-                result = run_mlb_first_five_model(date_str)
-                self._send_json(200, result)
+            result = _cached_or_model_response(
+                "mlb_first_five",
+                date_str,
+                run_mlb_first_five_model,
+                (date_str,),
+                async_mode,
+                force_refresh,
+            )
+            self._send_json(200, result)
 
         elif path == "/run-cannon-daily":
             # Always scrape Cannon Analytics + SportsLine live for the given
