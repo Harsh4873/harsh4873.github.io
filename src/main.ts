@@ -7502,12 +7502,13 @@ function _validateCannonPayloadDate(data, liveSource) {
   return { expectedDate, payloadDate };
 }
 
-async function loadCannonDailyPicks() {
+async function loadCannonDailyPicks(eventOrOptions = {}) {
   const btn = document.getElementById('btn-run-cannon');
   const statusEl = document.getElementById('status-cannon-analytics');
   const section = document.getElementById('cannon-daily-section');
   const metaEl = document.getElementById('cannon-daily-meta');
   const tbody = document.getElementById('cannon-daily-body');
+  const forceRefresh = isForceModelRefreshRequest(eventOrOptions);
 
   if (btn) { btn.disabled = true; btn.textContent = 'LOADING...'; }
   if (statusEl) { statusEl.textContent = 'Fetching Cannon daily picks...'; statusEl.className = 'model-status running'; }
@@ -7518,10 +7519,30 @@ async function loadCannonDailyPicks() {
     let liveSource = 'cache';
     let liveError = null;
 
+    const loadScheduledCannonCache = async () => {
+      const resp = await fetch('./data/cannon_mlb_daily.json?t=' + Date.now());
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      const cached = await resp.json();
+      _validateCannonPayloadDate(cached, 'cache');
+      return cached;
+    };
+
+    if (!forceRefresh) {
+      try {
+        if (statusEl) { statusEl.textContent = 'Loading scheduled Cannon cache...'; statusEl.className = 'model-status running'; }
+        data = await loadScheduledCannonCache();
+        liveSource = 'cache';
+      } catch (err) {
+        if (statusEl) {
+          statusEl.textContent = 'Scheduled Cannon cache unavailable (' + (err.message || err) + ') — trying live scrape...';
+          statusEl.className = 'model-status running';
+        }
+      }
+    }
+
     // Admin + model backend available: scrape Cannon Analytics + SportsLine
-    // LIVE for today's slate so each click pulls fresh data instead of the
-    // cached JSON produced by the scheduled GitHub workflow.
-    if (typeof isAdminModelRunnerUser === 'function' && isAdminModelRunnerUser()) {
+    // only when forced or when the scheduled GitHub cache is unavailable.
+    if (!data && typeof isAdminModelRunnerUser === 'function' && isAdminModelRunnerUser()) {
       let backendHealthy = false;
       try {
         backendHealthy = await canAttemptAdminBackend(true);
@@ -7570,9 +7591,7 @@ async function loadCannonDailyPicks() {
     // Fallback (non-admin users, or live scrape failed): read the static JSON
     // produced by the scheduled GitHub Pages refresh workflow.
     if (!data) {
-      const resp = await fetch('./data/cannon_mlb_daily.json?t=' + Date.now());
-      if (!resp.ok) throw new Error('HTTP ' + resp.status);
-      data = await resp.json();
+      data = await loadScheduledCannonCache();
       liveSource = 'cache';
     }
 
@@ -8238,6 +8257,8 @@ async function _pollJob(jobId, model, baseUrl = ADMIN_BACKEND_URL, timeoutMs = 6
         setModelStatus(model, `Running SportyTrader scrape... ${Math.floor(elapsedMs / 1000)}s`, 'running');
       } else if (model === 'sportsgambler') {
         setModelStatus(model, `Running SportsGambler scrape... ${Math.floor(elapsedMs / 1000)}s`, 'running');
+      } else if (model === 'cannon-analytics') {
+        setModelStatus(model, `Running Cannon scrape... ${Math.floor(elapsedMs / 1000)}s`, 'running');
       } else {
         setModelStatus(model, `Waiting for ${getModelBackendLabel(baseUrl)}... ${Math.floor(elapsedMs / 1000)}s`, 'running');
       }

@@ -4,6 +4,8 @@ on:
   schedule:
     # 13:30 UTC = 8:30 CT during daylight time, so morning checks have a same-day cache.
     - cron: "30 13 * * *"
+    # 14:05 UTC = 9:05 CT during daylight time, after more markets post lines.
+    - cron: "5 14 * * *"
     # 15:30 UTC = 10:30 CT during daylight time, after early market data settles.
     - cron: "30 15 * * *"
     # 20:30 UTC = 15:30 CT during daylight time, safety-net refresh before evening games.

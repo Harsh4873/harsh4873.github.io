@@ -1,7 +1,7 @@
 // @ts-nocheck
 export interface ModelsUIDeps {
   runModel: (model: string, event?: unknown) => Promise<void> | void;
-  loadCannonDailyPicks: () => Promise<void> | void;
+  loadCannonDailyPicks: (event?: unknown) => Promise<void> | void;
   loadNbaPropsGames: () => Promise<void> | void;
   toggleAllModelPicks: () => void;
   updateModelSelectAll: () => void;
@@ -363,7 +363,7 @@ export async function runSelectedModel(event) {
       focusRun.textContent = 'LOADING...';
     }
     try {
-      await modelDeps.loadCannonDailyPicks();
+      await modelDeps.loadCannonDailyPicks(event || {});
     } finally {
       refreshModelFocusFromSelected();
     }

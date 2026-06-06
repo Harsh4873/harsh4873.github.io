@@ -5,19 +5,24 @@ name: Cannon MLB Daily Refresh
 #
 # The export script reads "today" from MLBPredictionModel.date_utils.get_mlb_slate_date()
 # (America/Chicago), so the cron just needs to fire after the Cannon backend
-# publishes its daily batch. Runs at 14:00 UTC (~09:00 CT) and again at
-# 19:00 UTC (~14:00 CT) as a safety net, plus on-demand via workflow_dispatch.
+# publishes its daily batch. Runs several times around 09:00 CT because GitHub
+# scheduled workflows can be delayed, then again around 14:00 CT as a safety net.
 
 on:
   schedule:
-    # 14:00 UTC = 09:00 CT (CDT) — after Cannon publishes the daily slate
-    - cron: "0 14 * * *"
-    # 19:00 UTC = 14:00 CT — safety-net refresh before most first pitches
-    - cron: "0 19 * * *"
+    # 13:55 UTC = 08:55 CT during daylight time, first attempt near line confirmation.
+    - cron: "55 13 * * *"
+    # 14:15 UTC = 09:15 CT during daylight time, avoids exact-hour scheduler delays.
+    - cron: "15 14 * * *"
+    # 14:35 UTC = 09:35 CT during daylight time, backup if Cannon/lines post late.
+    - cron: "35 14 * * *"
+    # 19:05 UTC = 14:05 CT during daylight time, safety-net refresh before most first pitches.
+    - cron: "5 19 * * *"
   workflow_dispatch:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: cannon-daily-refresh
@@ -48,14 +53,23 @@ jobs:
         run: python -m MLBPredictionModel.export_cannon_daily_json
 
       - name: Commit and push if changed
+        id: commit-cannon
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           if git diff --quiet -- data/cannon_mlb_daily.json; then
             echo "No change in data/cannon_mlb_daily.json — skipping commit."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           SLATE=$(python -c "import json; print(json.load(open('data/cannon_mlb_daily.json'))['slate_date'])")
           git add data/cannon_mlb_daily.json
           git commit -m "chore(mlb): refresh Cannon daily JSON for ${SLATE}"
           git push
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Trigger Pages deploy after Cannon refresh
+        if: steps.commit-cannon.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy-pages.yml --ref main

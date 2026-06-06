@@ -46,6 +46,30 @@ def test_frontend_checks_model_cache_before_starting_cloud_job():
     assert run_block < force_gate < cache_lookup < backend_probe
 
 
+def test_frontend_checks_cannon_cache_before_live_cloud_scrape():
+    source = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
+
+    cannon_block = source.index("async function loadCannonDailyPicks")
+    cache_loader = source.index("const loadScheduledCannonCache = async () =>", cannon_block)
+    cache_first = source.index("data = await loadScheduledCannonCache();", cache_loader)
+    live_scrape = source.index('fetch(`${ADMIN_BACKEND_URL}/run-cannon-daily`', cannon_block)
+    cannon_poll_label = source.index("Running Cannon scrape...", cannon_block)
+
+    assert cannon_block < cache_loader < cache_first < live_scrape < cannon_poll_label
+
+
+def test_cannon_workflow_deploys_pages_after_cache_commit():
+    workflow = (ROOT / ".github" / "workflows" / "cannon-daily-refresh.yml").read_text(encoding="utf-8")
+
+    assert "actions: write" in workflow
+    assert "id: commit-cannon" in workflow
+    assert "changed=true" in workflow
+    assert "gh workflow run deploy-pages.yml --ref main" in workflow
+    assert "55 13 * * *" in workflow
+    assert "15 14 * * *" in workflow
+    assert "35 14 * * *" in workflow
+
+
 def test_frontend_ledger_cache_is_scoped_to_firebase_uid():
     source = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
 
