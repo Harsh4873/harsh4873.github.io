@@ -46,17 +46,20 @@ def test_frontend_checks_model_cache_before_starting_cloud_job():
     assert run_block < force_gate < cache_lookup < backend_probe
 
 
-def test_model_schedule_is_visible_and_includes_afternoon_refresh():
+def test_model_schedule_is_visible_as_two_refresh_windows():
     workflow = (ROOT / ".github" / "workflows" / "model-cache-refresh.yml").read_text(encoding="utf-8")
     html = (ROOT / "index.html").read_text(encoding="utf-8")
 
     assert "5 20 * * *" in workflow
     assert "5 8 * * *" not in workflow
-    assert "8:30 AM, 9:05 AM, 10:30 AM, 3:05 PM, 3:30 PM CT" in html
-    assert "Cannon: 8:55/9:15/9:35 AM + 3:05 PM CT" in html
-    assert "SportyTrader/SportsGambler: 9:10/9:40 AM + 3:10 PM CT" in html
+    assert "Models refresh around 9:00 AM and 3:00 PM CT" in html
+    assert "8:30 AM, 9:05 AM, 10:30 AM, 3:05 PM, 3:30 PM CT" not in html
+    assert "Cannon: 8:55/9:15/9:35 AM + 3:05 PM CT" not in html
+    assert "SportyTrader/SportsGambler: 9:10/9:40 AM + 3:10 PM CT" not in html
+    assert "<span class=\"models-schedule-label\">Feeds</span>" not in html
+    assert "<span class=\"models-schedule-label\">Auth</span>" not in html
     assert "3:05 AM" not in html
-    assert "Google sign-in is only for ledger sync or force refresh" in html
+    assert "Google sign-in is only for ledger sync or force refresh" not in html
 
 
 def test_frontend_checks_cannon_cache_before_live_cloud_scrape():
