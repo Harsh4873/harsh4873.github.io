@@ -1564,6 +1564,9 @@ function _extractFirebaseModelPayload(raw, options = {}) {
   if (typeof raw !== 'object') {
     return null;
   }
+  if (raw.ok === false) {
+    return null;
+  }
   if (options.gameLabel) {
     const nested = [
       raw.games && raw.games[options.gameLabel],
@@ -8505,7 +8508,7 @@ async function syncSportyTraderFromServer(options = {}) {
   };
 }
 
-async function syncSportsgamblerFromServer() {
+async function syncSportsgamblerFromServer(options = {}) {
   if (!isAdminModelRunnerUser()) {
     throw new Error('SportsGambler live sync is admin-only');
   }
@@ -8514,10 +8517,16 @@ async function syncSportsgamblerFromServer() {
     throw new Error(`${getModelBackendLabel()} is offline`);
   }
 
+  const forceRefresh = !!(options && options.forceRefresh);
   const resp = await fetch(`${ADMIN_BACKEND_URL}/run-sportsgambler`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ async: true, date: _getTodayDateStr(), sports: ['nba', 'mlb'] }),
+    body: JSON.stringify({
+      async: true,
+      date: _getTodayDateStr(),
+      sports: ['nba', 'mlb'],
+      force_refresh: forceRefresh,
+    }),
     signal: _createTimeoutSignal(MODEL_BACKEND_TIMEOUT_MS),
   });
   const launch = await resp.json().catch(() => ({}));
@@ -8539,8 +8548,12 @@ async function syncSportsgamblerFromServer() {
     meta: {
       updatedAt: new Date().toISOString(),
       date: _getTodayFeedDate(),
-      note: `Synced from ${getModelBackendLabel()}`,
-      from: isLoopbackServer(ADMIN_BACKEND_URL) ? 'local-backend' : 'cloud-backend',
+      note: data.source === 'firebase_cache'
+        ? 'Loaded from scheduled SportsGambler cache'
+        : `Synced from ${getModelBackendLabel()}`,
+      from: data.source === 'firebase_cache'
+        ? (data.cache_source || 'firebase-cache')
+        : (isLoopbackServer(ADMIN_BACKEND_URL) ? 'local-backend' : 'cloud-backend'),
       leagues: 'nba,mlb',
     },
   };
@@ -8726,16 +8739,53 @@ async function runModel(model, eventOrOptions = {}) {
   }
 
   if (model === 'sportsgambler') {
+    if (!forceRefresh) {
+      try {
+        const loaded = await loadSportsgamblerManualFeed();
+        _clearNbaComparisonResults();
+        _clearMlbComparisonResults();
+        pendingModelPicks = loaded.picks;
+        renderModelResults(loaded.picks, { meta: '' });
+        const meta = {
+          ...loaded.meta,
+          from: loaded.meta && loaded.meta.from ? loaded.meta.from : 'firebase-cache',
+          updatedAt: loaded.meta && loaded.meta.updatedAt ? loaded.meta.updatedAt : new Date().toISOString(),
+        };
+        saveSportsgamblerCachedFeed({ picks: loaded.picks, meta });
+        setSportsgamblerSyncMeta(meta);
+        setModelStatus(model, `Loaded ${loaded.picks.length} cached SportsGambler pick(s)`, 'ok');
+        _resetModelButton(model);
+        return;
+      } catch (_cacheErr) {
+        const cached = getSportsgamblerCachedFeed();
+        if (cached && Array.isArray(cached.picks) && cached.picks.length) {
+          _clearNbaComparisonResults();
+          _clearMlbComparisonResults();
+          pendingModelPicks = cached.picks;
+          renderModelResults(cached.picks, { meta: '' });
+          setSportsgamblerSyncMeta({ ...(cached.meta || {}), from: 'browser-cache' });
+          setModelStatus(model, `Using browser-cached SportsGambler feed (${cached.picks.length} pick(s))`, 'ok');
+          _resetModelButton(model);
+          return;
+        }
+      }
+    }
     try {
-      setModelStatus(model, 'Trying live SportsGambler sync...', 'running');
-      const synced = await syncSportsgamblerFromServer();
+      setModelStatus(model, forceRefresh ? 'Force refreshing SportsGambler sync...' : 'No cached SportsGambler feed found; trying live sync...', 'running');
+      const synced = await syncSportsgamblerFromServer({ forceRefresh });
       _clearNbaComparisonResults();
       _clearMlbComparisonResults();
       pendingModelPicks = synced.picks;
       renderModelResults(synced.picks, { meta: '' });
       saveSportsgamblerCachedFeed({ picks: synced.picks, meta: synced.meta });
       setSportsgamblerSyncMeta(synced.meta);
-      setModelStatus(model, `Synced ${synced.picks.length} pick(s) from SportsGambler`, 'ok');
+      setModelStatus(
+        model,
+        synced.meta && String(synced.meta.from || '').includes('cache')
+          ? `Loaded ${synced.picks.length} cached SportsGambler pick(s)`
+          : `Synced ${synced.picks.length} pick(s) from SportsGambler`,
+        'ok'
+      );
     } catch (e) {
       const backendErr = String(e && e.message ? e.message : e);
       try {

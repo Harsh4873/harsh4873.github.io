@@ -92,6 +92,41 @@ def test_frontend_loads_sportytrader_cache_before_live_sync():
     assert cache_first < live_sync
 
 
+def test_frontend_loads_sportsgambler_cache_before_live_sync():
+    source = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
+
+    sportsgambler_block = source.index("if (model === 'sportsgambler')")
+    cache_first = source.index("const loaded = await loadSportsgamblerManualFeed()", sportsgambler_block)
+    live_sync = source.index("const synced = await syncSportsgamblerFromServer", sportsgambler_block)
+
+    assert cache_first < live_sync
+
+
+def test_frontend_ignores_failed_external_feed_cache_payloads():
+    source = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
+
+    extract_block = source.index("function _extractFirebaseModelPayload")
+    ok_false = source.index("if (raw.ok === false)", extract_block)
+    picks_branch = source.index("if (Array.isArray(raw.picks))", extract_block)
+
+    assert extract_block < ok_false < picks_branch
+
+
+def test_external_feed_refresh_workflow_runs_scrapers_and_deploys_pages():
+    workflow = (ROOT / ".github" / "workflows" / "external-feed-refresh.yml").read_text(encoding="utf-8")
+    script = (ROOT / "scripts" / "refresh_external_feeds.py").read_text(encoding="utf-8")
+
+    assert "python scripts/refresh_external_feeds.py" in workflow
+    assert "python -m playwright install chromium chromium-headless-shell" in workflow
+    assert "gh workflow run deploy-pages.yml --ref main" in workflow
+    assert "10 14 * * *" in workflow
+    assert "40 14 * * *" in workflow
+    assert "10 19 * * *" in workflow
+    assert '"sportytrader": server.run_sportytrader_scraper' in script
+    assert '"sportsgambler": server.run_sportsgambler_scraper' in script
+    assert 'payload["models"][feed_key] = result' in script
+
+
 def test_backend_cloud_routes_require_correct_auth_scope():
     source = (ROOT / "pickgrader_server.py").read_text(encoding="utf-8")
 
