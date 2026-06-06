@@ -6,7 +6,7 @@ name: Cannon MLB Daily Refresh
 # The export script reads "today" from MLBPredictionModel.date_utils.get_mlb_slate_date()
 # (America/Chicago), so the cron just needs to fire after the Cannon backend
 # publishes its daily batch. Runs several times around 09:00 CT because GitHub
-# scheduled workflows can be delayed, then again around 14:00 CT as a safety net.
+# scheduled workflows can be delayed, then again around 15:00 CT as a safety net.
 
 on:
   schedule:
@@ -16,8 +16,8 @@ on:
     - cron: "15 14 * * *"
     # 14:35 UTC = 09:35 CT during daylight time, backup if Cannon/lines post late.
     - cron: "35 14 * * *"
-    # 19:05 UTC = 14:05 CT during daylight time, safety-net refresh before most first pitches.
-    - cron: "5 19 * * *"
+    # 20:05 UTC = 15:05 CT during daylight time, safety-net refresh before most first pitches.
+    - cron: "5 20 * * *"
   workflow_dispatch:
 
 permissions:

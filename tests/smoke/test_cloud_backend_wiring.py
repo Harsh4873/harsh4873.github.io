@@ -46,12 +46,16 @@ def test_frontend_checks_model_cache_before_starting_cloud_job():
     assert run_block < force_gate < cache_lookup < backend_probe
 
 
-def test_model_schedule_is_visible_and_includes_early_refresh():
+def test_model_schedule_is_visible_and_includes_afternoon_refresh():
     workflow = (ROOT / ".github" / "workflows" / "model-cache-refresh.yml").read_text(encoding="utf-8")
     html = (ROOT / "index.html").read_text(encoding="utf-8")
 
-    assert "5 8 * * *" in workflow
-    assert "3:05 AM, 8:30 AM, 9:05 AM, 10:30 AM, 3:30 PM CT" in html
+    assert "5 20 * * *" in workflow
+    assert "5 8 * * *" not in workflow
+    assert "8:30 AM, 9:05 AM, 10:30 AM, 3:05 PM, 3:30 PM CT" in html
+    assert "Cannon: 8:55/9:15/9:35 AM + 3:05 PM CT" in html
+    assert "SportyTrader/SportsGambler: 9:10/9:40 AM + 3:10 PM CT" in html
+    assert "3:05 AM" not in html
     assert "Google sign-in is only for ledger sync or force refresh" in html
 
 
@@ -77,6 +81,8 @@ def test_cannon_workflow_deploys_pages_after_cache_commit():
     assert "55 13 * * *" in workflow
     assert "15 14 * * *" in workflow
     assert "35 14 * * *" in workflow
+    assert "5 20 * * *" in workflow
+    assert "5 19 * * *" not in workflow
 
 
 def test_frontend_ledger_cache_is_scoped_to_firebase_uid():
@@ -130,7 +136,8 @@ def test_external_feed_refresh_workflow_runs_scrapers_and_deploys_pages():
     assert "gh workflow run deploy-pages.yml --ref main" in workflow
     assert "10 14 * * *" in workflow
     assert "40 14 * * *" in workflow
-    assert "10 19 * * *" in workflow
+    assert "10 20 * * *" in workflow
+    assert "10 19 * * *" not in workflow
     assert '"sportytrader": server.run_sportytrader_scraper' in script
     assert '"sportsgambler": server.run_sportsgambler_scraper' in script
     assert 'payload["models"][feed_key] = result' in script

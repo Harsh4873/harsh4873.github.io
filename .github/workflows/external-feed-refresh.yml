@@ -10,8 +10,8 @@ on:
     - cron: "10 14 * * *"
     # 14:40 UTC = 09:40 CT during daylight time, backup for delayed matchups/lines.
     - cron: "40 14 * * *"
-    # 19:10 UTC = 14:10 CT during daylight time, safety-net refresh before later games.
-    - cron: "10 19 * * *"
+    # 20:10 UTC = 15:10 CT during daylight time, safety-net refresh before later games.
+    - cron: "10 20 * * *"
   workflow_dispatch:
     inputs:
       date:
