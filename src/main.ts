@@ -7797,6 +7797,18 @@ async function _runAsyncModelRequest(model, endpoint, body) {
   const forceRefresh = !!(body && body.force_refresh);
   let backendError = null;
 
+  if (!forceRefresh) {
+    setModelStatus(model, 'Loading Firebase cache...', 'running');
+    const cachedResult = await getAdminPicksFromFirebase(fallbackModelKey, {
+      date: fallbackDate,
+      gameLabel,
+      allowRecentFallback: false,
+    });
+    if (cachedResult) {
+      return cachedResult;
+    }
+  }
+
   const backendCandidates = getModelBackendCandidates();
 
   if (endpoint) {
@@ -7858,15 +7870,6 @@ async function _runAsyncModelRequest(model, endpoint, body) {
     throw new Error(`Force refresh requires the ${getModelBackendLabel()}.`);
   }
 
-  setModelStatus(model, 'Loading Firebase cache...', 'running');
-  const result = await getAdminPicksFromFirebase(fallbackModelKey, {
-    date: fallbackDate,
-    gameLabel,
-    allowRecentFallback: false,
-  });
-  if (result) {
-    return result;
-  }
   if (backendError) {
     throw new Error(String(backendError && backendError.message ? backendError.message : backendError));
   }

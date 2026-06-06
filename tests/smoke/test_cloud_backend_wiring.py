@@ -35,6 +35,17 @@ def test_cloud_backend_calls_are_not_blocked_by_health_preflight():
     assert source.index("const backendHealthy = await canAttemptAdminBackend();", run_block) > run_block
 
 
+def test_frontend_checks_model_cache_before_starting_cloud_job():
+    source = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
+
+    run_block = source.index("async function _runAsyncModelRequest")
+    force_gate = source.index("if (!forceRefresh)", run_block)
+    cache_lookup = source.index("const cachedResult = await getAdminPicksFromFirebase", run_block)
+    backend_probe = source.index("const backendHealthy = await canAttemptAdminBackend();", run_block)
+
+    assert run_block < force_gate < cache_lookup < backend_probe
+
+
 def test_frontend_ledger_cache_is_scoped_to_firebase_uid():
     source = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
 
