@@ -6877,7 +6877,11 @@ function render() {
         const control = renderPickResultControl(p);
         const dateLabel = p._gameDate || p.date || '';
         const startLabel = formatStartLabel(p._gameStartIso);
-        const metaBits = [dateLabel, oddsDisplay, `${formatUnitsCompact(units)}u`, startLabel].filter(Boolean).join(' · ');
+        const rowGameLabel = String(p._gameLabel || deriveGameLabel(p, filtered) || '').trim();
+        const visibleGameLabel = rowGameLabel && !String(p.pick || '').toLowerCase().includes(rowGameLabel.toLowerCase())
+          ? rowGameLabel
+          : '';
+        const metaBits = [visibleGameLabel, dateLabel, oddsDisplay, `${formatUnitsCompact(units)}u`, startLabel].filter(Boolean).join(' · ');
         const sourceUpper = String(p.source || '').toUpperCase();
         const isNbaNewPick = sourceUpper.includes('NBANEW') || sourceUpper.includes('NBA NEW');
         const kellyHtml = (isNbaNewPick && p.kelly_edge) ? (() => {
@@ -7988,6 +7992,38 @@ function _modelResultGameLabel(pick) {
   return String(pick && (pick.matchup || pick.game || '') || '').trim();
 }
 
+function _modelResultStartTimeLabel(pick) {
+  const raw = String(pick && (pick.start_time || pick.game_start_time || pick.startTime || pick.game_time || '') || '').trim();
+  if (!raw) return '';
+  const dt = new Date(raw);
+  if (Number.isNaN(dt.getTime())) return '';
+  return dt.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZoneName: 'short' });
+}
+
+function _modelResultGameHeaderKey(pick) {
+  const gameId = String(pick && pick.game_id || '').trim();
+  const order = _modelResultGameOrder(pick);
+  const label = _modelResultGameLabel(pick);
+  const startMs = _modelResultStartTimeMs(pick);
+  return [gameId, order == null ? '' : order, label, startMs == null ? '' : startMs].join('|');
+}
+
+function _modelResultGameHeaderHtml(pick) {
+  const label = _modelResultGameLabel(pick) || 'Game TBD';
+  const order = _modelResultGameOrder(pick);
+  const timeLabel = _modelResultStartTimeLabel(pick);
+  const chips = [];
+  if (order != null) chips.push(`Game ${order + 1}`);
+  if (timeLabel) chips.push(timeLabel);
+  const chipHtml = chips.map((chip) => `<span>${_dailyEscape(chip)}</span>`).join('');
+  return `<tr class="model-result-game-row"><td colspan="11">
+    <div class="model-result-game-header">
+      <strong>${_dailyEscape(label)}</strong>
+      ${chipHtml ? `<div class="model-result-game-meta">${chipHtml}</div>` : ''}
+    </div>
+  </td></tr>`;
+}
+
 function _compareMlbInningModelResults(a, b) {
   const at = _modelResultStartTimeMs(a.pick);
   const bt = _modelResultStartTimeMs(b.pick);
@@ -9014,6 +9050,7 @@ function renderModelResults(picks, options = {}) {
   });
   pendingModelPicks = sorted.map(({ pick }) => pick);
   let lastSource = '';
+  let lastInningGameKey = '';
   tbody.innerHTML = sorted.map(({ pick: p }, idx) => {
     const verdict = modelResultsVerdict(p);
     const isBet = verdict === 'BET';
@@ -9029,12 +9066,19 @@ function renderModelResults(picks, options = {}) {
     const matchupLabel = modelResultsMatchupLabel(p);
     const source = String(p.source || '').toUpperCase();
     const sourceDisplay = sourceDisplayLabels[source] || p.source || 'MODEL';
-    const groupHeader = source !== lastSource
+    const sourceChanged = source !== lastSource;
+    const groupHeader = sourceChanged
       ? `<tr class="model-result-group-row"><td colspan="11">${sourceDisplay}</td></tr>`
       : '';
     lastSource = source;
-    return `${groupHeader}<tr class="${isActionable ? '' : 'model-result-pass-row'}" style="${isActionable ? '' : 'opacity:0.55'}">
-      <td><input type="checkbox" class="model-pick-cb" data-idx="${idx}" ${isBet ? 'checked' : ''} onchange="updateModelSelectAll()"></td>
+    if (sourceChanged) lastInningGameKey = '';
+    const gameHeaderKey = _isMlbInningModelPick(p) ? _modelResultGameHeaderKey(p) : '';
+    const gameHeader = gameHeaderKey && gameHeaderKey !== lastInningGameKey
+      ? _modelResultGameHeaderHtml(p)
+      : '';
+    lastInningGameKey = gameHeaderKey || '';
+    return `${groupHeader}${gameHeader}<tr class="${isActionable ? '' : 'model-result-pass-row'}" style="${isActionable ? '' : 'opacity:0.55'}">
+      <td><input type="checkbox" class="model-pick-cb" data-idx="${idx}" data-verdict="${verdict}" ${isBet ? 'checked' : ''} ${isActionable ? '' : 'disabled'} onchange="updateModelSelectAll()"></td>
       <td><span class="badge badge-source">${sourceDisplay}</span></td>
       <td><div class="log-pick-main">${p.pick}</div>${matchupLabel ? `<div class="log-pick-sub">${matchupLabel}</div>` : ''}</td>
       <td><span class="log-sport-text">${p.sport}</span></td>
@@ -9057,7 +9101,9 @@ function renderModelResults(picks, options = {}) {
   if (addAllBtn) {
     const betCount = picks.filter(p => modelResultsVerdict(p) === 'BET').length;
     addAllBtn.disabled = betCount === 0;
-    addAllBtn.textContent = 'ADD ALL BET PICKS TO LEDGER';
+    addAllBtn.textContent = betCount > 0
+      ? `ADD ALL ${betCount} BET PICK(S) TO LEDGER`
+      : 'NO BET PICKS TO ADD';
   }
   updateModelSelectAll();
 }
@@ -9130,16 +9176,19 @@ function _isDuplicatePick(existingPick, newPick, dateStr) {
 }
 
 function toggleAllModelPicks(checked) {
-  document.querySelectorAll('.model-pick-cb').forEach(cb => { cb.checked = checked; });
+  document.querySelectorAll('.model-pick-cb:not(:disabled)').forEach(cb => { cb.checked = checked; });
+  updateModelSelectAll();
 }
 
 function updateModelSelectAll() {
-  const all = document.querySelectorAll('.model-pick-cb');
-  const checked = document.querySelectorAll('.model-pick-cb:checked');
+  const all = document.querySelectorAll('.model-pick-cb:not(:disabled)');
+  const checked = document.querySelectorAll('.model-pick-cb:not(:disabled):checked');
   const selectAll = document.getElementById('model-select-all');
   if (selectAll) {
     selectAll.checked = all.length > 0 && checked.length === all.length;
     selectAll.indeterminate = checked.length > 0 && checked.length < all.length;
+    selectAll.disabled = all.length === 0;
+    selectAll.title = all.length ? 'Select all BET and LEAN rows' : 'No actionable model picks';
   }
   const btn = document.getElementById('btn-add-selected');
   if (btn) {
@@ -9263,10 +9312,12 @@ function _appendModelPicksToLedger(candidates) {
 }
 
 function addSelectedPicksToLedger() {
-  const checked = document.querySelectorAll('.model-pick-cb:checked');
+  const checked = document.querySelectorAll('.model-pick-cb:not(:disabled):checked');
   if (!checked.length) { alert('No picks selected.'); return; }
 
-  const indices = Array.from(checked).map(cb => parseInt(cb.dataset.idx));
+  const indices = Array.from(checked)
+    .map(cb => parseInt(cb.dataset.idx, 10))
+    .filter(Number.isFinite);
   const selected = indices.map(i => pendingModelPicks[i]).filter(Boolean);
 
   const { added } = _appendModelPicksToLedger(selected);

@@ -2569,6 +2569,50 @@
   .model-result-pass { color: var(--muted); }
   .model-result-group-row td { padding: 12px 14px 8px; border-bottom: 1px solid var(--border); font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 1px; color: var(--accent3); background: rgba(77,166,255,0.06); }
   body[data-theme="light"] .model-result-group-row td { background: rgba(37,99,235,0.05); }
+  .model-result-game-row td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(0,229,160,0.045);
+  }
+  .model-result-game-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .model-result-game-header strong {
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.25;
+  }
+  .model-result-game-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .model-result-game-meta span {
+    padding: 4px 9px;
+    border: 1px solid rgba(0,229,160,0.22);
+    border-radius: 999px;
+    color: var(--accent);
+    background: rgba(0,229,160,0.08);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.4px;
+    white-space: nowrap;
+  }
+  .model-pick-cb:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+  body[data-theme="light"] .model-result-game-row td { background: rgba(11,157,116,0.055); }
+  body[data-theme="light"] .model-result-game-meta span {
+    border-color: rgba(11,157,116,0.18);
+    background: rgba(11,157,116,0.08);
+    color: #047857;
+  }
 
   /* Light theme overrides for the console */
   body[data-theme="light"] .models-headline-title,

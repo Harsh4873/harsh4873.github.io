@@ -117,6 +117,27 @@ def test_frontend_loads_sportsgambler_cache_before_live_sync():
     assert cache_first < live_sync
 
 
+def test_model_results_make_inning_game_context_visible_and_actionable_rows_clear():
+    source = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
+    html = (ROOT / "index.html").read_text(encoding="utf-8")
+    css = (ROOT / "src" / "styles" / "pickledger.css").read_text(encoding="utf-8")
+
+    assert "function _modelResultGameHeaderHtml(pick)" in source
+    assert "model-result-game-row" in source
+    assert "_isMlbInningModelPick(p) ? _modelResultGameHeaderKey(p) : ''" in source
+    assert "const visibleGameLabel = rowGameLabel" in source
+    assert "const metaBits = [visibleGameLabel, dateLabel, oddsDisplay" in source
+    assert "function _modelResultStartTimeLabel(pick)" in source
+    assert "timeZoneName: 'short'" in source
+    assert "data-verdict=\"${verdict}\"" in source
+    assert "${isActionable ? '' : 'disabled'}" in source
+    assert ".model-pick-cb:not(:disabled)" in source
+    assert "Select all BET and LEAN rows" in source
+    assert "style=\"flex:1;opacity:0.7\"" not in html
+    assert ".model-result-game-header" in css
+    assert ".model-pick-cb:disabled" in css
+
+
 def test_frontend_ignores_failed_external_feed_cache_payloads():
     source = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
 
