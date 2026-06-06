@@ -152,6 +152,7 @@ def test_home_tab_is_matchup_board_with_modes_and_live_scores():
     assert "setHomeResultMode('settled')" in html
     assert "let homeResultMode = 'pending';" in source
     assert "function setHomeResultMode(mode)" in source
+    assert "formatSourceRecordLine('TODAY', todayPicks)" in source
     assert "const PRIMARY_SPORTS = ['ALL', 'MLB', 'NBA', 'WNBA'];" in source
     assert "...sports.filter(s => !PRIMARY_SPORTS.includes(s))" in source
     assert "String(p.sport || '').toUpperCase()===activeFilter" in source
@@ -166,9 +167,13 @@ def test_home_tab_is_matchup_board_with_modes_and_live_scores():
     assert "HOME_SCOREBOARD_CACHE_TTL_MS" in source
     assert "async function refreshHomeScoreboardForDate" in source
     assert "_fetchEspnScoreboard(endpoint.sport, endpoint.league, yyyymmdd, { force: true })" in source
-    assert "homeScoreChipHtml(homeScoreboardGameMap.get(game.key)" in source
+    assert "function _homeScoreEspnUrl(scoreInfo)" in source
+    assert "function _homeScoreGoogleUrl(scoreInfo, gameLabel)" in source
+    assert "target=\"_blank\" rel=\"noopener noreferrer\" title=\"Open live score\"" in source
+    assert "homeScoreChipHtml(homeScoreboardGameMap.get(game.key), game.startIso, game.label)" in source
     assert ".home-mode-segment" in css
     assert ".home-score-chip" in css
+    assert "a.home-score-chip:hover" in css
     assert "grid-template-columns: minmax(0, 1fr) auto;" in css
     assert "background: linear-gradient(180deg, #0d1117 0%, #030509 100%);" in css
     assert 'body[data-theme="light"] .home-score-chip' in css

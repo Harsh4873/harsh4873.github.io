@@ -3540,6 +3540,9 @@ function getSourcePastRecordLines(source, picks = getPicks()) {
   const todayStart = new Date();
   todayStart.setHours(0, 0, 0, 0);
 
+  const tomorrowStart = new Date(todayStart);
+  tomorrowStart.setDate(tomorrowStart.getDate() + 1);
+
   const yesterdayStart = new Date(todayStart);
   yesterdayStart.setDate(yesterdayStart.getDate() - 1);
 
@@ -3550,10 +3553,12 @@ function getSourcePastRecordLines(source, picks = getPicks()) {
     .filter(p => getRankingSourceKey(p) === source && p.result !== 'pending')
     .map(p => ({ ...p, parsedDate: parsePickDateLabel(p.date) }));
 
+  const todayPicks = sourcePicks.filter(p => p.parsedDate && p.parsedDate >= todayStart && p.parsedDate < tomorrowStart);
   const yesterdayPicks = sourcePicks.filter(p => p.parsedDate && p.parsedDate >= yesterdayStart && p.parsedDate < todayStart);
   const lastWeekPicks = sourcePicks.filter(p => p.parsedDate && p.parsedDate >= lastWeekStart && p.parsedDate < todayStart);
 
   return [
+    formatSourceRecordLine('TODAY', todayPicks),
     formatSourceRecordLine('YESTERDAY', yesterdayPicks),
     formatSourceRecordLine('LAST WEEK', lastWeekPicks),
     formatSourceRecordLine('OVERALL', sourcePicks),
@@ -4686,6 +4691,7 @@ function _buildEspnGameIndex(payload, sport) {
     const startTime = String(comp.date || event.date || '').trim();
     const matchKey = _matchupKeyFromTeams(awayName, homeName, sport);
     games.push({
+      sport: String(sport || '').toUpperCase(),
       competitors: parsed,
       away,
       home,
@@ -4767,6 +4773,7 @@ function _homeScoreInfoFromEspnGame(game) {
 
   return {
     eventId: game.eventId || '',
+    sport: String(game.sport || '').toUpperCase(),
     tone,
     text,
     statusText,
@@ -4777,6 +4784,33 @@ function _homeScoreInfoFromEspnGame(game) {
     startTime: game.startTime || '',
     updatedAt: Date.now(),
   };
+}
+
+function _homeScoreEspnUrl(scoreInfo) {
+  if (!scoreInfo || !scoreInfo.eventId) return '';
+  const sportSlug = {
+    MLB: 'mlb',
+    NBA: 'nba',
+    WNBA: 'wnba',
+    NHL: 'nhl',
+  }[String(scoreInfo.sport || '').toUpperCase()];
+  if (!sportSlug) return '';
+  return `https://www.espn.com/${sportSlug}/game/_/gameId/${encodeURIComponent(scoreInfo.eventId)}`;
+}
+
+function _homeScoreGoogleUrl(scoreInfo, gameLabel) {
+  const queryParts = [];
+  if (scoreInfo && scoreInfo.awayCode) queryParts.push(scoreInfo.awayCode);
+  if (scoreInfo && scoreInfo.homeCode) queryParts.push(scoreInfo.homeCode);
+  const label = String(gameLabel || '').trim();
+  if (!queryParts.length && label) queryParts.push(label);
+  if (!queryParts.length) return '';
+  queryParts.push('live score');
+  return `https://www.google.com/search?q=${encodeURIComponent(queryParts.join(' '))}`;
+}
+
+function _homeScoreLinkUrl(scoreInfo, gameLabel) {
+  return _homeScoreEspnUrl(scoreInfo) || _homeScoreGoogleUrl(scoreInfo, gameLabel);
 }
 
 function _homeScoreInfoSignature(info) {
@@ -4868,12 +4902,18 @@ async function refreshHomeScoreboardForDate(dateKey, picksForDate = []) {
   if (changed && isHomeTabActive()) render();
 }
 
-function homeScoreChipHtml(scoreInfo, fallbackStartIso) {
+function homeScoreChipHtml(scoreInfo, fallbackStartIso, gameLabel = '') {
+  const linkUrl = _homeScoreLinkUrl(scoreInfo, gameLabel);
+  const chipAttrs = linkUrl
+    ? `href="${_dailyEscape(linkUrl)}" target="_blank" rel="noopener noreferrer" title="Open live score"`
+    : '';
   if (scoreInfo && scoreInfo.text) {
-    return `<span class="home-score-chip ${_dailyEscape(scoreInfo.tone || 'pregame')}">${_dailyEscape(scoreInfo.text)}</span>`;
+    const tag = linkUrl ? 'a' : 'span';
+    return `<${tag} class="home-score-chip ${_dailyEscape(scoreInfo.tone || 'pregame')}" ${chipAttrs}>${_dailyEscape(scoreInfo.text)}</${tag}>`;
   }
   if (fallbackStartIso) {
-    return `<span class="home-score-chip pregame">${_dailyEscape(`Starts ${formatStartLabel(fallbackStartIso)}`)}</span>`;
+    const tag = linkUrl ? 'a' : 'span';
+    return `<${tag} class="home-score-chip pregame" ${chipAttrs}>${_dailyEscape(`Starts ${formatStartLabel(fallbackStartIso)}`)}</${tag}>`;
   }
   return '';
 }
@@ -7141,7 +7181,7 @@ function render() {
           `${gamePicks.length} pick${gamePicks.length === 1 ? '' : 's'}`,
           `${sourceCount} label${sourceCount === 1 ? '' : 's'}`,
         ].filter(Boolean).join(' | ');
-        const scoreChip = homeScoreChipHtml(homeScoreboardGameMap.get(game.key), game.startIso);
+        const scoreChip = homeScoreChipHtml(homeScoreboardGameMap.get(game.key), game.startIso, game.label);
         const caption = recordText;
         const sportPillClass = String(section.sport || '').toUpperCase() === 'IPL' ? ' is-ipl' : '';
         const rowsHtml = gamePicks.map(p => renderHomePickRow(p, game, section.sport)).join('');
