@@ -6798,9 +6798,17 @@ function render() {
   }
 
   // Filters (Home tab)
-  const PRIMARY_SPORTS = ['ALL', 'NHL', 'MLB', 'NBA', 'IPL'];
-  const sports=[...new Set(picks.map(p=>p.sport).filter(s=>s!=='EPL'))], sources=[...new Set(picks.map(p=>getRankingSourceKey(p)))];
-  const moreFilters = [...sports.filter(s=>!PRIMARY_SPORTS.includes(s)), ...sources];
+  const PRIMARY_SPORTS = ['ALL', 'MLB', 'NBA', 'WNBA'];
+  const sports = [...new Set(picks
+    .map(p => String(p.sport || '').toUpperCase())
+    .filter(s => s && s !== 'EPL'))].sort((a, b) => a.localeCompare(b));
+  const sources = [...new Set(picks
+    .map(p => getRankingSourceKey(p))
+    .filter(Boolean))].sort((a, b) => String(a).localeCompare(String(b)));
+  const moreFilters = [...new Set([
+    ...sports.filter(s => !PRIMARY_SPORTS.includes(s)),
+    ...sources.filter(s => !PRIMARY_SPORTS.includes(String(s).toUpperCase())),
+  ])];
   if (![...PRIMARY_SPORTS, ...moreFilters].includes(activeFilter)) activeFilter = 'ALL';
   const moreHasActive = moreFilters.includes(activeFilter);
   let filterHtml = PRIMARY_SPORTS.map(f=>
@@ -6825,7 +6833,7 @@ function render() {
   // Home feed
   const { entries: allDateEntries, todayKey } = ensureHomeSelectedDate(picks);
   let filteredByModeAndFilter = picks;
-  if(activeFilter!=='ALL') filteredByModeAndFilter=picks.filter(p=>p.sport===activeFilter||p.source===activeFilter||getRankingSourceKey(p)===activeFilter);
+  if(activeFilter!=='ALL') filteredByModeAndFilter=picks.filter(p=>String(p.sport || '').toUpperCase()===activeFilter||p.source===activeFilter||getRankingSourceKey(p)===activeFilter);
   if(homeMode === 'settled') filteredByModeAndFilter=filteredByModeAndFilter.filter(p=>p.result!=='pending');
   else if(homeMode === 'pending') filteredByModeAndFilter=filteredByModeAndFilter.filter(p=>p.result==='pending');
 

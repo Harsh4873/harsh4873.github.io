@@ -1172,16 +1172,17 @@
   .home-score-chip {
     display: inline-flex;
     align-items: center;
-    min-height: 34px;
+    min-height: 38px;
     max-width: 100%;
-    padding: 7px 12px;
+    padding: 8px 14px;
     border-radius: 999px;
     border: 1px solid rgba(77,166,255,0.25);
     background: rgba(77,166,255,0.08);
     color: var(--accent3);
     font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.45px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.25px;
     line-height: 1.2;
   }
   .home-score-chip.live {
@@ -2061,6 +2062,7 @@
     .home-feed-grid { grid-template-columns: 1fr; }
     .home-game-top { flex-direction: column; }
     .home-game-pl-wrap, .home-game-caption { text-align: left; }
+    .home-score-chip { min-height: 34px; padding: 7px 11px; font-size: 11px; }
     .home-pick-card { grid-template-columns: 1fr; }
     .home-pick-actions { width: 100%; align-items: stretch; min-width: 0; }
     .home-pick-control { justify-content: stretch; }

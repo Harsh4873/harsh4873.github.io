@@ -152,6 +152,9 @@ def test_home_tab_is_matchup_board_with_modes_and_live_scores():
     assert "setHomeResultMode('settled')" in html
     assert "let homeResultMode = 'pending';" in source
     assert "function setHomeResultMode(mode)" in source
+    assert "const PRIMARY_SPORTS = ['ALL', 'MLB', 'NBA', 'WNBA'];" in source
+    assert "...sports.filter(s => !PRIMARY_SPORTS.includes(s))" in source
+    assert "String(p.sport || '').toUpperCase()===activeFilter" in source
     assert "const homeModeCountLabel = homeMode === 'pending' ? 'open' : homeMode === 'settled' ? 'settled' : 'ledger';" in source
     assert "homeMode === 'settled'" in source
     assert "else if(homeMode === 'pending')" in source
@@ -165,6 +168,7 @@ def test_home_tab_is_matchup_board_with_modes_and_live_scores():
     assert "homeScoreChipHtml(homeScoreboardGameMap.get(game.key)" in source
     assert ".home-mode-segment" in css
     assert ".home-score-chip" in css
+    assert "font-size: 12px;" in css
 
 
 def test_frontend_ignores_failed_external_feed_cache_payloads():
