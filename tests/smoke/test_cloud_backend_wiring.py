@@ -169,8 +169,10 @@ def test_home_tab_is_matchup_board_with_modes_and_live_scores():
     assert "homeScoreChipHtml(homeScoreboardGameMap.get(game.key)" in source
     assert ".home-mode-segment" in css
     assert ".home-score-chip" in css
-    assert "background: #05070a;" in css
-    assert "font-size: 12px;" in css
+    assert "grid-template-columns: minmax(0, 1fr) auto;" in css
+    assert "background: linear-gradient(180deg, #0d1117 0%, #030509 100%);" in css
+    assert 'body[data-theme="light"] .home-score-chip' in css
+    assert "font-size: 15px;" in css
 
 
 def test_frontend_ignores_failed_external_feed_cache_payloads():

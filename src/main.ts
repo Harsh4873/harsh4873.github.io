@@ -7142,7 +7142,7 @@ function render() {
           `${sourceCount} label${sourceCount === 1 ? '' : 's'}`,
         ].filter(Boolean).join(' | ');
         const scoreChip = homeScoreChipHtml(homeScoreboardGameMap.get(game.key), game.startIso);
-        const caption = scoreChip ? 'Scoreboard' : recordText;
+        const caption = recordText;
         const sportPillClass = String(section.sport || '').toUpperCase() === 'IPL' ? ' is-ipl' : '';
         const rowsHtml = gamePicks.map(p => renderHomePickRow(p, game, section.sport)).join('');
         return `
