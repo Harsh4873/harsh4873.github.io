@@ -2,6 +2,8 @@ name: Model Cache Refresh
 
 on:
   schedule:
+    # 08:05 UTC = 03:05 CT during daylight time, early full-board rebuild.
+    - cron: "5 8 * * *"
     # 13:30 UTC = 8:30 CT during daylight time, so morning checks have a same-day cache.
     - cron: "30 13 * * *"
     # 14:05 UTC = 9:05 CT during daylight time, after more markets post lines.

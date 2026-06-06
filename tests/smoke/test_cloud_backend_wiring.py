@@ -46,6 +46,15 @@ def test_frontend_checks_model_cache_before_starting_cloud_job():
     assert run_block < force_gate < cache_lookup < backend_probe
 
 
+def test_model_schedule_is_visible_and_includes_early_refresh():
+    workflow = (ROOT / ".github" / "workflows" / "model-cache-refresh.yml").read_text(encoding="utf-8")
+    html = (ROOT / "index.html").read_text(encoding="utf-8")
+
+    assert "5 8 * * *" in workflow
+    assert "3:05 AM, 8:30 AM, 9:05 AM, 10:30 AM, 3:30 PM CT" in html
+    assert "Google sign-in is only for ledger sync or force refresh" in html
+
+
 def test_frontend_checks_cannon_cache_before_live_cloud_scrape():
     source = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
 
