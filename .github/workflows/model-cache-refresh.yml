@@ -21,6 +21,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: model-cache-refresh
@@ -65,14 +66,23 @@ jobs:
             --max-workers 3
 
       - name: Commit cache JSON if changed
+        id: commit-cache
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           if [ -z "$(git status --porcelain -- data/model_cache)" ]; then
             echo "No change in data/model_cache — skipping commit."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           git add data/model_cache
           CACHE_DATE=$(python -c "import json; print(json.load(open('data/model_cache/latest.json'))['date'])")
           git commit -m "chore(models): refresh model cache for ${CACHE_DATE}"
           git push
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Trigger Pages deploy after cache commit
+        if: steps.commit-cache.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy-pages.yml --ref main
