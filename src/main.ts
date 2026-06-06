@@ -1301,6 +1301,18 @@ function getModelBackendLabel(value = ADMIN_BACKEND_URL) {
   return isLoopbackServer(value) ? 'local model backend' : 'cloud model backend';
 }
 
+function canSkipBackendHealthGate(value = ADMIN_BACKEND_URL) {
+  return !!value && !isLoopbackServer(value);
+}
+
+async function canAttemptAdminBackend(force = false) {
+  if (canSkipBackendHealthGate()) {
+    checkAdminLocalBackendHealth(force).catch(() => {});
+    return true;
+  }
+  return checkAdminLocalBackendHealth(force);
+}
+
 async function getBackendAuthUser() {
   try {
     if (window._authStateReady && typeof window._authStateReady.then === 'function') {
@@ -1357,10 +1369,11 @@ async function checkAdminLocalBackendHealth(force = false) {
 
   adminLocalBackendCheckedAt = now;
   try {
+    const timeoutMs = canSkipBackendHealthGate() ? 15000 : 3000;
     const resp = await fetch(`${ADMIN_BACKEND_URL}/health`, {
       method: 'GET',
       cache: 'no-store',
-      signal: _createTimeoutSignal(3000),
+      signal: _createTimeoutSignal(timeoutMs),
     });
     adminLocalBackendHealthy = !!resp.ok;
   } catch {
@@ -1498,7 +1511,7 @@ async function loadAdminHistoricalRankingsState() {
   if (hasMeaningfulLedgerData(adminHistoricalRankingsState)) {
     return adminHistoricalRankingsState;
   }
-  const backendHealthy = await checkAdminLocalBackendHealth();
+  const backendHealthy = await canAttemptAdminBackend();
   if (!backendHealthy) return null;
   try {
     const resp = await fetch(`${ADMIN_BACKEND_URL}/ledger-state?uid=${encodeURIComponent(RANKINGS_STATE_UID)}`, {
@@ -7511,7 +7524,7 @@ async function loadCannonDailyPicks() {
     if (typeof isAdminModelRunnerUser === 'function' && isAdminModelRunnerUser()) {
       let backendHealthy = false;
       try {
-        backendHealthy = await checkAdminLocalBackendHealth(true);
+        backendHealthy = await canAttemptAdminBackend(true);
       } catch (_err) {
         backendHealthy = false;
       }
@@ -7787,7 +7800,7 @@ async function _runAsyncModelRequest(model, endpoint, body) {
   const backendCandidates = getModelBackendCandidates();
 
   if (endpoint) {
-    const backendHealthy = await checkAdminLocalBackendHealth();
+    const backendHealthy = await canAttemptAdminBackend();
     if (backendHealthy) {
       for (const backendUrl of backendCandidates) {
         setModelStatus(model, forceRefresh ? `Force refreshing from ${backendUrl}...` : `Connecting to model backend ${backendUrl}...`, 'running');
@@ -7863,9 +7876,9 @@ async function _runAsyncModelRequest(model, endpoint, body) {
 async function _runIplModelRequest() {
   let backendError = null;
   if (isAdminModelRunnerUser()) {
-    const backendHealthy = await checkAdminLocalBackendHealth();
+    const backendHealthy = await canAttemptAdminBackend();
     if (backendHealthy) {
-      setModelStatus('ipl', 'Calling local IPL backend...', 'running');
+      setModelStatus('ipl', `Calling ${getModelBackendLabel()}...`, 'running');
       try {
         const resp = await fetch(`${ADMIN_BACKEND_URL}/api/ipl`, {
           method: 'GET',
@@ -7888,7 +7901,7 @@ async function _runIplModelRequest() {
         backendError = err;
       }
     } else {
-      backendError = new Error('Local admin backend is offline');
+      backendError = new Error(`${getModelBackendLabel()} is offline`);
     }
   }
 
@@ -8052,7 +8065,7 @@ async function _runMlbVariantModel(model, dateStr) {
 
 async function _refreshSportsLineOdds() {
   if (!isAdminModelRunnerUser()) return;
-  const backendHealthy = await checkAdminLocalBackendHealth();
+  const backendHealthy = await canAttemptAdminBackend();
   if (!backendHealthy) return;
   try {
     const resp = await fetch(`${ADMIN_BACKEND_URL}/run-sportsline-odds`, {
@@ -8138,7 +8151,7 @@ async function loadNbaPropsGames() {
     let games = [];
     let backendError = null;
     if (isAdminModelRunnerUser()) {
-      const backendHealthy = await checkAdminLocalBackendHealth();
+      const backendHealthy = await canAttemptAdminBackend();
       if (backendHealthy) {
         try {
           const resp = await fetch(`${ADMIN_BACKEND_URL}/nba-props-games`, {
@@ -8155,7 +8168,7 @@ async function loadNbaPropsGames() {
           backendError = err;
         }
       } else {
-        backendError = new Error('Local admin backend is offline');
+        backendError = new Error(`${getModelBackendLabel()} is offline`);
       }
     }
     if (!games.length) {
@@ -8421,7 +8434,7 @@ async function syncSportyTraderFromServer(options = {}) {
   if (!isAdminModelRunnerUser()) {
     throw new Error('SportyTrader live sync is admin-only');
   }
-  const backendHealthy = await checkAdminLocalBackendHealth();
+  const backendHealthy = await canAttemptAdminBackend();
   if (!backendHealthy) {
     throw new Error(`${getModelBackendLabel()} is offline`);
   }
@@ -8472,7 +8485,7 @@ async function syncSportsgamblerFromServer() {
   if (!isAdminModelRunnerUser()) {
     throw new Error('SportsGambler live sync is admin-only');
   }
-  const backendHealthy = await checkAdminLocalBackendHealth();
+  const backendHealthy = await canAttemptAdminBackend();
   if (!backendHealthy) {
     throw new Error(`${getModelBackendLabel()} is offline`);
   }

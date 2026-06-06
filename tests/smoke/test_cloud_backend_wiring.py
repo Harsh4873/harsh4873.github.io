@@ -22,6 +22,19 @@ def test_frontend_prefers_configured_cloud_backend_over_stale_local_override():
     assert "headers.set('Authorization', `Bearer ${token}`)" in source
 
 
+def test_cloud_backend_calls_are_not_blocked_by_health_preflight():
+    source = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
+
+    assert "function canSkipBackendHealthGate(value = ADMIN_BACKEND_URL)" in source
+    assert "async function canAttemptAdminBackend(force = false)" in source
+    assert "if (canSkipBackendHealthGate())" in source
+    assert "checkAdminLocalBackendHealth(force).catch(() => {});" in source
+    assert "const timeoutMs = canSkipBackendHealthGate() ? 15000 : 3000;" in source
+
+    run_block = source.index("async function _runAsyncModelRequest")
+    assert source.index("const backendHealthy = await canAttemptAdminBackend();", run_block) > run_block
+
+
 def test_frontend_ledger_cache_is_scoped_to_firebase_uid():
     source = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
 
