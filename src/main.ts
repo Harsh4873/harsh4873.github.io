@@ -7151,9 +7151,9 @@ function render() {
               <div class="home-game-kicker">
                 <span class="home-sport-pill${sportPillClass}">${_dailyEscape(sportLabel)}</span>
                 <span class="home-status-pill ${_dailyEscape(verdict.key || 'live')}">${_dailyEscape(verdict.label || 'PENDING')}</span>
-                ${scoreChip}
               </div>
-              <div class="home-game-pl-wrap">
+              <div class="home-game-right-stack">
+                ${scoreChip}
                 <div class="home-game-pl ${plCls}">${_dailyEscape(plDisplay)}</div>
                 <div class="home-game-caption">${_dailyEscape(caption)}</div>
               </div>

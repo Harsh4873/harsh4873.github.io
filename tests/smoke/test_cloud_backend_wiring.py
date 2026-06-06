@@ -161,6 +161,7 @@ def test_home_tab_is_matchup_board_with_modes_and_live_scores():
     assert "homeMode === 'all'" in source
     assert "home-feed-grid" in source
     assert "home-game-card status-" in source
+    assert "home-game-right-stack" in source
     assert "const visibleGameLabel = rowGameLabel" in source
     assert "HOME_SCOREBOARD_CACHE_TTL_MS" in source
     assert "async function refreshHomeScoreboardForDate" in source
@@ -168,6 +169,7 @@ def test_home_tab_is_matchup_board_with_modes_and_live_scores():
     assert "homeScoreChipHtml(homeScoreboardGameMap.get(game.key)" in source
     assert ".home-mode-segment" in css
     assert ".home-score-chip" in css
+    assert "background: #05070a;" in css
     assert "font-size: 12px;" in css
 
 
