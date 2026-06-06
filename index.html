@@ -159,7 +159,7 @@
           <div class="home-hero-copy">
             <div class="home-eyebrow" id="home-eyebrow">LIVE BOARD</div>
             <div class="home-title" id="home-title">Today&rsquo;s Slate, cleaned up</div>
-            <div class="home-sub" id="home-sub">Big matchup cards, bigger sport labels, and a calmer way to scan everything that matters.</div>
+            <div class="home-sub" id="home-sub">Calendar, model filters, pending picks, and settled results in one matchup-first board.</div>
           </div>
           <div class="home-hero-actions">
             <div class="home-hero-chips">
@@ -167,7 +167,11 @@
               <span class="home-hero-chip date" id="home-date-chip">APR 19</span>
               <span class="home-hero-chip muted" id="home-filter-chip">ALL SOURCES</span>
             </div>
-            <button id="settled-toggle-btn" class="home-toggle-btn" onclick="toggleShowSettled()">SHOW SETTLED</button>
+            <div class="home-mode-segment" id="home-mode-segment" aria-label="Home result mode">
+              <button type="button" class="home-mode-btn active" data-home-mode="pending" onclick="setHomeResultMode('pending')">Pending</button>
+              <button type="button" class="home-mode-btn" data-home-mode="all" onclick="setHomeResultMode('all')">All</button>
+              <button type="button" class="home-mode-btn" data-home-mode="settled" onclick="setHomeResultMode('settled')">Settled</button>
+            </div>
           </div>
         </div>
         <div class="home-summary-grid" id="home-summary-grid"></div>
@@ -177,7 +181,7 @@
         <div class="home-filter-head">
           <div>
             <div class="home-filter-title">Filter The Board</div>
-            <div class="home-filter-sub">Lock the board to one date, then slice it by sport or source.</div>
+            <div class="home-filter-sub">Calendar, result mode, sport, and source stay tied together.</div>
           </div>
           <div class="home-date-wrap" id="home-date-wrap">
             <button

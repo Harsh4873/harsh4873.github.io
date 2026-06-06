@@ -1196,6 +1196,7 @@ const GAME_TIMES_KEY = `pickledger_game_times_${STORAGE_VERSION}`;
 const LEDGER_UPDATED_AT_KEY = `pickledger_ledger_updated_at_${STORAGE_VERSION}`;
 const LEDGER_OWNER_UID_KEY = `pickledger_ledger_owner_uid_${STORAGE_VERSION}`;
 const HOME_DATE_STORAGE_KEY = `pickledger_home_date_${STORAGE_VERSION}`;
+const HOME_MODE_STORAGE_KEY = `pickledger_home_mode_${STORAGE_VERSION}`;
 const ONE_TIME_PROPS_CLEANUP_KEY = `pickledger_cleanup_nba_props_${STORAGE_VERSION}`;
 const FORCED_LEDGER_RESET_DATE_KEYS = ['2026-05-04'];
 const FORCED_LEDGER_RESET_STORAGE_KEY = `pickledger_forced_reset_may4_${STORAGE_VERSION}`;
@@ -1204,6 +1205,7 @@ const STABLE_PICK_KEY_MIGRATION_KEY = `pickledger_stable_pick_keys_${STORAGE_VER
 const RESET_CUTOFF_ISO = '2026-03-19T00:00:00.000Z';
 let activeFilter = 'ALL';
 let showSettled = false;
+let homeResultMode = 'pending';
 let pulseLogRange = 'pending';  // 'pending' | 'today' | '7d' | '30d' | 'all'
 let pulseLogSport = 'ALL';
 let homeSelectedDateKey = '';
@@ -2419,17 +2421,43 @@ async function refreshAutoGrades(silent = false) {
   }
 }
 
-function toggleShowSettled() {
-  showSettled = !showSettled;
+function normalizeHomeResultMode(mode) {
+  const value = String(mode || '').trim().toLowerCase();
+  return ['pending', 'settled', 'all'].includes(value) ? value : 'pending';
+}
+
+function persistHomeResultMode() {
+  try {
+    localStorage.setItem(HOME_MODE_STORAGE_KEY, homeResultMode);
+  } catch {
+    // Ignore storage failures; the current session still keeps the mode.
+  }
+}
+
+function setHomeResultMode(mode) {
+  const nextMode = normalizeHomeResultMode(mode);
+  homeResultMode = nextMode;
+  showSettled = nextMode === 'settled';
+  persistHomeResultMode();
   syncHomeSettledToggleButton();
   render();
 }
 
+function toggleShowSettled() {
+  setHomeResultMode(homeResultMode === 'settled' ? 'pending' : 'settled');
+}
+
 function syncHomeSettledToggleButton() {
+  homeResultMode = normalizeHomeResultMode(homeResultMode || (showSettled ? 'settled' : 'pending'));
+  showSettled = homeResultMode === 'settled';
   const btn = document.getElementById('settled-toggle-btn');
-  if (!btn) return;
-  btn.textContent = showSettled ? 'SHOW PENDING' : 'SHOW SETTLED';
-  btn.classList.toggle('is-settled', showSettled);
+  if (btn) {
+    btn.textContent = showSettled ? 'SHOW PENDING' : 'SHOW SETTLED';
+    btn.classList.toggle('is-settled', showSettled);
+  }
+  document.querySelectorAll('[data-home-mode]').forEach((el) => {
+    el.classList.toggle('active', el.getAttribute('data-home-mode') === homeResultMode);
+  });
 }
 
 function calcPL(u,r) {
@@ -3473,6 +3501,8 @@ try {
     homeSelectedDateKey = storedHomeDateKey;
     homeCalendarMonthKey = getLocalMonthKey(parseLocalDateKey(storedHomeDateKey));
   }
+  homeResultMode = normalizeHomeResultMode(localStorage.getItem(HOME_MODE_STORAGE_KEY) || homeResultMode);
+  showSettled = homeResultMode === 'settled';
 } catch {
   // Ignore storage access issues and fall back to today.
 }
@@ -4479,6 +4509,10 @@ const ESPN_SPORT_ENDPOINTS = {
 
 let _lastStartTimeSyncForBoard = { dateKey: '', synced: 0, total: 0, unmatched: 0, ran: false };
 const _espnScoreboardCache = new Map();
+const HOME_SCOREBOARD_CACHE_TTL_MS = 45000;
+const homeScoreboardGameMap = new Map();
+const homeScoreboardFetchMeta = new Map();
+let homeScoreRefreshInFlightKey = '';
 const ESPN_FINAL_STATUS_NAMES = new Set(['STATUS_FINAL', 'STATUS_FULL_TIME']);
 const ESPN_VOID_STATUS_NAMES = new Set(['STATUS_POSTPONED', 'STATUS_SUSPENDED', 'STATUS_CANCELED', 'STATUS_CANCELLED']);
 const TEAM_ABBREVIATION_ALIASES_JS = {
@@ -4559,9 +4593,10 @@ function _pickAwayHomePair(pick) {
   return { away: '', home: '', sport };
 }
 
-async function _fetchEspnScoreboard(sport, league, yyyymmdd) {
+async function _fetchEspnScoreboard(sport, league, yyyymmdd, options = {}) {
   const cacheKey = `${sport}/${league}/${yyyymmdd}`;
-  if (_espnScoreboardCache.has(cacheKey)) return _espnScoreboardCache.get(cacheKey);
+  const force = Boolean(options && options.force);
+  if (!force && _espnScoreboardCache.has(cacheKey)) return _espnScoreboardCache.get(cacheKey);
   const url = `https://site.api.espn.com/apis/site/v2/sports/${sport}/${league}/scoreboard?dates=${yyyymmdd}`;
   const resp = await fetch(url, { cache: 'no-store', signal: _createTimeoutSignal(8000) });
   if (!resp.ok) throw new Error(`ESPN ${sport}/${league} ${yyyymmdd} -> HTTP ${resp.status}`);
@@ -4698,6 +4733,149 @@ function _findEspnGameForPick(games, pick) {
       && _teamMatchesEspnCompetitor(b, game.competitors[0].raw, sport);
     return direct || reverse;
   }) || null;
+}
+
+function _homeScoreTeamCode(comp) {
+  const team = comp && comp.raw && comp.raw.team ? comp.raw.team : {};
+  return String(team.abbreviation || team.shortDisplayName || team.name || '').trim();
+}
+
+function _homeScoreTone(game) {
+  const statusName = String(game && game.statusName || '').toUpperCase();
+  const statusState = String(game && game.statusState || '').toUpperCase();
+  if (ESPN_VOID_STATUS_NAMES.has(statusName)) return 'delayed';
+  if (game && (game.completed || ESPN_FINAL_STATUS_NAMES.has(statusName) || statusState === 'POST')) return 'final';
+  if (statusState === 'IN') return 'live';
+  return 'pregame';
+}
+
+function _homeScoreInfoFromEspnGame(game) {
+  if (!game) return null;
+  const tone = _homeScoreTone(game);
+  const awayCode = _homeScoreTeamCode(game.away) || game.awayName || 'Away';
+  const homeCode = _homeScoreTeamCode(game.home) || game.homeName || 'Home';
+  const awayScore = Number(game.away && game.away.score);
+  const homeScore = Number(game.home && game.home.score);
+  const hasScore = Number.isFinite(awayScore) && Number.isFinite(homeScore);
+  const scoreText = hasScore ? `${awayCode} ${awayScore} - ${homeCode} ${homeScore}` : '';
+  const statusText = String(game.statusDescription || '').trim();
+  let text = statusText || 'Scheduled';
+  if (tone === 'final') text = scoreText ? `Final | ${scoreText}` : 'Final';
+  else if (tone === 'live') text = scoreText ? `${scoreText} | ${statusText || 'Live'}` : (statusText || 'Live');
+  else if (tone === 'delayed') text = statusText || 'Delayed';
+  else if (game.startTime) text = `Starts ${formatStartLabel(game.startTime)}`;
+
+  return {
+    eventId: game.eventId || '',
+    tone,
+    text,
+    statusText,
+    awayCode,
+    homeCode,
+    awayScore: hasScore ? awayScore : null,
+    homeScore: hasScore ? homeScore : null,
+    startTime: game.startTime || '',
+    updatedAt: Date.now(),
+  };
+}
+
+function _homeScoreInfoSignature(info) {
+  if (!info) return '';
+  return [
+    info.eventId,
+    info.tone,
+    info.text,
+    info.awayScore,
+    info.homeScore,
+    info.statusText,
+  ].join('|');
+}
+
+function _homeScoreRefreshKey(dateKey, picksForDate, allPicks) {
+  const keys = new Set();
+  (Array.isArray(picksForDate) ? picksForDate : []).forEach((pick) => {
+    if (!pick) return;
+    const sport = String(pick.sport || '').toUpperCase();
+    if (!ESPN_SPORT_ENDPOINTS[sport]) return;
+    keys.add(deriveGameGroupKey(pick, allPicks || picksForDate));
+  });
+  return `${dateKey}::${[...keys].sort().join('|')}`;
+}
+
+function isHomeTabActive() {
+  const panel = document.getElementById('tab-home');
+  return Boolean(panel && panel.classList.contains('active'));
+}
+
+async function refreshHomeScoreboardForDate(dateKey, picksForDate = []) {
+  const key = String(dateKey || '').trim();
+  if (!key || !Array.isArray(picksForDate) || !picksForDate.length || !isHomeTabActive()) return;
+  const yyyymmdd = _boardDateKeyToYyyymmdd(key);
+  if (!yyyymmdd) return;
+
+  const allPicks = typeof getPicks === 'function' ? getPicks() : picksForDate;
+  const supported = picksForDate.filter((pick) => {
+    const sport = String(pick && pick.sport || '').toUpperCase();
+    return ESPN_SPORT_ENDPOINTS[sport] && _pickShouldJoinEspnBoardDate(pick, key);
+  });
+  if (!supported.length) return;
+
+  const refreshKey = _homeScoreRefreshKey(key, supported, allPicks);
+  const now = Date.now();
+  const lastFetchAt = Number(homeScoreboardFetchMeta.get(refreshKey) || 0);
+  if (homeScoreRefreshInFlightKey === refreshKey) return;
+  if (lastFetchAt && now - lastFetchAt < HOME_SCOREBOARD_CACHE_TTL_MS) return;
+
+  homeScoreRefreshInFlightKey = refreshKey;
+  homeScoreboardFetchMeta.set(refreshKey, now);
+  let changed = false;
+  const bySport = new Map();
+  supported.forEach((pick) => {
+    const sport = String(pick.sport || '').toUpperCase();
+    if (!bySport.has(sport)) bySport.set(sport, []);
+    bySport.get(sport).push(pick);
+  });
+
+  try {
+    for (const [sport, picksForSport] of bySport.entries()) {
+      const endpoint = ESPN_SPORT_ENDPOINTS[sport];
+      let games = [];
+      try {
+        const payload = await _fetchEspnScoreboard(endpoint.sport, endpoint.league, yyyymmdd, { force: true });
+        games = _buildEspnGameIndex(payload, sport);
+      } catch (err) {
+        console.warn(`[HomeScoreboard] ${sport} ${yyyymmdd}: scoreboard fetch failed -> ${err && err.message ? err.message : err}`);
+        continue;
+      }
+
+      picksForSport.forEach((pick) => {
+        const game = _findEspnGameForPick(games, pick);
+        if (!game) return;
+        const groupKey = deriveGameGroupKey(pick, allPicks);
+        if (!groupKey) return;
+        const nextInfo = _homeScoreInfoFromEspnGame(game);
+        const prevInfo = homeScoreboardGameMap.get(groupKey);
+        if (_homeScoreInfoSignature(prevInfo) !== _homeScoreInfoSignature(nextInfo)) {
+          homeScoreboardGameMap.set(groupKey, nextInfo);
+          changed = true;
+        }
+      });
+    }
+  } finally {
+    homeScoreRefreshInFlightKey = '';
+  }
+
+  if (changed && isHomeTabActive()) render();
+}
+
+function homeScoreChipHtml(scoreInfo, fallbackStartIso) {
+  if (scoreInfo && scoreInfo.text) {
+    return `<span class="home-score-chip ${_dailyEscape(scoreInfo.tone || 'pregame')}">${_dailyEscape(scoreInfo.text)}</span>`;
+  }
+  if (fallbackStartIso) {
+    return `<span class="home-score-chip pregame">${_dailyEscape(`Starts ${formatStartLabel(fallbackStartIso)}`)}</span>`;
+  }
+  return '';
 }
 
 function _resolveTeamScoreForAutoGrade(game, teamText, pick) {
@@ -6639,14 +6817,17 @@ function render() {
   const filterBarEl = document.getElementById('filter-bar');
   if (filterBarEl) filterBarEl.innerHTML = filterHtml;
   syncHomeSettledToggleButton();
+  const homeMode = normalizeHomeResultMode(homeResultMode);
+  homeResultMode = homeMode;
+  showSettled = homeMode === 'settled';
+  const homeModeCountLabel = homeMode === 'pending' ? 'open' : homeMode === 'settled' ? 'settled' : 'ledger';
 
   // Home feed
   const { entries: allDateEntries, todayKey } = ensureHomeSelectedDate(picks);
   let filteredByModeAndFilter = picks;
   if(activeFilter!=='ALL') filteredByModeAndFilter=picks.filter(p=>p.sport===activeFilter||p.source===activeFilter||getRankingSourceKey(p)===activeFilter);
-  // settled mode: show only win/loss/push; default: show only pending
-  if(showSettled) filteredByModeAndFilter=filteredByModeAndFilter.filter(p=>p.result!=='pending');
-  else filteredByModeAndFilter=filteredByModeAndFilter.filter(p=>p.result==='pending');
+  if(homeMode === 'settled') filteredByModeAndFilter=filteredByModeAndFilter.filter(p=>p.result!=='pending');
+  else if(homeMode === 'pending') filteredByModeAndFilter=filteredByModeAndFilter.filter(p=>p.result==='pending');
 
   const visibleDateEntries = buildHomeDateEntries(filteredByModeAndFilter);
   const visibleDateCountMap = new Map(visibleDateEntries.map((entry) => [entry.key, entry.count]));
@@ -6663,8 +6844,8 @@ function render() {
   if (dateTriggerValueEl) dateTriggerValueEl.textContent = selectedDateLong;
   if (dateTriggerMetaEl) {
     dateTriggerMetaEl.textContent = selectedDateCount > 0
-      ? `${selectedDateCount} ${showSettled ? 'settled' : 'open'} picks`
-      : `No ${showSettled ? 'settled' : 'open'} picks`;
+      ? `${selectedDateCount} ${homeModeCountLabel} picks`
+      : `No ${homeModeCountLabel} picks`;
   }
   if (datePopoverEl) {
     datePopoverEl.innerHTML = buildHomeCalendarPopoverHtml({
@@ -6673,7 +6854,7 @@ function render() {
       todayKey,
       dateCounts: visibleDateCountMap,
       latestDateKey: latestVisibleDateKey,
-      modeLabel: showSettled ? 'settled' : 'open',
+      modeLabel: homeModeCountLabel,
     });
   }
   syncHomeDatePickerVisibility();
@@ -6744,8 +6925,8 @@ function render() {
     .sort((a, b) => a.fromIso - b.fromIso)[0]?.startIso || '';
 
   const filterLabel = activeFilter === 'ALL' ? 'All Sources' : String(activeFilter || 'All Sources');
-  const modeLabel = showSettled ? 'SETTLED VIEW' : 'LIVE VIEW';
-  const headlineLabel = showSettled ? 'RESULTS REPLAY' : 'LIVE BOARD';
+  const modeLabel = homeMode === 'pending' ? 'PENDING PICKS' : homeMode === 'settled' ? 'SETTLED PICKS' : 'ALL PICKS';
+  const headlineLabel = homeMode === 'pending' ? 'LIVE BOARD' : homeMode === 'settled' ? 'RESULTS REPLAY' : 'LEDGER BOARD';
   const titleEl = document.getElementById('home-title');
   const eyebrowEl = document.getElementById('home-eyebrow');
   const subEl = document.getElementById('home-sub');
@@ -6754,30 +6935,53 @@ function render() {
   const filterChipEl = document.getElementById('home-filter-chip');
   const summaryGridEl = document.getElementById('home-summary-grid');
   const scopeCopy = activeFilter === 'ALL' ? 'all sources' : filterLabel;
-  if (eyebrowEl) eyebrowEl.textContent = `${headlineLabel} · ${selectedDateUpper}`;
-  if (titleEl) titleEl.textContent = showSettled ? `${selectedDateLong} settled, without the clutter` : `${selectedDateLong} board, matchup first`;
-  if (subEl) subEl.textContent = showSettled
-    ? `Showing ${scopeCopy} that already closed on ${selectedDateLong}, grouped by matchup so the recap stays readable.`
-    : `Showing ${scopeCopy} with open action on ${selectedDateLong}, grouped by matchup so the slate stays clean.`;
+  if (eyebrowEl) eyebrowEl.textContent = `${headlineLabel} | ${selectedDateUpper}`;
+  if (titleEl) {
+    titleEl.textContent = homeMode === 'pending'
+      ? `${selectedDateLong} board, matchup first`
+      : homeMode === 'settled'
+        ? `${selectedDateLong} settled, without the clutter`
+        : `${selectedDateLong} ledger, all in one view`;
+  }
+  if (subEl) {
+    subEl.textContent = homeMode === 'pending'
+      ? `Showing ${scopeCopy} with open action on ${selectedDateLong}, grouped by matchup so the slate stays clean.`
+      : homeMode === 'settled'
+        ? `Showing ${scopeCopy} that already closed on ${selectedDateLong}, grouped by matchup so the recap stays readable.`
+        : `Showing pending and settled picks from ${scopeCopy} on ${selectedDateLong}, with each game kept together.`;
+  }
   if (modeChipEl) modeChipEl.textContent = modeLabel;
   if (dateChipEl) dateChipEl.textContent = selectedDateUpper;
   if (filterChipEl) filterChipEl.textContent = activeFilter === 'ALL' ? 'ALL SOURCES' : String(activeFilter);
   if (summaryGridEl) {
-    const summaryCards = showSettled
-      ? [
-          { value: filtered.length, label: 'Settled Picks' },
-          { value: visibleGames, label: 'Matchups' },
-          { value: `${visibleWins}-${visibleLosses}${visiblePushes ? '-' + visiblePushes : ''}`, label: 'Record', className: 'small' },
-          { value: `${visibleNet >= 0 ? '+' : ''}${formatUnitsCompact(visibleNet)}u`, label: 'Net Units', className: visibleNet > 0 ? 'positive' : visibleNet < 0 ? 'negative' : 'neutral' },
-          { value: visibleRoi, label: 'ROI', className: visibleRoi !== '—' ? (parseFloat(visibleRoi) >= 0 ? 'positive' : 'negative') : 'neutral' },
-        ]
-      : [
-          { value: filtered.length, label: 'Open Picks' },
-          { value: visibleGames, label: 'Matchups' },
-          { value: visibleSources, label: 'Pick Labels' },
-          { value: nextStartIso ? formatStartLabel(nextStartIso) : 'TBD', label: 'Next Start', className: 'small' },
-          { value: visibleSports.length || 0, label: 'Sports In View' },
-        ];
+    const visiblePending = filtered.filter(p => p.result === 'pending').length;
+    const visibleSettled = filtered.length - visiblePending;
+    let summaryCards;
+    if (homeMode === 'settled') {
+      summaryCards = [
+        { value: filtered.length, label: 'Settled Picks' },
+        { value: visibleGames, label: 'Matchups' },
+        { value: `${visibleWins}-${visibleLosses}${visiblePushes ? '-' + visiblePushes : ''}`, label: 'Record', className: 'small' },
+        { value: `${visibleNet >= 0 ? '+' : ''}${formatUnitsCompact(visibleNet)}u`, label: 'Net Units', className: visibleNet > 0 ? 'positive' : visibleNet < 0 ? 'negative' : 'neutral' },
+        { value: visibleRoi, label: 'ROI', className: visibleRoi !== '—' ? (parseFloat(visibleRoi) >= 0 ? 'positive' : 'negative') : 'neutral' },
+      ];
+    } else if (homeMode === 'all') {
+      summaryCards = [
+        { value: filtered.length, label: 'Total Picks' },
+        { value: visiblePending, label: 'Pending' },
+        { value: visibleSettled, label: 'Settled' },
+        { value: visibleGames, label: 'Matchups' },
+        { value: `${visibleNet >= 0 ? '+' : ''}${formatUnitsCompact(visibleNet)}u`, label: 'Net Units', className: visibleNet > 0 ? 'positive' : visibleNet < 0 ? 'negative' : 'neutral' },
+      ];
+    } else {
+      summaryCards = [
+        { value: filtered.length, label: 'Open Picks' },
+        { value: visibleGames, label: 'Matchups' },
+        { value: visibleSources, label: 'Pick Labels' },
+        { value: nextStartIso ? formatStartLabel(nextStartIso) : 'TBD', label: 'Next Start', className: 'small' },
+        { value: visibleSports.length || 0, label: 'Sports In View' },
+      ];
+    }
     summaryGridEl.innerHTML = summaryCards.map(card => `
       <div class="home-summary-card">
         <div class="home-summary-value ${card.className || ''}">${_dailyEscape(card.value)}</div>
@@ -6792,15 +6996,19 @@ function render() {
     // Home layout ever changes again.
   }
   else if(!detailed.length) {
-    const emptyTitle = showSettled
+    const emptyTitle = homeMode === 'settled'
       ? `No settled picks on ${selectedDateLong}`
-      : `No open picks on ${selectedDateLong}`;
-    const emptySub = showSettled
+      : homeMode === 'all'
+        ? `No picks on ${selectedDateLong}`
+        : `No open picks on ${selectedDateLong}`;
+    const emptySub = homeMode === 'settled'
       ? `${filterLabel} has nothing closed for this date. Try another day in the calendar or jump back to pending view.`
-      : `${filterLabel} has nothing open for this date. Try another day in the calendar or switch over to settled results.`;
+      : homeMode === 'all'
+        ? `${filterLabel} has nothing logged for this date. Try another day in the calendar or clear the source filter.`
+        : `${filterLabel} has nothing open for this date. Try another day in the calendar or switch over to settled results.`;
     feed.innerHTML = `
       <div class="pick-feed-empty">
-        <div class="home-empty-kicker">${showSettled ? 'Settled View' : 'Live Board'} · ${_dailyEscape(selectedDateUpper)}</div>
+        <div class="home-empty-kicker">${_dailyEscape(modeLabel)} | ${_dailyEscape(selectedDateUpper)}</div>
         <div class="home-empty-title">${_dailyEscape(emptyTitle)}</div>
         <div class="home-empty-sub">${_dailyEscape(emptySub)}</div>
       </div>`;
@@ -6842,86 +7050,127 @@ function render() {
       return a.sport.localeCompare(b.sport);
     });
 
+    const renderHomePickRow = (p, game, sectionSport) => {
+      const sportKey = String(p.sport || sectionSport || 'OTHER').toUpperCase();
+      const source = getRankingSourceKey(p) || (p.source || 'Unknown');
+      const oddsDisplay = formatOddsOrProbabilityDisplay(p.odds, p.probability) || '';
+      const isPending = p.result === 'pending';
+      const units = Number(p.units) || 0;
+      const pl = Number(p.pl) || 0;
+      const plDisplay = isPending
+        ? `${formatUnitsCompact(units)}u risk`
+        : `${pl >= 0 ? '+' : ''}${formatUnitsCompact(pl)}u`;
+      const plCls = isPending ? 'neutral' : pl > 0 ? 'positive' : pl < 0 ? 'negative' : 'neutral';
+      const control = renderPickResultControl(p);
+      const dateLabel = game.date || p.date || '';
+      const startLabel = formatStartLabel(game.startIso);
+      const rowGameLabel = String(game.label || deriveGameLabel(p, filtered) || '').trim();
+      const visibleGameLabel = rowGameLabel && !String(p.pick || '').toLowerCase().includes(rowGameLabel.toLowerCase())
+        ? rowGameLabel
+        : '';
+      const metaBits = [visibleGameLabel, dateLabel, oddsDisplay, `${formatUnitsCompact(units)}u`, startLabel].filter(Boolean).join(' | ');
+      const sourceUpper = String(p.source || '').toUpperCase();
+      const isNbaNewPick = sourceUpper.includes('NBANEW') || sourceUpper.includes('NBA NEW');
+      const kellyHtml = (isNbaNewPick && p.kelly_edge) ? (() => {
+        const ke = p.kelly_edge;
+        const v  = ke.verdict || 'PASS';
+        const verdictLabel = {
+          BET: '🔥 Bet',
+          LEAN: '~ Lean',
+          PASS: '— Pass',
+          FADE: '✗ Fade',
+          NO_LINE: '— No Line',
+          ERROR: '— Error',
+          NO_MODEL_SPREAD: '— No Spread'
+        }[v] || v;
+        return `<span class="home-row-kelly kelly-badge ${v}">${verdictLabel}${ke.edge_pct != null ? ` · ${ke.edge_pct}%` : ''}</span>`;
+      })() : '';
+      return `
+        <div class="home-feed-row result-${p.result}">
+          <span class="home-feed-row-sport">${_dailyEscape(sportKey)}</span>
+          <div class="home-feed-row-body">
+            <div class="home-feed-row-source">${_dailyEscape(source)}${kellyHtml}</div>
+            <div class="home-feed-row-pick" title="${_dailyEscape(p.pick || '')}">${_dailyEscape(p.pick || '')}</div>
+            <div class="home-feed-row-meta">${_dailyEscape(metaBits)}</div>
+          </div>
+          <div class="home-feed-row-pl ${plCls}">${_dailyEscape(plDisplay)}</div>
+          <div class="home-feed-row-control">${control}</div>
+        </div>`;
+    };
+
     feed.innerHTML = sections.map(section => {
-      // Flatten all picks within this sport so we render compact rows
-      // (pulse-log style) instead of heavy per-matchup cards. We still
-      // group by matchup using a thin sub-header so the slate stays
-      // readable, but each pick line is a clean grade-able row.
-      const flatPicks = section.games.flatMap(g => g.picks.map(p => ({
-        ...p,
-        _gameLabel: g.label,
-        _gameDate: g.date,
-        _gameStartIso: g.startIso,
-      })));
-      flatPicks.sort((a, b) => {
-        const at = a.sortTs || 0;
-        const bt = b.sortTs || 0;
-        if (at !== bt) return at - bt;
-        return String(a.pick || '').localeCompare(String(b.pick || ''));
+      section.games.sort((a, b) => {
+        if (a.sortTs !== b.sortTs) return a.sortTs - b.sortTs;
+        return String(a.label || '').localeCompare(String(b.label || ''));
       });
-
-      const sectionPickCount = flatPicks.length;
-      const sectionMeta = `${sectionPickCount} pick${sectionPickCount === 1 ? '' : 's'} · ${section.games.length} matchup${section.games.length === 1 ? '' : 's'}`;
-
-      const rowsHtml = flatPicks.map(p => {
-        const sportKey = String(p.sport || section.sport || 'OTHER').toUpperCase();
-        const source = getRankingSourceKey(p) || (p.source || 'Unknown');
-        const oddsDisplay = formatOddsOrProbabilityDisplay(p.odds, p.probability) || '';
-        const isPending = p.result === 'pending';
-        const units = Number(p.units) || 0;
-        const pl = Number(p.pl) || 0;
-        const plDisplay = isPending
-          ? `${formatUnitsCompact(units)}u risk`
-          : `${pl >= 0 ? '+' : ''}${formatUnitsCompact(pl)}u`;
-        const plCls = isPending ? 'neutral' : pl > 0 ? 'positive' : pl < 0 ? 'negative' : 'neutral';
-        const control = renderPickResultControl(p);
-        const dateLabel = p._gameDate || p.date || '';
-        const startLabel = formatStartLabel(p._gameStartIso);
-        const rowGameLabel = String(p._gameLabel || deriveGameLabel(p, filtered) || '').trim();
-        const visibleGameLabel = rowGameLabel && !String(p.pick || '').toLowerCase().includes(rowGameLabel.toLowerCase())
-          ? rowGameLabel
-          : '';
-        const metaBits = [visibleGameLabel, dateLabel, oddsDisplay, `${formatUnitsCompact(units)}u`, startLabel].filter(Boolean).join(' · ');
-        const sourceUpper = String(p.source || '').toUpperCase();
-        const isNbaNewPick = sourceUpper.includes('NBANEW') || sourceUpper.includes('NBA NEW');
-        const kellyHtml = (isNbaNewPick && p.kelly_edge) ? (() => {
-          const ke = p.kelly_edge;
-          const v  = ke.verdict || 'PASS';
-          const verdictLabel = {
-            BET: '🔥 Bet',
-            LEAN: '~ Lean',
-            PASS: '— Pass',
-            FADE: '✗ Fade',
-            NO_LINE: '— No Line',
-            ERROR: '— Error',
-            NO_MODEL_SPREAD: '— No Spread'
-          }[v] || v;
-          return `<span class="home-row-kelly kelly-badge ${v}">${verdictLabel}${ke.edge_pct != null ? ` · ${ke.edge_pct}%` : ''}</span>`;
-        })() : '';
+      const sectionPickCount = section.games.reduce((sum, game) => sum + game.picks.length, 0);
+      const sectionMeta = `${sectionPickCount} pick${sectionPickCount === 1 ? '' : 's'} | ${section.games.length} matchup${section.games.length === 1 ? '' : 's'}`;
+      const sportLabel = getSportBadgeText(section.sport);
+      const gameCards = section.games.map((game) => {
+        const gamePicks = game.picks.slice().sort((a, b) => {
+          const aPending = a.result === 'pending';
+          const bPending = b.result === 'pending';
+          if (aPending !== bPending) return aPending ? -1 : 1;
+          return String(a.pick || '').localeCompare(String(b.pick || ''));
+        });
+        const verdict = _dailyGroupVerdict(gamePicks);
+        const pendingCount = gamePicks.filter(p => p.result === 'pending').length;
+        const wins = gamePicks.filter(p => p.result === 'win').length;
+        const losses = gamePicks.filter(p => p.result === 'loss').length;
+        const pushes = gamePicks.filter(p => p.result === 'push').length;
+        const settledCount = wins + losses + pushes;
+        const net = gamePicks.reduce((sum, p) => sum + (Number(p.pl) || 0), 0);
+        const netText = `${net >= 0 ? '+' : ''}${formatUnitsCompact(net)}u`;
+        const plCls = settledCount ? (net > 0 ? 'positive' : net < 0 ? 'negative' : 'neutral') : 'neutral';
+        const plDisplay = settledCount ? netText : `${pendingCount} open`;
+        const recordText = settledCount ? `${wins}-${losses}${pushes ? '-' + pushes : ''}` : `${pendingCount} pending`;
+        const sourceCount = new Set(gamePicks.map(p => getRankingSourceKey(p))).size;
+        const dateLabel = game.date || selectedDateLabel;
+        const startLabel = formatStartLabel(game.startIso);
+        const metaBits = [
+          dateLabel,
+          startLabel,
+          `${gamePicks.length} pick${gamePicks.length === 1 ? '' : 's'}`,
+          `${sourceCount} label${sourceCount === 1 ? '' : 's'}`,
+        ].filter(Boolean).join(' | ');
+        const scoreChip = homeScoreChipHtml(homeScoreboardGameMap.get(game.key), game.startIso);
+        const caption = scoreChip ? 'Scoreboard' : recordText;
+        const sportPillClass = String(section.sport || '').toUpperCase() === 'IPL' ? ' is-ipl' : '';
+        const rowsHtml = gamePicks.map(p => renderHomePickRow(p, game, section.sport)).join('');
         return `
-          <div class="home-feed-row result-${p.result}">
-            <span class="home-feed-row-sport">${_dailyEscape(sportKey)}</span>
-            <div class="home-feed-row-body">
-              <div class="home-feed-row-source">${_dailyEscape(source)}${kellyHtml}</div>
-              <div class="home-feed-row-pick" title="${_dailyEscape(p.pick || '')}">${_dailyEscape(p.pick || '')}</div>
-              <div class="home-feed-row-meta">${_dailyEscape(metaBits)}</div>
+          <article class="home-game-card status-${_dailyEscape(verdict.key || 'live')}">
+            <div class="home-game-top">
+              <div class="home-game-kicker">
+                <span class="home-sport-pill${sportPillClass}">${_dailyEscape(sportLabel)}</span>
+                <span class="home-status-pill ${_dailyEscape(verdict.key || 'live')}">${_dailyEscape(verdict.label || 'PENDING')}</span>
+                ${scoreChip}
+              </div>
+              <div class="home-game-pl-wrap">
+                <div class="home-game-pl ${plCls}">${_dailyEscape(plDisplay)}</div>
+                <div class="home-game-caption">${_dailyEscape(caption)}</div>
+              </div>
             </div>
-            <div class="home-feed-row-pl ${plCls}">${_dailyEscape(plDisplay)}</div>
-            <div class="home-feed-row-control">${control}</div>
-          </div>`;
+            <div>
+              <div class="home-game-title">${_dailyEscape(game.label || 'Matchup')}</div>
+              <div class="home-game-meta">${_dailyEscape(metaBits)}</div>
+            </div>
+            <div class="home-game-picks">${rowsHtml}</div>
+          </article>`;
       }).join('');
 
       return `
         <section class="home-feed-section">
           <div class="home-feed-section-head">
             <div>
-              <div class="home-feed-section-title">${_dailyEscape(getSportBadgeText(section.sport))}</div>
+              <div class="home-feed-section-title">${_dailyEscape(sportLabel)}</div>
               <div class="home-feed-section-meta">${_dailyEscape(sectionMeta)}</div>
             </div>
           </div>
-          <div class="home-feed-rows">${rowsHtml}</div>
+          <div class="home-feed-grid">${gameCards}</div>
         </section>`;
     }).join('');
+
+    refreshHomeScoreboardForDate(homeSelectedDateKey, filtered).catch(() => {});
   }
 
   // Overall stats
@@ -9554,6 +9803,7 @@ initLedgerUI({
   refreshAutoGrades,
   switchTab,
   toggleShowSettled,
+  setHomeResultMode,
   toggleHomeDatePicker,
   toggleMoreFilters,
   renderSearch,

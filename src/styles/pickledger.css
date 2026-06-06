@@ -446,6 +446,39 @@
     color: var(--accent3);
     box-shadow: 0 12px 24px rgba(77,166,255,0.14);
   }
+  .home-mode-segment {
+    display: inline-grid;
+    grid-template-columns: repeat(3, minmax(84px, 1fr));
+    gap: 4px;
+    padding: 4px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.04);
+  }
+  .home-mode-btn {
+    min-height: 38px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: 12px;
+    background: transparent;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.18s, background 0.18s, box-shadow 0.18s;
+  }
+  .home-mode-btn:hover {
+    color: var(--text);
+    background: rgba(255,255,255,0.05);
+  }
+  .home-mode-btn.active {
+    color: var(--text);
+    background: linear-gradient(135deg, rgba(0,229,160,0.22), rgba(77,166,255,0.16));
+    box-shadow: 0 10px 20px rgba(0,0,0,0.16);
+  }
   .home-summary-grid {
     position: relative;
     z-index: 1;
@@ -1136,6 +1169,36 @@
   .home-status-pill.win   { border-color: rgba(0,229,160,0.3); color: var(--win); background: rgba(0,229,160,0.1); }
   .home-status-pill.loss  { border-color: rgba(255,69,96,0.3); color: var(--loss); background: rgba(255,69,96,0.1); }
   .home-status-pill.mixed { border-color: rgba(255,215,0,0.28); color: var(--push); background: rgba(255,215,0,0.1); }
+  .home-score-chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    max-width: 100%;
+    padding: 7px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(77,166,255,0.25);
+    background: rgba(77,166,255,0.08);
+    color: var(--accent3);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.45px;
+    line-height: 1.2;
+  }
+  .home-score-chip.live {
+    border-color: rgba(0,229,160,0.34);
+    background: rgba(0,229,160,0.12);
+    color: var(--accent);
+  }
+  .home-score-chip.final {
+    border-color: rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.05);
+    color: var(--text);
+  }
+  .home-score-chip.delayed {
+    border-color: rgba(255,215,0,0.3);
+    background: rgba(255,215,0,0.1);
+    color: var(--push);
+  }
   .home-game-title {
     margin-top: 10px;
     font-family: 'Bebas Neue', sans-serif;
@@ -1158,6 +1221,10 @@
     line-height: 1;
     white-space: nowrap;
   }
+  .home-game-pl-wrap { text-align: right; }
+  .home-game-pl.positive { color: var(--win); }
+  .home-game-pl.negative { color: var(--loss); }
+  .home-game-pl.neutral { color: var(--muted); }
   .home-game-caption {
     font-family: 'DM Mono', monospace;
     font-size: 10px;
@@ -1420,9 +1487,15 @@
   }
   body[data-theme="light"] .home-hero-chip.muted,
   body[data-theme="light"] .home-toggle-btn,
+  body[data-theme="light"] .home-mode-segment,
   body[data-theme="light"] .filter-btn,
   body[data-theme="light"] .filter-more-btn {
     background: rgba(255,255,255,0.9);
+  }
+  body[data-theme="light"] .home-mode-btn.active {
+    color: #0f172a;
+    background: linear-gradient(135deg, rgba(0,168,112,0.16), rgba(37,99,235,0.12));
+    box-shadow: 0 8px 18px rgba(15,25,40,0.08);
   }
   body[data-theme="light"] .home-sport-pill {
     background: rgba(37,99,235,0.08);
@@ -1981,11 +2054,13 @@
     .home-hero { padding: 20px; }
     .home-hero-actions { width: 100%; align-items: flex-start; }
     .home-hero-chips { justify-content: flex-start; }
+    .home-mode-segment { width: 100%; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .home-mode-btn { padding: 0 8px; font-size: 10px; }
     .home-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .home-filter-shell { padding: 16px; }
     .home-feed-grid { grid-template-columns: 1fr; }
     .home-game-top { flex-direction: column; }
-    .home-game-caption { text-align: left; }
+    .home-game-pl-wrap, .home-game-caption { text-align: left; }
     .home-pick-card { grid-template-columns: 1fr; }
     .home-pick-actions { width: 100%; align-items: stretch; min-width: 0; }
     .home-pick-control { justify-content: stretch; }
@@ -3614,6 +3689,15 @@
     width: 100%;
     min-height: 42px;
     padding: 0 14px;
+  }
+  body.mobile-app-mode .home-mode-segment {
+    width: 100%;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  body.mobile-app-mode .home-mode-btn {
+    min-height: 36px;
+    padding: 0 8px;
+    font-size: 9px;
   }
   body.mobile-app-mode .home-filter-shell {
     padding: 14px;

@@ -141,6 +141,32 @@ def test_model_results_make_inning_game_context_visible_and_actionable_rows_clea
     assert ".model-pick-cb:disabled" in css
 
 
+def test_home_tab_is_matchup_board_with_modes_and_live_scores():
+    source = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
+    html = (ROOT / "index.html").read_text(encoding="utf-8")
+    css = (ROOT / "src" / "styles" / "pickledger.css").read_text(encoding="utf-8")
+
+    assert "home-mode-segment" in html
+    assert "setHomeResultMode('pending')" in html
+    assert "setHomeResultMode('all')" in html
+    assert "setHomeResultMode('settled')" in html
+    assert "let homeResultMode = 'pending';" in source
+    assert "function setHomeResultMode(mode)" in source
+    assert "const homeModeCountLabel = homeMode === 'pending' ? 'open' : homeMode === 'settled' ? 'settled' : 'ledger';" in source
+    assert "homeMode === 'settled'" in source
+    assert "else if(homeMode === 'pending')" in source
+    assert "homeMode === 'all'" in source
+    assert "home-feed-grid" in source
+    assert "home-game-card status-" in source
+    assert "const visibleGameLabel = rowGameLabel" in source
+    assert "HOME_SCOREBOARD_CACHE_TTL_MS" in source
+    assert "async function refreshHomeScoreboardForDate" in source
+    assert "_fetchEspnScoreboard(endpoint.sport, endpoint.league, yyyymmdd, { force: true })" in source
+    assert "homeScoreChipHtml(homeScoreboardGameMap.get(game.key)" in source
+    assert ".home-mode-segment" in css
+    assert ".home-score-chip" in css
+
+
 def test_frontend_ignores_failed_external_feed_cache_payloads():
     source = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
 

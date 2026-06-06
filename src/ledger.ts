@@ -2,6 +2,7 @@ export interface LedgerUIHandlers {
   refreshAutoGrades: unknown;
   switchTab: unknown;
   toggleShowSettled: unknown;
+  setHomeResultMode: unknown;
   toggleHomeDatePicker: unknown;
   toggleMoreFilters: unknown;
   renderSearch: unknown;
