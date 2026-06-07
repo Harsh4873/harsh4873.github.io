@@ -68,11 +68,25 @@ def test_model_schedule_is_visible_as_two_refresh_windows():
 def test_model_cache_workflow_rebases_and_retries_cache_publish():
     workflow = (ROOT / ".github" / "workflows" / "model-cache-refresh.yml").read_text(encoding="utf-8")
 
+    assert "cancel-in-progress: false" in workflow
     assert 'BRANCH="${GITHUB_REF_NAME:-main}"' in workflow
     assert 'git pull --rebase --autostash origin "$BRANCH"' in workflow
     assert "for attempt in 1 2 3; do" in workflow
     assert 'git push origin "HEAD:${BRANCH}"' in workflow
     assert 'git rebase "origin/${BRANCH}"' in workflow
+
+
+def test_model_cache_freshness_guard_dispatches_only_when_stale():
+    workflow = (ROOT / ".github" / "workflows" / "model-cache-freshness-guard.yml").read_text(encoding="utf-8")
+
+    assert 'cron: "12,27,42,57 12-16 * * *"' in workflow
+    assert "TARGET_DATE=\"$(TZ=America/Chicago date +%F)\"" in workflow
+    assert "data/model_cache/latest.json" in workflow
+    assert "fresh=true" in workflow
+    assert "fresh=false" in workflow
+    assert "--workflow model-cache-refresh.yml" in workflow
+    assert 'select(.status == "queued" or .status == "in_progress"' in workflow
+    assert 'gh workflow run model-cache-refresh.yml --ref main -f date="$TARGET_DATE"' in workflow
 
 
 def test_refresh_workflows_commit_with_triggering_actor():

@@ -1,0 +1,69 @@
+name: Model Cache Freshness Guard
+
+on:
+  schedule:
+    # Cheap morning stale-cache guard. GitHub schedules can be delayed, so run
+    # every 15 minutes and dispatch the heavy refresh only when today's cache is
+    # still missing.
+    - cron: "12,27,42,57 12-16 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: model-cache-freshness-guard
+  cancel-in-progress: false
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check committed cache date
+        id: cache
+        run: |
+          TARGET_DATE="$(TZ=America/Chicago date +%F)"
+          CACHE_DATE="$(python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path("data/model_cache/latest.json")
+          try:
+              payload = json.loads(path.read_text(encoding="utf-8"))
+          except Exception:
+              payload = {}
+          print(str(payload.get("date") or ""))
+          PY
+          )"
+          echo "target_date=${TARGET_DATE}" >> "$GITHUB_OUTPUT"
+          echo "cache_date=${CACHE_DATE}" >> "$GITHUB_OUTPUT"
+          if [ "$CACHE_DATE" = "$TARGET_DATE" ]; then
+            echo "fresh=true" >> "$GITHUB_OUTPUT"
+            echo "Model cache is fresh for ${TARGET_DATE}."
+          else
+            echo "fresh=false" >> "$GITHUB_OUTPUT"
+            echo "Model cache is stale: cache=${CACHE_DATE:-missing}, target=${TARGET_DATE}."
+          fi
+
+      - name: Dispatch model cache refresh if stale
+        if: steps.cache.outputs.fresh != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TARGET_DATE: ${{ steps.cache.outputs.target_date }}
+        run: |
+          ACTIVE_RUNS="$(gh run list \
+            --workflow model-cache-refresh.yml \
+            --branch main \
+            --limit 20 \
+            --json status \
+            --jq '[.[] | select(.status == "queued" or .status == "in_progress" or .status == "waiting" or .status == "pending" or .status == "requested")] | length')"
+          if [ "${ACTIVE_RUNS:-0}" -gt 0 ]; then
+            echo "Model cache refresh already queued or running; not dispatching another one."
+            exit 0
+          fi
+          gh workflow run model-cache-refresh.yml --ref main -f date="$TARGET_DATE"
