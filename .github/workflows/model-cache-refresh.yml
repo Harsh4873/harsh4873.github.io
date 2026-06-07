@@ -56,17 +56,58 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Sync latest main
+        run: |
+          git fetch origin main
+          git reset --hard origin/main
+
+      - name: Check scheduled cache freshness
+        id: cache-gate
+        run: |
+          TARGET_DATE="$(TZ=America/Chicago date +%F)"
+          CACHE_READY="$(TARGET_DATE="$TARGET_DATE" python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          path = Path("data/model_cache/latest.json")
+          try:
+              payload = json.loads(path.read_text(encoding="utf-8"))
+          except Exception:
+              payload = {}
+          models = payload.get("models") if isinstance(payload.get("models"), dict) else {}
+          required = ("mlb_new", "mlb_inning", "mlb_first_five")
+          ready = str(payload.get("date") or "") == os.environ.get("TARGET_DATE", "") and all(
+              isinstance(models.get(key), dict)
+              and models[key].get("ok") is True
+              and isinstance(models[key].get("picks"), list)
+              and len(models[key].get("picks")) > 0
+              for key in required
+          )
+          print("true" if ready else "false")
+          PY
+          )"
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "$CACHE_READY" = "true" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "Scheduled model cache already fresh for ${TARGET_DATE}; skipping duplicate refresh."
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Set up Python
+        if: steps.cache-gate.outputs.skip != 'true'
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
       - name: Install Python dependencies
+        if: steps.cache-gate.outputs.skip != 'true'
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
       - name: Refresh model caches
+        if: steps.cache-gate.outputs.skip != 'true'
         run: |
           python scripts/refresh_model_cache.py \
             --date "${{ github.event.inputs.date || '' }}" \
@@ -74,6 +115,7 @@ jobs:
             --max-workers 3
 
       - name: Commit cache JSON if changed
+        if: steps.cache-gate.outputs.skip != 'true'
         id: commit-cache
         run: |
           ACTOR_EMAIL="${GITHUB_ACTOR_ID:-41898282}+${GITHUB_ACTOR}@users.noreply.github.com"

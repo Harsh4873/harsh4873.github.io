@@ -69,11 +69,25 @@ def test_model_cache_workflow_rebases_and_retries_cache_publish():
     workflow = (ROOT / ".github" / "workflows" / "model-cache-refresh.yml").read_text(encoding="utf-8")
 
     assert "cancel-in-progress: false" in workflow
+    assert "git reset --hard origin/main" in workflow
+    assert "Check scheduled cache freshness" in workflow
+    assert "Scheduled model cache already fresh" in workflow
+    assert "if: steps.cache-gate.outputs.skip != 'true'" in workflow
     assert 'BRANCH="${GITHUB_REF_NAME:-main}"' in workflow
     assert 'git pull --rebase --autostash origin "$BRANCH"' in workflow
     assert "for attempt in 1 2 3; do" in workflow
     assert 'git push origin "HEAD:${BRANCH}"' in workflow
     assert 'git rebase "origin/${BRANCH}"' in workflow
+
+
+def test_cannon_workflow_skips_duplicate_scheduled_refreshes():
+    workflow = (ROOT / ".github" / "workflows" / "cannon-daily-refresh.yml").read_text(encoding="utf-8")
+
+    assert "git reset --hard origin/main" in workflow
+    assert "Check scheduled Cannon freshness" in workflow
+    assert "data/cannon_mlb_daily.json" in workflow
+    assert "Scheduled Cannon cache already fresh" in workflow
+    assert "if: steps.cache-gate.outputs.skip != 'true'" in workflow
 
 
 def test_model_cache_freshness_guard_dispatches_only_when_stale():
