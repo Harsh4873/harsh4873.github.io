@@ -3,6 +3,299 @@
   "errors": [
     "mlb_old: MLB OLD parser found no predictions ([sportsline_odds] Fetching MLB market odds for slate_date=2026-06-07 | MLB spread: 15 rows | MLB total: 15 rows | MLB ml: 15 rows | MLB merged: 15 games | [sportsline_odds] Schedule filter for slate_date=2026-06-07: kept=15 scraped_games=15 official_games=15 | Missing MLB moneyline model artifact for variant='old'. Run `venv/bin/python train_moneyline_model.py` inside MLBPredictionModel first.)"
   ],
+  "externalFeedsUpdatedAt": "2026-06-07T15:42:25.741008Z",
+  "external_feeds": {
+    "sportsgambler": {
+      "date": "2026-06-07",
+      "errors": [
+        "nba: no picks parsed (No picks found.)"
+      ],
+      "generatedAt": "2026-06-07T15:42:25.741008Z",
+      "generatedBy": "github-actions:external-feed-refresh",
+      "meta": {
+        "date": "2026-06-07",
+        "feed": "sportsgambler",
+        "from": "github-actions",
+        "leagues": "nba,mlb",
+        "updatedAt": "2026-06-07T15:42:25.741008Z"
+      },
+      "note": "Scheduled sportsgambler refresh returned 15 pick(s).",
+      "ok": true,
+      "picks": [
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -179,
+          "pick": "New York Yankees to Win (New York Yankees vs Boston Red Sox)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -175,
+          "pick": "Philadelphia Phillies to Win (Philadelphia Phillies vs Chicago White Sox)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -156,
+          "pick": "Atlanta Braves to Win (Atlanta Braves vs Pittsburgh Pirates)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -137,
+          "pick": "Toronto Blue Jays to Win (Toronto Blue Jays vs Baltimore Orioles)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -128,
+          "pick": "Seattle Mariners to Win (Detroit Tigers vs Seattle Mariners)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -103,
+          "pick": "Miami Marlins to Win (Miami Marlins vs Tampa Bay Rays)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -111,
+          "pick": "Athletics to Win (Houston Astros vs Athletics)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -109,
+          "pick": "Minnesota Twins to Win (Minnesota Twins vs Kansas City Royals)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -139,
+          "pick": "St. Louis Cardinals to Win (St. Louis Cardinals vs Cincinnati Reds)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -137,
+          "pick": "Texas Rangers to Win (Texas Rangers vs Cleveland Guardians)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -189,
+          "pick": "Milwaukee Brewers to Win (Colorado Rockies vs Milwaukee Brewers)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -147,
+          "pick": "Arizona Diamondbacks to Win (Arizona Diamondbacks vs Washington Nationals)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -227,
+          "pick": "Los Angeles Dodgers to Win (Los Angeles Dodgers vs Los Angeles Angels)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -110,
+          "pick": "New York Mets to Win (San Diego Padres vs New York Mets)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -120,
+          "pick": "Chicago Cubs to Win (Chicago Cubs vs San Francisco Giants)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        }
+      ],
+      "updatedAt": "2026-06-07T15:42:25.741008Z"
+    },
+    "sportytrader": {
+      "date": "2026-06-07",
+      "errors": [
+        "nba: no picks parsed (No SportyTrader NBA picks parsed.)"
+      ],
+      "generatedAt": "2026-06-07T15:42:25.741008Z",
+      "generatedBy": "github-actions:external-feed-refresh",
+      "meta": {
+        "date": "2026-06-07",
+        "feed": "sportytrader",
+        "from": "github-actions",
+        "leagues": "nba,mlb",
+        "updatedAt": "2026-06-07T15:42:25.741008Z"
+      },
+      "note": "Scheduled sportytrader refresh returned 10 pick(s).",
+      "ok": true,
+      "picks": [
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": 130,
+          "pick": "Yankees -1.5 (Yankees vs Red Sox)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -170,
+          "pick": "Phillies ML (Phillies vs White Sox)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -115,
+          "pick": "Over 8 (Blue Jays vs Orioles)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -105,
+          "pick": "Miami L (Marlins vs Rays)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -115,
+          "pick": "Over 9 (Astros vs Athletics)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -110,
+          "pick": "Kansas City Royals win the match (Twins vs Royals)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": 118,
+          "pick": "Guardians ML (Rangers vs Guardians)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -125,
+          "pick": "Brewers -1.5 (Rockies vs Brewers)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -118,
+          "pick": "Over 7.5 Total Runs (Padres vs Mets)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -120,
+          "pick": "Angels +1.5 (Dodgers vs Angels)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        }
+      ],
+      "updatedAt": "2026-06-07T15:42:25.741008Z"
+    }
+  },
   "generatedAt": "2026-06-07T15:16:51.837316Z",
   "generatedBy": "github-actions:model-cache-refresh",
   "ipl": {},
@@ -10913,6 +11206,296 @@
       "schedule_source": "ESPN scoreboard",
       "slate_games": 0
     },
+    "sportsgambler": {
+      "date": "2026-06-07",
+      "errors": [
+        "nba: no picks parsed (No picks found.)"
+      ],
+      "generatedAt": "2026-06-07T15:42:25.741008Z",
+      "generatedBy": "github-actions:external-feed-refresh",
+      "meta": {
+        "date": "2026-06-07",
+        "feed": "sportsgambler",
+        "from": "github-actions",
+        "leagues": "nba,mlb",
+        "updatedAt": "2026-06-07T15:42:25.741008Z"
+      },
+      "note": "Scheduled sportsgambler refresh returned 15 pick(s).",
+      "ok": true,
+      "picks": [
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -179,
+          "pick": "New York Yankees to Win (New York Yankees vs Boston Red Sox)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -175,
+          "pick": "Philadelphia Phillies to Win (Philadelphia Phillies vs Chicago White Sox)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -156,
+          "pick": "Atlanta Braves to Win (Atlanta Braves vs Pittsburgh Pirates)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -137,
+          "pick": "Toronto Blue Jays to Win (Toronto Blue Jays vs Baltimore Orioles)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -128,
+          "pick": "Seattle Mariners to Win (Detroit Tigers vs Seattle Mariners)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -103,
+          "pick": "Miami Marlins to Win (Miami Marlins vs Tampa Bay Rays)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -111,
+          "pick": "Athletics to Win (Houston Astros vs Athletics)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -109,
+          "pick": "Minnesota Twins to Win (Minnesota Twins vs Kansas City Royals)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -139,
+          "pick": "St. Louis Cardinals to Win (St. Louis Cardinals vs Cincinnati Reds)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -137,
+          "pick": "Texas Rangers to Win (Texas Rangers vs Cleveland Guardians)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -189,
+          "pick": "Milwaukee Brewers to Win (Colorado Rockies vs Milwaukee Brewers)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -147,
+          "pick": "Arizona Diamondbacks to Win (Arizona Diamondbacks vs Washington Nationals)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -227,
+          "pick": "Los Angeles Dodgers to Win (Los Angeles Dodgers vs Los Angeles Angels)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -110,
+          "pick": "New York Mets to Win (San Diego Padres vs New York Mets)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -120,
+          "pick": "Chicago Cubs to Win (Chicago Cubs vs San Francisco Giants)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        }
+      ],
+      "updatedAt": "2026-06-07T15:42:25.741008Z"
+    },
+    "sportytrader": {
+      "date": "2026-06-07",
+      "errors": [
+        "nba: no picks parsed (No SportyTrader NBA picks parsed.)"
+      ],
+      "generatedAt": "2026-06-07T15:42:25.741008Z",
+      "generatedBy": "github-actions:external-feed-refresh",
+      "meta": {
+        "date": "2026-06-07",
+        "feed": "sportytrader",
+        "from": "github-actions",
+        "leagues": "nba,mlb",
+        "updatedAt": "2026-06-07T15:42:25.741008Z"
+      },
+      "note": "Scheduled sportytrader refresh returned 10 pick(s).",
+      "ok": true,
+      "picks": [
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": 130,
+          "pick": "Yankees -1.5 (Yankees vs Red Sox)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -170,
+          "pick": "Phillies ML (Phillies vs White Sox)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -115,
+          "pick": "Over 8 (Blue Jays vs Orioles)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -105,
+          "pick": "Miami L (Marlins vs Rays)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -115,
+          "pick": "Over 9 (Astros vs Athletics)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -110,
+          "pick": "Kansas City Royals win the match (Twins vs Royals)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": 118,
+          "pick": "Guardians ML (Rangers vs Guardians)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -125,
+          "pick": "Brewers -1.5 (Rockies vs Brewers)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -118,
+          "pick": "Over 7.5 Total Runs (Padres vs Mets)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -120,
+          "pick": "Angels +1.5 (Dodgers vs Angels)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        }
+      ],
+      "updatedAt": "2026-06-07T15:42:25.741008Z"
+    },
     "wnba": {
       "ok": true,
       "picks": [
@@ -11019,7 +11602,297 @@
     "schedule_source": "ESPN scoreboard",
     "slate_games": 0
   },
-  "updatedAt": "2026-06-07T15:16:51.837316Z",
+  "sportsgambler": {
+    "date": "2026-06-07",
+    "errors": [
+      "nba: no picks parsed (No picks found.)"
+    ],
+    "generatedAt": "2026-06-07T15:42:25.741008Z",
+    "generatedBy": "github-actions:external-feed-refresh",
+    "meta": {
+      "date": "2026-06-07",
+      "feed": "sportsgambler",
+      "from": "github-actions",
+      "leagues": "nba,mlb",
+      "updatedAt": "2026-06-07T15:42:25.741008Z"
+    },
+    "note": "Scheduled sportsgambler refresh returned 15 pick(s).",
+    "ok": true,
+    "picks": [
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -179,
+        "pick": "New York Yankees to Win (New York Yankees vs Boston Red Sox)",
+        "probability": null,
+        "source": "SportsGambler",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -175,
+        "pick": "Philadelphia Phillies to Win (Philadelphia Phillies vs Chicago White Sox)",
+        "probability": null,
+        "source": "SportsGambler",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -156,
+        "pick": "Atlanta Braves to Win (Atlanta Braves vs Pittsburgh Pirates)",
+        "probability": null,
+        "source": "SportsGambler",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -137,
+        "pick": "Toronto Blue Jays to Win (Toronto Blue Jays vs Baltimore Orioles)",
+        "probability": null,
+        "source": "SportsGambler",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -128,
+        "pick": "Seattle Mariners to Win (Detroit Tigers vs Seattle Mariners)",
+        "probability": null,
+        "source": "SportsGambler",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -103,
+        "pick": "Miami Marlins to Win (Miami Marlins vs Tampa Bay Rays)",
+        "probability": null,
+        "source": "SportsGambler",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -111,
+        "pick": "Athletics to Win (Houston Astros vs Athletics)",
+        "probability": null,
+        "source": "SportsGambler",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -109,
+        "pick": "Minnesota Twins to Win (Minnesota Twins vs Kansas City Royals)",
+        "probability": null,
+        "source": "SportsGambler",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -139,
+        "pick": "St. Louis Cardinals to Win (St. Louis Cardinals vs Cincinnati Reds)",
+        "probability": null,
+        "source": "SportsGambler",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -137,
+        "pick": "Texas Rangers to Win (Texas Rangers vs Cleveland Guardians)",
+        "probability": null,
+        "source": "SportsGambler",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -189,
+        "pick": "Milwaukee Brewers to Win (Colorado Rockies vs Milwaukee Brewers)",
+        "probability": null,
+        "source": "SportsGambler",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -147,
+        "pick": "Arizona Diamondbacks to Win (Arizona Diamondbacks vs Washington Nationals)",
+        "probability": null,
+        "source": "SportsGambler",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -227,
+        "pick": "Los Angeles Dodgers to Win (Los Angeles Dodgers vs Los Angeles Angels)",
+        "probability": null,
+        "source": "SportsGambler",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -110,
+        "pick": "New York Mets to Win (San Diego Padres vs New York Mets)",
+        "probability": null,
+        "source": "SportsGambler",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -120,
+        "pick": "Chicago Cubs to Win (Chicago Cubs vs San Francisco Giants)",
+        "probability": null,
+        "source": "SportsGambler",
+        "sport": "MLB",
+        "units": 1
+      }
+    ],
+    "updatedAt": "2026-06-07T15:42:25.741008Z"
+  },
+  "sportytrader": {
+    "date": "2026-06-07",
+    "errors": [
+      "nba: no picks parsed (No SportyTrader NBA picks parsed.)"
+    ],
+    "generatedAt": "2026-06-07T15:42:25.741008Z",
+    "generatedBy": "github-actions:external-feed-refresh",
+    "meta": {
+      "date": "2026-06-07",
+      "feed": "sportytrader",
+      "from": "github-actions",
+      "leagues": "nba,mlb",
+      "updatedAt": "2026-06-07T15:42:25.741008Z"
+    },
+    "note": "Scheduled sportytrader refresh returned 10 pick(s).",
+    "ok": true,
+    "picks": [
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": 130,
+        "pick": "Yankees -1.5 (Yankees vs Red Sox)",
+        "probability": null,
+        "source": "SportyTrader",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -170,
+        "pick": "Phillies ML (Phillies vs White Sox)",
+        "probability": null,
+        "source": "SportyTrader",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -115,
+        "pick": "Over 8 (Blue Jays vs Orioles)",
+        "probability": null,
+        "source": "SportyTrader",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -105,
+        "pick": "Miami L (Marlins vs Rays)",
+        "probability": null,
+        "source": "SportyTrader",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -115,
+        "pick": "Over 9 (Astros vs Athletics)",
+        "probability": null,
+        "source": "SportyTrader",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -110,
+        "pick": "Kansas City Royals win the match (Twins vs Royals)",
+        "probability": null,
+        "source": "SportyTrader",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": 118,
+        "pick": "Guardians ML (Rangers vs Guardians)",
+        "probability": null,
+        "source": "SportyTrader",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -125,
+        "pick": "Brewers -1.5 (Rockies vs Brewers)",
+        "probability": null,
+        "source": "SportyTrader",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -118,
+        "pick": "Over 7.5 Total Runs (Padres vs Mets)",
+        "probability": null,
+        "source": "SportyTrader",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -120,
+        "pick": "Angels +1.5 (Dodgers vs Angels)",
+        "probability": null,
+        "source": "SportyTrader",
+        "sport": "MLB",
+        "units": 1
+      }
+    ],
+    "updatedAt": "2026-06-07T15:42:25.741008Z"
+  },
+  "updatedAt": "2026-06-07T15:42:25.741008Z",
   "wnba": {
     "ok": true,
     "picks": [
