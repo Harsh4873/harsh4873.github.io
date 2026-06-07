@@ -377,6 +377,15 @@
                   <div class="model-card-actions"><button class="model-run-btn" id="btn-run-cannon" onclick="loadCannonDailyPicks(event)">LOAD CANNON PICKS</button></div>
                   <div class="model-status" id="status-cannon-analytics"></div>
                 </div>
+                <div class="model-card" id="model-card-scores24-mlb" role="button" tabindex="0" data-model-key="scores24-mlb" data-run-action="runModel" data-run-label="OPEN SCORES24MLB" data-category="Scores24 Live" data-insight="External MLB scoreboard shortcut for checking the live Scores24 board without mixing it into model output.">
+                  <div class="model-card-icon">&#9918;</div>
+                  <span class="model-card-kicker">Scores24 Live</span>
+                  <div class="model-card-title">Scores24MLB</div>
+                  <div class="model-card-desc">External MLB scores</div>
+                  <span data-model-timestamp="scores24_mlb" class="model-timestamp-badge" style="display:none;"></span>
+                  <div class="model-card-actions"><button class="model-run-btn" id="btn-run-scores24-mlb" onclick="runModel('scores24-mlb', event)">OPEN SCORES24MLB</button></div>
+                  <div class="model-status" id="status-scores24-mlb"></div>
+                </div>
               </div>
             </div>
 
@@ -439,6 +448,15 @@
                   <span data-model-timestamp="wnba" class="model-timestamp-badge" style="display:none;"></span>
                   <div class="model-card-actions"><button class="model-run-btn" id="btn-run-wnba" onclick="runModel('wnba')">RUN WNBA MODEL</button></div>
                   <div class="model-status" id="status-wnba"></div>
+                </div>
+                <div class="model-card" id="model-card-scores24-wnba" role="button" tabindex="0" data-model-key="scores24-wnba" data-run-action="runModel" data-run-label="OPEN SCORES24WNBA" data-category="Scores24 Live" data-insight="External WNBA scoreboard shortcut for checking the live Scores24 board without mixing it into model output.">
+                  <div class="model-card-icon">&#127936;</div>
+                  <span class="model-card-kicker">Scores24 Live</span>
+                  <div class="model-card-title">Scores24WNBA</div>
+                  <div class="model-card-desc">External WNBA scores</div>
+                  <span data-model-timestamp="scores24_wnba" class="model-timestamp-badge" style="display:none;"></span>
+                  <div class="model-card-actions"><button class="model-run-btn" id="btn-run-scores24-wnba" onclick="runModel('scores24-wnba', event)">OPEN SCORES24WNBA</button></div>
+                  <div class="model-status" id="status-scores24-wnba"></div>
                 </div>
               </div>
             </div>

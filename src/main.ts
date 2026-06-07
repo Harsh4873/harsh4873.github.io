@@ -1227,6 +1227,20 @@ const SPORTYTRADER_FEED_URL = null;  // manual feed removed — use Firebase cac
 const SPORTYTRADER_CACHE_KEY = 'pickledger_sportytrader_feed_cache';
 const SPORTSGAMBLER_FEED_URL = null; // manual feed removed — use Firebase cache only
 const SPORTSGAMBLER_CACHE_KEY = 'pickledger_sportsgambler_feed_cache';
+const SCORES24_MODULES = {
+  'scores24-mlb': {
+    label: 'Scores24MLB',
+    sport: 'MLB',
+    url: 'https://scores24.live/mlb',
+    timestampKey: 'scores24_mlb',
+  },
+  'scores24-wnba': {
+    label: 'Scores24WNBA',
+    sport: 'WNBA',
+    url: 'https://scores24.live/wnba',
+    timestampKey: 'scores24_wnba',
+  },
+};
 const MODEL_FIREBASE_KEY_ALIASES = {
   'nba-old': ['nba_old', 'nba-old', 'nba'],
   'nba-new': ['nba_new', 'nba-new', 'nba_new_model', 'nbaNew', 'nba'],
@@ -6770,6 +6784,7 @@ function render() {
     'NBA New', 'NBA Playoffs', 'NBA Model', 'NBA Props Model',
     'WNBA Model', 'IPL Model',
     'SportyTrader', 'SportsGambler', 'Cannon Analytics',
+    'Scores24MLB', 'Scores24WNBA',
   ];
   const knownStatsSources = new Set(stats.map(s => s.source));
   const chooserStats = [...stats];
@@ -7286,6 +7301,42 @@ function setModelStatus(model, msg, state) {
   if (typeof syncModelFocusStatus === 'function') syncModelFocusStatus(model);
 }
 
+function updateModelTimestampBadge(timestampKey, prefix = 'Last updated') {
+  const key = String(timestampKey || '').trim();
+  if (!key) return;
+  const badge = document.querySelector(`[data-model-timestamp="${key}"]`);
+  if (!badge) return;
+  const now = new Date();
+  const timeStr = now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+  badge.textContent = `${prefix}: Today at ${timeStr}`;
+  badge.style.display = 'inline-block';
+  badge.dataset.tsMs = String(now.getTime());
+  if (typeof refreshModelFocusFromSelected === 'function') refreshModelFocusFromSelected();
+}
+
+function openScores24Module(model) {
+  const config = SCORES24_MODULES[model];
+  if (!config) return false;
+
+  let opened = null;
+  try {
+    opened = window.open(config.url, '_blank');
+  } catch (err) {
+    setModelStatus(model, `Could not open ${config.label}: ${String(err && err.message ? err.message : err)}`, 'error');
+    return true;
+  }
+
+  if (!opened) {
+    setModelStatus(model, `Allow pop-ups to open ${config.label}: ${config.url}`, 'error');
+    return true;
+  }
+
+  try { opened.opener = null; } catch {}
+  updateModelTimestampBadge(config.timestampKey, 'Last opened');
+  setModelStatus(model, `Opened ${config.label} ${config.sport} board on Scores24.live.`, 'ok');
+  return true;
+}
+
 function _getTodayDateStr() {
   // Returns MM/DD/YYYY for the model scripts
   const d = new Date();
@@ -7649,7 +7700,7 @@ async function loadModelTimestamps() {
     const data = typeof snap.data === 'function' ? snap.data() : null;
     if (!data || typeof data !== 'object') return;
 
-    for (const key of ['nba', 'nba_new', 'nba_playoffs', 'wnba', 'mlb', 'mlb_new', 'mlb_inning', 'mlb_first_five', 'ipl', 'props']) {
+    for (const key of ['nba', 'nba_new', 'nba_playoffs', 'wnba', 'scores24_wnba', 'mlb', 'mlb_new', 'mlb_inning', 'mlb_first_five', 'scores24_mlb', 'ipl', 'props']) {
       const rawTs = data[`${key}_ts`];
       if (!rawTs) continue;
       const badge = document.querySelector(`[data-model-timestamp="${key}"]`);
@@ -8896,6 +8947,11 @@ async function runModel(model, eventOrOptions = {}) {
   _setModelButtonRunning(model);
   const forceRefresh = isForceModelRefreshRequest(eventOrOptions);
 
+  if (openScores24Module(model)) {
+    _resetModelButton(model);
+    return;
+  }
+
   if (NBA_COMPARISON_MODELS.has(model)) {
     const dateStr = getSelectedNbaModelDate();
     const label = formatModelRunDate(dateStr);
@@ -9312,6 +9368,8 @@ function renderModelResults(picks, options = {}) {
     'MLB INNING': 5,
     'MLB FIRST FIVE': 6,
     'CANNON ANALYTICS': 7,
+    SCORES24MLB: 8,
+    SCORES24WNBA: 9,
   };
   // Keep backend variants distinct so they do not collapse.
   // 'MLB MODEL' is the single champion label; 'MLB NEW' is the challenger.
@@ -9329,6 +9387,8 @@ function renderModelResults(picks, options = {}) {
     'MLB INNING': 'MLB Inning',
     'MLB FIRST FIVE': 'MLB First Five',
     'CANNON ANALYTICS': 'Cannon Analytics',
+    SCORES24MLB: 'Scores24MLB',
+    SCORES24WNBA: 'Scores24WNBA',
   };
   const sorted = picks.map((pick, index) => ({ pick, index })).sort((a, b) => {
     const aSource = String(a.pick.source || '').toUpperCase();

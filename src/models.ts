@@ -475,6 +475,7 @@ function initModelChooser() {
     { id: 'model-card-mlb-new',          icon: '\u26BE', name: 'MLB Model',                     desc: 'Current MLB moneyline pipeline (2024-25 artifacts)' },
     { id: 'model-card-mlb-inning',       icon: '\u26BE', name: 'MLB Inning',                    desc: 'Least likely run-scoring innings' },
     { id: 'model-card-mlb-first-five',   icon: '\u26BE', name: 'MLB First Five',                desc: 'F5 side and total model' },
+    { id: 'model-card-scores24-mlb',     icon: '\u26BE', name: 'Scores24MLB',                   desc: 'External MLB live scores board' },
     { id: 'model-card-ipl',              icon: '\u{1F3DF}', name: 'IPL Model',                  desc: 'Cached IPL winner + fantasy XI' },
     { id: 'model-card-nba-new',          icon: '\u{1F3C0}', name: 'NBA New',                    desc: 'Refined NBA spread + calibration' },
     { id: 'model-card-nba-playoffs',     icon: '\u{1F3C6}', name: 'NBA Playoffs',               desc: 'Postseason-only verified moneyline model' },
@@ -484,6 +485,7 @@ function initModelChooser() {
     { id: 'model-card-sportsgambler',    icon: '\u{1F3B1}', name: 'SportsGambler Feed',         desc: 'NBA + MLB scraper feed' },
     { id: 'model-card-cannon-analytics', icon: '\u{1F4E1}', name: 'Cannon Analytics',           desc: 'MLB daily projections + EV picks' },
     { id: 'model-card-wnba',             icon: '\u{1F3C0}', name: 'WNBA Model',                 desc: 'Live WNBA picks and off-season placeholder support' },
+    { id: 'model-card-scores24-wnba',    icon: '\u{1F3C0}', name: 'Scores24WNBA',                desc: 'External WNBA live scores board' },
   ];
 
   // Default: show all
