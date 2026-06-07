@@ -55,8 +55,9 @@ jobs:
       - name: Commit and push if changed
         id: commit-cannon
         run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          ACTOR_EMAIL="${GITHUB_ACTOR_ID:-41898282}+${GITHUB_ACTOR}@users.noreply.github.com"
+          git config user.name  "${GITHUB_ACTOR}"
+          git config user.email "${ACTOR_EMAIL}"
           if git diff --quiet -- data/cannon_mlb_daily.json; then
             echo "No change in data/cannon_mlb_daily.json — skipping commit."
             echo "changed=false" >> "$GITHUB_OUTPUT"

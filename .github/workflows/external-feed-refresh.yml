@@ -69,8 +69,9 @@ jobs:
       - name: Commit feed cache JSON if changed
         id: commit-feeds
         run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          ACTOR_EMAIL="${GITHUB_ACTOR_ID:-41898282}+${GITHUB_ACTOR}@users.noreply.github.com"
+          git config user.name  "${GITHUB_ACTOR}"
+          git config user.email "${ACTOR_EMAIL}"
           if [ -z "$(git status --porcelain -- data/model_cache)" ]; then
             echo "No change in data/model_cache — skipping commit."
             echo "changed=false" >> "$GITHUB_OUTPUT"

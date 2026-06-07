@@ -75,6 +75,21 @@ def test_model_cache_workflow_rebases_and_retries_cache_publish():
     assert 'git rebase "origin/${BRANCH}"' in workflow
 
 
+def test_refresh_workflows_commit_with_triggering_actor():
+    workflow_paths = [
+        ".github/workflows/model-cache-refresh.yml",
+        ".github/workflows/cannon-daily-refresh.yml",
+        ".github/workflows/external-feed-refresh.yml",
+    ]
+
+    for workflow_path in workflow_paths:
+        workflow = (ROOT / workflow_path).read_text(encoding="utf-8")
+        assert 'ACTOR_EMAIL="${GITHUB_ACTOR_ID:-41898282}+${GITHUB_ACTOR}@users.noreply.github.com"' in workflow
+        assert 'git config user.name  "${GITHUB_ACTOR}"' in workflow
+        assert 'git config user.email "${ACTOR_EMAIL}"' in workflow
+        assert "github-actions[bot]" not in workflow
+
+
 def test_frontend_checks_cannon_cache_before_live_cloud_scrape():
     source = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
 
