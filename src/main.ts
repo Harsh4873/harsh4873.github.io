@@ -5494,11 +5494,11 @@ function renderSearch() {
   const query = document.getElementById('search-input').value.trim().toLowerCase();
   const container = document.getElementById('search-results');
   const meta = document.getElementById('search-meta');
-  const picks = getPicks().filter(p => p.result === 'pending');
+  const picks = getPicks();
 
   if (!query) {
     meta.textContent = '';
-    container.innerHTML = '<div class="empty-state">Type a team name, matchup, or source to search pending picks</div>';
+    container.innerHTML = '<div class="empty-state">Type a team name, matchup, or source to search saved picks</div>';
     return;
   }
 
@@ -5512,7 +5512,7 @@ function renderSearch() {
   meta.textContent = `${matches.length} result${matches.length !== 1 ? 's' : ''} for "${query}"`;
 
   if (!matches.length) {
-    container.innerHTML = '<div class="empty-state">No pending picks match your search</div>';
+    container.innerHTML = '<div class="empty-state">No saved picks match your search</div>';
     return;
   }
 
@@ -7018,11 +7018,14 @@ function render() {
 
   // Home feed
   const { entries: allDateEntries, todayKey } = ensureHomeSelectedDate(picks);
-  let filteredByModeAndFilter = picks;
-  if(activeFilter!=='ALL') filteredByModeAndFilter=picks.filter(p=>String(p.sport || '').toUpperCase()===activeFilter||p.source===activeFilter||getRankingSourceKey(p)===activeFilter);
+  let filteredByFilter = picks;
+  if(activeFilter!=='ALL') filteredByFilter=picks.filter(p=>String(p.sport || '').toUpperCase()===activeFilter||p.source===activeFilter||getRankingSourceKey(p)===activeFilter);
+  let filteredByModeAndFilter = filteredByFilter;
   if(homeMode === 'settled') filteredByModeAndFilter=filteredByModeAndFilter.filter(p=>p.result!=='pending');
   else if(homeMode === 'pending') filteredByModeAndFilter=filteredByModeAndFilter.filter(p=>p.result==='pending');
 
+  const allFilteredDateEntries = buildHomeDateEntries(filteredByFilter);
+  const allFilteredDateCountMap = new Map(allFilteredDateEntries.map((entry) => [entry.key, entry.count]));
   const visibleDateEntries = buildHomeDateEntries(filteredByModeAndFilter);
   const visibleDateCountMap = new Map(visibleDateEntries.map((entry) => [entry.key, entry.count]));
   const latestVisibleDateKey = visibleDateEntries[visibleDateEntries.length - 1]?.key
@@ -7032,14 +7035,20 @@ function render() {
   const selectedDateLong = formatHomeDateKey(homeSelectedDateKey, { month: 'long', day: 'numeric' }) || selectedDateLabel;
   const selectedDateUpper = selectedDateLabel.toUpperCase();
   const selectedDateCount = Number(visibleDateCountMap.get(homeSelectedDateKey) || 0);
+  const selectedDateTotalCount = Number(allFilteredDateCountMap.get(homeSelectedDateKey) || 0);
+  const hiddenByModeCount = homeMode === 'all' ? 0 : Math.max(0, selectedDateTotalCount - selectedDateCount);
+  const hiddenModeLabel = homeMode === 'pending' ? 'settled' : 'open';
   const dateTriggerValueEl = document.getElementById('home-date-trigger-value');
   const dateTriggerMetaEl = document.getElementById('home-date-trigger-meta');
   const datePopoverEl = document.getElementById('home-date-popover');
   if (dateTriggerValueEl) dateTriggerValueEl.textContent = selectedDateLong;
   if (dateTriggerMetaEl) {
-    dateTriggerMetaEl.textContent = selectedDateCount > 0
+    const countText = selectedDateCount > 0
       ? `${selectedDateCount} ${homeModeCountLabel} picks`
       : `No ${homeModeCountLabel} picks`;
+    dateTriggerMetaEl.textContent = hiddenByModeCount > 0
+      ? `${countText} | ${hiddenByModeCount} ${hiddenModeLabel} hidden`
+      : countText;
   }
   if (datePopoverEl) {
     datePopoverEl.innerHTML = buildHomeCalendarPopoverHtml({
@@ -7185,6 +7194,14 @@ function render() {
   }
 
   const feed = document.getElementById('pick-feed');
+  const modeNoticeHtml = hiddenByModeCount > 0 ? `
+    <div class="home-mode-notice">
+      <div>
+        <div class="home-mode-notice-title">${_dailyEscape(`${hiddenByModeCount} saved ${hiddenModeLabel} pick${hiddenByModeCount === 1 ? '' : 's'} hidden`)}</div>
+        <div class="home-mode-notice-copy">${_dailyEscape(`They are still in the ledger for ${selectedDateLong}; All shows the full date.`)}</div>
+      </div>
+      <button type="button" class="home-mode-notice-action" onclick="setHomeResultMode('all')">All</button>
+    </div>` : '';
   if (!feed) {
     // pick-feed element is expected on the Home tab; null-guarded in case the
     // Home layout ever changes again.
@@ -7200,7 +7217,7 @@ function render() {
       : homeMode === 'all'
         ? `${filterLabel} has nothing logged for this date. Try another day in the calendar or clear the source filter.`
         : `${filterLabel} has nothing open for this date. Try another day in the calendar or switch over to settled results.`;
-    feed.innerHTML = `
+    feed.innerHTML = `${modeNoticeHtml}
       <div class="pick-feed-empty">
         <div class="home-empty-kicker">${_dailyEscape(modeLabel)} | ${_dailyEscape(selectedDateUpper)}</div>
         <div class="home-empty-title">${_dailyEscape(emptyTitle)}</div>
@@ -7292,7 +7309,7 @@ function render() {
         </div>`;
     };
 
-    feed.innerHTML = sections.map(section => {
+    feed.innerHTML = modeNoticeHtml + sections.map(section => {
       section.games.sort((a, b) => {
         if (a.sortTs !== b.sortTs) return a.sortTs - b.sortTs;
         return String(a.label || '').localeCompare(String(b.label || ''));

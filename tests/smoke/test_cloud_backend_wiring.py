@@ -217,6 +217,8 @@ def test_home_tab_is_matchup_board_with_modes_and_live_scores():
     assert "...sports.filter(s => !PRIMARY_SPORTS.includes(s))" in source
     assert "String(p.sport || '').toUpperCase()===activeFilter" in source
     assert "const homeModeCountLabel = homeMode === 'pending' ? 'open' : homeMode === 'settled' ? 'settled' : 'ledger';" in source
+    assert "const hiddenByModeCount = homeMode === 'all' ? 0 : Math.max(0, selectedDateTotalCount - selectedDateCount);" in source
+    assert "home-mode-notice" in source
     assert "homeMode === 'settled'" in source
     assert "else if(homeMode === 'pending')" in source
     assert "homeMode === 'all'" in source
@@ -232,12 +234,24 @@ def test_home_tab_is_matchup_board_with_modes_and_live_scores():
     assert "target=\"_blank\" rel=\"noopener noreferrer\" title=\"Open live score\"" in source
     assert "homeScoreChipHtml(homeScoreboardGameMap.get(game.key), game.startIso, game.label)" in source
     assert ".home-mode-segment" in css
+    assert ".home-mode-notice" in css
     assert ".home-score-chip" in css
     assert "a.home-score-chip:hover" in css
     assert "grid-template-columns: minmax(0, 1fr) auto;" in css
     assert "background: linear-gradient(180deg, #0d1117 0%, #030509 100%);" in css
     assert 'body[data-theme="light"] .home-score-chip' in css
     assert "font-size: 15px;" in css
+
+
+def test_search_scans_saved_picks_not_only_pending_rows():
+    source = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
+
+    search_start = source.index("function renderSearch()")
+    search_block = source[search_start:source.index("// ── Trends ──", search_start)]
+    assert "const picks = getPicks();" in search_block
+    assert "getPicks().filter(p => p.result === 'pending')" not in search_block
+    assert "search saved picks" in search_block
+    assert "No saved picks match your search" in search_block
 
 
 def test_frontend_ignores_failed_external_feed_cache_payloads():
