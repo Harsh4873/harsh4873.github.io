@@ -123,15 +123,68 @@ import { initMobileMode, initSettingsUI, initTheme } from './settings';
     };
   }
 
-  function buildRecordSummaryFromResultsMap(resultsMap) {
-    const map = (resultsMap && typeof resultsMap === 'object') ? resultsMap : {};
-    let wins = 0, losses = 0, pushes = 0;
-    for (const value of Object.values(map)) {
-      if (value === 'win') wins++;
-      else if (value === 'loss') losses++;
-      else if (value === 'push') pushes++;
+  function addResultToRecordSummary(summary, result) {
+    const normalized = normalizeResultValue(result);
+    if (normalized === 'win') summary.wins += 1;
+    else if (normalized === 'loss') summary.losses += 1;
+    else if (normalized === 'push') summary.pushes += 1;
+    return summary;
+  }
+
+  function getLedgerPicksForRecordSummary() {
+    try {
+      if (typeof getAllLedgerPicks === 'function') return getAllLedgerPicks();
+      if (typeof getPicks === 'function') return getPicks();
+    } catch (_) {
+      // Fall back to counting the result map directly below.
     }
-    return { wins, losses, pushes };
+    return [];
+  }
+
+  function buildRecordSummaryFromResultsMap(resultsMap, picksForDedupe = null) {
+    const map = (resultsMap && typeof resultsMap === 'object') ? resultsMap : {};
+    const summary = { wins: 0, losses: 0, pushes: 0 };
+    const picks = Array.isArray(picksForDedupe) ? picksForDedupe : getLedgerPicksForRecordSummary();
+    const matchedResultKeys = new Set();
+
+    if (
+      Array.isArray(picks) &&
+      picks.length &&
+      typeof getResultForPickFromMap === 'function' &&
+      typeof getLegacyResultKeysForPick === 'function'
+    ) {
+      picks.forEach((pick, index) => {
+        if (!pick || typeof pick !== 'object') return;
+        getLegacyResultKeysForPick(pick, index).forEach((key) => {
+          if (key) matchedResultKeys.add(String(key));
+        });
+        addResultToRecordSummary(summary, getResultForPickFromMap(pick, map));
+      });
+    }
+
+    Object.entries(map).forEach(([key, value]) => {
+      if (matchedResultKeys.has(String(key))) return;
+      addResultToRecordSummary(summary, normalizeResultEntry(value).result);
+    });
+
+    return summary;
+  }
+
+  function chooseDerivedRecordSummary(fromResults, fromPicks) {
+    if (hasRecordSummaryData(fromResults)) return normalizeRecordSummary(fromResults);
+    if (hasRecordSummaryData(fromPicks)) return normalizeRecordSummary(fromPicks);
+    return normalizeRecordSummary(null);
+  }
+
+  function hasKnownLedgerRecordSource() {
+    try {
+      return (
+        (typeof getResults === 'function' && Object.keys(getResults()).length > 0) ||
+        (typeof getPicks === 'function' && getPicks().some(p => p && normalizeResultValue(p.result) !== 'pending'))
+      );
+    } catch (_) {
+      return false;
+    }
   }
 
   function normalizeRecordSummary(record) {
@@ -225,16 +278,15 @@ function clearPendingRecordDelta() {
 }
 
 function shouldPersistDerivedRecordSummary(canonicalRecord, derivedRecord) {
-  // Per-category ratchet: persist when any axis of derived exceeds canonical.
-  // Never decrease canonical — picks can be deleted (e.g. slate resets) but
-  // their historical wins/losses/pushes remain part of the lifetime record.
-  if (!hasRecordSummaryData(derivedRecord)) return false;
-  const merged = mergeRecordSummariesMaxPerCategory(canonicalRecord, derivedRecord);
-  return !recordSummariesEqual(canonicalRecord, merged);
+  if (!hasRecordSummaryData(derivedRecord) && !hasKnownLedgerRecordSource()) return false;
+  return !recordSummariesEqual(canonicalRecord, derivedRecord);
 }
 
 function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._userRecord) {
-  return mergeRecordSummariesMaxPerCategory(canonicalRecord, derivedRecord);
+  if (hasRecordSummaryData(derivedRecord) || hasKnownLedgerRecordSource()) {
+    return normalizeRecordSummary(derivedRecord);
+  }
+  return normalizeRecordSummary(canonicalRecord);
 }
 
   function syncVisibleUserRecord(record, options = {}) {
@@ -292,27 +344,26 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
   }
 
   function syncRecordWithLedger() {
-    // Source the historical truth from the full results map (which retains
-    // entries even after picks are deleted from the active ledger), then
-    // ratchet the canonical UP per-category. Never decrease.
+    // Source the displayed record from ledger truth, not from the sticky
+    // Firestore summary. The results map may contain legacy aliases, so count
+    // each active pick once and only then include unmatched settled entries.
     let resultsMap = {};
     try {
       if (typeof getResults === 'function') resultsMap = getResults();
     } catch (_) { resultsMap = {}; }
-    const fromResults = buildRecordSummaryFromResultsMap(resultsMap);
+    const allLedgerPicks = typeof getAllLedgerPicks === 'function' ? getAllLedgerPicks() : [];
+    const fromResults = buildRecordSummaryFromResultsMap(resultsMap, allLedgerPicks);
     const fromPicks = (typeof getPicks === 'function')
       ? buildRecordSummaryFromPicks(getPicks())
       : { wins: 0, losses: 0, pushes: 0 };
     const previousCanonical = window._userRecord;
-    const merged = mergeRecordSummariesMaxPerCategory(
-      mergeRecordSummariesMaxPerCategory(previousCanonical, fromResults),
-      fromPicks
-    );
-    updateRecordDisplays(merged);
-    window._userRecord = merged;
+    const derived = chooseDerivedRecordSummary(fromResults, fromPicks);
+    const nextRecord = getPreferredDisplayedRecord(derived, previousCanonical);
+    updateRecordDisplays(nextRecord);
+    window._userRecord = nextRecord;
     const uid = window._userUid;
-    if (uid && window._recordSummaryLoaded && !recordSummariesEqual(previousCanonical, merged) && typeof window._saveUserRecordSummary === 'function') {
-      window._saveUserRecordSummary(uid, merged).catch(() => {});
+    if (uid && window._recordSummaryLoaded && !recordSummariesEqual(previousCanonical, nextRecord) && typeof window._saveUserRecordSummary === 'function') {
+      window._saveUserRecordSummary(uid, nextRecord).catch(() => {});
     }
   }
 
@@ -329,6 +380,7 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
   window.applyRecordOutcomeTransition = applyRecordOutcomeTransition;
   window.buildRecordSummaryFromPicks = buildRecordSummaryFromPicks;
   window.buildRecordSummaryFromResultsMap = buildRecordSummaryFromResultsMap;
+  window.chooseDerivedRecordSummary = chooseDerivedRecordSummary;
   window.mergeRecordSummariesMaxPerCategory = mergeRecordSummariesMaxPerCategory;
   window.recordSummariesEqual = recordSummariesEqual;
   window.normalizeRecordDelta = normalizeRecordDelta;
@@ -515,7 +567,7 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
     if (!uid) return Promise.resolve(null);
     const requested = normalizeRecordSummary(record);
     userRecordSaveChain = userRecordSaveChain.catch(() => {}).then(async () => {
-      const summary = mergeRecordSummariesMaxPerCategory(window._userRecord, requested);
+      const summary = requested;
       try {
         await setDoc(doc(db, 'users', uid), { record: summary }, { merge: true });
         window._userRecord = summary;
@@ -2157,12 +2209,8 @@ function scheduleLedgerStateSync(delayMs = 250) {
   }
   ledgerStateSyncTimer = setTimeout(() => {
     pushLedgerState(false);
-    if (window._userUid && window._saveUserRecordSummary && typeof getPicks === 'function' && typeof window.buildRecordSummaryFromPicks === 'function') {
-      const derivedRecord = window.buildRecordSummaryFromPicks(getPicks());
-      if (window.shouldPersistDerivedRecordSummary(window._userRecord, derivedRecord)) {
-        const mergedRecord = window.getPreferredDisplayedRecord(derivedRecord, window._userRecord);
-        window.syncVisibleUserRecord(mergedRecord, { persist: true });
-      }
+    if (window._userUid && window._saveUserRecordSummary && typeof window.syncRecordWithLedger === 'function') {
+      window.syncRecordWithLedger();
     }
   }, Math.max(0, Number(delayMs) || 0));
 }
@@ -3088,8 +3136,8 @@ function deletePick(id) {
     localStorage.setItem(GAME_TIMES_KEY, JSON.stringify(gameTimes));
   }
 
-  // Deletion never decreases the lifetime record — graded picks stay
-  // counted even if the entry is removed from the active ledger.
+  // Re-derive the record from the ledger after removal so stale summaries do
+  // not survive deleted or reset picks.
   if (typeof window.syncRecordWithLedger === 'function') window.syncRecordWithLedger();
 
   render();
@@ -7245,7 +7293,7 @@ function render() {
   const nu=decided.reduce((s,p)=>s+p.pl,0), tw=decided.filter(p=>p.result!=='push').reduce((s,p)=>s+p.units,0);
   const roi=tw>0?((nu/tw)*100).toFixed(1)+'%':'—', nuf=nu;
   if (typeof window.updateRecordDisplays === 'function') {
-    window.updateRecordDisplays(window.getPreferredDisplayedRecord({ wins: w, losses: l, pushes: pu }));
+    window.updateRecordDisplays(window._userRecord || { wins: w, losses: l, pushes: pu });
   }
   document.getElementById('stat-picks').textContent=statsPicks.length;
   document.getElementById('stat-wins').textContent=w;
