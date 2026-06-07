@@ -151,9 +151,13 @@ def test_frontend_ledger_cache_is_scoped_to_firebase_uid():
     assert "function ensureLocalLedgerOwnerForUid(uid)" in source
     assert "window._ensureLocalLedgerOwnerForUid(user.uid)" in source
     assert "const hadLocalLedgerState = localCacheBelongsToUser &&" in source
-    assert "window._applyUserLedgerState(ledgerToApply, { uid: user.uid })" in source
+    assert "const LEDGER_DIRTY_KEY" in source
+    assert "function isLocalLedgerDirty()" in source
+    assert "markDirty: shouldKeepLocal || forcedResetChanged" in source
     assert "if (!localLedgerBelongsToUid(uid)) return;" in source
+    assert "if (!force && !isLocalLedgerDirty()) return;" in source
     assert "k.startsWith('pickledger_ledger_owner_uid')" in source
+    assert "k.startsWith('pickledger_ledger_dirty')" in source
 
 
 def test_frontend_loads_sportytrader_cache_before_live_sync():

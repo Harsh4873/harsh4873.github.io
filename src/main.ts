@@ -981,10 +981,13 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
       }
     }
     focusHomeDateForIncomingLedgerState(stateToApply, previousLocal);
-    const restored = window._applyUserLedgerState(stateToApply, { uid });
+    const restored = window._applyUserLedgerState(stateToApply, { uid, markDirty: shouldKeepLocal });
     if (!restored) return false;
     refreshLedgerUi();
     if (typeof window.syncRecordWithLedger === 'function') window.syncRecordWithLedger();
+    if (shouldKeepLocal && typeof window.pushLedgerState === 'function') {
+      window.pushLedgerState(true).catch(() => {});
+    }
     if (typeof window.loadCanonicalRankingsState === 'function') {
       window.loadCanonicalRankingsState().then(() => {
         if (typeof render === 'function') render();
@@ -1054,7 +1057,10 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
       typeof window._localLedgerBelongsToUid !== 'function' ||
       window._localLedgerBelongsToUid(window._userUid);
     if (localLedgerMatchesUser && window._userUid && typeof window._saveUserPicks === 'function' && typeof window._buildLedgerStatePayload === 'function') {
-      await window._saveUserPicks(window._userUid, window._buildLedgerStatePayload());
+      if (typeof window.isLocalLedgerDirty !== 'function' || window.isLocalLedgerDirty()) {
+        await window._saveUserPicks(window._userUid, window._buildLedgerStatePayload());
+        markLedgerLocalSynced(getLocalLedgerSavedAt());
+      }
     }
     if (window._userUid && typeof window._saveUserRecordSummary === 'function') {
       await window._saveUserRecordSummary(window._userUid, normalizeRecordSummary(window._userRecord));
@@ -1066,7 +1072,8 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
       k.startsWith('pickledger_results') ||
       k.startsWith('pickledger_game_times') ||
       k.startsWith('pickledger_ledger_updated_at') ||
-      k.startsWith('pickledger_ledger_owner_uid')
+      k.startsWith('pickledger_ledger_owner_uid') ||
+      k.startsWith('pickledger_ledger_dirty')
     ).forEach(k => localStorage.removeItem(k));
     signOut(auth);
   };
@@ -1143,7 +1150,10 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
           forcedResetChanged = Boolean(reset.changed);
         }
         focusHomeDateForIncomingLedgerState(ledgerToApply, localBeforeRemote);
-        window._applyUserLedgerState(ledgerToApply, { uid: user.uid });
+        window._applyUserLedgerState(ledgerToApply, {
+          uid: user.uid,
+          markDirty: shouldKeepLocal || forcedResetChanged,
+        });
         localLedgerLoaded = hasMeaningfulLocalState();
         if ((shouldKeepLocal || forcedResetChanged) && localLedgerLoaded && typeof window.pushLedgerState === 'function') {
           window.pushLedgerState(true).catch(() => {});
@@ -1156,7 +1166,7 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
           if (reset.changed) {
             forcedResetChanged = true;
             window._clearLedgerLocalState();
-            window._applyUserLedgerState(reset.state, { uid: user.uid });
+            window._applyUserLedgerState(reset.state, { uid: user.uid, markDirty: true });
           }
         }
         localLedgerLoaded = true;
@@ -1208,7 +1218,8 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
         k.startsWith('pickledger_results') ||
         k.startsWith('pickledger_game_times') ||
         k.startsWith('pickledger_ledger_updated_at') ||
-        k.startsWith('pickledger_ledger_owner_uid')
+        k.startsWith('pickledger_ledger_owner_uid') ||
+        k.startsWith('pickledger_ledger_dirty')
       );
       signOutKeys.forEach(k => localStorage.removeItem(k));
       if (typeof render === 'function') render();
@@ -1247,6 +1258,7 @@ const RESULTS_KEY = `pickledger_results_${STORAGE_VERSION}`;
 const GAME_TIMES_KEY = `pickledger_game_times_${STORAGE_VERSION}`;
 const LEDGER_UPDATED_AT_KEY = `pickledger_ledger_updated_at_${STORAGE_VERSION}`;
 const LEDGER_OWNER_UID_KEY = `pickledger_ledger_owner_uid_${STORAGE_VERSION}`;
+const LEDGER_DIRTY_KEY = `pickledger_ledger_dirty_${STORAGE_VERSION}`;
 const HOME_DATE_STORAGE_KEY = `pickledger_home_date_${STORAGE_VERSION}`;
 const HOME_MODE_STORAGE_KEY = `pickledger_home_mode_${STORAGE_VERSION}`;
 const ONE_TIME_PROPS_CLEANUP_KEY = `pickledger_cleanup_nba_props_${STORAGE_VERSION}`;
@@ -1316,6 +1328,8 @@ let rankingsLedgerState = null;
 let adminHistoricalRankingsState = null;
 let adminLocalBackendHealthy = false;
 let adminLocalBackendCheckedAt = 0;
+let latestLedgerPullInFlight = false;
+let latestLedgerPullAt = 0;
 
 function normalizeServerBase(value) {
   if (!value) return '';
@@ -1892,6 +1906,14 @@ function getLocalLedgerOwnerUid() {
   }
 }
 
+function isLocalLedgerDirty() {
+  try {
+    return localStorage.getItem(LEDGER_DIRTY_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
+
 function setLocalLedgerOwnerUid(uid) {
   try {
     const value = typeof uid === 'string' ? uid.trim() : '';
@@ -1937,15 +1959,36 @@ function getLedgerOwnerUidOption(options = {}) {
   return typeof explicit === 'string' ? explicit.trim() : '';
 }
 
-function markLedgerLocalChanged(savedAt = new Date().toISOString()) {
+function markLedgerLocalChanged(savedAt = new Date().toISOString(), options = {}) {
   const value = String(savedAt || new Date().toISOString());
   try {
     if (window._userUid) setLocalLedgerOwnerUid(window._userUid);
     localStorage.setItem(LEDGER_UPDATED_AT_KEY, value);
+    if (options.dirty !== false) localStorage.setItem(LEDGER_DIRTY_KEY, '1');
   } catch {
     // Local ledger still exists in memory if storage metadata cannot be written.
   }
   return value;
+}
+
+function markLedgerLocalSynced(savedAt = getLocalLedgerSavedAt() || new Date().toISOString()) {
+  const value = String(savedAt || new Date().toISOString());
+  try {
+    if (window._userUid) setLocalLedgerOwnerUid(window._userUid);
+    localStorage.setItem(LEDGER_UPDATED_AT_KEY, value);
+    localStorage.removeItem(LEDGER_DIRTY_KEY);
+  } catch {
+    // Sync metadata is a cache hint; the Firestore write already succeeded.
+  }
+  return value;
+}
+
+function clearLedgerLocalDirtyFlag() {
+  try {
+    localStorage.removeItem(LEDGER_DIRTY_KEY);
+  } catch {
+    // Dirty state only affects cache conflict resolution.
+  }
 }
 
 function getAllLedgerPicks() {
@@ -2082,20 +2125,19 @@ function hasMeaningfulLocalState() {
 
 window._hasMeaningfulLocalState = hasMeaningfulLocalState;
 window.hasMeaningfulLocalState = hasMeaningfulLocalState;
+window.isLocalLedgerDirty = isLocalLedgerDirty;
 
 function shouldPreserveLocalLedgerState(localState, remoteState) {
-  const localTs = getLedgerSavedAtMs(localState);
-  const remoteTs = getLedgerSavedAtMs(remoteState);
-  if (!remoteTs) return true;
-  if (!localTs) return false;
-  return localTs >= remoteTs;
+  if (!isLocalLedgerDirty()) return false;
+  if (!hasMeaningfulLedgerData(localState)) return false;
+  return true;
 }
 
 window.shouldPreserveLocalLedgerState = shouldPreserveLocalLedgerState;
 
 function buildLedgerStatePayload(options = {}) {
-  migrateLocalResultKeysToStable({ schedule: false });
   const shouldTouchSavedAt = options.touchSavedAt !== false;
+  migrateLocalResultKeysToStable({ schedule: false, dirty: shouldTouchSavedAt });
   const existingSavedAt = getLocalLedgerSavedAt();
   const localHasData = hasMeaningfulLocalState();
   const savedAt = existingSavedAt
@@ -2122,6 +2164,7 @@ function clearLedgerLocalState() {
   localStorage.removeItem(GAME_TIMES_KEY);
   localStorage.removeItem(LEDGER_UPDATED_AT_KEY);
   localStorage.removeItem(LEDGER_OWNER_UID_KEY);
+  localStorage.removeItem(LEDGER_DIRTY_KEY);
 }
 
 function writeLedgerStateToLocalStorage(state, options = {}) {
@@ -2159,14 +2202,16 @@ function writeLedgerStateToLocalStorage(state, options = {}) {
     Object.entries(results).forEach(([id, result]) => saveResultToServer(id, result));
   }
   localStorage.setItem(GAME_TIMES_KEY, JSON.stringify(gameTimes));
-  markLedgerLocalChanged(getLedgerSavedAt(migratedState) || new Date().toISOString());
+  const savedAt = getLedgerSavedAt(migratedState) || new Date().toISOString();
+  if (options.markDirty === false) markLedgerLocalSynced(savedAt);
+  else markLedgerLocalChanged(savedAt);
   return { hasAny: true };
 }
 
 function applyLedgerStateFromServer(state, options = {}) {
   const uid = getLedgerOwnerUidOption(options);
   if (uid) setLocalLedgerOwnerUid(uid);
-  const { hasAny } = writeLedgerStateToLocalStorage(state, { mirrorResultsToServer: true, uid });
+  const { hasAny } = writeLedgerStateToLocalStorage(state, { uid, markDirty: false });
   return hasAny;
 }
 
@@ -2174,7 +2219,10 @@ function applyUserLedgerState(state, options = {}) {
   const uid = getLedgerOwnerUidOption(options);
   clearLedgerLocalState();
   if (uid) setLocalLedgerOwnerUid(uid);
-  const { hasAny } = writeLedgerStateToLocalStorage(state, { uid });
+  const { hasAny } = writeLedgerStateToLocalStorage(state, {
+    uid,
+    markDirty: options.markDirty === true,
+  });
   return hasAny;
 }
 
@@ -2186,6 +2234,7 @@ window._localLedgerBelongsToUid = localLedgerBelongsToUid;
 async function pushLedgerState(force = false) {
   const uid = window.getLedgerSyncUid ? window.getLedgerSyncUid() : '';
   if (!window._authStateResolved || !uid) return;
+  if (!force && !isLocalLedgerDirty()) return;
   if (!ensureLocalLedgerOwnerForUid(uid) && !hasMeaningfulLocalState()) return;
   if (!localLedgerBelongsToUid(uid)) return;
   if (ledgerStateSyncInFlight && !force) return;
@@ -2194,6 +2243,7 @@ async function pushLedgerState(force = false) {
     const state = buildLedgerStatePayload();
     await saveLedgerToFirebase(uid, state);
     await pushCanonicalRankingsState(state);
+    markLedgerLocalSynced(state.savedAt || getLocalLedgerSavedAt());
   } catch {
     // Best-effort sync only.
   } finally {
@@ -2218,12 +2268,20 @@ function scheduleLedgerStateSync(delayMs = 250) {
 function flushLedgerStateBeforeUnload() {
   if (!hasMeaningfulLocalState() || !window._userUid) return;
   if (!localLedgerBelongsToUid(window._userUid)) return;
+  if (!isLocalLedgerDirty()) return;
   pushLedgerState(true).catch(() => {});
 }
 
 window.addEventListener('pagehide', flushLedgerStateBeforeUnload);
 document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'hidden') flushLedgerStateBeforeUnload();
+  if (document.visibilityState === 'hidden') {
+    flushLedgerStateBeforeUnload();
+    return;
+  }
+  pullLatestUserLedgerState().catch(() => {});
+});
+window.addEventListener('focus', () => {
+  pullLatestUserLedgerState().catch(() => {});
 });
 
 async function pullLedgerStateIfNeeded(options = {}) {
@@ -2262,6 +2320,30 @@ async function pullLedgerStateIfNeeded(options = {}) {
   }
   return false;
 }
+
+async function pullLatestUserLedgerState(options = {}) {
+  const uid = window.getLedgerSyncUid ? window.getLedgerSyncUid(options.uid) : '';
+  if (!window._authStateResolved || !uid) return false;
+  if (latestLedgerPullInFlight) return false;
+
+  const force = options.force === true;
+  const now = Date.now();
+  if (!force && latestLedgerPullAt && now - latestLedgerPullAt < 3000) return false;
+  latestLedgerPullAt = now;
+  latestLedgerPullInFlight = true;
+  try {
+    const remoteState = await loadLedgerFromFirebase(uid);
+    if (!hasMeaningfulFirestoreLedgerState(remoteState)) return false;
+    return applyRemoteLedgerState(remoteState, window._authStateGeneration);
+  } catch (err) {
+    console.warn('[Firestore] foreground ledger sync failed:', err && err.message ? err.message : err);
+    return false;
+  } finally {
+    latestLedgerPullInFlight = false;
+  }
+}
+
+window.pullLatestUserLedgerState = pullLatestUserLedgerState;
 
 function toggleMoreFilters(e) {
   e.stopPropagation();
@@ -2316,10 +2398,10 @@ async function syncWithServer() {
       throw new Error('health check failed');
     }
     const uid = window.getLedgerSyncUid ? window.getLedgerSyncUid() : '';
-    if (uid && hasMeaningfulLocalState()) {
+    if (uid && hasMeaningfulLocalState() && isLocalLedgerDirty()) {
       await pushLedgerState(false);
     } else if (uid) {
-      await pullLedgerStateIfNeeded({ uid, expectedGeneration: window._authStateGeneration });
+      await pullLatestUserLedgerState({ uid, force: true });
     }
     setSyncStatus('synced');
   } catch {
@@ -2923,7 +3005,8 @@ function migrateLocalResultKeysToStable(options = {}) {
   const migrated = migrateResultsToStablePickKeys(rawResults, getAllLedgerPicks());
   if (migrated.changed || options.force) {
     localStorage.setItem(RESULTS_KEY, JSON.stringify(migrated.results));
-    markLedgerLocalChanged();
+    if (options.dirty === false) clearLedgerLocalDirtyFlag();
+    else markLedgerLocalChanged();
     if (options.schedule !== false && typeof scheduleLedgerStateSync === 'function') scheduleLedgerStateSync();
   }
   try {
@@ -9803,7 +9886,7 @@ refreshAdminLiveControls();
 initDayOfWeekChartRendering();
 window.dispatchEvent(new Event('pickledger:helpers-ready'));
 try {
-  migrateLocalResultKeysToStable({ schedule: false });
+  migrateLocalResultKeysToStable({ schedule: false, dirty: false });
 } catch (err) {
   console.warn('[StableKey] local result-key migration failed:', err && err.message ? err.message : err);
 }
@@ -9856,7 +9939,7 @@ render();
   if (isAdminModelRunnerUser()) {
     checkAdminLocalBackendHealth(true).catch(() => {});
   }
-  if (window._userUid && hasMeaningfulLocalState() && localLedgerBelongsToUid(window._userUid)) {
+  if (window._userUid && hasMeaningfulLocalState() && localLedgerBelongsToUid(window._userUid) && isLocalLedgerDirty()) {
     scheduleLedgerStateSync();
     pushLedgerState(true);
   }
