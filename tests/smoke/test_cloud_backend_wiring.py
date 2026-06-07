@@ -50,9 +50,12 @@ def test_model_schedule_is_visible_as_two_refresh_windows():
     workflow = (ROOT / ".github" / "workflows" / "model-cache-refresh.yml").read_text(encoding="utf-8")
     html = (ROOT / "index.html").read_text(encoding="utf-8")
 
+    assert "45 12 * * *" in workflow
+    assert "5 13 * * *" in workflow
+    assert "30 13 * * *" in workflow
     assert "5 20 * * *" in workflow
     assert "5 8 * * *" not in workflow
-    assert "Models refresh around 9:00 AM and 3:00 PM CT" in html
+    assert "Models warm before 9:00 AM and refresh around 3:00 PM CT" in html
     assert "8:30 AM, 9:05 AM, 10:30 AM, 3:05 PM, 3:30 PM CT" not in html
     assert "Cannon: 8:55/9:15/9:35 AM + 3:05 PM CT" not in html
     assert "SportyTrader/SportsGambler: 9:10/9:40 AM + 3:10 PM CT" not in html
@@ -60,6 +63,16 @@ def test_model_schedule_is_visible_as_two_refresh_windows():
     assert "<span class=\"models-schedule-label\">Auth</span>" not in html
     assert "3:05 AM" not in html
     assert "Google sign-in is only for ledger sync or force refresh" not in html
+
+
+def test_model_cache_workflow_rebases_and_retries_cache_publish():
+    workflow = (ROOT / ".github" / "workflows" / "model-cache-refresh.yml").read_text(encoding="utf-8")
+
+    assert 'BRANCH="${GITHUB_REF_NAME:-main}"' in workflow
+    assert 'git pull --rebase --autostash origin "$BRANCH"' in workflow
+    assert "for attempt in 1 2 3; do" in workflow
+    assert 'git push origin "HEAD:${BRANCH}"' in workflow
+    assert 'git rebase "origin/${BRANCH}"' in workflow
 
 
 def test_frontend_checks_cannon_cache_before_live_cloud_scrape():

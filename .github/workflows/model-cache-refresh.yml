@@ -2,6 +2,10 @@ name: Model Cache Refresh
 
 on:
   schedule:
+    # 12:45 UTC = 7:45 CT during daylight time, early safety warmup before GitHub queue delays.
+    - cron: "45 12 * * *"
+    # 13:05 UTC = 8:05 CT during daylight time, redundant morning warmup.
+    - cron: "5 13 * * *"
     # 13:30 UTC = 8:30 CT during daylight time, so morning checks have a same-day cache.
     - cron: "30 13 * * *"
     # 14:05 UTC = 9:05 CT during daylight time, after more markets post lines.
@@ -74,15 +78,31 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          BRANCH="${GITHUB_REF_NAME:-main}"
           if [ -z "$(git status --porcelain -- data/model_cache)" ]; then
             echo "No change in data/model_cache — skipping commit."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
+          git pull --rebase --autostash origin "$BRANCH"
           git add data/model_cache
+          if git diff --cached --quiet; then
+            echo "No staged cache change after rebase — skipping commit."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
           CACHE_DATE=$(python -c "import json; print(json.load(open('data/model_cache/latest.json'))['date'])")
           git commit -m "chore(models): refresh model cache for ${CACHE_DATE}"
-          git push
+          for attempt in 1 2 3; do
+            if git push origin "HEAD:${BRANCH}"; then
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            echo "Push failed on attempt ${attempt}; rebasing on origin/${BRANCH} before retry."
+            git fetch origin "$BRANCH"
+            git rebase "origin/${BRANCH}"
+          done
+          git push origin "HEAD:${BRANCH}"
           echo "changed=true" >> "$GITHUB_OUTPUT"
 
       - name: Trigger Pages deploy after cache commit
