@@ -487,10 +487,23 @@ function initModelChooser() {
     { id: 'model-card-wnba',             icon: '\u{1F3C0}', name: 'WNBA Model',                 desc: 'Live WNBA picks and off-season placeholder support' },
     { id: 'model-card-scores24-wnba',    icon: '\u{1F3C0}', name: 'Scores24WNBA',                desc: 'External WNBA live scores board' },
   ];
+  const DEPLOYED_MODEL_IDS = [
+    'model-card-mlb-new',
+    'model-card-mlb-inning',
+    'model-card-mlb-first-five',
+    'model-card-nba-new',
+    'model-card-nba-playoffs',
+    'model-card-wnba',
+    'model-card-sportytrader',
+    'model-card-sportsgambler',
+  ];
+  const DEPLOYED_MODEL_ID_SET = new Set(DEPLOYED_MODEL_IDS);
+  const DEPLOYED_MODELS = ALL_MODELS.filter(m => DEPLOYED_MODEL_ID_SET.has(m.id));
 
-  // Default: show all
+  // Default: show deployed models only. Dormant cards stay in code, but stale
+  // localStorage cannot bring them back into the deployed chooser.
   function getVisible() {
-    const allIds = ALL_MODELS.map(m => m.id);
+    const allIds = DEPLOYED_MODELS.map(m => m.id);
     try {
       const stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
       if (Array.isArray(stored)) {
@@ -522,14 +535,14 @@ function initModelChooser() {
     ALL_MODELS.forEach(function(m) {
       const card = document.getElementById(m.id);
       if (!card) return;
-      if (visibleSet.has(m.id)) {
+      if (DEPLOYED_MODEL_ID_SET.has(m.id) && visibleSet.has(m.id)) {
         card.classList.remove('model-hidden');
       } else {
         card.classList.add('model-hidden');
       }
     });
     const countEl = document.getElementById('model-chooser-count');
-    if (countEl) countEl.textContent = visibleSet.size;
+    if (countEl) countEl.textContent = String([...visibleSet].filter(id => DEPLOYED_MODEL_ID_SET.has(id)).length);
     if (typeof afterModelVisibilityChanged === 'function') afterModelVisibilityChanged();
   }
 
@@ -537,7 +550,7 @@ function initModelChooser() {
     const dd = document.getElementById('model-chooser-dropdown');
     if (!dd) return;
     dd.innerHTML = '<div class="model-chooser-section-label">AVAILABLE MODELS</div>' +
-      ALL_MODELS.map(function(m) {
+      DEPLOYED_MODELS.map(function(m) {
         const sel = visibleSet.has(m.id) ? ' selected' : '';
         return '<div class="model-chooser-item' + sel + '" data-model-id="' + m.id + '">' +
           '<span class="model-chooser-item-icon">' + m.icon + '</span>' +

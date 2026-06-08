@@ -25,7 +25,7 @@ on:
       models:
         description: "Comma-separated models, or all"
         required: false
-        default: "mlb_new,mlb_old,mlb_inning,mlb_first_five,wnba,nba,nba_old,nba_playoffs,nba_props"
+        default: "mlb_new,mlb_inning,mlb_first_five,wnba,nba,nba_playoffs"
 
 permissions:
   contents: write
@@ -76,7 +76,7 @@ jobs:
           except Exception:
               payload = {}
           models = payload.get("models") if isinstance(payload.get("models"), dict) else {}
-          required = ("mlb_new", "mlb_inning", "mlb_first_five")
+          required = ("mlb_new", "mlb_inning", "mlb_first_five", "wnba", "nba", "nba_playoffs")
           ready = str(payload.get("date") or "") == os.environ.get("TARGET_DATE", "") and all(
               isinstance(models.get(key), dict)
               and models[key].get("ok") is True
@@ -111,7 +111,7 @@ jobs:
         run: |
           python scripts/refresh_model_cache.py \
             --date "${{ github.event.inputs.date || '' }}" \
-            --models "${{ github.event.inputs.models || 'mlb_new,mlb_old,mlb_inning,mlb_first_five,wnba,nba,nba_old,nba_playoffs,nba_props' }}" \
+            --models "${{ github.event.inputs.models || 'mlb_new,mlb_inning,mlb_first_five,wnba,nba,nba_playoffs' }}" \
             --max-workers 3
 
       - name: Commit cache JSON if changed

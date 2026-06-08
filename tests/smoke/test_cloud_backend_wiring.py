@@ -98,8 +98,12 @@ def test_model_schedule_is_visible_as_two_refresh_windows():
 
 def test_model_cache_workflow_rebases_and_retries_cache_publish():
     workflow = (ROOT / ".github" / "workflows" / "model-cache-refresh.yml").read_text(encoding="utf-8")
+    script = (ROOT / "scripts" / "refresh_model_cache.py").read_text(encoding="utf-8")
 
     assert "cancel-in-progress: false" in workflow
+    assert "mlb_new,mlb_inning,mlb_first_five,wnba,nba,nba_playoffs" in workflow
+    assert "mlb_new,mlb_inning,mlb_first_five,wnba,nba,nba_playoffs" in script
+    assert "mlb_new,mlb_old,mlb_inning" not in workflow
     assert "git reset --hard origin/main" in workflow
     assert "Check scheduled cache freshness" in workflow
     assert "Scheduled model cache already fresh" in workflow
@@ -109,6 +113,42 @@ def test_model_cache_workflow_rebases_and_retries_cache_publish():
     assert "for attempt in 1 2 3; do" in workflow
     assert 'git push origin "HEAD:${BRANCH}"' in workflow
     assert 'git rebase "origin/${BRANCH}"' in workflow
+
+
+def test_deployed_model_and_ranking_choosers_are_limited_to_eight_sources():
+    models_source = (ROOT / "src" / "models.ts").read_text(encoding="utf-8")
+    main_source = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
+
+    for model_id in [
+        "model-card-mlb-new",
+        "model-card-mlb-inning",
+        "model-card-mlb-first-five",
+        "model-card-nba-new",
+        "model-card-nba-playoffs",
+        "model-card-wnba",
+        "model-card-sportytrader",
+        "model-card-sportsgambler",
+    ]:
+        assert model_id in models_source
+    assert "const DEPLOYED_MODEL_IDS = [" in models_source
+    assert "const DEPLOYED_MODELS = ALL_MODELS.filter" in models_source
+    assert "DEPLOYED_MODEL_ID_SET.has(m.id) && visibleSet.has(m.id)" in models_source
+    assert "DEPLOYED_MODELS.map(function(m)" in models_source
+
+    assert "const DEPLOYED_RANKING_SOURCES = [" in main_source
+    for source in [
+        "MLB Model",
+        "MLB Inning",
+        "MLB First Five",
+        "NBA New",
+        "NBA Playoffs",
+        "WNBA Model",
+        "SportyTrader",
+        "SportsGambler",
+    ]:
+        assert source in main_source
+    assert "const KNOWN_PICKLEDGER_SOURCES = DEPLOYED_RANKING_SOURCES;" in main_source
+    assert "stats.filter(s => DEPLOYED_RANKING_SOURCE_SET.has(s.source))" in main_source
 
 
 def test_cannon_workflow_skips_duplicate_scheduled_refreshes():
@@ -199,6 +239,8 @@ def test_frontend_loads_sportytrader_cache_before_live_sync():
     live_sync = source.index("const synced = await syncSportyTraderFromServer", sportytrader_block)
 
     assert cache_first < live_sync
+    assert "Using browser-cached SportyTrader feed" not in source
+    assert "from: 'browser-cache'" not in source
 
 
 def test_frontend_loads_sportsgambler_cache_before_live_sync():
@@ -209,6 +251,8 @@ def test_frontend_loads_sportsgambler_cache_before_live_sync():
     live_sync = source.index("const synced = await syncSportsgamblerFromServer", sportsgambler_block)
 
     assert cache_first < live_sync
+    assert "Using browser-cached SportsGambler feed" not in source
+    assert "from: 'browser-cache'" not in source
 
 
 def test_model_results_make_inning_game_context_visible_and_actionable_rows_clear():
@@ -302,6 +346,11 @@ def test_external_feed_refresh_workflow_runs_scrapers_and_deploys_pages():
     assert "python scripts/refresh_external_feeds.py" in workflow
     assert "python -m playwright install chromium chromium-headless-shell" in workflow
     assert "gh workflow run deploy-pages.yml --ref main" in workflow
+    assert "cancel-in-progress: false" in workflow
+    assert "git reset --hard origin/main" in workflow
+    assert 'git pull --rebase --autostash origin "$BRANCH"' in workflow
+    assert "for attempt in 1 2 3; do" in workflow
+    assert 'git push origin "HEAD:${BRANCH}"' in workflow
     assert "10 14 * * *" in workflow
     assert "40 14 * * *" in workflow
     assert "10 20 * * *" in workflow

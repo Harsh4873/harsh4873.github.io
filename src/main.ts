@@ -6755,6 +6755,17 @@ function renderTrends() {
 // ── Source Rankings Chooser ──
 const SOURCE_CHOOSER_STORAGE_KEY = 'pickledger_visible_ranking_sources';
 const SOURCE_CHOOSER_CATALOG_KEY = 'pickledger_visible_ranking_sources_catalog';
+const DEPLOYED_RANKING_SOURCES = [
+  'MLB Model',
+  'MLB Inning',
+  'MLB First Five',
+  'NBA New',
+  'NBA Playoffs',
+  'WNBA Model',
+  'SportyTrader',
+  'SportsGambler',
+];
+const DEPLOYED_RANKING_SOURCE_SET = new Set(DEPLOYED_RANKING_SOURCES);
 let sourceChooserVisibleSources = null;
 let sourceChooserBound = false;
 let sourceChooserOpen = false;
@@ -6777,7 +6788,7 @@ function saveVisibleRankingSources(set) {
 function getVisibleRankingSources(sourceNames) {
   const allSources = [...new Set((Array.isArray(sourceNames) ? sourceNames : [])
     .map(source => String(source || '').trim())
-    .filter(Boolean))];
+    .filter(source => source && DEPLOYED_RANKING_SOURCE_SET.has(source)))];
   const allSourceSet = new Set(allSources);
   const stored = readStoredArray(SOURCE_CHOOSER_STORAGE_KEY);
   if (!sourceChooserVisibleSources) {
@@ -6932,13 +6943,7 @@ function render() {
   // Source chooser shows the union of (eligible-in-leaderboard) ∪ (known
   // model sources) so users can opt in/out of, e.g., MLB First Five before
   // it has 3 graded picks. Stubs render with a 0-0 record badge.
-  const KNOWN_PICKLEDGER_SOURCES = [
-    'MLB Model', 'MLB First Five', 'MLB Inning',
-    'NBA New', 'NBA Playoffs', 'NBA Model', 'NBA Props Model',
-    'WNBA Model', 'IPL Model',
-    'SportyTrader', 'SportsGambler', 'Cannon Analytics',
-    'Scores24MLB', 'Scores24WNBA',
-  ];
+  const KNOWN_PICKLEDGER_SOURCES = DEPLOYED_RANKING_SOURCES;
   const knownStatsSources = new Set(stats.map(s => s.source));
   const chooserStats = [...stats];
   KNOWN_PICKLEDGER_SOURCES.forEach(name => {
@@ -6952,10 +6957,12 @@ function render() {
   });
   chooserStats.sort((a, b) => (b.composite - a.composite) || String(a.source).localeCompare(String(b.source)));
   const visibleRankingSources = getVisibleRankingSources(chooserStats.map(s => s.source));
-  const visibleStats = stats.filter(s => visibleRankingSources.has(s.source));
-  renderSourceChooser(chooserStats, visibleRankingSources);
+  const deployedStats = stats.filter(s => DEPLOYED_RANKING_SOURCE_SET.has(s.source));
+  const visibleStats = deployedStats.filter(s => visibleRankingSources.has(s.source));
+  const deployedChooserStats = chooserStats.filter(s => DEPLOYED_RANKING_SOURCE_SET.has(s.source));
+  renderSourceChooser(deployedChooserStats, visibleRankingSources);
   const lb = document.getElementById('leaderboard');
-  if(!stats.length) lb.innerHTML='<div class="empty-state" style="grid-column:1/-1">Need 3+ decided picks per source to rank</div>';
+  if(!deployedStats.length) lb.innerHTML='<div class="empty-state" style="grid-column:1/-1">Need 3+ decided picks per deployed source to rank</div>';
   else if(!visibleStats.length) lb.innerHTML='<div class="empty-state" style="grid-column:1/-1">Choose at least one source to show rankings</div>';
   else lb.innerHTML=visibleStats.map((s,i)=>{
     const rank=i+1, rc=rank<=3?`rank-${rank}`:'', c=getColor(s.composite);
@@ -7964,6 +7971,7 @@ async function loadModelTimestamps() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  clearLegacyFeedLocalCaches();
   loadModelTimestamps();
   refreshGithubModelCacheStatus();
 });
@@ -8954,7 +8962,16 @@ function _buildManualFeedCandidates(feedUrl, endpointPath = '') {
 async function loadSportyTraderManualFeed() {
   const firebaseCache = await getAdminPicksFromFirebase('sportytrader');
   if (firebaseCache) {
-    return { picks: firebaseCache.picks || [], meta: firebaseCache.meta || {} };
+    const payload = firebaseCache.payload && typeof firebaseCache.payload === 'object' ? firebaseCache.payload : {};
+    const meta = payload.meta && typeof payload.meta === 'object' ? payload.meta : {};
+    return {
+      picks: firebaseCache.picks || [],
+      meta: {
+        ...meta,
+        date: String(meta.date || firebaseCache.date || '').trim(),
+        updatedAt: String(meta.updatedAt || payload.updatedAt || payload.generatedAt || '').trim(),
+      },
+    };
   }
 
   const payload = await (SPORTYTRADER_FEED_URL
@@ -9001,13 +9018,25 @@ function getSportyTraderCachedFeed() {
 }
 
 function saveSportyTraderCachedFeed(payload) {
-  localStorage.setItem(SPORTYTRADER_CACHE_KEY, JSON.stringify(payload));
+  void payload;
+  try {
+    localStorage.removeItem(SPORTYTRADER_CACHE_KEY);
+  } catch {}
 }
 
 async function loadSportsgamblerManualFeed() {
   const firebaseCache = await getAdminPicksFromFirebase('sportsgambler');
   if (firebaseCache) {
-    return { picks: firebaseCache.picks || [], meta: firebaseCache.meta || {} };
+    const payload = firebaseCache.payload && typeof firebaseCache.payload === 'object' ? firebaseCache.payload : {};
+    const meta = payload.meta && typeof payload.meta === 'object' ? payload.meta : {};
+    return {
+      picks: firebaseCache.picks || [],
+      meta: {
+        ...meta,
+        date: String(meta.date || firebaseCache.date || '').trim(),
+        updatedAt: String(meta.updatedAt || payload.updatedAt || payload.generatedAt || '').trim(),
+      },
+    };
   }
 
   const payload = await (SPORTSGAMBLER_FEED_URL
@@ -9054,7 +9083,17 @@ function getSportsgamblerCachedFeed() {
 }
 
 function saveSportsgamblerCachedFeed(payload) {
-  localStorage.setItem(SPORTSGAMBLER_CACHE_KEY, JSON.stringify(payload));
+  void payload;
+  try {
+    localStorage.removeItem(SPORTSGAMBLER_CACHE_KEY);
+  } catch {}
+}
+
+function clearLegacyFeedLocalCaches() {
+  try {
+    localStorage.removeItem(SPORTYTRADER_CACHE_KEY);
+    localStorage.removeItem(SPORTSGAMBLER_CACHE_KEY);
+  } catch {}
 }
 
 function setSportsgamblerSyncMeta(meta) {
@@ -9294,21 +9333,12 @@ async function runModel(model, eventOrOptions = {}) {
         };
         saveSportyTraderCachedFeed({ picks: loaded.picks, meta });
         setSportyTraderSyncMeta(meta);
-        setModelStatus(model, `Loaded ${loaded.picks.length} cached SportyTrader pick(s)`, 'ok');
+        setModelStatus(model, `Loaded ${loaded.picks.length} scheduled SportyTrader pick(s)`, 'ok');
         _resetModelButton(model);
         return;
       } catch (_cacheErr) {
-        const cached = getSportyTraderCachedFeed();
-        if (cached && Array.isArray(cached.picks) && cached.picks.length) {
-          _clearNbaComparisonResults();
-          _clearMlbComparisonResults();
-          pendingModelPicks = cached.picks;
-          renderModelResults(cached.picks, { meta: '' });
-          setSportyTraderSyncMeta({ ...(cached.meta || {}), from: 'browser-cache' });
-          setModelStatus(model, `Using browser-cached SportyTrader feed (${cached.picks.length} pick(s))`, 'ok');
-          _resetModelButton(model);
-          return;
-        }
+        // No local fallback: if today's scheduled cache is missing, only an
+        // admin live sync should produce fresh feed output.
       }
     }
     let backendErr = '';
@@ -9322,12 +9352,12 @@ async function runModel(model, eventOrOptions = {}) {
       saveSportyTraderCachedFeed({ picks: synced.picks, meta: synced.meta });
       setSportyTraderSyncMeta(synced.meta);
       setModelStatus(
-        model,
-        synced.meta && String(synced.meta.from || '').includes('cache')
-          ? `Loaded ${synced.picks.length} cached SportyTrader pick(s)`
-          : `Synced ${synced.picks.length} pick(s) from SportyTrader`,
-        'ok'
-      );
+          model,
+          synced.meta && String(synced.meta.from || '').includes('cache')
+            ? `Loaded ${synced.picks.length} scheduled SportyTrader pick(s)`
+            : `Synced ${synced.picks.length} pick(s) from SportyTrader`,
+          'ok'
+        );
     } catch (e) {
       backendErr = String(e && e.message ? e.message : e);
       try {
@@ -9346,29 +9376,13 @@ async function runModel(model, eventOrOptions = {}) {
         setModelStatus(
           model,
           backendErr
-            ? `Live sync failed (${backendErr}); loaded ${loaded.picks.length} cached SportyTrader pick(s)`
-            : `Loaded ${loaded.picks.length} cached SportyTrader pick(s)`,
+            ? `Live sync failed (${backendErr}); loaded ${loaded.picks.length} scheduled SportyTrader pick(s)`
+            : `Loaded ${loaded.picks.length} scheduled SportyTrader pick(s)`,
           'ok'
         );
       } catch (feedErr) {
-        const cached = getSportyTraderCachedFeed();
-        if (cached && Array.isArray(cached.picks) && cached.picks.length) {
-          _clearNbaComparisonResults();
-          _clearMlbComparisonResults();
-          pendingModelPicks = cached.picks;
-          renderModelResults(cached.picks, { meta: '' });
-          setSportyTraderSyncMeta({ ...(cached.meta || {}), from: 'browser-cache' });
-          setModelStatus(
-            model,
-            backendErr
-              ? `Live sync failed (${backendErr}); using browser-cached SportyTrader feed (${cached.picks.length} pick(s))`
-              : `Using browser-cached SportyTrader feed (${cached.picks.length} pick(s))`,
-            'ok'
-          );
-        } else {
-          const feedMsg = String(feedErr && feedErr.message ? feedErr.message : feedErr);
-          setModelStatus(model, `SportyTrader unavailable (${backendErr}; ${feedMsg})`, 'error');
-        }
+        const feedMsg = String(feedErr && feedErr.message ? feedErr.message : feedErr);
+        setModelStatus(model, `SportyTrader unavailable (${backendErr}; ${feedMsg})`, 'error');
       }
     } finally {
       _resetModelButton(model);
@@ -9391,21 +9405,12 @@ async function runModel(model, eventOrOptions = {}) {
         };
         saveSportsgamblerCachedFeed({ picks: loaded.picks, meta });
         setSportsgamblerSyncMeta(meta);
-        setModelStatus(model, `Loaded ${loaded.picks.length} cached SportsGambler pick(s)`, 'ok');
+        setModelStatus(model, `Loaded ${loaded.picks.length} scheduled SportsGambler pick(s)`, 'ok');
         _resetModelButton(model);
         return;
       } catch (_cacheErr) {
-        const cached = getSportsgamblerCachedFeed();
-        if (cached && Array.isArray(cached.picks) && cached.picks.length) {
-          _clearNbaComparisonResults();
-          _clearMlbComparisonResults();
-          pendingModelPicks = cached.picks;
-          renderModelResults(cached.picks, { meta: '' });
-          setSportsgamblerSyncMeta({ ...(cached.meta || {}), from: 'browser-cache' });
-          setModelStatus(model, `Using browser-cached SportsGambler feed (${cached.picks.length} pick(s))`, 'ok');
-          _resetModelButton(model);
-          return;
-        }
+        // No local fallback: if today's scheduled cache is missing, only an
+        // admin live sync should produce fresh feed output.
       }
     }
     try {
@@ -9418,12 +9423,12 @@ async function runModel(model, eventOrOptions = {}) {
       saveSportsgamblerCachedFeed({ picks: synced.picks, meta: synced.meta });
       setSportsgamblerSyncMeta(synced.meta);
       setModelStatus(
-        model,
-        synced.meta && String(synced.meta.from || '').includes('cache')
-          ? `Loaded ${synced.picks.length} cached SportsGambler pick(s)`
-          : `Synced ${synced.picks.length} pick(s) from SportsGambler`,
-        'ok'
-      );
+          model,
+          synced.meta && String(synced.meta.from || '').includes('cache')
+            ? `Loaded ${synced.picks.length} scheduled SportsGambler pick(s)`
+            : `Synced ${synced.picks.length} pick(s) from SportsGambler`,
+          'ok'
+        );
     } catch (e) {
       const backendErr = String(e && e.message ? e.message : e);
       try {
@@ -9442,29 +9447,13 @@ async function runModel(model, eventOrOptions = {}) {
         setModelStatus(
           model,
           backendErr
-            ? `Live sync failed (${backendErr}); loaded ${loaded.picks.length} cached SportsGambler pick(s)`
-            : `Loaded ${loaded.picks.length} cached SportsGambler pick(s)`,
+            ? `Live sync failed (${backendErr}); loaded ${loaded.picks.length} scheduled SportsGambler pick(s)`
+            : `Loaded ${loaded.picks.length} scheduled SportsGambler pick(s)`,
           'ok'
         );
       } catch (feedErr) {
-        const cached = getSportsgamblerCachedFeed();
-        if (cached && Array.isArray(cached.picks) && cached.picks.length) {
-          _clearNbaComparisonResults();
-          _clearMlbComparisonResults();
-          pendingModelPicks = cached.picks;
-          renderModelResults(cached.picks, { meta: '' });
-          setSportsgamblerSyncMeta({ ...(cached.meta || {}), from: 'browser-cache' });
-          setModelStatus(
-            model,
-            backendErr
-              ? `Live sync failed (${backendErr}); using browser-cached SportsGambler feed (${cached.picks.length} pick(s))`
-              : `Using browser-cached SportsGambler feed (${cached.picks.length} pick(s))`,
-            'ok'
-          );
-        } else {
-          const feedMsg = String(feedErr && feedErr.message ? feedErr.message : feedErr);
-          setModelStatus(model, `SportsGambler unavailable (${backendErr}; ${feedMsg})`, 'error');
-        }
+        const feedMsg = String(feedErr && feedErr.message ? feedErr.message : feedErr);
+        setModelStatus(model, `SportsGambler unavailable (${backendErr}; ${feedMsg})`, 'error');
       }
     } finally {
       _resetModelButton(model);
@@ -9954,21 +9943,25 @@ function addModelPicksToLedger() {
 }
 
 function initSportyTraderSyncMeta() {
-  const cached = getSportyTraderCachedFeed();
-  if (cached && cached.meta && _isFreshFeedMeta(cached.meta)) {
-    setSportyTraderSyncMeta(cached.meta);
-  } else {
-    setSportyTraderSyncMeta(null);
-  }
+  setSportyTraderSyncMeta(null);
+  loadSportyTraderManualFeed()
+    .then((loaded) => {
+      if (loaded && loaded.meta && _isFreshFeedMeta(loaded.meta)) {
+        setSportyTraderSyncMeta({ ...loaded.meta, from: loaded.meta.from || 'scheduled-cache' });
+      }
+    })
+    .catch(() => {});
 }
 
 function initSportsgamblerSyncMeta() {
-  const cached = getSportsgamblerCachedFeed();
-  if (cached && cached.meta && _isFreshFeedMeta(cached.meta)) {
-    setSportsgamblerSyncMeta(cached.meta);
-  } else {
-    setSportsgamblerSyncMeta(null);
-  }
+  setSportsgamblerSyncMeta(null);
+  loadSportsgamblerManualFeed()
+    .then((loaded) => {
+      if (loaded && loaded.meta && _isFreshFeedMeta(loaded.meta)) {
+        setSportsgamblerSyncMeta({ ...loaded.meta, from: loaded.meta.from || 'scheduled-cache' });
+      }
+    })
+    .catch(() => {});
 }
 
 function removePickLogNhlFilterOption() {
