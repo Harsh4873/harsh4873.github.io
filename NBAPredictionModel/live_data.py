@@ -24,11 +24,206 @@ from nba_api.stats.endpoints import (
 _nba_teams = teams.get_teams()
 _GARBAGE_TIME_MARGIN_CAP = 15.0
 REQUEST_PAUSE_SECONDS = 0.1 if os.environ.get("RENDER", "").strip().lower() == "true" else 0.6
+ESPN_NBA_TEAMS_URL = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams"
+ESPN_USER_AGENT = "Mozilla/5.0 PickLedgerPro NBA fallback/1.0"
 
 
 def _pause() -> None:
     if REQUEST_PAUSE_SECONDS > 0:
         time.sleep(REQUEST_PAUSE_SECONDS)
+
+
+def _fetch_espn_json(url: str) -> dict:
+    req = Request(url, headers={"User-Agent": ESPN_USER_AGENT})
+    with urlopen(req, timeout=20) as resp:
+        payload = json.loads(resp.read().decode("utf-8"))
+    return payload if isinstance(payload, dict) else {}
+
+
+def _normalize_team_lookup(value: object) -> str:
+    return "".join(ch for ch in str(value or "").lower() if ch.isalnum())
+
+
+def _espn_team_catalog() -> list[dict]:
+    payload = _fetch_espn_json(ESPN_NBA_TEAMS_URL)
+    sports = payload.get("sports") if isinstance(payload.get("sports"), list) else []
+    leagues = sports[0].get("leagues") if sports and isinstance(sports[0], dict) else []
+    teams_payload = leagues[0].get("teams") if leagues and isinstance(leagues[0], dict) else []
+    return [
+        item.get("team")
+        for item in teams_payload or []
+        if isinstance(item, dict) and isinstance(item.get("team"), dict)
+    ]
+
+
+def _find_espn_team(team_name: str, catalog: list[dict]) -> dict | None:
+    target = _normalize_team_lookup(team_name)
+    for team in catalog:
+        candidates = (
+            team.get("name"),
+            team.get("displayName"),
+            team.get("shortDisplayName"),
+            team.get("abbreviation"),
+            team.get("location"),
+        )
+        if any(_normalize_team_lookup(value) == target for value in candidates):
+            return team
+    return None
+
+
+def _espn_stat_lookup(payload: dict) -> dict[str, float]:
+    results = payload.get("results") if isinstance(payload.get("results"), dict) else {}
+    stats_root = results.get("stats") if isinstance(results.get("stats"), dict) else {}
+    categories = stats_root.get("categories") if isinstance(stats_root.get("categories"), list) else []
+    values: dict[str, float] = {}
+    for category in categories:
+        stats = category.get("stats") if isinstance(category, dict) and isinstance(category.get("stats"), list) else []
+        for stat in stats:
+            if not isinstance(stat, dict):
+                continue
+            name = str(stat.get("name") or "").strip()
+            if not name:
+                continue
+            try:
+                values[name] = float(stat.get("value"))
+            except (TypeError, ValueError):
+                continue
+    return values
+
+
+def _espn_total_record(team_payload: dict) -> dict[str, float]:
+    team = team_payload.get("team") if isinstance(team_payload.get("team"), dict) else {}
+    record = team.get("record") if isinstance(team.get("record"), dict) else {}
+    items = record.get("items") if isinstance(record.get("items"), list) else []
+    total = next((item for item in items if isinstance(item, dict) and item.get("type") == "total"), {})
+    stats = total.get("stats") if isinstance(total, dict) and isinstance(total.get("stats"), list) else []
+    values: dict[str, float] = {}
+    for stat in stats:
+        if not isinstance(stat, dict):
+            continue
+        try:
+            values[str(stat.get("name") or "")] = float(stat.get("value"))
+        except (TypeError, ValueError):
+            continue
+    return values
+
+
+def _clamp_metric(value: float, low: float, high: float) -> float:
+    return max(low, min(high, value))
+
+
+def _espn_fallback_team_stats(team_name: str, team: dict) -> dict:
+    slug = str(team.get("abbreviation") or team.get("id") or "").strip().lower()
+    stats = _espn_stat_lookup(_fetch_espn_json(f"{ESPN_NBA_TEAMS_URL}/{slug}/statistics"))
+    record = _espn_total_record(_fetch_espn_json(f"{ESPN_NBA_TEAMS_URL}/{slug}"))
+
+    points_for = float(record.get("avgPointsFor", stats.get("avgPoints", 112.0)))
+    points_against = float(record.get("avgPointsAgainst", points_for))
+    point_diff = float(record.get("differential", points_for - points_against))
+    win_pct = _clamp_metric(float(record.get("winPercent", 0.5)), 0.0, 1.0)
+    fga = max(float(stats.get("avgFieldGoalsAttempted", 88.0)), 1.0)
+    fgm = float(stats.get("avgFieldGoalsMade", fga * 0.47))
+    three_made = float(stats.get("avgThreePointFieldGoalsMade", 12.0))
+    fta = float(stats.get("avgFreeThrowsAttempted", 22.0))
+    turnovers = float(stats.get("avgTurnovers", 13.0))
+    rebounds = float(stats.get("avgRebounds", 43.0))
+    defensive_rebounds = float(stats.get("avgDefensiveRebounds", rebounds * 0.72))
+    offensive_rebounds = float(stats.get("avgOffensiveRebounds", rebounds - defensive_rebounds))
+    shooting_denom = max(2.0 * (fga + 0.44 * fta), 1.0)
+    ts_pct = _clamp_metric(points_for / shooting_denom, 0.45, 0.70)
+    efg_pct = _clamp_metric((fgm + (0.5 * three_made)) / fga, 0.40, 0.70)
+    tov_pct = _clamp_metric(turnovers / max(fga + (0.44 * fta) + turnovers, 1.0), 0.08, 0.22)
+    reb_pct = _clamp_metric(0.50 + ((rebounds - 43.0) / 200.0), 0.45, 0.55)
+    dreb_pct = _clamp_metric(defensive_rebounds / max(rebounds, 1.0), 0.60, 0.85)
+    opp_oreb_pct = _clamp_metric(1.0 - dreb_pct, 0.15, 0.40)
+
+    return {
+        "full_name": str(team.get("displayName") or team_name),
+        "net_rating": point_diff,
+        "season_net_rating": point_diff,
+        "last10_net_rating": point_diff,
+        "off_rating": points_for,
+        "def_rating": points_against,
+        "efg_pct": efg_pct,
+        "ts_pct": ts_pct,
+        "tov_pct": tov_pct,
+        "reb_pct": reb_pct,
+        "dreb_pct": dreb_pct,
+        "opp_tov_pct": 0.135,
+        "opp_oreb_pct": opp_oreb_pct,
+        "pace": 99.0,
+        "win_pct": win_pct,
+        "recent_5_win_pct": win_pct,
+        "recent_10_win_pct": win_pct,
+        "weighted_win_pct": win_pct,
+        "raw_recent_5_point_diff": point_diff,
+        "raw_recent_10_point_diff": point_diff,
+        "raw_weighted_point_diff": point_diff,
+        "capped_recent_5_point_diff": cap_game_margin(point_diff),
+        "capped_recent_10_point_diff": cap_game_margin(point_diff),
+        "capped_weighted_point_diff": cap_game_margin(point_diff),
+        "garbage_time_margin_cap": _GARBAGE_TIME_MARGIN_CAP,
+        "recent_5_point_diff": point_diff,
+        "recent_10_point_diff": point_diff,
+        "weighted_point_diff": point_diff,
+        "recent_5_total_points": points_for + points_against,
+        "recent_10_total_points": points_for + points_against,
+        "points_per_game": points_for,
+        "opp_points_per_game": points_against,
+        "rest_days": 1.0,
+        "back_to_back_flag": False,
+        "is_b2b_second_leg": False,
+        "is_3_in_4_nights": False,
+        "is_4_in_5_nights": False,
+        "is_5_in_7_nights": False,
+        "current_road_trip_length": 0,
+        "stats_source": "ESPN team statistics fallback",
+    }
+
+
+def fetch_espn_team_stats_fallback(upcoming_games: list[dict] | None = None) -> dict:
+    team_names: list[str] = []
+    for game in upcoming_games or []:
+        for key in ("away_team", "home_team"):
+            name = str(game.get(key) or "").strip()
+            if name and name not in team_names:
+                team_names.append(name)
+    if not team_names:
+        return {}
+
+    catalog = _espn_team_catalog()
+    result: dict[str, dict] = {}
+    for team_name in team_names:
+        team = _find_espn_team(team_name, catalog)
+        if not team:
+            continue
+        payload = _espn_fallback_team_stats(team_name, team)
+        result[team_name] = payload
+        result[str(team.get("displayName") or team_name)] = payload
+        result[_team_key(str(team.get("displayName") or team_name))] = payload
+    return result
+
+
+def fetch_espn_roster_fallback(team_name: str) -> list:
+    catalog = _espn_team_catalog()
+    team = _find_espn_team(team_name, catalog)
+    if not team:
+        return []
+    slug = str(team.get("abbreviation") or team.get("id") or "").strip().lower()
+    payload = _fetch_espn_json(f"{ESPN_NBA_TEAMS_URL}/{slug}/roster")
+    athletes = payload.get("athletes") if isinstance(payload.get("athletes"), list) else []
+    return [
+        {
+            "name": str(athlete.get("displayName") or athlete.get("fullName") or "").strip(),
+            "num": str(athlete.get("jersey") or "").strip(),
+            "position": str((athlete.get("position") or {}).get("abbreviation") or "").strip(),
+            "age": athlete.get("age") or 0,
+            "player_id": athlete.get("id") or 0,
+            "source": "ESPN roster fallback",
+        }
+        for athlete in athletes
+        if isinstance(athlete, dict) and (athlete.get("displayName") or athlete.get("fullName"))
+    ]
 
 
 def _team_key(full_name: str) -> str:
@@ -247,8 +442,15 @@ def fetch_roster(team_name: str, season: str = '2025-26') -> list:
         return []
     
     _pause()
-    roster = commonteamroster.CommonTeamRoster(team_id=team_id, season=season)
-    df = roster.get_data_frames()[0]
+    try:
+        roster = commonteamroster.CommonTeamRoster(team_id=team_id, season=season)
+        df = roster.get_data_frames()[0]
+    except Exception as exc:
+        fallback = fetch_espn_roster_fallback(team_name)
+        if fallback:
+            print(f"WARNING: NBA API roster failed for {team_name} ({exc}); using ESPN roster fallback.")
+            return fallback
+        raise
     
     players = []
     for _, row in df.iterrows():
@@ -272,12 +474,19 @@ def fetch_all_team_stats(
     Blends season-long and last-10-game Net Rating (70/30).
     """
     _pause()
-    stats = leaguedashteamstats.LeagueDashTeamStats(
-        measure_type_detailed_defense='Advanced',
-        season=season,
-        per_mode_detailed='PerGame'
-    )
-    df = stats.get_data_frames()[0]
+    try:
+        stats = leaguedashteamstats.LeagueDashTeamStats(
+            measure_type_detailed_defense='Advanced',
+            season=season,
+            per_mode_detailed='PerGame'
+        )
+        df = stats.get_data_frames()[0]
+    except Exception as exc:
+        fallback = fetch_espn_team_stats_fallback(upcoming_games)
+        if fallback:
+            print(f"WARNING: NBA API team stats failed ({exc}); using ESPN team statistics fallback.")
+            return fallback
+        raise
     
     # Also fetch last-10 stats for recent form blending
     _pause()
@@ -380,6 +589,7 @@ def fetch_all_team_stats(
             'is_4_in_5_nights': context.get('is_4_in_5_nights', False),
             'is_5_in_7_nights': context.get('is_5_in_7_nights', False),
             'current_road_trip_length': context.get('current_road_trip_length', 0),
+            'stats_source': 'NBA API',
         }
         # Also store by full name
         result[full_name] = result[short_name]

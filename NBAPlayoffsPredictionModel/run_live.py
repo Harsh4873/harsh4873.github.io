@@ -278,13 +278,21 @@ def fetch_h2h_context(home_team: str, away_abbr: str, season: str, as_of_date: s
     if not team_id:
         return {"home_win_pct": 0.5, "games": 0, "point_diff": 0.0, "note": "H2H unavailable"}
 
-    finder = leaguegamefinder.LeagueGameFinder(
-        team_id_nullable=team_id,
-        season_nullable=season,
-        season_type_nullable="Regular Season",
-        league_id_nullable="00",
-    )
-    frame = finder.get_data_frames()[0]
+    try:
+        finder = leaguegamefinder.LeagueGameFinder(
+            team_id_nullable=team_id,
+            season_nullable=season,
+            season_type_nullable="Regular Season",
+            league_id_nullable="00",
+        )
+        frame = finder.get_data_frames()[0]
+    except Exception as exc:
+        return {
+            "home_win_pct": 0.5,
+            "games": 0,
+            "point_diff": 0.0,
+            "note": f"H2H unavailable because NBA API lookup failed ({exc})",
+        }
     if frame.empty or "MATCHUP" not in frame.columns:
         return {"home_win_pct": 0.5, "games": 0, "point_diff": 0.0, "note": "H2H unavailable"}
 
@@ -1144,7 +1152,8 @@ def _verify_roster(team_name: str, season: str) -> tuple[bool, str]:
         return False, f"NBA API roster lookup failed: {exc}"
     if not roster:
         return False, "NBA API roster lookup returned no players"
-    return True, f"{len(roster)} active roster entries fetched from NBA API"
+    source = str(roster[0].get("source") or "NBA API") if isinstance(roster[0], dict) else "NBA API"
+    return True, f"{len(roster)} active roster entries fetched from {source}"
 
 
 def _market_pick_spread(market: dict[str, Any], pick_team: str, home_name: str, away_name: str) -> float | None:
@@ -1314,8 +1323,15 @@ def run_playoff_game(
         return None
 
     if away_name not in all_team_stats or home_name not in all_team_stats:
-        print(f"DECLINE: Missing NBA API team stats for {matchup}.")
+        print(f"DECLINE: Missing team stats for {matchup}.")
         return None
+
+    stats_sources = {
+        str(all_team_stats[name].get("stats_source") or "NBA API")
+        for name in (away_name, home_name)
+        if isinstance(all_team_stats.get(name), dict)
+    }
+    stats_source = ", ".join(sorted(stats_sources)) or "NBA API"
 
     home_roster_ok, home_roster_note = _verify_roster(home_name, season)
     away_roster_ok, away_roster_note = _verify_roster(away_name, season)
@@ -1443,11 +1459,11 @@ def run_playoff_game(
     print("- [x] Official playoff game verified through ESPN scoreboard")
     print("- [x] Game has not started")
     print(f"- [x] Current rosters checked: {home_name} ({home_roster_note}); {away_name} ({away_roster_note})")
-    print("- [x] NBA API team efficiency and recent-form stats fetched")
+    print(f"- [x] Team efficiency and recent-form stats fetched from {stats_source}")
     print(f"- [x] Market moneyline fetched from {market.get('provider') or 'ESPN odds'}")
 
     print("\n**Key Factors:**")
-    print(f"- Net Rating: {away_name} {away_team.team_stats.net_rating:+.1f} vs {home_name} {home_team.team_stats.net_rating:+.1f} (NBA API)")
+    print(f"- Net Rating: {away_name} {away_team.team_stats.net_rating:+.1f} vs {home_name} {home_team.team_stats.net_rating:+.1f} ({stats_source})")
     print(f"- Off/Def Rating: {away_name} {away_team.team_stats.off_rating_10:.1f}/{away_team.team_stats.def_rating_10:.1f} vs {home_name} {home_team.team_stats.off_rating_10:.1f}/{home_team.team_stats.def_rating_10:.1f}")
     print(f"- Pace: {away_name} {away_team.team_stats.pace:.1f} vs {home_name} {home_team.team_stats.pace:.1f}; playoff pace {tempo_context.get('playoff_pace', 0.0):.1f} after {tempo_context.get('pace_drag', 0.0):.1f}-possession playoff drag")
     print(f"- Playoff style: halfcourt weight {tempo_context.get('halfcourt_weight', 0.0):.2f}; dictating side {tempo_context.get('dictating_side')}")
@@ -1555,6 +1571,7 @@ def run_playoff_game(
         "guardrail_adjustment_total_pp": round(float(guardrail.get("adjustment_total") or 0.0) * 100.0, 2),
         "is_big_dog": guardrail.get("is_big_dog", False),
         "confidence": confidence,
+        "stats_source": stats_source,
         "series_form": {
             "games": int(series_form.get("games", 0) or 0),
             "avg_margin": round(float(series_form.get("avg_margin", 0.0) or 0.0), 2),

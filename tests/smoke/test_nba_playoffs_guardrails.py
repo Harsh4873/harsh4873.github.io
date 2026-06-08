@@ -235,6 +235,51 @@ def test_espn_fallback_lookback_window_covers_finals():
     assert SERIES_HISTORY_MAX_GAMES == 6   # max prior games before Game 7
 
 
+def test_nba_team_stats_fall_back_to_espn_when_nba_api_times_out(monkeypatch):
+    import live_data
+
+    class BrokenTeamStats:
+        def __init__(self, **_kwargs):
+            raise TimeoutError("stats.nba.com timed out")
+
+    fallback = {
+        "Spurs": {"stats_source": "ESPN team statistics fallback"},
+        "Knicks": {"stats_source": "ESPN team statistics fallback"},
+    }
+    monkeypatch.setattr(live_data.leaguedashteamstats, "LeagueDashTeamStats", BrokenTeamStats)
+    monkeypatch.setattr(live_data, "fetch_espn_team_stats_fallback", lambda _games: fallback)
+
+    result = live_data.fetch_all_team_stats(
+        upcoming_games=[{"away_team": "Spurs", "home_team": "Knicks"}],
+    )
+
+    assert result == fallback
+
+
+def test_nba_roster_falls_back_to_espn_when_nba_api_times_out(monkeypatch):
+    import live_data
+
+    class BrokenRoster:
+        def __init__(self, **_kwargs):
+            raise TimeoutError("stats.nba.com timed out")
+
+    fallback = [{"name": "Test Player", "source": "ESPN roster fallback"}]
+    monkeypatch.setattr(live_data.commonteamroster, "CommonTeamRoster", BrokenRoster)
+    monkeypatch.setattr(live_data, "fetch_espn_roster_fallback", lambda _team: fallback)
+
+    result = live_data.fetch_roster("Spurs")
+
+    assert result == fallback
+
+
+def test_nba_playoffs_pick_payload_records_team_stats_source():
+    source = (REPO_ROOT / "NBAPlayoffsPredictionModel" / "run_live.py").read_text(encoding="utf-8")
+
+    assert '"stats_source": stats_source' in source
+    assert "Team efficiency and recent-form stats fetched from {stats_source}" in source
+    assert "Missing NBA API team stats" not in source
+
+
 def test_missing_injury_feed_caps_at_lean():
     """An empty injury feed leaves the model running blind on availability;
     even a good-looking edge should drop to LEAN."""
