@@ -2,10 +2,7 @@
   "date": "2026-06-08",
   "errors": [
     "nba: NBA New runtime failed (  File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 671, in get |     return self.request(\"GET\", url, params=params, **kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 651, in request |     resp = self.send(prep, **send_kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 784, in send |     r = adapter.send(request, **kwargs) |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/adapters.py\", line 742, in send |     raise ReadTimeout(e, request=request) | requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='stats.nba.com', port=443): Read timed out. (read timeout=30))",
-    "nba_old: NBA Model runtime failed (  File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 671, in get |     return self.request(\"GET\", url, params=params, **kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 651, in request |     resp = self.send(prep, **send_kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 784, in send |     r = adapter.send(request, **kwargs) |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/adapters.py\", line 742, in send |     raise ReadTimeout(e, request=request) | requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='stats.nba.com', port=443): Read timed out. (read timeout=30))",
-    "nba_playoffs: NBA Playoffs runtime failed (  File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 671, in get |     return self.request(\"GET\", url, params=params, **kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 651, in request |     resp = self.send(prep, **send_kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 784, in send |     r = adapter.send(request, **kwargs) |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/adapters.py\", line 742, in send |     raise ReadTimeout(e, request=request) | requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='stats.nba.com', port=443): Read timed out. (read timeout=30))",
-    "mlb_old: MLB OLD parser found no predictions ([sportsline_odds] Fetching MLB market odds for slate_date=2026-06-08 | MLB spread: 8 rows | MLB total: 8 rows | MLB ml: 8 rows | MLB merged: 8 games | [sportsline_odds] Schedule filter for slate_date=2026-06-08: kept=8 scraped_games=8 official_games=8 | Missing MLB moneyline model artifact for variant='old'. Run `venv/bin/python train_moneyline_model.py` inside MLBPredictionModel first.)",
-    "nba_props: NBA props model runtime failed (  File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 671, in get |     return self.request(\"GET\", url, params=params, **kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 651, in request |     resp = self.send(prep, **send_kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 784, in send |     r = adapter.send(request, **kwargs) |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/adapters.py\", line 742, in send |     raise ReadTimeout(e, request=request) | requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='stats.nba.com', port=443): Read timed out. (read timeout=30))"
+    "nba_playoffs: NBA Playoffs runtime failed (  File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 671, in get |     return self.request(\"GET\", url, params=params, **kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 651, in request |     resp = self.send(prep, **send_kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 784, in send |     r = adapter.send(request, **kwargs) |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/adapters.py\", line 742, in send |     raise ReadTimeout(e, request=request) | requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='stats.nba.com', port=443): Read timed out. (read timeout=30))"
   ],
   "externalFeedsUpdatedAt": "2026-06-08T17:52:59.413620Z",
   "external_feeds": {
@@ -178,14 +175,10 @@
       "updatedAt": "2026-06-08T17:52:59.413620Z"
     }
   },
-  "generatedAt": "2026-06-08T14:42:40.375004Z",
+  "generatedAt": "2026-06-08T17:57:07.854188Z",
   "generatedBy": "github-actions:model-cache-refresh",
   "ipl": {},
-  "mlb": {
-    "error": "MLB OLD parser found no predictions ([sportsline_odds] Fetching MLB market odds for slate_date=2026-06-08 | MLB spread: 8 rows | MLB total: 8 rows | MLB ml: 8 rows | MLB merged: 8 games | [sportsline_odds] Schedule filter for slate_date=2026-06-08: kept=8 scraped_games=8 official_games=8 | Missing MLB moneyline model artifact for variant='old'. Run `venv/bin/python train_moneyline_model.py` inside MLBPredictionModel first.)",
-    "ok": false,
-    "raw_lines": 8
-  },
+  "mlb": {},
   "mlb_first_five": {
     "date": "2026-06-08",
     "firebase_saved": true,
@@ -2223,23 +2216,23 @@
         },
         "edge_table": {
           "1": 0.1798,
-          "2": 0.069,
+          "2": 0.175,
           "3": 0.0681,
           "4": -0.0342,
-          "5": 0.0127,
+          "5": 0.1023,
           "6": 0.0519,
           "7": -0.1531,
-          "8": -0.1389
+          "8": -0.0509
         },
         "full_inning_table": {
           "1": 0.564,
-          "2": 0.587,
+          "2": 0.693,
           "3": 0.558,
           "4": 0.484,
-          "5": 0.517,
+          "5": 0.606,
           "6": 0.57,
           "7": 0.395,
-          "8": 0.424
+          "8": 0.512
         },
         "game_id": "823289",
         "game_order": 5,
@@ -2259,12 +2252,12 @@
           },
           {
             "baseline": 0.5184,
-            "confidence": "Medium",
-            "decision": "LEAN",
-            "edge_pp": 6.9,
+            "confidence": "High",
+            "decision": "BET",
+            "edge_pp": 17.5,
             "inning": 2,
-            "label": "Inning 2 - No Run Scored (58.7%, edge +6.9pp)",
-            "probability_scoreless": 0.587
+            "label": "Inning 2 - No Run Scored (69.3%, edge +17.5pp)",
+            "probability_scoreless": 0.693
           }
         ],
         "venue_factor": 1.0
@@ -2658,7 +2651,7 @@
         "market": "no_run_inning",
         "matchup": "San Diego Padres vs Cincinnati Reds",
         "model_prediction": "56.4%",
-        "notes": "Top no-run inning candidate (edge +18.0pp vs baseline). Full table: {\"1\": 0.564, \"2\": 0.587, \"3\": 0.558, \"4\": 0.484, \"5\": 0.517, \"6\": 0.57, \"7\": 0.395, \"8\": 0.424}",
+        "notes": "Top no-run inning candidate (edge +18.0pp vs baseline). Full table: {\"1\": 0.564, \"2\": 0.693, \"3\": 0.558, \"4\": 0.484, \"5\": 0.606, \"6\": 0.57, \"7\": 0.395, \"8\": 0.512}",
         "odds": null,
         "pick": "Inning 1 - No Run Scored",
         "probability": 0.564,
@@ -2671,11 +2664,11 @@
         "assumed_odds": -110,
         "away_team": "Cincinnati Reds",
         "baseline_probability": 0.5184,
-        "confidence": "Medium",
+        "confidence": "High",
         "date": "2026-06-08",
-        "decision": "LEAN",
-        "edge": 6.9,
-        "edge_pp": 6.9,
+        "decision": "BET",
+        "edge": 17.5,
+        "edge_pp": 17.5,
         "game": "San Diego Padres vs Cincinnati Reds",
         "game_id": "823289",
         "game_order": 5,
@@ -2685,11 +2678,11 @@
         "league": "MLB",
         "market": "no_run_inning",
         "matchup": "San Diego Padres vs Cincinnati Reds",
-        "model_prediction": "58.7%",
-        "notes": "Top no-run inning candidate (edge +6.9pp vs baseline). Full table: {\"1\": 0.564, \"2\": 0.587, \"3\": 0.558, \"4\": 0.484, \"5\": 0.517, \"6\": 0.57, \"7\": 0.395, \"8\": 0.424}",
+        "model_prediction": "69.3%",
+        "notes": "Top no-run inning candidate (edge +17.5pp vs baseline). Full table: {\"1\": 0.564, \"2\": 0.693, \"3\": 0.558, \"4\": 0.484, \"5\": 0.606, \"6\": 0.57, \"7\": 0.395, \"8\": 0.512}",
         "odds": null,
         "pick": "Inning 2 - No Run Scored",
-        "probability": 0.587,
+        "probability": 0.693,
         "source": "MLB Inning",
         "sport": "MLB",
         "start_time": "2026-06-09T01:40:00Z",
@@ -2844,25 +2837,25 @@
       {
         "assumed_odds": -110,
         "away_team": "Boston Red Sox",
-        "decision": "LEAN",
+        "decision": "PASS",
         "direction": "Over",
-        "edge": 3.04,
+        "edge": -1.55,
         "home_team": "Tampa Bay Rays",
-        "kelly": 1.6,
-        "line": 7.5,
-        "market_line": 7.5,
+        "kelly": 0.0,
+        "line": 8.0,
+        "market_line": 8.0,
         "market_total_source": "model_output",
         "market_type": "totals",
         "model_prediction": 8.1,
         "odds": -110,
-        "pick": "Over 7.5 (Boston Red Sox vs Tampa Bay Rays)",
-        "prob": 0.5542,
-        "probability": 0.5542,
-        "selection": "Over",
+        "pick": "Over 8.0 (Boston Red Sox vs Tampa Bay Rays)",
+        "prob": 0.5083,
+        "probability": 0.5083,
+        "selection": "PASS",
         "source": "MLB NEW",
         "sport": "MLB",
-        "units": 0.01,
-        "vegas": 7.5
+        "units": 0.0,
+        "vegas": 8.0
       },
       {
         "away_team": "New York Yankees",
@@ -3101,11 +3094,7 @@
     ],
     "raw_lines": 84
   },
-  "mlb_old": {
-    "error": "MLB OLD parser found no predictions ([sportsline_odds] Fetching MLB market odds for slate_date=2026-06-08 | MLB spread: 8 rows | MLB total: 8 rows | MLB ml: 8 rows | MLB merged: 8 games | [sportsline_odds] Schedule filter for slate_date=2026-06-08: kept=8 scraped_games=8 official_games=8 | Missing MLB moneyline model artifact for variant='old'. Run `venv/bin/python train_moneyline_model.py` inside MLBPredictionModel first.)",
-    "ok": false,
-    "raw_lines": 8
-  },
+  "mlb_old": {},
   "models": {
     "mlb_first_five": {
       "date": "2026-06-08",
@@ -5144,23 +5133,23 @@
           },
           "edge_table": {
             "1": 0.1798,
-            "2": 0.069,
+            "2": 0.175,
             "3": 0.0681,
             "4": -0.0342,
-            "5": 0.0127,
+            "5": 0.1023,
             "6": 0.0519,
             "7": -0.1531,
-            "8": -0.1389
+            "8": -0.0509
           },
           "full_inning_table": {
             "1": 0.564,
-            "2": 0.587,
+            "2": 0.693,
             "3": 0.558,
             "4": 0.484,
-            "5": 0.517,
+            "5": 0.606,
             "6": 0.57,
             "7": 0.395,
-            "8": 0.424
+            "8": 0.512
           },
           "game_id": "823289",
           "game_order": 5,
@@ -5180,12 +5169,12 @@
             },
             {
               "baseline": 0.5184,
-              "confidence": "Medium",
-              "decision": "LEAN",
-              "edge_pp": 6.9,
+              "confidence": "High",
+              "decision": "BET",
+              "edge_pp": 17.5,
               "inning": 2,
-              "label": "Inning 2 - No Run Scored (58.7%, edge +6.9pp)",
-              "probability_scoreless": 0.587
+              "label": "Inning 2 - No Run Scored (69.3%, edge +17.5pp)",
+              "probability_scoreless": 0.693
             }
           ],
           "venue_factor": 1.0
@@ -5579,7 +5568,7 @@
           "market": "no_run_inning",
           "matchup": "San Diego Padres vs Cincinnati Reds",
           "model_prediction": "56.4%",
-          "notes": "Top no-run inning candidate (edge +18.0pp vs baseline). Full table: {\"1\": 0.564, \"2\": 0.587, \"3\": 0.558, \"4\": 0.484, \"5\": 0.517, \"6\": 0.57, \"7\": 0.395, \"8\": 0.424}",
+          "notes": "Top no-run inning candidate (edge +18.0pp vs baseline). Full table: {\"1\": 0.564, \"2\": 0.693, \"3\": 0.558, \"4\": 0.484, \"5\": 0.606, \"6\": 0.57, \"7\": 0.395, \"8\": 0.512}",
           "odds": null,
           "pick": "Inning 1 - No Run Scored",
           "probability": 0.564,
@@ -5592,11 +5581,11 @@
           "assumed_odds": -110,
           "away_team": "Cincinnati Reds",
           "baseline_probability": 0.5184,
-          "confidence": "Medium",
+          "confidence": "High",
           "date": "2026-06-08",
-          "decision": "LEAN",
-          "edge": 6.9,
-          "edge_pp": 6.9,
+          "decision": "BET",
+          "edge": 17.5,
+          "edge_pp": 17.5,
           "game": "San Diego Padres vs Cincinnati Reds",
           "game_id": "823289",
           "game_order": 5,
@@ -5606,11 +5595,11 @@
           "league": "MLB",
           "market": "no_run_inning",
           "matchup": "San Diego Padres vs Cincinnati Reds",
-          "model_prediction": "58.7%",
-          "notes": "Top no-run inning candidate (edge +6.9pp vs baseline). Full table: {\"1\": 0.564, \"2\": 0.587, \"3\": 0.558, \"4\": 0.484, \"5\": 0.517, \"6\": 0.57, \"7\": 0.395, \"8\": 0.424}",
+          "model_prediction": "69.3%",
+          "notes": "Top no-run inning candidate (edge +17.5pp vs baseline). Full table: {\"1\": 0.564, \"2\": 0.693, \"3\": 0.558, \"4\": 0.484, \"5\": 0.606, \"6\": 0.57, \"7\": 0.395, \"8\": 0.512}",
           "odds": null,
           "pick": "Inning 2 - No Run Scored",
-          "probability": 0.587,
+          "probability": 0.693,
           "source": "MLB Inning",
           "sport": "MLB",
           "start_time": "2026-06-09T01:40:00Z",
@@ -5765,25 +5754,25 @@
         {
           "assumed_odds": -110,
           "away_team": "Boston Red Sox",
-          "decision": "LEAN",
+          "decision": "PASS",
           "direction": "Over",
-          "edge": 3.04,
+          "edge": -1.55,
           "home_team": "Tampa Bay Rays",
-          "kelly": 1.6,
-          "line": 7.5,
-          "market_line": 7.5,
+          "kelly": 0.0,
+          "line": 8.0,
+          "market_line": 8.0,
           "market_total_source": "model_output",
           "market_type": "totals",
           "model_prediction": 8.1,
           "odds": -110,
-          "pick": "Over 7.5 (Boston Red Sox vs Tampa Bay Rays)",
-          "prob": 0.5542,
-          "probability": 0.5542,
-          "selection": "Over",
+          "pick": "Over 8.0 (Boston Red Sox vs Tampa Bay Rays)",
+          "prob": 0.5083,
+          "probability": 0.5083,
+          "selection": "PASS",
           "source": "MLB NEW",
           "sport": "MLB",
-          "units": 0.01,
-          "vegas": 7.5
+          "units": 0.0,
+          "vegas": 8.0
         },
         {
           "away_team": "New York Yankees",
@@ -6022,25 +6011,12 @@
       ],
       "raw_lines": 84
     },
-    "mlb_old": {
-      "error": "MLB OLD parser found no predictions ([sportsline_odds] Fetching MLB market odds for slate_date=2026-06-08 | MLB spread: 8 rows | MLB total: 8 rows | MLB ml: 8 rows | MLB merged: 8 games | [sportsline_odds] Schedule filter for slate_date=2026-06-08: kept=8 scraped_games=8 official_games=8 | Missing MLB moneyline model artifact for variant='old'. Run `venv/bin/python train_moneyline_model.py` inside MLBPredictionModel first.)",
-      "ok": false,
-      "raw_lines": 8
-    },
     "nba": {
       "error": "NBA New runtime failed (  File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 671, in get |     return self.request(\"GET\", url, params=params, **kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 651, in request |     resp = self.send(prep, **send_kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 784, in send |     r = adapter.send(request, **kwargs) |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/adapters.py\", line 742, in send |     raise ReadTimeout(e, request=request) | requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='stats.nba.com', port=443): Read timed out. (read timeout=30))",
       "ok": false
     },
-    "nba_old": {
-      "error": "NBA Model runtime failed (  File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 671, in get |     return self.request(\"GET\", url, params=params, **kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 651, in request |     resp = self.send(prep, **send_kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 784, in send |     r = adapter.send(request, **kwargs) |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/adapters.py\", line 742, in send |     raise ReadTimeout(e, request=request) | requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='stats.nba.com', port=443): Read timed out. (read timeout=30))",
-      "ok": false
-    },
     "nba_playoffs": {
       "error": "NBA Playoffs runtime failed (  File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 671, in get |     return self.request(\"GET\", url, params=params, **kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 651, in request |     resp = self.send(prep, **send_kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 784, in send |     r = adapter.send(request, **kwargs) |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/adapters.py\", line 742, in send |     raise ReadTimeout(e, request=request) | requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='stats.nba.com', port=443): Read timed out. (read timeout=30))",
-      "ok": false
-    },
-    "nba_props": {
-      "error": "NBA props model runtime failed (  File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 671, in get |     return self.request(\"GET\", url, params=params, **kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 651, in request |     resp = self.send(prep, **send_kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 784, in send |     r = adapter.send(request, **kwargs) |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/adapters.py\", line 742, in send |     raise ReadTimeout(e, request=request) | requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='stats.nba.com', port=443): Read timed out. (read timeout=30))",
       "ok": false
     },
     "sportsgambler": {
@@ -6227,14 +6203,14 @@
           "has_market_price": true,
           "home_team": "Connecticut Sun",
           "league": "WNBA",
-          "market_edge": 0.0745,
-          "market_pick_odds": -850,
-          "market_pick_prob": 0.8579,
+          "market_edge": 0.0694,
+          "market_pick_odds": -900,
+          "market_pick_prob": 0.863,
           "market_source": "DraftKings via ESPN",
           "matchup": "New York Liberty @ Connecticut Sun",
           "model_prediction": -15.9,
           "notes": "Proj Margin: New York Liberty +15.9 | Total: 131.7 | Conf: Medium",
-          "odds": -850,
+          "odds": -900,
           "pick": "New York Liberty ML (New York Liberty @ Connecticut Sun)",
           "probability": 0.932,
           "projected_total": 131.7,
@@ -6320,18 +6296,12 @@
     "error": "NBA New runtime failed (  File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 671, in get |     return self.request(\"GET\", url, params=params, **kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 651, in request |     resp = self.send(prep, **send_kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 784, in send |     r = adapter.send(request, **kwargs) |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/adapters.py\", line 742, in send |     raise ReadTimeout(e, request=request) | requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='stats.nba.com', port=443): Read timed out. (read timeout=30))",
     "ok": false
   },
-  "nba_old": {
-    "error": "NBA Model runtime failed (  File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 671, in get |     return self.request(\"GET\", url, params=params, **kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 651, in request |     resp = self.send(prep, **send_kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 784, in send |     r = adapter.send(request, **kwargs) |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/adapters.py\", line 742, in send |     raise ReadTimeout(e, request=request) | requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='stats.nba.com', port=443): Read timed out. (read timeout=30))",
-    "ok": false
-  },
+  "nba_old": {},
   "nba_playoffs": {
     "error": "NBA Playoffs runtime failed (  File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 671, in get |     return self.request(\"GET\", url, params=params, **kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 651, in request |     resp = self.send(prep, **send_kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 784, in send |     r = adapter.send(request, **kwargs) |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/adapters.py\", line 742, in send |     raise ReadTimeout(e, request=request) | requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='stats.nba.com', port=443): Read timed out. (read timeout=30))",
     "ok": false
   },
-  "nba_props": {
-    "error": "NBA props model runtime failed (  File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 671, in get |     return self.request(\"GET\", url, params=params, **kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 651, in request |     resp = self.send(prep, **send_kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 784, in send |     r = adapter.send(request, **kwargs) |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/adapters.py\", line 742, in send |     raise ReadTimeout(e, request=request) | requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='stats.nba.com', port=443): Read timed out. (read timeout=30))",
-    "ok": false
-  },
+  "nba_props": {},
   "sportsgambler": {
     "date": "2026-06-08",
     "errors": [
@@ -6500,7 +6470,7 @@
     ],
     "updatedAt": "2026-06-08T17:52:59.413620Z"
   },
-  "updatedAt": "2026-06-08T17:52:59.413620Z",
+  "updatedAt": "2026-06-08T17:57:07.854188Z",
   "wnba": {
     "ok": true,
     "picks": [
@@ -6517,14 +6487,14 @@
         "has_market_price": true,
         "home_team": "Connecticut Sun",
         "league": "WNBA",
-        "market_edge": 0.0745,
-        "market_pick_odds": -850,
-        "market_pick_prob": 0.8579,
+        "market_edge": 0.0694,
+        "market_pick_odds": -900,
+        "market_pick_prob": 0.863,
         "market_source": "DraftKings via ESPN",
         "matchup": "New York Liberty @ Connecticut Sun",
         "model_prediction": -15.9,
         "notes": "Proj Margin: New York Liberty +15.9 | Total: 131.7 | Conf: Medium",
-        "odds": -850,
+        "odds": -900,
         "pick": "New York Liberty ML (New York Liberty @ Connecticut Sun)",
         "probability": 0.932,
         "projected_total": 131.7,
