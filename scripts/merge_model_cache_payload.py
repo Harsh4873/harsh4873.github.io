@@ -11,6 +11,15 @@ from typing import Any
 
 MODEL_CACHE_DIR = Path("data/model_cache")
 EXTERNAL_FEED_MODEL_KEYS = {"sportytrader", "sportsgambler"}
+DEPLOYED_MODEL_KEYS = {
+    "mlb_new",
+    "mlb_inning",
+    "mlb_first_five",
+    "wnba",
+    "nba",
+    "nba_playoffs",
+    *EXTERNAL_FEED_MODEL_KEYS,
+}
 MODEL_ALIAS_KEYS = {
     "nba",
     "nba_old",
@@ -63,7 +72,7 @@ def _merged_models(current: dict[str, Any], generated: dict[str, Any]) -> dict[s
     generated_models = generated.get("models") if isinstance(generated.get("models"), dict) else {}
     external_feeds = current.get("external_feeds") if isinstance(current.get("external_feeds"), dict) else {}
 
-    keep_keys = set(EXTERNAL_FEED_MODEL_KEYS)
+    keep_keys = set(DEPLOYED_MODEL_KEYS)
     keep_keys.update(str(key) for key in external_feeds)
     merged = {
         key: current_models[key]

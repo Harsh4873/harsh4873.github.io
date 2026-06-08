@@ -182,6 +182,52 @@ def test_model_cache_merge_preserves_external_feed_buckets(tmp_path):
     assert merged["nba_old"] == {}
 
 
+def test_model_cache_merge_preserves_deployed_buckets_on_partial_rerun(tmp_path):
+    module_path = ROOT / "scripts" / "merge_model_cache_payload.py"
+    spec = importlib.util.spec_from_file_location("merge_model_cache_payload", module_path)
+    module = importlib.util.module_from_spec(spec)
+    assert spec and spec.loader
+    spec.loader.exec_module(module)
+
+    cache_dir = tmp_path / "data" / "model_cache"
+    cache_dir.mkdir(parents=True)
+    current = {
+        "date": "2026-06-08",
+        "models": {
+            "mlb_new": {"ok": True, "picks": [{"pick": "C"}]},
+            "mlb_inning": {"ok": True, "picks": [{"pick": "D"}]},
+            "mlb_first_five": {"ok": True, "picks": [{"pick": "E"}]},
+            "wnba": {"ok": True, "picks": [{"pick": "F"}]},
+            "sportytrader": {"ok": True, "picks": [{"pick": "A"}]},
+            "sportsgambler": {"ok": True, "picks": [{"pick": "B"}]},
+        },
+    }
+    generated = {
+        "date": "2026-06-08",
+        "models": {
+            "nba": {"ok": True, "picks": [{"pick": "G"}]},
+            "nba_playoffs": {"ok": True, "picks": [{"pick": "H"}]},
+        },
+        "nba": {"ok": True, "picks": [{"pick": "G"}]},
+        "nba_playoffs": {"ok": True, "picks": [{"pick": "H"}]},
+    }
+    (cache_dir / "2026-06-08.json").write_text(json.dumps(current), encoding="utf-8")
+    merged = module.merge_payload(generated, cache_dir)
+
+    assert sorted(merged["models"]) == [
+        "mlb_first_five",
+        "mlb_inning",
+        "mlb_new",
+        "nba",
+        "nba_playoffs",
+        "sportsgambler",
+        "sportytrader",
+        "wnba",
+    ]
+    assert merged["models"]["mlb_new"]["picks"][0]["pick"] == "C"
+    assert merged["models"]["nba"]["picks"][0]["pick"] == "G"
+
+
 def test_external_feed_merge_preserves_model_buckets(tmp_path):
     module_path = ROOT / "scripts" / "merge_external_feed_cache_payload.py"
     spec = importlib.util.spec_from_file_location("merge_external_feed_cache_payload", module_path)
