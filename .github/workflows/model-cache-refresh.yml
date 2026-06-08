@@ -127,26 +127,28 @@ jobs:
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          git pull --rebase --autostash origin "$BRANCH"
-          git add data/model_cache
-          if git diff --cached --quiet; then
-            echo "No staged cache change after rebase — skipping commit."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          CACHE_DATE=$(python -c "import json; print(json.load(open('data/model_cache/latest.json'))['date'])")
-          git commit -m "chore(models): refresh model cache for ${CACHE_DATE}"
+          GENERATED_CACHE="${RUNNER_TEMP}/model-cache-latest.json"
+          cp data/model_cache/latest.json "$GENERATED_CACHE"
           for attempt in 1 2 3; do
+            git fetch origin "$BRANCH"
+            git reset --hard "origin/${BRANCH}"
+            python scripts/merge_model_cache_payload.py "$GENERATED_CACHE"
+            git add data/model_cache
+            if git diff --cached --quiet; then
+              echo "No staged cache change after merge — skipping commit."
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            CACHE_DATE=$(python -c "import json; print(json.load(open('data/model_cache/latest.json'))['date'])")
+            git commit -m "chore(models): refresh model cache for ${CACHE_DATE}"
             if git push origin "HEAD:${BRANCH}"; then
               echo "changed=true" >> "$GITHUB_OUTPUT"
               exit 0
             fi
-            echo "Push failed on attempt ${attempt}; rebasing on origin/${BRANCH} before retry."
-            git fetch origin "$BRANCH"
-            git rebase "origin/${BRANCH}"
+            echo "Push failed on attempt ${attempt}; retrying merge on latest origin/${BRANCH}."
           done
-          git push origin "HEAD:${BRANCH}"
-          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "Unable to publish model cache after retrying latest origin/${BRANCH}."
+          exit 1
 
       - name: Trigger Pages deploy after cache commit
         if: steps.commit-cache.outputs.changed == 'true'

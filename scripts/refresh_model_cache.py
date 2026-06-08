@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
@@ -90,6 +91,44 @@ def _build_payload(date_iso: str, models: dict[str, Any], errors: list[str]) -> 
     }
 
 
+def _is_transient_model_error(result: Any) -> bool:
+    if not isinstance(result, dict) or result.get("ok") is True:
+        return False
+    error = str(result.get("error") or "").lower()
+    return any(
+        marker in error
+        for marker in (
+            "readtimeout",
+            "read timed out",
+            "timed out",
+            "timeout",
+            "temporarily unavailable",
+            "connection reset",
+            "connection aborted",
+            "remote disconnected",
+        )
+    )
+
+
+def _run_model_job_with_retries(
+    key: str,
+    job: Callable[[], dict[str, Any]],
+    attempts: int = 2,
+) -> dict[str, Any]:
+    max_attempts = max(1, attempts)
+    result: dict[str, Any] = {"ok": False, "error": "model did not run"}
+    for attempt in range(1, max_attempts + 1):
+        try:
+            result = job()
+        except Exception as exc:  # pragma: no cover - defensive for scheduled jobs
+            result = {"ok": False, "error": str(exc)}
+        if not _is_transient_model_error(result) or attempt >= max_attempts:
+            return result
+        print(f"[model-cache] {key}: transient failure on attempt {attempt}; retrying")
+        time.sleep(3 * attempt)
+    return result
+
+
 def _write_json_cache(date_iso: str, payload: dict[str, Any]) -> None:
     MODEL_CACHE_DIR.mkdir(parents=True, exist_ok=True)
     for target in (MODEL_CACHE_DIR / f"{date_iso}.json", MODEL_CACHE_DIR / "latest.json"):
@@ -109,7 +148,10 @@ def main() -> int:
     results: dict[str, Any] = {}
     errors: list[str] = []
     with ThreadPoolExecutor(max_workers=workers) as executor:
-        future_map = {executor.submit(available[key]): key for key in selected}
+        future_map = {
+            executor.submit(_run_model_job_with_retries, key, available[key]): key
+            for key in selected
+        }
         for future in as_completed(future_map):
             key = future_map[future]
             try:

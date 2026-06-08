@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import importlib.util
+import json
 from pathlib import Path
 
 
@@ -96,23 +98,142 @@ def test_model_schedule_is_visible_as_two_refresh_windows():
     assert "Google sign-in is only for ledger sync or force refresh" not in html
 
 
-def test_model_cache_workflow_rebases_and_retries_cache_publish():
+def test_model_cache_workflow_merges_generated_json_on_latest_main():
     workflow = (ROOT / ".github" / "workflows" / "model-cache-refresh.yml").read_text(encoding="utf-8")
     script = (ROOT / "scripts" / "refresh_model_cache.py").read_text(encoding="utf-8")
+    merge_script = (ROOT / "scripts" / "merge_model_cache_payload.py").read_text(encoding="utf-8")
 
     assert "cancel-in-progress: false" in workflow
     assert "mlb_new,mlb_inning,mlb_first_five,wnba,nba,nba_playoffs" in workflow
     assert "mlb_new,mlb_inning,mlb_first_five,wnba,nba,nba_playoffs" in script
     assert "mlb_new,mlb_old,mlb_inning" not in workflow
+    assert "_run_model_job_with_retries" in script
+    assert "transient failure on attempt" in script
     assert "git reset --hard origin/main" in workflow
+    assert "merge_model_cache_payload.py" in workflow
     assert "Check scheduled cache freshness" in workflow
     assert "Scheduled model cache already fresh" in workflow
     assert "if: steps.cache-gate.outputs.skip != 'true'" in workflow
     assert 'BRANCH="${GITHUB_REF_NAME:-main}"' in workflow
-    assert 'git pull --rebase --autostash origin "$BRANCH"' in workflow
+    assert 'git pull --rebase --autostash origin "$BRANCH"' not in workflow
+    assert "GENERATED_CACHE=" in workflow
     assert "for attempt in 1 2 3; do" in workflow
+    assert 'git reset --hard "origin/${BRANCH}"' in workflow
     assert 'git push origin "HEAD:${BRANCH}"' in workflow
-    assert 'git rebase "origin/${BRANCH}"' in workflow
+    assert 'git rebase "origin/${BRANCH}"' not in workflow
+    assert "EXTERNAL_FEED_MODEL_KEYS" in merge_script
+
+
+def test_model_cache_merge_preserves_external_feed_buckets(tmp_path):
+    module_path = ROOT / "scripts" / "merge_model_cache_payload.py"
+    spec = importlib.util.spec_from_file_location("merge_model_cache_payload", module_path)
+    module = importlib.util.module_from_spec(spec)
+    assert spec and spec.loader
+    spec.loader.exec_module(module)
+
+    cache_dir = tmp_path / "data" / "model_cache"
+    cache_dir.mkdir(parents=True)
+    current = {
+        "date": "2026-06-08",
+        "models": {
+            "sportytrader": {"ok": True, "picks": [{"pick": "A"}]},
+            "sportsgambler": {"ok": True, "picks": [{"pick": "B"}]},
+            "nba_old": {"ok": True, "picks": [{"pick": "stale"}]},
+        },
+        "sportytrader": {"ok": True, "picks": [{"pick": "A"}]},
+        "sportsgambler": {"ok": True, "picks": [{"pick": "B"}]},
+        "external_feeds": {
+            "sportytrader": {"ok": True},
+            "sportsgambler": {"ok": True},
+        },
+    }
+    generated = {
+        "date": "2026-06-08",
+        "updatedAt": "2026-06-08T18:00:00Z",
+        "generatedAt": "2026-06-08T18:00:00Z",
+        "generatedBy": "github-actions:model-cache-refresh",
+        "models": {
+            "mlb_new": {"ok": True, "picks": [{"pick": "C"}]},
+            "mlb_inning": {"ok": True, "picks": [{"pick": "D"}]},
+            "mlb_first_five": {"ok": True, "picks": [{"pick": "E"}]},
+            "wnba": {"ok": True, "picks": [{"pick": "F"}]},
+            "nba": {"ok": False, "picks": [], "error": "timeout"},
+            "nba_playoffs": {"ok": False, "picks": [], "error": "timeout"},
+        },
+        "mlb_new": {"ok": True, "picks": [{"pick": "C"}]},
+        "nba_old": {},
+    }
+    (cache_dir / "2026-06-08.json").write_text(json.dumps(current), encoding="utf-8")
+    merged = module.merge_payload(generated, cache_dir)
+
+    assert sorted(merged["models"]) == [
+        "mlb_first_five",
+        "mlb_inning",
+        "mlb_new",
+        "nba",
+        "nba_playoffs",
+        "sportsgambler",
+        "sportytrader",
+        "wnba",
+    ]
+    assert merged["models"]["sportytrader"]["picks"][0]["pick"] == "A"
+    assert merged["models"]["sportsgambler"]["picks"][0]["pick"] == "B"
+    assert merged["models"]["nba"]["error"] == "timeout"
+    assert merged["nba_old"] == {}
+
+
+def test_external_feed_merge_preserves_model_buckets(tmp_path):
+    module_path = ROOT / "scripts" / "merge_external_feed_cache_payload.py"
+    spec = importlib.util.spec_from_file_location("merge_external_feed_cache_payload", module_path)
+    module = importlib.util.module_from_spec(spec)
+    assert spec and spec.loader
+    spec.loader.exec_module(module)
+
+    cache_dir = tmp_path / "data" / "model_cache"
+    cache_dir.mkdir(parents=True)
+    current = {
+        "date": "2026-06-08",
+        "models": {
+            "mlb_new": {"ok": True, "picks": [{"pick": "C"}]},
+            "mlb_inning": {"ok": True, "picks": [{"pick": "D"}]},
+            "mlb_first_five": {"ok": True, "picks": [{"pick": "E"}]},
+            "wnba": {"ok": True, "picks": [{"pick": "F"}]},
+            "nba": {"ok": False, "picks": [], "error": "timeout"},
+            "nba_playoffs": {"ok": False, "picks": [], "error": "timeout"},
+        },
+        "mlb_new": {"ok": True, "picks": [{"pick": "C"}]},
+    }
+    generated = {
+        "date": "2026-06-08",
+        "updatedAt": "2026-06-08T18:05:00Z",
+        "externalFeedsUpdatedAt": "2026-06-08T18:05:00Z",
+        "models": {
+            "sportytrader": {"ok": True, "picks": [{"pick": "A"}]},
+            "sportsgambler": {"ok": True, "picks": [{"pick": "B"}]},
+        },
+        "sportytrader": {"ok": True, "picks": [{"pick": "A"}]},
+        "sportsgambler": {"ok": True, "picks": [{"pick": "B"}]},
+        "external_feeds": {
+            "sportytrader": {"ok": True},
+            "sportsgambler": {"ok": True},
+        },
+    }
+    (cache_dir / "2026-06-08.json").write_text(json.dumps(current), encoding="utf-8")
+    merged = module.merge_payload(generated, cache_dir)
+
+    assert sorted(merged["models"]) == [
+        "mlb_first_five",
+        "mlb_inning",
+        "mlb_new",
+        "nba",
+        "nba_playoffs",
+        "sportsgambler",
+        "sportytrader",
+        "wnba",
+    ]
+    assert merged["models"]["mlb_new"]["picks"][0]["pick"] == "C"
+    assert merged["models"]["sportytrader"]["picks"][0]["pick"] == "A"
+    assert merged["models"]["sportsgambler"]["picks"][0]["pick"] == "B"
 
 
 def test_deployed_model_and_ranking_choosers_are_limited_to_eight_sources():
@@ -342,15 +463,20 @@ def test_frontend_ignores_failed_external_feed_cache_payloads():
 def test_external_feed_refresh_workflow_runs_scrapers_and_deploys_pages():
     workflow = (ROOT / ".github" / "workflows" / "external-feed-refresh.yml").read_text(encoding="utf-8")
     script = (ROOT / "scripts" / "refresh_external_feeds.py").read_text(encoding="utf-8")
+    merge_script = (ROOT / "scripts" / "merge_external_feed_cache_payload.py").read_text(encoding="utf-8")
 
     assert "python scripts/refresh_external_feeds.py" in workflow
     assert "python -m playwright install chromium chromium-headless-shell" in workflow
     assert "gh workflow run deploy-pages.yml --ref main" in workflow
     assert "cancel-in-progress: false" in workflow
     assert "git reset --hard origin/main" in workflow
-    assert 'git pull --rebase --autostash origin "$BRANCH"' in workflow
+    assert 'git pull --rebase --autostash origin "$BRANCH"' not in workflow
+    assert "merge_external_feed_cache_payload.py" in workflow
+    assert "GENERATED_CACHE=" in workflow
     assert "for attempt in 1 2 3; do" in workflow
+    assert 'git reset --hard "origin/${BRANCH}"' in workflow
     assert 'git push origin "HEAD:${BRANCH}"' in workflow
+    assert "EXTERNAL_FEED_MODEL_KEYS" in merge_script
     assert "10 14 * * *" in workflow
     assert "40 14 * * *" in workflow
     assert "10 20 * * *" in workflow
