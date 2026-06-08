@@ -7,21 +7,21 @@
     "mlb_old: MLB OLD parser found no predictions ([sportsline_odds] Fetching MLB market odds for slate_date=2026-06-08 | MLB spread: 8 rows | MLB total: 8 rows | MLB ml: 8 rows | MLB merged: 8 games | [sportsline_odds] Schedule filter for slate_date=2026-06-08: kept=8 scraped_games=8 official_games=8 | Missing MLB moneyline model artifact for variant='old'. Run `venv/bin/python train_moneyline_model.py` inside MLBPredictionModel first.)",
     "nba_props: NBA props model runtime failed (  File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 671, in get |     return self.request(\"GET\", url, params=params, **kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 651, in request |     resp = self.send(prep, **send_kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 784, in send |     r = adapter.send(request, **kwargs) |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/adapters.py\", line 742, in send |     raise ReadTimeout(e, request=request) | requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='stats.nba.com', port=443): Read timed out. (read timeout=30))"
   ],
-  "externalFeedsUpdatedAt": "2026-06-08T17:39:39.032028Z",
+  "externalFeedsUpdatedAt": "2026-06-08T17:52:59.413620Z",
   "external_feeds": {
     "sportsgambler": {
       "date": "2026-06-08",
       "errors": [
         "nba: no picks parsed (No picks found.)"
       ],
-      "generatedAt": "2026-06-08T17:39:39.032028Z",
+      "generatedAt": "2026-06-08T17:52:59.413620Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-08",
         "feed": "sportsgambler",
         "from": "github-actions",
         "leagues": "nba,mlb",
-        "updatedAt": "2026-06-08T17:39:39.032028Z"
+        "updatedAt": "2026-06-08T17:52:59.413620Z"
       },
       "note": "Scheduled sportsgambler refresh returned 8 pick(s).",
       "ok": true,
@@ -107,19 +107,19 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-08T17:39:39.032028Z"
+      "updatedAt": "2026-06-08T17:52:59.413620Z"
     },
     "sportytrader": {
       "date": "2026-06-08",
       "errors": [],
-      "generatedAt": "2026-06-08T17:39:39.032028Z",
+      "generatedAt": "2026-06-08T17:52:59.413620Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-08",
         "feed": "sportytrader",
         "from": "github-actions",
         "leagues": "nba,mlb",
-        "updatedAt": "2026-06-08T17:39:39.032028Z"
+        "updatedAt": "2026-06-08T17:52:59.413620Z"
       },
       "note": "Scheduled sportytrader refresh returned 5 pick(s).",
       "ok": true,
@@ -175,7 +175,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-08T17:39:39.032028Z"
+      "updatedAt": "2026-06-08T17:52:59.413620Z"
     }
   },
   "generatedAt": "2026-06-08T14:42:40.375004Z",
@@ -6048,14 +6048,14 @@
       "errors": [
         "nba: no picks parsed (No picks found.)"
       ],
-      "generatedAt": "2026-06-08T17:39:39.032028Z",
+      "generatedAt": "2026-06-08T17:52:59.413620Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-08",
         "feed": "sportsgambler",
         "from": "github-actions",
         "leagues": "nba,mlb",
-        "updatedAt": "2026-06-08T17:39:39.032028Z"
+        "updatedAt": "2026-06-08T17:52:59.413620Z"
       },
       "note": "Scheduled sportsgambler refresh returned 8 pick(s).",
       "ok": true,
@@ -6141,19 +6141,19 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-08T17:39:39.032028Z"
+      "updatedAt": "2026-06-08T17:52:59.413620Z"
     },
     "sportytrader": {
       "date": "2026-06-08",
       "errors": [],
-      "generatedAt": "2026-06-08T17:39:39.032028Z",
+      "generatedAt": "2026-06-08T17:52:59.413620Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-08",
         "feed": "sportytrader",
         "from": "github-actions",
         "leagues": "nba,mlb",
-        "updatedAt": "2026-06-08T17:39:39.032028Z"
+        "updatedAt": "2026-06-08T17:52:59.413620Z"
       },
       "note": "Scheduled sportytrader refresh returned 5 pick(s).",
       "ok": true,
@@ -6209,7 +6209,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-08T17:39:39.032028Z"
+      "updatedAt": "2026-06-08T17:52:59.413620Z"
     },
     "wnba": {
       "ok": true,
@@ -6337,14 +6337,14 @@
     "errors": [
       "nba: no picks parsed (No picks found.)"
     ],
-    "generatedAt": "2026-06-08T17:39:39.032028Z",
+    "generatedAt": "2026-06-08T17:52:59.413620Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-08",
       "feed": "sportsgambler",
       "from": "github-actions",
       "leagues": "nba,mlb",
-      "updatedAt": "2026-06-08T17:39:39.032028Z"
+      "updatedAt": "2026-06-08T17:52:59.413620Z"
     },
     "note": "Scheduled sportsgambler refresh returned 8 pick(s).",
     "ok": true,
@@ -6430,19 +6430,19 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-08T17:39:39.032028Z"
+    "updatedAt": "2026-06-08T17:52:59.413620Z"
   },
   "sportytrader": {
     "date": "2026-06-08",
     "errors": [],
-    "generatedAt": "2026-06-08T17:39:39.032028Z",
+    "generatedAt": "2026-06-08T17:52:59.413620Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-08",
       "feed": "sportytrader",
       "from": "github-actions",
       "leagues": "nba,mlb",
-      "updatedAt": "2026-06-08T17:39:39.032028Z"
+      "updatedAt": "2026-06-08T17:52:59.413620Z"
     },
     "note": "Scheduled sportytrader refresh returned 5 pick(s).",
     "ok": true,
@@ -6498,9 +6498,9 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-08T17:39:39.032028Z"
+    "updatedAt": "2026-06-08T17:52:59.413620Z"
   },
-  "updatedAt": "2026-06-08T17:39:39.032028Z",
+  "updatedAt": "2026-06-08T17:52:59.413620Z",
   "wnba": {
     "ok": true,
     "picks": [
