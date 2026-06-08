@@ -7612,7 +7612,7 @@ function _adminCacheDocDateCandidates(dateStr, options = {}) {
   const requested = String(dateStr || '').trim();
   if (requested) candidates.push(requested);
   const today = getPickLedgerDateKey();
-  const allowRecentFallback = !options || options.allowRecentFallback !== false;
+  const allowRecentFallback = !!(options && options.allowRecentFallback === true);
   const useRecentFallback = allowRecentFallback && (!requested || requested === today);
   const pushDate = (value) => {
     if (value && !candidates.includes(value)) candidates.push(value);
@@ -7708,11 +7708,10 @@ async function getAdminPicksFromFirebase(modelKey, options = {}) {
   if (!modelKey) return null;
   const dateStr = typeof options === 'string' ? options : (options && options.date ? options.date : '');
   const gameLabel = options && typeof options === 'object' ? String(options.gameLabel || '').trim() : '';
-  const allowRecentFallback = !(options && typeof options === 'object' && options.allowRecentFallback === false);
+  const allowRecentFallback = !!(options && typeof options === 'object' && options.allowRecentFallback === true);
   const aliases = MODEL_FIREBASE_KEY_ALIASES[modelKey] || [modelKey];
   const normalizedAliases = aliases.map(value => String(value || '').trim().toLowerCase().replace(/[\s_]+/g, '-'));
   const requestedDate = getFirestoreDateKey(dateStr);
-  const staleCacheNote = (cacheDate) => `Using ${formatModelRunDate(cacheDate)} GitHub cache while ${formatModelRunDate(requestedDate)} cache is still warming.`;
   const docCandidates = _adminCacheDocDateCandidates(requestedDate, { allowRecentFallback });
 
   if (db && docFn && getDocFn) {
@@ -7776,9 +7775,6 @@ async function getAdminPicksFromFirebase(modelKey, options = {}) {
       if (!payload) continue;
       const cacheDate = String(data.date || docId).trim() || docId;
       const staleCache = Boolean(requestedDate && cacheDate !== requestedDate);
-      const note = staleCache
-        ? staleCacheNote(cacheDate)
-        : String(payload.note || '').trim();
       return {
         ok: true,
         source: 'firebase_cache',
@@ -7788,7 +7784,7 @@ async function getAdminPicksFromFirebase(modelKey, options = {}) {
         cache_doc: docId,
         requested_date: requestedDate,
         stale_cache: staleCache,
-        note,
+        note: String(payload.note || '').trim(),
         payload,
         picks: _extractModelPicks({ payload, picks: Array.isArray(payload && payload.picks) ? payload.picks : Array.isArray(payload) ? payload : [] }),
       };
@@ -7850,9 +7846,6 @@ async function getAdminPicksFromFirebase(modelKey, options = {}) {
       if (!payload) continue;
       const cacheDate = String(data.date || docId).trim() || docId;
       const staleCache = Boolean(requestedDate && cacheDate !== requestedDate);
-      const note = staleCache
-        ? staleCacheNote(cacheDate)
-        : String(payload.note || '').trim();
       return {
         ok: true,
         source: 'firebase_cache',
@@ -7863,7 +7856,7 @@ async function getAdminPicksFromFirebase(modelKey, options = {}) {
         cache_doc: docId,
         requested_date: requestedDate,
         stale_cache: staleCache,
-        note,
+        note: String(payload.note || '').trim(),
         payload,
         picks: _extractModelPicks({ payload, picks: Array.isArray(payload && payload.picks) ? payload.picks : Array.isArray(payload) ? payload : [] }),
       };
@@ -7872,6 +7865,62 @@ async function getAdminPicksFromFirebase(modelKey, options = {}) {
     }
   }
   return null;
+}
+
+function _countSuccessfulGithubModelBuckets(payload) {
+  const models = payload && payload.models && typeof payload.models === 'object' ? payload.models : {};
+  return Object.values(models).filter((modelPayload) => (
+    modelPayload &&
+    typeof modelPayload === 'object' &&
+    modelPayload.ok === true
+  )).length;
+}
+
+function _formatGithubCacheRunTime(value) {
+  const raw = String(value || '').trim();
+  if (!raw) return '';
+  const parsed = new Date(raw);
+  if (Number.isNaN(parsed.getTime())) return '';
+  return parsed.toLocaleTimeString('en-US', {
+    timeZone: 'America/Chicago',
+    hour: 'numeric',
+    minute: '2-digit',
+    timeZoneName: 'short',
+  });
+}
+
+function setGithubModelCacheStatus(message, state = '') {
+  const el = document.getElementById('github-model-cache-status');
+  if (!el) return;
+  el.textContent = message;
+  el.classList.toggle('is-good', state === 'ok');
+  el.classList.toggle('is-warn', state === 'warn');
+  el.classList.toggle('is-error', state === 'error');
+}
+
+async function refreshGithubModelCacheStatus() {
+  const el = document.getElementById('github-model-cache-status');
+  if (!el) return;
+  setGithubModelCacheStatus('Checking GitHub model cache...', '');
+  try {
+    const resp = await fetch(`./data/model_cache/latest.json?t=${Date.now()}`, {
+      cache: 'no-store',
+      signal: _createTimeoutSignal(8000),
+    });
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const payload = await resp.json();
+    const today = getPickLedgerDateKey();
+    const cacheDate = String(payload && payload.date || '').trim();
+    const successfulBuckets = _countSuccessfulGithubModelBuckets(payload);
+    if (cacheDate === today && successfulBuckets > 0) {
+      const runTime = _formatGithubCacheRunTime(payload.generatedAt || payload.updatedAt);
+      setGithubModelCacheStatus(runTime ? `Ran today at ${runTime}` : 'Ran today', 'ok');
+      return;
+    }
+    setGithubModelCacheStatus('Not yet run today', 'warn');
+  } catch (_err) {
+    setGithubModelCacheStatus('Unable to check GitHub run status', 'error');
+  }
 }
 
 async function loadModelTimestamps() {
@@ -7916,6 +7965,7 @@ async function loadModelTimestamps() {
 
 document.addEventListener('DOMContentLoaded', () => {
   loadModelTimestamps();
+  refreshGithubModelCacheStatus();
 });
 
 function _resetMlbComparisonState(dateStr = '') {
@@ -8365,7 +8415,7 @@ async function _runAsyncModelRequest(model, endpoint, body) {
     const cachedResult = await getAdminPicksFromFirebase(fallbackModelKey, {
       date: fallbackDate,
       gameLabel,
-      allowRecentFallback: true,
+      allowRecentFallback: false,
     });
     if (cachedResult) {
       return cachedResult;

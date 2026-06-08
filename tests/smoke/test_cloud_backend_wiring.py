@@ -46,13 +46,15 @@ def test_frontend_checks_model_cache_before_starting_cloud_job():
     backend_probe = source.index("const backendHealthy = await canAttemptAdminBackend();", run_block)
 
     assert run_block < cache_only_flag < force_gate < cache_lookup < cache_only_stop < backend_probe
-    assert "allowRecentFallback: true" in source
+    assert "allowRecentFallback: false" in source
     assert "No GitHub model cache is available" in source
     assert "cache_only: !forceRefresh" in source
 
 
-def test_frontend_uses_central_slate_date_and_latest_static_cache_fallback():
+def test_frontend_uses_central_slate_date_and_reports_github_cache_status():
     source = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
+    html = (ROOT / "index.html").read_text(encoding="utf-8")
+    css = (ROOT / "src" / "styles" / "pickledger.css").read_text(encoding="utf-8")
 
     assert "function getPickLedgerDateKey(date = new Date())" in source
     assert "timeZone: 'America/Chicago'" in source
@@ -65,7 +67,14 @@ def test_frontend_uses_central_slate_date_and_latest_static_cache_fallback():
     assert "cache_doc: docId" in source
     assert "requested_date: requestedDate" in source
     assert "stale_cache: staleCache" in source
-    assert "Using ${formatModelRunDate(cacheDate)} GitHub cache while ${formatModelRunDate(requestedDate)} cache is still warming." in source
+    assert "Using ${formatModelRunDate(cacheDate)} GitHub cache" not in source
+    assert "function refreshGithubModelCacheStatus()" in source
+    assert "./data/model_cache/latest.json" in source
+    assert "Ran today at ${runTime}" in source
+    assert "Not yet run today" in source
+    assert "github-model-cache-status" in html
+    assert "GitHub Models" in html
+    assert ".github-model-cache-status.is-good" in css
 
 
 def test_model_schedule_is_visible_as_two_refresh_windows():
