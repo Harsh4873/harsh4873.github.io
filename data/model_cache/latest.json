@@ -3,21 +3,21 @@
   "errors": [
     "nba: NBA New parser found no predictions ( | Fetching official NBA injury report... |     [injury_report] Using scraper-based injury report. |  |  | RUNNING PREDICTIONS FOR ALL GAMES |  |  | ================================================================================ | GAME: None @ Knicks (8:30 pm ET) | ================================================================================ | ERROR: Could not find team stats for None or Knicks)"
   ],
-  "externalFeedsUpdatedAt": "2026-06-08T17:52:59.413620Z",
+  "externalFeedsUpdatedAt": "2026-06-08T21:59:23.532761Z",
   "external_feeds": {
     "sportsgambler": {
       "date": "2026-06-08",
       "errors": [
         "nba: no picks parsed (No picks found.)"
       ],
-      "generatedAt": "2026-06-08T17:52:59.413620Z",
+      "generatedAt": "2026-06-08T21:59:23.532761Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-08",
         "feed": "sportsgambler",
         "from": "github-actions",
         "leagues": "nba,mlb",
-        "updatedAt": "2026-06-08T17:52:59.413620Z"
+        "updatedAt": "2026-06-08T21:59:23.532761Z"
       },
       "note": "Scheduled sportsgambler refresh returned 8 pick(s).",
       "ok": true,
@@ -103,21 +103,21 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-08T17:52:59.413620Z"
+      "updatedAt": "2026-06-08T21:59:23.532761Z"
     },
     "sportytrader": {
       "date": "2026-06-08",
       "errors": [],
-      "generatedAt": "2026-06-08T17:52:59.413620Z",
+      "generatedAt": "2026-06-08T21:59:23.532761Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-08",
         "feed": "sportytrader",
         "from": "github-actions",
         "leagues": "nba,mlb",
-        "updatedAt": "2026-06-08T17:52:59.413620Z"
+        "updatedAt": "2026-06-08T21:59:23.532761Z"
       },
-      "note": "Scheduled sportytrader refresh returned 5 pick(s).",
+      "note": "Scheduled sportytrader refresh returned 6 pick(s).",
       "ok": true,
       "picks": [
         {
@@ -169,9 +169,19 @@
           "source": "SportyTrader",
           "sport": "MLB",
           "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": 100,
+          "pick": "Brewers -1.5 (Athletics vs Brewers)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
         }
       ],
-      "updatedAt": "2026-06-08T17:52:59.413620Z"
+      "updatedAt": "2026-06-08T21:59:23.532761Z"
     }
   },
   "generatedAt": "2026-06-08T18:24:20.155366Z",
@@ -3185,14 +3195,14 @@
       "errors": [
         "nba: no picks parsed (No picks found.)"
       ],
-      "generatedAt": "2026-06-08T17:52:59.413620Z",
+      "generatedAt": "2026-06-08T21:59:23.532761Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-08",
         "feed": "sportsgambler",
         "from": "github-actions",
         "leagues": "nba,mlb",
-        "updatedAt": "2026-06-08T17:52:59.413620Z"
+        "updatedAt": "2026-06-08T21:59:23.532761Z"
       },
       "note": "Scheduled sportsgambler refresh returned 8 pick(s).",
       "ok": true,
@@ -3278,21 +3288,21 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-08T17:52:59.413620Z"
+      "updatedAt": "2026-06-08T21:59:23.532761Z"
     },
     "sportytrader": {
       "date": "2026-06-08",
       "errors": [],
-      "generatedAt": "2026-06-08T17:52:59.413620Z",
+      "generatedAt": "2026-06-08T21:59:23.532761Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-08",
         "feed": "sportytrader",
         "from": "github-actions",
         "leagues": "nba,mlb",
-        "updatedAt": "2026-06-08T17:52:59.413620Z"
+        "updatedAt": "2026-06-08T21:59:23.532761Z"
       },
-      "note": "Scheduled sportytrader refresh returned 5 pick(s).",
+      "note": "Scheduled sportytrader refresh returned 6 pick(s).",
       "ok": true,
       "picks": [
         {
@@ -3344,9 +3354,19 @@
           "source": "SportyTrader",
           "sport": "MLB",
           "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": 100,
+          "pick": "Brewers -1.5 (Athletics vs Brewers)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
         }
       ],
-      "updatedAt": "2026-06-08T17:52:59.413620Z"
+      "updatedAt": "2026-06-08T21:59:23.532761Z"
     },
     "wnba": {
       "ok": true,
@@ -3542,14 +3562,14 @@
     "errors": [
       "nba: no picks parsed (No picks found.)"
     ],
-    "generatedAt": "2026-06-08T17:52:59.413620Z",
+    "generatedAt": "2026-06-08T21:59:23.532761Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-08",
       "feed": "sportsgambler",
       "from": "github-actions",
       "leagues": "nba,mlb",
-      "updatedAt": "2026-06-08T17:52:59.413620Z"
+      "updatedAt": "2026-06-08T21:59:23.532761Z"
     },
     "note": "Scheduled sportsgambler refresh returned 8 pick(s).",
     "ok": true,
@@ -3635,21 +3655,21 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-08T17:52:59.413620Z"
+    "updatedAt": "2026-06-08T21:59:23.532761Z"
   },
   "sportytrader": {
     "date": "2026-06-08",
     "errors": [],
-    "generatedAt": "2026-06-08T17:52:59.413620Z",
+    "generatedAt": "2026-06-08T21:59:23.532761Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-08",
       "feed": "sportytrader",
       "from": "github-actions",
       "leagues": "nba,mlb",
-      "updatedAt": "2026-06-08T17:52:59.413620Z"
+      "updatedAt": "2026-06-08T21:59:23.532761Z"
     },
-    "note": "Scheduled sportytrader refresh returned 5 pick(s).",
+    "note": "Scheduled sportytrader refresh returned 6 pick(s).",
     "ok": true,
     "picks": [
       {
@@ -3701,10 +3721,20 @@
         "source": "SportyTrader",
         "sport": "MLB",
         "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": 100,
+        "pick": "Brewers -1.5 (Athletics vs Brewers)",
+        "probability": null,
+        "source": "SportyTrader",
+        "sport": "MLB",
+        "units": 1
       }
     ],
-    "updatedAt": "2026-06-08T17:52:59.413620Z"
+    "updatedAt": "2026-06-08T21:59:23.532761Z"
   },
-  "updatedAt": "2026-06-08T18:24:20.155366Z",
+  "updatedAt": "2026-06-08T21:59:23.532761Z",
   "wnba": {}
 }
