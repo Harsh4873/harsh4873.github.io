@@ -467,13 +467,19 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
       loginErr.textContent = 'Finishing Google sign-in…';
     }
     try {
-      const result = await getRedirectResult(auth);
+      const result = await Promise.race([
+        getRedirectResult(auth),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 15000))
+      ]);
       if (result && result.user && loginErr) {
         loginErr.textContent = '';
+      } else if (redirectWasPending) {
+        if (loginErr) loginErr.textContent = '';
+        restoreLoginButton();
       }
     } catch (e) {
       console.warn('[Auth] Google redirect sign-in failed:', e);
-      restoreLoginButton(formatAuthError(e));
+      restoreLoginButton(e && e.message === 'timeout' ? 'Google sign-in timed out. Please try again.' : formatAuthError(e));
     } finally {
       sessionStorage.removeItem(REDIRECT_SIGN_IN_PENDING_KEY);
     }
@@ -936,7 +942,11 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
   async function waitForLedgerHelpers() {
     if (window._applyUserLedgerState && window._clearLedgerLocalState) return;
     await new Promise((resolve) => {
-      window.addEventListener('pickledger:helpers-ready', resolve, { once: true });
+      let timeoutId = setTimeout(resolve, 5000); // Fallback so we never hang forever
+      window.addEventListener('pickledger:helpers-ready', () => {
+        clearTimeout(timeoutId);
+        resolve();
+      }, { once: true });
     });
   }
 
