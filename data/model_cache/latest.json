@@ -7,6 +7,177 @@
     "mlb_old: MLB OLD parser found no predictions ([sportsline_odds] Fetching MLB market odds for slate_date=2026-06-08 | MLB spread: 8 rows | MLB total: 8 rows | MLB ml: 8 rows | MLB merged: 8 games | [sportsline_odds] Schedule filter for slate_date=2026-06-08: kept=8 scraped_games=8 official_games=8 | Missing MLB moneyline model artifact for variant='old'. Run `venv/bin/python train_moneyline_model.py` inside MLBPredictionModel first.)",
     "nba_props: NBA props model runtime failed (  File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 671, in get |     return self.request(\"GET\", url, params=params, **kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 651, in request |     resp = self.send(prep, **send_kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 784, in send |     r = adapter.send(request, **kwargs) |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/adapters.py\", line 742, in send |     raise ReadTimeout(e, request=request) | requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='stats.nba.com', port=443): Read timed out. (read timeout=30))"
   ],
+  "externalFeedsUpdatedAt": "2026-06-08T17:28:50.995552Z",
+  "external_feeds": {
+    "sportsgambler": {
+      "date": "2026-06-08",
+      "errors": [
+        "nba: no picks parsed (No picks found.)"
+      ],
+      "generatedAt": "2026-06-08T17:28:50.995552Z",
+      "generatedBy": "github-actions:external-feed-refresh",
+      "meta": {
+        "date": "2026-06-08",
+        "feed": "sportsgambler",
+        "from": "github-actions",
+        "leagues": "nba,mlb",
+        "updatedAt": "2026-06-08T17:28:50.995552Z"
+      },
+      "note": "Scheduled sportsgambler refresh returned 8 pick(s).",
+      "ok": true,
+      "picks": [
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -137,
+          "pick": "Seattle Mariners to Win (Baltimore Orioles vs Seattle Mariners)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": 108,
+          "pick": "New York Yankees to Win (Cleveland Guardians vs New York Yankees)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -106,
+          "pick": "Tampa Bay Rays to Win (Tampa Bay Rays vs Boston Red Sox)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -192,
+          "pick": "Philadelphia Phillies to Win (Toronto Blue Jays vs Philadelphia Phillies)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -130,
+          "pick": "Houston Astros to Win (Los Angeles Angels vs Houston Astros)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -132,
+          "pick": "San Diego Padres to Win (San Diego Padres vs Cincinnati Reds)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": 135,
+          "pick": "Washington Nationals to Win (San Francisco Giants vs Washington Nationals)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": 130,
+          "pick": "Athletics to Win (Athletics vs Milwaukee Brewers)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        }
+      ],
+      "updatedAt": "2026-06-08T17:28:50.995552Z"
+    },
+    "sportytrader": {
+      "date": "2026-06-08",
+      "errors": [],
+      "generatedAt": "2026-06-08T17:28:50.995552Z",
+      "generatedBy": "github-actions:external-feed-refresh",
+      "meta": {
+        "date": "2026-06-08",
+        "feed": "sportytrader",
+        "from": "github-actions",
+        "leagues": "nba,mlb",
+        "updatedAt": "2026-06-08T17:28:50.995552Z"
+      },
+      "note": "Scheduled sportytrader refresh returned 5 pick(s).",
+      "ok": true,
+      "picks": [
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -260,
+          "pick": "Over 206.5 (Knicks vs Spurs)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "NBA",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": 108,
+          "pick": "Orioles ML (Orioles vs Mariners)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -110,
+          "pick": "Under 8 Total Runs (Guardians vs Yankees)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -118,
+          "pick": "Red Sox ML (Rays vs Red Sox)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -120,
+          "pick": "Houston Astros ML (Angels vs Astros)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        }
+      ],
+      "updatedAt": "2026-06-08T17:28:50.995552Z"
+    }
+  },
   "generatedAt": "2026-06-08T14:42:40.375004Z",
   "generatedBy": "github-actions:model-cache-refresh",
   "ipl": {},
@@ -5872,6 +6043,174 @@
       "error": "NBA props model runtime failed (  File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 671, in get |     return self.request(\"GET\", url, params=params, **kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 651, in request |     resp = self.send(prep, **send_kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 784, in send |     r = adapter.send(request, **kwargs) |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/adapters.py\", line 742, in send |     raise ReadTimeout(e, request=request) | requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='stats.nba.com', port=443): Read timed out. (read timeout=30))",
       "ok": false
     },
+    "sportsgambler": {
+      "date": "2026-06-08",
+      "errors": [
+        "nba: no picks parsed (No picks found.)"
+      ],
+      "generatedAt": "2026-06-08T17:28:50.995552Z",
+      "generatedBy": "github-actions:external-feed-refresh",
+      "meta": {
+        "date": "2026-06-08",
+        "feed": "sportsgambler",
+        "from": "github-actions",
+        "leagues": "nba,mlb",
+        "updatedAt": "2026-06-08T17:28:50.995552Z"
+      },
+      "note": "Scheduled sportsgambler refresh returned 8 pick(s).",
+      "ok": true,
+      "picks": [
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -137,
+          "pick": "Seattle Mariners to Win (Baltimore Orioles vs Seattle Mariners)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": 108,
+          "pick": "New York Yankees to Win (Cleveland Guardians vs New York Yankees)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -106,
+          "pick": "Tampa Bay Rays to Win (Tampa Bay Rays vs Boston Red Sox)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -192,
+          "pick": "Philadelphia Phillies to Win (Toronto Blue Jays vs Philadelphia Phillies)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -130,
+          "pick": "Houston Astros to Win (Los Angeles Angels vs Houston Astros)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -132,
+          "pick": "San Diego Padres to Win (San Diego Padres vs Cincinnati Reds)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": 135,
+          "pick": "Washington Nationals to Win (San Francisco Giants vs Washington Nationals)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": 130,
+          "pick": "Athletics to Win (Athletics vs Milwaukee Brewers)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        }
+      ],
+      "updatedAt": "2026-06-08T17:28:50.995552Z"
+    },
+    "sportytrader": {
+      "date": "2026-06-08",
+      "errors": [],
+      "generatedAt": "2026-06-08T17:28:50.995552Z",
+      "generatedBy": "github-actions:external-feed-refresh",
+      "meta": {
+        "date": "2026-06-08",
+        "feed": "sportytrader",
+        "from": "github-actions",
+        "leagues": "nba,mlb",
+        "updatedAt": "2026-06-08T17:28:50.995552Z"
+      },
+      "note": "Scheduled sportytrader refresh returned 5 pick(s).",
+      "ok": true,
+      "picks": [
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -260,
+          "pick": "Over 206.5 (Knicks vs Spurs)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "NBA",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": 108,
+          "pick": "Orioles ML (Orioles vs Mariners)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -110,
+          "pick": "Under 8 Total Runs (Guardians vs Yankees)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -118,
+          "pick": "Red Sox ML (Rays vs Red Sox)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -120,
+          "pick": "Houston Astros ML (Angels vs Astros)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        }
+      ],
+      "updatedAt": "2026-06-08T17:28:50.995552Z"
+    },
     "wnba": {
       "ok": true,
       "picks": [
@@ -5993,7 +6332,175 @@
     "error": "NBA props model runtime failed (  File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 671, in get |     return self.request(\"GET\", url, params=params, **kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 651, in request |     resp = self.send(prep, **send_kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 784, in send |     r = adapter.send(request, **kwargs) |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/adapters.py\", line 742, in send |     raise ReadTimeout(e, request=request) | requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='stats.nba.com', port=443): Read timed out. (read timeout=30))",
     "ok": false
   },
-  "updatedAt": "2026-06-08T14:42:40.375004Z",
+  "sportsgambler": {
+    "date": "2026-06-08",
+    "errors": [
+      "nba: no picks parsed (No picks found.)"
+    ],
+    "generatedAt": "2026-06-08T17:28:50.995552Z",
+    "generatedBy": "github-actions:external-feed-refresh",
+    "meta": {
+      "date": "2026-06-08",
+      "feed": "sportsgambler",
+      "from": "github-actions",
+      "leagues": "nba,mlb",
+      "updatedAt": "2026-06-08T17:28:50.995552Z"
+    },
+    "note": "Scheduled sportsgambler refresh returned 8 pick(s).",
+    "ok": true,
+    "picks": [
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -137,
+        "pick": "Seattle Mariners to Win (Baltimore Orioles vs Seattle Mariners)",
+        "probability": null,
+        "source": "SportsGambler",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": 108,
+        "pick": "New York Yankees to Win (Cleveland Guardians vs New York Yankees)",
+        "probability": null,
+        "source": "SportsGambler",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -106,
+        "pick": "Tampa Bay Rays to Win (Tampa Bay Rays vs Boston Red Sox)",
+        "probability": null,
+        "source": "SportsGambler",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -192,
+        "pick": "Philadelphia Phillies to Win (Toronto Blue Jays vs Philadelphia Phillies)",
+        "probability": null,
+        "source": "SportsGambler",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -130,
+        "pick": "Houston Astros to Win (Los Angeles Angels vs Houston Astros)",
+        "probability": null,
+        "source": "SportsGambler",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -132,
+        "pick": "San Diego Padres to Win (San Diego Padres vs Cincinnati Reds)",
+        "probability": null,
+        "source": "SportsGambler",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": 135,
+        "pick": "Washington Nationals to Win (San Francisco Giants vs Washington Nationals)",
+        "probability": null,
+        "source": "SportsGambler",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": 130,
+        "pick": "Athletics to Win (Athletics vs Milwaukee Brewers)",
+        "probability": null,
+        "source": "SportsGambler",
+        "sport": "MLB",
+        "units": 1
+      }
+    ],
+    "updatedAt": "2026-06-08T17:28:50.995552Z"
+  },
+  "sportytrader": {
+    "date": "2026-06-08",
+    "errors": [],
+    "generatedAt": "2026-06-08T17:28:50.995552Z",
+    "generatedBy": "github-actions:external-feed-refresh",
+    "meta": {
+      "date": "2026-06-08",
+      "feed": "sportytrader",
+      "from": "github-actions",
+      "leagues": "nba,mlb",
+      "updatedAt": "2026-06-08T17:28:50.995552Z"
+    },
+    "note": "Scheduled sportytrader refresh returned 5 pick(s).",
+    "ok": true,
+    "picks": [
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -260,
+        "pick": "Over 206.5 (Knicks vs Spurs)",
+        "probability": null,
+        "source": "SportyTrader",
+        "sport": "NBA",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": 108,
+        "pick": "Orioles ML (Orioles vs Mariners)",
+        "probability": null,
+        "source": "SportyTrader",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -110,
+        "pick": "Under 8 Total Runs (Guardians vs Yankees)",
+        "probability": null,
+        "source": "SportyTrader",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -118,
+        "pick": "Red Sox ML (Rays vs Red Sox)",
+        "probability": null,
+        "source": "SportyTrader",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -120,
+        "pick": "Houston Astros ML (Angels vs Astros)",
+        "probability": null,
+        "source": "SportyTrader",
+        "sport": "MLB",
+        "units": 1
+      }
+    ],
+    "updatedAt": "2026-06-08T17:28:50.995552Z"
+  },
+  "updatedAt": "2026-06-08T17:28:50.995552Z",
   "wnba": {
     "ok": true,
     "picks": [
