@@ -1634,8 +1634,30 @@ function getCurrentFirebaseUid() {
   return uid;
 }
 
+function getPickLedgerDateKey(date = new Date()) {
+  try {
+    const parts = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'America/Chicago',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    }).formatToParts(date).reduce((acc, part) => {
+      if (part.type !== 'literal') acc[part.type] = part.value;
+      return acc;
+    }, {});
+    if (parts.year && parts.month && parts.day) {
+      return `${parts.year}-${parts.month}-${parts.day}`;
+    }
+  } catch (_) {}
+  const d = date instanceof Date ? date : new Date(date);
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return `${d.getFullYear()}-${mm}-${dd}`;
+}
+
 function getFirestoreDateKey(dateStr = null) {
-  return String(dateStr || new Date().toISOString().split('T')[0]).trim();
+  const explicit = String(dateStr || '').trim();
+  return explicit || getPickLedgerDateKey();
 }
 
 function _extractFirebaseModelPayload(raw, options = {}) {
@@ -7487,17 +7509,12 @@ function openScores24Module(model) {
 
 function _getTodayDateStr() {
   // Returns MM/DD/YYYY for the model scripts
-  const d = new Date();
-  const mm = String(d.getMonth() + 1).padStart(2, '0');
-  const dd = String(d.getDate()).padStart(2, '0');
-  return `${mm}/${dd}/${d.getFullYear()}`;
+  const [yyyy, mm, dd] = getPickLedgerDateKey().split('-');
+  return `${mm}/${dd}/${yyyy}`;
 }
 
 function _getTodayIsoDate() {
-  const d = new Date();
-  const mm = String(d.getMonth() + 1).padStart(2, '0');
-  const dd = String(d.getDate()).padStart(2, '0');
-  return `${d.getFullYear()}-${mm}-${dd}`;
+  return getPickLedgerDateKey();
 }
 
 function _shiftIsoDate(dateStr, offsetDays) {
@@ -7594,21 +7611,22 @@ function _adminCacheDocDateCandidates(dateStr, options = {}) {
   const candidates = [];
   const requested = String(dateStr || '').trim();
   if (requested) candidates.push(requested);
-  const todayUtc = new Date().toISOString().split('T')[0];
+  const today = getPickLedgerDateKey();
   const allowRecentFallback = !options || options.allowRecentFallback !== false;
-  const useRecentFallback = allowRecentFallback && (!requested || requested === todayUtc);
+  const useRecentFallback = allowRecentFallback && (!requested || requested === today);
   const pushDate = (value) => {
     if (value && !candidates.includes(value)) candidates.push(value);
   };
   if (useRecentFallback) {
-    const cursor = new Date(`${todayUtc}T12:00:00Z`);
+    pushDate('latest');
+    const cursor = new Date(`${today}T12:00:00Z`);
     for (let offset = 0; offset <= 14; offset += 1) {
       const d = new Date(cursor);
       d.setUTCDate(cursor.getUTCDate() - offset);
       pushDate(d.toISOString().split('T')[0]);
     }
   } else {
-    pushDate(todayUtc);
+    pushDate(today);
   }
   return candidates;
 }
@@ -7693,7 +7711,9 @@ async function getAdminPicksFromFirebase(modelKey, options = {}) {
   const allowRecentFallback = !(options && typeof options === 'object' && options.allowRecentFallback === false);
   const aliases = MODEL_FIREBASE_KEY_ALIASES[modelKey] || [modelKey];
   const normalizedAliases = aliases.map(value => String(value || '').trim().toLowerCase().replace(/[\s_]+/g, '-'));
-  const docCandidates = _adminCacheDocDateCandidates(dateStr || getFirestoreDateKey(), { allowRecentFallback });
+  const requestedDate = getFirestoreDateKey(dateStr);
+  const staleCacheNote = (cacheDate) => `Using ${formatModelRunDate(cacheDate)} GitHub cache while ${formatModelRunDate(requestedDate)} cache is still warming.`;
+  const docCandidates = _adminCacheDocDateCandidates(requestedDate, { allowRecentFallback });
 
   if (db && docFn && getDocFn) {
     for (const docId of docCandidates) {
@@ -7754,11 +7774,21 @@ async function getAdminPicksFromFirebase(modelKey, options = {}) {
         if (payload) break;
       }
       if (!payload) continue;
+      const cacheDate = String(data.date || docId).trim() || docId;
+      const staleCache = Boolean(requestedDate && cacheDate !== requestedDate);
+      const note = staleCache
+        ? staleCacheNote(cacheDate)
+        : String(payload.note || '').trim();
       return {
         ok: true,
         source: 'firebase_cache',
         model: modelKey,
-        date: docId,
+        date: cacheDate,
+        cache_date: cacheDate,
+        cache_doc: docId,
+        requested_date: requestedDate,
+        stale_cache: staleCache,
+        note,
         payload,
         picks: _extractModelPicks({ payload, picks: Array.isArray(payload && payload.picks) ? payload.picks : Array.isArray(payload) ? payload : [] }),
       };
@@ -7818,12 +7848,22 @@ async function getAdminPicksFromFirebase(modelKey, options = {}) {
         if (payload) break;
       }
       if (!payload) continue;
+      const cacheDate = String(data.date || docId).trim() || docId;
+      const staleCache = Boolean(requestedDate && cacheDate !== requestedDate);
+      const note = staleCache
+        ? staleCacheNote(cacheDate)
+        : String(payload.note || '').trim();
       return {
         ok: true,
         source: 'firebase_cache',
         cache_source: 'static_json',
         model: modelKey,
-        date: docId,
+        date: cacheDate,
+        cache_date: cacheDate,
+        cache_doc: docId,
+        requested_date: requestedDate,
+        stale_cache: staleCache,
+        note,
         payload,
         picks: _extractModelPicks({ payload, picks: Array.isArray(payload && payload.picks) ? payload.picks : Array.isArray(payload) ? payload : [] }),
       };
@@ -7841,7 +7881,7 @@ async function loadModelTimestamps() {
   if (!db || !docFn || !getDocFn) return;
 
   try {
-    const today = new Date().toISOString().split('T')[0];
+    const today = getPickLedgerDateKey();
     const snap = await getDocFn(docFn(db, 'admin_picks', today));
     const exists = typeof snap.exists === 'function' ? snap.exists() : !!snap.exists;
     if (!exists) return;
@@ -8317,6 +8357,7 @@ async function _runAsyncModelRequest(model, endpoint, body) {
   const fallbackModelKey = String(body && body.fallbackModelKey ? body.fallbackModelKey : model).trim() || model;
   const fallbackDate = String(body && body.fallbackDateStr ? body.fallbackDateStr : dateStr).trim() || dateStr;
   const forceRefresh = !!(body && body.force_refresh);
+  const cacheOnly = !!(body && body.cache_only);
   let backendError = null;
 
   if (!forceRefresh) {
@@ -8324,11 +8365,15 @@ async function _runAsyncModelRequest(model, endpoint, body) {
     const cachedResult = await getAdminPicksFromFirebase(fallbackModelKey, {
       date: fallbackDate,
       gameLabel,
-      allowRecentFallback: false,
+      allowRecentFallback: true,
     });
     if (cachedResult) {
       return cachedResult;
     }
+  }
+
+  if (cacheOnly && !forceRefresh) {
+    throw new Error(`No GitHub model cache is available for ${formatModelRunDate(fallbackDate)} yet. Use force refresh to run ${getModelBackendLabel()}.`);
   }
 
   const backendCandidates = getModelBackendCandidates();
@@ -8553,7 +8598,7 @@ async function _runNbaVariantModel(model, dateStr, options = {}) {
     forceRefresh
       ? `Force refreshing ${NBA_MODEL_SOURCE_LABELS[model]} for ${label}...`
       : isAdminModelRunnerUser()
-      ? `Running ${NBA_MODEL_SOURCE_LABELS[model]} for ${label}...`
+      ? `Loading ${NBA_MODEL_SOURCE_LABELS[model]} for ${label} from GitHub cache...`
       : `Loading ${NBA_MODEL_SOURCE_LABELS[model]} for ${label} from Firebase...`,
     'running'
   );
@@ -8566,6 +8611,7 @@ async function _runNbaVariantModel(model, dateStr, options = {}) {
       fallbackModelKey: model === 'nba-old' ? 'nba_old' : 'nba_new',
       fallbackDateStr: dateStr,
       force_refresh: forceRefresh,
+      cache_only: !forceRefresh,
     }
   );
   const picks = _relabelPicksForVariant(_extractModelPicks(result), NBA_MODEL_SOURCE_LABELS[model]);
@@ -8584,13 +8630,16 @@ async function _runNbaVariantModel(model, dateStr, options = {}) {
   return picks;
 }
 
-async function _runMlbVariantModel(model, dateStr) {
+async function _runMlbVariantModel(model, dateStr, options = {}) {
   const label = formatModelRunDate(dateStr);
   const isOldVariant = model === 'mlb';
+  const forceRefresh = !!(options && options.forceRefresh);
   setModelStatus(
     model,
-    isAdminModelRunnerUser()
-      ? `Running ${MLB_MODEL_SOURCE_LABELS[model]} for ${label}...`
+    forceRefresh
+      ? `Force refreshing ${MLB_MODEL_SOURCE_LABELS[model]} for ${label}...`
+      : isAdminModelRunnerUser()
+      ? `Loading ${MLB_MODEL_SOURCE_LABELS[model]} for ${label} from GitHub cache...`
       : `Loading ${MLB_MODEL_SOURCE_LABELS[model]} for ${label} from Firebase...`,
     'running'
   );
@@ -8598,10 +8647,12 @@ async function _runMlbVariantModel(model, dateStr) {
     model,
     isOldVariant ? '/run-mlb-model' : '/run-mlb-new-model',
     {
-      async: true,
+      async: !forceRefresh,
       date: dateStr,
       fallbackModelKey: isOldVariant ? 'mlb_old' : 'mlb_new',
       fallbackDateStr: dateStr,
+      force_refresh: forceRefresh,
+      cache_only: !forceRefresh,
     }
   );
   const picks = _relabelPicksForVariant(_extractModelPicks(result), MLB_MODEL_SOURCE_LABELS[model]);
@@ -9126,7 +9177,7 @@ async function runModel(model, eventOrOptions = {}) {
     const label = formatModelRunDate(dateStr);
     _clearNbaComparisonResults();
     try {
-      const picks = await _runMlbVariantModel(model, dateStr);
+      const picks = await _runMlbVariantModel(model, dateStr, { forceRefresh });
       _storeMlbComparisonPicks(model, picks, dateStr);
       const hasBoth = ['mlb', 'mlb-new'].every(key => (pendingMlbComparisonPicks[key] || []).length > 0);
       setModelStatus(
@@ -9376,6 +9427,7 @@ async function runModel(model, eventOrOptions = {}) {
     async: !forceRefresh,
     date: _getTodayIsoDate ? _getTodayIsoDate() : getFirestoreDateKey(),
     force_refresh: forceRefresh,
+    cache_only: !forceRefresh,
   };
   if (model === 'mlb-inning') {
     endpoint = '/run-mlb-inning-model';

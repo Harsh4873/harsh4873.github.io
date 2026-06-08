@@ -39,11 +39,33 @@ def test_frontend_checks_model_cache_before_starting_cloud_job():
     source = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
 
     run_block = source.index("async function _runAsyncModelRequest")
+    cache_only_flag = source.index("const cacheOnly = !!(body && body.cache_only);", run_block)
     force_gate = source.index("if (!forceRefresh)", run_block)
     cache_lookup = source.index("const cachedResult = await getAdminPicksFromFirebase", run_block)
+    cache_only_stop = source.index("if (cacheOnly && !forceRefresh)", run_block)
     backend_probe = source.index("const backendHealthy = await canAttemptAdminBackend();", run_block)
 
-    assert run_block < force_gate < cache_lookup < backend_probe
+    assert run_block < cache_only_flag < force_gate < cache_lookup < cache_only_stop < backend_probe
+    assert "allowRecentFallback: true" in source
+    assert "No GitHub model cache is available" in source
+    assert "cache_only: !forceRefresh" in source
+
+
+def test_frontend_uses_central_slate_date_and_latest_static_cache_fallback():
+    source = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
+
+    assert "function getPickLedgerDateKey(date = new Date())" in source
+    assert "timeZone: 'America/Chicago'" in source
+    assert "return explicit || getPickLedgerDateKey();" in source
+    assert "function _getTodayIsoDate()" in source
+    assert "return getPickLedgerDateKey();" in source
+    assert "const today = getPickLedgerDateKey();" in source
+    assert "pushDate('latest');" in source
+    assert "cache_date: cacheDate" in source
+    assert "cache_doc: docId" in source
+    assert "requested_date: requestedDate" in source
+    assert "stale_cache: staleCache" in source
+    assert "Using ${formatModelRunDate(cacheDate)} GitHub cache while ${formatModelRunDate(requestedDate)} cache is still warming." in source
 
 
 def test_model_schedule_is_visible_as_two_refresh_windows():
