@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PickLedgerPro — Sports Pick Tracker</title>
-<meta name="description" content="PickLedgerPro — algorithmic sports pick tracker for NBA, MLB, WNBA, and IPL. Live predictions powered by Firebase.">
+<title>PickLedger — Automated Sports Pick Viewer</title>
+<meta name="description" content="PickLedger — Public automated sports pick viewer for NBA, MLB, WNBA, and IPL.">
 <meta property="og:title" content="PickLedgerPro">
 <meta property="og:description" content="Sports pick tracker with live algorithmic predictions for NBA, MLB, WNBA, and IPL.">
 <meta property="og:type" content="website">
@@ -18,78 +18,7 @@
 <link rel="stylesheet" href="./ipl/ipl_styles.css">
 </head>
 <body>
-<div id="login-gate" style="
-  position:fixed;inset:0;z-index:99999;
-  background:#0a0a0a;
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Courier New',monospace;
-">
-  <div style="
-    background:#111;
-    border:1px solid #222;
-    border-radius:16px;
-    padding:48px 40px;
-    width:100%;max-width:400px;
-    text-align:center;
-    box-shadow:0 24px 64px rgba(0,0,0,0.6);
-  ">
-    <!-- Logo -->
-    <div style="margin-bottom:8px;">
-      <svg width="48" height="48" viewBox="0 0 48 48" fill="none"
-           style="margin:0 auto 12px;">
-        <rect width="48" height="48" rx="12" fill="#1a1a1a"/>
-        <path d="M12 16h4v16h-4zM20 16h8l6 8-6 8h-8v-6h6l2-2-2-2h-6z"
-              fill="#4ade80"/>
-      </svg>
-    </div>
-    <div style="
-      font-size:22px;font-weight:700;
-      color:#fff;letter-spacing:0.08em;
-      text-transform:uppercase;margin-bottom:6px;">
-      PICKLEDGER
-    </div>
-    <div style="
-      font-size:12px;color:#555;
-      letter-spacing:0.12em;text-transform:uppercase;
-      margin-bottom:32px;">
-      Source · Performance · Tracker
-    </div>
 
-    <button id="login-google-btn" style="
-      width:100%;
-      background:#fff;color:#111;
-      border:none;border-radius:8px;
-      padding:14px 20px;
-      font-size:14px;font-weight:600;
-      font-family:'Courier New',monospace;
-      cursor:pointer;
-      display:flex;align-items:center;justify-content:center;gap:10px;
-      transition:background 0.15s;
-    "
-    onmouseover="this.style.background='#e8e8e8'"
-    onmouseout="this.style.background='#fff'">
-      <svg width="18" height="18" viewBox="0 0 18 18">
-        <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/>
-        <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/>
-        <path fill="#FBBC05" d="M3.964 10.706c-.18-.54-.282-1.117-.282-1.706s.102-1.166.282-1.706V4.962H.957C.347 6.175 0 7.55 0 9s.348 2.825.957 4.038l3.007-2.332z"/>
-        <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.962L3.964 7.294C4.672 5.167 6.656 3.58 9 3.58z"/>
-      </svg>
-      Sign in with Google
-    </button>
-
-    <div id="login-error" style="
-      color:#f87171;font-size:12px;
-      margin-top:14px;min-height:18px;
-    "></div>
-
-    <div style="
-      color:#333;font-size:11px;
-      margin-top:24px;letter-spacing:0.05em;
-    ">
-      Your picks and record are private<br>and synced to your Google account
-    </div>
-  </div>
-</div>
 <div class="container">
 
   <header>
@@ -115,29 +44,11 @@
         </button>
         <button id="refresh-btn" class="refresh-btn" onclick="refreshAutoGrades()" aria-label="Auto-grade picks">REFRESH</button>
         <span id="sync-status" style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-left:8px;"></span>
-        <!-- Profile widget (top-right) -->
-        <div class="header-profile-widget" id="header-profile-widget">
-          <div class="header-profile-trigger" id="header-profile-trigger">
-            <img class="header-profile-avatar" id="header-profile-avatar" src="" alt="">
-            <span class="header-profile-name" id="header-profile-name"></span>
-            <span class="header-profile-caret">&#9660;</span>
-          </div>
-          <div class="header-profile-dropdown" id="header-profile-dropdown">
-            <div class="profile-dd-info">
-              <img class="profile-dd-avatar" id="profile-dd-avatar" src="" alt="">
-              <div>
-                <div class="profile-dd-name" id="profile-dd-name"></div>
-                <div class="profile-dd-email" id="profile-dd-email"></div>
-              </div>
-            </div>
-            <button class="profile-dd-signout" onclick="window._signOut()">SIGN OUT</button>
-          </div>
-        </div>
+
       </div>
       <div id="refresh-status" class="refresh-status">Ready to auto-grade</div>
-      <div>
-        <div class="header-stat-val" id="total-record">0-0</div>
-        <div class="header-stat-label">OVERALL RECORD</div>
+      <div class="automated-picks-badge">
+        Automated Picks
       </div>
     </div>
   </header>
@@ -148,7 +59,7 @@
     <button class="tab" onclick="switchTab('rankings')">RANKINGS</button>
     <button class="tab" onclick="switchTab('trends')">TRENDS</button>
     <button class="tab" onclick="switchTab('daily')">DAILY</button>
-    <button class="tab" onclick="switchTab('models')">MODELS</button>
+
   </div>
 
   <!-- HOME TAB -->
@@ -270,330 +181,12 @@
     <div id="daily-container"></div>
   </div>
 
-  <!-- MODELS TAB -->
-  <div id="tab-models" class="tab-content">
-    <div class="models-console">
-      <div class="models-headline">
-        <div class="models-headline-copy">
-          <div class="models-headline-eyebrow">Model Lab</div>
-          <div class="models-headline-title">Prediction Console</div>
-          <div class="models-headline-subtitle">Pick a model from the rail, fire it from the stage. Status, freshness, and output stay on one surface.</div>
-        </div>
-        <div class="models-headline-actions">
-          <div class="model-chooser-wrap" id="model-chooser-wrap">
-            <div class="model-chooser-trigger" id="model-chooser-trigger">
-              <span class="model-chooser-icon">&#9881;</span>
-              <span class="model-chooser-label">Visible Models</span>
-              <span class="model-chooser-count" id="model-chooser-count">0</span>
-              <span class="model-chooser-caret">&#9660;</span>
-            </div>
-            <div class="model-chooser-dropdown" id="model-chooser-dropdown"></div>
-          </div>
-        </div>
-      </div>
 
-      <div class="models-schedule-strip" aria-label="Automated model refresh schedule">
-        <div class="models-schedule-row">
-          <span class="models-schedule-label">Auto Refresh</span>
-          <span class="models-schedule-copy">Models warm before 9:00 AM and refresh around 3:00 PM CT</span>
-        </div>
-        <div class="models-schedule-row">
-          <span class="models-schedule-label">GitHub Models</span>
-          <span class="models-schedule-copy github-model-cache-status" id="github-model-cache-status">Checking GitHub model cache...</span>
-        </div>
-      </div>
-
-      <div class="models-pulse-strip">
-        <div class="pulse-stat">
-          <div class="pulse-stat-label">Active</div>
-          <div class="pulse-stat-value" id="lab-stat-active">0</div>
-          <div class="pulse-stat-detail" id="lab-stat-active-detail">visible models</div>
-        </div>
-        <div class="pulse-stat">
-          <div class="pulse-stat-label">Ready</div>
-          <div class="pulse-stat-value is-good" id="lab-stat-ready">0</div>
-          <div class="pulse-stat-detail" id="lab-stat-ready-detail">picks loaded</div>
-        </div>
-        <div class="pulse-stat">
-          <div class="pulse-stat-label">Running</div>
-          <div class="pulse-stat-value" id="lab-stat-running">0</div>
-          <div class="pulse-stat-detail" id="lab-stat-running-detail">idle</div>
-        </div>
-        <div class="pulse-stat">
-          <div class="pulse-stat-label">Issues</div>
-          <div class="pulse-stat-value" id="lab-stat-errors">0</div>
-          <div class="pulse-stat-detail" id="lab-stat-errors-detail">no errors</div>
-        </div>
-        <div class="pulse-stat pulse-stat-suggest" id="lab-stat-suggest">
-          <div class="pulse-stat-label">Suggested Next</div>
-          <div class="pulse-stat-value pulse-stat-value-small" id="lab-stat-next" role="button" tabindex="0" onclick="selectSuggestedModel()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectSuggestedModel();}">&mdash;</div>
-          <div class="pulse-stat-detail" id="lab-stat-next-detail">scanning models</div>
-        </div>
-      </div>
-
-      <div class="model-compare-strip">
-        <div class="model-status" id="status-nba-compare"></div>
-        <div class="model-status" id="status-mlb-compare"></div>
-      </div>
-
-      <div class="models-workbench-grid">
-        <aside class="models-rail">
-          <div id="model-wheel-orbit">
-            <div class="models-rail-group" data-rail-group="MLB">
-              <div class="models-rail-group-head">
-                <span class="models-rail-group-label">MLB</span>
-                <span class="models-rail-group-count" data-group-count></span>
-              </div>
-              <div class="models-rail-list">
-                <div class="model-card is-active" id="model-card-mlb-new" role="button" tabindex="0" data-model-key="mlb-new" data-run-action="runModel" data-run-label="RUN MLB MODEL" data-category="Core Slate" data-insight="Slate-wide read: calibrated MLB moneyline output with the current artifact set. Best first run when the baseball board is open.">
-                  <div class="model-card-icon">&#9918;</div>
-                  <span class="model-card-kicker">Core Slate</span>
-                  <div class="model-card-title">MLB Model</div>
-                  <div class="model-card-desc">Moneyline pipeline</div>
-                  <span data-model-timestamp="mlb_new" class="model-timestamp-badge" style="display:none;"></span>
-                  <div class="model-card-actions"><button class="model-run-btn" id="btn-run-mlb-new" onclick="runModel('mlb-new')">RUN MLB MODEL</button></div>
-                  <div class="model-status" id="status-mlb-new"></div>
-                </div>
-                <div class="model-card" id="model-card-mlb-inning" role="button" tabindex="0" data-model-key="mlb-inning" data-run-action="runModel" data-run-label="RUN MLB INNING" data-category="Micro Edge" data-insight="Inning pressure view: isolates the lowest run-expectancy pockets instead of asking the full game to carry the bet.">
-                  <div class="model-card-icon">&#9918;</div>
-                  <span class="model-card-kicker">Micro Edge</span>
-                  <div class="model-card-title">MLB Inning</div>
-                  <div class="model-card-desc">No-run inning spots</div>
-                  <span data-model-timestamp="mlb_inning" class="model-timestamp-badge" style="display:none;"></span>
-                  <div class="model-card-actions"><button class="model-run-btn" id="btn-run-mlb-inning" onclick="runModel('mlb-inning')">RUN MLB INNING</button></div>
-                  <div class="model-status" id="status-mlb-inning"></div>
-                </div>
-                <div class="model-card" id="model-card-mlb-first-five" role="button" tabindex="0" data-model-key="mlb-first-five" data-run-action="runModel" data-run-label="RUN MLB FIRST FIVE" data-category="Starter Window" data-insight="Starter-first lens: useful when bullpen noise is muddy but the first-five matchup has a clean shape.">
-                  <div class="model-card-icon">&#9918;</div>
-                  <span class="model-card-kicker">Starter Window</span>
-                  <div class="model-card-title">MLB First Five</div>
-                  <div class="model-card-desc">F5 side and total</div>
-                  <span data-model-timestamp="mlb_first_five" class="model-timestamp-badge" style="display:none;"></span>
-                  <div class="model-card-actions"><button class="model-run-btn" id="btn-run-mlb-first-five" onclick="runModel('mlb-first-five')">RUN MLB FIRST FIVE</button></div>
-                  <div class="model-status" id="status-mlb-first-five"></div>
-                </div>
-                <div class="model-card" id="model-card-cannon-analytics" role="button" tabindex="0" data-model-key="cannon-analytics" data-run-action="cannon" data-run-label="LOAD CANNON PICKS" data-category="MLB Feed" data-insight="Projection board: team run estimates, fair prices, EV, and injected Cannon picks in the shared results table.">
-                  <div class="model-card-icon">&#128371;</div>
-                  <span class="model-card-kicker">MLB Feed</span>
-                  <div class="model-card-title">Cannon Analytics</div>
-                  <div class="model-card-desc">Daily projections and EV</div>
-                  <span class="model-timestamp-badge" style="display:none;"></span>
-                  <div class="model-card-actions"><button class="model-run-btn" id="btn-run-cannon" onclick="loadCannonDailyPicks(event)">LOAD CANNON PICKS</button></div>
-                  <div class="model-status" id="status-cannon-analytics"></div>
-                </div>
-                <div class="model-card" id="model-card-scores24-mlb" role="button" tabindex="0" data-model-key="scores24-mlb" data-run-action="runModel" data-run-label="OPEN SCORES24MLB" data-category="Scores24 Live" data-insight="External MLB scoreboard shortcut for checking the live Scores24 board without mixing it into model output.">
-                  <div class="model-card-icon">&#9918;</div>
-                  <span class="model-card-kicker">Scores24 Live</span>
-                  <div class="model-card-title">Scores24MLB</div>
-                  <div class="model-card-desc">External MLB scores</div>
-                  <span data-model-timestamp="scores24_mlb" class="model-timestamp-badge" style="display:none;"></span>
-                  <div class="model-card-actions"><button class="model-run-btn" id="btn-run-scores24-mlb" onclick="runModel('scores24-mlb', event)">OPEN SCORES24MLB</button></div>
-                  <div class="model-status" id="status-scores24-mlb"></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="models-rail-group" data-rail-group="NBA">
-              <div class="models-rail-group-head">
-                <span class="models-rail-group-label">NBA</span>
-                <span class="models-rail-group-count" data-group-count></span>
-              </div>
-              <div class="models-rail-list">
-                <div class="model-card" id="model-card-nba-new" role="button" tabindex="0" data-model-key="nba-new" data-run-action="runModel" data-run-label="RUN NBA NEW" data-category="Calibrated NBA" data-insight="Refined NBA read: spread layer, form, rest, injury signal, and calibration all route to the same existing runner.">
-                  <div class="model-card-icon">&#127936;</div>
-                  <span class="model-card-kicker">Calibrated NBA</span>
-                  <div class="model-card-title">NBA New</div>
-                  <div class="model-card-desc">Spread calibration</div>
-                  <span data-model-timestamp="nba_new" class="model-timestamp-badge" style="display:none;"></span>
-                  <div class="model-card-actions"><button class="model-run-btn" id="btn-run-nba-new" onclick="runModel('nba-new', event)" title="Shift-click to force refresh from the local backend">RUN NBA NEW</button></div>
-                  <div class="model-status" id="status-nba-new"></div>
-                </div>
-                <div class="model-card" id="model-card-nba-playoffs" role="button" tabindex="0" data-model-key="nba-playoffs" data-run-action="runModel" data-run-label="RUN NBA PLAYOFFS" data-category="Postseason" data-insight="Playoff-only guardrails keep regular-season assumptions out of postseason moneyline calls.">
-                  <div class="model-card-icon">&#127942;</div>
-                  <span class="model-card-kicker">Postseason</span>
-                  <div class="model-card-title">NBA Playoffs</div>
-                  <div class="model-card-desc">Playoff moneylines</div>
-                  <span data-model-timestamp="nba_playoffs" class="model-timestamp-badge" style="display:none;"></span>
-                  <div class="model-card-actions"><button class="model-run-btn" id="btn-run-nba-playoffs" onclick="runModel('nba-playoffs', event)" title="Shift-click to force refresh from the local backend">RUN NBA PLAYOFFS</button></div>
-                  <div class="model-status" id="status-nba-playoffs"></div>
-                </div>
-                <div class="model-card" id="model-card-nba-old" role="button" tabindex="0" data-model-key="nba-old" data-run-action="runModel" data-run-label="RUN NBA MODEL" data-category="Legacy Compare" data-insight="Legacy confidence path: still valuable as a comparison rail against the newer NBA calibration layer.">
-                  <div class="model-card-icon">&#128220;</div>
-                  <span class="model-card-kicker">Legacy Compare</span>
-                  <div class="model-card-title">NBA Model</div>
-                  <div class="model-card-desc">Original NBA path</div>
-                  <span data-model-timestamp="nba" class="model-timestamp-badge" style="display:none;"></span>
-                  <div class="model-card-actions"><button class="model-run-btn" id="btn-run-nba-old" onclick="runModel('nba-old', event)" title="Shift-click to force refresh from the local backend">RUN NBA MODEL</button></div>
-                  <div class="model-status" id="status-nba-old"></div>
-                </div>
-                <div class="model-card" id="model-card-nba-props" role="button" tabindex="0" data-model-key="nba-props" data-run-action="runModel" data-run-label="RUN PROPS MODEL" data-category="Player Props" data-insight="Player-level lens: points, rebounds, assists, and Kelly sizing when the team market is not the whole story.">
-                  <div class="model-card-icon">&#127919;</div>
-                  <span class="model-card-kicker">Player Props</span>
-                  <div class="model-card-title">NBA Props</div>
-                  <div class="model-card-desc">PRA model</div>
-                  <span data-model-timestamp="props" class="model-timestamp-badge" style="display:none;"></span>
-                  <div class="model-card-actions"><button class="model-run-btn" id="btn-run-nba-props" onclick="runModel('nba-props')">RUN PROPS MODEL</button></div>
-                  <div class="model-status" id="status-nba-props"></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="models-rail-group" data-rail-group="WNBA">
-              <div class="models-rail-group-head">
-                <span class="models-rail-group-label">WNBA</span>
-                <span class="models-rail-group-count" data-group-count></span>
-              </div>
-              <div class="models-rail-list">
-                <div class="model-card" id="model-card-wnba" role="button" tabindex="0" data-model-key="wnba" data-run-action="runModel" data-run-label="RUN WNBA MODEL" data-category="WNBA" data-insight="WNBA live slate runner with off-season-safe empty states, feeding the same pick table as the rest of the stack.">
-                  <div class="model-card-icon">&#127936;</div>
-                  <span class="model-card-kicker">WNBA</span>
-                  <div class="model-card-title">WNBA Model</div>
-                  <div class="model-card-desc">Live WNBA picks</div>
-                  <span data-model-timestamp="wnba" class="model-timestamp-badge" style="display:none;"></span>
-                  <div class="model-card-actions"><button class="model-run-btn" id="btn-run-wnba" onclick="runModel('wnba')">RUN WNBA MODEL</button></div>
-                  <div class="model-status" id="status-wnba"></div>
-                </div>
-                <div class="model-card" id="model-card-scores24-wnba" role="button" tabindex="0" data-model-key="scores24-wnba" data-run-action="runModel" data-run-label="OPEN SCORES24WNBA" data-category="Scores24 Live" data-insight="External WNBA scoreboard shortcut for checking the live Scores24 board without mixing it into model output.">
-                  <div class="model-card-icon">&#127936;</div>
-                  <span class="model-card-kicker">Scores24 Live</span>
-                  <div class="model-card-title">Scores24WNBA</div>
-                  <div class="model-card-desc">External WNBA scores</div>
-                  <span data-model-timestamp="scores24_wnba" class="model-timestamp-badge" style="display:none;"></span>
-                  <div class="model-card-actions"><button class="model-run-btn" id="btn-run-scores24-wnba" onclick="runModel('scores24-wnba', event)">OPEN SCORES24WNBA</button></div>
-                  <div class="model-status" id="status-scores24-wnba"></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="models-rail-group" data-rail-group="Cricket">
-              <div class="models-rail-group-head">
-                <span class="models-rail-group-label">Cricket</span>
-                <span class="models-rail-group-count" data-group-count></span>
-              </div>
-              <div class="models-rail-list">
-                <div class="model-card" id="model-card-ipl" role="button" tabindex="0" data-model-key="ipl" data-run-action="runModel" data-run-label="RUN IPL MODEL" data-category="Cricket" data-insight="Compact IPL payload: winner read plus fantasy XI, optimized for quickly turning one match into a lineup view.">
-                  <div class="model-card-icon">&#127951;</div>
-                  <span class="model-card-kicker">Cricket</span>
-                  <div class="model-card-title">IPL Model</div>
-                  <div class="model-card-desc">Winner and fantasy XI</div>
-                  <span data-model-timestamp="ipl" class="model-timestamp-badge" style="display:none;"></span>
-                  <div class="model-card-actions"><button class="model-run-btn" id="btn-run-ipl" onclick="runModel('ipl')">RUN IPL MODEL</button></div>
-                  <div class="model-status" id="status-ipl"></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="models-rail-group" data-rail-group="Feeds">
-              <div class="models-rail-group-head">
-                <span class="models-rail-group-label">Market Feeds</span>
-                <span class="models-rail-group-count" data-group-count></span>
-              </div>
-              <div class="models-rail-list">
-                <div class="model-card" id="model-card-sportytrader" role="button" tabindex="0" data-model-key="sportytrader" data-run-action="runModel" data-run-label="SYNC SPORTYTRADER NOW" data-category="External Feed" data-insight="Market texture feed: live admin sync when available, cached Firebase reads everywhere else.">
-                  <div class="model-card-icon">&#127936;</div>
-                  <span class="model-card-kicker">External Feed</span>
-                  <div class="model-card-title">SportyTrader</div>
-                  <div class="model-card-desc" id="model-desc-sportytrader">Admin account can run a live local sync. Other users read cached Firebase data only.</div>
-                  <div class="model-status" id="sportytrader-sync-meta">Last sync: never</div>
-                  <div class="model-card-actions"><button class="model-run-btn" id="btn-run-sportytrader" onclick="runModel('sportytrader')">SYNC SPORTYTRADER NOW</button></div>
-                  <div class="model-status" id="status-sportytrader"></div>
-                </div>
-                <div class="model-card" id="model-card-sportsgambler" role="button" tabindex="0" data-model-key="sportsgambler" data-run-action="runModel" data-run-label="SYNC SPORTSGAMBLER NOW" data-category="External Feed" data-insight="A second market-opinion rail for NBA and MLB, kept separate so source overlap stays visible.">
-                  <div class="model-card-icon">&#127921;</div>
-                  <span class="model-card-kicker">External Feed</span>
-                  <div class="model-card-title">SportsGambler</div>
-                  <div class="model-card-desc" id="model-desc-sportsgambler">Admin account can run a live local sync. Other users read cached Firebase data only.</div>
-                  <div class="model-status" id="sportsgambler-sync-meta">Last sync: never</div>
-                  <div class="model-card-actions"><button class="model-run-btn" id="btn-run-sportsgambler" onclick="runModel('sportsgambler')">SYNC SPORTSGAMBLER NOW</button></div>
-                  <div class="model-status" id="status-sportsgambler"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </aside>
-
-        <section class="model-stage" id="model-stage">
-          <div class="model-stage-meta-row">
-            <span class="model-stage-pill" id="model-focus-category">Core Slate</span>
-            <span class="model-stage-pill model-stage-pill-soft"><span id="model-focus-count">0</span>&nbsp;visible</span>
-            <span class="model-stage-pill model-stage-pill-freshness" id="model-stage-freshness">No run yet</span>
-          </div>
-          <div class="model-stage-headline">
-            <div class="model-stage-icon" id="model-focus-icon">&#9918;</div>
-            <div class="model-stage-headline-text">
-              <div class="model-stage-title" id="model-focus-title">MLB Model</div>
-              <div class="model-stage-desc" id="model-focus-desc">Moneyline pipeline</div>
-            </div>
-          </div>
-          <div class="model-stage-insight model-focus-insight" id="model-focus-insight">Slate-wide read: calibrated MLB moneyline output with the current artifact set. Best first run when the baseball board is open.</div>
-          <div class="model-stage-timestamp model-focus-timestamp" id="model-focus-timestamp"></div>
-          <div class="model-stage-extra model-focus-extra" id="model-focus-props-extra">
-            <select id="nba-props-game-select" class="model-league-select">
-              <option value="">No games found in DB yet</option>
-            </select>
-            <button class="model-run-btn model-inline-btn" id="btn-refresh-nba-props-games" onclick="loadNbaPropsGames()">REFRESH GAMES</button>
-          </div>
-          <button class="model-run-btn model-stage-run model-focus-run-btn" id="model-focus-run" onclick="runSelectedModel(event)">RUN MLB MODEL</button>
-          <div class="model-status model-stage-status model-focus-status" id="model-focus-status"></div>
-          <div class="model-stage-shortcut">
-            <span><kbd>&uarr;</kbd><kbd>&darr;</kbd> navigate</span>
-            <span><kbd>Enter</kbd> run</span>
-            <span><kbd>R</kbd> suggested next</span>
-          </div>
-        </section>
-      </div>
-    </div>
-    <div id="model-results-section" class="model-results-shell" style="display:none;">
-      <div class="model-results-head">
-        <div>
-          <div class="section-title clean-title" id="model-results-title">Model Results</div>
-          <div class="model-status" id="model-results-meta"></div>
-        </div>
-      </div>
-      <div class="panel" id="ipl-model-results-panel" style="display:none;">
-        <div id="ipl-prediction-root"></div>
-      </div>
-      <div class="panel">
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th style="width:32px"><input type="checkbox" id="model-select-all" onchange="toggleAllModelPicks(this.checked)" title="Select all"></th><th>SOURCE</th><th>PICK</th><th>SPORT</th><th>ODDS</th><th>PROB</th><th>EDGE</th><th>VEGAS</th><th>MODEL PRED</th><th>KELLY</th><th>DECISION</th></tr></thead>
-            <tbody id="model-results-body"></tbody>
-          </table>
-        </div>
-      </div>
-      <div class="model-results-actions">
-        <button class="model-run-btn" id="btn-add-selected" onclick="addSelectedPicksToLedger()" style="flex:1">ADD SELECTED PICKS TO LEDGER</button>
-        <button class="model-run-btn" id="btn-add-picks" onclick="addModelPicksToLedger()" style="flex:1">ADD ALL BET PICKS TO LEDGER</button>
-      </div>
-    </div>
-
-    <!-- Cannon MLB Daily Projections -->
-    <div id="cannon-daily-section" style="display:none;">
-      <div class="section-title clean-title" style="margin-top:24px">Cannon MLB Daily Projections</div>
-      <div class="model-status" id="cannon-daily-meta"></div>
-      <div class="panel">
-        <div class="table-wrap">
-          <table id="cannon-daily-table">
-            <thead>
-              <tr>
-                <th>AWAY</th><th>SP</th><th>xR</th><th>xWin%</th>
-                <th>HOME</th><th>SP</th><th>xR</th><th>xWin%</th>
-                <th>TOTAL xR</th>
-                <th>ML PICK</th><th>FAIR</th><th>MARKET</th><th>ML EV%</th>
-                <th>O/U</th><th>LINE</th><th>ODDS</th><th>OU EV%</th>
-              </tr>
-            </thead>
-            <tbody id="cannon-daily-body"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
 
 
 </div>
 
-<script src="./ipl/ipl_frontend.js"></script>
+
 <script type="module" src="./src/main.ts"></script>
 
 </body>

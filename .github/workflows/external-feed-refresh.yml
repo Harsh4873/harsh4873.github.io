@@ -6,12 +6,10 @@ name: External Feed Refresh
 
 on:
   schedule:
+    - cron: "45 11,15,19 * * *"
     # 14:10 UTC = 09:10 CT during daylight time, shortly after lines usually post.
-    - cron: "10 14 * * *"
     # 14:40 UTC = 09:40 CT during daylight time, backup for delayed matchups/lines.
-    - cron: "40 14 * * *"
     # 20:10 UTC = 15:10 CT during daylight time, safety-net refresh before later games.
-    - cron: "10 20 * * *"
   workflow_dispatch:
     inputs:
       date:

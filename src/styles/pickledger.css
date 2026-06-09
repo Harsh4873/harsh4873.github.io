@@ -4278,3 +4278,15 @@
     body.mobile-app-mode .logo-title { font-size: 30px; }
     body[data-theme="light"].mobile-app-mode .logo-title { font-size: 31px; }
   }
+
+.automated-picks-badge {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba(var(--primary-rgb), 0.15);
+  color: var(--primary);
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-top: 4px;
+}

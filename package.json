@@ -1,15 +1,13 @@
 {
   "name": "pickledgerpro",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
+    "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit"
-  },
-  "dependencies": {
-    "firebase": "^11.6.0"
   },
   "devDependencies": {
     "typescript": "^5.8.3",

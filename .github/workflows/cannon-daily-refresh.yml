@@ -10,14 +10,11 @@ name: Cannon MLB Daily Refresh
 
 on:
   schedule:
+    - cron: "0 12,16 * * *"
     # 13:55 UTC = 08:55 CT during daylight time, first attempt near line confirmation.
-    - cron: "55 13 * * *"
     # 14:15 UTC = 09:15 CT during daylight time, avoids exact-hour scheduler delays.
-    - cron: "15 14 * * *"
     # 14:35 UTC = 09:35 CT during daylight time, backup if Cannon/lines post late.
-    - cron: "35 14 * * *"
     # 20:05 UTC = 15:05 CT during daylight time, safety-net refresh before most first pitches.
-    - cron: "5 20 * * *"
   workflow_dispatch:
 
 permissions:

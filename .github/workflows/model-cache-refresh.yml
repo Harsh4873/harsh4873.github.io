@@ -2,20 +2,14 @@ name: Model Cache Refresh
 
 on:
   schedule:
+    - cron: "30 11,15,19 * * *"
     # 12:45 UTC = 7:45 CT during daylight time, early safety warmup before GitHub queue delays.
-    - cron: "45 12 * * *"
     # 13:05 UTC = 8:05 CT during daylight time, redundant morning warmup.
-    - cron: "5 13 * * *"
     # 13:30 UTC = 8:30 CT during daylight time, so morning checks have a same-day cache.
-    - cron: "30 13 * * *"
     # 14:05 UTC = 9:05 CT during daylight time, after more markets post lines.
-    - cron: "5 14 * * *"
     # 15:30 UTC = 10:30 CT during daylight time, after early market data settles.
-    - cron: "30 15 * * *"
     # 20:05 UTC = 15:05 CT during daylight time, pregame rerun before evening MLB starts.
-    - cron: "5 20 * * *"
     # 20:30 UTC = 15:30 CT during daylight time, safety-net refresh before evening games.
-    - cron: "30 20 * * *"
   workflow_dispatch:
     inputs:
       date:
