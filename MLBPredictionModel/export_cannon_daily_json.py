@@ -22,6 +22,9 @@ def main() -> None:
         "games": rows,
         "picks": picks,
     }
+    for pick in out["picks"]:
+        pick.setdefault("date", slate_date.isoformat())
+        pick.setdefault("result", "pending")
 
     out_path = Path(__file__).resolve().parent.parent / "data" / "cannon_mlb_daily.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)

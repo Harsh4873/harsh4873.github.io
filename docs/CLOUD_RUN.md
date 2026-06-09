@@ -1,4 +1,6 @@
-# Cloud Run Backend
+# Optional Legacy Cloud Run Backend
+
+The GitHub Pages viewer and scheduled JSON workflows do not depend on this service. This document is retained only for running the legacy/admin backend manually.
 
 The public model backend runs `pickgrader_server.py` in a container. GitHub Pages stays static; the browser calls this HTTPS backend when `VITE_PICKLEDGER_BACKEND_URL` is configured.
 

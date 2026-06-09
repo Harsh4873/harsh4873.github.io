@@ -26,7 +26,7 @@ permissions:
   actions: write
 
 concurrency:
-  group: model-cache-refresh
+  group: pick-cache-writer
   cancel-in-progress: false
 
 jobs:
@@ -34,13 +34,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     env:
-      FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
-      FIREBASE_CLIENT_EMAIL: ${{ secrets.FIREBASE_CLIENT_EMAIL }}
-      FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
-      FIREBASE_PRIVATE_KEY_ID: ${{ secrets.FIREBASE_PRIVATE_KEY_ID }}
-      FIREBASE_CLIENT_ID: ${{ secrets.FIREBASE_CLIENT_ID }}
-      PICKLEDGER_REQUIRE_AUTH: true
-      PICKLEDGER_ADMIN_EMAILS: ${{ secrets.PICKLEDGER_ADMIN_EMAILS }}
       PICKLEDGER_MLB_TIMEZONE: America/Chicago
       PICKLEDGER_MLB_MODEL_TIMEOUT_SECONDS: 1200
       PICKLEDGER_MLB_INNING_TIMEOUT_SECONDS: 240
@@ -106,7 +99,8 @@ jobs:
           python scripts/refresh_model_cache.py \
             --date "${{ github.event.inputs.date || '' }}" \
             --models "${{ github.event.inputs.models || 'mlb_new,mlb_inning,mlb_first_five,wnba,nba,nba_playoffs' }}" \
-            --max-workers 3
+            --max-workers 3 \
+            --skip-firestore
 
       - name: Commit cache JSON if changed
         if: steps.cache-gate.outputs.skip != 'true'

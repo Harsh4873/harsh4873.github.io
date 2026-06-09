@@ -22,8 +22,8 @@ permissions:
   actions: write
 
 concurrency:
-  group: cannon-daily-refresh
-  cancel-in-progress: true
+  group: pick-cache-writer
+  cancel-in-progress: false
 
 jobs:
   refresh:

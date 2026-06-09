@@ -18,6 +18,7 @@ MODEL_CACHE_DIR = REPO_ROOT / "data" / "model_cache"
 sys.path.insert(0, str(REPO_ROOT))
 
 import pickgrader_server as server  # noqa: E402
+from scripts.cache_manifest import write_cache_manifest  # noqa: E402
 
 
 def _parse_args() -> argparse.Namespace:
@@ -135,6 +136,7 @@ def _write_json_cache(date_iso: str, payload: dict[str, Any]) -> None:
         with target.open("w", encoding="utf-8") as handle:
             json.dump(payload, handle, indent=2, sort_keys=True, default=str)
             handle.write("\n")
+    write_cache_manifest(MODEL_CACHE_DIR)
 
 
 def main() -> int:

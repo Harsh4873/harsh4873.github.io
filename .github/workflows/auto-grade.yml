@@ -2,16 +2,15 @@ name: Auto-Grade Picks
 
 on:
   schedule:
-    # Run every 30 minutes from 6 PM to 2 AM CT (23:00 to 07:00 UTC)
-    - cron: '*/30 23,0,1,2,3,4,5,6,7 * * *'
+    - cron: '*/30 * * * *'
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: auto-grade
-  cancel-in-progress: true
+  group: pick-cache-writer
+  cancel-in-progress: false
 
 jobs:
   auto-grade:
@@ -19,6 +18,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Sync latest main
+        run: |
+          git fetch origin main
+          git reset --hard origin/main
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -28,17 +32,24 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt || true
-          pip install pytz beautifulsoup4 lxml requests
+          pip install -r requirements.txt
 
       - name: Run Auto-Grader
         run: |
           python3 scripts/auto_grade_picks.py
 
       - name: Commit and Push Changes
+        id: commit-grades
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          ACTOR_EMAIL="${GITHUB_ACTOR_ID:-41898282}+${GITHUB_ACTOR}@users.noreply.github.com"
+          git config user.name  "${GITHUB_ACTOR}"
+          git config user.email "${ACTOR_EMAIL}"
+          BRANCH="${GITHUB_REF_NAME:-main}"
+          if [ -z "$(git status --porcelain -- data/)" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
           git add data/
-          git commit -m "chore(grade): auto-grade pending picks" || echo "No changes to commit"
-          git push
+          git commit -m "chore(grade): update committed pick results"
+          git push origin "HEAD:${BRANCH}"
+          echo "changed=true" >> "$GITHUB_OUTPUT"

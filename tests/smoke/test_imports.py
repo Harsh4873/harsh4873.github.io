@@ -41,9 +41,8 @@ def test_locked_runtime_imports_still_resolve(monkeypatch):
         ("models.mlb_inning.mlb_inning_model", (REPO_ROOT,)),
         ("models.mlb_first_five.mlb_first_five_model", (REPO_ROOT,)),
         ("ipl.run_api", (REPO_ROOT,)),
-        ("scripts.firebase_writer", (REPO_ROOT,)),
-        ("scripts.seed_record", (REPO_ROOT,)),
-        ("scripts.grader_loop", (REPO_ROOT,)),
+        ("scripts.auto_grade_picks", (REPO_ROOT,)),
+        ("scripts.cache_manifest", (REPO_ROOT,)),
     ]
 
     for module_name, paths in imports:

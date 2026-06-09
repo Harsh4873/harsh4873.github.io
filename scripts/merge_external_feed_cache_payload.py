@@ -5,12 +5,18 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 from typing import Any
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from cache_manifest import write_cache_manifest  # noqa: E402
 
 
 MODEL_CACHE_DIR = Path("data/model_cache")
 EXTERNAL_FEED_MODEL_KEYS = {"sportytrader", "sportsgambler"}
+PICK_METADATA_FIELDS = {"result", "start_time", "game_start_time"}
 
 
 def _parse_args() -> argparse.Namespace:
@@ -53,6 +59,33 @@ def _feed_keys(generated: dict[str, Any]) -> set[str]:
     return keys
 
 
+def _pick_key(pick: dict[str, Any]) -> tuple[str, ...]:
+    return tuple(
+        str(pick.get(key) or "").strip().lower()
+        for key in ("source", "sport", "date", "pick", "matchup", "game")
+    )
+
+
+def _preserve_pick_metadata(current_bucket: Any, generated_bucket: Any) -> Any:
+    if not isinstance(current_bucket, dict) or not isinstance(generated_bucket, dict):
+        return generated_bucket
+    current_picks = current_bucket.get("picks")
+    generated_picks = generated_bucket.get("picks")
+    if not isinstance(current_picks, list) or not isinstance(generated_picks, list):
+        return generated_bucket
+    metadata = {
+        _pick_key(pick): {field: pick[field] for field in PICK_METADATA_FIELDS if field in pick}
+        for pick in current_picks
+        if isinstance(pick, dict)
+    }
+    merged = dict(generated_bucket)
+    merged["picks"] = [
+        {**pick, **metadata.get(_pick_key(pick), {})} if isinstance(pick, dict) else pick
+        for pick in generated_picks
+    ]
+    return merged
+
+
 def merge_payload(generated: dict[str, Any], cache_dir: Path) -> dict[str, Any]:
     date_iso = str(generated.get("date") or "").strip()
     if not date_iso:
@@ -70,7 +103,7 @@ def merge_payload(generated: dict[str, Any], cache_dir: Path) -> dict[str, Any]:
     models = dict(current_models)
     for key in feed_keys:
         if key in generated_models:
-            models[key] = generated_models[key]
+            models[key] = _preserve_pick_metadata(current_models.get(key), generated_models[key])
     merged["models"] = models
 
     current_external = current.get("external_feeds") if isinstance(current.get("external_feeds"), dict) else {}
@@ -100,6 +133,7 @@ def main() -> int:
     date_iso = str(merged["date"])
     _write_json(cache_dir / f"{date_iso}.json", merged)
     _write_json(cache_dir / "latest.json", merged)
+    write_cache_manifest(cache_dir)
     print(json.dumps({
         "date": date_iso,
         "models": sorted((merged.get("models") or {}).keys()),
