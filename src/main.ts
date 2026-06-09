@@ -1,4 +1,5 @@
 // @ts-nocheck
+import "./styles/pickledger.css";
 // PickLedger Viewer — Public Pick Viewer (no auth, no Firebase)
 import { initTheme, initMobileMode, initSettingsUI } from './settings';
 import {
