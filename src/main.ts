@@ -399,7 +399,7 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
   const loginBtn = document.getElementById('login-google-btn');
   const loginErr = document.getElementById('login-error');
   const loginBtnHtml = loginBtn ? loginBtn.innerHTML : '';
-  const SIGN_IN_POPUP_TIMEOUT_MS = 20000;
+  const SIGN_IN_POPUP_TIMEOUT_MS = 120000;
   const REDIRECT_SIGN_IN_PENDING_KEY = 'pickledger_google_redirect_pending';
 
   function formatAuthError(error) {
@@ -469,13 +469,16 @@ function getPreferredDisplayedRecord(derivedRecord, canonicalRecord = window._us
     try {
       const result = await Promise.race([
         getRedirectResult(auth),
-        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 15000))
+        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 20000))
       ]);
       if (result && result.user && loginErr) {
         loginErr.textContent = '';
       } else if (redirectWasPending) {
-        if (loginErr) loginErr.textContent = '';
-        restoreLoginButton();
+        if (auth && auth.currentUser) {
+          if (loginErr) loginErr.textContent = '';
+        } else {
+          restoreLoginButton('Browser blocked login (cross-site tracking). Disable "Prevent Cross-Site Tracking" or try Chrome.');
+        }
       }
     } catch (e) {
       console.warn('[Auth] Google redirect sign-in failed:', e);
