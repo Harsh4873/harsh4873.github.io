@@ -22,6 +22,22 @@ type Stats = {
   roi: number | null;
 };
 
+type HomeScoreInfo = {
+  eventId: string;
+  sport: string;
+  tone: 'pregame' | 'live' | 'final' | 'delayed';
+  text: string;
+  startTime: string;
+};
+
+type TrendSignalGroup = {
+  key: string;
+  label: string;
+  picks: Pick[];
+  matching: boolean;
+  pass: boolean;
+};
+
 const ESPN_ENDPOINTS: Record<string, [string, string]> = {
   MLB: ['baseball', 'mlb'],
   NBA: ['basketball', 'nba'],
@@ -35,6 +51,10 @@ let selectedDate = '';
 let calendarMonth = '';
 let calendarOpen = false;
 let refreshInFlight = false;
+const homeScores = new Map<string, HomeScoreInfo>();
+const homeScoreFetches = new Map<string, number>();
+let homeScoreRefreshKey = '';
+const HOME_SCORE_TTL_MS = 45_000;
 
 function escapeHtml(value: unknown): string {
   return String(value ?? '')
@@ -98,7 +118,11 @@ function gameName(pick: Pick): string {
 }
 
 function gameKey(pick: Pick): string {
-  return `${pick.sport}::${pickDateKey(pick)}::${gameName(pick).toLowerCase()}`;
+  const teams = teamsForPick(pick);
+  const matchup = teams
+    ? teams.map(canonicalTeamToken).sort().join('|')
+    : normalizeTeam(gameName(pick));
+  return `${pick.sport}::${pickDateKey(pick)}::${matchup}`;
 }
 
 function statsFor(picks: Pick[]): Stats {
@@ -291,16 +315,18 @@ function renderHome(): void {
       <div class="home-feed-section-head"><div><div class="home-feed-section-title">${escapeHtml(sport)}</div><div class="home-feed-section-meta">${games.reduce((sum, game) => sum + game[1].length, 0)} picks | ${games.length} matchups</div></div></div>
       <div class="home-feed-grid">${games.map(([, gamePicks]) => renderGameCard(gamePicks)).join('')}</div>
     </section>`).join('');
+  void refreshHomeScores(selectedDate, picks);
 }
 
 function renderGameCard(picks: Pick[]): string {
   const stats = statsFor(picks);
   const pending = stats.pending > 0;
   const start = picks.map(pick => pick.start_time).filter(Boolean).sort()[0];
+  const scoreChip = homeScoreChipHtml(homeScores.get(gameKey(picks[0])), start, gameName(picks[0]));
   return `<article class="home-game-card status-${statusClass(picks)}">
     <div class="home-game-top">
       <div class="home-game-kicker"><span class="home-sport-pill">${escapeHtml(picks[0]?.sport)}</span><span class="home-status-pill ${statusClass(picks)}">${pending ? 'PENDING' : `${stats.wins}-${stats.losses}${stats.pushes ? `-${stats.pushes}` : ''}`}</span></div>
-      <div class="home-game-right-stack"><div class="home-game-pl ${stats.net > 0 ? 'positive' : stats.net < 0 ? 'negative' : 'neutral'}">${pending ? `${stats.pending} open` : signedUnits(stats.net)}</div><div class="home-game-caption">${formatStart(start)}</div></div>
+      <div class="home-game-right-stack">${scoreChip}<div class="home-game-pl ${stats.net > 0 ? 'positive' : stats.net < 0 ? 'negative' : 'neutral'}">${pending ? `${stats.pending} open` : signedUnits(stats.net)}</div><div class="home-game-caption">${formatStart(start)}</div></div>
     </div>
     <div><div class="home-game-title">${escapeHtml(gameName(picks[0]))}</div><div class="home-game-meta">${escapeHtml(dateLabel(pickDateKey(picks[0])))} | ${picks.length} picks | ${new Set(picks.map(sourceName)).size} sources</div></div>
     <div class="home-game-picks">${picks.map(renderPickRow).join('')}</div>
@@ -357,15 +383,43 @@ function renderRankings(): void {
     return `<div class="sport-card"><div class="sport-name">${escapeHtml(sport)}</div><div class="sport-meta">${stats.wins}-${stats.losses}${stats.pushes ? `-${stats.pushes}` : ''} record<br>${stats.total} tracked picks</div><div class="sport-units ${stats.net >= 0 ? 'positive' : 'negative'}">${signedUnits(stats.net)}</div><div class="sport-meta">ROI ${stats.roi == null ? '—' : `${(stats.roi * 100).toFixed(1)}%`}</div></div>`;
   }).join('');
 
-  const daySection = document.getElementById('dow-overall-heatmap');
-  if (daySection) {
-    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    daySection.innerHTML = `<div class="sport-board">${days.map((day, index) => {
-      const picks = getAllPicks().filter(pick => parseDateKey(pickDateKey(pick))?.getDay() === index);
-      const stats = statsFor(picks);
-      return `<div class="sport-card"><div class="sport-name">${day}</div><div class="sport-meta">${stats.wins}-${stats.losses}${stats.pushes ? `-${stats.pushes}` : ''}<br>${stats.total} picks</div><div class="sport-units">${stats.winRate == null ? '—' : `${(stats.winRate * 100).toFixed(0)}%`}</div></div>`;
-    }).join('')}</div>`;
+  renderDayOfWeekTable();
+}
+
+function renderDayOfWeekTable(): void {
+  const container = document.getElementById('dow-model-breakdown');
+  if (!container) return;
+  const dayOrder = [1, 2, 3, 4, 5, 6, 0];
+  const dayLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  const bySource = new Map<string, Pick[][]>();
+
+  getAllPicks().filter(pick => pick.result === 'win' || pick.result === 'loss').forEach(pick => {
+    const day = parseDateKey(pickDateKey(pick))?.getDay();
+    if (day == null) return;
+    const buckets = bySource.get(sourceName(pick)) || Array.from({ length: 7 }, () => []);
+    buckets[day].push(pick);
+    bySource.set(sourceName(pick), buckets);
+  });
+
+  const sources = [...bySource.keys()].sort((a, b) => a.localeCompare(b));
+  if (!sources.length) {
+    container.innerHTML = '<div class="empty-state">No decided picks yet</div>';
+    return;
   }
+
+  container.innerHTML = `<table class="dow-table">
+    <thead><tr><th>Source</th>${dayLabels.map(day => `<th>${day}</th>`).join('')}</tr></thead>
+    <tbody>${sources.map(source => `<tr><td class="dow-model-name">${escapeHtml(source)}</td>${dayOrder.map(day => {
+      const stats = statsFor(bySource.get(source)?.[day] || []);
+      const decided = stats.wins + stats.losses;
+      const rate = stats.winRate == null ? null : stats.winRate * 100;
+      const tone = decided < 3 || rate == null
+        ? 'dow-cell-gray'
+        : rate >= 55 ? 'dow-cell-green' : rate >= 50 ? 'dow-cell-yellow' : 'dow-cell-red';
+      const text = rate == null ? '—' : `${rate.toFixed(0)}% (${stats.wins}-${stats.losses})`;
+      return `<td class="${tone}" title="${decided} decided picks">${text}</td>`;
+    }).join('')}</tr>`).join('')}</tbody>
+  </table>`;
 }
 
 function renderSearch(): void {
@@ -387,16 +441,96 @@ function renderSearch(): void {
     </div>`).join('') : '<div class="empty-state">No picks match your search</div>';
 }
 
+function canonicalTeamForPick(pick: Pick, label: string): string {
+  const target = normalizeTeam(label);
+  const matched = teamsForPick(pick)?.find(team => {
+    const normalized = normalizeTeam(team);
+    return normalized === target || normalized.includes(target) || target.includes(normalized);
+  });
+  return canonicalTeamToken(matched || label);
+}
+
+function trendMarketScope(pick: Pick, selection: string): string {
+  const lower = selection.toLowerCase();
+  const inning = lower.match(/\binning\s*(\d+)|\b(\d+)(?:st|nd|rd|th)?\s+inning\b/);
+  if (inning) return `inning:${inning[1] || inning[2]}`;
+  if (/\bf5\b|first five/.test(lower)) return 'first-five';
+  if (lower.includes('team total')) {
+    return `team-total:${canonicalTeamForPick(pick, String(pick.team || selection.split(/team total/i)[0]))}`;
+  }
+  return 'full-game';
+}
+
+function canonicalTrendSignal(pick: Pick): { key: string; label: string; pass: boolean } {
+  const selection = pick.pick.split('(', 1)[0].trim();
+  const pass = String(pick.decision || '').trim().toUpperCase() === 'PASS';
+  const scope = trendMarketScope(pick, selection);
+  const total = selection.match(/\b(over|under)\s+(\d+(?:\.\d+)?)/i);
+  if (total) return { key: `${scope}:total:${total[1].toLowerCase()}`, label: selection, pass };
+
+  const noRun = selection.match(/\binning\s*(\d+).*?\bno runs?\b|\bno runs?\b.*?\binning\s*(\d+)/i);
+  if (noRun) return { key: `inning:no-run:${noRun[1] || noRun[2]}`, label: selection, pass };
+
+  const spread = selection.match(/^(.*?)\s+([+-]\d+(?:\.\d+)?)(?:\s|$)/);
+  if (spread) return { key: `${scope}:side:${canonicalTeamForPick(pick, spread[1])}`, label: selection, pass };
+
+  const moneyline = selection.match(/^(.*?)\s+(?:ML|moneyline|to win|wins?)\b/i);
+  if (moneyline) return { key: `${scope}:side:${canonicalTeamForPick(pick, moneyline[1])}`, label: selection, pass };
+
+  return { key: `pick:${normalizeTeam(selection)}`, label: selection, pass };
+}
+
+function trendSignalGroups(picks: Pick[]): TrendSignalGroup[] {
+  const grouped = new Map<string, { labels: Set<string>; picks: Pick[]; pass: boolean }>();
+  picks.forEach(pick => {
+    const signal = canonicalTrendSignal(pick);
+    const key = `${signal.pass ? 'pass' : 'bet'}:${signal.key}`;
+    const current = grouped.get(key) || { labels: new Set<string>(), picks: [], pass: signal.pass };
+    current.labels.add(signal.label);
+    current.picks.push(pick);
+    grouped.set(key, current);
+  });
+  return [...grouped.entries()].map(([key, group]) => ({
+    key,
+    label: [...group.labels].join(' / '),
+    picks: group.picks,
+    matching: !group.pass && new Set(group.picks.map(sourceName)).size >= 2,
+    pass: group.pass,
+  })).sort((a, b) => Number(b.matching) - Number(a.matching) || b.picks.length - a.picks.length);
+}
+
+function renderTrendSignal(group: TrendSignalGroup): string {
+  const sources = [...new Set(group.picks.map(sourceName))];
+  const details = [...new Set(group.picks.flatMap(pick => [
+    formatOdds(pick),
+    pick.edge != null ? `edge ${pick.edge}` : '',
+  ]).filter(Boolean))];
+  return `<div class="trend-market ${group.matching ? 'matching' : ''} ${group.pass ? 'pass' : ''}">
+    <div class="trend-market-row"><span class="trend-market-label">${group.matching ? `${sources.length} MATCHING SOURCES` : group.pass ? 'PASS' : 'SINGLE SIGNAL'}</span><span class="trend-market-signal">${escapeHtml(group.label)}</span></div>
+    <div class="trend-source-row">${sources.map(source => `<span class="trend-source-pill">${escapeHtml(source)}</span>`).join('')}</div>
+    ${details.length ? `<div class="trend-market-detail">${escapeHtml(details.join(' | '))}</div>` : ''}
+  </div>`;
+}
+
 function renderTrends(): void {
   const container = document.getElementById('trends-container');
   if (!container) return;
-  const pending = getAllPicks().filter(pick => pick.result === 'pending');
-  const groups = new Map<string, Pick[]>();
-  pending.forEach(pick => groups.set(gameKey(pick), [...(groups.get(gameKey(pick)) || []), pick]));
-  const consensus = [...groups.values()].sort((a, b) => b.length - a.length);
-  container.innerHTML = `<div class="trend-head"><div class="trend-title">Active Consensus</div><div class="trend-subtitle">Pending picks grouped by matchup from committed model data.</div></div>
-    <div class="trend-summary-grid"><div class="trend-summary-box"><div class="trend-summary-val">${pending.length}</div><div class="trend-summary-label">PENDING PICKS</div></div><div class="trend-summary-box"><div class="trend-summary-val">${groups.size}</div><div class="trend-summary-label">MATCHUPS</div></div><div class="trend-summary-box"><div class="trend-summary-val">${new Set(pending.map(sourceName)).size}</div><div class="trend-summary-label">SOURCES</div></div></div>
-    <div class="trend-board">${consensus.map(picks => `<div class="trend-game-card ${picks.length >= 3 ? 'strong' : ''}"><div class="trend-game-head"><div><div class="trend-game-name">${escapeHtml(gameName(picks[0]))}</div><div class="trend-game-meta">${escapeHtml(picks[0].sport)} | ${escapeHtml(dateLabel(pickDateKey(picks[0])))}</div></div><div class="trend-strength-pill ${picks.length >= 3 ? 'strong' : 'lean'}">${picks.length} signals</div></div>${picks.map(pick => `<div class="trend-market"><div class="trend-market-row"><span class="trend-market-label">${escapeHtml(sourceName(pick))}</span><span class="trend-market-signal">${escapeHtml(pick.pick)}</span></div><div class="trend-market-detail">${escapeHtml([formatOdds(pick), pick.decision, pick.edge != null ? `edge ${pick.edge}` : ''].filter(Boolean).join(' | '))}</div></div>`).join('')}</div>`).join('')}</div>`;
+  ensureSelection();
+  const pending = getAllPicks().filter(pick => pick.result === 'pending' && pickDateKey(pick) === selectedDate);
+  const games = new Map<string, Pick[]>();
+  pending.forEach(pick => games.set(gameKey(pick), [...(games.get(gameKey(pick)) || []), pick]));
+  const consensus = [...games.values()].map(picks => {
+    const signals = trendSignalGroups(picks);
+    const matching = signals.filter(signal => signal.matching).length;
+    const actionable = signals.filter(signal => !signal.pass).length;
+    return { picks, signals, matching, split: matching === 0 && actionable > 1 };
+  }).sort((a, b) => b.matching - a.matching || b.picks.length - a.picks.length);
+  const matchingGroups = consensus.reduce((total, game) => total + game.matching, 0);
+  const conflictGames = consensus.filter(game => game.split).length;
+
+  container.innerHTML = `<div class="trend-head"><div class="trend-title">Consensus Radar</div><div class="trend-subtitle">${escapeHtml(dateLabel(selectedDate, true))} pending picks. Green appears only when two or more sources make the same market selection.</div></div>
+    <div class="trend-summary-grid"><div class="trend-summary-box"><div class="trend-summary-val">${matchingGroups}</div><div class="trend-summary-label">MATCHING SIGNALS</div></div><div class="trend-summary-box"><div class="trend-summary-val">${games.size}</div><div class="trend-summary-label">MATCHUPS</div></div><div class="trend-summary-box"><div class="trend-summary-val">${conflictGames}</div><div class="trend-summary-label">CONFLICT GAMES</div></div><div class="trend-summary-box"><div class="trend-summary-val">${new Set(pending.map(sourceName)).size}</div><div class="trend-summary-label">SOURCES</div></div></div>
+    ${consensus.length ? `<div class="trend-board">${consensus.map(game => `<div class="trend-game-card ${game.split ? 'split' : ''}"><div class="trend-game-head"><div><div class="trend-game-name">${escapeHtml(gameName(game.picks[0]))}</div><div class="trend-game-meta">${escapeHtml(game.picks[0].sport)} | ${escapeHtml(dateLabel(pickDateKey(game.picks[0])))}</div></div><div class="trend-strength-pill ${game.matching ? 'strong' : game.split ? 'split' : 'lean'}">${game.matching ? `${game.matching} MATCHING` : game.split ? 'MIXED SIGNALS' : 'LEAN'}</div></div>${game.signals.map(renderTrendSignal).join('')}</div>`).join('')}</div>` : '<div class="empty-state">No pending trends for this slate.</div>'}`;
 }
 
 function renderDaily(): void {
@@ -429,6 +563,7 @@ function switchTab(name: string): void {
   document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
   document.querySelector<HTMLElement>(`.tab[onclick*="'${name}'"]`)?.classList.add('active');
   document.getElementById(`tab-${name}`)?.classList.add('active');
+  if (name === 'home') renderHome();
   if (name === 'search') renderSearch();
   if (name === 'trends') renderTrends();
   if (name === 'daily') renderDaily();
@@ -451,6 +586,21 @@ function normalizeTeam(value: unknown): string {
   return String(value || '').toLowerCase().replace(/[^a-z0-9 ]/g, ' ').replace(/\b(the|baseball|basketball|club)\b/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
+function canonicalTeamToken(value: unknown): string {
+  const normalized = normalizeTeam(value);
+  const multiWordNames = [
+    'red sox',
+    'white sox',
+    'blue jays',
+    'trail blazers',
+    'golden knights',
+    'maple leafs',
+    'red wings',
+  ];
+  const suffix = multiWordNames.find(name => normalized === name || normalized.endsWith(` ${name}`));
+  return suffix || normalized.split(' ').at(-1) || normalized;
+}
+
 function teamMatches(label: string, team: Record<string, unknown>): boolean {
   const target = normalizeTeam(label);
   const names = [team.displayName, team.shortDisplayName, team.name, team.abbreviation].map(normalizeTeam);
@@ -463,20 +613,118 @@ function teamsForPick(pick: Pick): [string, string] | null {
   return matchup.length === 2 ? [matchup[0], matchup[1]] : null;
 }
 
-function findEspnGame(pick: Pick, events: unknown[]): Record<string, unknown> | null {
+function findEspnEventForPick(pick: Pick, events: unknown[]): { event: Record<string, unknown>; game: Record<string, unknown> } | null {
   const teams = teamsForPick(pick);
   if (!teams) return null;
   for (const event of events) {
     if (!event || typeof event !== 'object') continue;
-    const competition = (event as Record<string, unknown>).competitions;
+    const eventObject = event as Record<string, unknown>;
+    const competition = eventObject.competitions;
     const game = Array.isArray(competition) ? competition[0] as Record<string, unknown> : null;
     const competitors = Array.isArray(game?.competitors) ? game.competitors as Record<string, unknown>[] : [];
     if (competitors.length !== 2) continue;
     const teamObjects = competitors.map(competitor => competitor.team as Record<string, unknown>);
     if ((teamMatches(teams[0], teamObjects[0]) && teamMatches(teams[1], teamObjects[1])) ||
-        (teamMatches(teams[0], teamObjects[1]) && teamMatches(teams[1], teamObjects[0]))) return game;
+        (teamMatches(teams[0], teamObjects[1]) && teamMatches(teams[1], teamObjects[0]))) return { event: eventObject, game };
   }
   return null;
+}
+
+function findEspnGame(pick: Pick, events: unknown[]): Record<string, unknown> | null {
+  return findEspnEventForPick(pick, events)?.game || null;
+}
+
+function espnStatus(event: Record<string, unknown>, game: Record<string, unknown>): Record<string, unknown> {
+  const status = game.status || event.status;
+  if (!status || typeof status !== 'object') return {};
+  const type = (status as Record<string, unknown>).type;
+  return type && typeof type === 'object' ? type as Record<string, unknown> : {};
+}
+
+function homeScoreInfo(sport: string, event: Record<string, unknown>, game: Record<string, unknown>): HomeScoreInfo {
+  const competitors = Array.isArray(game.competitors) ? game.competitors as Record<string, unknown>[] : [];
+  const away = competitors.find(competitor => competitor.homeAway === 'away') || competitors[0] || {};
+  const home = competitors.find(competitor => competitor.homeAway === 'home') || competitors[1] || {};
+  const teamCode = (competitor: Record<string, unknown>): string => {
+    const team = competitor.team && typeof competitor.team === 'object' ? competitor.team as Record<string, unknown> : {};
+    return String(team.abbreviation || team.shortDisplayName || team.name || '').trim();
+  };
+  const type = espnStatus(event, game);
+  const state = String(type.state || '').toLowerCase();
+  const name = String(type.name || '').toUpperCase();
+  const detail = String(type.shortDetail || type.detail || type.description || '').trim();
+  const delayed = ['STATUS_POSTPONED', 'STATUS_SUSPENDED', 'STATUS_CANCELED', 'STATUS_CANCELLED'].includes(name);
+  const final = Boolean(type.completed) || state === 'post' || ['STATUS_FINAL', 'STATUS_FULL_TIME'].includes(name);
+  const live = state === 'in';
+  const awayScore = Number(away.score);
+  const homeScore = Number(home.score);
+  const hasScore = Number.isFinite(awayScore) && Number.isFinite(homeScore);
+  const score = hasScore ? `${teamCode(away)} ${awayScore} - ${teamCode(home)} ${homeScore}` : '';
+  const startTime = String(game.date || event.date || '');
+  const tone: HomeScoreInfo['tone'] = delayed ? 'delayed' : final ? 'final' : live ? 'live' : 'pregame';
+  const text = delayed
+    ? detail || 'Delayed'
+    : final ? score ? `Final | ${score}` : 'Final'
+      : live ? score ? `${score} | ${detail || 'Live'}` : detail || 'Live'
+        : startTime ? `Starts ${formatStart(startTime)}` : detail || 'Scheduled';
+  return { eventId: String(event.id || ''), sport, tone, text, startTime };
+}
+
+function homeScoreChipHtml(info: HomeScoreInfo | undefined, fallbackStart: unknown, gameLabel: string): string {
+  if (!info) {
+    return fallbackStart ? `<span class="home-score-chip pregame">${escapeHtml(`Starts ${formatStart(fallbackStart)}`)}</span>` : '';
+  }
+  const sportSlug = info.sport.toLowerCase();
+  const url = info.eventId ? `https://www.espn.com/${sportSlug}/game/_/gameId/${encodeURIComponent(info.eventId)}` : '';
+  const tag = url ? 'a' : 'span';
+  const attrs = url ? ` href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" title="Open ESPN box score for ${escapeHtml(gameLabel)}"` : '';
+  return `<${tag} class="home-score-chip ${info.tone}"${attrs}>${escapeHtml(info.text)}</${tag}>`;
+}
+
+function homeTabActive(): boolean {
+  return Boolean(document.getElementById('tab-home')?.classList.contains('active'));
+}
+
+async function refreshHomeScores(date: string, picks: Pick[]): Promise<void> {
+  if (!date || !picks.length || !homeTabActive()) return;
+  const supported = picks.filter(pick => ESPN_ENDPOINTS[pick.sport]);
+  if (!supported.length) return;
+  const key = `${date}::${[...new Set(supported.map(gameKey))].sort().join('|')}`;
+  const now = Date.now();
+  if (homeScoreRefreshKey === key || now - (homeScoreFetches.get(key) || 0) < HOME_SCORE_TTL_MS) return;
+  homeScoreRefreshKey = key;
+  homeScoreFetches.set(key, now);
+  let changed = false;
+  const bySport = new Map<string, Pick[]>();
+  supported.forEach(pick => bySport.set(pick.sport, [...(bySport.get(pick.sport) || []), pick]));
+
+  try {
+    for (const [sport, sportPicks] of bySport) {
+      const endpoint = ESPN_ENDPOINTS[sport];
+      try {
+        const response = await fetch(`https://site.api.espn.com/apis/site/v2/sports/${endpoint[0]}/${endpoint[1]}/scoreboard?dates=${date.replace(/-/g, '')}`, { cache: 'no-store' });
+        if (!response.ok) continue;
+        const payload = await response.json() as { events?: unknown[] };
+        sportPicks.forEach(pick => {
+          const matched = findEspnEventForPick(pick, payload.events || []);
+          if (!matched) return;
+          const next = homeScoreInfo(sport, matched.event, matched.game);
+          const previous = homeScores.get(gameKey(pick));
+          if (JSON.stringify(previous) !== JSON.stringify(next)) {
+            homeScores.set(gameKey(pick), next);
+            changed = true;
+          }
+          if (next.startTime) setLocalGameTime(pick.id, next.startTime);
+        });
+      } catch {
+        // A missing scoreboard should not prevent the rest of the Home slate from rendering.
+      }
+    }
+  } finally {
+    homeScoreRefreshKey = '';
+  }
+
+  if (changed && homeTabActive()) renderHome();
 }
 
 function scoreForTeam(game: Record<string, unknown>, label: string): [number, number] | null {

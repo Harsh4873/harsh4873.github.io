@@ -44,6 +44,22 @@ def test_static_viewer_keeps_public_tabs_and_client_grading():
     assert "function renderSearch()" in main
 
 
+def test_rich_static_viewer_restores_consensus_table_and_scores():
+    main = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
+    html = (ROOT / "index.html").read_text(encoding="utf-8")
+    css = (ROOT / "src" / "styles" / "pickledger.css").read_text(encoding="utf-8")
+
+    assert "function canonicalTrendSignal(" in main
+    assert "matching: !group.pass && new Set(group.picks.map(sourceName)).size >= 2" in main
+    assert ".trend-market.matching" in css
+    assert "function renderDayOfWeekTable()" in main
+    assert 'class="dow-table"' in main
+    assert 'id="dow-overall-heatmap"' not in html
+    assert "async function refreshHomeScores(" in main
+    assert "homeScoreChipHtml(" in main
+    assert "Open ESPN box score" in main
+
+
 def test_cache_manifest_lists_committed_dated_payloads():
     manifest = json.loads((ROOT / "data" / "model_cache" / "index.json").read_text(encoding="utf-8"))
     files = manifest["files"]

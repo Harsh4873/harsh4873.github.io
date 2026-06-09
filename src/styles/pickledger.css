@@ -1662,10 +1662,6 @@
   body[data-theme="light"] .trend-game-card:hover { box-shadow: 0 10px 22px rgba(15,25,35,0.12); }
   .trend-game-card.expanded { border-color: var(--accent); }
   .trend-game-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-  .trend-game-card.strong {
-    border-color: rgba(0,229,160,0.65);
-    background: linear-gradient(180deg, rgba(0,229,160,0.09), rgba(255,215,0,0.05) 65%, transparent), var(--card);
-  }
   .trend-game-card.split { border-color: rgba(255,69,96,0.35); }
   .trend-game-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
   .trend-game-name { font-family: 'Bebas Neue', sans-serif; font-size: 27px; letter-spacing: 0.9px; color: var(--text); line-height: 1; }
@@ -1680,6 +1676,16 @@
   .trend-strength-pill.split { border-color: rgba(255,69,96,0.4); color: var(--danger); background: rgba(255,69,96,0.08); }
   .trend-market { border-top: 1px solid var(--border); padding-top: 10px; margin-top: 10px; }
   .trend-market:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+  .trend-market.matching {
+    border: 1px solid rgba(0,229,160,0.5);
+    border-radius: 12px;
+    padding: 11px 12px;
+    background: rgba(0,229,160,0.09);
+  }
+  .trend-market.matching:first-of-type { border: 1px solid rgba(0,229,160,0.5); padding: 11px 12px; }
+  .trend-market.matching .trend-market-label,
+  .trend-market.matching .trend-market-signal { color: var(--accent); }
+  .trend-market.pass { opacity: 0.55; }
   .trend-market-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
   .trend-market-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 0.9px; }
   .trend-market-signal { font-weight: 600; font-size: 14px; color: var(--text); text-align: right; }
@@ -3091,7 +3097,6 @@
 
   #day-of-week-section { margin-top: 48px; padding: 0 0 48px 0; }
   .dow-subtitle { color: var(--muted); font-size: 12px; margin-bottom: 24px; font-family: 'DM Mono', monospace; letter-spacing: 0.4px; }
-  #dow-overall-heatmap { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 28px; }
   #dow-model-breakdown { margin-top: 8px; overflow-x: auto; }
   .dow-day-card {
     display: inline-flex;
@@ -3132,7 +3137,7 @@
   .dow-record { margin-top: 8px; font-size: 11px; color: rgba(233,233,238,0.75); letter-spacing: 0.4px; }
   .dow-verdict { margin-top: 10px; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
   .dow-day-summary { width: 100%; padding: 16px 14px; border-radius: 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.06); color: #8d9099; font-size: 15px; line-height: 1.35; }
-  .dow-table { width: 100%; border-collapse: collapse; margin-top: 24px; }
+  .dow-table { width: 100%; min-width: 820px; border-collapse: collapse; margin-top: 24px; }
   .dow-table th { background: rgba(0,229,160,0.06); color: var(--accent); padding: 10px; text-align: center; font-size: 13px; border: 1px solid rgba(255,255,255,0.08); }
   .dow-table td { padding: 10px; text-align: center; font-size: 13px; border: 1px solid rgba(255,255,255,0.08); }
   .dow-model-name { color: var(--text); font-family: 'DM Mono', monospace; font-size: 12px; white-space: nowrap; }
