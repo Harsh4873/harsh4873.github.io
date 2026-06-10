@@ -46,6 +46,12 @@ jobs:
           cp ipl/ipl_frontend.js dist/ipl/ || true
           cp -R data/. dist/data/ || true
 
+      - name: Verify styled Pages artifact
+        run: |
+          grep -q 'rel="stylesheet"' dist/index.html
+          test -n "$(find dist/assets -maxdepth 1 -name '*.css' -print -quit)"
+          test -f dist/data/model_cache/index.json
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

@@ -1518,11 +1518,26 @@ def _invoke_anthropic(
 
 
 def parse_pick_date(date_text: str, year: int) -> str | None:
-    try:
-        dt = datetime.strptime(f"{date_text} {year}", "%b %d %Y")
-        return dt.strftime("%Y%m%d")
-    except ValueError:
+    value = str(date_text or "").strip()
+    if not value:
         return None
+    normalized = value.replace("Z", "+00:00")
+    try:
+        return datetime.fromisoformat(normalized).strftime("%Y%m%d")
+    except ValueError:
+        pass
+    for candidate, date_format in (
+        (value, "%Y%m%d"),
+        (value, "%m/%d/%Y"),
+        (value, "%m/%d/%y"),
+        (f"{value} {year}", "%b %d %Y"),
+        (f"{value} {year}", "%B %d %Y"),
+    ):
+        try:
+            return datetime.strptime(candidate, date_format).strftime("%Y%m%d")
+        except ValueError:
+            continue
+    return None
 
 
 def fetch_scoreboard(sport: str, league: str, yyyymmdd: str) -> dict[str, Any] | None:
@@ -1632,7 +1647,13 @@ def get_games(scoreboard: dict[str, Any], completed_only: bool) -> list[dict[str
             continue
         comp0 = comps[0]
         status = comp0.get("status", {}).get("type", {})
-        if completed_only and not status.get("completed", False):
+        status_name = str(status.get("name") or "").upper()
+        terminal_without_score = status_name in {
+            "STATUS_CANCELED",
+            "STATUS_CANCELLED",
+            "STATUS_POSTPONED",
+        }
+        if completed_only and not status.get("completed", False) and not terminal_without_score:
             continue
 
         competitors = comp0.get("competitors", [])
@@ -1660,6 +1681,8 @@ def get_games(scoreboard: dict[str, Any], completed_only: bool) -> list[dict[str
             "competitors": parsed,
             "startTime": start_time,
             "eventId": str(event.get("id") or ""),
+            "statusName": status_name,
+            "completed": bool(status.get("completed", False)),
         })
     return games
 
@@ -2079,7 +2102,7 @@ def grade_pick(pick: dict[str, Any], game: dict[str, Any]) -> str:
         return "win" if adj > opp_score else "loss"
 
     # Moneyline explicit: "Team ML"
-    m_ml = re.search(r"^(.*?)\s+ml\b", lower)
+    m_ml = re.search(r"^(.*?)\s+(?:ml|moneyline|to win|wins?)\b", lower)
     if m_ml:
         team_label = m_ml.group(1).strip()
         resolved = resolve_team_score(game, team_label, pick)
@@ -2163,7 +2186,13 @@ def auto_grade(picks: list[dict[str, Any]], existing: dict[str, str], year: int)
             game = find_game_for_pick(games, str(pick.get("pick", "")), pick)
             if not game:
                 continue
-            if sport_key == "NBA" and parse_nba_player_prop_pick(str(pick.get("pick", ""))):
+            if str(game.get("statusName") or "") in {
+                "STATUS_CANCELED",
+                "STATUS_CANCELLED",
+                "STATUS_POSTPONED",
+            }:
+                result = "push"
+            elif sport_key == "NBA" and parse_nba_player_prop_pick(str(pick.get("pick", ""))):
                 event_id = str(game.get("eventId") or "").strip()
                 summary_key = (sport_key, event_id)
                 if summary_key not in summary_cache:

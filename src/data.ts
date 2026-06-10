@@ -149,7 +149,8 @@ function normalizePick(
   const game = gameByMatchup.get(matchup);
   const id = stablePickId(raw, date, source);
   const embeddedResult = normalizeResult(raw.result);
-  const result = normalizeResult(resultOverrides[id] || embeddedResult);
+  const localResult = normalizeResult(resultOverrides[id]);
+  const result = embeddedResult === 'pending' ? localResult : embeddedResult;
   const units = numberOrNull(raw.units) ?? 1;
   const startTime = String(
     raw.start_time || raw.game_start_time ||

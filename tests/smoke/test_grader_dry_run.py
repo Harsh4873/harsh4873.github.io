@@ -147,6 +147,68 @@ def test_grade_pick_moneyline_result_without_network():
     }
 
     assert pickgrader_server.grade_pick(pick, game) == "win"
+    assert pickgrader_server.grade_pick(
+        {**pick, "pick": "Lakers to Win (Lakers vs Celtics)"},
+        game,
+    ) == "win"
+
+
+def test_auto_grade_accepts_iso_dates_and_pushes_canceled_games(monkeypatch):
+    import pickgrader_server
+
+    scoreboard = {
+        "events": [
+            {
+                "id": "canceled-smoke",
+                "competitions": [
+                    {
+                        "date": "2026-06-08T20:00:00Z",
+                        "status": {"type": {"completed": False, "name": "STATUS_CANCELED"}},
+                        "competitors": [
+                            {
+                                "score": "0",
+                                "homeAway": "home",
+                                "team": {
+                                    "displayName": "Los Angeles Lakers",
+                                    "shortDisplayName": "Lakers",
+                                    "name": "Lakers",
+                                    "abbreviation": "LAL",
+                                },
+                            },
+                            {
+                                "score": "0",
+                                "homeAway": "away",
+                                "team": {
+                                    "displayName": "Boston Celtics",
+                                    "shortDisplayName": "Celtics",
+                                    "name": "Celtics",
+                                    "abbreviation": "BOS",
+                                },
+                            },
+                        ],
+                    }
+                ],
+            }
+        ]
+    }
+    monkeypatch.setattr(pickgrader_server, "fetch_scoreboard", lambda *_: scoreboard)
+
+    result = pickgrader_server.auto_grade(
+        [
+            {
+                "id": "iso-date-pick",
+                "sport": "NBA",
+                "date": "2026-06-08",
+                "pick": "Lakers ML (Lakers vs Celtics)",
+            }
+        ],
+        {},
+        2026,
+    )
+
+    assert pickgrader_server.parse_pick_date("2026-06-08", 2026) == "20260608"
+    assert result["graded"] == {"iso-date-pick": "push"}
+    assert result["startTimes"] == {"iso-date-pick": "2026-06-08T20:00:00Z"}
 
 
 def test_grade_mlb_first_five_markets_without_network():

@@ -27,11 +27,13 @@ def test_frontend_is_static_json_only():
     assert "ADMIN_BACKEND" not in main
     assert "./data/model_cache/index.json" in data
     assert "./data/cannon_mlb_daily.json" in data
+    assert '<link rel="stylesheet" href="./src/styles/pickledger.css">' in html
     assert "Global model performance calculated from committed, auto-graded JSON." in html
 
 
 def test_static_viewer_keeps_public_tabs_and_client_grading():
     main = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
+    data = (ROOT / "src" / "data.ts").read_text(encoding="utf-8")
     html = (ROOT / "index.html").read_text(encoding="utf-8")
 
     for tab in ("home", "search", "rankings", "trends", "daily"):
@@ -40,6 +42,9 @@ def test_static_viewer_keeps_public_tabs_and_client_grading():
     assert "async function gradeDate(" in main
     assert "site.api.espn.com" in main
     assert "setLocalResult(pick.id" in main
+    assert "await loadAllData();" in main
+    assert "timeZone: 'America/Chicago'" in main
+    assert "embeddedResult === 'pending' ? localResult : embeddedResult" in data
     assert "function renderRankings()" in main
     assert "function renderSearch()" in main
 
@@ -120,6 +125,25 @@ def test_scheduled_refreshes_are_json_only_and_use_shared_writer_lock():
     assert "--skip-firestore" in feeds
     assert "FIREBASE_PROJECT_ID" not in model
     assert "FIREBASE_PROJECT_ID" not in feeds
+
+
+def test_refresh_timing_and_pages_deploy_are_deterministic():
+    workflows = ROOT / ".github" / "workflows"
+    model = (workflows / "model-cache-refresh.yml").read_text(encoding="utf-8")
+    feeds = (workflows / "external-feed-refresh.yml").read_text(encoding="utf-8")
+    cannon = (workflows / "cannon-daily-refresh.yml").read_text(encoding="utf-8")
+    grader = (workflows / "auto-grade.yml").read_text(encoding="utf-8")
+    deploy = (workflows / "deploy-pages.yml").read_text(encoding="utf-8")
+
+    assert "cache-gate" not in model
+    assert "cache-gate" not in cannon
+    assert "cron: '*/15 * * * *'" in grader
+    assert 'cron: "45 12 * * *"' in model
+    assert 'cron: "10,40 14 * * *"' in feeds
+    assert 'cron: "55 13 * * *"' in cannon
+    for workflow in (model, feeds, cannon):
+        assert "gh workflow run deploy-pages.yml" not in workflow
+    assert "Verify styled Pages artifact" in deploy
 
 
 def test_refresh_workflows_commit_as_triggering_actor():

@@ -1,4 +1,3 @@
-import './styles/pickledger.css';
 import { initMobileMode, initSettingsUI, initTheme } from './settings';
 import {
   getAllPicks,
@@ -94,7 +93,12 @@ function dateLabel(key: string, long = false): string {
 function formatStart(value: unknown): string {
   const date = new Date(String(value || ''));
   if (Number.isNaN(date.getTime())) return 'TBD';
-  return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+  return date.toLocaleTimeString('en-US', {
+    timeZone: 'America/Chicago',
+    hour: 'numeric',
+    minute: '2-digit',
+    timeZoneName: 'short',
+  });
 }
 
 function formatOdds(pick: Pick): string {
@@ -735,15 +739,81 @@ function scoreForTeam(game: Record<string, unknown>, label: string): [number, nu
   return [Number(selected.score), Number(opponent.score)];
 }
 
+function lineScoreRuns(competitor: Record<string, unknown>, inning: number): number | null {
+  const linescores = Array.isArray(competitor.linescores)
+    ? competitor.linescores
+    : Array.isArray(competitor.lineScores) ? competitor.lineScores : [];
+  const entry = linescores[inning - 1];
+  if (!entry || typeof entry !== 'object') return null;
+  const raw = (entry as Record<string, unknown>).value
+    ?? (entry as Record<string, unknown>).score
+    ?? (entry as Record<string, unknown>).runs;
+  const runs = Number(raw);
+  return Number.isFinite(runs) ? runs : null;
+}
+
+function firstFiveRuns(competitor: Record<string, unknown>): number | null {
+  const runs = Array.from({ length: 5 }, (_, index) => lineScoreRuns(competitor, index + 1));
+  return runs.some(value => value == null) ? null : runs.reduce<number>((sum, value) => sum + Number(value), 0);
+}
+
+function firstFiveScoreForTeam(game: Record<string, unknown>, label: string): [number, number] | null {
+  const competitors = Array.isArray(game.competitors) ? game.competitors as Record<string, unknown>[] : [];
+  const selected = competitors.find(competitor => teamMatches(label, competitor.team as Record<string, unknown>));
+  const opponent = competitors.find(competitor => competitor !== selected);
+  if (!selected || !opponent) return null;
+  const selectedRuns = firstFiveRuns(selected);
+  const opponentRuns = firstFiveRuns(opponent);
+  return selectedRuns == null || opponentRuns == null ? null : [selectedRuns, opponentRuns];
+}
+
 function gradePick(pick: Pick, game: Record<string, unknown>): PickResult {
   const text = pick.pick.split('(', 1)[0].trim();
   const lower = text.toLowerCase();
   const competitors = Array.isArray(game.competitors) ? game.competitors as Record<string, unknown>[] : [];
   const scores = competitors.map(competitor => Number(competitor.score));
   if (scores.some(score => !Number.isFinite(score))) return 'pending';
+
+  const noRunInning = lower.match(/\binning\s+([1-8])\s*[-:–—]?\s*no\s+runs?\s+scored\b/);
+  if (pick.sport === 'MLB' && noRunInning) {
+    const runs = competitors.map(competitor => lineScoreRuns(competitor, Number(noRunInning[1])));
+    if (runs.some(value => value == null)) return 'pending';
+    return runs.reduce<number>((sum, value) => sum + Number(value), 0) === 0 ? 'win' : 'loss';
+  }
+
+  const firstFive = pick.sport === 'MLB' && (
+    ['f5_side', 'f5_total', 'first_five', 'first-five'].includes(String(pick.market || '').toLowerCase())
+    || /\bf5\b|first\s*five/.test(lower)
+  );
+  if (firstFive) {
+    const totalMatch = lower.match(/\b(over|under)\s+(\d+(?:\.\d+)?)\s*(?:f5|first\s*five)\b/);
+    if (totalMatch) {
+      const firstFiveScores = competitors.map(firstFiveRuns);
+      if (firstFiveScores.some(value => value == null)) return 'pending';
+      const total = firstFiveScores.reduce<number>((sum, value) => sum + Number(value), 0);
+      const line = Number(totalMatch[2]);
+      if (total === line) return 'push';
+      return totalMatch[1] === 'over' ? (total > line ? 'win' : 'loss') : (total < line ? 'win' : 'loss');
+    }
+    const team = String(pick.team || text.replace(/\s+(?:f5|first\s*five)\s+ml\b/i, '')).trim();
+    const score = firstFiveScoreForTeam(game, team);
+    if (!score) return 'pending';
+    return score[0] === score[1] ? 'push' : score[0] > score[1] ? 'win' : 'loss';
+  }
+
   const total = scores[0] + scores[1];
   const totalMatch = lower.match(/\b(over|under)\s+(\d+(?:\.\d+)?)/);
-  if (totalMatch && !lower.includes('team total')) {
+  const teamGoals = lower.match(/^(.*?)\s+(over|under)\s+(\d+(?:\.\d+)?)\s*tg\b/);
+  const teamTotal = lower.match(/^(.*?)\s+team total\s+(over|under)\s+(\d+(?:\.\d+)?)/);
+  const teamMarket = teamTotal || teamGoals;
+  if (teamMarket) {
+    const score = scoreForTeam(game, teamMarket[1]);
+    if (!score) return 'pending';
+    const line = Number(teamMarket[3]);
+    if (score[0] === line) return 'push';
+    return teamMarket[2] === 'over' ? (score[0] > line ? 'win' : 'loss') : (score[0] < line ? 'win' : 'loss');
+  }
+  if (totalMatch) {
     const line = Number(totalMatch[2]);
     if (total === line) return 'push';
     return totalMatch[1] === 'over' ? (total > line ? 'win' : 'loss') : (total < line ? 'win' : 'loss');
@@ -755,7 +825,7 @@ function gradePick(pick: Pick, game: Record<string, unknown>): PickResult {
     const adjusted = score[0] + Number(spread[2]);
     return adjusted === score[1] ? 'push' : adjusted > score[1] ? 'win' : 'loss';
   }
-  const moneyline = text.match(/^(.*?)\s+ML\b/i);
+  const moneyline = text.match(/^(.*?)\s+(?:ML|moneyline|to win|wins?)\b/i);
   const team = moneyline?.[1] || String(pick.team || '').trim();
   if (team) {
     const score = scoreForTeam(game, team);
@@ -803,10 +873,12 @@ async function gradeDate(date: string, picks: Pick[]): Promise<number> {
 async function refreshAutoGrades(): Promise<void> {
   if (refreshInFlight) return;
   refreshInFlight = true;
-  setRefreshStatus('Checking final scores...');
+  setRefreshStatus('Loading latest picks and final scores...');
   const button = document.getElementById('refresh-btn') as HTMLButtonElement | null;
   if (button) button.disabled = true;
   try {
+    await loadAllData();
+    updateSyncStatus();
     const pending = getAllPicks().filter(pick => pick.result === 'pending');
     const byDate = new Map<string, Pick[]>();
     pending.forEach(pick => byDate.set(pickDateKey(pick), [...(byDate.get(pickDateKey(pick)) || []), pick]));
@@ -820,6 +892,12 @@ async function refreshAutoGrades(): Promise<void> {
     refreshInFlight = false;
     if (button) button.disabled = false;
   }
+}
+
+function updateSyncStatus(): void {
+  const status = getCacheStatus();
+  const syncStatus = document.getElementById('sync-status');
+  if (syncStatus) syncStatus.textContent = status.date ? `cache ${status.date}${status.runTime ? ` | ${status.runTime}` : ''}` : 'cache unavailable';
 }
 
 Object.assign(window, {
@@ -843,8 +921,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   initMobileMode();
   initSettingsUI();
   await loadAllData();
-  const status = getCacheStatus();
-  const syncStatus = document.getElementById('sync-status');
-  if (syncStatus) syncStatus.textContent = status.date ? `cache ${status.date}${status.runTime ? ` | ${status.runTime}` : ''}` : 'cache unavailable';
+  updateSyncStatus();
   render();
 });
