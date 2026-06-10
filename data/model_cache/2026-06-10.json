@@ -3,45 +3,25 @@
   "errors": [
     "nba: NBA New runtime failed (  File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 671, in get |     return self.request(\"GET\", url, params=params, **kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 651, in request |     resp = self.send(prep, **send_kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 784, in send |     r = adapter.send(request, **kwargs) |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/adapters.py\", line 742, in send |     raise ReadTimeout(e, request=request) | requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='stats.nba.com', port=443): Read timed out. (read timeout=30))"
   ],
-  "externalFeedsUpdatedAt": "2026-06-10T14:42:48.093501Z",
+  "externalFeedsUpdatedAt": "2026-06-10T18:22:16.766710Z",
   "external_feeds": {
     "sportsgambler": {
       "date": "2026-06-10",
       "errors": [
         "nba: no picks parsed (No picks found.)"
       ],
-      "generatedAt": "2026-06-10T14:42:48.093501Z",
+      "generatedAt": "2026-06-10T18:22:16.766710Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-10",
         "feed": "sportsgambler",
         "from": "github-actions",
         "leagues": "nba,mlb",
-        "updatedAt": "2026-06-10T14:42:48.093501Z"
+        "updatedAt": "2026-06-10T18:22:16.766710Z"
       },
-      "note": "Scheduled sportsgambler refresh returned 15 pick(s).",
+      "note": "Scheduled sportsgambler refresh returned 13 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "decision": "BET",
-          "edge": null,
-          "odds": -104,
-          "pick": "New York Yankees to Win (Cleveland Guardians vs New York Yankees)",
-          "probability": null,
-          "source": "SportsGambler",
-          "sport": "MLB",
-          "units": 1
-        },
-        {
-          "decision": "BET",
-          "edge": null,
-          "odds": -147,
-          "pick": "Tampa Bay Rays to Win (Tampa Bay Rays vs Boston Red Sox)",
-          "probability": null,
-          "source": "SportsGambler",
-          "sport": "MLB",
-          "units": 1
-        },
         {
           "decision": "BET",
           "edge": null,
@@ -173,21 +153,21 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-10T14:42:48.093501Z"
+      "updatedAt": "2026-06-10T18:22:16.766710Z"
     },
     "sportytrader": {
       "date": "2026-06-10",
       "errors": [],
-      "generatedAt": "2026-06-10T14:42:48.093501Z",
+      "generatedAt": "2026-06-10T18:22:16.766710Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-10",
         "feed": "sportytrader",
         "from": "github-actions",
         "leagues": "nba,mlb",
-        "updatedAt": "2026-06-10T14:42:48.093501Z"
+        "updatedAt": "2026-06-10T18:22:16.766710Z"
       },
-      "note": "Scheduled sportytrader refresh returned 5 pick(s).",
+      "note": "Scheduled sportytrader refresh returned 9 pick(s).",
       "ok": true,
       "picks": [
         {
@@ -223,8 +203,38 @@
         {
           "decision": "BET",
           "edge": null,
+          "odds": -107,
+          "pick": "Shohei Ohtani 7+ Strikeouts (Pirates vs Dodgers)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": 113,
+          "pick": "Tigers -1.5 (Tigers vs Twins)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
           "odds": -119,
           "pick": "Under 8.5 (Mets vs Cardinals)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -110,
+          "pick": "Under 7.5 (White Sox vs Braves)",
           "probability": null,
           "source": "SportyTrader",
           "sport": "MLB",
@@ -239,9 +249,19 @@
           "source": "SportyTrader",
           "sport": "MLB",
           "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -102,
+          "pick": "Houston ML (Angels vs Astros)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
         }
       ],
-      "updatedAt": "2026-06-10T14:42:48.093501Z"
+      "updatedAt": "2026-06-10T18:22:16.766710Z"
     }
   },
   "generatedAt": "2026-06-10T18:21:19.850674Z",
@@ -9716,38 +9736,18 @@
       "errors": [
         "nba: no picks parsed (No picks found.)"
       ],
-      "generatedAt": "2026-06-10T14:42:48.093501Z",
+      "generatedAt": "2026-06-10T18:22:16.766710Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-10",
         "feed": "sportsgambler",
         "from": "github-actions",
         "leagues": "nba,mlb",
-        "updatedAt": "2026-06-10T14:42:48.093501Z"
+        "updatedAt": "2026-06-10T18:22:16.766710Z"
       },
-      "note": "Scheduled sportsgambler refresh returned 15 pick(s).",
+      "note": "Scheduled sportsgambler refresh returned 13 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "decision": "BET",
-          "edge": null,
-          "odds": -104,
-          "pick": "New York Yankees to Win (Cleveland Guardians vs New York Yankees)",
-          "probability": null,
-          "source": "SportsGambler",
-          "sport": "MLB",
-          "units": 1
-        },
-        {
-          "decision": "BET",
-          "edge": null,
-          "odds": -147,
-          "pick": "Tampa Bay Rays to Win (Tampa Bay Rays vs Boston Red Sox)",
-          "probability": null,
-          "source": "SportsGambler",
-          "sport": "MLB",
-          "units": 1
-        },
         {
           "decision": "BET",
           "edge": null,
@@ -9879,21 +9879,21 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-10T14:42:48.093501Z"
+      "updatedAt": "2026-06-10T18:22:16.766710Z"
     },
     "sportytrader": {
       "date": "2026-06-10",
       "errors": [],
-      "generatedAt": "2026-06-10T14:42:48.093501Z",
+      "generatedAt": "2026-06-10T18:22:16.766710Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-10",
         "feed": "sportytrader",
         "from": "github-actions",
         "leagues": "nba,mlb",
-        "updatedAt": "2026-06-10T14:42:48.093501Z"
+        "updatedAt": "2026-06-10T18:22:16.766710Z"
       },
-      "note": "Scheduled sportytrader refresh returned 5 pick(s).",
+      "note": "Scheduled sportytrader refresh returned 9 pick(s).",
       "ok": true,
       "picks": [
         {
@@ -9929,8 +9929,38 @@
         {
           "decision": "BET",
           "edge": null,
+          "odds": -107,
+          "pick": "Shohei Ohtani 7+ Strikeouts (Pirates vs Dodgers)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": 113,
+          "pick": "Tigers -1.5 (Tigers vs Twins)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
           "odds": -119,
           "pick": "Under 8.5 (Mets vs Cardinals)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -110,
+          "pick": "Under 7.5 (White Sox vs Braves)",
           "probability": null,
           "source": "SportyTrader",
           "sport": "MLB",
@@ -9945,9 +9975,19 @@
           "source": "SportyTrader",
           "sport": "MLB",
           "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -102,
+          "pick": "Houston ML (Angels vs Astros)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
         }
       ],
-      "updatedAt": "2026-06-10T14:42:48.093501Z"
+      "updatedAt": "2026-06-10T18:22:16.766710Z"
     },
     "wnba": {
       "ok": true,
@@ -10104,38 +10144,18 @@
     "errors": [
       "nba: no picks parsed (No picks found.)"
     ],
-    "generatedAt": "2026-06-10T14:42:48.093501Z",
+    "generatedAt": "2026-06-10T18:22:16.766710Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-10",
       "feed": "sportsgambler",
       "from": "github-actions",
       "leagues": "nba,mlb",
-      "updatedAt": "2026-06-10T14:42:48.093501Z"
+      "updatedAt": "2026-06-10T18:22:16.766710Z"
     },
-    "note": "Scheduled sportsgambler refresh returned 15 pick(s).",
+    "note": "Scheduled sportsgambler refresh returned 13 pick(s).",
     "ok": true,
     "picks": [
-      {
-        "decision": "BET",
-        "edge": null,
-        "odds": -104,
-        "pick": "New York Yankees to Win (Cleveland Guardians vs New York Yankees)",
-        "probability": null,
-        "source": "SportsGambler",
-        "sport": "MLB",
-        "units": 1
-      },
-      {
-        "decision": "BET",
-        "edge": null,
-        "odds": -147,
-        "pick": "Tampa Bay Rays to Win (Tampa Bay Rays vs Boston Red Sox)",
-        "probability": null,
-        "source": "SportsGambler",
-        "sport": "MLB",
-        "units": 1
-      },
       {
         "decision": "BET",
         "edge": null,
@@ -10267,21 +10287,21 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-10T14:42:48.093501Z"
+    "updatedAt": "2026-06-10T18:22:16.766710Z"
   },
   "sportytrader": {
     "date": "2026-06-10",
     "errors": [],
-    "generatedAt": "2026-06-10T14:42:48.093501Z",
+    "generatedAt": "2026-06-10T18:22:16.766710Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-10",
       "feed": "sportytrader",
       "from": "github-actions",
       "leagues": "nba,mlb",
-      "updatedAt": "2026-06-10T14:42:48.093501Z"
+      "updatedAt": "2026-06-10T18:22:16.766710Z"
     },
-    "note": "Scheduled sportytrader refresh returned 5 pick(s).",
+    "note": "Scheduled sportytrader refresh returned 9 pick(s).",
     "ok": true,
     "picks": [
       {
@@ -10317,8 +10337,38 @@
       {
         "decision": "BET",
         "edge": null,
+        "odds": -107,
+        "pick": "Shohei Ohtani 7+ Strikeouts (Pirates vs Dodgers)",
+        "probability": null,
+        "source": "SportyTrader",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": 113,
+        "pick": "Tigers -1.5 (Tigers vs Twins)",
+        "probability": null,
+        "source": "SportyTrader",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
         "odds": -119,
         "pick": "Under 8.5 (Mets vs Cardinals)",
+        "probability": null,
+        "source": "SportyTrader",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -110,
+        "pick": "Under 7.5 (White Sox vs Braves)",
         "probability": null,
         "source": "SportyTrader",
         "sport": "MLB",
@@ -10333,11 +10383,21 @@
         "source": "SportyTrader",
         "sport": "MLB",
         "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -102,
+        "pick": "Houston ML (Angels vs Astros)",
+        "probability": null,
+        "source": "SportyTrader",
+        "sport": "MLB",
+        "units": 1
       }
     ],
-    "updatedAt": "2026-06-10T14:42:48.093501Z"
+    "updatedAt": "2026-06-10T18:22:16.766710Z"
   },
-  "updatedAt": "2026-06-10T18:21:19.850674Z",
+  "updatedAt": "2026-06-10T18:22:16.766710Z",
   "wnba": {
     "ok": true,
     "picks": [
