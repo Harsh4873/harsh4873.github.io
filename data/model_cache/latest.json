@@ -3,45 +3,25 @@
   "errors": [
     "nba: NBA New runtime failed (  File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 671, in get |     return self.request(\"GET\", url, params=params, **kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 651, in request |     resp = self.send(prep, **send_kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 784, in send |     r = adapter.send(request, **kwargs) |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/adapters.py\", line 742, in send |     raise ReadTimeout(e, request=request) | requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='stats.nba.com', port=443): Read timed out. (read timeout=30))"
   ],
-  "externalFeedsUpdatedAt": "2026-06-10T18:22:16.766710Z",
+  "externalFeedsUpdatedAt": "2026-06-10T21:45:55.125872Z",
   "external_feeds": {
     "sportsgambler": {
       "date": "2026-06-10",
       "errors": [
         "nba: no picks parsed (No picks found.)"
       ],
-      "generatedAt": "2026-06-10T18:22:16.766710Z",
+      "generatedAt": "2026-06-10T21:45:55.125872Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-10",
         "feed": "sportsgambler",
         "from": "github-actions",
         "leagues": "nba,mlb",
-        "updatedAt": "2026-06-10T18:22:16.766710Z"
+        "updatedAt": "2026-06-10T21:45:55.125872Z"
       },
-      "note": "Scheduled sportsgambler refresh returned 13 pick(s).",
+      "note": "Scheduled sportsgambler refresh returned 11 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "decision": "BET",
-          "edge": null,
-          "odds": -130,
-          "pick": "San Francisco Giants to Win (San Francisco Giants vs Washington Nationals)",
-          "probability": null,
-          "source": "SportsGambler",
-          "sport": "MLB",
-          "units": 1
-        },
-        {
-          "decision": "BET",
-          "edge": null,
-          "odds": -172,
-          "pick": "San Diego Padres to Win (San Diego Padres vs Cincinnati Reds)",
-          "probability": null,
-          "source": "SportsGambler",
-          "sport": "MLB",
-          "units": 1
-        },
         {
           "decision": "BET",
           "edge": null,
@@ -153,19 +133,19 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-10T18:22:16.766710Z"
+      "updatedAt": "2026-06-10T21:45:55.125872Z"
     },
     "sportytrader": {
       "date": "2026-06-10",
       "errors": [],
-      "generatedAt": "2026-06-10T18:22:16.766710Z",
+      "generatedAt": "2026-06-10T21:45:55.125872Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-10",
         "feed": "sportytrader",
         "from": "github-actions",
         "leagues": "nba,mlb",
-        "updatedAt": "2026-06-10T18:22:16.766710Z"
+        "updatedAt": "2026-06-10T21:45:55.125872Z"
       },
       "note": "Scheduled sportytrader refresh returned 9 pick(s).",
       "ok": true,
@@ -261,7 +241,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-10T18:22:16.766710Z"
+      "updatedAt": "2026-06-10T21:45:55.125872Z"
     }
   },
   "generatedAt": "2026-06-10T21:41:57.476299Z",
@@ -8332,38 +8312,18 @@
       "errors": [
         "nba: no picks parsed (No picks found.)"
       ],
-      "generatedAt": "2026-06-10T18:22:16.766710Z",
+      "generatedAt": "2026-06-10T21:45:55.125872Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-10",
         "feed": "sportsgambler",
         "from": "github-actions",
         "leagues": "nba,mlb",
-        "updatedAt": "2026-06-10T18:22:16.766710Z"
+        "updatedAt": "2026-06-10T21:45:55.125872Z"
       },
-      "note": "Scheduled sportsgambler refresh returned 13 pick(s).",
+      "note": "Scheduled sportsgambler refresh returned 11 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "decision": "BET",
-          "edge": null,
-          "odds": -130,
-          "pick": "San Francisco Giants to Win (San Francisco Giants vs Washington Nationals)",
-          "probability": null,
-          "source": "SportsGambler",
-          "sport": "MLB",
-          "units": 1
-        },
-        {
-          "decision": "BET",
-          "edge": null,
-          "odds": -172,
-          "pick": "San Diego Padres to Win (San Diego Padres vs Cincinnati Reds)",
-          "probability": null,
-          "source": "SportsGambler",
-          "sport": "MLB",
-          "units": 1
-        },
         {
           "decision": "BET",
           "edge": null,
@@ -8475,19 +8435,19 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-10T18:22:16.766710Z"
+      "updatedAt": "2026-06-10T21:45:55.125872Z"
     },
     "sportytrader": {
       "date": "2026-06-10",
       "errors": [],
-      "generatedAt": "2026-06-10T18:22:16.766710Z",
+      "generatedAt": "2026-06-10T21:45:55.125872Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-10",
         "feed": "sportytrader",
         "from": "github-actions",
         "leagues": "nba,mlb",
-        "updatedAt": "2026-06-10T18:22:16.766710Z"
+        "updatedAt": "2026-06-10T21:45:55.125872Z"
       },
       "note": "Scheduled sportytrader refresh returned 9 pick(s).",
       "ok": true,
@@ -8583,7 +8543,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-10T18:22:16.766710Z"
+      "updatedAt": "2026-06-10T21:45:55.125872Z"
     },
     "wnba": {
       "ok": true,
@@ -8740,38 +8700,18 @@
     "errors": [
       "nba: no picks parsed (No picks found.)"
     ],
-    "generatedAt": "2026-06-10T18:22:16.766710Z",
+    "generatedAt": "2026-06-10T21:45:55.125872Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-10",
       "feed": "sportsgambler",
       "from": "github-actions",
       "leagues": "nba,mlb",
-      "updatedAt": "2026-06-10T18:22:16.766710Z"
+      "updatedAt": "2026-06-10T21:45:55.125872Z"
     },
-    "note": "Scheduled sportsgambler refresh returned 13 pick(s).",
+    "note": "Scheduled sportsgambler refresh returned 11 pick(s).",
     "ok": true,
     "picks": [
-      {
-        "decision": "BET",
-        "edge": null,
-        "odds": -130,
-        "pick": "San Francisco Giants to Win (San Francisco Giants vs Washington Nationals)",
-        "probability": null,
-        "source": "SportsGambler",
-        "sport": "MLB",
-        "units": 1
-      },
-      {
-        "decision": "BET",
-        "edge": null,
-        "odds": -172,
-        "pick": "San Diego Padres to Win (San Diego Padres vs Cincinnati Reds)",
-        "probability": null,
-        "source": "SportsGambler",
-        "sport": "MLB",
-        "units": 1
-      },
       {
         "decision": "BET",
         "edge": null,
@@ -8883,19 +8823,19 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-10T18:22:16.766710Z"
+    "updatedAt": "2026-06-10T21:45:55.125872Z"
   },
   "sportytrader": {
     "date": "2026-06-10",
     "errors": [],
-    "generatedAt": "2026-06-10T18:22:16.766710Z",
+    "generatedAt": "2026-06-10T21:45:55.125872Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-10",
       "feed": "sportytrader",
       "from": "github-actions",
       "leagues": "nba,mlb",
-      "updatedAt": "2026-06-10T18:22:16.766710Z"
+      "updatedAt": "2026-06-10T21:45:55.125872Z"
     },
     "note": "Scheduled sportytrader refresh returned 9 pick(s).",
     "ok": true,
@@ -8991,9 +8931,9 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-10T18:22:16.766710Z"
+    "updatedAt": "2026-06-10T21:45:55.125872Z"
   },
-  "updatedAt": "2026-06-10T21:41:57.476299Z",
+  "updatedAt": "2026-06-10T21:45:55.125872Z",
   "wnba": {
     "ok": true,
     "picks": [
