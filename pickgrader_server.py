@@ -4557,6 +4557,87 @@ def _resolve_scrape_date(date_str: str | None) -> str:
             except ValueError:
                 pass
     return datetime.now().strftime("%Y-%m-%d")
+def _matchup_pair_key(raw: str) -> tuple[str, str] | None:
+    teams = re.split(r"\s+(?:vs\.?|@)\s+", str(raw or "").strip(), maxsplit=1, flags=re.IGNORECASE)
+    if len(teams) != 2:
+        return None
+    normalized = sorted(re.sub(r"[^a-z0-9]+", "", team.lower()) for team in teams)
+    return (normalized[0], normalized[1]) if all(normalized) else None
+
+
+def _known_basketball_slate_matchups(target_date: str, sport_code: str) -> list[str]:
+    sport = str(sport_code or "").strip().upper()
+    if sport not in {"NBA", "WNBA"}:
+        return []
+
+    matchups: dict[tuple[str, str], str] = {}
+    cache_paths = [
+        os.path.join(BASE_DIR, "data", "model_cache", f"{target_date}.json"),
+        os.path.join(BASE_DIR, "data", "model_cache", "latest.json"),
+    ]
+    model_keys = {
+        "NBA": ("nba", "nba_playoffs"),
+        "WNBA": ("wnba",),
+    }[sport]
+    for cache_path in cache_paths:
+        try:
+            with open(cache_path, encoding="utf-8") as handle:
+                payload = json.load(handle)
+        except (OSError, json.JSONDecodeError):
+            continue
+        if not isinstance(payload, dict) or str(payload.get("date") or "") != target_date:
+            continue
+        models = payload.get("models") if isinstance(payload.get("models"), dict) else {}
+        for model_key in model_keys:
+            bucket = models.get(model_key) if isinstance(models.get(model_key), dict) else payload.get(model_key)
+            picks = bucket.get("picks") if isinstance(bucket, dict) else []
+            for pick in picks if isinstance(picks, list) else []:
+                if not isinstance(pick, dict):
+                    continue
+                matchup = str(pick.get("matchup") or pick.get("game") or "").strip()
+                if not matchup:
+                    away = str(pick.get("away_team") or "").strip()
+                    home = str(pick.get("home_team") or "").strip()
+                    matchup = f"{away} @ {home}" if away and home else ""
+                if key := _matchup_pair_key(matchup):
+                    matchups.setdefault(key, matchup)
+        break
+
+    try:
+        sport_slug, league_slug = SPORT_TO_ESPNSLUG[sport]
+        scoreboard = fetch_scoreboard(
+            sport_slug,
+            league_slug,
+            datetime.strptime(target_date, "%Y-%m-%d").strftime("%Y%m%d"),
+        )
+    except (KeyError, ValueError):
+        scoreboard = None
+    if isinstance(scoreboard, dict):
+        for event in scoreboard.get("events") if isinstance(scoreboard.get("events"), list) else []:
+            competitions = event.get("competitions") if isinstance(event, dict) else []
+            competition = competitions[0] if isinstance(competitions, list) and competitions else {}
+            competitors = competition.get("competitors") if isinstance(competition, dict) else []
+            away = home = ""
+            for competitor in competitors if isinstance(competitors, list) else []:
+                team = competitor.get("team") if isinstance(competitor, dict) else {}
+                name = str(team.get("displayName") or team.get("shortDisplayName") or "").strip() if isinstance(team, dict) else ""
+                if competitor.get("homeAway") == "home":
+                    home = name
+                elif competitor.get("homeAway") == "away":
+                    away = name
+            matchup = f"{away} @ {home}" if away and home else ""
+            if key := _matchup_pair_key(matchup):
+                matchups.setdefault(key, matchup)
+
+    return list(matchups.values())
+
+
+def _scraper_reported_empty_slate(output: str) -> bool:
+    return "No picks found." in output or bool(
+        re.search(r"No SportyTrader \w+ picks parsed\.", output)
+    )
+
+
 def run_sportytrader_scraper(
     date_str: str | None = None,
     sports: list[str] | None = None,
@@ -4587,9 +4668,17 @@ def run_sportytrader_scraper(
     if not selected:
         selected = default_sports
 
+    expected_by_sport = {
+        sport_code: _known_basketball_slate_matchups(target_date, sport_code)
+        for sport_code in selected
+    }
+
     def _invoke(sport_code: str) -> subprocess.CompletedProcess[str]:
+        command = [python_bin, scraper_path, "--sport", sport_code, "--date", target_date]
+        for matchup in expected_by_sport.get(sport_code, []):
+            command.extend(["--expected-matchup", matchup])
         return _subprocess_run(
-            [python_bin, scraper_path, "--sport", sport_code, "--date", target_date],
+            command,
             cwd=BASE_DIR,
             env=env,
             capture_output=True,
@@ -4662,13 +4751,15 @@ def run_sportytrader_scraper(
                 errors.append(f"{sport_code}: scraper exited {result.returncode} ({_compact_error_text(output)})")
                 continue
             if not picks:
+                if result.returncode == 0 and _scraper_reported_empty_slate(output):
+                    continue
                 errors.append(f"{sport_code}: no picks parsed ({_compact_error_text(output)})")
                 continue
 
             all_picks.extend(picks)
 
-        if not all_picks and errors:
-            return {"ok": False, "error": "; ".join(errors[:4])}
+        if errors:
+            return {"ok": False, "error": "; ".join(errors[:4]), "picks": all_picks, "date": target_date}
 
         result = {"ok": True, "picks": all_picks, "errors": errors, "date": target_date}
         _save_admin_picks_doc("sportytrader", result, target_date)
@@ -4704,9 +4795,17 @@ def run_sportsgambler_scraper(
     if not selected:
         selected = default_sports
 
+    expected_by_sport = {
+        sport_code: _known_basketball_slate_matchups(target_date, sport_code)
+        for sport_code in selected
+    }
+
     def _invoke(sport_code: str) -> subprocess.CompletedProcess[str]:
+        command = [python_bin, scraper_path, "--sport", sport_code, "--date", target_date]
+        for matchup in expected_by_sport.get(sport_code, []):
+            command.extend(["--expected-matchup", matchup])
         return _subprocess_run(
-            [python_bin, scraper_path, "--sport", sport_code, "--date", target_date],
+            command,
             cwd=BASE_DIR,
             capture_output=True,
             text=True,
@@ -4765,13 +4864,15 @@ def run_sportsgambler_scraper(
                 errors.append(f"{sport_code}: scraper exited {result.returncode} ({_compact_error_text(output)})")
                 continue
             if not picks:
+                if result.returncode == 0 and _scraper_reported_empty_slate(output):
+                    continue
                 errors.append(f"{sport_code}: no picks parsed ({_compact_error_text(output)})")
                 continue
 
             all_picks.extend(picks)
 
-        if not all_picks and errors:
-            return {"ok": False, "error": "; ".join(errors[:4])}
+        if errors:
+            return {"ok": False, "error": "; ".join(errors[:4]), "picks": all_picks, "date": target_date}
 
         result = {"ok": True, "picks": all_picks, "errors": errors, "date": target_date}
         _save_admin_picks_doc("sportsgambler", result, target_date)

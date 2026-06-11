@@ -147,6 +147,13 @@ def _looks_like_cloudflare_block(title: str, body_text: str) -> bool:
     blob = f"{title}\n{body_text}".lower()
     return any(signal in blob for signal in CLOUDFLARE_SIGNALS)
 
+def _matchup_key(raw: str) -> tuple[str, str] | None:
+    teams = re.split(r"\s+(?:vs\.?|@)\s+", _normalize_line(raw), maxsplit=1, flags=re.IGNORECASE)
+    if len(teams) != 2:
+        return None
+    normalized = sorted(re.sub(r"[^a-z0-9]+", "", team.lower()) for team in teams)
+    return (normalized[0], normalized[1]) if all(normalized) else None
+
 
 def _launch_browser(pw):
     launch_kwargs = {
@@ -206,10 +213,21 @@ def _load_cards(page, url: str) -> tuple[list[dict[str, str]], str]:
     return [], last_text
 
 
-def _extract_rows(cards: list[dict[str, str]], target_date: datetime | None, sport_key: str) -> list[dict[str, str]]:
+def _extract_rows(
+    cards: list[dict[str, str]],
+    target_date: datetime | None,
+    sport_key: str,
+    expected_matchups: list[str] | None = None,
+) -> list[dict[str, str]]:
     out: list[dict[str, str]] = []
     seen: set[tuple[str, str, str, str]] = set()
     sport_league = SPORT_CONFIG[sport_key]["league"]
+    expected = {
+        key: matchup
+        for matchup in expected_matchups or []
+        if (key := _matchup_key(matchup))
+    }
+    found_expected: set[tuple[str, str]] = set()
 
     for raw in cards:
         row = {key: _normalize_line(str(raw.get(key, ""))) for key in ("datetime", "league", "home", "away", "tip", "odds", "href")}
@@ -218,15 +236,26 @@ def _extract_rows(cards: list[dict[str, str]], target_date: datetime | None, spo
         if not row["home"] or not row["away"] or not row["tip"]:
             continue
         dt = _parse_english_datetime(row["datetime"])
-        if target_date and dt and dt.date() != target_date.date():
+        matchup_key = _matchup_key(f"{row['home']} vs {row['away']}")
+        if expected and matchup_key not in expected:
+            continue
+        if not expected and target_date and dt and dt.date() != target_date.date():
             continue
         key = (row["datetime"], row["home"], row["away"], row["tip"])
         if key in seen:
             continue
         seen.add(key)
+        if matchup_key:
+            found_expected.add(matchup_key)
         row["league"] = sport_league
         out.append(row)
 
+    missing = [matchup for key, matchup in expected.items() if key not in found_expected]
+    if missing:
+        raise RuntimeError(
+            f"partial {SPORT_CONFIG[sport_key]['title']} listing: missing {len(missing)} known slate matchup(s): "
+            f"{', '.join(missing[:3])}"
+        )
     return out
 
 
@@ -247,6 +276,7 @@ def main() -> None:
     ap = argparse.ArgumentParser(description="SportyTrader scraper")
     ap.add_argument("--sport", "-s", default="nba", help="Supported: nba/wnba/mlb")
     ap.add_argument("--date", "-d", help="Date in YYYY-MM-DD")
+    ap.add_argument("--expected-matchup", action="append", default=[])
     args = ap.parse_args()
 
     sport_key = _normalize_sport(args.sport or "")
@@ -278,7 +308,11 @@ def main() -> None:
         print(f"Error: SportyTrader {target_title} page hit Cloudflare verification")
         sys.exit(1)
 
-    rows = _extract_rows(cards, target_date, sport_key)
+    try:
+        rows = _extract_rows(cards, target_date, sport_key, args.expected_matchup)
+    except RuntimeError as exc:
+        print(f"Error: {exc}")
+        sys.exit(1)
     if not rows:
         print(f"No SportyTrader {target_title} picks parsed.")
         return

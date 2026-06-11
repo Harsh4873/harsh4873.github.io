@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse, json, re, sys
 from datetime import date, datetime
 from typing import Any
+from zoneinfo import ZoneInfo
 import requests
 from bs4 import BeautifulSoup
 
@@ -15,6 +16,7 @@ HEADERS = {
 NBA_URL = "https://www.sportsgambler.com/betting-tips/basketball/nba-predictions/"
 WNBA_URL = "https://www.sportsgambler.com/betting-tips/basketball/wnba-predictions/"
 MLB_URL = "https://www.sportsgambler.com/betting-tips/baseball/"
+SLATE_TIME_ZONE = ZoneInfo("America/Chicago")
 
 def _norm(s: str) -> str:
     return re.sub(r"\s+", " ", str(s or "")).strip()
@@ -51,12 +53,15 @@ def _iter_nodes(v: Any):
         for item in v:
             yield from _iter_nodes(item)
 
-def _iso_date(raw: str) -> date | None:
-    m = re.search(r"(\d{4}-\d{2}-\d{2})", _norm(raw))
+def _slate_date(raw: str) -> date | None:
+    compact = _norm(raw)
     try:
-        return datetime.strptime(m.group(1), "%Y-%m-%d").date() if m else None
+        parsed = datetime.fromisoformat(compact.replace("Z", "+00:00"))
     except ValueError:
         return None
+    if parsed.tzinfo is None:
+        return parsed.date()
+    return parsed.astimezone(SLATE_TIME_ZONE).date()
 
 def _matchup_from_node(node: dict) -> str:
     name = _norm(node.get("name", ""))
@@ -69,10 +74,28 @@ def _matchup_from_node(node: dict) -> str:
             return f"{teams[0]} vs {teams[1]}"
     return ""
 
-def scrape_basketball(target: date | None, url: str, league: str) -> list[dict]:
+def _matchup_key(raw: str) -> tuple[str, str] | None:
+    teams = re.split(r"\s+(?:vs\.?|@)\s+", _norm(raw), maxsplit=1, flags=re.IGNORECASE)
+    if len(teams) != 2:
+        return None
+    normalized = sorted(re.sub(r"[^a-z0-9]+", "", team.lower()) for team in teams)
+    return (normalized[0], normalized[1]) if all(normalized) else None
+
+def scrape_basketball(
+    target: date | None,
+    url: str,
+    league: str,
+    expected_matchups: list[str] | None = None,
+) -> list[dict]:
     html = requests.get(url, headers=HEADERS, timeout=30).text
     soup = BeautifulSoup(html, "html.parser")
     articles, seen = [], set()
+    expected = {
+        key: matchup
+        for matchup in expected_matchups or []
+        if (key := _matchup_key(matchup))
+    }
+    found_expected: set[tuple[str, str]] = set()
     for obj in _json_ld(soup):
         for node in _iter_nodes(obj):
             item = node.get("item")
@@ -80,19 +103,33 @@ def scrape_basketball(target: date | None, url: str, league: str) -> list[dict]:
                 continue
             url = _norm(item.get("url", ""))
             matchup = _matchup_from_node(item)
-            event_date = _iso_date(_norm(item.get("startDate", "")))
+            event_date = _slate_date(_norm(item.get("startDate", "")))
             if not url or not matchup or url in seen:
                 continue
-            if target and event_date and event_date != target:
+            matchup_key = _matchup_key(matchup)
+            if expected and matchup_key not in expected:
+                continue
+            if not expected and target and event_date and event_date != target:
                 continue
             seen.add(url)
+            if matchup_key:
+                found_expected.add(matchup_key)
             articles.append({"url": url, "matchup": matchup, "date": item.get("startDate", "")})
 
+    missing_listings = [matchup for key, matchup in expected.items() if key not in found_expected]
+    if missing_listings:
+        raise RuntimeError(
+            f"partial {league} listing: missing {len(missing_listings)} known slate matchup(s): "
+            f"{', '.join(missing_listings[:3])}"
+        )
+
     rows = []
+    missing: list[str] = []
     for art in articles:
         try:
             detail = BeautifulSoup(requests.get(art["url"], headers=HEADERS, timeout=30).text, "html.parser")
         except Exception:
+            missing.append(art["url"])
             continue
         prediction = ""
         for cont in detail.select("div.tpbot_container"):
@@ -103,18 +140,25 @@ def scrape_basketball(target: date | None, url: str, league: str) -> list[dict]:
                     prediction = _norm(spans[-1].get_text(" ", strip=True))
                     break
         if not prediction:
+            missing.append(art["url"])
             continue
         tip, odds = _split_tip_odds(prediction)
         if not tip:
+            missing.append(art["url"])
             continue
         rows.append({"datetime": art["date"], "league": league, "matchup": art["matchup"], "tip": tip, "odds": odds, "href": art["url"]})
+    if missing:
+        raise RuntimeError(
+            f"partial {league} scrape: parsed {len(rows)} of {len(articles)} listed prediction page(s); "
+            f"missing {', '.join(missing[:3])}"
+        )
     return rows
 
-def scrape_nba(target: date | None) -> list[dict]:
-    return scrape_basketball(target, NBA_URL, "NBA")
+def scrape_nba(target: date | None, expected_matchups: list[str] | None = None) -> list[dict]:
+    return scrape_basketball(target, NBA_URL, "NBA", expected_matchups)
 
-def scrape_wnba(target: date | None) -> list[dict]:
-    return scrape_basketball(target, WNBA_URL, "WNBA")
+def scrape_wnba(target: date | None, expected_matchups: list[str] | None = None) -> list[dict]:
+    return scrape_basketball(target, WNBA_URL, "WNBA", expected_matchups)
 
 def scrape_mlb(target: date | None) -> list[dict]:
     html = requests.get(MLB_URL, headers=HEADERS, timeout=30).text
@@ -146,14 +190,15 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--sport", "-s", default="nba")
     ap.add_argument("--date", "-d", default=None)
+    ap.add_argument("--expected-matchup", action="append", default=[])
     args = ap.parse_args()
     sport = args.sport.strip().lower()
     target = _parse_date(args.date) if args.date else None
     try:
         if sport in ("nba", "basketball"):
-            rows = scrape_nba(target)
+            rows = scrape_nba(target, args.expected_matchup)
         elif sport == "wnba":
-            rows = scrape_wnba(target)
+            rows = scrape_wnba(target, args.expected_matchup)
         elif sport in ("mlb", "baseball"):
             rows = scrape_mlb(target)
         else:
