@@ -200,18 +200,23 @@ def test_model_cache_merge_preserves_other_deployed_buckets(tmp_path):
             "mlb_new": {"ok": True, "picks": [{"pick": "A", "result": "win"}]},
             "sportytrader": {"ok": True, "picks": [{"pick": "B"}]},
         },
+        "mlb_new": {"ok": True, "picks": [{"pick": "A", "result": "win"}]},
     }
     generated = {
         "date": "2026-06-08",
         "models": {
             "nba": {"ok": True, "picks": [{"pick": "C"}]},
         },
+        "mlb_new": {},
+        "nba": {"ok": True, "picks": [{"pick": "C"}]},
     }
     (cache_dir / "2026-06-08.json").write_text(json.dumps(current), encoding="utf-8")
     merged = module.merge_payload(generated, cache_dir)
     assert merged["models"]["mlb_new"]["picks"][0]["result"] == "win"
     assert merged["models"]["sportytrader"]["picks"][0]["pick"] == "B"
     assert merged["models"]["nba"]["picks"][0]["pick"] == "C"
+    assert merged["mlb_new"]["picks"][0]["pick"] == "A"
+    assert merged["nba"]["picks"][0]["pick"] == "C"
 
 
 def test_model_cache_merge_preserves_committed_grades(tmp_path):

@@ -38,6 +38,10 @@ MODEL_ALIAS_KEYS = {
     "mlb_first_five",
     "ipl",
 }
+MODEL_ALIAS_TO_MODEL_KEY = {
+    "mlb": "mlb_old",
+    **{key: key for key in MODEL_ALIAS_KEYS if key != "mlb"},
+}
 PICK_METADATA_FIELDS = {"result", "start_time", "game_start_time"}
 
 
@@ -129,9 +133,13 @@ def merge_payload(generated: dict[str, Any], cache_dir: Path) -> dict[str, Any]:
             merged[key] = generated[key]
     merged["models"] = _merged_models(current, generated)
 
-    for key in MODEL_ALIAS_KEYS:
-        if key in generated:
-            merged[key] = generated[key]
+    for alias_key, model_key in MODEL_ALIAS_TO_MODEL_KEY.items():
+        if model_key in merged["models"]:
+            merged[alias_key] = merged["models"][model_key]
+        elif alias_key in current:
+            merged[alias_key] = current[alias_key]
+        elif alias_key in generated and generated[alias_key]:
+            merged[alias_key] = generated[alias_key]
     for key in EXTERNAL_FEED_MODEL_KEYS:
         if key in current:
             merged[key] = current[key]
