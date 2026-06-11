@@ -1,6 +1,129 @@
 {
   "date": "2026-06-11",
   "errors": [],
+  "externalFeedsUpdatedAt": "2026-06-11T18:26:22.894049Z",
+  "external_feeds": {
+    "sportsgambler": {
+      "date": "2026-06-11",
+      "errors": [
+        "nba: no picks parsed (No picks found.)"
+      ],
+      "generatedAt": "2026-06-11T18:26:22.894049Z",
+      "generatedBy": "github-actions:external-feed-refresh",
+      "meta": {
+        "date": "2026-06-11",
+        "feed": "sportsgambler",
+        "from": "github-actions",
+        "leagues": "nba,mlb",
+        "updatedAt": "2026-06-11T18:26:22.894049Z"
+      },
+      "note": "Scheduled sportsgambler refresh returned 5 pick(s).",
+      "ok": true,
+      "picks": [
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": 104,
+          "pick": "Texas Rangers to Win (Kansas City Royals vs Texas Rangers)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": 128,
+          "pick": "Colorado Rockies to Win (Colorado Rockies vs Chicago Cubs)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": 133,
+          "pick": "Pittsburgh Pirates to Win (Pittsburgh Pirates vs Los Angeles Dodgers)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -119,
+          "pick": "Seattle Mariners to Win (Baltimore Orioles vs Seattle Mariners)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -125,
+          "pick": "Atlanta Braves to Win (Chicago White Sox vs Atlanta Braves)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        }
+      ],
+      "updatedAt": "2026-06-11T18:26:22.894049Z"
+    },
+    "sportytrader": {
+      "date": "2026-06-11",
+      "errors": [
+        "nba: no picks parsed (No SportyTrader NBA picks parsed.)"
+      ],
+      "generatedAt": "2026-06-11T18:26:22.894049Z",
+      "generatedBy": "github-actions:external-feed-refresh",
+      "meta": {
+        "date": "2026-06-11",
+        "feed": "sportytrader",
+        "from": "github-actions",
+        "leagues": "nba,mlb",
+        "updatedAt": "2026-06-11T18:26:22.894049Z"
+      },
+      "note": "Scheduled sportytrader refresh returned 3 pick(s).",
+      "ok": true,
+      "picks": [
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": 100,
+          "pick": "Rangers ML (Royals vs Rangers)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -110,
+          "pick": "Dodgers -1.5 (Pirates vs Dodgers)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -115,
+          "pick": "Over 8.5 (White Sox vs Braves)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        }
+      ],
+      "updatedAt": "2026-06-11T18:26:22.894049Z"
+    }
+  },
   "generatedAt": "2026-06-11T17:44:48.367492Z",
   "generatedBy": "github-actions:model-cache-refresh",
   "ipl": {},
@@ -4050,6 +4173,126 @@
       "picks": [],
       "raw_lines": 8
     },
+    "sportsgambler": {
+      "date": "2026-06-11",
+      "errors": [
+        "nba: no picks parsed (No picks found.)"
+      ],
+      "generatedAt": "2026-06-11T18:26:22.894049Z",
+      "generatedBy": "github-actions:external-feed-refresh",
+      "meta": {
+        "date": "2026-06-11",
+        "feed": "sportsgambler",
+        "from": "github-actions",
+        "leagues": "nba,mlb",
+        "updatedAt": "2026-06-11T18:26:22.894049Z"
+      },
+      "note": "Scheduled sportsgambler refresh returned 5 pick(s).",
+      "ok": true,
+      "picks": [
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": 104,
+          "pick": "Texas Rangers to Win (Kansas City Royals vs Texas Rangers)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": 128,
+          "pick": "Colorado Rockies to Win (Colorado Rockies vs Chicago Cubs)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": 133,
+          "pick": "Pittsburgh Pirates to Win (Pittsburgh Pirates vs Los Angeles Dodgers)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -119,
+          "pick": "Seattle Mariners to Win (Baltimore Orioles vs Seattle Mariners)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -125,
+          "pick": "Atlanta Braves to Win (Chicago White Sox vs Atlanta Braves)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "MLB",
+          "units": 1
+        }
+      ],
+      "updatedAt": "2026-06-11T18:26:22.894049Z"
+    },
+    "sportytrader": {
+      "date": "2026-06-11",
+      "errors": [
+        "nba: no picks parsed (No SportyTrader NBA picks parsed.)"
+      ],
+      "generatedAt": "2026-06-11T18:26:22.894049Z",
+      "generatedBy": "github-actions:external-feed-refresh",
+      "meta": {
+        "date": "2026-06-11",
+        "feed": "sportytrader",
+        "from": "github-actions",
+        "leagues": "nba,mlb",
+        "updatedAt": "2026-06-11T18:26:22.894049Z"
+      },
+      "note": "Scheduled sportytrader refresh returned 3 pick(s).",
+      "ok": true,
+      "picks": [
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": 100,
+          "pick": "Rangers ML (Royals vs Rangers)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -110,
+          "pick": "Dodgers -1.5 (Pirates vs Dodgers)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -115,
+          "pick": "Over 8.5 (White Sox vs Braves)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        }
+      ],
+      "updatedAt": "2026-06-11T18:26:22.894049Z"
+    },
     "wnba": {
       "ok": true,
       "picks": [
@@ -4210,7 +4453,127 @@
     "raw_lines": 8
   },
   "nba_props": {},
-  "updatedAt": "2026-06-11T17:44:48.367492Z",
+  "sportsgambler": {
+    "date": "2026-06-11",
+    "errors": [
+      "nba: no picks parsed (No picks found.)"
+    ],
+    "generatedAt": "2026-06-11T18:26:22.894049Z",
+    "generatedBy": "github-actions:external-feed-refresh",
+    "meta": {
+      "date": "2026-06-11",
+      "feed": "sportsgambler",
+      "from": "github-actions",
+      "leagues": "nba,mlb",
+      "updatedAt": "2026-06-11T18:26:22.894049Z"
+    },
+    "note": "Scheduled sportsgambler refresh returned 5 pick(s).",
+    "ok": true,
+    "picks": [
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": 104,
+        "pick": "Texas Rangers to Win (Kansas City Royals vs Texas Rangers)",
+        "probability": null,
+        "source": "SportsGambler",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": 128,
+        "pick": "Colorado Rockies to Win (Colorado Rockies vs Chicago Cubs)",
+        "probability": null,
+        "source": "SportsGambler",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": 133,
+        "pick": "Pittsburgh Pirates to Win (Pittsburgh Pirates vs Los Angeles Dodgers)",
+        "probability": null,
+        "source": "SportsGambler",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -119,
+        "pick": "Seattle Mariners to Win (Baltimore Orioles vs Seattle Mariners)",
+        "probability": null,
+        "source": "SportsGambler",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -125,
+        "pick": "Atlanta Braves to Win (Chicago White Sox vs Atlanta Braves)",
+        "probability": null,
+        "source": "SportsGambler",
+        "sport": "MLB",
+        "units": 1
+      }
+    ],
+    "updatedAt": "2026-06-11T18:26:22.894049Z"
+  },
+  "sportytrader": {
+    "date": "2026-06-11",
+    "errors": [
+      "nba: no picks parsed (No SportyTrader NBA picks parsed.)"
+    ],
+    "generatedAt": "2026-06-11T18:26:22.894049Z",
+    "generatedBy": "github-actions:external-feed-refresh",
+    "meta": {
+      "date": "2026-06-11",
+      "feed": "sportytrader",
+      "from": "github-actions",
+      "leagues": "nba,mlb",
+      "updatedAt": "2026-06-11T18:26:22.894049Z"
+    },
+    "note": "Scheduled sportytrader refresh returned 3 pick(s).",
+    "ok": true,
+    "picks": [
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": 100,
+        "pick": "Rangers ML (Royals vs Rangers)",
+        "probability": null,
+        "source": "SportyTrader",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -110,
+        "pick": "Dodgers -1.5 (Pirates vs Dodgers)",
+        "probability": null,
+        "source": "SportyTrader",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -115,
+        "pick": "Over 8.5 (White Sox vs Braves)",
+        "probability": null,
+        "source": "SportyTrader",
+        "sport": "MLB",
+        "units": 1
+      }
+    ],
+    "updatedAt": "2026-06-11T18:26:22.894049Z"
+  },
+  "updatedAt": "2026-06-11T18:26:22.894049Z",
   "wnba": {
     "ok": true,
     "picks": [
