@@ -1,33 +1,23 @@
 {
   "date": "2026-06-11",
   "errors": [],
-  "externalFeedsUpdatedAt": "2026-06-11T19:35:16.056144Z",
+  "externalFeedsUpdatedAt": "2026-06-11T22:12:26.002489Z",
   "external_feeds": {
     "sportsgambler": {
       "date": "2026-06-11",
       "errors": [],
-      "generatedAt": "2026-06-11T19:35:16.056144Z",
+      "generatedAt": "2026-06-11T22:12:26.002489Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-11",
         "feed": "sportsgambler",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba",
-        "updatedAt": "2026-06-11T19:35:16.056144Z"
+        "updatedAt": "2026-06-11T22:12:26.002489Z"
       },
-      "note": "Scheduled sportsgambler refresh returned 8 pick(s).",
+      "note": "Scheduled sportsgambler refresh returned 7 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "decision": "BET",
-          "edge": null,
-          "odds": 128,
-          "pick": "Colorado Rockies to Win (Colorado Rockies vs Chicago Cubs)",
-          "probability": null,
-          "source": "SportsGambler",
-          "sport": "MLB",
-          "units": 1
-        },
         {
           "decision": "BET",
           "edge": null,
@@ -99,19 +89,19 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-11T19:35:16.056144Z"
+      "updatedAt": "2026-06-11T22:12:26.002489Z"
     },
     "sportytrader": {
       "date": "2026-06-11",
       "errors": [],
-      "generatedAt": "2026-06-11T19:35:16.056144Z",
+      "generatedAt": "2026-06-11T22:12:26.002489Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-11",
         "feed": "sportytrader",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba",
-        "updatedAt": "2026-06-11T19:35:16.056144Z"
+        "updatedAt": "2026-06-11T22:12:26.002489Z"
       },
       "note": "Scheduled sportytrader refresh returned 6 pick(s).",
       "ok": true,
@@ -177,7 +167,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-11T19:35:16.056144Z"
+      "updatedAt": "2026-06-11T22:12:26.002489Z"
     }
   },
   "generatedAt": "2026-06-11T19:50:36.104858Z",
@@ -3610,30 +3600,18 @@
     "sportsgambler": {
       "date": "2026-06-11",
       "errors": [],
-      "generatedAt": "2026-06-11T19:35:16.056144Z",
+      "generatedAt": "2026-06-11T22:12:26.002489Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-11",
         "feed": "sportsgambler",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba",
-        "updatedAt": "2026-06-11T19:35:16.056144Z"
+        "updatedAt": "2026-06-11T22:12:26.002489Z"
       },
-      "note": "Scheduled sportsgambler refresh returned 8 pick(s).",
+      "note": "Scheduled sportsgambler refresh returned 7 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "decision": "BET",
-          "edge": null,
-          "game_start_time": "2026-06-11T19:10Z",
-          "odds": 128,
-          "pick": "Colorado Rockies to Win (Colorado Rockies vs Chicago Cubs)",
-          "probability": null,
-          "source": "SportsGambler",
-          "sport": "MLB",
-          "start_time": "2026-06-11T19:10Z",
-          "units": 1
-        },
         {
           "decision": "BET",
           "edge": null,
@@ -3719,19 +3697,19 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-11T19:35:16.056144Z"
+      "updatedAt": "2026-06-11T22:12:26.002489Z"
     },
     "sportytrader": {
       "date": "2026-06-11",
       "errors": [],
-      "generatedAt": "2026-06-11T19:35:16.056144Z",
+      "generatedAt": "2026-06-11T22:12:26.002489Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-11",
         "feed": "sportytrader",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba",
-        "updatedAt": "2026-06-11T19:35:16.056144Z"
+        "updatedAt": "2026-06-11T22:12:26.002489Z"
       },
       "note": "Scheduled sportytrader refresh returned 6 pick(s).",
       "ok": true,
@@ -3809,7 +3787,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-11T19:35:16.056144Z"
+      "updatedAt": "2026-06-11T22:12:26.002489Z"
     },
     "wnba": {
       "ok": true,
@@ -4273,28 +4251,18 @@
   "sportsgambler": {
     "date": "2026-06-11",
     "errors": [],
-    "generatedAt": "2026-06-11T19:35:16.056144Z",
+    "generatedAt": "2026-06-11T22:12:26.002489Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-11",
       "feed": "sportsgambler",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba",
-      "updatedAt": "2026-06-11T19:35:16.056144Z"
+      "updatedAt": "2026-06-11T22:12:26.002489Z"
     },
-    "note": "Scheduled sportsgambler refresh returned 8 pick(s).",
+    "note": "Scheduled sportsgambler refresh returned 7 pick(s).",
     "ok": true,
     "picks": [
-      {
-        "decision": "BET",
-        "edge": null,
-        "odds": 128,
-        "pick": "Colorado Rockies to Win (Colorado Rockies vs Chicago Cubs)",
-        "probability": null,
-        "source": "SportsGambler",
-        "sport": "MLB",
-        "units": 1
-      },
       {
         "decision": "BET",
         "edge": null,
@@ -4366,19 +4334,19 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-11T19:35:16.056144Z"
+    "updatedAt": "2026-06-11T22:12:26.002489Z"
   },
   "sportytrader": {
     "date": "2026-06-11",
     "errors": [],
-    "generatedAt": "2026-06-11T19:35:16.056144Z",
+    "generatedAt": "2026-06-11T22:12:26.002489Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-11",
       "feed": "sportytrader",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba",
-      "updatedAt": "2026-06-11T19:35:16.056144Z"
+      "updatedAt": "2026-06-11T22:12:26.002489Z"
     },
     "note": "Scheduled sportytrader refresh returned 6 pick(s).",
     "ok": true,
@@ -4444,9 +4412,9 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-11T19:35:16.056144Z"
+    "updatedAt": "2026-06-11T22:12:26.002489Z"
   },
-  "updatedAt": "2026-06-11T19:50:36.104858Z",
+  "updatedAt": "2026-06-11T22:12:26.002489Z",
   "wnba": {
     "ok": true,
     "picks": [
