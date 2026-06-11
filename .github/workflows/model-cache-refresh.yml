@@ -23,6 +23,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: pick-cache-writer
@@ -99,3 +100,9 @@ jobs:
           done
           echo "Unable to publish model cache after retrying latest origin/${BRANCH}."
           exit 1
+
+      - name: Deploy updated model cache
+        if: steps.commit-cache.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy-pages.yml --ref main

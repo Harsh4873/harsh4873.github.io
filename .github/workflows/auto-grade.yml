@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: pick-cache-writer
@@ -53,3 +54,9 @@ jobs:
           git commit -m "chore(grade): update committed pick results"
           git push origin "HEAD:${BRANCH}"
           echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Deploy updated grades
+        if: steps.commit-grades.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy-pages.yml --ref main

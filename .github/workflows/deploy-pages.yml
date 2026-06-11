@@ -49,8 +49,12 @@ jobs:
       - name: Verify styled Pages artifact
         run: |
           grep -q 'rel="stylesheet"' dist/index.html
+          grep -q 'type="module"' dist/index.html
           test -n "$(find dist/assets -maxdepth 1 -name '*.css' -print -quit)"
+          test -n "$(find dist/assets -maxdepth 1 -name '*.js' -print -quit)"
+          ! grep -q 'src/main.ts' dist/index.html
           test -f dist/data/model_cache/index.json
+          python scripts/site_upcheck.py
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

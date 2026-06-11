@@ -21,6 +21,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: pick-cache-writer
@@ -71,3 +72,9 @@ jobs:
           git commit -m "chore(mlb): refresh Cannon daily JSON for ${SLATE}"
           git push
           echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Deploy updated Cannon slate
+        if: steps.commit-cannon.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy-pages.yml --ref main

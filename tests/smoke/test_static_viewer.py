@@ -145,9 +145,13 @@ def test_refresh_timing_and_pages_deploy_are_deterministic():
     assert 'cron: "45 12 * * *"' in model
     assert 'cron: "10,40 14 * * *"' in feeds
     assert 'cron: "55 13 * * *"' in cannon
-    for workflow in (model, feeds, cannon):
-        assert "gh workflow run deploy-pages.yml" not in workflow
+    for workflow in (model, feeds, cannon, grader):
+        assert "gh workflow run deploy-pages.yml --ref main" in workflow
+        assert "actions: write" in workflow
     assert "Verify styled Pages artifact" in deploy
+    assert "find dist/assets -maxdepth 1 -name '*.js'" in deploy
+    assert "! grep -q 'src/main.ts' dist/index.html" in deploy
+    assert "python scripts/site_upcheck.py" in deploy
 
 
 def test_refresh_workflows_commit_as_triggering_actor():
