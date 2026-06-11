@@ -47,6 +47,7 @@ const ESPN_ENDPOINTS: Record<string, [string, string]> = {
 let activeFilter = 'ALL';
 let homeMode: 'pending' | 'all' | 'settled' = 'pending';
 let selectedDate = '';
+let followCentralToday = true;
 let calendarMonth = '';
 let calendarOpen = false;
 let refreshInFlight = false;
@@ -54,6 +55,9 @@ const homeScores = new Map<string, HomeScoreInfo>();
 const homeScoreFetches = new Map<string, number>();
 let homeScoreRefreshKey = '';
 const HOME_SCORE_TTL_MS = 45_000;
+const DISPLAY_TIME_ZONE = 'America/Chicago';
+const AUTO_REFRESH_MS = 5 * 60_000;
+let lastCentralDate = '';
 
 function escapeHtml(value: unknown): string {
   return String(value ?? '')
@@ -64,8 +68,19 @@ function escapeHtml(value: unknown): string {
     .replace(/'/g, '&#039;');
 }
 
-function localDateKey(date = new Date()): string {
+function calendarDateKey(date: Date): string {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+}
+
+function centralDateKey(date = new Date()): string {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: DISPLAY_TIME_ZONE,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(date);
+  const values = Object.fromEntries(parts.map(part => [part.type, part.value]));
+  return `${values.year}-${values.month}-${values.day}`;
 }
 
 function parseDateKey(value: string): Date | null {
@@ -79,7 +94,7 @@ function pickDateKey(pick: Pick): string {
   const raw = String(pick.date || '').trim();
   if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) return raw;
   const parsed = new Date(raw);
-  return Number.isNaN(parsed.getTime()) ? '' : localDateKey(parsed);
+  return Number.isNaN(parsed.getTime()) ? '' : centralDateKey(parsed);
 }
 
 function dateLabel(key: string, long = false): string {
@@ -94,7 +109,7 @@ function formatStart(value: unknown): string {
   const date = new Date(String(value || ''));
   if (Number.isNaN(date.getTime())) return 'TBD';
   return date.toLocaleTimeString('en-US', {
-    timeZone: 'America/Chicago',
+    timeZone: DISPLAY_TIME_ZONE,
     hour: 'numeric',
     minute: '2-digit',
     timeZoneName: 'short',
@@ -168,7 +183,9 @@ function statusClass(picks: Pick[]): string {
 
 function ensureSelection(): void {
   const dates = [...new Set(getAllPicks().map(pickDateKey).filter(Boolean))].sort();
-  if (!dates.includes(selectedDate)) selectedDate = dates.includes(localDateKey()) ? localDateKey() : dates.at(-1) || localDateKey();
+  const today = centralDateKey();
+  if (followCentralToday) selectedDate = today;
+  else if (!dates.includes(selectedDate)) selectedDate = dates.at(-1) || today;
   if (!calendarMonth) calendarMonth = selectedDate.slice(0, 7);
 }
 
@@ -224,9 +241,9 @@ function calendarHtml(): string {
   filteredPicks().forEach(pick => counts.set(pickDateKey(pick), (counts.get(pickDateKey(pick)) || 0) + 1));
   const days = Array.from({ length: 42 }, (_, index) => {
     const date = new Date(gridStart.getFullYear(), gridStart.getMonth(), gridStart.getDate() + index);
-    const key = localDateKey(date);
+    const key = calendarDateKey(date);
     const count = counts.get(key) || 0;
-    return `<button class="home-calendar-day ${date.getMonth() !== monthDate.getMonth() ? 'is-outside' : ''} ${key === localDateKey() ? 'is-today' : ''} ${key === selectedDate ? 'is-selected' : ''} ${count ? 'has-picks' : ''}" data-date="${key}">
+    return `<button class="home-calendar-day ${date.getMonth() !== monthDate.getMonth() ? 'is-outside' : ''} ${key === centralDateKey() ? 'is-today' : ''} ${key === selectedDate ? 'is-selected' : ''} ${count ? 'has-picks' : ''}" data-date="${key}">
       <span class="home-calendar-day-num">${date.getDate()}</span>
       <span class="home-calendar-day-count">${count || '&middot;'}</span>
     </button>`;
@@ -245,6 +262,7 @@ function bindCalendar(): void {
   popover.querySelectorAll<HTMLButtonElement>('[data-date]').forEach(button => {
     button.addEventListener('click', () => {
       selectedDate = button.dataset.date || selectedDate;
+      followCentralToday = selectedDate === centralDateKey();
       calendarMonth = selectedDate.slice(0, 7);
       calendarOpen = false;
       render();
@@ -255,7 +273,7 @@ function bindCalendar(): void {
       event.stopPropagation();
       const current = parseDateKey(`${calendarMonth}-01`) || new Date();
       current.setMonth(current.getMonth() + Number(button.dataset.monthShift || 0));
-      calendarMonth = localDateKey(current).slice(0, 7);
+      calendarMonth = calendarDateKey(current).slice(0, 7);
       render();
     });
   });
@@ -283,7 +301,7 @@ function renderHome(): void {
   if (filterChip) filterChip.textContent = activeFilter === 'ALL' ? 'ALL SOURCES' : activeFilter.toUpperCase();
   if (modeChip) modeChip.textContent = `${homeMode.toUpperCase()} VIEW`;
   if (triggerValue) triggerValue.textContent = dateLabel(selectedDate, true);
-  if (triggerMeta) triggerMeta.textContent = selectedDate === localDateKey() ? 'Today' : `${selectedAll.length} picks`;
+  if (triggerMeta) triggerMeta.textContent = selectedDate === centralDateKey() ? 'Today | CT' : `${selectedAll.length} picks`;
   document.querySelectorAll<HTMLElement>('[data-home-mode]').forEach(button => button.classList.toggle('active', button.dataset.homeMode === homeMode));
 
   const summary = document.getElementById('home-summary-grid');
@@ -431,18 +449,21 @@ function renderSearch(): void {
   const results = document.getElementById('search-results');
   const meta = document.getElementById('search-meta');
   if (!input || !results || !meta) return;
+  ensureSelection();
   const query = input.value.trim().toLowerCase();
+  const pending = getAllPicks().filter(pick => pick.result === 'pending' && pickDateKey(pick) === selectedDate);
+  const scope = `${dateLabel(selectedDate, true)} pending picks (Central time)`;
   if (!query) {
-    meta.textContent = '';
-    results.innerHTML = '<div class="empty-state">Type a team name, matchup, or source to search picks</div>';
+    meta.textContent = `${pending.length} ${scope.toLowerCase()}`;
+    results.innerHTML = '<div class="empty-state">Type a team name, matchup, or source to search pending picks for the selected Home date</div>';
     return;
   }
-  const picks = getAllPicks().filter(pick => [pick.pick, sourceName(pick), pick.sport, pick.date, gameName(pick)].some(value => String(value).toLowerCase().includes(query)));
-  meta.textContent = `${picks.length} result${picks.length === 1 ? '' : 's'} for "${input.value.trim()}"`;
+  const picks = pending.filter(pick => [pick.pick, sourceName(pick), pick.sport, pick.date, gameName(pick)].some(value => String(value).toLowerCase().includes(query)));
+  meta.textContent = `${picks.length} pending result${picks.length === 1 ? '' : 's'} for "${input.value.trim()}" | ${scope}`;
   results.innerHTML = picks.length ? picks.map(pick => `
     <div class="search-card"><div class="search-card-top">${resultBadge(pick.result)}<span class="badge badge-source">${escapeHtml(sourceName(pick))}</span><div class="search-card-pick">${escapeHtml(pick.pick)}</div><div class="search-card-odds">${escapeHtml(formatOdds(pick))}</div></div>
       <div class="search-card-row"><div class="search-card-field"><span class="search-card-field-label">GAME</span><span class="search-card-field-val">${escapeHtml(gameName(pick))}</span></div><div class="search-card-field"><span class="search-card-field-label">DATE</span><span class="search-card-field-val">${escapeHtml(pick.date)}</span></div><div class="search-card-field"><span class="search-card-field-label">P/L</span><span class="search-card-field-val">${signedUnits(pick.pl)}</span></div></div>
-    </div>`).join('') : '<div class="empty-state">No picks match your search</div>';
+    </div>`).join('') : '<div class="empty-state">No pending picks match your search for the selected Home date</div>';
 }
 
 function canonicalTeamForPick(pick: Pick, label: string): string {
@@ -541,7 +562,8 @@ function renderDaily(): void {
   const container = document.getElementById('daily-container');
   if (!container) return;
   const dates = [...new Set(getAllPicks().map(pickDateKey).filter(Boolean))].sort();
-  const key = dates.includes(localDateKey()) ? localDateKey() : dates.at(-1) || localDateKey();
+  const today = centralDateKey();
+  const key = dates.includes(today) ? today : dates.at(-1) || today;
   const picks = getAllPicks().filter(pick => pickDateKey(pick) === key);
   const stats = statsFor(picks);
   const groups = new Map<string, Pick[]>();
@@ -894,6 +916,16 @@ async function refreshAutoGrades(): Promise<void> {
   }
 }
 
+async function refreshForCentralClock(): Promise<void> {
+  const today = centralDateKey();
+  if (today !== lastCentralDate && followCentralToday) {
+    selectedDate = today;
+    calendarMonth = today.slice(0, 7);
+  }
+  lastCentralDate = today;
+  await refreshAutoGrades();
+}
+
 function updateSyncStatus(): void {
   const status = getCacheStatus();
   const syncStatus = document.getElementById('sync-status');
@@ -921,6 +953,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   initMobileMode();
   initSettingsUI();
   await loadAllData();
+  lastCentralDate = centralDateKey();
   updateSyncStatus();
   render();
+  window.setInterval(() => void refreshForCentralClock(), AUTO_REFRESH_MS);
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') void refreshForCentralClock();
+  });
 });

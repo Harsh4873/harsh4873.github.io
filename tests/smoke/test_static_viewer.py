@@ -43,7 +43,11 @@ def test_static_viewer_keeps_public_tabs_and_client_grading():
     assert "site.api.espn.com" in main
     assert "setLocalResult(pick.id" in main
     assert "await loadAllData();" in main
-    assert "timeZone: 'America/Chicago'" in main
+    assert "DISPLAY_TIME_ZONE = 'America/Chicago'" in main
+    assert "function centralDateKey(" in main
+    assert "pick.result === 'pending' && pickDateKey(pick) === selectedDate" in main
+    assert "window.setInterval(() => void refreshForCentralClock(), AUTO_REFRESH_MS)" in main
+    assert "Search pending picks for the selected Home date" in html
     assert "embeddedResult === 'pending' ? localResult : embeddedResult" in data
     assert "function renderRankings()" in main
     assert "function renderSearch()" in main
