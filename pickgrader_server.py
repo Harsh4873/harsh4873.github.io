@@ -3192,6 +3192,7 @@ def _parse_wnba_output(output: str) -> list[dict[str, Any]]:
             "pick": f"{favorite_team} ML ({matchup})",
             "sport": "WNBA",
             "league": "WNBA",
+            "market_type": "h2h",
             "odds": market_pick_odds_value,
             "market_pick_odds": market_pick_odds_value,
             "market_pick_prob": json_payload.get("market_pick_prob"),
@@ -3217,6 +3218,44 @@ def _parse_wnba_output(output: str) -> list[dict[str, Any]]:
             "guardrail_reasons": guardrail_reasons_value,
             "notes": notes,
         })
+        for raw_market_pick in json_payload.get("market_picks") or []:
+            if not isinstance(raw_market_pick, dict):
+                continue
+            market_type = str(raw_market_pick.get("market_type") or "").strip().lower()
+            pick_text = str(raw_market_pick.get("pick") or "").strip()
+            if market_type not in {"spread", "totals"} or not pick_text:
+                continue
+            market_pick = dict(raw_market_pick)
+            market_decision = str(market_pick.get("decision") or "PASS").upper()
+            try:
+                market_units = float(market_pick.get("units") or 0.0)
+            except (TypeError, ValueError):
+                market_units = 0.0
+            if market_decision == "PASS":
+                market_units = 0.0
+            market_pick.update({
+                "source": "WNBA Model",
+                "sport": "WNBA",
+                "league": "WNBA",
+                "market_type": market_type,
+                "decision": market_decision,
+                "units": market_units,
+                "away_team": away_team,
+                "home_team": home_team,
+                "game": matchup,
+                "matchup": matchup,
+                "has_market_price": True,
+                "market_pick_odds": market_pick.get("odds"),
+                "confidence": round(float(market_pick.get("probability") or 0.0) * 100, 1),
+                "confidence_label": (
+                    "High" if market_decision == "BET"
+                    else "Medium" if market_decision == "LEAN"
+                    else "Low"
+                ),
+                "h2h_games": h2h_games_value,
+                "projected_total": projected_total,
+            })
+            picks.append(market_pick)
         seen_matchups.add(matchup)
 
     return picks

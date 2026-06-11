@@ -56,6 +56,8 @@ class MarketOdds:
     total_line: Optional[float]
     fetched_at: Optional[str]
     source: str = "SportsLine"
+    spread_odds: Optional[int] = None
+    total_odds: Optional[int] = None
 
 
 def _db_path() -> Optional[Path]:
@@ -163,24 +165,42 @@ def _lookup_espn_market_odds(
         odds_rows = competition.get("odds") or []
         odds = odds_rows[0] if odds_rows else {}
         moneyline = odds.get("moneyline") or {}
-        home_ml = _moneyline_from_side(moneyline.get("home"))
-        away_ml = _moneyline_from_side(moneyline.get("away"))
-        if home_ml is None and away_ml is None:
-            return None
+        home_team_odds = odds.get("homeTeamOdds") or {}
+        away_team_odds = odds.get("awayTeamOdds") or {}
+        home_ml = _moneyline_from_side(moneyline.get("home")) or _coerce_american(home_team_odds.get("moneyLine"))
+        away_ml = _moneyline_from_side(moneyline.get("away")) or _coerce_american(away_team_odds.get("moneyLine"))
 
         spread = _coerce_float(odds.get("spread"))
         total = _coerce_float(odds.get("overUnder"))
-        home_favorite = bool((odds.get("homeTeamOdds") or {}).get("favorite"))
-        away_favorite = bool((odds.get("awayTeamOdds") or {}).get("favorite"))
+        if home_ml is None and away_ml is None and spread is None and total is None:
+            return None
+
+        home_favorite = bool(home_team_odds.get("favorite"))
+        away_favorite = bool(away_team_odds.get("favorite"))
         spread_home = None
         spread_away = None
         if spread is not None:
+            spread_magnitude = abs(spread)
             if home_favorite:
+                spread_home = -spread_magnitude
+                spread_away = spread_magnitude
+            elif away_favorite:
+                spread_away = -spread_magnitude
+                spread_home = spread_magnitude
+            else:
                 spread_home = spread
                 spread_away = -spread
-            elif away_favorite:
-                spread_away = spread
-                spread_home = -spread
+
+        spread_odds = (
+            _coerce_american(home_team_odds.get("spreadOdds"))
+            or _coerce_american(away_team_odds.get("spreadOdds"))
+            or (-110 if spread is not None else None)
+        )
+        total_odds = (
+            _coerce_american(odds.get("overOdds"))
+            or _coerce_american(odds.get("underOdds"))
+            or (-110 if total is not None else None)
+        )
 
         provider = odds.get("provider") or {}
         provider_name = str(provider.get("displayName") or provider.get("name") or "ESPN odds").strip()
@@ -194,6 +214,8 @@ def _lookup_espn_market_odds(
             total_line=total,
             fetched_at=None,
             source=f"{provider_name} via ESPN",
+            spread_odds=spread_odds,
+            total_odds=total_odds,
         )
     return None
 
@@ -218,7 +240,8 @@ def lookup_market_odds(home_abbr: str, away_abbr: str, date_str: str | None = No
                     cursor.execute(
                         """
                         SELECT home_team, away_team, ml_home, ml_away,
-                               spread_home, spread_away, total_line, fetched_at
+                               spread_home, spread_away, total_line, fetched_at,
+                               spread_odds, total_odds
                           FROM cbs_odds
                          WHERE league = 'WNBA'
                            AND home_team LIKE ?
@@ -239,6 +262,8 @@ def lookup_market_odds(home_abbr: str, away_abbr: str, date_str: str | None = No
                             spread_away=float(row[5]) if row[5] is not None else None,
                             total_line=float(row[6]) if row[6] is not None else None,
                             fetched_at=str(row[7] or ""),
+                            spread_odds=int(row[8]) if row[8] is not None else None,
+                            total_odds=int(row[9]) if row[9] is not None else None,
                         )
         finally:
             conn.close()

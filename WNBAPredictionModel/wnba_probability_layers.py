@@ -39,6 +39,8 @@ WNBA_FORM_ADJ_CAP    = 2.0         # max recent-form points in either direction
 WNBA_H2H_MARGIN_COEF = 0.40        # fraction of avg H2H margin treated as evidence
 WNBA_H2H_ADJ_CAP     = 3.5         # max H2H points in either direction
 WNBA_H2H_BASE_RMSE   = 11.0        # WNBA per-game margin sigma (regular season)
+WNBA_TOTAL_INJURY_SCALE = 8.0      # total-points reduction per combined injury-penalty unit
+WNBA_TOTAL_INJURY_ADJ_CAP = 8.0    # never remove more than 8 points from a game total
 
 
 # ---------------------------------------------------------------------------
@@ -403,7 +405,7 @@ def compute_projected_total(
 
     Preferred formula:
         projected = (home_ORtg + away_ORtg) * blended_pace / 100
-        projected -= (home_inj + away_inj) * WNBA_LEAGUE_AVG_PPG
+        projected -= bounded combined injury adjustment
 
     When either ORtg is missing, fall back to direct points-per-game
     averages so we always emit a usable total (was previously returning
@@ -448,7 +450,11 @@ def compute_projected_total(
         ai = float(away_injury_penalty) if away_injury_penalty is not None else 0.0
     except (TypeError, ValueError):
         hi, ai = 0.0, 0.0
-    projected -= (hi + ai) * WNBA_LEAGUE_AVG_PPG
+    injury_adjustment = min(
+        WNBA_TOTAL_INJURY_ADJ_CAP,
+        max(0.0, hi + ai) * WNBA_TOTAL_INJURY_SCALE,
+    )
+    projected -= injury_adjustment
 
     if projected < 130.0:
         projected = 130.0

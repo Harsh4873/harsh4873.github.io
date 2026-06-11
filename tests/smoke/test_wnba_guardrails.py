@@ -145,6 +145,23 @@ def test_wnba_total_falls_back_to_ppg_when_ortg_missing():
     assert 130.0 <= total <= 185.0
 
 
+def test_wnba_total_injury_adjustment_is_bounded():
+    from WNBAPredictionModel.wnba_probability_layers import compute_projected_total
+
+    home = {"ORtg": 108.0, "Pace": 80.0}
+    away = {"ORtg": 104.0, "Pace": 80.0}
+    baseline = compute_projected_total(home, away)
+    injured = compute_projected_total(
+        home,
+        away,
+        home_injury_penalty=1.0,
+        away_injury_penalty=1.0,
+    )
+
+    assert baseline is not None and injured is not None
+    assert baseline - injured == 8.0
+
+
 def test_wnba_market_vig_removal_and_kelly():
     """Vig-removed two-sided ML should sum to 1.0; Kelly stake scales
     with edge and decimal odds."""
@@ -205,6 +222,126 @@ def test_wnba_compute_edge_uses_market_prob_for_pick_side():
     away = compute_edge_units(False, 0.50, market)
     assert away.edge is not None and away.edge < 0
     assert away.kelly_units == 0.0
+
+
+def test_wnba_espn_market_normalizes_favorite_spread_sign(monkeypatch):
+    from WNBAPredictionModel import wnba_market
+
+    class Response:
+        def raise_for_status(self):
+            return None
+
+        def json(self):
+            return {
+                "events": [{
+                    "competitions": [{
+                        "competitors": [
+                            {"homeAway": "home", "team": {"abbreviation": "IND"}},
+                            {"homeAway": "away", "team": {"abbreviation": "CHI"}},
+                        ],
+                        "odds": [{
+                            "spread": 10.5,
+                            "overUnder": 172.5,
+                            "homeTeamOdds": {
+                                "favorite": True,
+                                "moneyLine": -500,
+                                "spreadOdds": -108,
+                            },
+                            "awayTeamOdds": {
+                                "favorite": False,
+                                "moneyLine": 360,
+                                "spreadOdds": -112,
+                            },
+                        }],
+                    }],
+                }],
+            }
+
+    monkeypatch.setattr(wnba_market.requests, "get", lambda *args, **kwargs: Response())
+
+    market = wnba_market._lookup_espn_market_odds("IND", "CHI", "2026-06-11")
+
+    assert market is not None
+    assert market.spread_home == -10.5
+    assert market.spread_away == 10.5
+    assert market.spread_odds == -108
+    assert market.total_line == 172.5
+    assert market.total_odds == -110
+
+
+def test_wnba_spread_market_selects_cover_side_without_changing_moneyline():
+    from WNBAPredictionModel.wnba_market import MarketOdds
+    from WNBAPredictionModel.wnba_picks import assess_wnba_spread_market
+
+    market = MarketOdds(
+        home_team_nickname="Wings",
+        away_team_nickname="Mercury",
+        home_ml=-150,
+        away_ml=130,
+        spread_home=-8.0,
+        spread_away=8.0,
+        total_line=165.5,
+        fetched_at="2026-06-11T12:00:00Z",
+        spread_odds=-110,
+        total_odds=-110,
+    )
+    stats = {"NRtg": 4.0, "W": 8, "L": 4}
+
+    spread = assess_wnba_spread_market(
+        {"adjusted_margin": 2.0},
+        market,
+        stats,
+        stats,
+        {},
+    )
+
+    assert spread["decision"] == "BET"
+    assert spread["pick_team_is_home"] is False
+    assert spread["market_line"] == 8.0
+    assert spread["model_team_margin"] == -2.0
+    assert spread["cover_margin"] == 6.0
+    assert spread["units"] > 0.0
+
+
+def test_wnba_total_market_uses_stricter_gap_and_sample_guardrails():
+    from WNBAPredictionModel.wnba_market import MarketOdds
+    from WNBAPredictionModel.wnba_picks import assess_wnba_total_market
+
+    market = MarketOdds(
+        home_team_nickname="Wings",
+        away_team_nickname="Mercury",
+        home_ml=-150,
+        away_ml=130,
+        spread_home=-3.5,
+        spread_away=3.5,
+        total_line=165.5,
+        fetched_at="2026-06-11T12:00:00Z",
+        total_odds=-110,
+    )
+    established = {"NRtg": 4.0, "W": 8, "L": 4}
+    thin = {"NRtg": 4.0, "W": 1, "L": 1}
+
+    bet = assess_wnba_total_market(
+        {"projected_total": 155.0},
+        market,
+        established,
+        established,
+        {},
+    )
+    passed = assess_wnba_total_market(
+        {"projected_total": 155.0},
+        market,
+        thin,
+        thin,
+        {},
+    )
+
+    assert bet["direction"] == "Under"
+    assert bet["decision"] == "LEAN"
+    assert bet["units"] > 0.0
+    assert any("capped at LEAN" in reason for reason in bet["reasons"])
+    assert passed["decision"] == "PASS"
+    assert passed["units"] == 0.0
 
 
 def test_wnba_decision_uses_real_edge_when_market_present():
@@ -433,6 +570,72 @@ def test_wnba_generator_keeps_pass_games_visible(monkeypatch):
     assert "Minnesota Lynx @ Dallas Wings" in picks[0]["output_line"]
 
 
+def test_wnba_generator_attaches_gradeable_spread_and_total_rows(monkeypatch):
+    from WNBAPredictionModel import wnba_picks
+    from WNBAPredictionModel.wnba_market import MarketOdds
+    from WNBAPredictionModel.wnba_schedule import WNBAGame
+
+    monkeypatch.setattr(
+        wnba_picks,
+        "get_todays_wnba_games",
+        lambda date_str=None: [
+            WNBAGame(
+                bdl_game_id=None,
+                espn_game_id="401000002",
+                home_abbr="DAL",
+                away_abbr="PHX",
+                date_str="2026-06-11",
+                start_time="20:00 ET",
+                status="scheduled",
+            )
+        ],
+    )
+    monkeypatch.setattr(wnba_picks, "get_all_team_stats", lambda: {})
+    monkeypatch.setattr(wnba_picks, "get_injury_report", lambda: {})
+    monkeypatch.setattr(
+        wnba_picks,
+        "get_team_stats",
+        lambda abbr: {"NRtg": 4.0 if abbr == "DAL" else 0.0, "W": 8, "L": 4},
+    )
+    monkeypatch.setattr(wnba_picks, "build_game_context", lambda game: {})
+    monkeypatch.setattr(
+        wnba_picks,
+        "calculate_wnba_matchup",
+        lambda home, away, home_stats, away_stats, context: {
+            "home_abbr": home,
+            "away_abbr": away,
+            "win_prob": 0.72,
+            "adjusted_margin": 8.0,
+            "projected_total": 150.0,
+            "data_quality": "full",
+        },
+    )
+    monkeypatch.setattr(
+        wnba_picks,
+        "lookup_market_odds",
+        lambda *args, **kwargs: MarketOdds(
+            home_team_nickname="Wings",
+            away_team_nickname="Mercury",
+            home_ml=-150,
+            away_ml=130,
+            spread_home=-3.5,
+            spread_away=3.5,
+            total_line=160.0,
+            fetched_at="2026-06-11T12:00:00Z",
+            spread_odds=-110,
+            total_odds=-110,
+        ),
+    )
+
+    picks = wnba_picks.generate_wnba_picks(echo=False, date_str="2026-06-11")
+
+    assert len(picks) == 1
+    assert picks[0]["decision"] == "BET"
+    assert {pick["market_type"] for pick in picks[0]["market_picks"]} == {"spread", "totals"}
+    assert picks[0]["market_picks"][0]["pick"].startswith("Dallas Wings -3.5")
+    assert picks[0]["market_picks"][1]["pick"].startswith("Under 160.0")
+
+
 def test_wnba_parser_normalizes_short_teams_for_grading():
     from pickgrader_server import _parse_wnba_output
 
@@ -450,6 +653,54 @@ def test_wnba_parser_normalizes_short_teams_for_grading():
     assert picks[0]["home_team"] == "Dallas Wings"
     assert picks[0]["decision"] == "PASS"
     assert picks[0]["units"] == 0.0
+
+
+def test_wnba_parser_expands_structured_spread_and_total_rows():
+    import json
+
+    from pickgrader_server import _parse_wnba_output
+
+    payload = {
+        "home": "DAL",
+        "away": "PHX",
+        "decision": "BET",
+        "units": 0.2,
+        "market_picks": [
+            {
+                "pick": "Dallas Wings -3.5 (Phoenix Mercury @ Dallas Wings)",
+                "market_type": "spread",
+                "selection": "Dallas Wings",
+                "odds": -110,
+                "line": -3.5,
+                "probability": 0.62,
+                "edge": 9.6,
+                "decision": "BET",
+                "units": 0.03,
+            },
+            {
+                "pick": "Under 160.0 (Phoenix Mercury vs Dallas Wings)",
+                "market_type": "totals",
+                "selection": "Under",
+                "odds": -110,
+                "line": 160.0,
+                "probability": 0.61,
+                "edge": 8.6,
+                "decision": "LEAN",
+                "units": 0.02,
+            },
+        ],
+    }
+    output = "\n".join([
+        "WNBA | PHX @ DAL | Home Win 72.0% | Proj Margin: DAL +8.0 | Total: 150.0 | Conf: High",
+        f"PICK_JSON: {json.dumps(payload)}",
+    ])
+
+    picks = _parse_wnba_output(output)
+
+    assert [pick["market_type"] for pick in picks] == ["h2h", "spread", "totals"]
+    assert picks[1]["pick"] == "Dallas Wings -3.5 (Phoenix Mercury @ Dallas Wings)"
+    assert picks[2]["decision"] == "LEAN"
+    assert picks[2]["units"] == 0.02
 
 
 def test_wnba_schedule_imports_without_local_config(monkeypatch):

@@ -12,6 +12,7 @@ imported modules, which own their own caches and rate-limiting.
 from __future__ import annotations
 
 import datetime
+import math
 
 try:
     from .wnba_probability_layers import calculate_wnba_matchup
@@ -34,8 +35,10 @@ try:
     from .wnba_market import (
         EdgeAssessment,
         MarketOdds,
+        american_to_implied,
         compute_edge_units,
         lookup_market_odds,
+        quarter_kelly_units,
     )
     from .wnba_teams import get_team_by_abbr
 except ImportError:
@@ -59,8 +62,10 @@ except ImportError:
     from wnba_market import (
         EdgeAssessment,
         MarketOdds,
+        american_to_implied,
         compute_edge_units,
         lookup_market_odds,
+        quarter_kelly_units,
     )
     from wnba_teams import get_team_by_abbr
 
@@ -296,6 +301,12 @@ def _team_full_name(team_abbr: str) -> str:
 
 MARKET_EDGE_BET_THRESHOLD = 0.030   # 3% vig-removed edge required for BET
 MARKET_EDGE_LEAN_THRESHOLD = 0.015  # 1.5% edge qualifies for LEAN
+WNBA_SPREAD_RMSE = 11.0
+WNBA_TOTAL_RMSE = 13.0
+WNBA_SPREAD_BET_EDGE = 0.050
+WNBA_SPREAD_LEAN_EDGE = 0.030
+WNBA_TOTAL_BET_EDGE = 0.050
+WNBA_TOTAL_LEAN_EDGE = 0.030
 
 def _units_for_conviction(
     decision: str,
@@ -493,6 +504,163 @@ def assess_spread_edge(
     }
 
 
+def _normal_cdf(value: float) -> float:
+    return 0.5 * (1.0 + math.erf(value / math.sqrt(2.0)))
+
+
+def _lineup_for_side(context: dict | None, pick_team_is_home: bool) -> "LineupQuality | None":
+    context = context or {}
+    key = "home_lineup_quality" if pick_team_is_home else "away_lineup_quality"
+    lineup = context.get(key)
+    return lineup if isinstance(lineup, LineupQuality) else None
+
+
+def assess_wnba_spread_market(
+    result: dict,
+    market: "MarketOdds | None",
+    home_stats: dict | None = None,
+    away_stats: dict | None = None,
+    context: dict | None = None,
+) -> dict:
+    """Grade the best WNBA spread side without changing the ML decision path."""
+    reasons: list[str] = []
+    if market is None or market.spread_home is None or market.spread_away is None:
+        return {"available": False, "decision": "PASS", "units": 0.0, "reasons": ["spread line unavailable"]}
+    try:
+        home_margin = float(result.get("adjusted_margin"))
+    except (AttributeError, TypeError, ValueError):
+        return {"available": True, "decision": "PASS", "units": 0.0, "reasons": ["model margin unavailable"]}
+
+    home_cover_margin = home_margin + float(market.spread_home)
+    away_cover_margin = -home_margin + float(market.spread_away)
+    pick_team_is_home = home_cover_margin >= away_cover_margin
+    cover_margin = home_cover_margin if pick_team_is_home else away_cover_margin
+    market_line = float(market.spread_home if pick_team_is_home else market.spread_away)
+    odds = int(market.spread_odds or -110)
+    probability = _normal_cdf(cover_margin / WNBA_SPREAD_RMSE)
+    implied = american_to_implied(odds)
+    edge = probability - implied
+
+    has_full_baseline = _has_rating_baseline(home_stats) and _has_rating_baseline(away_stats)
+    min_games = min(_games_sample(home_stats), _games_sample(away_stats))
+    if not has_full_baseline:
+        reasons.append("spread requires two-team NRtg baseline")
+    if min_games < 3:
+        reasons.append(f"thin completed-game sample ({min_games})")
+    if cover_margin < 1.5:
+        reasons.append("model-to-line cover margin below 1.5 points")
+
+    decision = "PASS"
+    if has_full_baseline and min_games >= 3:
+        if cover_margin >= 2.5 and edge >= WNBA_SPREAD_BET_EDGE:
+            decision = "BET"
+        elif cover_margin >= 1.5 and edge >= WNBA_SPREAD_LEAN_EDGE:
+            decision = "LEAN"
+
+    lineup = _lineup_for_side(context, pick_team_is_home)
+    starters_out = list(lineup.starters_out) if lineup else []
+    starters_questionable = list(lineup.starters_questionable) if lineup else []
+    if starters_out and decision == "BET":
+        decision = "LEAN"
+        reasons.append("picked side has a key starter out; spread capped at LEAN")
+    if len(starters_out) >= 2:
+        decision = "PASS"
+        reasons.append("picked side has two or more key starters out")
+
+    units = quarter_kelly_units(edge, odds, cap=1.0) if decision != "PASS" else 0.0
+    if decision == "LEAN":
+        units = round(units * 0.6, 2)
+    if starters_questionable and units:
+        units = round(units * 0.85, 2)
+
+    return {
+        "available": True,
+        "decision": decision,
+        "units": units,
+        "pick_team_is_home": pick_team_is_home,
+        "market_line": market_line,
+        "odds": odds,
+        "cover_margin": round(cover_margin, 2),
+        "probability": round(probability, 4),
+        "market_implied_probability": round(implied, 4),
+        "edge": round(edge, 4),
+        "model_team_margin": round(home_margin if pick_team_is_home else -home_margin, 2),
+        "starters_out": starters_out,
+        "starters_questionable": starters_questionable,
+        "reasons": reasons,
+    }
+
+
+def assess_wnba_total_market(
+    result: dict,
+    market: "MarketOdds | None",
+    home_stats: dict | None = None,
+    away_stats: dict | None = None,
+    context: dict | None = None,
+) -> dict:
+    """Grade WNBA totals conservatively while the total model builds a record."""
+    reasons: list[str] = []
+    if market is None or market.total_line is None:
+        return {"available": False, "decision": "PASS", "units": 0.0, "reasons": ["total line unavailable"]}
+    try:
+        projected_total = float(result.get("projected_total"))
+        market_line = float(market.total_line)
+    except (AttributeError, TypeError, ValueError):
+        return {"available": True, "decision": "PASS", "units": 0.0, "reasons": ["projected total unavailable"]}
+
+    difference = projected_total - market_line
+    direction = "Over" if difference >= 0 else "Under"
+    gap = abs(difference)
+    odds = int(market.total_odds or -110)
+    probability = _normal_cdf(gap / WNBA_TOTAL_RMSE)
+    implied = american_to_implied(odds)
+    edge = probability - implied
+    has_full_baseline = _has_rating_baseline(home_stats) and _has_rating_baseline(away_stats)
+    min_games = min(_games_sample(home_stats), _games_sample(away_stats))
+
+    if not has_full_baseline:
+        reasons.append("total requires two-team NRtg baseline")
+    if min_games < 3:
+        reasons.append(f"thin completed-game sample ({min_games})")
+    if gap < 5.0:
+        reasons.append("model-to-line total gap below 5 points")
+
+    decision = "PASS"
+    if has_full_baseline and min_games >= 3 and gap >= 5.0 and edge >= WNBA_TOTAL_LEAN_EDGE:
+        decision = "LEAN"
+        if gap >= 7.0 and min_games >= 5 and edge >= WNBA_TOTAL_BET_EDGE:
+            reasons.append("new totals market capped at LEAN while its live record is established")
+
+    context = context or {}
+    lineups = [
+        lineup
+        for lineup in (context.get("home_lineup_quality"), context.get("away_lineup_quality"))
+        if isinstance(lineup, LineupQuality)
+    ]
+    questionable = [name for lineup in lineups for name in lineup.starters_questionable]
+    if questionable and decision != "PASS":
+        reasons.append("questionable starter uncertainty")
+
+    units = quarter_kelly_units(edge, odds, cap=0.75) if decision != "PASS" else 0.0
+    if decision == "LEAN":
+        units = round(units * 0.6, 2)
+
+    return {
+        "available": True,
+        "decision": decision,
+        "units": units,
+        "direction": direction,
+        "market_line": market_line,
+        "odds": odds,
+        "gap": round(gap, 2),
+        "probability": round(probability, 4),
+        "market_implied_probability": round(implied, 4),
+        "edge": round(edge, 4),
+        "projected_total": round(projected_total, 1),
+        "reasons": reasons,
+    }
+
+
 # ---------------------------------------------------------------------------
 # Section 4 — Output Formatter
 # ---------------------------------------------------------------------------
@@ -612,16 +780,17 @@ def generate_wnba_picks(
             home_abbr, away_abbr, home_stats, away_stats, context
         )
 
-        market_total = (
-            market_totals.get(game.espn_game_id) if market_totals else None
-        )
-
         # Picked side determines which moneyline price + lineup snapshot
         # the edge math operates on.
         pick_team_is_home = float(result.get("win_prob", 0.5)) >= 0.5
         pick_team_abbr = home_abbr if pick_team_is_home else away_abbr
         pick_team_name = home_name if pick_team_is_home else away_name
         market_odds = lookup_market_odds(home_abbr, away_abbr, date_str=game.date_str)
+        market_total = (
+            market_totals.get(game.espn_game_id) if market_totals else None
+        )
+        if market_total is None and market_odds is not None:
+            market_total = market_odds.total_line
         pick_team_lineup = (
             context.get("home_lineup_quality") if pick_team_is_home else context.get("away_lineup_quality")
         )
@@ -647,10 +816,25 @@ def generate_wnba_picks(
         )
         result["confidence_label"] = guardrail["confidence_label"]
 
-        spread_pick = guardrail["decision"] != "PASS"
-        totals_pick = should_generate_totals_pick(result, market_total)
+        spread_market = assess_wnba_spread_market(
+            result,
+            market_odds,
+            home_stats,
+            away_stats,
+            context,
+        )
+        total_market = assess_wnba_total_market(
+            result,
+            market_odds,
+            home_stats,
+            away_stats,
+            context,
+        )
+        moneyline_pick = guardrail["decision"] != "PASS"
+        spread_pick = spread_market["decision"] != "PASS"
+        totals_pick = total_market["decision"] != "PASS"
 
-        if not spread_pick and not totals_pick:
+        if not moneyline_pick and not spread_pick and not totals_pick:
             if echo:
                 reasons = "; ".join(guardrail["reasons"]) or "edge below threshold"
                 print(
@@ -663,6 +847,55 @@ def generate_wnba_picks(
             confidence_label=guardrail["confidence_label"],
         )
         matchup = f"{away_name} @ {home_name}"
+        market_picks: list[dict] = []
+        if spread_market.get("available"):
+            spread_team_is_home = bool(spread_market.get("pick_team_is_home"))
+            spread_team = home_name if spread_team_is_home else away_name
+            spread_line = float(spread_market["market_line"])
+            market_picks.append({
+                "pick": f"{spread_team} {spread_line:+.1f} ({matchup})",
+                "market_type": "spread",
+                "selection": spread_team,
+                "team": spread_team,
+                "odds": spread_market["odds"],
+                "line": spread_line,
+                "market_line": spread_line,
+                "vegas": spread_line,
+                "model_prediction": spread_market["model_team_margin"],
+                "cover_margin": spread_market["cover_margin"],
+                "probability": spread_market["probability"],
+                "edge": round(float(spread_market["edge"]) * 100.0, 2),
+                "market_edge": spread_market["edge"],
+                "market_pick_prob": spread_market["market_implied_probability"],
+                "decision": spread_market["decision"],
+                "units": spread_market["units"],
+                "market_source": market_odds.source if market_odds else None,
+                "guardrail_reasons": spread_market["reasons"],
+                "starters_out": spread_market["starters_out"],
+                "starters_questionable": spread_market["starters_questionable"],
+            })
+        if total_market.get("available"):
+            total_line = float(total_market["market_line"])
+            direction = str(total_market["direction"])
+            market_picks.append({
+                "pick": f"{direction} {total_line:.1f} ({away_name} vs {home_name})",
+                "market_type": "totals",
+                "selection": direction,
+                "odds": total_market["odds"],
+                "line": total_line,
+                "market_line": total_line,
+                "vegas": total_line,
+                "model_prediction": total_market["projected_total"],
+                "projected_total": total_market["projected_total"],
+                "probability": total_market["probability"],
+                "edge": round(float(total_market["edge"]) * 100.0, 2),
+                "market_edge": total_market["edge"],
+                "market_pick_prob": total_market["market_implied_probability"],
+                "decision": total_market["decision"],
+                "units": total_market["units"],
+                "market_source": market_odds.source if market_odds else None,
+                "guardrail_reasons": total_market["reasons"],
+            })
         pick = {
             "league": "WNBA",
             "home": home_name,
@@ -685,6 +918,8 @@ def generate_wnba_picks(
             "market_edge": guardrail.get("market_edge"),
             "has_market_price": guardrail.get("has_market_price", False),
             "market_source": market_odds.source if market_odds else None,
+            "market_picks": market_picks,
+            "moneyline_pick": moneyline_pick,
             "spread_pick": spread_pick,
             "totals_pick": totals_pick,
             "decision": guardrail["decision"],
