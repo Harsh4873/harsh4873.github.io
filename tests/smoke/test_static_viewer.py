@@ -69,6 +69,29 @@ def test_rich_static_viewer_restores_consensus_table_and_scores():
     assert "Open ESPN box score" in main
 
 
+def test_daily_tab_is_a_betting_tldr_not_a_duplicate_slate():
+    main = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
+    css = (ROOT / "src" / "styles" / "pickledger.css").read_text(encoding="utf-8")
+
+    for section in (
+        "Best Bets: Model Greenlights",
+        "Success Zone: Highest Probability",
+        "Best Bets From Hot Models",
+        "Consensus Zone",
+        "Value Zone",
+        "Research Queue",
+    ):
+        assert section in main
+    assert "PRICEY FAVORITE" in main
+    assert "function dailySourceForms(" in main
+    assert "function dailyPickScore(" in main
+    assert "function dailyConsensusCards(" in main
+    assert ".daily-bet-card" in css
+    assert ".daily-model-card" in css
+    assert ".daily-consensus-card" in css
+    assert "daily-slate-grid" not in main
+
+
 def test_cache_manifest_lists_committed_dated_payloads():
     manifest = json.loads((ROOT / "data" / "model_cache" / "index.json").read_text(encoding="utf-8"))
     files = manifest["files"]

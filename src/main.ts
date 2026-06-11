@@ -37,6 +37,15 @@ type TrendSignalGroup = {
   pass: boolean;
 };
 
+type DailySourceForm = {
+  source: string;
+  recentStats: Stats;
+  lastStats: Stats;
+  recentDates: string[];
+  todayBets: Pick[];
+  score: number;
+};
+
 const ESPN_ENDPOINTS: Record<string, [string, string]> = {
   MLB: ['baseball', 'mlb'],
   NBA: ['basketball', 'nba'],
@@ -558,6 +567,102 @@ function renderTrends(): void {
     ${consensus.length ? `<div class="trend-board">${consensus.map(game => `<div class="trend-game-card ${game.split ? 'split' : ''}"><div class="trend-game-head"><div><div class="trend-game-name">${escapeHtml(gameName(game.picks[0]))}</div><div class="trend-game-meta">${escapeHtml(game.picks[0].sport)} | ${escapeHtml(dateLabel(pickDateKey(game.picks[0])))}</div></div><div class="trend-strength-pill ${game.matching ? 'strong' : game.split ? 'split' : 'lean'}">${game.matching ? `${game.matching} MATCHING` : game.split ? 'MIXED SIGNALS' : 'LEAN'}</div></div>${game.signals.map(renderTrendSignal).join('')}</div>`).join('')}</div>` : '<div class="empty-state">No pending trends for this slate.</div>'}`;
 }
 
+function pickProbability(pick: Pick): number | null {
+  if (pick.probability == null) return null;
+  const raw = Number(pick.probability);
+  if (!Number.isFinite(raw)) return null;
+  const probability = raw > 1 ? raw / 100 : raw;
+  return probability >= 0 && probability <= 1 ? probability : null;
+}
+
+function pickEdgePercent(pick: Pick): number | null {
+  if (pick.market_edge == null && pick.edge == null) return null;
+  const raw = Number(pick.market_edge ?? pick.edge);
+  if (!Number.isFinite(raw)) return null;
+  return Math.abs(raw) <= 1 ? raw * 100 : raw;
+}
+
+function dailyDecision(pick: Pick): string {
+  return String(pick.decision || 'WATCH').trim().toUpperCase();
+}
+
+function dailySourceForms(date: string, todaysPicks: Pick[]): DailySourceForm[] {
+  const historical = getAllPicks().filter(pick => pickDateKey(pick) < date);
+  const recentDates = [...new Set(historical.map(pickDateKey).filter(Boolean))].sort().slice(-3);
+  const lastDate = recentDates.at(-1) || '';
+  const sources = new Set(todaysPicks.map(sourceName));
+  return [...sources].map(source => {
+    const recent = historical.filter(pick => sourceName(pick) === source && recentDates.includes(pickDateKey(pick)) && pick.result !== 'pending');
+    const last = recent.filter(pick => pickDateKey(pick) === lastDate);
+    const recentStats = statsFor(recent);
+    const lastStats = statsFor(last);
+    const todayBets = todaysPicks.filter(pick => sourceName(pick) === source && pick.result === 'pending' && dailyDecision(pick) === 'BET');
+    const score = (recentStats.winRate || 0) * 100 + Math.min(recentStats.wins + recentStats.losses, 20) * 0.35 + recentStats.net * 0.08;
+    return { source, recentStats, lastStats, recentDates, todayBets, score };
+  }).filter(form => form.recentStats.wins + form.recentStats.losses >= 3)
+    .sort((a, b) => b.score - a.score);
+}
+
+function dailyPickScore(pick: Pick, forms: Map<string, DailySourceForm>): number {
+  const probability = pickProbability(pick);
+  const edge = pickEdgePercent(pick);
+  const sourceRate = forms.get(sourceName(pick))?.recentStats.winRate;
+  return (probability == null ? 45 : probability * 100)
+    + Math.max(-10, Math.min(25, edge || 0)) * 0.65
+    + (sourceRate == null ? 0 : (sourceRate - 0.5) * 30)
+    + (dailyDecision(pick) === 'BET' ? 8 : dailyDecision(pick) === 'LEAN' ? 2 : 0);
+}
+
+function dailyPickCard(pick: Pick, note: string): string {
+  const probability = pickProbability(pick);
+  const edge = pickEdgePercent(pick);
+  const decision = dailyDecision(pick);
+  const pricey = pick.odds != null && pick.odds <= -300;
+  const metric = probability != null
+    ? `${(probability * 100).toFixed(1)}%`
+    : edge != null ? `${edge >= 0 ? '+' : ''}${edge.toFixed(1)}%` : formatOdds(pick) || 'TRACK';
+  const metricLabel = probability != null ? 'MODEL WIN PROB' : edge != null ? 'MODEL EDGE' : 'MARKET PRICE';
+  return `<article class="daily-bet-card decision-${decision.toLowerCase()} ${pricey ? 'is-pricey' : ''}">
+    <div class="daily-bet-top"><div><div class="daily-bet-source">${escapeHtml(sourceName(pick))} | ${escapeHtml(pick.sport)}</div><div class="daily-bet-pick">${escapeHtml(pick.pick)}</div></div><div class="daily-bet-score"><strong>${escapeHtml(metric)}</strong><span>${metricLabel}</span></div></div>
+    <div class="daily-bet-game">${escapeHtml(gameName(pick))} | ${escapeHtml(formatStart(pick.start_time))}</div>
+    <div class="daily-bet-tags"><span class="daily-decision-tag ${decision.toLowerCase()}">${escapeHtml(decision)}</span>${formatOdds(pick) ? `<span>${escapeHtml(formatOdds(pick))}</span>` : ''}${edge != null ? `<span>${edge >= 0 ? '+' : ''}${edge.toFixed(1)}% edge</span>` : ''}${pricey ? '<span class="pricey">PRICEY FAVORITE</span>' : ''}</div>
+    <div class="daily-bet-note">${escapeHtml(note)}</div>
+  </article>`;
+}
+
+function dailySection(title: string, subtitle: string, body: string): string {
+  return `<section class="daily-zone"><div class="daily-section-head"><div class="daily-section-title">${escapeHtml(title)}</div><div class="daily-section-sub">${escapeHtml(subtitle)}</div></div>${body}</section>`;
+}
+
+function dailyPickGrid(picks: Pick[], note: (pick: Pick) => string): string {
+  if (!picks.length) return '<div class="daily-empty"><div class="daily-empty-title">Nothing qualifies yet</div><div class="daily-empty-sub">This zone will populate when the committed models meet its rules.</div></div>';
+  return `<div class="daily-bet-grid">${picks.map(pick => dailyPickCard(pick, note(pick))).join('')}</div>`;
+}
+
+function dailyHotModelCard(form: DailySourceForm): string {
+  const recentDecided = form.recentStats.wins + form.recentStats.losses;
+  const lastDecided = form.lastStats.wins + form.lastStats.losses;
+  const todays = form.todayBets.slice(0, 3);
+  return `<article class="daily-model-card">
+    <div class="daily-model-head"><div><div class="daily-model-kicker">HOT SOURCE</div><div class="daily-model-name">${escapeHtml(form.source)}</div></div><div class="daily-model-rate">${form.recentStats.winRate == null ? '—' : `${(form.recentStats.winRate * 100).toFixed(0)}%`}</div></div>
+    <div class="daily-model-records"><span>Last ${form.recentDates.length} slates: ${form.recentStats.wins}-${form.recentStats.losses}${form.recentStats.pushes ? `-${form.recentStats.pushes}` : ''}</span><span>Last slate: ${lastDecided ? `${form.lastStats.wins}-${form.lastStats.losses}${form.lastStats.pushes ? `-${form.lastStats.pushes}` : ''}` : 'No decisions'}</span></div>
+    <div class="daily-model-picks">${todays.length ? todays.map(pick => `<div><strong>${escapeHtml(pick.pick)}</strong><span>${escapeHtml([formatOdds(pick), pickProbability(pick) == null ? '' : `${(pickProbability(pick)! * 100).toFixed(1)}%`].filter(Boolean).join(' | '))}</span></div>`).join('') : '<div><strong>No BET call today</strong><span>Recent form is hot, but the model is sitting out.</span></div>'}</div>
+    <div class="daily-model-foot">${recentDecided} recent decisions | ${signedUnits(form.recentStats.net)}</div>
+  </article>`;
+}
+
+function dailyConsensusCards(picks: Pick[]): string {
+  const games = new Map<string, Pick[]>();
+  picks.forEach(pick => games.set(gameKey(pick), [...(games.get(gameKey(pick)) || []), pick]));
+  const matching = [...games.values()].flatMap(gamePicks => trendSignalGroups(gamePicks)
+    .filter(signal => signal.matching)
+    .map(signal => ({ signal, game: gamePicks[0] })))
+    .sort((a, b) => b.signal.picks.length - a.signal.picks.length)
+    .slice(0, 6);
+  if (!matching.length) return '<div class="daily-empty"><div class="daily-empty-title">No true consensus yet</div><div class="daily-empty-sub">Two independent sources must make the same market selection.</div></div>';
+  return `<div class="daily-consensus-grid">${matching.map(({ signal, game }) => `<article class="daily-consensus-card"><div class="daily-consensus-count">${new Set(signal.picks.map(sourceName)).size} SOURCES</div><div class="daily-consensus-pick">${escapeHtml(signal.label)}</div><div class="daily-consensus-game">${escapeHtml(gameName(game))}</div><div class="trend-source-row">${[...new Set(signal.picks.map(sourceName))].map(source => `<span class="trend-source-pill">${escapeHtml(source)}</span>`).join('')}</div></article>`).join('')}</div>`;
+}
+
 function renderDaily(): void {
   const container = document.getElementById('daily-container');
   if (!container) return;
@@ -566,12 +671,40 @@ function renderDaily(): void {
   const key = dates.includes(today) ? today : dates.at(-1) || today;
   const picks = getAllPicks().filter(pick => pickDateKey(pick) === key);
   const stats = statsFor(picks);
-  const groups = new Map<string, Pick[]>();
-  picks.forEach(pick => groups.set(gameKey(pick), [...(groups.get(gameKey(pick)) || []), pick]));
-  container.innerHTML = `<div class="daily-hero"><div class="daily-hero-row"><div><div class="daily-eyebrow">LATEST COMMITTED SLATE</div><div class="daily-title">${escapeHtml(dateLabel(key, true))}</div><div class="daily-sub">Automated picks and grades from repository JSON.</div></div><div class="daily-clock-wrap"><div class="daily-clock-label">CACHE DATE</div><div class="daily-clock">${escapeHtml(key)}</div></div></div>
-    <div class="daily-stats-strip">${[[stats.total, 'Picks'], [stats.pending, 'Pending'], [`${stats.wins}-${stats.losses}`, 'Record'], [signedUnits(stats.net), 'Net Units'], [groups.size, 'Matchups']].map(([value, label]) => `<div class="daily-stat"><div class="daily-stat-val">${escapeHtml(value)}</div><div class="daily-stat-label">${label}</div></div>`).join('')}</div></div>
-    <div class="daily-section-head"><div class="daily-section-title">Slate</div><div class="daily-section-sub">${groups.size} matchup${groups.size === 1 ? '' : 's'}</div></div>
-    <div class="daily-slate-grid">${[...groups.values()].map(picksInGame => `<div class="daily-slate-card decided-${statusClass(picksInGame)}"><div class="daily-slate-head"><div><div class="daily-slate-game">${escapeHtml(gameName(picksInGame[0]))}</div><div class="daily-slate-meta">${escapeHtml(picksInGame[0].sport)} | ${picksInGame.length} picks</div></div><span class="daily-slate-badge ${statusClass(picksInGame)}">${statusClass(picksInGame).toUpperCase()}</span></div><div class="daily-slate-picks">${picksInGame.map(pick => `<div class="daily-slate-pick result-${pick.result}"><span class="daily-slate-source">${escapeHtml(sourceName(pick))}</span><span class="daily-slate-text">${escapeHtml(pick.pick)}</span><span class="daily-slate-odds">${escapeHtml(formatOdds(pick))}</span><span class="daily-slate-result ${pick.result}">${pick.result.toUpperCase()}</span></div>`).join('')}</div></div>`).join('')}</div>`;
+  const pending = picks.filter(pick => pick.result === 'pending');
+  const forms = dailySourceForms(key, picks);
+  const formsBySource = new Map(forms.map(form => [form.source, form]));
+  const ranked = (candidates: Pick[]) => [...candidates].sort((a, b) => dailyPickScore(b, formsBySource) - dailyPickScore(a, formsBySource));
+  const modelBets = ranked(pending.filter(pick => dailyDecision(pick) === 'BET')).slice(0, 8);
+  const probabilityLeaders = [...pending].filter(pick => pickProbability(pick) != null)
+    .sort((a, b) => (pickProbability(b) || 0) - (pickProbability(a) || 0)).slice(0, 8);
+  const valueZone = ranked(pending.filter(pick => dailyDecision(pick) === 'BET' && ((pick.odds || 0) > 0 || (pickEdgePercent(pick) || 0) >= 10))).slice(0, 6);
+  const researchQueue = [...pending].filter(pick => (
+    (pickProbability(pick) || 0) >= 0.6 && dailyDecision(pick) !== 'BET'
+  ) || (pick.odds != null && pick.odds <= -300)).sort((a, b) => (pickProbability(b) || 0) - (pickProbability(a) || 0)).slice(0, 6);
+  const priceyCount = pending.filter(pick => pick.odds != null && pick.odds <= -300).length;
+  const consensusCount = (() => {
+    const games = new Map<string, Pick[]>();
+    pending.forEach(pick => games.set(gameKey(pick), [...(games.get(gameKey(pick)) || []), pick]));
+    return [...games.values()].reduce((total, gamePicks) => total + trendSignalGroups(gamePicks).filter(signal => signal.matching).length, 0);
+  })();
+
+  container.innerHTML = `<div class="daily-hero"><div class="daily-hero-row"><div><div class="daily-eyebrow">TODAY'S BETTING TLDR</div><div class="daily-title">The Shortlist</div><div class="daily-sub">${escapeHtml(dateLabel(key, true))} | Probability is not the same as value. Prices, edges, recent form, and consensus are labeled separately.</div></div><div class="daily-clock-wrap"><div class="daily-clock-label">SLATE DATE</div><div class="daily-clock">${escapeHtml(key)}</div></div></div>
+    <div class="daily-stats-strip">${[[modelBets.length, 'Model Greenlights'], [probabilityLeaders.length, 'Probability Leaders'], [consensusCount, 'Consensus Signals'], [forms.filter(form => form.todayBets.length).length, 'Hot Models Betting'], [priceyCount, 'Pricey Favorites']].map(([value, label]) => `<div class="daily-stat"><div class="daily-stat-val">${escapeHtml(value)}</div><div class="daily-stat-label">${label}</div></div>`).join('')}</div></div>
+    ${dailySection('Best Bets: Model Greenlights', 'BET calls ranked by probability, edge, and recent source form', dailyPickGrid(modelBets, pick => {
+      const form = formsBySource.get(sourceName(pick));
+      return form?.recentStats.winRate != null ? `${sourceName(pick)} is ${(form.recentStats.winRate * 100).toFixed(0)}% across the last ${form.recentDates.length} completed slates.` : 'The model marked this as a BET; compare the probability and price before sizing.';
+    }))}
+    ${dailySection('Success Zone: Highest Probability', 'Raw model win probability, including expensive favorites and non-BET calls', dailyPickGrid(probabilityLeaders, pick => {
+      if (pick.odds != null && pick.odds <= -300) return 'High expected hit rate, but the price is expensive. This is intentionally shown even when Kelly sizing is small.';
+      if (dailyDecision(pick) !== 'BET') return `High model probability, but the official decision is ${dailyDecision(pick)}. Treat it as research, not an automatic bet.`;
+      return 'One of today’s highest raw model probabilities. Check price and edge before treating probability as value.';
+    }))}
+    ${dailySection('Best Bets From Hot Models', 'Recent three-slate form, with the latest completed-slate record shown separately', forms.filter(form => form.todayBets.length).slice(0, 6).length ? `<div class="daily-model-grid">${forms.filter(form => form.todayBets.length).slice(0, 6).map(dailyHotModelCard).join('')}</div>` : '<div class="daily-empty"><div class="daily-empty-title">No hot model has a BET today</div><div class="daily-empty-sub">Strong recent records remain visible only when that source has a current greenlight.</div></div>')}
+    ${dailySection('Consensus Zone', 'Same market selection from at least two independent sources', dailyConsensusCards(pending))}
+    ${dailySection('Value Zone', 'Plus-money BETs or model edges of at least 10%', dailyPickGrid(valueZone, pick => (pick.odds || 0) > 0 ? 'Plus-money upside with an active BET call. Higher payout still means higher variance.' : 'The model reports a double-digit edge; verify that the market line has not moved.'))}
+    ${dailySection('Research Queue', 'Likely outcomes that may still be poor bets, plus strong non-BET signals', dailyPickGrid(researchQueue, pick => pick.odds != null && pick.odds <= -300 ? 'This favorite may win often, but the payout is thin. Compare price, parlay temptation, and downside.' : `The model sees probability, but its official call is ${dailyDecision(pick)}. Research the reason before betting.`))}
+    <div class="daily-disclaimer"><strong>Quick read, not a blind card.</strong> Model probability estimates the chance of winning. Edge compares that chance with the market price. Recent records and consensus add context, but none guarantees the next result. ${stats.pending} picks remain open on this slate.</div>`;
 }
 
 function render(): void {
