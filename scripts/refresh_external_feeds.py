@@ -33,7 +33,7 @@ def _parse_args() -> argparse.Namespace:
         default="sportytrader,sportsgambler",
         help="Comma-separated feeds to refresh, or 'all'.",
     )
-    parser.add_argument("--sports", default="nba,mlb", help="Comma-separated sports passed to each feed scraper.")
+    parser.add_argument("--sports", default="nba,mlb,wnba", help="Comma-separated sports passed to each feed scraper.")
     parser.add_argument("--skip-firestore", action="store_true", help="Write JSON only; useful for local checks.")
     return parser.parse_args()
 
@@ -121,7 +121,7 @@ def main() -> int:
     args = _parse_args()
     date_iso, _ = server._parse_model_date_arg(args.date or None)  # noqa: SLF001
     feeds = _selected_feed_keys(args.feeds)
-    sports = _csv_values(args.sports) or ["nba", "mlb"]
+    sports = _csv_values(args.sports) or ["nba", "mlb", "wnba"]
     now_iso = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
     print(f"[external-feeds] refreshing {', '.join(feeds)} for {date_iso} sports={','.join(sports)}")

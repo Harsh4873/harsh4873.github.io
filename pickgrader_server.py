@@ -3716,6 +3716,8 @@ _SPORTYTRADER_SPORT_ALIAS = {
     "USA - NBA": "NBA",
     "NBA": "NBA",
     "BASKETBALL": "NBA",
+    "USA - WNBA": "WNBA",
+    "WNBA": "WNBA",
     "USA - MLB": "MLB",
     "MLB": "MLB",
     "BASEBALL": "MLB",
@@ -4559,7 +4561,7 @@ def run_sportytrader_scraper(
     date_str: str | None = None,
     sports: list[str] | None = None,
 ) -> dict[str, Any]:
-    """Execute the SportyTrader scraper for NBA and/or MLB."""
+    """Execute the SportyTrader scraper for NBA, WNBA, and/or MLB."""
     python_bin = _resolve_python_bin(SPORTYTRADER_VENV)
     target_date = _resolve_scrape_date(date_str)
     scraper_path = os.path.join(BASE_DIR, "scripts", "scrapers", "sportytrader_scraper.py")
@@ -4575,10 +4577,11 @@ def run_sportytrader_scraper(
     sport_map = {
         "nba": "nba",
         "basketball": "nba",
+        "wnba": "wnba",
         "mlb": "mlb",
         "baseball": "mlb",
     }
-    default_sports = ["nba", "mlb"]
+    default_sports = ["nba", "mlb", "wnba"]
     selected = [sport_map.get(str(s).strip().lower(), "") for s in (sports or default_sports)]
     selected = [sport for sport in selected if sport]
     if not selected:
@@ -4680,7 +4683,7 @@ def run_sportsgambler_scraper(
     date_str: str | None = None,
     sports: list[str] | None = None,
 ) -> dict[str, Any]:
-    """Execute the SportsGambler scraper for NBA and/or MLB."""
+    """Execute the SportsGambler scraper for NBA, WNBA, and/or MLB."""
     python_bin = _resolve_python_bin(SPORTSGAMBLER_VENV)
     target_date = _resolve_scrape_date(date_str)
     scraper_path = os.path.join(BASE_DIR, "scripts", "scrapers", "sportsgambler_scraper.py")
@@ -4691,10 +4694,11 @@ def run_sportsgambler_scraper(
     sport_map = {
         "nba": "nba",
         "basketball": "nba",
+        "wnba": "wnba",
         "mlb": "mlb",
         "baseball": "mlb",
     }
-    default_sports = ["nba", "mlb"]
+    default_sports = ["nba", "mlb", "wnba"]
     selected = [sport_map.get(str(s).strip().lower(), "") for s in (sports or default_sports)]
     selected = [sport for sport in selected if sport]
     if not selected:
@@ -4735,7 +4739,7 @@ def run_sportsgambler_scraper(
 
                 league = league_m.group(1).strip() if league_m else ""
                 sport = (league or expected_sport).upper()
-                if sport not in {"NBA", "MLB"}:
+                if sport not in {"NBA", "WNBA", "MLB"}:
                     sport = expected_sport
 
                 odds_val = None

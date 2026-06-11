@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""SportsGambler scraper — NBA and MLB picks."""
+"""SportsGambler scraper — NBA, WNBA, and MLB picks."""
 from __future__ import annotations
 import argparse, json, re, sys
 from datetime import date, datetime
@@ -13,6 +13,7 @@ HEADERS = {
 }
 
 NBA_URL = "https://www.sportsgambler.com/betting-tips/basketball/nba-predictions/"
+WNBA_URL = "https://www.sportsgambler.com/betting-tips/basketball/wnba-predictions/"
 MLB_URL = "https://www.sportsgambler.com/betting-tips/baseball/"
 
 def _norm(s: str) -> str:
@@ -68,8 +69,8 @@ def _matchup_from_node(node: dict) -> str:
             return f"{teams[0]} vs {teams[1]}"
     return ""
 
-def scrape_nba(target: date | None) -> list[dict]:
-    html = requests.get(NBA_URL, headers=HEADERS, timeout=30).text
+def scrape_basketball(target: date | None, url: str, league: str) -> list[dict]:
+    html = requests.get(url, headers=HEADERS, timeout=30).text
     soup = BeautifulSoup(html, "html.parser")
     articles, seen = [], set()
     for obj in _json_ld(soup):
@@ -106,8 +107,14 @@ def scrape_nba(target: date | None) -> list[dict]:
         tip, odds = _split_tip_odds(prediction)
         if not tip:
             continue
-        rows.append({"datetime": art["date"], "league": "NBA", "matchup": art["matchup"], "tip": tip, "odds": odds, "href": art["url"]})
+        rows.append({"datetime": art["date"], "league": league, "matchup": art["matchup"], "tip": tip, "odds": odds, "href": art["url"]})
     return rows
+
+def scrape_nba(target: date | None) -> list[dict]:
+    return scrape_basketball(target, NBA_URL, "NBA")
+
+def scrape_wnba(target: date | None) -> list[dict]:
+    return scrape_basketball(target, WNBA_URL, "WNBA")
 
 def scrape_mlb(target: date | None) -> list[dict]:
     html = requests.get(MLB_URL, headers=HEADERS, timeout=30).text
@@ -143,7 +150,14 @@ def main() -> None:
     sport = args.sport.strip().lower()
     target = _parse_date(args.date) if args.date else None
     try:
-        rows = scrape_nba(target) if sport in ("nba", "basketball") else scrape_mlb(target)
+        if sport in ("nba", "basketball"):
+            rows = scrape_nba(target)
+        elif sport == "wnba":
+            rows = scrape_wnba(target)
+        elif sport in ("mlb", "baseball"):
+            rows = scrape_mlb(target)
+        else:
+            raise ValueError("supported sports: nba/basketball, wnba, mlb/baseball")
     except Exception as exc:
         print(f"Error: {exc}", file=sys.stderr)
         sys.exit(1)

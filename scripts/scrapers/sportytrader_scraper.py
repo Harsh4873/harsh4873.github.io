@@ -2,7 +2,7 @@
 """
 SportyTrader Scraper
 ====================
-Scrapes NBA and MLB picks from SportyTrader and prints structured
+    Scrapes NBA, WNBA, and MLB picks from SportyTrader and prints structured
 pick blocks for the backend parser.
 """
 
@@ -38,6 +38,12 @@ SPORT_CONFIG = {
         "league": "USA - NBA",
         "title": "NBA",
         "url": "https://www.sportytrader.com/us/picks/basketball/usa/nba-306/",
+    },
+    "wnba": {
+        "aliases": {"wnba"},
+        "league": "USA - WNBA",
+        "title": "WNBA",
+        "url": "https://www.sportytrader.com/us/picks/basketball/usa/wnba-58202/",
     },
     "mlb": {
         "aliases": {"mlb", "baseball"},
@@ -80,7 +86,7 @@ SPORTYTRADER_CARDS_JS = r"""
             .map((node) => text(node.textContent))
             .filter(Boolean);
         const dateText = paragraphs.find((line) => /\b[A-Z][a-z]{2,8}\s+\d{1,2},\s+\d{4},\s+\d{1,2}:\d{2}/.test(line)) || '';
-        const league = paragraphs.find((line) => /\b-\s*(NBA|MLB)\b/i.test(line)) || '';
+        const league = paragraphs.find((line) => /\b-\s*(NBA|WNBA|MLB)\b/i.test(line)) || '';
         const tipNode = card.querySelector('.bg-gray-100 p.font-semibold');
         const tip = text(tipNode ? tipNode.textContent : '');
 
@@ -239,13 +245,13 @@ def _print_pick(row: dict[str, str]) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description="SportyTrader scraper")
-    ap.add_argument("--sport", "-s", default="nba", help="Supported: nba/mlb")
+    ap.add_argument("--sport", "-s", default="nba", help="Supported: nba/wnba/mlb")
     ap.add_argument("--date", "-d", help="Date in YYYY-MM-DD")
     args = ap.parse_args()
 
     sport_key = _normalize_sport(args.sport or "")
     if not sport_key:
-        print("Error: SportyTrader scraper supports only NBA/basketball and MLB/baseball.")
+        print("Error: SportyTrader scraper supports NBA/basketball, WNBA, and MLB/baseball.")
         sys.exit(1)
 
     target_date = _parse_target_date(args.date)
