@@ -1,23 +1,21 @@
 {
   "date": "2026-06-11",
   "errors": [],
-  "externalFeedsUpdatedAt": "2026-06-11T19:24:39.189158Z",
+  "externalFeedsUpdatedAt": "2026-06-11T19:35:16.056144Z",
   "external_feeds": {
     "sportsgambler": {
       "date": "2026-06-11",
-      "errors": [
-        "nba: no picks parsed (No picks found.)"
-      ],
-      "generatedAt": "2026-06-11T19:24:39.189158Z",
+      "errors": [],
+      "generatedAt": "2026-06-11T19:35:16.056144Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-11",
         "feed": "sportsgambler",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba",
-        "updatedAt": "2026-06-11T19:24:39.189158Z"
+        "updatedAt": "2026-06-11T19:35:16.056144Z"
       },
-      "note": "Scheduled sportsgambler refresh returned 6 pick(s).",
+      "note": "Scheduled sportsgambler refresh returned 8 pick(s).",
       "ok": true,
       "picks": [
         {
@@ -79,23 +77,41 @@
           "source": "SportsGambler",
           "sport": "WNBA",
           "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -110,
+          "pick": "Under 170.5 Points (Dallas Wings vs Phoenix Mercury)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "WNBA",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -114,
+          "pick": "Under 173.5 Points (Portland Fire vs Las Vegas Aces)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "WNBA",
+          "units": 1
         }
       ],
-      "updatedAt": "2026-06-11T19:24:39.189158Z"
+      "updatedAt": "2026-06-11T19:35:16.056144Z"
     },
     "sportytrader": {
       "date": "2026-06-11",
-      "errors": [
-        "nba: no picks parsed (No SportyTrader NBA picks parsed.)"
-      ],
-      "generatedAt": "2026-06-11T19:24:39.189158Z",
+      "errors": [],
+      "generatedAt": "2026-06-11T19:35:16.056144Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-11",
         "feed": "sportytrader",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba",
-        "updatedAt": "2026-06-11T19:24:39.189158Z"
+        "updatedAt": "2026-06-11T19:35:16.056144Z"
       },
       "note": "Scheduled sportytrader refresh returned 6 pick(s).",
       "ok": true,
@@ -161,7 +177,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-11T19:24:39.189158Z"
+      "updatedAt": "2026-06-11T19:35:16.056144Z"
     }
   },
   "generatedAt": "2026-06-11T18:36:23.688658Z",
@@ -3555,19 +3571,17 @@
     },
     "sportsgambler": {
       "date": "2026-06-11",
-      "errors": [
-        "nba: no picks parsed (No picks found.)"
-      ],
-      "generatedAt": "2026-06-11T19:24:39.189158Z",
+      "errors": [],
+      "generatedAt": "2026-06-11T19:35:16.056144Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-11",
         "feed": "sportsgambler",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba",
-        "updatedAt": "2026-06-11T19:24:39.189158Z"
+        "updatedAt": "2026-06-11T19:35:16.056144Z"
       },
-      "note": "Scheduled sportsgambler refresh returned 6 pick(s).",
+      "note": "Scheduled sportsgambler refresh returned 8 pick(s).",
       "ok": true,
       "picks": [
         {
@@ -3629,23 +3643,41 @@
           "source": "SportsGambler",
           "sport": "WNBA",
           "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -110,
+          "pick": "Under 170.5 Points (Dallas Wings vs Phoenix Mercury)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "WNBA",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -114,
+          "pick": "Under 173.5 Points (Portland Fire vs Las Vegas Aces)",
+          "probability": null,
+          "source": "SportsGambler",
+          "sport": "WNBA",
+          "units": 1
         }
       ],
-      "updatedAt": "2026-06-11T19:24:39.189158Z"
+      "updatedAt": "2026-06-11T19:35:16.056144Z"
     },
     "sportytrader": {
       "date": "2026-06-11",
-      "errors": [
-        "nba: no picks parsed (No SportyTrader NBA picks parsed.)"
-      ],
-      "generatedAt": "2026-06-11T19:24:39.189158Z",
+      "errors": [],
+      "generatedAt": "2026-06-11T19:35:16.056144Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-11",
         "feed": "sportytrader",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba",
-        "updatedAt": "2026-06-11T19:24:39.189158Z"
+        "updatedAt": "2026-06-11T19:35:16.056144Z"
       },
       "note": "Scheduled sportytrader refresh returned 6 pick(s).",
       "ok": true,
@@ -3711,7 +3743,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-11T19:24:39.189158Z"
+      "updatedAt": "2026-06-11T19:35:16.056144Z"
     },
     "wnba": {
       "ok": true,
@@ -3875,19 +3907,17 @@
   "nba_props": {},
   "sportsgambler": {
     "date": "2026-06-11",
-    "errors": [
-      "nba: no picks parsed (No picks found.)"
-    ],
-    "generatedAt": "2026-06-11T19:24:39.189158Z",
+    "errors": [],
+    "generatedAt": "2026-06-11T19:35:16.056144Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-11",
       "feed": "sportsgambler",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba",
-      "updatedAt": "2026-06-11T19:24:39.189158Z"
+      "updatedAt": "2026-06-11T19:35:16.056144Z"
     },
-    "note": "Scheduled sportsgambler refresh returned 6 pick(s).",
+    "note": "Scheduled sportsgambler refresh returned 8 pick(s).",
     "ok": true,
     "picks": [
       {
@@ -3949,23 +3979,41 @@
         "source": "SportsGambler",
         "sport": "WNBA",
         "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -110,
+        "pick": "Under 170.5 Points (Dallas Wings vs Phoenix Mercury)",
+        "probability": null,
+        "source": "SportsGambler",
+        "sport": "WNBA",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -114,
+        "pick": "Under 173.5 Points (Portland Fire vs Las Vegas Aces)",
+        "probability": null,
+        "source": "SportsGambler",
+        "sport": "WNBA",
+        "units": 1
       }
     ],
-    "updatedAt": "2026-06-11T19:24:39.189158Z"
+    "updatedAt": "2026-06-11T19:35:16.056144Z"
   },
   "sportytrader": {
     "date": "2026-06-11",
-    "errors": [
-      "nba: no picks parsed (No SportyTrader NBA picks parsed.)"
-    ],
-    "generatedAt": "2026-06-11T19:24:39.189158Z",
+    "errors": [],
+    "generatedAt": "2026-06-11T19:35:16.056144Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-11",
       "feed": "sportytrader",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba",
-      "updatedAt": "2026-06-11T19:24:39.189158Z"
+      "updatedAt": "2026-06-11T19:35:16.056144Z"
     },
     "note": "Scheduled sportytrader refresh returned 6 pick(s).",
     "ok": true,
@@ -4031,9 +4079,9 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-11T19:24:39.189158Z"
+    "updatedAt": "2026-06-11T19:35:16.056144Z"
   },
-  "updatedAt": "2026-06-11T19:24:39.189158Z",
+  "updatedAt": "2026-06-11T19:35:16.056144Z",
   "wnba": {
     "ok": true,
     "picks": [
