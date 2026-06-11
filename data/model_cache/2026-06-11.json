@@ -2408,7 +2408,7 @@
           "game": "Baltimore Orioles vs Seattle Mariners",
           "game_id": "824827",
           "game_order": 1,
-          "game_start_time": "2026-06-11T23:05:00Z",
+          "game_start_time": "2026-06-11T23:00Z",
           "home_team": "Baltimore Orioles",
           "inning": 4,
           "league": "MLB",
@@ -2421,7 +2421,7 @@
           "probability": 0.624,
           "source": "MLB Inning",
           "sport": "MLB",
-          "start_time": "2026-06-11T23:05:00Z",
+          "start_time": "2026-06-11T23:00Z",
           "team": ""
         },
         {
@@ -2464,7 +2464,7 @@
           "game": "Chicago White Sox vs Atlanta Braves",
           "game_id": "824589",
           "game_order": 2,
-          "game_start_time": "2026-06-11T23:40:00Z",
+          "game_start_time": "2026-06-11T23:40Z",
           "home_team": "Chicago White Sox",
           "inning": 6,
           "league": "MLB",
@@ -2477,7 +2477,7 @@
           "probability": 0.635,
           "source": "MLB Inning",
           "sport": "MLB",
-          "start_time": "2026-06-11T23:40:00Z",
+          "start_time": "2026-06-11T23:40Z",
           "team": ""
         }
       ],
@@ -2677,6 +2677,7 @@
           "odds": null,
           "pick": "Cubs ML (Cubs vs Rockies)",
           "probability": 0.602,
+          "result": "win",
           "source": "MLB NEW",
           "sport": "MLB",
           "start_time": "2026-06-11T19:10Z",
@@ -2689,6 +2690,7 @@
           "decision": "BET",
           "direction": "Under",
           "edge": 20.21,
+          "game_start_time": "2026-06-11T19:10Z",
           "home_team": "Colorado Rockies",
           "kelly": 10.61,
           "line": 11.5,
@@ -2700,9 +2702,11 @@
           "pick": "Under 11.5 (Chicago Cubs vs Colorado Rockies)",
           "prob": 0.7259,
           "probability": 0.7259,
+          "result": "loss",
           "selection": "Under",
           "source": "MLB NEW",
           "sport": "MLB",
+          "start_time": "2026-06-11T19:10Z",
           "units": 0.11,
           "vegas": 11.5
         },
@@ -2753,6 +2757,7 @@
           "away_team": "Seattle Mariners",
           "decision": "LEAN",
           "edge": 5.56,
+          "game_start_time": "2026-06-11T23:00Z",
           "home_team": "Baltimore Orioles",
           "market_pick_prob": null,
           "market_type": "h2h",
@@ -2762,6 +2767,7 @@
           "probability": 0.5556,
           "source": "MLB NEW",
           "sport": "MLB",
+          "start_time": "2026-06-11T23:00Z",
           "team": "Mariners",
           "units": 0.28
         },
@@ -2794,6 +2800,7 @@
           "away_team": "Atlanta Braves",
           "decision": "LEAN",
           "edge": 5.56,
+          "game_start_time": "2026-06-11T23:40Z",
           "home_team": "Chicago White Sox",
           "market_pick_prob": null,
           "market_type": "h2h",
@@ -2803,6 +2810,7 @@
           "probability": 0.5556,
           "source": "MLB NEW",
           "sport": "MLB",
+          "start_time": "2026-06-11T23:40Z",
           "team": "Braves",
           "units": 0.28
         },
@@ -3093,6 +3101,7 @@
           "decision": "BET",
           "edge": 15.25,
           "game": "Chicago Sky @ Indiana Fever",
+          "game_start_time": "2026-06-11T23:00Z",
           "guardrail_reasons": [],
           "h2h_games": 0,
           "has_market_price": true,
@@ -3114,6 +3123,7 @@
           "selection": "Indiana Fever",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-11T23:00Z",
           "starters_out": [],
           "starters_questionable": [
             "Caitlin Clark"
@@ -3237,6 +3247,7 @@
           "decision": "PASS",
           "edge": 8.82,
           "game": "New York Liberty @ Atlanta Dream",
+          "game_start_time": "2026-06-11T23:30Z",
           "guardrail_reasons": [
             "model-to-line total gap below 5 points"
           ],
@@ -3260,6 +3271,7 @@
           "selection": "Over",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-11T23:30Z",
           "units": 0.0,
           "vegas": 165.5
         },
@@ -3340,6 +3352,7 @@
           "decision": "PASS",
           "edge": -2.38,
           "game": "Phoenix Mercury @ Dallas Wings",
+          "game_start_time": "2026-06-12T01:00Z",
           "guardrail_reasons": [
             "model-to-line total gap below 5 points"
           ],
@@ -3363,6 +3376,7 @@
           "selection": "Over",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-12T01:00Z",
           "units": 0.0,
           "vegas": 168.5
         },
@@ -3407,6 +3421,7 @@
           "decision": "PASS",
           "edge": 1.13,
           "game": "Las Vegas Aces @ Portland Fire",
+          "game_start_time": "2026-06-12T02:00Z",
           "guardrail_reasons": [
             "model-to-line cover margin below 1.5 points"
           ],
@@ -3430,6 +3445,7 @@
           "selection": "Portland Fire",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-12T02:00Z",
           "starters_out": [],
           "starters_questionable": [],
           "team": "Portland Fire",
