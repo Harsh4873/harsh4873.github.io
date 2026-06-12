@@ -91,26 +91,29 @@ def test_source_rankings_expand_period_records_and_static_cards_do_not_fake_clic
     assert ".daily-bet-card:hover" not in css
 
 
-def test_daily_tab_is_a_betting_tldr_not_a_duplicate_slate():
+def test_daily_tab_uses_focused_views_and_merges_duplicate_markets():
     main = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
     css = (ROOT / "src" / "styles" / "pickledger.css").read_text(encoding="utf-8")
 
-    for section in (
-        "Best Bets: Model Greenlights",
-        "Success Zone: Highest Probability",
-        "Best Bets From Hot Models",
-        "Consensus Zone",
-        "Value Zone",
-        "Research Queue",
-    ):
+    for section in ("Top Picks", "Consensus Signals", "Hot Sources", "Research Queue"):
         assert section in main
     assert "PRICEY FAVORITE" in main
     assert "function dailySourceForms(" in main
     assert "function dailyPickScore(" in main
+    assert "function dailyPickKey(" in main
+    assert "function dailyPickGroups(" in main
+    assert "allPicks: Pick[] = picks" in main
+    assert "uniqueDailyPicks(ranked(pending.filter" in main
     assert "function dailyConsensusCards(" in main
+    assert "function setDailyView(" in main
+    assert "Each unique market appears once." in main
+    assert "excluding anything already in Top Picks" in main
     assert ".daily-bet-card" in css
     assert ".daily-model-card" in css
     assert ".daily-consensus-card" in css
+    assert ".daily-view-nav" in css
+    assert ".daily-view-select-wrap" in css
+    assert ".daily-pick-source-list" in css
     assert "daily-slate-grid" not in main
 
 

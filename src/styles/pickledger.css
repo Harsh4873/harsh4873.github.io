@@ -1816,16 +1816,54 @@
   .daily-stat-val.accent3  { color: var(--accent3); }
   .daily-stat-label { margin-top: 6px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
 
-  .daily-section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; margin: 28px 0 12px; flex-wrap: wrap; }
-  .daily-section-title { font-family: 'Bebas Neue', sans-serif; font-size: 30px; letter-spacing: 1.8px; color: var(--text); }
-  .daily-section-sub { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.6px; }
-  .daily-zone { margin-top: 30px; }
+  .daily-view-shell {
+    margin-top: 18px;
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    background: linear-gradient(150deg, rgba(77,166,255,0.07), rgba(0,229,160,0.03)), var(--card);
+  }
+  .daily-view-copy { margin-bottom: 16px; }
+  .daily-view-eyebrow { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--accent3); letter-spacing: 1.4px; }
+  .daily-view-title { margin-top: 4px; font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 1.2px; color: var(--text); }
+  .daily-view-description { margin-top: 4px; max-width: 720px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+  .daily-view-nav { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  .daily-view-tab {
+    min-width: 0;
+    min-height: 104px;
+    padding: 14px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: rgba(255,255,255,0.025);
+    color: var(--muted);
+    text-align: left;
+    cursor: pointer;
+    transition: transform 0.18s, border-color 0.18s, background 0.18s, box-shadow 0.18s;
+  }
+  .daily-view-tab:hover { transform: translateY(-2px); border-color: rgba(77,166,255,0.42); }
+  .daily-view-tab.active {
+    border-color: rgba(0,229,160,0.58);
+    background: linear-gradient(145deg, rgba(0,229,160,0.14), rgba(77,166,255,0.1));
+    box-shadow: 0 14px 30px rgba(0,0,0,0.16);
+    color: var(--text);
+  }
+  .daily-view-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .daily-view-tab-count { display: block; font-family: 'Bebas Neue', sans-serif; font-size: 34px; line-height: 1; color: var(--accent); }
+  .daily-view-tab-label { display: block; margin-top: 6px; font-size: 13px; font-weight: 700; color: var(--text); }
+  .daily-view-tab-desc { display: block; margin-top: 4px; font-family: 'DM Mono', monospace; font-size: 9px; line-height: 1.35; color: var(--muted); }
+  .daily-view-select-wrap { display: none; }
+  .daily-active-content { margin-top: 20px; }
+  .daily-section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; margin: 0 0 16px; flex-wrap: wrap; }
+  .daily-section-title { font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 1.8px; color: var(--text); }
+  .daily-section-sub { margin-top: 4px; max-width: 720px; font-family: 'DM Mono', monospace; font-size: 11px; line-height: 1.5; color: var(--muted); letter-spacing: 0.4px; }
+  .daily-section-meta { padding: 7px 11px; border: 1px solid var(--border); border-radius: 999px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--accent3); letter-spacing: 0.5px; }
+  .daily-zone { margin-top: 0; }
   .daily-bet-grid,
   .daily-model-grid,
   .daily-consensus-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 14px;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+    gap: 18px;
   }
   .daily-bet-card,
   .daily-model-card,
@@ -1840,7 +1878,7 @@
     transition: transform 0.22s, border-color 0.22s, box-shadow 0.22s;
   }
   .daily-bet-card {
-    padding: 17px;
+    padding: 23px;
   }
   .daily-bet-card::before {
     content: '';
@@ -1868,20 +1906,20 @@
     color: var(--accent3);
   }
   .daily-bet-pick {
-    margin-top: 5px;
-    font-size: 16px;
+    margin-top: 7px;
+    font-size: 20px;
     font-weight: 700;
     color: var(--text);
-    line-height: 1.3;
+    line-height: 1.28;
   }
   .daily-bet-score {
-    min-width: 84px;
+    min-width: 98px;
     text-align: right;
   }
   .daily-bet-score strong {
     display: block;
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 31px;
+    font-size: 39px;
     letter-spacing: 0.8px;
     color: var(--accent);
     line-height: 1;
@@ -1895,7 +1933,7 @@
     color: var(--muted);
   }
   .daily-bet-game {
-    margin-top: 9px;
+    margin-top: 12px;
     font-family: 'DM Mono', monospace;
     font-size: 10px;
     line-height: 1.4;
@@ -1920,10 +1958,29 @@
   .daily-bet-tags .daily-decision-tag.bet { background: rgba(0,229,160,0.14); color: var(--win); }
   .daily-bet-tags .daily-decision-tag.lean { background: rgba(255,215,0,0.14); color: var(--push); }
   .daily-bet-tags .daily-decision-tag.pass { background: rgba(90,112,133,0.16); color: var(--muted); }
+  .daily-bet-tags .daily-qualifier-tag { background: rgba(0,229,160,0.12); color: var(--accent); }
   .daily-bet-tags span.pricey { background: rgba(255,215,0,0.15); color: var(--gold); }
+  .daily-pick-source-list {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-top: 14px;
+  }
+  .daily-pick-source-row {
+    display: grid;
+    grid-template-columns: minmax(120px, 0.8fr) minmax(0, 1.5fr);
+    gap: 12px;
+    align-items: center;
+    padding: 10px 11px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: rgba(0,0,0,0.12);
+  }
+  .daily-pick-source-row strong { min-width: 0; color: var(--text); font-size: 12px; line-height: 1.3; }
+  .daily-pick-source-row span { min-width: 0; text-align: right; font-family: 'DM Mono', monospace; font-size: 9px; line-height: 1.4; color: var(--accent3); }
   .daily-bet-note {
-    margin-top: 12px;
-    padding-top: 11px;
+    margin-top: 15px;
+    padding-top: 13px;
     border-top: 1px dashed var(--border);
     font-family: 'DM Mono', monospace;
     font-size: 10px;
@@ -1931,7 +1988,7 @@
     color: var(--muted);
   }
   .daily-model-card {
-    padding: 18px;
+    padding: 23px;
     background:
       radial-gradient(500px 180px at 0% 0%, rgba(0,229,160,0.12), transparent 70%),
       var(--card);
@@ -1945,13 +2002,13 @@
   .daily-model-name {
     margin-top: 4px;
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 26px;
+    font-size: 30px;
     letter-spacing: 0.8px;
     color: var(--text);
   }
   .daily-model-rate {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 38px;
+    font-size: 44px;
     color: var(--accent);
     line-height: 1;
   }
@@ -1994,7 +2051,7 @@
     color: var(--muted);
   }
   .daily-consensus-card {
-    padding: 17px;
+    padding: 23px;
     border-color: rgba(0,229,160,0.3);
     background:
       radial-gradient(500px 180px at 0% 0%, rgba(0,229,160,0.13), transparent 70%),
@@ -2008,7 +2065,7 @@
   }
   .daily-consensus-pick {
     margin-top: 6px;
-    font-size: 16px;
+    font-size: 20px;
     font-weight: 700;
     color: var(--text);
   }
@@ -2342,6 +2399,10 @@
   body[data-theme="light"] .daily-stat { background: rgba(255,255,255,0.9); }
   body[data-theme="light"] .daily-clock { color: var(--accent); }
   body[data-theme="light"] .daily-eyebrow { color: var(--accent); }
+  body[data-theme="light"] .daily-view-shell { background: linear-gradient(150deg, rgba(52,121,216,0.05), rgba(11,157,116,0.03)), #ffffff; }
+  body[data-theme="light"] .daily-view-tab { background: #f7f9fc; }
+  body[data-theme="light"] .daily-view-tab.active { background: linear-gradient(145deg, rgba(11,157,116,0.1), rgba(52,121,216,0.07)); }
+  body[data-theme="light"] .daily-pick-source-row { background: #f7f9fc; }
 
   @media (max-width: 720px) {
     .home-title { font-size: 40px; }
@@ -2364,9 +2425,15 @@
     .daily-title { font-size: 40px; }
     .daily-clock { font-size: 30px; }
     .daily-hero { padding: 20px; }
+    .daily-view-shell { padding: 16px; }
+    .daily-view-nav { display: none; }
+    .daily-view-select-wrap { display: flex; flex-direction: column; gap: 7px; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; }
+    .daily-view-select { width: 100%; min-height: 46px; padding: 0 13px; border: 1px solid var(--border); border-radius: 12px; background: var(--card); color: var(--text); font: 600 12px 'DM Sans', sans-serif; }
     .daily-bet-grid, .daily-model-grid, .daily-consensus-grid { grid-template-columns: 1fr; }
     .daily-bet-top { grid-template-columns: 1fr; }
     .daily-bet-score { text-align: left; }
+    .daily-pick-source-row { grid-template-columns: 1fr; gap: 4px; }
+    .daily-pick-source-row span { text-align: left; }
     .daily-ranking-row { grid-template-columns: 36px 1.4fr 1fr 1fr; }
     .daily-ranking-row .daily-ranking-hide-sm { display: none; }
   }
@@ -4248,12 +4315,41 @@
   body.mobile-app-mode .daily-clock {
     font-size: 30px;
   }
+  body.mobile-app-mode .daily-view-shell {
+    padding: 14px;
+    border-radius: 18px;
+  }
+  body.mobile-app-mode .daily-view-nav {
+    display: none;
+  }
+  body.mobile-app-mode .daily-view-select-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  body.mobile-app-mode .daily-view-select {
+    width: 100%;
+    min-height: 44px;
+    padding: 0 12px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--card);
+    color: var(--text);
+    font: 600 12px 'DM Sans', sans-serif;
+  }
   body.mobile-app-mode .daily-bet-top,
-  body.mobile-app-mode .daily-model-picks div {
+  body.mobile-app-mode .daily-model-picks div,
+  body.mobile-app-mode .daily-pick-source-row {
     grid-template-columns: 1fr;
   }
   body.mobile-app-mode .daily-bet-score,
-  body.mobile-app-mode .daily-model-picks span {
+  body.mobile-app-mode .daily-model-picks span,
+  body.mobile-app-mode .daily-pick-source-row span {
     text-align: left;
   }
   body.mobile-app-mode .daily-podium-rank {
