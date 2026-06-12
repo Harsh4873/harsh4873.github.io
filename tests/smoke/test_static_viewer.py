@@ -28,7 +28,23 @@ def test_frontend_is_static_json_only():
     assert "./data/model_cache/index.json" in data
     assert "./data/cannon_mlb_daily.json" in data
     assert '<link rel="stylesheet" href="./src/styles/pickledger.css">' in html
-    assert "Global model performance calculated from committed, auto-graded JSON." in html
+    assert "See how every source has performed across the picks and results collected here." in html
+
+
+def test_header_brand_and_freshness_copy_are_friendly_and_accurate():
+    main = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
+    data = (ROOT / "src" / "data.ts").read_text(encoding="utf-8")
+    html = (ROOT / "index.html").read_text(encoding="utf-8")
+    css = (ROOT / "src" / "styles" / "pickledger.css").read_text(encoding="utf-8")
+
+    assert 'class="brand-home" href="#home" onclick="goHome(event)"' in html
+    assert "function goHome(" in main
+    assert "function latestPayloadTimestamp(" in data
+    assert "Picks updated ${updatedAgoLabel(status.updatedAt)}" in main
+    assert "Models refresh each morning and again around 3:30 PM CT" in html
+    assert "Scores are checked automatically every 15 minutes" in html
+    assert "cache ${status.date}" not in main
+    assert ".brand-home" in css
 
 
 def test_static_viewer_keeps_public_tabs_and_client_grading():
@@ -47,7 +63,7 @@ def test_static_viewer_keeps_public_tabs_and_client_grading():
     assert "function centralDateKey(" in main
     assert "pick.result === 'pending' && pickDateKey(pick) === selectedDate" in main
     assert "window.setInterval(() => void refreshForCentralClock(), AUTO_REFRESH_MS)" in main
-    assert "Search pending picks for the selected Home date" in html
+    assert "Find a team, matchup, or source in the selected date’s open picks" in html
     assert "embeddedResult === 'pending' ? localResult : embeddedResult" in data
     assert "function renderRankings()" in main
     assert "function renderSearch()" in main
@@ -81,7 +97,7 @@ def test_source_rankings_expand_period_records_and_static_cards_do_not_fake_clic
     assert 'role="button" tabindex="0" aria-expanded="${expanded}"' in main
     assert "function bindSourceCards(" in main
     assert "View period records" in main
-    assert "Select a source card for today, yesterday, last 7 days, and all-time records." in html
+    assert "Select a source for today, yesterday, last 7 days, and all-time records." in html
     assert ".source-expand-control" in css
     assert ".source-card.expanded .source-deep-dive" in css
     assert ".trend-game-card:hover" not in css

@@ -75,6 +75,7 @@ const homeScores = new Map<string, HomeScoreInfo>();
 const homeScoreFetches = new Map<string, number>();
 const expandedSourceKeys = new Set<string>();
 let homeScoreRefreshKey = '';
+let latestPicksUpdatedAt = '';
 const HOME_SCORE_TTL_MS = 45_000;
 const DISPLAY_TIME_ZONE = 'America/Chicago';
 const AUTO_REFRESH_MS = 5 * 60_000;
@@ -205,7 +206,7 @@ function sourceRecordText(picks: Pick[]): string {
     record,
     signedUnits(stats.net),
     stats.winRate == null ? '' : `${(stats.winRate * 100).toFixed(1)}%`,
-    stats.pending ? `${stats.pending} pending` : '',
+    stats.pending ? `${stats.pending} open` : '',
   ].filter(Boolean).join(' | ');
 }
 
@@ -229,7 +230,7 @@ function sourceRecordLines(picks: Pick[]): Array<{ label: string; text: string }
 }
 
 function resultBadge(result: PickResult): string {
-  return `<span class="badge badge-${result}">${result.toUpperCase()}</span>`;
+  return `<span class="badge badge-${result}">${result === 'pending' ? 'OPEN' : result.toUpperCase()}</span>`;
 }
 
 function statusClass(picks: Pick[]): string {
@@ -353,11 +354,11 @@ function renderHome(): void {
   const modeChip = document.getElementById('home-mode-chip');
   const triggerValue = document.getElementById('home-date-trigger-value');
   const triggerMeta = document.getElementById('home-date-trigger-meta');
-  if (title) title.textContent = `${dateLabel(selectedDate, true)} Slate`;
-  if (sub) sub.textContent = `${selectedAll.length} committed picks from automated model and feed refreshes.`;
+  if (title) title.textContent = `${dateLabel(selectedDate, true)} Picks`;
+  if (sub) sub.textContent = `${selectedAll.length} picks from ${new Set(selectedAll.map(sourceName)).size} sources, organized by matchup.`;
   if (dateChip) dateChip.textContent = dateLabel(selectedDate).toUpperCase();
   if (filterChip) filterChip.textContent = activeFilter === 'ALL' ? 'ALL SOURCES' : activeFilter.toUpperCase();
-  if (modeChip) modeChip.textContent = `${homeMode.toUpperCase()} VIEW`;
+  if (modeChip) modeChip.textContent = homeMode === 'pending' ? 'OPEN PICKS' : homeMode === 'settled' ? 'RESULTS' : 'ALL PICKS';
   if (triggerValue) triggerValue.textContent = dateLabel(selectedDate, true);
   if (triggerMeta) triggerMeta.textContent = selectedDate === centralDateKey() ? 'Today | CT' : `${selectedAll.length} picks`;
   document.querySelectorAll<HTMLElement>('[data-home-mode]').forEach(button => button.classList.toggle('active', button.dataset.homeMode === homeMode));
@@ -367,7 +368,7 @@ function renderHome(): void {
     [stats.total, homeMode === 'pending' ? 'Open Picks' : 'Picks'],
     [groups.size, 'Matchups'],
     [new Set(picks.map(sourceName)).size, 'Sources'],
-    [stats.pending, 'Pending'],
+    [stats.pending, 'Open'],
     [signedUnits(stats.net), 'Net Units'],
   ].map(([value, label]) => `<div class="home-summary-card"><div class="home-summary-value">${escapeHtml(value)}</div><div class="home-summary-label">${label}</div></div>`).join('');
 
@@ -382,7 +383,8 @@ function renderHome(): void {
   const feed = document.getElementById('pick-feed');
   if (!feed) return;
   if (!picks.length) {
-    feed.innerHTML = `<div class="pick-feed-empty"><div class="home-empty-kicker">${homeMode.toUpperCase()} | ${escapeHtml(dateLabel(selectedDate).toUpperCase())}</div><div class="home-empty-title">No ${homeMode} picks in this view</div><div class="home-empty-sub">Choose another date, result mode, sport, or source.</div></div>`;
+    const modeLabel = homeMode === 'pending' ? 'open' : homeMode === 'settled' ? 'finished' : 'available';
+    feed.innerHTML = `<div class="pick-feed-empty"><div class="home-empty-kicker">${homeMode === 'pending' ? 'OPEN PICKS' : homeMode === 'settled' ? 'RESULTS' : 'ALL PICKS'} | ${escapeHtml(dateLabel(selectedDate).toUpperCase())}</div><div class="home-empty-title">No ${modeLabel} picks in this view</div><div class="home-empty-sub">Try another date, sport, source, or result view.</div></div>`;
     return;
   }
   const bySport = new Map<string, Array<[string, Pick[]]>>();
@@ -405,7 +407,7 @@ function renderGameCard(picks: Pick[]): string {
   const scoreChip = homeScoreChipHtml(homeScores.get(gameKey(picks[0])), start, gameName(picks[0]));
   return `<article class="home-game-card status-${statusClass(picks)}">
     <div class="home-game-top">
-      <div class="home-game-kicker"><span class="home-sport-pill">${escapeHtml(picks[0]?.sport)}</span><span class="home-status-pill ${statusClass(picks)}">${pending ? 'PENDING' : `${stats.wins}-${stats.losses}${stats.pushes ? `-${stats.pushes}` : ''}`}</span></div>
+      <div class="home-game-kicker"><span class="home-sport-pill">${escapeHtml(picks[0]?.sport)}</span><span class="home-status-pill ${statusClass(picks)}">${pending ? 'OPEN' : `${stats.wins}-${stats.losses}${stats.pushes ? `-${stats.pushes}` : ''}`}</span></div>
       <div class="home-game-right-stack">${scoreChip}<div class="home-game-pl ${stats.net > 0 ? 'positive' : stats.net < 0 ? 'negative' : 'neutral'}">${pending ? `${stats.pending} open` : signedUnits(stats.net)}</div><div class="home-game-caption">${formatStart(start)}</div></div>
     </div>
     <div><div class="home-game-title">${escapeHtml(gameName(picks[0]))}</div><div class="home-game-meta">${escapeHtml(dateLabel(pickDateKey(picks[0])))} | ${picks.length} picks | ${new Set(picks.map(sourceName)).size} sources</div></div>
@@ -455,14 +457,14 @@ function renderRankings(): void {
         <div class="card-rank">${index + 1}</div><div class="card-name">${escapeHtml(item.source)}</div>
         <div class="score-bar-wrap"><div class="score-label"><span>ACCURACY</span><span class="score-val">${item.stats.winRate == null ? '—' : `${(item.stats.winRate * 100).toFixed(1)}%`} (${item.stats.wins}-${item.stats.losses})</span></div><div class="bar-bg"><div class="bar-fill bar-acc" style="width:${(item.stats.winRate || 0) * 100}%"></div></div></div>
         <div class="score-bar-wrap"><div class="score-label"><span>ROI</span><span class="score-val">${item.stats.roi == null ? '—' : `${(item.stats.roi * 100).toFixed(1)}%`} (${signedUnits(item.stats.net)})</span></div><div class="bar-bg"><div class="bar-fill bar-roi" style="width:${Math.max(0, Math.min(100, 50 + (item.stats.roi || 0) * 100))}%"></div></div></div>
-        <div class="algo-score"><div class="algo-score-val">${item.stats.total}</div><div class="algo-score-info">TRACKED PICKS<br>${item.stats.pending} PENDING</div></div>
+        <div class="algo-score"><div class="algo-score-val">${item.stats.total}</div><div class="algo-score-info">PICKS TRACKED<br>${item.stats.pending} OPEN</div></div>
         <div class="source-expand-control"><span data-source-expand-label>${expanded ? 'Hide period records' : 'View period records'}</span><span class="source-expand-icon" aria-hidden="true">&#9662;</span></div>
         <div class="source-deep-dive">
           <div class="trend-deep-title">PERIOD RECORDS</div>
           <div class="source-record-list">${records.map(record => `<div class="source-record-item"><div class="source-record-label">${record.label}</div><div class="source-record-value">${record.text}</div></div>`).join('')}</div>
         </div>
       </article>`;
-    }).join('') : '<div class="empty-state">No committed grades yet. The scheduled grader will build rankings as games finish.</div>';
+    }).join('') : '<div class="empty-state">Source records will appear here as games finish and scores come in.</div>';
     bindSourceCards(leaderboard);
   }
 
@@ -543,18 +545,18 @@ function renderSearch(): void {
   ensureSelection();
   const query = input.value.trim().toLowerCase();
   const pending = getAllPicks().filter(pick => pick.result === 'pending' && pickDateKey(pick) === selectedDate);
-  const scope = `${dateLabel(selectedDate, true)} pending picks (Central time)`;
+  const scope = `${dateLabel(selectedDate, true)} open picks (Central time)`;
   if (!query) {
     meta.textContent = `${pending.length} ${scope.toLowerCase()}`;
-    results.innerHTML = '<div class="empty-state">Type a team name, matchup, or source to search pending picks for the selected Home date</div>';
+    results.innerHTML = '<div class="empty-state">Search for a team, matchup, or source in the selected date’s open picks</div>';
     return;
   }
   const picks = pending.filter(pick => [pick.pick, sourceName(pick), pick.sport, pick.date, gameName(pick)].some(value => String(value).toLowerCase().includes(query)));
-  meta.textContent = `${picks.length} pending result${picks.length === 1 ? '' : 's'} for "${input.value.trim()}" | ${scope}`;
+  meta.textContent = `${picks.length} open pick${picks.length === 1 ? '' : 's'} for "${input.value.trim()}" | ${scope}`;
   results.innerHTML = picks.length ? picks.map(pick => `
     <div class="search-card"><div class="search-card-top">${resultBadge(pick.result)}<span class="badge badge-source">${escapeHtml(sourceName(pick))}</span><div class="search-card-pick">${escapeHtml(pick.pick)}</div><div class="search-card-odds">${escapeHtml(formatOdds(pick))}</div></div>
       <div class="search-card-row"><div class="search-card-field"><span class="search-card-field-label">GAME</span><span class="search-card-field-val">${escapeHtml(gameName(pick))}</span></div><div class="search-card-field"><span class="search-card-field-label">DATE</span><span class="search-card-field-val">${escapeHtml(pick.date)}</span></div><div class="search-card-field"><span class="search-card-field-label">P/L</span><span class="search-card-field-val">${signedUnits(pick.pl)}</span></div></div>
-    </div>`).join('') : '<div class="empty-state">No pending picks match your search for the selected Home date</div>';
+    </div>`).join('') : '<div class="empty-state">No open picks match that search for the selected date</div>';
 }
 
 function canonicalTeamForPick(pick: Pick, label: string): string {
@@ -644,9 +646,9 @@ function renderTrends(): void {
   const matchingGroups = consensus.reduce((total, game) => total + game.matching, 0);
   const conflictGames = consensus.filter(game => game.split).length;
 
-  container.innerHTML = `<div class="trend-head"><div class="trend-title">Consensus Radar</div><div class="trend-subtitle">${escapeHtml(dateLabel(selectedDate, true))} pending picks. Green appears only when two or more sources make the same market selection.</div></div>
+  container.innerHTML = `<div class="trend-head"><div class="trend-title">Consensus Radar</div><div class="trend-subtitle">${escapeHtml(dateLabel(selectedDate, true))} open picks. Green appears when two or more sources make the same market selection.</div></div>
     <div class="trend-summary-grid"><div class="trend-summary-box"><div class="trend-summary-val">${matchingGroups}</div><div class="trend-summary-label">MATCHING SIGNALS</div></div><div class="trend-summary-box"><div class="trend-summary-val">${games.size}</div><div class="trend-summary-label">MATCHUPS</div></div><div class="trend-summary-box"><div class="trend-summary-val">${conflictGames}</div><div class="trend-summary-label">CONFLICT GAMES</div></div><div class="trend-summary-box"><div class="trend-summary-val">${new Set(pending.map(sourceName)).size}</div><div class="trend-summary-label">SOURCES</div></div></div>
-    ${consensus.length ? `<div class="trend-board">${consensus.map(game => `<div class="trend-game-card ${game.split ? 'split' : ''}"><div class="trend-game-head"><div><div class="trend-game-name">${escapeHtml(gameName(game.picks[0]))}</div><div class="trend-game-meta">${escapeHtml(game.picks[0].sport)} | ${escapeHtml(dateLabel(pickDateKey(game.picks[0])))}</div></div><div class="trend-strength-pill ${game.matching ? 'strong' : game.split ? 'split' : 'lean'}">${game.matching ? `${game.matching} MATCHING` : game.split ? 'MIXED SIGNALS' : 'LEAN'}</div></div>${game.signals.map(renderTrendSignal).join('')}</div>`).join('')}</div>` : '<div class="empty-state">No pending trends for this slate.</div>'}`;
+    ${consensus.length ? `<div class="trend-board">${consensus.map(game => `<div class="trend-game-card ${game.split ? 'split' : ''}"><div class="trend-game-head"><div><div class="trend-game-name">${escapeHtml(gameName(game.picks[0]))}</div><div class="trend-game-meta">${escapeHtml(game.picks[0].sport)} | ${escapeHtml(dateLabel(pickDateKey(game.picks[0])))}</div></div><div class="trend-strength-pill ${game.matching ? 'strong' : game.split ? 'split' : 'lean'}">${game.matching ? `${game.matching} MATCHING` : game.split ? 'MIXED SIGNALS' : 'LEAN'}</div></div>${game.signals.map(renderTrendSignal).join('')}</div>`).join('')}</div>` : '<div class="empty-state">No consensus signals for these open picks yet.</div>'}`;
 }
 
 function pickProbability(pick: Pick): number | null {
@@ -777,7 +779,7 @@ function dailySection(title: string, subtitle: string, body: string, meta = ''):
 }
 
 function dailyPickGrid(groups: DailyPickGroup[]): string {
-  if (!groups.length) return '<div class="daily-empty"><div class="daily-empty-title">Nothing qualifies yet</div><div class="daily-empty-sub">This view will populate when the committed models meet its rules.</div></div>';
+  if (!groups.length) return '<div class="daily-empty"><div class="daily-empty-title">Nothing qualifies yet</div><div class="daily-empty-sub">This view fills in when today’s picks meet its rules.</div></div>';
   return `<div class="daily-bet-grid">${groups.map(dailyPickGroupCard).join('')}</div>`;
 }
 
@@ -875,7 +877,7 @@ function renderDaily(): void {
         ? dailySection('Hot Sources', 'Recent three-slate form plus each source’s unique BET calls today.', hotForms.length ? `<div class="daily-model-grid">${hotForms.map(dailyHotModelCard).join('')}</div>` : '<div class="daily-empty"><div class="daily-empty-title">No hot source has a BET today</div><div class="daily-empty-sub">This view appears when a source has enough recent decisions and a current greenlight.</div></div>', `${hotForms.length} active sources`)
         : dailySection('Research Queue', 'High-probability non-BET calls and expensive favorites, excluding anything already in Top Picks.', dailyPickGrid(researchGroups), `${researchGroups.length} unique markets`);
 
-  container.innerHTML = `<div class="daily-hero"><div class="daily-hero-row"><div><div class="daily-eyebrow">TODAY'S BETTING TLDR</div><div class="daily-title">The Shortlist</div><div class="daily-sub">${escapeHtml(dateLabel(key, true))} | Each unique market appears once. Choose a view to focus on picks, consensus, sources, or research.</div></div><div class="daily-clock-wrap"><div class="daily-clock-label">SLATE DATE</div><div class="daily-clock">${escapeHtml(key)}</div></div></div></div>
+  container.innerHTML = `<div class="daily-hero"><div class="daily-hero-row"><div><div class="daily-eyebrow">TODAY'S QUICK READ</div><div class="daily-title">The Shortlist</div><div class="daily-sub">${escapeHtml(dateLabel(key, true))} | Each unique market appears once. Choose a view to focus on picks, consensus, sources, or research.</div></div><div class="daily-clock-wrap"><div class="daily-clock-label">PICKS FOR</div><div class="daily-clock">${escapeHtml(key)}</div></div></div></div>
     <div class="daily-view-shell">
       <div class="daily-view-copy"><div class="daily-view-eyebrow">CHOOSE A VIEW</div><div class="daily-view-title">${escapeHtml(activeView.label)}</div><div class="daily-view-description">${escapeHtml(activeView.description)}. ${stats.pending} picks remain open; ${priceyCount} are pricey favorites.</div></div>
       <div class="daily-view-nav" role="tablist" aria-label="Daily shortlist categories">${viewOptions.map(option => `<button class="daily-view-tab ${dailyView === option.key ? 'active' : ''}" type="button" role="tab" aria-selected="${dailyView === option.key}" onclick="setDailyView('${option.key}')"><span class="daily-view-tab-count">${option.count}</span><span class="daily-view-tab-label">${option.label}</span><span class="daily-view-tab-desc">${option.description}</span></button>`).join('')}</div>
@@ -1206,7 +1208,7 @@ async function gradeDate(date: string, picks: Pick[]): Promise<number> {
 async function refreshAutoGrades(): Promise<void> {
   if (refreshInFlight) return;
   refreshInFlight = true;
-  setRefreshStatus('Loading latest picks and final scores...');
+  setRefreshStatus('Checking for fresh picks and final scores...');
   const button = document.getElementById('refresh-btn') as HTMLButtonElement | null;
   if (button) button.disabled = true;
   try {
@@ -1218,9 +1220,9 @@ async function refreshAutoGrades(): Promise<void> {
     let graded = 0;
     for (const [date, picks] of byDate) graded += await gradeDate(date, picks);
     render();
-    setRefreshStatus(graded ? `Graded ${graded} pick${graded === 1 ? '' : 's'} locally` : 'No new final scores', 'ok');
+    setRefreshStatus(graded ? `Updated ${graded} finished pick${graded === 1 ? '' : 's'}` : 'You’re up to date — no new final scores', 'ok');
   } catch {
-    setRefreshStatus('Could not refresh scores', 'error');
+    setRefreshStatus('Couldn’t check for updates right now', 'error');
   } finally {
     refreshInFlight = false;
     if (button) button.disabled = false;
@@ -1237,14 +1239,36 @@ async function refreshForCentralClock(): Promise<void> {
   await refreshAutoGrades();
 }
 
+function updatedAgoLabel(value: string): string {
+  const timestamp = new Date(value).getTime();
+  if (!Number.isFinite(timestamp)) return '';
+  const minutes = Math.max(0, Math.floor((Date.now() - timestamp) / 60_000));
+  if (minutes < 1) return 'just now';
+  if (minutes < 60) return `${minutes} min ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours} hr${hours === 1 ? '' : 's'} ago`;
+  const days = Math.floor(hours / 24);
+  return `${days} day${days === 1 ? '' : 's'} ago`;
+}
+
 function updateSyncStatus(): void {
   const status = getCacheStatus();
+  latestPicksUpdatedAt = status.updatedAt;
   const syncStatus = document.getElementById('sync-status');
-  if (syncStatus) syncStatus.textContent = status.date ? `cache ${status.date}${status.runTime ? ` | ${status.runTime}` : ''}` : 'cache unavailable';
+  if (syncStatus) syncStatus.textContent = status.updatedAt
+    ? `Picks updated ${updatedAgoLabel(status.updatedAt)}${status.runTime ? ` • ${status.runTime}` : ''}`
+    : 'Latest pick update time unavailable';
+}
+
+function goHome(event?: Event): void {
+  event?.preventDefault();
+  switchTab('home');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 Object.assign(window, {
   switchTab,
+  goHome,
   setHomeResultMode,
   setDailyView,
   toggleHomeDatePicker,
@@ -1268,6 +1292,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   lastCentralDate = centralDateKey();
   updateSyncStatus();
   render();
+  window.setInterval(() => {
+    if (latestPicksUpdatedAt) updateSyncStatus();
+  }, 60_000);
   window.setInterval(() => void refreshForCentralClock(), AUTO_REFRESH_MS);
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') void refreshForCentralClock();

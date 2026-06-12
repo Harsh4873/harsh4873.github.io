@@ -283,12 +283,26 @@ export function setLocalGameTime(id: string, startTime: string): void {
   }
 }
 
-export function getCacheStatus(): { date: string; runTime: string; pickCount: number } {
-  const rawTime = String(latestCache?.generatedAt || latestCache?.updatedAt || '');
-  const parsed = new Date(rawTime);
+function latestPayloadTimestamp(value: unknown): number {
+  if (!value || typeof value !== 'object') return 0;
+  let latest = 0;
+  for (const [key, nested] of Object.entries(value as Record<string, unknown>)) {
+    if ((key === 'generatedAt' || key === 'updatedAt') && typeof nested === 'string') {
+      const timestamp = new Date(nested).getTime();
+      if (Number.isFinite(timestamp)) latest = Math.max(latest, timestamp);
+    } else if (nested && typeof nested === 'object') {
+      latest = Math.max(latest, latestPayloadTimestamp(nested));
+    }
+  }
+  return latest;
+}
+
+export function getCacheStatus(): { date: string; runTime: string; updatedAt: string; pickCount: number } {
+  const latestTimestamp = latestPayloadTimestamp(latestCache);
+  const parsed = new Date(latestTimestamp);
   return {
     date: String(latestCache?.date || ''),
-    runTime: Number.isNaN(parsed.getTime())
+    runTime: !latestTimestamp || Number.isNaN(parsed.getTime())
       ? ''
       : parsed.toLocaleTimeString('en-US', {
         timeZone: 'America/Chicago',
@@ -296,6 +310,7 @@ export function getCacheStatus(): { date: string; runTime: string; pickCount: nu
         minute: '2-digit',
         timeZoneName: 'short',
       }),
+    updatedAt: latestTimestamp ? parsed.toISOString() : '',
     pickCount: allPicks.length,
   };
 }

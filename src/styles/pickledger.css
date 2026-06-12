@@ -60,6 +60,9 @@
   }
   .logo-title { font-family: 'Bebas Neue', sans-serif; font-size: 42px; letter-spacing: 3px; line-height: 1; background: linear-gradient(135deg, var(--accent) 0%, var(--accent3) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
   .logo-sub { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 2px; margin-top: 4px; }
+  .brand-home { display: inline-flex; flex-direction: column; color: inherit; text-decoration: none; border-radius: 10px; cursor: pointer; }
+  .brand-home:hover .logo-sub { color: var(--text); }
+  .brand-home:focus-visible { outline: 2px solid var(--accent3); outline-offset: 6px; }
   .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
   .header-controls { display: flex; align-items: center; gap: 8px; }
   .header-stat-val { font-family: 'Bebas Neue', sans-serif; font-size: 32px; color: var(--accent); text-align: right; }
@@ -107,6 +110,7 @@
   .refresh-status { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.5px; color: var(--muted); text-align: right; min-height: 14px; }
   .refresh-status.error { color: var(--danger); }
   .refresh-status.ok { color: var(--accent3); }
+  .sync-status { margin-left: 8px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--accent3); }
   .toggle-icon { font-size: 12px; line-height: 1; }
   .toggle-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; color: var(--muted); min-width: 32px; }
   .toggle-track { width: 34px; height: 18px; background: var(--border); border-radius: 9px; position: relative; flex-shrink: 0; transition: background-color 0.3s; }
@@ -4592,13 +4596,15 @@
   }
 
 .automated-picks-badge {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  background: rgba(var(--primary-rgb), 0.15);
-  color: var(--primary);
-  padding: 4px 8px;
-  border-radius: 4px;
+  max-width: 390px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  line-height: 1.4;
+  letter-spacing: 0.35px;
+  background: rgba(0,229,160,0.08);
+  border: 1px solid rgba(0,229,160,0.18);
+  color: var(--accent);
+  padding: 6px 9px;
+  border-radius: 999px;
   margin-top: 4px;
 }

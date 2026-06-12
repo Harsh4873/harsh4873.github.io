@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PickLedger — Automated Sports Pick Viewer</title>
-<meta name="description" content="PickLedger — Public automated sports pick viewer for NBA, MLB, WNBA, and IPL.">
+<title>PickLedger — Daily Sports Picks and Source Records</title>
+<meta name="description" content="PickLedger brings today’s sports picks, source records, consensus signals, and results into one clear daily board.">
 <meta property="og:title" content="PickLedgerPro">
-<meta property="og:description" content="Sports pick tracker with live algorithmic predictions for NBA, MLB, WNBA, and IPL.">
+<meta property="og:description" content="Today’s sports picks, source records, consensus signals, and results in one clear board.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://harsh.bet/">
 <link rel="canonical" href="https://harsh.bet/">
@@ -23,10 +23,10 @@
 <div class="container">
 
   <header>
-    <div>
-      <div class="logo-title">PICKLEDGER</div>
-      <div class="logo-sub">SOURCE PERFORMANCE TRACKER</div>
-    </div>
+    <a class="brand-home" href="#home" onclick="goHome(event)" aria-label="Go to PickLedger Home">
+      <span class="logo-title">PICKLEDGER</span>
+      <span class="logo-sub">PICKS, SOURCES &amp; RESULTS</span>
+    </a>
     <div class="header-right">
       <div class="header-controls">
         <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
@@ -43,23 +43,23 @@
           <div class="mobile-toggle-track"><div class="mobile-toggle-thumb"></div></div>
           <span class="toggle-label" id="mobile-mode-label">DESK</span>
         </button>
-        <button id="refresh-btn" class="refresh-btn" onclick="refreshAutoGrades()" aria-label="Auto-grade picks">REFRESH</button>
-        <span id="sync-status" style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-left:8px;"></span>
+        <button id="refresh-btn" class="refresh-btn" onclick="refreshAutoGrades()" aria-label="Check for new picks and final scores">CHECK SCORES</button>
+        <span id="sync-status" class="sync-status">Finding the latest picks...</span>
 
       </div>
-      <div id="refresh-status" class="refresh-status">Ready to auto-grade</div>
+      <div id="refresh-status" class="refresh-status">Scores are checked automatically every 15 minutes</div>
       <div class="automated-picks-badge">
-        Automated Picks
+        Models refresh each morning and again around 3:30 PM CT
       </div>
     </div>
   </header>
 
   <div class="tabs">
     <button class="tab active" onclick="switchTab('home')">HOME</button>
-    <button class="tab" onclick="switchTab('search')">SEARCH</button>
+    <button class="tab" onclick="switchTab('search')">FIND PICKS</button>
     <button class="tab" onclick="switchTab('rankings')">RANKINGS</button>
-    <button class="tab" onclick="switchTab('trends')">TRENDS</button>
-    <button class="tab" onclick="switchTab('daily')">DAILY</button>
+    <button class="tab" onclick="switchTab('trends')">CONSENSUS</button>
+    <button class="tab" onclick="switchTab('daily')">SHORTLIST</button>
 
   </div>
 
@@ -69,20 +69,20 @@
       <div class="home-hero">
         <div class="home-hero-row">
           <div class="home-hero-copy">
-            <div class="home-eyebrow" id="home-eyebrow">LIVE BOARD</div>
-            <div class="home-title" id="home-title">Today&rsquo;s Slate, cleaned up</div>
-            <div class="home-sub" id="home-sub">Calendar, model filters, pending picks, and settled results in one matchup-first board.</div>
+            <div class="home-eyebrow" id="home-eyebrow">TODAY&rsquo;S PICKS</div>
+            <div class="home-title" id="home-title">Today&rsquo;s picks, cleaned up</div>
+            <div class="home-sub" id="home-sub">Browse open picks and finished results by matchup, sport, source, or date.</div>
           </div>
           <div class="home-hero-actions">
             <div class="home-hero-chips">
-              <span class="home-hero-chip" id="home-mode-chip">PENDING VIEW</span>
+              <span class="home-hero-chip" id="home-mode-chip">OPEN PICKS</span>
               <span class="home-hero-chip date" id="home-date-chip">APR 19</span>
               <span class="home-hero-chip muted" id="home-filter-chip">ALL SOURCES</span>
             </div>
             <div class="home-mode-segment" id="home-mode-segment" aria-label="Home result mode">
-              <button type="button" class="home-mode-btn active" data-home-mode="pending" onclick="setHomeResultMode('pending')">Pending</button>
+              <button type="button" class="home-mode-btn active" data-home-mode="pending" onclick="setHomeResultMode('pending')">Open</button>
               <button type="button" class="home-mode-btn" data-home-mode="all" onclick="setHomeResultMode('all')">All</button>
-              <button type="button" class="home-mode-btn" data-home-mode="settled" onclick="setHomeResultMode('settled')">Settled</button>
+              <button type="button" class="home-mode-btn" data-home-mode="settled" onclick="setHomeResultMode('settled')">Results</button>
             </div>
           </div>
         </div>
@@ -92,8 +92,8 @@
       <div class="home-filter-shell">
         <div class="home-filter-head">
           <div>
-            <div class="home-filter-title">Filter The Board</div>
-            <div class="home-filter-sub">Calendar, result mode, sport, and source stay tied together.</div>
+            <div class="home-filter-title">Explore The Board</div>
+            <div class="home-filter-sub">Choose a date, sport, source, or result view.</div>
           </div>
           <div class="home-date-wrap" id="home-date-wrap">
             <button
@@ -105,7 +105,7 @@
               aria-expanded="false"
             >
               <span class="home-date-trigger-copy">
-                <span class="home-date-trigger-label">Board Date</span>
+                <span class="home-date-trigger-label">Pick Date</span>
                 <span class="home-date-trigger-value" id="home-date-trigger-value">April 19</span>
               </span>
               <span class="home-date-trigger-meta" id="home-date-trigger-meta">Today</span>
@@ -127,11 +127,11 @@
   <div id="tab-search" class="tab-content">
     <div class="search-wrap">
       <span class="search-icon">&#128269;</span>
-      <input type="text" class="search-input" id="search-input" placeholder="Search pending picks for the selected Home date..." autocomplete="off" oninput="renderSearch()">
+      <input type="text" class="search-input" id="search-input" placeholder="Find a team, matchup, or source in the selected date’s open picks..." autocomplete="off" oninput="renderSearch()">
     </div>
     <div class="search-meta" id="search-meta"></div>
     <div class="search-results" id="search-results">
-      <div class="empty-state">Type a team name, matchup, or source to search pending picks for the selected Home date</div>
+      <div class="empty-state">Search for a team, matchup, or source in the selected date’s open picks</div>
     </div>
   </div>
 
@@ -143,7 +143,7 @@
       <div class="stat-box"><div class="stat-box-val positive" id="stat-wins">0</div><div class="stat-box-label">WINS</div></div>
       <div class="stat-box"><div class="stat-box-val negative" id="stat-losses">0</div><div class="stat-box-label">LOSSES</div></div>
       <div class="stat-box"><div class="stat-box-val neutral" id="stat-pushes">0</div><div class="stat-box-label">PUSHES</div></div>
-      <div class="stat-box"><div class="stat-box-val" id="stat-pending" style="color:var(--accent3)">0</div><div class="stat-box-label">PENDING</div></div>
+      <div class="stat-box"><div class="stat-box-val" id="stat-pending" style="color:var(--accent3)">0</div><div class="stat-box-label">OPEN</div></div>
       <div class="stat-box"><div class="stat-box-val" id="stat-acc">&mdash;</div><div class="stat-box-label">WIN RATE</div></div>
       <div class="stat-box"><div class="stat-box-val" id="stat-units">+0u</div><div class="stat-box-label">NET UNITS</div></div>
       <div class="stat-box"><div class="stat-box-val" id="stat-roi">&mdash;</div><div class="stat-box-label">ROI</div></div>
@@ -153,7 +153,7 @@
     <div class="rankings-section-bar">
       <div>
         <div class="section-title clean-title">Source Rankings</div>
-        <div class="section-subtitle">Global model performance calculated from committed, auto-graded JSON. Select a source card for today, yesterday, last 7 days, and all-time records.</div>
+        <div class="section-subtitle">See how every source has performed across the picks and results collected here. Select a source for today, yesterday, last 7 days, and all-time records.</div>
       </div>
     </div>
     <div class="leaderboard" id="leaderboard"><div class="empty-state" style="grid-column:1/-1">Waiting for results...</div></div>
