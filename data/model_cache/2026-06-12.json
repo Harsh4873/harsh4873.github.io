@@ -1,7 +1,7 @@
 {
   "date": "2026-06-12",
   "errors": [],
-  "externalFeedsUpdatedAt": "2026-06-12T19:15:29.475440Z",
+  "externalFeedsUpdatedAt": "2026-06-12T19:19:43.301899Z",
   "external_feeds": {
     "scores24_mlb": {
       "date": "2026-06-12",
@@ -360,14 +360,14 @@
     "sportsgambler": {
       "date": "2026-06-12",
       "errors": [],
-      "generatedAt": "2026-06-12T17:13:19.938190Z",
+      "generatedAt": "2026-06-12T19:19:43.301899Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-12",
         "feed": "sportsgambler",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba",
-        "updatedAt": "2026-06-12T17:13:19.938190Z"
+        "updatedAt": "2026-06-12T19:19:43.301899Z"
       },
       "note": "Scheduled sportsgambler refresh returned 17 pick(s).",
       "ok": true,
@@ -543,21 +543,21 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-12T17:13:19.938190Z"
+      "updatedAt": "2026-06-12T19:19:43.301899Z"
     },
     "sportytrader": {
       "date": "2026-06-12",
       "errors": [],
-      "generatedAt": "2026-06-12T17:13:19.938190Z",
+      "generatedAt": "2026-06-12T19:19:43.301899Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-12",
         "feed": "sportytrader",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba",
-        "updatedAt": "2026-06-12T17:13:19.938190Z"
+        "updatedAt": "2026-06-12T19:19:43.301899Z"
       },
-      "note": "Scheduled sportytrader refresh returned 11 pick(s).",
+      "note": "Scheduled sportytrader refresh returned 12 pick(s).",
       "ok": true,
       "picks": [
         {
@@ -653,6 +653,16 @@
         {
           "decision": "BET",
           "edge": null,
+          "odds": 180,
+          "pick": "Giants -1.5 (Giants vs Cubs)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
           "odds": 110,
           "pick": "Tempo ML (Mystics vs Tempo)",
           "probability": null,
@@ -671,7 +681,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-12T17:13:19.938190Z"
+      "updatedAt": "2026-06-12T19:19:43.301899Z"
     }
   },
   "generatedAt": "2026-06-12T17:48:19.102335Z",
@@ -11958,14 +11968,14 @@
     "sportsgambler": {
       "date": "2026-06-12",
       "errors": [],
-      "generatedAt": "2026-06-12T17:13:19.938190Z",
+      "generatedAt": "2026-06-12T19:19:43.301899Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-12",
         "feed": "sportsgambler",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba",
-        "updatedAt": "2026-06-12T17:13:19.938190Z"
+        "updatedAt": "2026-06-12T19:19:43.301899Z"
       },
       "note": "Scheduled sportsgambler refresh returned 17 pick(s).",
       "ok": true,
@@ -12175,21 +12185,21 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-12T17:13:19.938190Z"
+      "updatedAt": "2026-06-12T19:19:43.301899Z"
     },
     "sportytrader": {
       "date": "2026-06-12",
       "errors": [],
-      "generatedAt": "2026-06-12T17:13:19.938190Z",
+      "generatedAt": "2026-06-12T19:19:43.301899Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-12",
         "feed": "sportytrader",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba",
-        "updatedAt": "2026-06-12T17:13:19.938190Z"
+        "updatedAt": "2026-06-12T19:19:43.301899Z"
       },
-      "note": "Scheduled sportytrader refresh returned 11 pick(s).",
+      "note": "Scheduled sportytrader refresh returned 12 pick(s).",
       "ok": true,
       "picks": [
         {
@@ -12303,6 +12313,16 @@
         {
           "decision": "BET",
           "edge": null,
+          "odds": 180,
+          "pick": "Giants -1.5 (Giants vs Cubs)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
           "game_start_time": "2026-06-12T23:30Z",
           "odds": 110,
           "pick": "Tempo ML (Mystics vs Tempo)",
@@ -12325,7 +12345,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-12T17:13:19.938190Z"
+      "updatedAt": "2026-06-12T19:19:43.301899Z"
     },
     "wnba": {
       "ok": true,
@@ -12940,14 +12960,14 @@
   "sportsgambler": {
     "date": "2026-06-12",
     "errors": [],
-    "generatedAt": "2026-06-12T17:13:19.938190Z",
+    "generatedAt": "2026-06-12T19:19:43.301899Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-12",
       "feed": "sportsgambler",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba",
-      "updatedAt": "2026-06-12T17:13:19.938190Z"
+      "updatedAt": "2026-06-12T19:19:43.301899Z"
     },
     "note": "Scheduled sportsgambler refresh returned 17 pick(s).",
     "ok": true,
@@ -13123,21 +13143,21 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-12T17:13:19.938190Z"
+    "updatedAt": "2026-06-12T19:19:43.301899Z"
   },
   "sportytrader": {
     "date": "2026-06-12",
     "errors": [],
-    "generatedAt": "2026-06-12T17:13:19.938190Z",
+    "generatedAt": "2026-06-12T19:19:43.301899Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-12",
       "feed": "sportytrader",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba",
-      "updatedAt": "2026-06-12T17:13:19.938190Z"
+      "updatedAt": "2026-06-12T19:19:43.301899Z"
     },
-    "note": "Scheduled sportytrader refresh returned 11 pick(s).",
+    "note": "Scheduled sportytrader refresh returned 12 pick(s).",
     "ok": true,
     "picks": [
       {
@@ -13233,6 +13253,16 @@
       {
         "decision": "BET",
         "edge": null,
+        "odds": 180,
+        "pick": "Giants -1.5 (Giants vs Cubs)",
+        "probability": null,
+        "source": "SportyTrader",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
         "odds": 110,
         "pick": "Tempo ML (Mystics vs Tempo)",
         "probability": null,
@@ -13251,9 +13281,9 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-12T17:13:19.938190Z"
+    "updatedAt": "2026-06-12T19:19:43.301899Z"
   },
-  "updatedAt": "2026-06-12T19:15:29.475440Z",
+  "updatedAt": "2026-06-12T19:19:43.301899Z",
   "wnba": {
     "ok": true,
     "picks": [
