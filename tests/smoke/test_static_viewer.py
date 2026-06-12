@@ -69,6 +69,28 @@ def test_rich_static_viewer_restores_consensus_table_and_scores():
     assert "Open ESPN box score" in main
 
 
+def test_source_rankings_expand_period_records_and_static_cards_do_not_fake_clicks():
+    main = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
+    html = (ROOT / "index.html").read_text(encoding="utf-8")
+    css = (ROOT / "src" / "styles" / "pickledger.css").read_text(encoding="utf-8")
+
+    assert "function sourceRecordLines(" in main
+    for label in ("TODAY", "YESTERDAY", "LAST 7 DAYS", "ALL TIME"):
+        assert f"label: '{label}'" in main
+    assert 'data-source-card="${escapeHtml(item.source)}"' in main
+    assert 'role="button" tabindex="0" aria-expanded="${expanded}"' in main
+    assert "function bindSourceCards(" in main
+    assert "View period records" in main
+    assert "Select a source card for today, yesterday, last 7 days, and all-time records." in html
+    assert ".source-expand-control" in css
+    assert ".source-card.expanded .source-deep-dive" in css
+    assert ".trend-game-card:hover" not in css
+    assert ".search-card:hover" not in css
+    assert ".sport-card:hover" not in css
+    assert ".home-game-card:hover" not in css
+    assert ".daily-bet-card:hover" not in css
+
+
 def test_daily_tab_is_a_betting_tldr_not_a_duplicate_slate():
     main = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
     css = (ROOT / "src" / "styles" / "pickledger.css").read_text(encoding="utf-8")

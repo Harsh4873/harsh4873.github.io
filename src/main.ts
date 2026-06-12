@@ -62,6 +62,7 @@ let calendarOpen = false;
 let refreshInFlight = false;
 const homeScores = new Map<string, HomeScoreInfo>();
 const homeScoreFetches = new Map<string, number>();
+const expandedSourceKeys = new Set<string>();
 let homeScoreRefreshKey = '';
 const HOME_SCORE_TTL_MS = 45_000;
 const DISPLAY_TIME_ZONE = 'America/Chicago';
@@ -177,6 +178,43 @@ function statsFor(picks: Pick[]): Stats {
 
 function signedUnits(value: number): string {
   return `${value >= 0 ? '+' : ''}${Number(value.toFixed(2))}u`;
+}
+
+function shiftedDateKey(key: string, days: number): string {
+  const date = parseDateKey(key);
+  if (!date) return key;
+  date.setDate(date.getDate() + days);
+  return calendarDateKey(date);
+}
+
+function sourceRecordText(picks: Pick[]): string {
+  const stats = statsFor(picks);
+  const record = `${stats.wins}-${stats.losses}${stats.pushes ? `-${stats.pushes}` : ''}`;
+  return [
+    record,
+    signedUnits(stats.net),
+    stats.winRate == null ? '' : `${(stats.winRate * 100).toFixed(1)}%`,
+    stats.pending ? `${stats.pending} pending` : '',
+  ].filter(Boolean).join(' | ');
+}
+
+function sourceRecordLines(picks: Pick[]): Array<{ label: string; text: string }> {
+  const today = centralDateKey();
+  const yesterday = shiftedDateKey(today, -1);
+  const lastSevenStart = shiftedDateKey(today, -6);
+  const forDate = (key: string): Pick[] => picks.filter(pick => pickDateKey(pick) === key);
+  return [
+    { label: 'TODAY', text: sourceRecordText(forDate(today)) },
+    { label: 'YESTERDAY', text: sourceRecordText(forDate(yesterday)) },
+    {
+      label: 'LAST 7 DAYS',
+      text: sourceRecordText(picks.filter(pick => {
+        const key = pickDateKey(pick);
+        return key >= lastSevenStart && key <= today;
+      })),
+    },
+    { label: 'ALL TIME', text: sourceRecordText(picks) },
+  ];
 }
 
 function resultBadge(result: PickResult): string {
@@ -398,13 +436,24 @@ function renderRankings(): void {
     .filter(item => item.stats.wins + item.stats.losses > 0)
     .sort((a, b) => (b.stats.roi ?? -999) - (a.stats.roi ?? -999) || b.stats.net - a.stats.net);
   const leaderboard = document.getElementById('leaderboard');
-  if (leaderboard) leaderboard.innerHTML = ranked.length ? ranked.map((item, index) => `
-    <div class="source-card ${index < 3 ? `rank-${index + 1}` : ''}">
-      <div class="card-rank">${index + 1}</div><div class="card-name">${escapeHtml(item.source)}</div>
-      <div class="score-bar-wrap"><div class="score-label"><span>ACCURACY</span><span class="score-val">${item.stats.winRate == null ? '—' : `${(item.stats.winRate * 100).toFixed(1)}%`} (${item.stats.wins}-${item.stats.losses})</span></div><div class="bar-bg"><div class="bar-fill bar-acc" style="width:${(item.stats.winRate || 0) * 100}%"></div></div></div>
-      <div class="score-bar-wrap"><div class="score-label"><span>ROI</span><span class="score-val">${item.stats.roi == null ? '—' : `${(item.stats.roi * 100).toFixed(1)}%`} (${signedUnits(item.stats.net)})</span></div><div class="bar-bg"><div class="bar-fill bar-roi" style="width:${Math.max(0, Math.min(100, 50 + (item.stats.roi || 0) * 100))}%"></div></div></div>
-      <div class="algo-score"><div class="algo-score-val">${item.stats.total}</div><div class="algo-score-info">TRACKED PICKS<br>${item.stats.pending} PENDING</div></div>
-    </div>`).join('') : '<div class="empty-state">No committed grades yet. The scheduled grader will build rankings as games finish.</div>';
+  if (leaderboard) {
+    leaderboard.innerHTML = ranked.length ? ranked.map((item, index) => {
+      const expanded = expandedSourceKeys.has(item.source);
+      const records = sourceRecordLines(item.picks);
+      return `<article class="source-card ${index < 3 ? `rank-${index + 1}` : ''} ${expanded ? 'expanded' : ''}" data-source-card="${escapeHtml(item.source)}" role="button" tabindex="0" aria-expanded="${expanded}">
+        <div class="card-rank">${index + 1}</div><div class="card-name">${escapeHtml(item.source)}</div>
+        <div class="score-bar-wrap"><div class="score-label"><span>ACCURACY</span><span class="score-val">${item.stats.winRate == null ? '—' : `${(item.stats.winRate * 100).toFixed(1)}%`} (${item.stats.wins}-${item.stats.losses})</span></div><div class="bar-bg"><div class="bar-fill bar-acc" style="width:${(item.stats.winRate || 0) * 100}%"></div></div></div>
+        <div class="score-bar-wrap"><div class="score-label"><span>ROI</span><span class="score-val">${item.stats.roi == null ? '—' : `${(item.stats.roi * 100).toFixed(1)}%`} (${signedUnits(item.stats.net)})</span></div><div class="bar-bg"><div class="bar-fill bar-roi" style="width:${Math.max(0, Math.min(100, 50 + (item.stats.roi || 0) * 100))}%"></div></div></div>
+        <div class="algo-score"><div class="algo-score-val">${item.stats.total}</div><div class="algo-score-info">TRACKED PICKS<br>${item.stats.pending} PENDING</div></div>
+        <div class="source-expand-control"><span data-source-expand-label>${expanded ? 'Hide period records' : 'View period records'}</span><span class="source-expand-icon" aria-hidden="true">&#9662;</span></div>
+        <div class="source-deep-dive">
+          <div class="trend-deep-title">PERIOD RECORDS</div>
+          <div class="source-record-list">${records.map(record => `<div class="source-record-item"><div class="source-record-label">${record.label}</div><div class="source-record-value">${record.text}</div></div>`).join('')}</div>
+        </div>
+      </article>`;
+    }).join('') : '<div class="empty-state">No committed grades yet. The scheduled grader will build rankings as games finish.</div>';
+    bindSourceCards(leaderboard);
+  }
 
   const bySport = new Map<string, Pick[]>();
   getAllPicks().forEach(pick => bySport.set(pick.sport, [...(bySport.get(pick.sport) || []), pick]));
@@ -415,6 +464,28 @@ function renderRankings(): void {
   }).join('');
 
   renderDayOfWeekTable();
+}
+
+function bindSourceCards(leaderboard: HTMLElement): void {
+  leaderboard.querySelectorAll<HTMLElement>('[data-source-card]').forEach(card => {
+    const toggle = (): void => {
+      const source = card.dataset.sourceCard || '';
+      if (!source) return;
+      const expanded = !expandedSourceKeys.has(source);
+      if (expanded) expandedSourceKeys.add(source);
+      else expandedSourceKeys.delete(source);
+      card.classList.toggle('expanded', expanded);
+      card.setAttribute('aria-expanded', String(expanded));
+      const label = card.querySelector<HTMLElement>('[data-source-expand-label]');
+      if (label) label.textContent = expanded ? 'Hide period records' : 'View period records';
+    };
+    card.addEventListener('click', toggle);
+    card.addEventListener('keydown', event => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      toggle();
+    });
+  });
 }
 
 function renderDayOfWeekTable(): void {
