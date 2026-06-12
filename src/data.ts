@@ -177,7 +177,8 @@ function normalizePick(
 }
 
 function isTrackedPick(pick: Pick): boolean {
-  return String(pick.decision || '').trim().toUpperCase() !== 'PASS';
+  const decision = String(pick.decision || '').trim().toUpperCase();
+  return decision === 'BET' || decision === 'LEAN';
 }
 
 function picksFromCache(payload: ModelCachePayload): Pick[] {

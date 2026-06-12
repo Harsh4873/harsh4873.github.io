@@ -68,7 +68,7 @@ def test_static_viewer_keeps_public_tabs_and_client_grading():
     assert "Find a team, matchup, or source in the selected date’s open picks" in html
     assert "embeddedResult === 'pending' ? localResult : embeddedResult" in data
     assert "function isTrackedPick(" in data
-    assert "!== 'PASS'" in data
+    assert "decision === 'BET' || decision === 'LEAN'" in data
     assert "pick && isTrackedPick(pick)" in data
     assert "function renderRankings()" in main
     assert "function renderSearch()" in main
@@ -163,6 +163,7 @@ def test_auto_grader_updates_nested_model_picks(monkeypatch):
                         "source": "MLB Model",
                         "sport": "MLB",
                         "pick": "Cubs ML (Cubs vs Cardinals)",
+                        "decision": "BET",
                         "result": "pending",
                     }
                 ]
@@ -184,7 +185,7 @@ def test_auto_grader_updates_nested_model_picks(monkeypatch):
     assert pick["start_time"] == "2026-06-08T20:00:00Z"
 
 
-def test_auto_grader_skips_pass_decisions(monkeypatch):
+def test_auto_grader_only_tracks_bet_and_lean_decisions(monkeypatch):
     module = _load_module("auto_grade_pass_test", ROOT / "scripts" / "auto_grade_picks.py")
     payload = {
         "date": "2026-06-08",
@@ -197,7 +198,20 @@ def test_auto_grader_skips_pass_decisions(monkeypatch):
                         "pick": "Cubs ML (Cubs vs Cardinals)",
                         "decision": "PASS",
                         "result": "pending",
-                    }
+                    },
+                    {
+                        "source": "MLB Model",
+                        "sport": "MLB",
+                        "pick": "Cardinals ML (Cubs vs Cardinals)",
+                        "decision": "WATCH",
+                        "result": "pending",
+                    },
+                    {
+                        "source": "MLB Model",
+                        "sport": "MLB",
+                        "pick": "Over 8.5 (Cubs vs Cardinals)",
+                        "result": "pending",
+                    },
                 ]
             }
         },
@@ -208,7 +222,7 @@ def test_auto_grader_skips_pass_decisions(monkeypatch):
 
     monkeypatch.setattr(module.pickgrader_server, "auto_grade", fail_if_called)
     assert module.grade_payload(payload) == 0
-    assert payload["models"]["mlb_new"]["picks"][0]["result"] == "pending"
+    assert all(pick["result"] == "pending" for pick in payload["models"]["mlb_new"]["picks"])
 
 
 def test_scheduled_refreshes_are_json_only_and_use_shared_writer_lock():

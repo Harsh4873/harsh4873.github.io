@@ -73,7 +73,7 @@ def grade_payload(payload: dict[str, Any]) -> int:
 
     for scope, picks in _iter_pick_lists(payload):
         for index, pick in enumerate(picks):
-            if str(pick.get("decision") or "").strip().upper() == "PASS":
+            if str(pick.get("decision") or "").strip().upper() not in {"BET", "LEAN"}:
                 continue
             if str(pick.get("result") or "pending").lower() not in {"", "pending"}:
                 continue
