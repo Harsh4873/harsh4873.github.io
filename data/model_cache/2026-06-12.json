@@ -1,15 +1,15 @@
 {
   "date": "2026-06-12",
   "errors": [],
-  "externalFeedsUpdatedAt": "2026-06-12T19:19:43.301899Z",
+  "externalFeedsUpdatedAt": "2026-06-12T20:02:01.251495Z",
   "external_feeds": {
     "scores24_mlb": {
       "date": "2026-06-12",
-      "generatedAt": "2026-06-12T19:15:29.475440Z",
+      "generatedAt": "2026-06-12T20:02:01.251495Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
-        "attemptedUrls": 24,
-        "blockRetryRounds": 1,
+        "attemptedUrls": 27,
+        "blockRetryRounds": 2,
         "blockedUrls": 9,
         "date": "2026-06-12",
         "expectedMatchups": 15,
@@ -19,7 +19,7 @@
         "listingLinks": 12,
         "matchedPicks": 15,
         "missingMatchups": [],
-        "updatedAt": "2026-06-12T19:15:29.475440Z"
+        "updatedAt": "2026-06-12T20:02:01.251495Z"
       },
       "note": "Scores24MLB matched 15 published editorial choice(s) to 15 official 2026-06-12 matchup(s).",
       "ok": true,
@@ -295,11 +295,11 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-12T19:15:29.475440Z"
+      "updatedAt": "2026-06-12T20:02:01.251495Z"
     },
     "scores24_wnba": {
       "date": "2026-06-12",
-      "generatedAt": "2026-06-12T19:15:29.475440Z",
+      "generatedAt": "2026-06-12T20:02:01.251495Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "attemptedUrls": 2,
@@ -313,7 +313,7 @@
         "listingLinks": 12,
         "matchedPicks": 2,
         "missingMatchups": [],
-        "updatedAt": "2026-06-12T19:15:29.475440Z"
+        "updatedAt": "2026-06-12T20:02:01.251495Z"
       },
       "note": "Scores24WNBA matched 2 published editorial choice(s) to 2 official 2026-06-12 matchup(s).",
       "ok": true,
@@ -355,7 +355,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-12T19:15:29.475440Z"
+      "updatedAt": "2026-06-12T20:02:01.251495Z"
     },
     "sportsgambler": {
       "date": "2026-06-12",
@@ -11613,11 +11613,11 @@
     },
     "scores24_mlb": {
       "date": "2026-06-12",
-      "generatedAt": "2026-06-12T19:15:29.475440Z",
+      "generatedAt": "2026-06-12T20:02:01.251495Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
-        "attemptedUrls": 24,
-        "blockRetryRounds": 1,
+        "attemptedUrls": 27,
+        "blockRetryRounds": 2,
         "blockedUrls": 9,
         "date": "2026-06-12",
         "expectedMatchups": 15,
@@ -11627,7 +11627,7 @@
         "listingLinks": 12,
         "matchedPicks": 15,
         "missingMatchups": [],
-        "updatedAt": "2026-06-12T19:15:29.475440Z"
+        "updatedAt": "2026-06-12T20:02:01.251495Z"
       },
       "note": "Scores24MLB matched 15 published editorial choice(s) to 15 official 2026-06-12 matchup(s).",
       "ok": true,
@@ -11903,11 +11903,11 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-12T19:15:29.475440Z"
+      "updatedAt": "2026-06-12T20:02:01.251495Z"
     },
     "scores24_wnba": {
       "date": "2026-06-12",
-      "generatedAt": "2026-06-12T19:15:29.475440Z",
+      "generatedAt": "2026-06-12T20:02:01.251495Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "attemptedUrls": 2,
@@ -11921,7 +11921,7 @@
         "listingLinks": 12,
         "matchedPicks": 2,
         "missingMatchups": [],
-        "updatedAt": "2026-06-12T19:15:29.475440Z"
+        "updatedAt": "2026-06-12T20:02:01.251495Z"
       },
       "note": "Scores24WNBA matched 2 published editorial choice(s) to 2 official 2026-06-12 matchup(s).",
       "ok": true,
@@ -11963,7 +11963,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-12T19:15:29.475440Z"
+      "updatedAt": "2026-06-12T20:02:01.251495Z"
     },
     "sportsgambler": {
       "date": "2026-06-12",
@@ -12605,11 +12605,11 @@
   },
   "scores24_mlb": {
     "date": "2026-06-12",
-    "generatedAt": "2026-06-12T19:15:29.475440Z",
+    "generatedAt": "2026-06-12T20:02:01.251495Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
-      "attemptedUrls": 24,
-      "blockRetryRounds": 1,
+      "attemptedUrls": 27,
+      "blockRetryRounds": 2,
       "blockedUrls": 9,
       "date": "2026-06-12",
       "expectedMatchups": 15,
@@ -12619,7 +12619,7 @@
       "listingLinks": 12,
       "matchedPicks": 15,
       "missingMatchups": [],
-      "updatedAt": "2026-06-12T19:15:29.475440Z"
+      "updatedAt": "2026-06-12T20:02:01.251495Z"
     },
     "note": "Scores24MLB matched 15 published editorial choice(s) to 15 official 2026-06-12 matchup(s).",
     "ok": true,
@@ -12895,11 +12895,11 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-12T19:15:29.475440Z"
+    "updatedAt": "2026-06-12T20:02:01.251495Z"
   },
   "scores24_wnba": {
     "date": "2026-06-12",
-    "generatedAt": "2026-06-12T19:15:29.475440Z",
+    "generatedAt": "2026-06-12T20:02:01.251495Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "attemptedUrls": 2,
@@ -12913,7 +12913,7 @@
       "listingLinks": 12,
       "matchedPicks": 2,
       "missingMatchups": [],
-      "updatedAt": "2026-06-12T19:15:29.475440Z"
+      "updatedAt": "2026-06-12T20:02:01.251495Z"
     },
     "note": "Scores24WNBA matched 2 published editorial choice(s) to 2 official 2026-06-12 matchup(s).",
     "ok": true,
@@ -12955,7 +12955,7 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-12T19:15:29.475440Z"
+    "updatedAt": "2026-06-12T20:02:01.251495Z"
   },
   "sportsgambler": {
     "date": "2026-06-12",
@@ -13283,7 +13283,7 @@
     ],
     "updatedAt": "2026-06-12T19:19:43.301899Z"
   },
-  "updatedAt": "2026-06-12T19:19:43.301899Z",
+  "updatedAt": "2026-06-12T20:02:01.251495Z",
   "wnba": {
     "ok": true,
     "picks": [
