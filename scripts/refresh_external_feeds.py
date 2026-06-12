@@ -17,11 +17,14 @@ sys.path.insert(0, str(REPO_ROOT))
 
 import pickgrader_server as server  # noqa: E402
 from scripts.cache_manifest import write_cache_manifest  # noqa: E402
+from scripts.scrapers.scores24_scraper import run_scores24_mlb, run_scores24_wnba  # noqa: E402
 
 
 FEED_RUNNERS: dict[str, Callable[[str, list[str]], dict[str, Any]]] = {
     "sportytrader": server.run_sportytrader_scraper,
     "sportsgambler": server.run_sportsgambler_scraper,
+    "scores24_wnba": run_scores24_wnba,
+    "scores24_mlb": run_scores24_mlb,
 }
 
 
@@ -30,7 +33,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--date", default="", help="Target date in YYYY-MM-DD or MM/DD/YYYY format.")
     parser.add_argument(
         "--feeds",
-        default="sportytrader,sportsgambler",
+        default="sportytrader,sportsgambler,scores24_wnba,scores24_mlb",
         help="Comma-separated feeds to refresh, or 'all'.",
     )
     parser.add_argument("--sports", default="nba,mlb,wnba", help="Comma-separated sports passed to each feed scraper.")

@@ -1,0 +1,635 @@
+#!/usr/bin/env python3
+"""Scrape Scores24 WNBA and MLB editorial choices by official slate matchup."""
+
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import re
+import time
+import unicodedata
+from datetime import date, datetime, timedelta
+from pathlib import Path
+from typing import Any
+from urllib.parse import urljoin
+
+import requests
+from bs4 import BeautifulSoup
+
+
+BASE_URL = "https://scores24.live"
+REPO_ROOT = Path(__file__).resolve().parents[2]
+MODEL_CACHE_DIR = REPO_ROOT / "data" / "model_cache"
+HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
+    ),
+    "Accept-Language": "en-US,en;q=0.9",
+}
+SPORT_CONFIG = {
+    "wnba": {
+        "espn_sport": "basketball",
+        "espn_league": "wnba",
+        "scores24_sport": "basketball",
+        "listing_url": f"{BASE_URL}/en/basketball/l-usa-wnba/predictions",
+        "source": "Scores24WNBA",
+        "label": "WNBA",
+        "cache_keys": ("wnba",),
+    },
+    "mlb": {
+        "espn_sport": "baseball",
+        "espn_league": "mlb",
+        "scores24_sport": "baseball",
+        "listing_url": f"{BASE_URL}/en/baseball/l-usa-mlb/predictions",
+        "source": "Scores24MLB",
+        "label": "MLB",
+        "cache_keys": ("mlb_first_five", "mlb_inning", "mlb_new"),
+    },
+}
+CLOUDFLARE_SIGNALS = (
+    "attention required",
+    "just a moment",
+    "performing security verification",
+    "sorry, you have been blocked",
+    "cf-error-details",
+    "challenge-platform",
+    "cloudflare",
+)
+TEAM_TEXT_ALIASES = {
+    "cleveland gardians": "cleveland guardians",
+    "oakland athletics": "athletics",
+}
+TEAM_SLUG_ALIASES = {
+    "Cleveland Guardians": ("Cleveland Gardians",),
+    "Athletics": ("Oakland Athletics",),
+}
+
+
+def _env_flag(name: str, default: bool) -> bool:
+    raw = os.environ.get(name)
+    if raw is None:
+        return default
+    return raw.strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _env_float(name: str, default: float, minimum: float = 0.0) -> float:
+    try:
+        value = float(os.environ.get(name, str(default)))
+    except ValueError:
+        value = default
+    return max(minimum, value)
+
+
+def _norm_space(value: Any) -> str:
+    return re.sub(r"\s+", " ", str(value or "")).strip()
+
+
+def _normalize_team(value: Any) -> str:
+    text = unicodedata.normalize("NFKD", str(value or ""))
+    text = "".join(char for char in text if not unicodedata.combining(char))
+    text = re.sub(r"\s*\(w\)\s*", " ", text, flags=re.IGNORECASE)
+    text = re.sub(r"[^a-z0-9]+", " ", text.lower()).strip()
+    return TEAM_TEXT_ALIASES.get(text, text)
+
+
+def _team_matches(expected: str, candidate: str) -> bool:
+    expected_norm = _normalize_team(expected)
+    candidate_norm = _normalize_team(candidate)
+    if not expected_norm or not candidate_norm:
+        return False
+    if expected_norm == candidate_norm:
+        return True
+    if len(expected_norm) >= 4 and expected_norm in candidate_norm:
+        return True
+    if len(candidate_norm) >= 4 and candidate_norm in expected_norm:
+        return True
+    expected_tokens = expected_norm.split()
+    candidate_tokens = candidate_norm.split()
+    return bool(expected_tokens and expected_tokens[-1] in candidate_tokens)
+
+
+def _matchup_matches_blob(matchup: dict[str, str], blob: str) -> bool:
+    return _team_matches(matchup.get("away", ""), blob) and _team_matches(matchup.get("home", ""), blob)
+
+
+def _matchup_key(away: str, home: str) -> tuple[str, str] | None:
+    teams = sorted((_normalize_team(away), _normalize_team(home)))
+    return (teams[0], teams[1]) if all(teams) else None
+
+
+def _parse_target_date(raw: str) -> date:
+    for fmt in ("%Y-%m-%d", "%m/%d/%Y"):
+        try:
+            return datetime.strptime(raw, fmt).date()
+        except ValueError:
+            continue
+    raise ValueError(f"unsupported date: {raw}")
+
+
+def _cache_matchups(sport: str, date_iso: str) -> list[dict[str, str]]:
+    config = SPORT_CONFIG[sport]
+    for path in (MODEL_CACHE_DIR / f"{date_iso}.json", MODEL_CACHE_DIR / "latest.json"):
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if not isinstance(payload, dict) or str(payload.get("date") or "") != date_iso:
+            continue
+        models = payload.get("models") if isinstance(payload.get("models"), dict) else {}
+        matchups: dict[tuple[str, str], dict[str, str]] = {}
+        for model_key in config["cache_keys"]:
+            bucket = models.get(model_key) if isinstance(models.get(model_key), dict) else {}
+            rows = bucket.get("games") if isinstance(bucket.get("games"), list) else bucket.get("picks")
+            for row in rows if isinstance(rows, list) else []:
+                if not isinstance(row, dict):
+                    continue
+                away = _norm_space(row.get("away_team"))
+                home = _norm_space(row.get("home_team"))
+                if not away or not home:
+                    continue
+                key = _matchup_key(away, home)
+                if not key:
+                    continue
+                matchups.setdefault(
+                    key,
+                    {
+                        "away": away,
+                        "home": home,
+                        "start_time": _norm_space(row.get("start_time") or row.get("game_start_time")),
+                    },
+                )
+        if matchups:
+            return list(matchups.values())
+    return []
+
+
+def fetch_daily_matchups(
+    sport: str,
+    date_iso: str,
+    session: requests.Session | None = None,
+) -> list[dict[str, str]]:
+    """Return official daily matchups, with committed cache as a resilient fallback."""
+    config = SPORT_CONFIG[sport]
+    url = (
+        "https://site.api.espn.com/apis/site/v2/sports/"
+        f"{config['espn_sport']}/{config['espn_league']}/scoreboard?dates={date_iso.replace('-', '')}"
+    )
+    client = session or requests.Session()
+    matchups: dict[tuple[str, str], dict[str, str]] = {}
+    try:
+        response = client.get(url, headers={"User-Agent": "PickLedgerScores24/1.0"}, timeout=20)
+        response.raise_for_status()
+        payload = response.json()
+    except (requests.RequestException, ValueError):
+        payload = {}
+
+    for event in payload.get("events", []) if isinstance(payload, dict) else []:
+        competitions = event.get("competitions") if isinstance(event, dict) else []
+        competition = competitions[0] if isinstance(competitions, list) and competitions else {}
+        competitors = competition.get("competitors") if isinstance(competition, dict) else []
+        away = home = ""
+        for competitor in competitors if isinstance(competitors, list) else []:
+            team = competitor.get("team") if isinstance(competitor, dict) else {}
+            name = _norm_space(team.get("displayName") or team.get("shortDisplayName")) if isinstance(team, dict) else ""
+            if competitor.get("homeAway") == "away":
+                away = name
+            elif competitor.get("homeAway") == "home":
+                home = name
+        key = _matchup_key(away, home)
+        if key:
+            matchups[key] = {
+                "away": away,
+                "home": home,
+                "start_time": _norm_space(event.get("date") or competition.get("date")),
+            }
+
+    for matchup in _cache_matchups(sport, date_iso):
+        key = _matchup_key(matchup["away"], matchup["home"])
+        if key:
+            matchups.setdefault(key, matchup)
+    return list(matchups.values())
+
+
+def _looks_blocked(status: int, html: str) -> bool:
+    if status in {403, 429}:
+        return True
+    blob = (html or "")[:12000].lower()
+    return any(signal in blob for signal in CLOUDFLARE_SIGNALS)
+
+
+class Scores24Client:
+    """Paced requests client with a lazy headless-Playwright fallback."""
+
+    def __init__(
+        self,
+        session: requests.Session | None = None,
+        *,
+        interval_seconds: float | None = None,
+        browser_fallback: bool | None = None,
+    ) -> None:
+        self.session = session or requests.Session()
+        self.session.headers.update(HEADERS)
+        self.interval_seconds = (
+            _env_float("SCORES24_REQUEST_INTERVAL_SECONDS", 1.2)
+            if interval_seconds is None
+            else max(0.0, interval_seconds)
+        )
+        self.browser_fallback = (
+            _env_flag("SCORES24_BROWSER_FALLBACK", True)
+            if browser_fallback is None
+            else browser_fallback
+        )
+        self._last_request_at = 0.0
+        self._pw = None
+        self._browser = None
+        self._context = None
+
+    def __enter__(self) -> Scores24Client:
+        return self
+
+    def __exit__(self, *_args: Any) -> None:
+        self.close()
+
+    def close(self) -> None:
+        for resource in (self._context, self._browser, self._pw):
+            if resource is None:
+                continue
+            try:
+                resource.close() if resource is not self._pw else resource.stop()
+            except Exception:
+                pass
+        self._context = self._browser = self._pw = None
+
+    def _pace(self) -> None:
+        remaining = self.interval_seconds - (time.monotonic() - self._last_request_at)
+        if remaining > 0:
+            time.sleep(remaining)
+        self._last_request_at = time.monotonic()
+
+    def _browser_html(self, url: str) -> tuple[str, int]:
+        if not self.browser_fallback:
+            return "", 0
+        try:
+            from playwright.sync_api import sync_playwright
+
+            if self._pw is None:
+                self._pw = sync_playwright().start()
+                self._browser = self._pw.chromium.launch(
+                    headless=True,
+                    args=[
+                        "--no-sandbox",
+                        "--disable-setuid-sandbox",
+                        "--disable-dev-shm-usage",
+                        "--disable-blink-features=AutomationControlled",
+                    ],
+                )
+                self._context = self._browser.new_context(
+                    user_agent=HEADERS["User-Agent"],
+                    locale="en-US",
+                    timezone_id="America/Chicago",
+                    viewport={"width": 1365, "height": 900},
+                )
+                self._context.add_init_script(
+                    "Object.defineProperty(navigator, 'webdriver', { get: () => undefined });"
+                )
+            page = self._context.new_page()
+            try:
+                response = page.goto(url, timeout=45000, wait_until="domcontentloaded")
+                page.wait_for_timeout(3500)
+                html = page.content()
+                status = response.status if response else 0
+                return html, status
+            finally:
+                page.close()
+        except Exception:
+            return "", 0
+
+    def get_html(self, url: str, attempts: int = 3) -> tuple[str, int, bool]:
+        last_html = ""
+        last_status = 0
+        blocked = False
+        for attempt in range(max(1, attempts)):
+            self._pace()
+            try:
+                response = self.session.get(url, timeout=35)
+                last_html = response.text
+                last_status = response.status_code
+            except requests.RequestException:
+                last_html = ""
+                last_status = 0
+            blocked = _looks_blocked(last_status, last_html)
+            if last_status == 200 and not blocked:
+                return last_html, last_status, False
+            if last_status == 404:
+                return last_html, last_status, False
+            if attempt + 1 < attempts:
+                time.sleep((4.0 if blocked else 2.0) * (attempt + 1))
+
+        if blocked:
+            browser_html, browser_status = self._browser_html(url)
+            if browser_status == 200 and not _looks_blocked(browser_status, browser_html):
+                return browser_html, browser_status, False
+        return last_html, last_status, blocked
+
+
+def extract_listing_links(html: str) -> list[dict[str, str]]:
+    soup = BeautifulSoup(html or "", "html.parser")
+    out: list[dict[str, str]] = []
+    seen: set[str] = set()
+    for anchor in soup.find_all("a", href=True):
+        href = _norm_space(anchor.get("href"))
+        if "/m-" not in href or "prediction" not in href:
+            continue
+        url = urljoin(BASE_URL, href)
+        if url in seen:
+            continue
+        seen.add(url)
+        out.append({"url": url, "text": _norm_space(anchor.get_text(" ", strip=True))})
+    return out
+
+
+def extract_our_choice(html: str) -> tuple[str, int | None]:
+    soup = BeautifulSoup(html or "", "html.parser")
+    label = soup.find(string=lambda value: value and _norm_space(value).lower() == "our choice")
+    candidates: list[str] = []
+    if label:
+        parent = label.parent
+        for _ in range(5):
+            if parent is None:
+                break
+            text = _norm_space(parent.get_text(" ", strip=True))
+            if "at odds of" in text.lower():
+                candidates.append(text)
+            parent = parent.parent
+    candidates.append(_norm_space(soup.get_text(" ", strip=True)))
+
+    for text in candidates:
+        match = re.search(
+            r"Our choice\s+(.+?)\s+at odds of\s+([+-]?\d+(?:\.\d+)?)\*?",
+            text,
+            re.IGNORECASE,
+        )
+        if not match:
+            continue
+        tip = _norm_space(match.group(1)).rstrip(" .:")
+        try:
+            odds = int(float(match.group(2)))
+        except ValueError:
+            odds = None
+        if tip:
+            return tip, odds
+    return "", None
+
+
+def _slugify(value: str) -> str:
+    normalized = unicodedata.normalize("NFKD", value)
+    normalized = "".join(char for char in normalized if not unicodedata.combining(char))
+    return re.sub(r"[^a-z0-9]+", "-", normalized.lower()).strip("-")
+
+
+def _team_slug_variants(team: str, sport: str) -> list[str]:
+    labels = [team, *TEAM_SLUG_ALIASES.get(team, ())]
+    if sport == "wnba":
+        labels.extend(f"{label} W" for label in list(labels))
+    return list(dict.fromkeys(_slugify(label) for label in labels if _slugify(label)))
+
+
+def candidate_prediction_urls(sport: str, target_date: str, matchup: dict[str, str]) -> list[str]:
+    config = SPORT_CONFIG[sport]
+    base_date = _parse_target_date(target_date)
+    date_candidates = [base_date, base_date + timedelta(days=1), base_date - timedelta(days=1)]
+    home_slugs = _team_slug_variants(matchup["home"], sport)
+    away_slugs = _team_slug_variants(matchup["away"], sport)
+    urls: list[str] = []
+    orders = (
+        [(home_slug, away_slug) for home_slug in home_slugs for away_slug in away_slugs],
+        [(away_slug, home_slug) for home_slug in home_slugs for away_slug in away_slugs],
+    )
+    for ordered_pairs in orders:
+        for first, second in ordered_pairs:
+            for day in date_candidates:
+                date_slug = day.strftime("%d-%m-%Y")
+                root = f"{BASE_URL}/en/{config['scores24_sport']}/m-{date_slug}-{first}-{second}"
+                urls.append(f"{root}-prediction")
+                if sport == "wnba":
+                    urls.append(f"{root}--prediction")
+    return list(dict.fromkeys(urls))
+
+
+def _clean_pick(tip: str, matchup: dict[str, str]) -> str:
+    compact = re.sub(r"\s*\(inc\.?\s*OT\)\s*", "", _norm_space(tip), flags=re.IGNORECASE)
+    compact = compact.rstrip(" .:")
+    market = compact
+    total = re.fullmatch(
+        r"(?:Total(?:\s+(?:points|runs|goals))?|Total points)\s+(Over|Under)\s*\((\d+(?:\.\d+)?)\)",
+        compact,
+        re.IGNORECASE,
+    )
+    if total:
+        market = f"{total.group(1).title()} {total.group(2)}"
+    else:
+        winner = re.fullmatch(r"(.+?)\s+Win", compact, re.IGNORECASE)
+        handicap = re.fullmatch(r"(.+?)\s+Handicap\s*\(([+-]?\d+(?:\.\d+)?)\)", compact, re.IGNORECASE)
+        if winner:
+            market = f"{_norm_space(winner.group(1))} ML"
+        elif handicap:
+            market = f"{_norm_space(handicap.group(1))} {handicap.group(2)}"
+    return f"{market} ({matchup['away']} @ {matchup['home']})"
+
+
+def _matching_listing_urls(links: list[dict[str, str]], matchup: dict[str, str]) -> list[str]:
+    return [
+        link["url"]
+        for link in links
+        if _matchup_matches_blob(matchup, f"{link.get('text', '')} {link.get('url', '').replace('-', ' ')}")
+    ]
+
+
+def _pick_payload(
+    config: dict[str, Any],
+    date_iso: str,
+    matchup: dict[str, str],
+    source_url: str,
+    tip: str,
+    odds: int | None,
+) -> dict[str, Any]:
+    matchup_label = f"{matchup['away']} @ {matchup['home']}"
+    return {
+        "source": config["source"],
+        "pick": _clean_pick(tip, matchup),
+        "tip": tip,
+        "sport": config["label"],
+        "odds": odds,
+        "units": 1,
+        "probability": None,
+        "edge": None,
+        "decision": "BET",
+        "date": date_iso,
+        "matchup": matchup_label,
+        "game": matchup_label,
+        "away_team": matchup["away"],
+        "home_team": matchup["home"],
+        "start_time": matchup.get("start_time") or None,
+        "source_url": source_url,
+    }
+
+
+def scrape_scores24(
+    sport: str,
+    date_iso: str,
+    *,
+    client: Scores24Client | None = None,
+    matchups: list[dict[str, str]] | None = None,
+) -> dict[str, Any]:
+    sport_key = sport.strip().lower()
+    if sport_key not in SPORT_CONFIG:
+        raise ValueError(f"unsupported Scores24 sport: {sport}")
+    _parse_target_date(date_iso)
+    config = SPORT_CONFIG[sport_key]
+    expected = matchups if matchups is not None else fetch_daily_matchups(sport_key, date_iso)
+    if not expected:
+        return {
+            "ok": False,
+            "date": date_iso,
+            "picks": [],
+            "error": f"Scores24{config['label']} could not resolve an official {date_iso} slate",
+        }
+
+    owns_client = client is None
+    scores_client = client or Scores24Client()
+    blocked_urls: list[str] = []
+    blocked_matchups: set[tuple[str, str]] = set()
+    attempted_urls = 0
+    listing_links: list[dict[str, str]] = []
+    try:
+        listing_html, _, listing_blocked = scores_client.get_html(config["listing_url"])
+        if listing_blocked:
+            blocked_urls.append(config["listing_url"])
+        else:
+            listing_links = extract_listing_links(listing_html)
+
+        picks: list[dict[str, Any]] = []
+        unresolved: list[tuple[dict[str, str], list[str]]] = []
+        max_candidates = int(_env_float("SCORES24_MAX_CANDIDATES_PER_MATCHUP", 36, 1))
+
+        def resolve_candidates(
+            matchup: dict[str, str],
+            candidates: list[str],
+            candidate_limit: int,
+        ) -> dict[str, Any] | None:
+            nonlocal attempted_urls
+            for url in candidates[:candidate_limit]:
+                attempted_urls += 1
+                html, status, blocked = scores_client.get_html(url)
+                if blocked:
+                    blocked_urls.append(url)
+                    key = _matchup_key(matchup["away"], matchup["home"])
+                    if key:
+                        blocked_matchups.add(key)
+                    break
+                if status != 200:
+                    continue
+                if not _matchup_matches_blob(matchup, f"{url.replace('-', ' ')} {_norm_space(BeautifulSoup(html, 'html.parser').title)}"):
+                    continue
+                tip, odds = extract_our_choice(html)
+                if not tip:
+                    continue
+                key = _matchup_key(matchup["away"], matchup["home"])
+                if key:
+                    blocked_matchups.discard(key)
+                return _pick_payload(config, date_iso, matchup, url, tip, odds)
+            return None
+
+        for matchup in expected:
+            candidates = list(
+                dict.fromkeys(
+                    [
+                        *_matching_listing_urls(listing_links, matchup),
+                        *candidate_prediction_urls(sport_key, date_iso, matchup),
+                    ]
+                )
+            )
+            pick = resolve_candidates(matchup, candidates, max_candidates)
+            if not pick:
+                unresolved.append((matchup, candidates))
+                continue
+            picks.append(pick)
+
+        if unresolved and blocked_urls:
+            time.sleep(_env_float("SCORES24_BLOCK_RETRY_DELAY_SECONDS", 8.0))
+            still_unresolved: list[tuple[dict[str, str], list[str]]] = []
+            for matchup, candidates in unresolved:
+                pick = resolve_candidates(matchup, candidates, min(max_candidates, 6))
+                if pick:
+                    picks.append(pick)
+                else:
+                    still_unresolved.append((matchup, candidates))
+            unresolved = still_unresolved
+    finally:
+        if owns_client:
+            scores_client.close()
+
+    missing_matchups = [f"{matchup['away']} @ {matchup['home']}" for matchup, _ in unresolved]
+    blocked_missing = [
+        f"{matchup['away']} @ {matchup['home']}"
+        for matchup, _ in unresolved
+        if _matchup_key(matchup["away"], matchup["home"]) in blocked_matchups
+    ]
+    if blocked_missing:
+        return {
+            "ok": False,
+            "date": date_iso,
+            "picks": picks,
+            "error": (
+                f"Scores24{config['label']} was blocked before it could finish today's official matchups: "
+                f"{', '.join(blocked_missing[:3])}"
+            ),
+            "meta": {
+                "expectedMatchups": len(expected),
+                "matchedPicks": len(picks),
+                "missingMatchups": missing_matchups,
+                "attemptedUrls": attempted_urls,
+                "blockedUrls": len(set(blocked_urls)),
+            },
+        }
+    return {
+        "ok": True,
+        "date": date_iso,
+        "picks": picks,
+        "note": (
+            f"Scores24{config['label']} matched {len(picks)} published editorial choice(s) "
+            f"to {len(expected)} official {date_iso} matchup(s)."
+        ),
+        "meta": {
+            "expectedMatchups": len(expected),
+            "matchedPicks": len(picks),
+            "missingMatchups": missing_matchups,
+            "attemptedUrls": attempted_urls,
+            "blockedUrls": len(set(blocked_urls)),
+            "listingLinks": len(listing_links),
+        },
+    }
+
+
+def run_scores24_wnba(date_iso: str, _sports: list[str] | None = None) -> dict[str, Any]:
+    return scrape_scores24("wnba", date_iso)
+
+
+def run_scores24_mlb(date_iso: str, _sports: list[str] | None = None) -> dict[str, Any]:
+    return scrape_scores24("mlb", date_iso)
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Scrape Scores24 editorial choices by official matchup.")
+    parser.add_argument("--sport", required=True, choices=sorted(SPORT_CONFIG))
+    parser.add_argument("--date", default=datetime.now().strftime("%Y-%m-%d"))
+    args = parser.parse_args()
+    result = scrape_scores24(args.sport, args.date)
+    print(json.dumps(result, indent=2, default=str))
+    return 0 if result.get("ok") else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

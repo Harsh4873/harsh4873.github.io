@@ -5,7 +5,7 @@ The active production automation runs in GitHub Actions and writes committed JSO
 | Script | Purpose |
 | --- | --- |
 | `refresh_model_cache.py` | Runs selected model directories and writes dated model-cache JSON. |
-| `refresh_external_feeds.py` | Refreshes SportyTrader and SportsGambler cache buckets. |
+| `refresh_external_feeds.py` | Refreshes SportyTrader, SportsGambler, Scores24WNBA, and Scores24MLB cache buckets. |
 | `merge_model_cache_payload.py` | Merges model output while preserving other buckets and grades. |
 | `merge_external_feed_cache_payload.py` | Merges feed output while preserving model buckets and grades. |
 | `auto_grade_picks.py` | Traverses committed model/Cannon picks and grades completed games through ESPN. |
