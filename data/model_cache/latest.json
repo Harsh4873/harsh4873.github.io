@@ -1,19 +1,19 @@
 {
   "date": "2026-06-12",
   "errors": [],
-  "externalFeedsUpdatedAt": "2026-06-12T16:18:56.227493Z",
+  "externalFeedsUpdatedAt": "2026-06-12T17:13:19.938190Z",
   "external_feeds": {
     "sportsgambler": {
       "date": "2026-06-12",
       "errors": [],
-      "generatedAt": "2026-06-12T16:18:56.227493Z",
+      "generatedAt": "2026-06-12T17:13:19.938190Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-12",
         "feed": "sportsgambler",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba",
-        "updatedAt": "2026-06-12T16:18:56.227493Z"
+        "updatedAt": "2026-06-12T17:13:19.938190Z"
       },
       "note": "Scheduled sportsgambler refresh returned 17 pick(s).",
       "ok": true,
@@ -21,7 +21,7 @@
         {
           "decision": "BET",
           "edge": null,
-          "odds": -156,
+          "odds": -154,
           "pick": "Pittsburgh Pirates to Win (Pittsburgh Pirates vs Miami Marlins)",
           "probability": null,
           "source": "SportsGambler",
@@ -31,7 +31,7 @@
         {
           "decision": "BET",
           "edge": null,
-          "odds": -154,
+          "odds": -147,
           "pick": "Seattle Mariners to Win (Washington Nationals vs Seattle Mariners)",
           "probability": null,
           "source": "SportsGambler",
@@ -41,7 +41,7 @@
         {
           "decision": "BET",
           "edge": null,
-          "odds": -147,
+          "odds": -141,
           "pick": "Baltimore Orioles to Win (Baltimore Orioles vs San Diego Padres)",
           "probability": null,
           "source": "SportsGambler",
@@ -51,7 +51,7 @@
         {
           "decision": "BET",
           "edge": null,
-          "odds": -116,
+          "odds": -122,
           "pick": "Cleveland Guardians to Win (Cleveland Guardians vs Detroit Tigers)",
           "probability": null,
           "source": "SportsGambler",
@@ -61,7 +61,7 @@
         {
           "decision": "BET",
           "edge": null,
-          "odds": -133,
+          "odds": -130,
           "pick": "Boston Red Sox to Win (Boston Red Sox vs Texas Rangers)",
           "probability": null,
           "source": "SportsGambler",
@@ -71,7 +71,7 @@
         {
           "decision": "BET",
           "edge": null,
-          "odds": -115,
+          "odds": -125,
           "pick": "New York Mets to Win (New York Mets vs Atlanta Braves)",
           "probability": null,
           "source": "SportsGambler",
@@ -81,7 +81,7 @@
         {
           "decision": "BET",
           "edge": null,
-          "odds": -115,
+          "odds": -111,
           "pick": "Arizona Diamondbacks to Win (Cincinnati Reds vs Arizona Diamondbacks)",
           "probability": null,
           "source": "SportsGambler",
@@ -91,7 +91,7 @@
         {
           "decision": "BET",
           "edge": null,
-          "odds": -115,
+          "odds": -114,
           "pick": "Toronto Blue Jays to Win (Toronto Blue Jays vs New York Yankees)",
           "probability": null,
           "source": "SportsGambler",
@@ -101,7 +101,7 @@
         {
           "decision": "BET",
           "edge": null,
-          "odds": -250,
+          "odds": -263,
           "pick": "Milwaukee Brewers to Win (Milwaukee Brewers vs Philadelphia Phillies)",
           "probability": null,
           "source": "SportsGambler",
@@ -111,7 +111,7 @@
         {
           "decision": "BET",
           "edge": null,
-          "odds": -152,
+          "odds": -161,
           "pick": "Los Angeles Dodgers to Win (Chicago White Sox vs Los Angeles Dodgers)",
           "probability": null,
           "source": "SportsGambler",
@@ -121,7 +121,7 @@
         {
           "decision": "BET",
           "edge": null,
-          "odds": -125,
+          "odds": -119,
           "pick": "Houston Astros to Win (Kansas City Royals vs Houston Astros)",
           "probability": null,
           "source": "SportsGambler",
@@ -131,7 +131,7 @@
         {
           "decision": "BET",
           "edge": null,
-          "odds": 115,
+          "odds": 120,
           "pick": "St. Louis Cardinals to Win (Minnesota Twins vs St. Louis Cardinals)",
           "probability": null,
           "source": "SportsGambler",
@@ -141,7 +141,7 @@
         {
           "decision": "BET",
           "edge": null,
-          "odds": -175,
+          "odds": -172,
           "pick": "Tampa Bay Rays to Win (Los Angeles Angels vs Tampa Bay Rays)",
           "probability": null,
           "source": "SportsGambler",
@@ -151,7 +151,7 @@
         {
           "decision": "BET",
           "edge": null,
-          "odds": 163,
+          "odds": 170,
           "pick": "Colorado Rockies to Win (Athletics vs Colorado Rockies)",
           "probability": null,
           "source": "SportsGambler",
@@ -161,7 +161,7 @@
         {
           "decision": "BET",
           "edge": null,
-          "odds": -109,
+          "odds": -100,
           "pick": "Chicago Cubs to Win (San Francisco Giants vs Chicago Cubs)",
           "probability": null,
           "source": "SportsGambler",
@@ -189,21 +189,21 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-12T16:18:56.227493Z"
+      "updatedAt": "2026-06-12T17:13:19.938190Z"
     },
     "sportytrader": {
       "date": "2026-06-12",
       "errors": [],
-      "generatedAt": "2026-06-12T16:18:56.227493Z",
+      "generatedAt": "2026-06-12T17:13:19.938190Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-12",
         "feed": "sportytrader",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba",
-        "updatedAt": "2026-06-12T16:18:56.227493Z"
+        "updatedAt": "2026-06-12T17:13:19.938190Z"
       },
-      "note": "Scheduled sportytrader refresh returned 10 pick(s).",
+      "note": "Scheduled sportytrader refresh returned 11 pick(s).",
       "ok": true,
       "picks": [
         {
@@ -221,6 +221,16 @@
           "edge": null,
           "odds": -130,
           "pick": "Orioles ML (Orioles vs Padres)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": 158,
+          "pick": "Red Sox -1.5 (Red Sox vs Rangers)",
           "probability": null,
           "source": "SportyTrader",
           "sport": "MLB",
@@ -307,10 +317,10 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-12T16:18:56.227493Z"
+      "updatedAt": "2026-06-12T17:13:19.938190Z"
     }
   },
-  "generatedAt": "2026-06-12T16:56:27.987326Z",
+  "generatedAt": "2026-06-12T17:48:19.102335Z",
   "generatedBy": "github-actions:model-cache-refresh",
   "ipl": {
     "error": "Execution failed on sql '\n            SELECT\n                match_id,\n                season,\n                date,\n                venue,\n                team1,\n                team2,\n                toss_winner,\n                toss_decision,\n                winner\n            FROM ipl_matches\n            WHERE team1 IS NOT NULL\n              AND team2 IS NOT NULL\n            ': no such table: ipl_matches"
@@ -3728,23 +3738,23 @@
           "8": 0.5625
         },
         "edge_table": {
-          "1": 0.1104,
+          "1": 0.1269,
           "2": 0.011,
-          "3": 0.0223,
-          "4": -0.0123,
+          "3": -0.0051,
+          "4": 0.0071,
           "5": 0.002,
-          "6": 0.0306,
-          "7": -0.096,
+          "6": -0.0002,
+          "7": -0.0751,
           "8": -0.1603
         },
         "full_inning_table": {
-          "1": 0.495,
+          "1": 0.511,
           "2": 0.529,
-          "3": 0.512,
-          "4": 0.506,
+          "3": 0.485,
+          "4": 0.525,
           "5": 0.506,
-          "6": 0.549,
-          "7": 0.452,
+          "6": 0.518,
+          "7": 0.473,
           "8": 0.402
         },
         "game_id": "824425",
@@ -3757,20 +3767,11 @@
           {
             "baseline": 0.3844,
             "confidence": "Medium",
-            "decision": "LEAN",
-            "edge_pp": 11.04,
+            "decision": "BET",
+            "edge_pp": 12.69,
             "inning": 1,
-            "label": "Inning 1 - No Run Scored (49.5%, edge +11.0pp)",
-            "probability_scoreless": 0.495
-          },
-          {
-            "baseline": 0.5184,
-            "confidence": "Medium",
-            "decision": "LEAN",
-            "edge_pp": 3.06,
-            "inning": 6,
-            "label": "Inning 6 - No Run Scored (54.9%, edge +3.1pp)",
-            "probability_scoreless": 0.549
+            "label": "Inning 1 - No Run Scored (51.1%, edge +12.7pp)",
+            "probability_scoreless": 0.511
           }
         ],
         "venue_factor": 1.0
@@ -3851,20 +3852,20 @@
         },
         "edge_table": {
           "1": 0.1638,
-          "2": 0.0087,
+          "2": 0.0082,
           "3": 0.0143,
           "4": -0.0367,
-          "5": -0.0215,
+          "5": -0.0219,
           "6": -0.0373,
           "7": -0.1139,
-          "8": -0.0884
+          "8": -0.0889
         },
         "full_inning_table": {
           "1": 0.548,
           "2": 0.527,
           "3": 0.504,
           "4": 0.482,
-          "5": 0.483,
+          "5": 0.482,
           "6": 0.481,
           "7": 0.434,
           "8": 0.474
@@ -3964,23 +3965,23 @@
         },
         "edge_table": {
           "1": 0.0683,
-          "2": -0.0432,
+          "2": -0.0444,
           "3": -0.0559,
           "4": -0.0595,
-          "5": -0.0384,
+          "5": -0.0396,
           "6": -0.049,
           "7": -0.1547,
-          "8": -0.1193
+          "8": -0.1205
         },
         "full_inning_table": {
           "1": 0.453,
-          "2": 0.475,
+          "2": 0.474,
           "3": 0.434,
           "4": 0.459,
-          "5": 0.466,
+          "5": 0.465,
           "6": 0.469,
           "7": 0.393,
-          "8": 0.443
+          "8": 0.442
         },
         "game_id": "822803",
         "game_order": 7,
@@ -4421,7 +4422,7 @@
       }
     ],
     "model": "MLBInning",
-    "note": "MLB Inning processed 15 game(s), returned 26 top inning pick(s).",
+    "note": "MLB Inning processed 15 game(s), returned 25 top inning pick(s).",
     "ok": true,
     "picks": [
       {
@@ -4570,9 +4571,9 @@
         "baseline_probability": 0.3844,
         "confidence": "Medium",
         "date": "2026-06-12",
-        "decision": "LEAN",
-        "edge": 11.04,
-        "edge_pp": 11.04,
+        "decision": "BET",
+        "edge": 12.69,
+        "edge_pp": 12.69,
         "game": "Cleveland Guardians vs Detroit Tigers",
         "game_id": "824425",
         "game_order": 3,
@@ -4582,42 +4583,14 @@
         "league": "MLB",
         "market": "no_run_inning",
         "matchup": "Cleveland Guardians vs Detroit Tigers",
-        "model_prediction": "49.5%",
-        "notes": "Top no-run inning candidate (edge +11.0pp vs baseline). Full table: {\"1\": 0.495, \"2\": 0.529, \"3\": 0.512, \"4\": 0.506, \"5\": 0.506, \"6\": 0.549, \"7\": 0.452, \"8\": 0.402}",
+        "model_prediction": "51.1%",
+        "notes": "Top no-run inning candidate (edge +12.7pp vs baseline). Full table: {\"1\": 0.511, \"2\": 0.529, \"3\": 0.485, \"4\": 0.525, \"5\": 0.506, \"6\": 0.518, \"7\": 0.473, \"8\": 0.402}",
         "odds": null,
         "pick": "Inning 1 - No Run Scored",
-        "probability": 0.495,
+        "probability": 0.511,
         "source": "MLB Inning",
         "sport": "MLB",
         "start_time": "2026-06-12T23:10Z",
-        "team": ""
-      },
-      {
-        "assumed_odds": -110,
-        "away_team": "Detroit Tigers",
-        "baseline_probability": 0.5184,
-        "confidence": "Medium",
-        "date": "2026-06-12",
-        "decision": "LEAN",
-        "edge": 3.06,
-        "edge_pp": 3.06,
-        "game": "Cleveland Guardians vs Detroit Tigers",
-        "game_id": "824425",
-        "game_order": 3,
-        "game_start_time": "2026-06-12T23:10:00Z",
-        "home_team": "Cleveland Guardians",
-        "inning": 6,
-        "league": "MLB",
-        "market": "no_run_inning",
-        "matchup": "Cleveland Guardians vs Detroit Tigers",
-        "model_prediction": "54.9%",
-        "notes": "Top no-run inning candidate (edge +3.1pp vs baseline). Full table: {\"1\": 0.495, \"2\": 0.529, \"3\": 0.512, \"4\": 0.506, \"5\": 0.506, \"6\": 0.549, \"7\": 0.452, \"8\": 0.402}",
-        "odds": null,
-        "pick": "Inning 6 - No Run Scored",
-        "probability": 0.549,
-        "source": "MLB Inning",
-        "sport": "MLB",
-        "start_time": "2026-06-12T23:10:00Z",
         "team": ""
       },
       {
@@ -4695,7 +4668,7 @@
         "market": "no_run_inning",
         "matchup": "Cincinnati Reds vs Arizona Diamondbacks",
         "model_prediction": "54.8%",
-        "notes": "Top no-run inning candidate (edge +16.4pp vs baseline). Full table: {\"1\": 0.548, \"2\": 0.527, \"3\": 0.504, \"4\": 0.482, \"5\": 0.483, \"6\": 0.481, \"7\": 0.434, \"8\": 0.474}",
+        "notes": "Top no-run inning candidate (edge +16.4pp vs baseline). Full table: {\"1\": 0.548, \"2\": 0.527, \"3\": 0.504, \"4\": 0.482, \"5\": 0.482, \"6\": 0.481, \"7\": 0.434, \"8\": 0.474}",
         "odds": null,
         "pick": "Inning 1 - No Run Scored",
         "probability": 0.548,
@@ -4779,7 +4752,7 @@
         "market": "no_run_inning",
         "matchup": "Toronto Blue Jays vs New York Yankees",
         "model_prediction": "45.3%",
-        "notes": "Top no-run inning candidate (edge +6.8pp vs baseline). Full table: {\"1\": 0.453, \"2\": 0.475, \"3\": 0.434, \"4\": 0.459, \"5\": 0.466, \"6\": 0.469, \"7\": 0.393, \"8\": 0.443}",
+        "notes": "Top no-run inning candidate (edge +6.8pp vs baseline). Full table: {\"1\": 0.453, \"2\": 0.474, \"3\": 0.434, \"4\": 0.459, \"5\": 0.465, \"6\": 0.469, \"7\": 0.393, \"8\": 0.442}",
         "odds": null,
         "pick": "Inning 1 - No Run Scored",
         "probability": 0.453,
@@ -5268,23 +5241,23 @@
         "away_team": "San Diego Padres",
         "decision": "BET",
         "direction": "Under",
-        "edge": 10.47,
+        "edge": 6.03,
         "home_team": "Baltimore Orioles",
-        "kelly": 5.5,
-        "line": 9.5,
-        "market_line": 9.5,
+        "kelly": 3.17,
+        "line": 9.0,
+        "market_line": 9.0,
         "market_total_source": "model_output",
         "market_type": "totals",
         "model_prediction": 8.1,
         "odds": -110,
-        "pick": "Under 9.5 (San Diego Padres vs Baltimore Orioles)",
-        "prob": 0.6285,
-        "probability": 0.6285,
+        "pick": "Under 9.0 (San Diego Padres vs Baltimore Orioles)",
+        "prob": 0.5841,
+        "probability": 0.5841,
         "selection": "Under",
         "source": "MLB NEW",
         "sport": "MLB",
-        "units": 0.05,
-        "vegas": 9.5
+        "units": 0.03,
+        "vegas": 9.0
       },
       {
         "away_team": "Detroit Tigers",
@@ -9213,23 +9186,23 @@
             "8": 0.5625
           },
           "edge_table": {
-            "1": 0.1104,
+            "1": 0.1269,
             "2": 0.011,
-            "3": 0.0223,
-            "4": -0.0123,
+            "3": -0.0051,
+            "4": 0.0071,
             "5": 0.002,
-            "6": 0.0306,
-            "7": -0.096,
+            "6": -0.0002,
+            "7": -0.0751,
             "8": -0.1603
           },
           "full_inning_table": {
-            "1": 0.495,
+            "1": 0.511,
             "2": 0.529,
-            "3": 0.512,
-            "4": 0.506,
+            "3": 0.485,
+            "4": 0.525,
             "5": 0.506,
-            "6": 0.549,
-            "7": 0.452,
+            "6": 0.518,
+            "7": 0.473,
             "8": 0.402
           },
           "game_id": "824425",
@@ -9242,20 +9215,11 @@
             {
               "baseline": 0.3844,
               "confidence": "Medium",
-              "decision": "LEAN",
-              "edge_pp": 11.04,
+              "decision": "BET",
+              "edge_pp": 12.69,
               "inning": 1,
-              "label": "Inning 1 - No Run Scored (49.5%, edge +11.0pp)",
-              "probability_scoreless": 0.495
-            },
-            {
-              "baseline": 0.5184,
-              "confidence": "Medium",
-              "decision": "LEAN",
-              "edge_pp": 3.06,
-              "inning": 6,
-              "label": "Inning 6 - No Run Scored (54.9%, edge +3.1pp)",
-              "probability_scoreless": 0.549
+              "label": "Inning 1 - No Run Scored (51.1%, edge +12.7pp)",
+              "probability_scoreless": 0.511
             }
           ],
           "venue_factor": 1.0
@@ -9336,20 +9300,20 @@
           },
           "edge_table": {
             "1": 0.1638,
-            "2": 0.0087,
+            "2": 0.0082,
             "3": 0.0143,
             "4": -0.0367,
-            "5": -0.0215,
+            "5": -0.0219,
             "6": -0.0373,
             "7": -0.1139,
-            "8": -0.0884
+            "8": -0.0889
           },
           "full_inning_table": {
             "1": 0.548,
             "2": 0.527,
             "3": 0.504,
             "4": 0.482,
-            "5": 0.483,
+            "5": 0.482,
             "6": 0.481,
             "7": 0.434,
             "8": 0.474
@@ -9449,23 +9413,23 @@
           },
           "edge_table": {
             "1": 0.0683,
-            "2": -0.0432,
+            "2": -0.0444,
             "3": -0.0559,
             "4": -0.0595,
-            "5": -0.0384,
+            "5": -0.0396,
             "6": -0.049,
             "7": -0.1547,
-            "8": -0.1193
+            "8": -0.1205
           },
           "full_inning_table": {
             "1": 0.453,
-            "2": 0.475,
+            "2": 0.474,
             "3": 0.434,
             "4": 0.459,
-            "5": 0.466,
+            "5": 0.465,
             "6": 0.469,
             "7": 0.393,
-            "8": 0.443
+            "8": 0.442
           },
           "game_id": "822803",
           "game_order": 7,
@@ -9906,7 +9870,7 @@
         }
       ],
       "model": "MLBInning",
-      "note": "MLB Inning processed 15 game(s), returned 26 top inning pick(s).",
+      "note": "MLB Inning processed 15 game(s), returned 25 top inning pick(s).",
       "ok": true,
       "picks": [
         {
@@ -10055,9 +10019,9 @@
           "baseline_probability": 0.3844,
           "confidence": "Medium",
           "date": "2026-06-12",
-          "decision": "LEAN",
-          "edge": 11.04,
-          "edge_pp": 11.04,
+          "decision": "BET",
+          "edge": 12.69,
+          "edge_pp": 12.69,
           "game": "Cleveland Guardians vs Detroit Tigers",
           "game_id": "824425",
           "game_order": 3,
@@ -10067,42 +10031,14 @@
           "league": "MLB",
           "market": "no_run_inning",
           "matchup": "Cleveland Guardians vs Detroit Tigers",
-          "model_prediction": "49.5%",
-          "notes": "Top no-run inning candidate (edge +11.0pp vs baseline). Full table: {\"1\": 0.495, \"2\": 0.529, \"3\": 0.512, \"4\": 0.506, \"5\": 0.506, \"6\": 0.549, \"7\": 0.452, \"8\": 0.402}",
+          "model_prediction": "51.1%",
+          "notes": "Top no-run inning candidate (edge +12.7pp vs baseline). Full table: {\"1\": 0.511, \"2\": 0.529, \"3\": 0.485, \"4\": 0.525, \"5\": 0.506, \"6\": 0.518, \"7\": 0.473, \"8\": 0.402}",
           "odds": null,
           "pick": "Inning 1 - No Run Scored",
-          "probability": 0.495,
+          "probability": 0.511,
           "source": "MLB Inning",
           "sport": "MLB",
           "start_time": "2026-06-12T23:10Z",
-          "team": ""
-        },
-        {
-          "assumed_odds": -110,
-          "away_team": "Detroit Tigers",
-          "baseline_probability": 0.5184,
-          "confidence": "Medium",
-          "date": "2026-06-12",
-          "decision": "LEAN",
-          "edge": 3.06,
-          "edge_pp": 3.06,
-          "game": "Cleveland Guardians vs Detroit Tigers",
-          "game_id": "824425",
-          "game_order": 3,
-          "game_start_time": "2026-06-12T23:10:00Z",
-          "home_team": "Cleveland Guardians",
-          "inning": 6,
-          "league": "MLB",
-          "market": "no_run_inning",
-          "matchup": "Cleveland Guardians vs Detroit Tigers",
-          "model_prediction": "54.9%",
-          "notes": "Top no-run inning candidate (edge +3.1pp vs baseline). Full table: {\"1\": 0.495, \"2\": 0.529, \"3\": 0.512, \"4\": 0.506, \"5\": 0.506, \"6\": 0.549, \"7\": 0.452, \"8\": 0.402}",
-          "odds": null,
-          "pick": "Inning 6 - No Run Scored",
-          "probability": 0.549,
-          "source": "MLB Inning",
-          "sport": "MLB",
-          "start_time": "2026-06-12T23:10:00Z",
           "team": ""
         },
         {
@@ -10180,7 +10116,7 @@
           "market": "no_run_inning",
           "matchup": "Cincinnati Reds vs Arizona Diamondbacks",
           "model_prediction": "54.8%",
-          "notes": "Top no-run inning candidate (edge +16.4pp vs baseline). Full table: {\"1\": 0.548, \"2\": 0.527, \"3\": 0.504, \"4\": 0.482, \"5\": 0.483, \"6\": 0.481, \"7\": 0.434, \"8\": 0.474}",
+          "notes": "Top no-run inning candidate (edge +16.4pp vs baseline). Full table: {\"1\": 0.548, \"2\": 0.527, \"3\": 0.504, \"4\": 0.482, \"5\": 0.482, \"6\": 0.481, \"7\": 0.434, \"8\": 0.474}",
           "odds": null,
           "pick": "Inning 1 - No Run Scored",
           "probability": 0.548,
@@ -10264,7 +10200,7 @@
           "market": "no_run_inning",
           "matchup": "Toronto Blue Jays vs New York Yankees",
           "model_prediction": "45.3%",
-          "notes": "Top no-run inning candidate (edge +6.8pp vs baseline). Full table: {\"1\": 0.453, \"2\": 0.475, \"3\": 0.434, \"4\": 0.459, \"5\": 0.466, \"6\": 0.469, \"7\": 0.393, \"8\": 0.443}",
+          "notes": "Top no-run inning candidate (edge +6.8pp vs baseline). Full table: {\"1\": 0.453, \"2\": 0.474, \"3\": 0.434, \"4\": 0.459, \"5\": 0.465, \"6\": 0.469, \"7\": 0.393, \"8\": 0.442}",
           "odds": null,
           "pick": "Inning 1 - No Run Scored",
           "probability": 0.453,
@@ -10753,23 +10689,25 @@
           "away_team": "San Diego Padres",
           "decision": "BET",
           "direction": "Under",
-          "edge": 10.47,
+          "edge": 6.03,
+          "game_start_time": "2026-06-12T23:05Z",
           "home_team": "Baltimore Orioles",
-          "kelly": 5.5,
-          "line": 9.5,
-          "market_line": 9.5,
+          "kelly": 3.17,
+          "line": 9.0,
+          "market_line": 9.0,
           "market_total_source": "model_output",
           "market_type": "totals",
           "model_prediction": 8.1,
           "odds": -110,
-          "pick": "Under 9.5 (San Diego Padres vs Baltimore Orioles)",
-          "prob": 0.6285,
-          "probability": 0.6285,
+          "pick": "Under 9.0 (San Diego Padres vs Baltimore Orioles)",
+          "prob": 0.5841,
+          "probability": 0.5841,
           "selection": "Under",
           "source": "MLB NEW",
           "sport": "MLB",
-          "units": 0.05,
-          "vegas": 9.5
+          "start_time": "2026-06-12T23:05Z",
+          "units": 0.03,
+          "vegas": 9.0
         },
         {
           "away_team": "Detroit Tigers",
@@ -11053,6 +10991,7 @@
           "decision": "PASS",
           "direction": "Over",
           "edge": 1.03,
+          "game_start_time": "2026-06-12T23:40Z",
           "home_team": "Milwaukee Brewers",
           "kelly": 0.54,
           "line": 8.0,
@@ -11067,6 +11006,7 @@
           "selection": "PASS",
           "source": "MLB NEW",
           "sport": "MLB",
+          "start_time": "2026-06-12T23:40Z",
           "units": 0.0,
           "vegas": 8.0
         },
@@ -11137,6 +11077,7 @@
           "decision": "BET",
           "direction": "Under",
           "edge": 10.12,
+          "game_start_time": "2026-06-13T00:10Z",
           "home_team": "Minnesota Twins",
           "kelly": 5.31,
           "line": 8.5,
@@ -11151,6 +11092,7 @@
           "selection": "Under",
           "source": "MLB NEW",
           "sport": "MLB",
+          "start_time": "2026-06-13T00:10Z",
           "units": 0.05,
           "vegas": 8.5
         },
@@ -11221,6 +11163,7 @@
           "decision": "BET",
           "direction": "Under",
           "edge": 36.4,
+          "game_start_time": "2026-06-13T02:05Z",
           "home_team": "Athletics",
           "kelly": 19.11,
           "line": 14.0,
@@ -11235,6 +11178,7 @@
           "selection": "Under",
           "source": "MLB NEW",
           "sport": "MLB",
+          "start_time": "2026-06-13T02:05Z",
           "units": 0.19,
           "vegas": 14.0
         },
@@ -11306,14 +11250,14 @@
     "sportsgambler": {
       "date": "2026-06-12",
       "errors": [],
-      "generatedAt": "2026-06-12T16:18:56.227493Z",
+      "generatedAt": "2026-06-12T17:13:19.938190Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-12",
         "feed": "sportsgambler",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba",
-        "updatedAt": "2026-06-12T16:18:56.227493Z"
+        "updatedAt": "2026-06-12T17:13:19.938190Z"
       },
       "note": "Scheduled sportsgambler refresh returned 17 pick(s).",
       "ok": true,
@@ -11321,293 +11265,359 @@
         {
           "decision": "BET",
           "edge": null,
-          "odds": -156,
+          "game_start_time": "2026-06-12T22:40Z",
+          "odds": -154,
           "pick": "Pittsburgh Pirates to Win (Pittsburgh Pirates vs Miami Marlins)",
           "probability": null,
           "source": "SportsGambler",
           "sport": "MLB",
+          "start_time": "2026-06-12T22:40Z",
           "units": 1
         },
         {
           "decision": "BET",
           "edge": null,
-          "odds": -154,
+          "game_start_time": "2026-06-12T22:45Z",
+          "odds": -147,
           "pick": "Seattle Mariners to Win (Washington Nationals vs Seattle Mariners)",
           "probability": null,
           "source": "SportsGambler",
           "sport": "MLB",
+          "start_time": "2026-06-12T22:45Z",
           "units": 1
         },
         {
           "decision": "BET",
           "edge": null,
-          "odds": -147,
+          "game_start_time": "2026-06-12T23:05Z",
+          "odds": -141,
           "pick": "Baltimore Orioles to Win (Baltimore Orioles vs San Diego Padres)",
           "probability": null,
           "source": "SportsGambler",
           "sport": "MLB",
+          "start_time": "2026-06-12T23:05Z",
           "units": 1
         },
         {
           "decision": "BET",
           "edge": null,
-          "odds": -116,
+          "game_start_time": "2026-06-12T23:10Z",
+          "odds": -122,
           "pick": "Cleveland Guardians to Win (Cleveland Guardians vs Detroit Tigers)",
           "probability": null,
           "source": "SportsGambler",
           "sport": "MLB",
+          "start_time": "2026-06-12T23:10Z",
           "units": 1
         },
         {
           "decision": "BET",
           "edge": null,
-          "odds": -133,
+          "game_start_time": "2026-06-12T23:10Z",
+          "odds": -130,
           "pick": "Boston Red Sox to Win (Boston Red Sox vs Texas Rangers)",
           "probability": null,
           "source": "SportsGambler",
           "sport": "MLB",
+          "start_time": "2026-06-12T23:10Z",
           "units": 1
         },
         {
           "decision": "BET",
           "edge": null,
-          "odds": -115,
+          "game_start_time": "2026-06-12T23:15Z",
+          "odds": -125,
           "pick": "New York Mets to Win (New York Mets vs Atlanta Braves)",
           "probability": null,
           "source": "SportsGambler",
           "sport": "MLB",
+          "start_time": "2026-06-12T23:15Z",
           "units": 1
         },
         {
           "decision": "BET",
           "edge": null,
-          "odds": -115,
+          "game_start_time": "2026-06-12T23:15Z",
+          "odds": -111,
           "pick": "Arizona Diamondbacks to Win (Cincinnati Reds vs Arizona Diamondbacks)",
           "probability": null,
           "source": "SportsGambler",
           "sport": "MLB",
+          "start_time": "2026-06-12T23:15Z",
           "units": 1
         },
         {
           "decision": "BET",
           "edge": null,
-          "odds": -115,
+          "game_start_time": "2026-06-12T23:37Z",
+          "odds": -114,
           "pick": "Toronto Blue Jays to Win (Toronto Blue Jays vs New York Yankees)",
           "probability": null,
           "source": "SportsGambler",
           "sport": "MLB",
+          "start_time": "2026-06-12T23:37Z",
           "units": 1
         },
         {
           "decision": "BET",
           "edge": null,
-          "odds": -250,
+          "game_start_time": "2026-06-12T23:40Z",
+          "odds": -263,
           "pick": "Milwaukee Brewers to Win (Milwaukee Brewers vs Philadelphia Phillies)",
           "probability": null,
           "source": "SportsGambler",
           "sport": "MLB",
+          "start_time": "2026-06-12T23:40Z",
           "units": 1
         },
         {
           "decision": "BET",
           "edge": null,
-          "odds": -152,
+          "game_start_time": "2026-06-12T23:40Z",
+          "odds": -161,
           "pick": "Los Angeles Dodgers to Win (Chicago White Sox vs Los Angeles Dodgers)",
           "probability": null,
           "source": "SportsGambler",
           "sport": "MLB",
+          "start_time": "2026-06-12T23:40Z",
           "units": 1
         },
         {
           "decision": "BET",
           "edge": null,
-          "odds": -125,
+          "game_start_time": "2026-06-13T00:10Z",
+          "odds": -119,
           "pick": "Houston Astros to Win (Kansas City Royals vs Houston Astros)",
           "probability": null,
           "source": "SportsGambler",
           "sport": "MLB",
+          "start_time": "2026-06-13T00:10Z",
           "units": 1
         },
         {
           "decision": "BET",
           "edge": null,
-          "odds": 115,
+          "game_start_time": "2026-06-13T00:10Z",
+          "odds": 120,
           "pick": "St. Louis Cardinals to Win (Minnesota Twins vs St. Louis Cardinals)",
           "probability": null,
           "source": "SportsGambler",
           "sport": "MLB",
+          "start_time": "2026-06-13T00:10Z",
           "units": 1
         },
         {
           "decision": "BET",
           "edge": null,
-          "odds": -175,
+          "game_start_time": "2026-06-13T01:38Z",
+          "odds": -172,
           "pick": "Tampa Bay Rays to Win (Los Angeles Angels vs Tampa Bay Rays)",
           "probability": null,
           "source": "SportsGambler",
           "sport": "MLB",
+          "start_time": "2026-06-13T01:38Z",
           "units": 1
         },
         {
           "decision": "BET",
           "edge": null,
-          "odds": 163,
+          "game_start_time": "2026-06-13T02:05Z",
+          "odds": 170,
           "pick": "Colorado Rockies to Win (Athletics vs Colorado Rockies)",
           "probability": null,
           "source": "SportsGambler",
           "sport": "MLB",
+          "start_time": "2026-06-13T02:05Z",
           "units": 1
         },
         {
           "decision": "BET",
           "edge": null,
-          "odds": -109,
+          "game_start_time": "2026-06-13T02:15Z",
+          "odds": -100,
           "pick": "Chicago Cubs to Win (San Francisco Giants vs Chicago Cubs)",
           "probability": null,
           "source": "SportsGambler",
           "sport": "MLB",
+          "start_time": "2026-06-13T02:15Z",
           "units": 1
         },
         {
           "decision": "BET",
           "edge": null,
+          "game_start_time": "2026-06-12T23:30Z",
           "odds": -110,
           "pick": "Over 169.5 Points (Washington Mystics vs Toronto Tempo)",
           "probability": null,
           "source": "SportsGambler",
           "sport": "WNBA",
+          "start_time": "2026-06-12T23:30Z",
           "units": 1
         },
         {
           "decision": "BET",
           "edge": null,
+          "game_start_time": "2026-06-13T02:00Z",
           "odds": -114,
           "pick": "Storm +9.5 (Seattle Storm vs Golden State Valkyries)",
           "probability": null,
           "source": "SportsGambler",
           "sport": "WNBA",
+          "start_time": "2026-06-13T02:00Z",
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-12T16:18:56.227493Z"
+      "updatedAt": "2026-06-12T17:13:19.938190Z"
     },
     "sportytrader": {
       "date": "2026-06-12",
       "errors": [],
-      "generatedAt": "2026-06-12T16:18:56.227493Z",
+      "generatedAt": "2026-06-12T17:13:19.938190Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-12",
         "feed": "sportytrader",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba",
-        "updatedAt": "2026-06-12T16:18:56.227493Z"
+        "updatedAt": "2026-06-12T17:13:19.938190Z"
       },
-      "note": "Scheduled sportytrader refresh returned 10 pick(s).",
+      "note": "Scheduled sportytrader refresh returned 11 pick(s).",
       "ok": true,
       "picks": [
         {
           "decision": "BET",
           "edge": null,
+          "game_start_time": "2026-06-12T22:40Z",
           "odds": 123,
           "pick": "Miami Marlins win the match (Pirates vs Marlins)",
           "probability": null,
           "source": "SportyTrader",
           "sport": "MLB",
+          "start_time": "2026-06-12T22:40Z",
           "units": 1
         },
         {
           "decision": "BET",
           "edge": null,
+          "game_start_time": "2026-06-12T23:05Z",
           "odds": -130,
           "pick": "Orioles ML (Orioles vs Padres)",
           "probability": null,
           "source": "SportyTrader",
           "sport": "MLB",
+          "start_time": "2026-06-12T23:05Z",
           "units": 1
         },
         {
           "decision": "BET",
           "edge": null,
+          "game_start_time": "2026-06-12T23:10Z",
+          "odds": 158,
+          "pick": "Red Sox -1.5 (Red Sox vs Rangers)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "start_time": "2026-06-12T23:10Z",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "game_start_time": "2026-06-12T23:15Z",
           "odds": 100,
           "pick": "Arizona ML (Reds vs Diamondbacks)",
           "probability": null,
           "source": "SportyTrader",
           "sport": "MLB",
+          "start_time": "2026-06-12T23:15Z",
           "units": 1
         },
         {
           "decision": "BET",
           "edge": null,
+          "game_start_time": "2026-06-12T23:15Z",
           "odds": -105,
           "pick": "Under 8 (Mets vs Braves)",
           "probability": null,
           "source": "SportyTrader",
           "sport": "MLB",
+          "start_time": "2026-06-12T23:15Z",
           "units": 1
         },
         {
           "decision": "BET",
           "edge": null,
+          "game_start_time": "2026-06-12T23:40Z",
           "odds": 116,
           "pick": "White Sox ML (White Sox vs Dodgers)",
           "probability": null,
           "source": "SportyTrader",
           "sport": "MLB",
+          "start_time": "2026-06-12T23:40Z",
           "units": 1
         },
         {
           "decision": "BET",
           "edge": null,
+          "game_start_time": "2026-06-12T23:40Z",
           "odds": 140,
           "pick": "Brewers to win and over 7.5 runs (Brewers vs Phillies)",
           "probability": null,
           "source": "SportyTrader",
           "sport": "MLB",
+          "start_time": "2026-06-12T23:40Z",
           "units": 1
         },
         {
           "decision": "BET",
           "edge": null,
+          "game_start_time": "2026-06-13T00:10Z",
           "odds": -135,
           "pick": "St. Louis Cardinals win the match (Twins vs Cardinals)",
           "probability": null,
           "source": "SportyTrader",
           "sport": "MLB",
+          "start_time": "2026-06-13T00:10Z",
           "units": 1
         },
         {
           "decision": "BET",
           "edge": null,
+          "game_start_time": "2026-06-13T01:38Z",
           "odds": -181,
           "pick": "Tampa Bay Rays win the match (Angels vs Rays)",
           "probability": null,
           "source": "SportyTrader",
           "sport": "MLB",
+          "start_time": "2026-06-13T01:38Z",
           "units": 1
         },
         {
           "decision": "BET",
           "edge": null,
+          "game_start_time": "2026-06-12T23:30Z",
           "odds": 110,
           "pick": "Tempo ML (Mystics vs Tempo)",
           "probability": null,
           "source": "SportyTrader",
           "sport": "WNBA",
+          "start_time": "2026-06-12T23:30Z",
           "units": 1
         },
         {
           "decision": "BET",
           "edge": null,
+          "game_start_time": "2026-06-13T02:00Z",
           "odds": -116,
           "pick": "Seattle Storm on the +9.5 spread (Storm vs Valkyries)",
           "probability": null,
           "source": "SportyTrader",
           "sport": "WNBA",
+          "start_time": "2026-06-13T02:00Z",
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-12T16:18:56.227493Z"
+      "updatedAt": "2026-06-12T17:13:19.938190Z"
     },
     "wnba": {
       "ok": true,
@@ -11647,20 +11657,21 @@
         },
         {
           "away_team": "Toronto Tempo",
-          "confidence": 69.6,
+          "confidence": 72.7,
           "confidence_label": "High",
-          "cover_margin": 5.65,
+          "cover_margin": 6.65,
           "decision": "BET",
-          "edge": 17.24,
+          "edge": 20.34,
           "game": "Toronto Tempo @ Washington Mystics",
+          "game_start_time": "2026-06-12T23:30Z",
           "guardrail_reasons": [],
           "h2h_games": 0,
           "has_market_price": true,
           "home_team": "Washington Mystics",
           "league": "WNBA",
-          "line": 1.5,
-          "market_edge": 0.1724,
-          "market_line": 1.5,
+          "line": 2.5,
+          "market_edge": 0.2034,
+          "market_line": 2.5,
           "market_pick_odds": -110,
           "market_pick_prob": 0.5238,
           "market_source": "DraftKings via ESPN",
@@ -11668,17 +11679,18 @@
           "matchup": "Toronto Tempo @ Washington Mystics",
           "model_prediction": 4.15,
           "odds": -110,
-          "pick": "Toronto Tempo +1.5 (Toronto Tempo @ Washington Mystics)",
-          "probability": 0.6962,
+          "pick": "Toronto Tempo +2.5 (Toronto Tempo @ Washington Mystics)",
+          "probability": 0.7273,
           "projected_total": 168.0,
           "selection": "Toronto Tempo",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-12T23:30Z",
           "starters_out": [],
           "starters_questionable": [],
           "team": "Toronto Tempo",
-          "units": 0.05,
-          "vegas": 1.5
+          "units": 0.06,
+          "vegas": 2.5
         },
         {
           "away_team": "Toronto Tempo",
@@ -11866,14 +11878,14 @@
   "sportsgambler": {
     "date": "2026-06-12",
     "errors": [],
-    "generatedAt": "2026-06-12T16:18:56.227493Z",
+    "generatedAt": "2026-06-12T17:13:19.938190Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-12",
       "feed": "sportsgambler",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba",
-      "updatedAt": "2026-06-12T16:18:56.227493Z"
+      "updatedAt": "2026-06-12T17:13:19.938190Z"
     },
     "note": "Scheduled sportsgambler refresh returned 17 pick(s).",
     "ok": true,
@@ -11881,7 +11893,7 @@
       {
         "decision": "BET",
         "edge": null,
-        "odds": -156,
+        "odds": -154,
         "pick": "Pittsburgh Pirates to Win (Pittsburgh Pirates vs Miami Marlins)",
         "probability": null,
         "source": "SportsGambler",
@@ -11891,7 +11903,7 @@
       {
         "decision": "BET",
         "edge": null,
-        "odds": -154,
+        "odds": -147,
         "pick": "Seattle Mariners to Win (Washington Nationals vs Seattle Mariners)",
         "probability": null,
         "source": "SportsGambler",
@@ -11901,7 +11913,7 @@
       {
         "decision": "BET",
         "edge": null,
-        "odds": -147,
+        "odds": -141,
         "pick": "Baltimore Orioles to Win (Baltimore Orioles vs San Diego Padres)",
         "probability": null,
         "source": "SportsGambler",
@@ -11911,7 +11923,7 @@
       {
         "decision": "BET",
         "edge": null,
-        "odds": -116,
+        "odds": -122,
         "pick": "Cleveland Guardians to Win (Cleveland Guardians vs Detroit Tigers)",
         "probability": null,
         "source": "SportsGambler",
@@ -11921,7 +11933,7 @@
       {
         "decision": "BET",
         "edge": null,
-        "odds": -133,
+        "odds": -130,
         "pick": "Boston Red Sox to Win (Boston Red Sox vs Texas Rangers)",
         "probability": null,
         "source": "SportsGambler",
@@ -11931,7 +11943,7 @@
       {
         "decision": "BET",
         "edge": null,
-        "odds": -115,
+        "odds": -125,
         "pick": "New York Mets to Win (New York Mets vs Atlanta Braves)",
         "probability": null,
         "source": "SportsGambler",
@@ -11941,7 +11953,7 @@
       {
         "decision": "BET",
         "edge": null,
-        "odds": -115,
+        "odds": -111,
         "pick": "Arizona Diamondbacks to Win (Cincinnati Reds vs Arizona Diamondbacks)",
         "probability": null,
         "source": "SportsGambler",
@@ -11951,7 +11963,7 @@
       {
         "decision": "BET",
         "edge": null,
-        "odds": -115,
+        "odds": -114,
         "pick": "Toronto Blue Jays to Win (Toronto Blue Jays vs New York Yankees)",
         "probability": null,
         "source": "SportsGambler",
@@ -11961,7 +11973,7 @@
       {
         "decision": "BET",
         "edge": null,
-        "odds": -250,
+        "odds": -263,
         "pick": "Milwaukee Brewers to Win (Milwaukee Brewers vs Philadelphia Phillies)",
         "probability": null,
         "source": "SportsGambler",
@@ -11971,7 +11983,7 @@
       {
         "decision": "BET",
         "edge": null,
-        "odds": -152,
+        "odds": -161,
         "pick": "Los Angeles Dodgers to Win (Chicago White Sox vs Los Angeles Dodgers)",
         "probability": null,
         "source": "SportsGambler",
@@ -11981,7 +11993,7 @@
       {
         "decision": "BET",
         "edge": null,
-        "odds": -125,
+        "odds": -119,
         "pick": "Houston Astros to Win (Kansas City Royals vs Houston Astros)",
         "probability": null,
         "source": "SportsGambler",
@@ -11991,7 +12003,7 @@
       {
         "decision": "BET",
         "edge": null,
-        "odds": 115,
+        "odds": 120,
         "pick": "St. Louis Cardinals to Win (Minnesota Twins vs St. Louis Cardinals)",
         "probability": null,
         "source": "SportsGambler",
@@ -12001,7 +12013,7 @@
       {
         "decision": "BET",
         "edge": null,
-        "odds": -175,
+        "odds": -172,
         "pick": "Tampa Bay Rays to Win (Los Angeles Angels vs Tampa Bay Rays)",
         "probability": null,
         "source": "SportsGambler",
@@ -12011,7 +12023,7 @@
       {
         "decision": "BET",
         "edge": null,
-        "odds": 163,
+        "odds": 170,
         "pick": "Colorado Rockies to Win (Athletics vs Colorado Rockies)",
         "probability": null,
         "source": "SportsGambler",
@@ -12021,7 +12033,7 @@
       {
         "decision": "BET",
         "edge": null,
-        "odds": -109,
+        "odds": -100,
         "pick": "Chicago Cubs to Win (San Francisco Giants vs Chicago Cubs)",
         "probability": null,
         "source": "SportsGambler",
@@ -12049,21 +12061,21 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-12T16:18:56.227493Z"
+    "updatedAt": "2026-06-12T17:13:19.938190Z"
   },
   "sportytrader": {
     "date": "2026-06-12",
     "errors": [],
-    "generatedAt": "2026-06-12T16:18:56.227493Z",
+    "generatedAt": "2026-06-12T17:13:19.938190Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-12",
       "feed": "sportytrader",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba",
-      "updatedAt": "2026-06-12T16:18:56.227493Z"
+      "updatedAt": "2026-06-12T17:13:19.938190Z"
     },
-    "note": "Scheduled sportytrader refresh returned 10 pick(s).",
+    "note": "Scheduled sportytrader refresh returned 11 pick(s).",
     "ok": true,
     "picks": [
       {
@@ -12081,6 +12093,16 @@
         "edge": null,
         "odds": -130,
         "pick": "Orioles ML (Orioles vs Padres)",
+        "probability": null,
+        "source": "SportyTrader",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": 158,
+        "pick": "Red Sox -1.5 (Red Sox vs Rangers)",
         "probability": null,
         "source": "SportyTrader",
         "sport": "MLB",
@@ -12167,9 +12189,9 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-12T16:18:56.227493Z"
+    "updatedAt": "2026-06-12T17:13:19.938190Z"
   },
-  "updatedAt": "2026-06-12T16:56:27.987326Z",
+  "updatedAt": "2026-06-12T17:48:19.102335Z",
   "wnba": {
     "ok": true,
     "picks": [
@@ -12208,20 +12230,20 @@
       },
       {
         "away_team": "Toronto Tempo",
-        "confidence": 69.6,
+        "confidence": 72.7,
         "confidence_label": "High",
-        "cover_margin": 5.65,
+        "cover_margin": 6.65,
         "decision": "BET",
-        "edge": 17.24,
+        "edge": 20.34,
         "game": "Toronto Tempo @ Washington Mystics",
         "guardrail_reasons": [],
         "h2h_games": 0,
         "has_market_price": true,
         "home_team": "Washington Mystics",
         "league": "WNBA",
-        "line": 1.5,
-        "market_edge": 0.1724,
-        "market_line": 1.5,
+        "line": 2.5,
+        "market_edge": 0.2034,
+        "market_line": 2.5,
         "market_pick_odds": -110,
         "market_pick_prob": 0.5238,
         "market_source": "DraftKings via ESPN",
@@ -12229,8 +12251,8 @@
         "matchup": "Toronto Tempo @ Washington Mystics",
         "model_prediction": 4.15,
         "odds": -110,
-        "pick": "Toronto Tempo +1.5 (Toronto Tempo @ Washington Mystics)",
-        "probability": 0.6962,
+        "pick": "Toronto Tempo +2.5 (Toronto Tempo @ Washington Mystics)",
+        "probability": 0.7273,
         "projected_total": 168.0,
         "selection": "Toronto Tempo",
         "source": "WNBA Model",
@@ -12238,8 +12260,8 @@
         "starters_out": [],
         "starters_questionable": [],
         "team": "Toronto Tempo",
-        "units": 0.05,
-        "vegas": 1.5
+        "units": 0.06,
+        "vegas": 2.5
       },
       {
         "away_team": "Toronto Tempo",
