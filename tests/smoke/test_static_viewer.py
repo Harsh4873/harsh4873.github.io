@@ -123,6 +123,10 @@ def test_daily_tab_uses_focused_views_and_merges_duplicate_markets():
     assert "allPicks: Pick[] = picks" in main
     assert "uniqueDailyPicks(ranked(pending.filter" in main
     assert "function dailyConsensusCards(" in main
+    consensus_cards = main[main.index("function dailyConsensusCards("):main.index("function setDailyView(")]
+    assert ".slice(0, 6)" not in consensus_cards
+    assert "All matching market signals" in main
+    assert "Sources issuing BET calls today" in main
     assert "function setDailyView(" in main
     assert "Each unique market appears once." in main
     assert "excluding anything already in Top Picks" in main

@@ -801,8 +801,7 @@ function dailyConsensusCards(picks: Pick[]): string {
   const matching = [...games.values()].flatMap(gamePicks => trendSignalGroups(gamePicks)
     .filter(signal => signal.matching)
     .map(signal => ({ signal, game: gamePicks[0] })))
-    .sort((a, b) => b.signal.picks.length - a.signal.picks.length)
-    .slice(0, 6);
+    .sort((a, b) => b.signal.picks.length - a.signal.picks.length);
   if (!matching.length) return '<div class="daily-empty"><div class="daily-empty-title">No true consensus yet</div><div class="daily-empty-sub">Two independent sources must make the same market selection.</div></div>';
   return `<div class="daily-consensus-grid">${matching.map(({ signal, game }) => `<article class="daily-consensus-card"><div class="daily-consensus-count">${new Set(signal.picks.map(sourceName)).size} SOURCES</div><div class="daily-consensus-pick">${escapeHtml(signal.label)}</div><div class="daily-consensus-game">${escapeHtml(gameName(game))}</div><div class="trend-source-row">${[...new Set(signal.picks.map(sourceName))].map(source => `<span class="trend-source-pill">${escapeHtml(source)}</span>`).join('')}</div></article>`).join('')}</div>`;
 }
@@ -864,8 +863,8 @@ function renderDaily(): void {
   const consensusCount = [...games.values()].reduce((total, gamePicks) => total + trendSignalGroups(gamePicks).filter(signal => signal.matching).length, 0);
   const viewOptions: Array<{ key: DailyView; label: string; count: number; description: string }> = [
     { key: 'picks', label: 'Top Picks', count: topGroups.length, description: 'Unique actionable markets' },
-    { key: 'consensus', label: 'Consensus', count: consensusCount, description: 'Matching source signals' },
-    { key: 'sources', label: 'Sources', count: hotForms.length, description: 'Hot models with BET calls' },
+    { key: 'consensus', label: 'Consensus', count: consensusCount, description: 'All matching market signals' },
+    { key: 'sources', label: 'Active Sources', count: hotForms.length, description: 'Sources issuing BET calls today' },
     { key: 'research', label: 'Research', count: researchGroups.length, description: 'High probability and pricey spots' },
   ];
   const activeView = viewOptions.find(option => option.key === dailyView) || viewOptions[0];
