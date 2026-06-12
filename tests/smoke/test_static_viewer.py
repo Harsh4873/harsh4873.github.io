@@ -54,6 +54,8 @@ def test_static_viewer_keeps_public_tabs_and_client_grading():
 
     for tab in ("home", "search", "rankings", "trends", "daily"):
         assert f"id=\"tab-{tab}\"" in html
+    assert 'onclick="switchTab(\'trends\')">TRENDS</button>' in html
+    assert 'onclick="switchTab(\'daily\')">BEST BETS</button>' in html
     assert "async function refreshAutoGrades()" in main
     assert "async function gradeDate(" in main
     assert "site.api.espn.com" in main
