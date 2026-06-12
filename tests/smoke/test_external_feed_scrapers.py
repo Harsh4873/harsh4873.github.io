@@ -408,5 +408,6 @@ def test_external_feed_schedule_registers_separate_scores24_models():
     for model_key in ("scores24_wnba", "scores24_mlb"):
         assert model_key in workflow
         assert model_key in refresh
+    assert "python -m camoufox fetch" in workflow
     assert 'cron: "10,40 14 * * *"' in workflow
     assert 'cron: "10 20 * * *"' in workflow

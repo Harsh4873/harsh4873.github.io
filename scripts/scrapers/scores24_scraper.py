@@ -247,6 +247,10 @@ class Scores24Client:
         self._context = None
         self._curl_session = None
         self._curl_request_count = 0
+        self._camoufox_manager = None
+        self._camoufox_context = None
+        self._camoufox_failed = False
+        self._prefer_camoufox = False
         self._browser_failed = False
         self._blocked_until = 0.0
 
@@ -262,6 +266,16 @@ class Scores24Client:
                 self._curl_session.close()
             except Exception:
                 pass
+        if self._camoufox_context is not None:
+            try:
+                self._camoufox_context.close()
+            except Exception:
+                pass
+        if self._camoufox_manager is not None:
+            try:
+                self._camoufox_manager.__exit__(None, None, None)
+            except Exception:
+                pass
         for resource in (self._context, self._browser, self._pw):
             if resource is None:
                 continue
@@ -272,6 +286,8 @@ class Scores24Client:
         self._context = self._browser = self._pw = None
         self._curl_session = None
         self._curl_request_count = 0
+        self._camoufox_manager = None
+        self._camoufox_context = None
 
     def _pace(self) -> None:
         remaining = self.interval_seconds - (time.monotonic() - self._last_request_at)
@@ -318,6 +334,47 @@ class Scores24Client:
             self._browser_failed = True
             return "", 0
 
+    def _camoufox_html(self, url: str) -> tuple[str, int]:
+        if not _env_flag("SCORES24_CAMOUFOX_FALLBACK", True) or self._camoufox_failed:
+            return "", 0
+        try:
+            from camoufox.sync_api import Camoufox
+
+            if self._camoufox_manager is None:
+                launch_options: dict[str, Any] = {
+                    "headless": True,
+                    "humanize": True,
+                }
+                proxy_server = os.environ.get("PLAYWRIGHT_PROXY_SERVER", "").strip()
+                if proxy_server:
+                    launch_options["proxy"] = {"server": proxy_server}
+                self._camoufox_manager = Camoufox(**launch_options)
+                browser = self._camoufox_manager.__enter__()
+                self._camoufox_context = browser.new_context(
+                    locale="en-US",
+                    timezone_id="America/Chicago",
+                    viewport={"width": 1365, "height": 900},
+                )
+            page = self._camoufox_context.new_page()
+            try:
+                response = page.goto(url, timeout=60000, wait_until="domcontentloaded")
+                status = response.status if response else 0
+                html = ""
+                for attempt in range(4):
+                    page.wait_for_timeout(5000)
+                    html = page.content()
+                    if status == 200 and not _looks_blocked(status, html):
+                        return html, status
+                    if attempt < 3:
+                        response = page.reload(timeout=60000, wait_until="domcontentloaded")
+                        status = response.status if response else status
+                return html, status
+            finally:
+                page.close()
+        except Exception:
+            self._camoufox_failed = True
+            return "", 0
+
     def _impersonated_html(self, url: str) -> tuple[str, int]:
         try:
             from curl_cffi import requests as curl_requests
@@ -335,6 +392,11 @@ class Scores24Client:
             return "", 0
 
     def get_html(self, url: str, attempts: int = 3) -> tuple[str, int, bool]:
+        if self._prefer_camoufox:
+            camoufox_html, camoufox_status = self._camoufox_html(url)
+            if camoufox_status == 200 and not _looks_blocked(camoufox_status, camoufox_html):
+                return camoufox_html, camoufox_status, False
+            self._prefer_camoufox = False
         if time.monotonic() < self._blocked_until:
             return "", 429, True
         last_html = ""
@@ -361,6 +423,12 @@ class Scores24Client:
                 time.sleep((4.0 if blocked else 2.0) * (attempt + 1))
 
         if blocked:
+            camoufox_html, camoufox_status = self._camoufox_html(url)
+            if camoufox_status == 200 and not _looks_blocked(camoufox_status, camoufox_html):
+                self._prefer_camoufox = True
+                self._blocked_until = 0.0
+                return camoufox_html, camoufox_status, False
+            self._camoufox_failed = True
             browser_html, browser_status = self._browser_html(url)
             if browser_status == 200 and not _looks_blocked(browser_status, browser_html):
                 self._blocked_until = 0.0
