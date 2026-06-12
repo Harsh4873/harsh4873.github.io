@@ -1,19 +1,19 @@
 {
   "date": "2026-06-12",
   "errors": [],
-  "externalFeedsUpdatedAt": "2026-06-12T16:03:54.501363Z",
+  "externalFeedsUpdatedAt": "2026-06-12T16:18:56.227493Z",
   "external_feeds": {
     "sportsgambler": {
       "date": "2026-06-12",
       "errors": [],
-      "generatedAt": "2026-06-12T16:03:54.501363Z",
+      "generatedAt": "2026-06-12T16:18:56.227493Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-12",
         "feed": "sportsgambler",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba",
-        "updatedAt": "2026-06-12T16:03:54.501363Z"
+        "updatedAt": "2026-06-12T16:18:56.227493Z"
       },
       "note": "Scheduled sportsgambler refresh returned 17 pick(s).",
       "ok": true,
@@ -189,21 +189,21 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-12T16:03:54.501363Z"
+      "updatedAt": "2026-06-12T16:18:56.227493Z"
     },
     "sportytrader": {
       "date": "2026-06-12",
       "errors": [],
-      "generatedAt": "2026-06-12T16:03:54.501363Z",
+      "generatedAt": "2026-06-12T16:18:56.227493Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-12",
         "feed": "sportytrader",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba",
-        "updatedAt": "2026-06-12T16:03:54.501363Z"
+        "updatedAt": "2026-06-12T16:18:56.227493Z"
       },
-      "note": "Scheduled sportytrader refresh returned 9 pick(s).",
+      "note": "Scheduled sportytrader refresh returned 10 pick(s).",
       "ok": true,
       "picks": [
         {
@@ -231,6 +231,16 @@
           "edge": null,
           "odds": 100,
           "pick": "Arizona ML (Reds vs Diamondbacks)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -105,
+          "pick": "Under 8 (Mets vs Braves)",
           "probability": null,
           "source": "SportyTrader",
           "sport": "MLB",
@@ -297,7 +307,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-12T16:03:54.501363Z"
+      "updatedAt": "2026-06-12T16:18:56.227493Z"
     }
   },
   "generatedAt": "2026-06-12T16:03:02.825066Z",
@@ -11234,14 +11244,14 @@
     "sportsgambler": {
       "date": "2026-06-12",
       "errors": [],
-      "generatedAt": "2026-06-12T16:03:54.501363Z",
+      "generatedAt": "2026-06-12T16:18:56.227493Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-12",
         "feed": "sportsgambler",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba",
-        "updatedAt": "2026-06-12T16:03:54.501363Z"
+        "updatedAt": "2026-06-12T16:18:56.227493Z"
       },
       "note": "Scheduled sportsgambler refresh returned 17 pick(s).",
       "ok": true,
@@ -11417,21 +11427,21 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-12T16:03:54.501363Z"
+      "updatedAt": "2026-06-12T16:18:56.227493Z"
     },
     "sportytrader": {
       "date": "2026-06-12",
       "errors": [],
-      "generatedAt": "2026-06-12T16:03:54.501363Z",
+      "generatedAt": "2026-06-12T16:18:56.227493Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-12",
         "feed": "sportytrader",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba",
-        "updatedAt": "2026-06-12T16:03:54.501363Z"
+        "updatedAt": "2026-06-12T16:18:56.227493Z"
       },
-      "note": "Scheduled sportytrader refresh returned 9 pick(s).",
+      "note": "Scheduled sportytrader refresh returned 10 pick(s).",
       "ok": true,
       "picks": [
         {
@@ -11459,6 +11469,16 @@
           "edge": null,
           "odds": 100,
           "pick": "Arizona ML (Reds vs Diamondbacks)",
+          "probability": null,
+          "source": "SportyTrader",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "decision": "BET",
+          "edge": null,
+          "odds": -105,
+          "pick": "Under 8 (Mets vs Braves)",
           "probability": null,
           "source": "SportyTrader",
           "sport": "MLB",
@@ -11525,7 +11545,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-12T16:03:54.501363Z"
+      "updatedAt": "2026-06-12T16:18:56.227493Z"
     },
     "wnba": {
       "ok": true,
@@ -11784,14 +11804,14 @@
   "sportsgambler": {
     "date": "2026-06-12",
     "errors": [],
-    "generatedAt": "2026-06-12T16:03:54.501363Z",
+    "generatedAt": "2026-06-12T16:18:56.227493Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-12",
       "feed": "sportsgambler",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba",
-      "updatedAt": "2026-06-12T16:03:54.501363Z"
+      "updatedAt": "2026-06-12T16:18:56.227493Z"
     },
     "note": "Scheduled sportsgambler refresh returned 17 pick(s).",
     "ok": true,
@@ -11967,21 +11987,21 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-12T16:03:54.501363Z"
+    "updatedAt": "2026-06-12T16:18:56.227493Z"
   },
   "sportytrader": {
     "date": "2026-06-12",
     "errors": [],
-    "generatedAt": "2026-06-12T16:03:54.501363Z",
+    "generatedAt": "2026-06-12T16:18:56.227493Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-12",
       "feed": "sportytrader",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba",
-      "updatedAt": "2026-06-12T16:03:54.501363Z"
+      "updatedAt": "2026-06-12T16:18:56.227493Z"
     },
-    "note": "Scheduled sportytrader refresh returned 9 pick(s).",
+    "note": "Scheduled sportytrader refresh returned 10 pick(s).",
     "ok": true,
     "picks": [
       {
@@ -12009,6 +12029,16 @@
         "edge": null,
         "odds": 100,
         "pick": "Arizona ML (Reds vs Diamondbacks)",
+        "probability": null,
+        "source": "SportyTrader",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "odds": -105,
+        "pick": "Under 8 (Mets vs Braves)",
         "probability": null,
         "source": "SportyTrader",
         "sport": "MLB",
@@ -12075,9 +12105,9 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-12T16:03:54.501363Z"
+    "updatedAt": "2026-06-12T16:18:56.227493Z"
   },
-  "updatedAt": "2026-06-12T16:03:54.501363Z",
+  "updatedAt": "2026-06-12T16:18:56.227493Z",
   "wnba": {
     "ok": true,
     "picks": [
