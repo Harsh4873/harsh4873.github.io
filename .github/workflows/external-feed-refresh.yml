@@ -1,6 +1,6 @@
 name: External Feed Refresh
 
-# Runs the external prediction scrapers on a daily schedule and
+# Runs the SportyTrader and SportsGambler scrapers on a daily schedule and
 # publishes their results into data/model_cache so GitHub Pages can serve them
 # without waiting on the cloud backend.
 
@@ -20,7 +20,7 @@ on:
       feeds:
         description: "Comma-separated feeds, or all"
         required: false
-        default: "sportytrader,sportsgambler,scores24_wnba,scores24_mlb"
+        default: "sportytrader,sportsgambler"
 
 permissions:
   contents: write
@@ -57,13 +57,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           python -m playwright install chromium chromium-headless-shell
-          python -m camoufox fetch
 
       - name: Refresh external feeds
         run: |
           python scripts/refresh_external_feeds.py \
             --date "${{ github.event.inputs.date || '' }}" \
-            --feeds "${{ github.event.inputs.feeds || 'sportytrader,sportsgambler,scores24_wnba,scores24_mlb' }}" \
+            --feeds "${{ github.event.inputs.feeds || 'sportytrader,sportsgambler' }}" \
             --sports "nba,mlb,wnba" \
             --skip-firestore
 

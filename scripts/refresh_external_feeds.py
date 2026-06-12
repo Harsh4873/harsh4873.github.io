@@ -33,7 +33,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--date", default="", help="Target date in YYYY-MM-DD or MM/DD/YYYY format.")
     parser.add_argument(
         "--feeds",
-        default="sportytrader,sportsgambler,scores24_wnba,scores24_mlb",
+        default="sportytrader,sportsgambler",
         help="Comma-separated feeds to refresh, or 'all'.",
     )
     parser.add_argument("--sports", default="nba,mlb,wnba", help="Comma-separated sports passed to each feed scraper.")

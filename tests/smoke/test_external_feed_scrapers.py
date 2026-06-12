@@ -402,12 +402,19 @@ def test_scores24_fails_closed_when_blocked_retry_stays_blocked(monkeypatch):
     assert client.detail_calls == 2
 
 
-def test_external_feed_schedule_registers_separate_scores24_models():
+def test_local_scores24_schedule_registers_separate_models():
     workflow = (ROOT / ".github" / "workflows" / "external-feed-refresh.yml").read_text(encoding="utf-8")
     refresh = (ROOT / "scripts" / "refresh_external_feeds.py").read_text(encoding="utf-8")
+    publisher = (ROOT / "scripts" / "scrapers" / "scores24_publish_local.sh").read_text(encoding="utf-8")
+    launchd = (ROOT / "scripts" / "launchd" / "com.pickledger.scores24.plist").read_text(encoding="utf-8")
     for model_key in ("scores24_wnba", "scores24_mlb"):
-        assert model_key in workflow
         assert model_key in refresh
-    assert "python -m camoufox fetch" in workflow
+        assert model_key in publisher
+    assert 'default="sportytrader,sportsgambler"' in refresh
+    assert "scores24_wnba" not in workflow
+    assert "<integer>9</integer>" in launchd
+    assert "<integer>15</integer>" in launchd
+    assert "gh" not in publisher.split('GH_BIN="/opt/homebrew/bin/gh"', 1)[0]
+    assert "workflow run deploy-pages.yml" in publisher
     assert 'cron: "10,40 14 * * *"' in workflow
     assert 'cron: "10 20 * * *"' in workflow
