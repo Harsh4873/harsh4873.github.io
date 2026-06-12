@@ -67,6 +67,9 @@ def test_static_viewer_keeps_public_tabs_and_client_grading():
     assert "window.setInterval(() => void refreshForCentralClock(), AUTO_REFRESH_MS)" in main
     assert "Find a team, matchup, or source in the selected date’s open picks" in html
     assert "embeddedResult === 'pending' ? localResult : embeddedResult" in data
+    assert "function isTrackedPick(" in data
+    assert "!== 'PASS'" in data
+    assert "pick && isTrackedPick(pick)" in data
     assert "function renderRankings()" in main
     assert "function renderSearch()" in main
 
@@ -179,6 +182,33 @@ def test_auto_grader_updates_nested_model_picks(monkeypatch):
     pick = payload["models"]["mlb_new"]["picks"][0]
     assert pick["result"] == "win"
     assert pick["start_time"] == "2026-06-08T20:00:00Z"
+
+
+def test_auto_grader_skips_pass_decisions(monkeypatch):
+    module = _load_module("auto_grade_pass_test", ROOT / "scripts" / "auto_grade_picks.py")
+    payload = {
+        "date": "2026-06-08",
+        "models": {
+            "mlb_new": {
+                "picks": [
+                    {
+                        "source": "MLB Model",
+                        "sport": "MLB",
+                        "pick": "Cubs ML (Cubs vs Cardinals)",
+                        "decision": "PASS",
+                        "result": "pending",
+                    }
+                ]
+            }
+        },
+    }
+
+    def fail_if_called(*_args):
+        raise AssertionError("PASS decisions must not be sent to the grader")
+
+    monkeypatch.setattr(module.pickgrader_server, "auto_grade", fail_if_called)
+    assert module.grade_payload(payload) == 0
+    assert payload["models"]["mlb_new"]["picks"][0]["result"] == "pending"
 
 
 def test_scheduled_refreshes_are_json_only_and_use_shared_writer_lock():

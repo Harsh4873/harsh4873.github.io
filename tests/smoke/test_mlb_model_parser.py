@@ -152,8 +152,7 @@ def test_mlb_totals_emit_from_model_line_when_market_missing(monkeypatch):
 
 
 def test_mlb_totals_pass_rows_emit_from_model_line_when_market_missing(monkeypatch):
-    """PASS totals still need to be visible so the UI shows the full game
-    slate instead of looking like the model skipped games."""
+    """PASS totals remain in raw model output for diagnostics and guardrail audits."""
     from pickgrader_server import _parse_mlb_output
 
     _stub_sl_get_ml(monkeypatch, ml_home=None, ml_away=None)

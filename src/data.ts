@@ -176,6 +176,10 @@ function normalizePick(
   return pick;
 }
 
+function isTrackedPick(pick: Pick): boolean {
+  return String(pick.decision || '').trim().toUpperCase() !== 'PASS';
+}
+
 function picksFromCache(payload: ModelCachePayload): Pick[] {
   const date = String(payload.date || '').trim();
   const models = payload.models && typeof payload.models === 'object' ? payload.models : {};
@@ -194,7 +198,7 @@ function picksFromCache(payload: ModelCachePayload): Pick[] {
     }
     for (const raw of Array.isArray(bucket.picks) ? bucket.picks : []) {
       const pick = normalizePick(raw, date, SOURCE_LABELS[modelKey] || modelKey, gameByMatchup);
-      if (pick) picks.push(pick);
+      if (pick && isTrackedPick(pick)) picks.push(pick);
     }
   }
   return picks;
@@ -204,7 +208,7 @@ function picksFromCannon(payload: CannonPayload): Pick[] {
   const date = String(payload.slate_date || payload.as_of || '').trim();
   return (Array.isArray(payload.picks) ? payload.picks : [])
     .map(raw => normalizePick(raw, date, 'Cannon Analytics'))
-    .filter((pick): pick is Pick => Boolean(pick));
+    .filter((pick): pick is Pick => Boolean(pick) && isTrackedPick(pick));
 }
 
 async function fetchJson<T>(path: string): Promise<T | null> {
