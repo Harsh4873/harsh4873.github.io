@@ -341,6 +341,7 @@ def test_scores24_retries_blocked_matchup_without_hammering_candidates(monkeypat
         ROOT / "scripts" / "scrapers" / "scores24_scraper.py",
     )
     monkeypatch.setenv("SCORES24_BLOCK_RETRY_DELAY_SECONDS", "0")
+    monkeypatch.setenv("SCORES24_BLOCK_RETRY_ROUNDS", "1")
     detail = """
     <html><head><title>Los Angeles Angels vs Tampa Bay Rays Prediction</title></head>
     <body><div><div>Our choice</div><div>Tampa Bay Rays Win at odds of -179*</div></div></body>
@@ -377,6 +378,7 @@ def test_scores24_fails_closed_when_blocked_retry_stays_blocked(monkeypatch):
         ROOT / "scripts" / "scrapers" / "scores24_scraper.py",
     )
     monkeypatch.setenv("SCORES24_BLOCK_RETRY_DELAY_SECONDS", "0")
+    monkeypatch.setenv("SCORES24_BLOCK_RETRY_ROUNDS", "1")
 
     class FakeClient:
         def __init__(self):

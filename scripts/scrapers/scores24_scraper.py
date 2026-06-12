@@ -232,7 +232,7 @@ class Scores24Client:
         self.session = session or requests.Session()
         self.session.headers.update(HEADERS)
         self.interval_seconds = (
-            _env_float("SCORES24_REQUEST_INTERVAL_SECONDS", 1.2)
+            _env_float("SCORES24_REQUEST_INTERVAL_SECONDS", 2.0)
             if interval_seconds is None
             else max(0.0, interval_seconds)
         )
@@ -245,6 +245,10 @@ class Scores24Client:
         self._pw = None
         self._browser = None
         self._context = None
+        self._curl_session = None
+        self._curl_request_count = 0
+        self._browser_failed = False
+        self._blocked_until = 0.0
 
     def __enter__(self) -> Scores24Client:
         return self
@@ -253,6 +257,11 @@ class Scores24Client:
         self.close()
 
     def close(self) -> None:
+        if self._curl_session is not None:
+            try:
+                self._curl_session.close()
+            except Exception:
+                pass
         for resource in (self._context, self._browser, self._pw):
             if resource is None:
                 continue
@@ -261,6 +270,8 @@ class Scores24Client:
             except Exception:
                 pass
         self._context = self._browser = self._pw = None
+        self._curl_session = None
+        self._curl_request_count = 0
 
     def _pace(self) -> None:
         remaining = self.interval_seconds - (time.monotonic() - self._last_request_at)
@@ -269,7 +280,7 @@ class Scores24Client:
         self._last_request_at = time.monotonic()
 
     def _browser_html(self, url: str) -> tuple[str, int]:
-        if not self.browser_fallback:
+        if not self.browser_fallback or self._browser_failed:
             return "", 0
         try:
             from playwright.sync_api import sync_playwright
@@ -304,23 +315,45 @@ class Scores24Client:
             finally:
                 page.close()
         except Exception:
+            self._browser_failed = True
+            return "", 0
+
+    def _impersonated_html(self, url: str) -> tuple[str, int]:
+        try:
+            from curl_cffi import requests as curl_requests
+
+            max_requests = int(_env_float("SCORES24_CURL_SESSION_MAX_REQUESTS", 4, 1))
+            if self._curl_session is None or self._curl_request_count >= max_requests:
+                if self._curl_session is not None:
+                    self._curl_session.close()
+                self._curl_session = curl_requests.Session(impersonate="chrome")
+                self._curl_request_count = 0
+            response = self._curl_session.get(url, headers=HEADERS, timeout=35)
+            self._curl_request_count += 1
+            return response.text, response.status_code
+        except Exception:
             return "", 0
 
     def get_html(self, url: str, attempts: int = 3) -> tuple[str, int, bool]:
+        if time.monotonic() < self._blocked_until:
+            return "", 429, True
         last_html = ""
         last_status = 0
         blocked = False
         for attempt in range(max(1, attempts)):
             self._pace()
-            try:
-                response = self.session.get(url, timeout=35)
-                last_html = response.text
-                last_status = response.status_code
-            except requests.RequestException:
-                last_html = ""
-                last_status = 0
+            last_html, last_status = self._impersonated_html(url)
+            if not last_status:
+                try:
+                    response = self.session.get(url, timeout=35)
+                    last_html = response.text
+                    last_status = response.status_code
+                except requests.RequestException:
+                    last_html = ""
+                    last_status = 0
             blocked = _looks_blocked(last_status, last_html)
             if last_status == 200 and not blocked:
+                self._blocked_until = 0.0
                 return last_html, last_status, False
             if last_status == 404:
                 return last_html, last_status, False
@@ -330,7 +363,17 @@ class Scores24Client:
         if blocked:
             browser_html, browser_status = self._browser_html(url)
             if browser_status == 200 and not _looks_blocked(browser_status, browser_html):
+                self._blocked_until = 0.0
                 return browser_html, browser_status, False
+            self._browser_failed = True
+            if self._curl_session is not None:
+                try:
+                    self._curl_session.close()
+                except Exception:
+                    pass
+            self._curl_session = None
+            self._curl_request_count = 0
+            self._blocked_until = time.monotonic() + _env_float("SCORES24_HOST_BLOCK_COOLDOWN_SECONDS", 8.0)
         return last_html, last_status, blocked
 
 
@@ -501,6 +544,7 @@ def scrape_scores24(
     scores_client = client or Scores24Client()
     blocked_urls: list[str] = []
     blocked_matchups: set[tuple[str, str]] = set()
+    block_retry_rounds = 0
     attempted_urls = 0
     listing_links: list[dict[str, str]] = []
     try:
@@ -557,8 +601,17 @@ def scrape_scores24(
                 continue
             picks.append(pick)
 
-        if unresolved and blocked_urls:
-            time.sleep(_env_float("SCORES24_BLOCK_RETRY_DELAY_SECONDS", 8.0))
+        max_retry_rounds = int(_env_float("SCORES24_BLOCK_RETRY_ROUNDS", 3, 0))
+        retry_delay = _env_float("SCORES24_BLOCK_RETRY_DELAY_SECONDS", 45.0)
+        while unresolved and block_retry_rounds < max_retry_rounds:
+            unresolved_blocked = any(
+                _matchup_key(matchup["away"], matchup["home"]) in blocked_matchups
+                for matchup, _ in unresolved
+            )
+            if not unresolved_blocked:
+                break
+            block_retry_rounds += 1
+            time.sleep(retry_delay)
             still_unresolved: list[tuple[dict[str, str], list[str]]] = []
             for matchup, candidates in unresolved:
                 pick = resolve_candidates(matchup, candidates, min(max_candidates, 6))
@@ -592,6 +645,7 @@ def scrape_scores24(
                 "missingMatchups": missing_matchups,
                 "attemptedUrls": attempted_urls,
                 "blockedUrls": len(set(blocked_urls)),
+                "blockRetryRounds": block_retry_rounds,
             },
         }
     return {
@@ -608,6 +662,7 @@ def scrape_scores24(
             "missingMatchups": missing_matchups,
             "attemptedUrls": attempted_urls,
             "blockedUrls": len(set(blocked_urls)),
+            "blockRetryRounds": block_retry_rounds,
             "listingLinks": len(listing_links),
         },
     }
