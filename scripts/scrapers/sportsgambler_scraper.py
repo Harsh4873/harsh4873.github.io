@@ -103,7 +103,6 @@ def scrape_basketball(
         for matchup in expected_matchups or []
         if (key := _matchup_key(matchup))
     }
-    found_expected: set[tuple[str, str]] = set()
     for obj in _json_ld(soup):
         for node in _iter_nodes(obj):
             item = node.get("item")
@@ -120,16 +119,7 @@ def scrape_basketball(
             if not expected and target and event_date and event_date != target:
                 continue
             seen.add(url)
-            if matchup_key:
-                found_expected.add(matchup_key)
             articles.append({"url": url, "matchup": matchup, "date": item.get("startDate", "")})
-
-    missing_listings = [matchup for key, matchup in expected.items() if key not in found_expected]
-    if missing_listings:
-        raise RuntimeError(
-            f"partial {league} listing: missing {len(missing_listings)} known slate matchup(s): "
-            f"{', '.join(missing_listings[:3])}"
-        )
 
     rows = []
     missing: list[str] = []

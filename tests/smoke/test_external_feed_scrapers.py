@@ -65,7 +65,7 @@ def test_sportytrader_fifa_world_cup_config_and_known_matchup_alias():
         ],
         module._parse_target_date("2026-06-13"),
         "fifa_world_cup",
-        ["Turkey @ Australia"],
+        ["Turkey @ Australia", "Switzerland @ Qatar"],
     )
     assert rows[0]["league"] == "World - World Cup"
     assert rows[0]["tip"] == "Turkey to Win & Under 3.5 Goals"
@@ -175,7 +175,7 @@ def test_sportsgambler_rejects_partial_basketball_feed(monkeypatch):
         raise AssertionError("partial SportsGambler WNBA scrape must fail instead of publishing")
 
 
-def test_sportsgambler_rejects_missing_known_matchup(monkeypatch):
+def test_sportsgambler_uses_known_matchups_as_a_whitelist(monkeypatch):
     module = _load_module(
         "sportsgambler_missing_matchup_test",
         ROOT / "scripts" / "scrapers" / "sportsgambler_scraper.py",
@@ -189,21 +189,23 @@ def test_sportsgambler_rejects_missing_known_matchup(monkeypatch):
         }
     }
 
+    listing_html = f'<script type="application/ld+json">{json.dumps(listing)}</script>'
+    detail_html = '<div class="tpbot_container"><div class="tpbot_title">Our Game Prediction</div><a class="tpbot_tip"><span>Pick</span><span>Fever -9.5 @ -112</span></a></div>'
+
     class Response:
-        text = f'<script type="application/ld+json">{json.dumps(listing)}</script>'
+        def __init__(self, text: str):
+            self.text = text
 
-    monkeypatch.setattr(module.requests, "get", lambda *_args, **_kwargs: Response())
-
-    try:
-        module.scrape_wnba(
-            date(2026, 6, 11),
-            ["Chicago Sky @ Indiana Fever", "Phoenix Mercury @ Dallas Wings"],
-        )
-    except RuntimeError as exc:
-        assert "missing 1 known slate matchup" in str(exc)
-        assert "Phoenix Mercury @ Dallas Wings" in str(exc)
-    else:
-        raise AssertionError("missing known slate matchup must fail instead of publishing")
+    monkeypatch.setattr(
+        module.requests,
+        "get",
+        lambda url, **_kwargs: Response(detail_html if url == "https://example.com/fever-sky" else listing_html),
+    )
+    rows = module.scrape_wnba(
+        date(2026, 6, 11),
+        ["Chicago Sky @ Indiana Fever", "Phoenix Mercury @ Dallas Wings"],
+    )
+    assert [row["matchup"] for row in rows] == ["Indiana Fever vs Chicago Sky"]
 
 
 def test_sportsgambler_fifa_world_cup_preserves_asian_handicap(monkeypatch):

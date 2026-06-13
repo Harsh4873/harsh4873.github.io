@@ -242,7 +242,6 @@ def _extract_rows(
         for matchup in expected_matchups or []
         if (key := _matchup_key(matchup))
     }
-    found_expected: set[tuple[str, str]] = set()
 
     for raw in cards:
         row = {key: _normalize_line(str(raw.get(key, ""))) for key in ("datetime", "league", "home", "away", "tip", "odds", "href")}
@@ -260,17 +259,9 @@ def _extract_rows(
         if key in seen:
             continue
         seen.add(key)
-        if matchup_key:
-            found_expected.add(matchup_key)
         row["league"] = sport_league
         out.append(row)
 
-    missing = [matchup for key, matchup in expected.items() if key not in found_expected]
-    if missing:
-        raise RuntimeError(
-            f"partial {SPORT_CONFIG[sport_key]['title']} listing: missing {len(missing)} known slate matchup(s): "
-            f"{', '.join(missing[:3])}"
-        )
     return out
 
 
