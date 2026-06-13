@@ -1,8 +1,9 @@
-import { initMobileMode, initSettingsUI, initTheme } from './settings';
+import { initMobileMode, initPickMode, initSettingsUI, initTheme, type PickMode } from './settings';
 import {
   getAllPicks,
   getCacheStatus,
   loadAllData,
+  setPickMode as setDataPickMode,
   setLocalGameTime,
   setLocalResult,
   type Pick,
@@ -64,6 +65,7 @@ const ESPN_ENDPOINTS: Record<string, [string, string]> = {
 };
 
 let activeFilter = 'ALL';
+let activePickMode: PickMode = 'team';
 let homeMode: 'pending' | 'all' | 'settled' = 'pending';
 let dailyView: DailyView = 'picks';
 let selectedDate = '';
@@ -146,6 +148,53 @@ function formatOdds(pick: Pick): string {
     : '';
 }
 
+function detailValues(value: unknown): string[] {
+  if (Array.isArray(value)) return value.flatMap(detailValues);
+  if (value == null || value === '') return [];
+  if (typeof value === 'object') {
+    const record = value as Record<string, unknown>;
+    return detailValues(record.reason || record.factor || record.label || record.name);
+  }
+  return [String(value).trim()].filter(Boolean);
+}
+
+function formatPlayerMeasure(value: unknown, percent = false): string {
+  if (value == null || value === '') return '';
+  const number = Number(value);
+  if (!Number.isFinite(number)) return String(value);
+  if (percent) {
+    const percentage = Math.abs(number) <= 1 ? number * 100 : number;
+    return `${Number(percentage.toFixed(1))}%`;
+  }
+  return String(Number(number.toFixed(2)));
+}
+
+function playerDetailsHtml(pick: Pick): string {
+  if (activePickMode !== 'player') return '';
+  const decision = String(pick.decision || 'PASS').trim().toUpperCase();
+  const kellyUnits = pick.kelly_units ?? pick.recommended_units;
+  const kelly = kellyUnits ?? pick.kelly;
+  const fullKelly = formatPlayerMeasure(pick.full_kelly, true);
+  const quarterKelly = formatPlayerMeasure(pick.quarter_kelly, true);
+  const kellyText = kellyUnits != null
+    ? `${formatPlayerMeasure(kellyUnits)}u`
+    : formatPlayerMeasure(kelly, true);
+  const confidence = formatPlayerMeasure(pick.confidence, true);
+  const reason = detailValues(pick.reason ?? pick.rationale)[0] || '';
+  const factors = detailValues(pick.key_factors);
+  return `<div class="home-player-details">
+    <div class="home-player-metrics">
+      <span class="home-player-decision decision-${escapeHtml(decision.toLowerCase())}">${escapeHtml(decision)}</span>
+      ${quarterKelly ? `<span><strong>Quarter Kelly</strong>${escapeHtml(quarterKelly)}</span>` : ''}
+      ${fullKelly ? `<span><strong>Full Kelly</strong>${escapeHtml(fullKelly)}</span>` : ''}
+      ${!quarterKelly && !fullKelly && kellyText ? `<span><strong>Kelly</strong>${escapeHtml(kellyText)}</span>` : ''}
+      ${confidence ? `<span><strong>Confidence</strong>${escapeHtml(confidence)}</span>` : ''}
+    </div>
+    ${reason ? `<div class="home-player-reason"><strong>Reason</strong><span>${escapeHtml(reason)}</span></div>` : ''}
+    ${factors.length ? `<div class="home-player-factors"><strong>Key factors</strong><div>${factors.map(factor => `<span>${escapeHtml(factor)}</span>`).join('')}</div></div>` : ''}
+  </div>`;
+}
+
 function sourceName(pick: Pick): string {
   return String(pick.source || 'Unknown').trim();
 }
@@ -154,6 +203,8 @@ function gameName(pick: Pick): string {
   const explicit = String(pick.matchup || pick.game || '').trim();
   if (explicit) return explicit;
   if (pick.away_team && pick.home_team) return `${pick.away_team} vs ${pick.home_team}`;
+  if (pick.team) return String(pick.team);
+  if (pick.player) return String(pick.player);
   const parenthetical = pick.pick.match(/\(([^)]+(?:vs|@)[^)]+)\)/i);
   return parenthetical?.[1] || pick.pick;
 }
@@ -348,24 +399,30 @@ function renderHome(): void {
   picks.forEach(pick => groups.set(gameKey(pick), [...(groups.get(gameKey(pick)) || []), pick]));
 
   const title = document.getElementById('home-title');
+  const eyebrow = document.getElementById('home-eyebrow');
   const sub = document.getElementById('home-sub');
   const dateChip = document.getElementById('home-date-chip');
   const filterChip = document.getElementById('home-filter-chip');
   const modeChip = document.getElementById('home-mode-chip');
   const triggerValue = document.getElementById('home-date-trigger-value');
   const triggerMeta = document.getElementById('home-date-trigger-meta');
-  if (title) title.textContent = `${dateLabel(selectedDate, true)} Picks`;
-  if (sub) sub.textContent = `${selectedAll.length} picks from ${new Set(selectedAll.map(sourceName)).size} sources, organized by matchup.`;
+  const itemLabel = activePickMode === 'player' ? 'props' : 'picks';
+  const itemTitle = activePickMode === 'player' ? 'Props' : 'Picks';
+  if (eyebrow) eyebrow.textContent = activePickMode === 'player' ? 'PLAYER PROPS' : 'TEAM PICKS';
+  if (title) title.textContent = activePickMode === 'player'
+    ? `${dateLabel(selectedDate, true)} Player Props`
+    : `${dateLabel(selectedDate, true)} Picks`;
+  if (sub) sub.textContent = `${selectedAll.length} ${activePickMode === 'player' ? 'player props' : 'picks'} from ${new Set(selectedAll.map(sourceName)).size} sources, organized by matchup.`;
   if (dateChip) dateChip.textContent = dateLabel(selectedDate).toUpperCase();
   if (filterChip) filterChip.textContent = activeFilter === 'ALL' ? 'ALL SOURCES' : activeFilter.toUpperCase();
-  if (modeChip) modeChip.textContent = homeMode === 'pending' ? 'OPEN PICKS' : homeMode === 'settled' ? 'RESULTS' : 'ALL PICKS';
+  if (modeChip) modeChip.textContent = homeMode === 'pending' ? `OPEN ${itemLabel.toUpperCase()}` : homeMode === 'settled' ? 'RESULTS' : `ALL ${itemLabel.toUpperCase()}`;
   if (triggerValue) triggerValue.textContent = dateLabel(selectedDate, true);
   if (triggerMeta) triggerMeta.textContent = selectedDate === centralDateKey() ? 'Today | CT' : `${selectedAll.length} picks`;
   document.querySelectorAll<HTMLElement>('[data-home-mode]').forEach(button => button.classList.toggle('active', button.dataset.homeMode === homeMode));
 
   const summary = document.getElementById('home-summary-grid');
   if (summary) summary.innerHTML = [
-    [stats.total, homeMode === 'pending' ? 'Open Picks' : 'Picks'],
+    [stats.total, homeMode === 'pending' ? `Open ${itemTitle}` : itemTitle],
     [groups.size, 'Matchups'],
     [new Set(picks.map(sourceName)).size, 'Sources'],
     [stats.pending, 'Open'],
@@ -384,7 +441,7 @@ function renderHome(): void {
   if (!feed) return;
   if (!picks.length) {
     const modeLabel = homeMode === 'pending' ? 'open' : homeMode === 'settled' ? 'finished' : 'available';
-    feed.innerHTML = `<div class="pick-feed-empty"><div class="home-empty-kicker">${homeMode === 'pending' ? 'OPEN PICKS' : homeMode === 'settled' ? 'RESULTS' : 'ALL PICKS'} | ${escapeHtml(dateLabel(selectedDate).toUpperCase())}</div><div class="home-empty-title">No ${modeLabel} picks in this view</div><div class="home-empty-sub">Try another date, sport, source, or result view.</div></div>`;
+    feed.innerHTML = `<div class="pick-feed-empty"><div class="home-empty-kicker">${homeMode === 'pending' ? `OPEN ${itemLabel.toUpperCase()}` : homeMode === 'settled' ? 'RESULTS' : `ALL ${itemLabel.toUpperCase()}`} | ${escapeHtml(dateLabel(selectedDate).toUpperCase())}</div><div class="home-empty-title">No ${modeLabel} ${itemLabel} in this view</div><div class="home-empty-sub">Try another date, sport, source, or result view.</div></div>`;
     return;
   }
   const bySport = new Map<string, Array<[string, Pick[]]>>();
@@ -394,7 +451,7 @@ function renderHome(): void {
   });
   feed.innerHTML = [...bySport.entries()].map(([sport, games]) => `
     <section class="home-feed-section">
-      <div class="home-feed-section-head"><div><div class="home-feed-section-title">${escapeHtml(sport)}</div><div class="home-feed-section-meta">${games.reduce((sum, game) => sum + game[1].length, 0)} picks | ${games.length} matchups</div></div></div>
+      <div class="home-feed-section-head"><div><div class="home-feed-section-title">${escapeHtml(sport)}</div><div class="home-feed-section-meta">${games.reduce((sum, game) => sum + game[1].length, 0)} ${itemLabel} | ${games.length} matchups</div></div></div>
       <div class="home-feed-grid">${games.map(([, gamePicks]) => renderGameCard(gamePicks)).join('')}</div>
     </section>`).join('');
   void refreshHomeScores(selectedDate, picks);
@@ -405,21 +462,23 @@ function renderGameCard(picks: Pick[]): string {
   const pending = stats.pending > 0;
   const start = picks.map(pick => pick.start_time).filter(Boolean).sort()[0];
   const scoreChip = homeScoreChipHtml(homeScores.get(gameKey(picks[0])), start, gameName(picks[0]));
+  const itemLabel = activePickMode === 'player' ? 'props' : 'picks';
   return `<article class="home-game-card status-${statusClass(picks)}">
     <div class="home-game-top">
       <div class="home-game-kicker"><span class="home-sport-pill">${escapeHtml(picks[0]?.sport)}</span><span class="home-status-pill ${statusClass(picks)}">${pending ? 'OPEN' : `${stats.wins}-${stats.losses}${stats.pushes ? `-${stats.pushes}` : ''}`}</span></div>
       <div class="home-game-right-stack">${scoreChip}<div class="home-game-pl ${stats.net > 0 ? 'positive' : stats.net < 0 ? 'negative' : 'neutral'}">${pending ? `${stats.pending} open` : signedUnits(stats.net)}</div><div class="home-game-caption">${formatStart(start)}</div></div>
     </div>
-    <div><div class="home-game-title">${escapeHtml(gameName(picks[0]))}</div><div class="home-game-meta">${escapeHtml(dateLabel(pickDateKey(picks[0])))} | ${picks.length} picks | ${new Set(picks.map(sourceName)).size} sources</div></div>
+    <div><div class="home-game-title">${escapeHtml(gameName(picks[0]))}</div><div class="home-game-meta">${escapeHtml(dateLabel(pickDateKey(picks[0])))} | ${picks.length} ${itemLabel} | ${new Set(picks.map(sourceName)).size} sources</div></div>
     <div class="home-game-picks">${picks.map(renderPickRow).join('')}</div>
   </article>`;
 }
 
 function renderPickRow(pick: Pick): string {
+  const decision = String(pick.decision || '').trim().toUpperCase();
   return `<div class="home-feed-row result-${pick.result}">
     <span class="home-feed-row-sport">${escapeHtml(pick.sport)}</span>
-    <div class="home-feed-row-body"><div class="home-feed-row-source">${escapeHtml(sourceName(pick))}</div><div class="home-feed-row-pick">${escapeHtml(pick.pick)}</div><div class="home-feed-row-meta">${escapeHtml([formatOdds(pick), `${pick.units}u`, formatStart(pick.start_time), pick.decision].filter(Boolean).join(' | '))}</div></div>
-    <div class="home-feed-row-pl ${pick.pl > 0 ? 'positive' : pick.pl < 0 ? 'negative' : 'neutral'}">${pick.result === 'pending' ? `${pick.units}u risk` : signedUnits(pick.pl)}</div>
+    <div class="home-feed-row-body"><div class="home-feed-row-source">${escapeHtml(sourceName(pick))}</div><div class="home-feed-row-pick">${escapeHtml(pick.pick)}</div><div class="home-feed-row-meta">${escapeHtml([formatOdds(pick), decision === 'PASS' ? '' : `${pick.units}u`, formatStart(pick.start_time), activePickMode === 'player' ? '' : pick.decision].filter(Boolean).join(' | '))}</div>${playerDetailsHtml(pick)}</div>
+    <div class="home-feed-row-pl ${pick.pl > 0 ? 'positive' : pick.pl < 0 ? 'negative' : 'neutral'}">${pick.result === 'pending' ? decision === 'PASS' ? 'Pass' : `${pick.units}u risk` : signedUnits(pick.pl)}</div>
     <div class="home-feed-row-control">${resultBadge(pick.result)}</div>
   </div>`;
 }
@@ -545,18 +604,31 @@ function renderSearch(): void {
   ensureSelection();
   const query = input.value.trim().toLowerCase();
   const pending = getAllPicks().filter(pick => pick.result === 'pending' && pickDateKey(pick) === selectedDate);
-  const scope = `${dateLabel(selectedDate, true)} open picks (Central time)`;
+  const itemLabel = activePickMode === 'player' ? 'props' : 'picks';
+  const subjects = activePickMode === 'player' ? 'player, prop, matchup, or source' : 'team, matchup, or source';
+  const scope = `${dateLabel(selectedDate, true)} open ${itemLabel} (Central time)`;
   if (!query) {
     meta.textContent = `${pending.length} ${scope.toLowerCase()}`;
-    results.innerHTML = '<div class="empty-state">Search for a team, matchup, or source in the selected date’s open picks</div>';
+    results.innerHTML = `<div class="empty-state">Search for a ${subjects} in the selected date’s open ${itemLabel}</div>`;
     return;
   }
-  const picks = pending.filter(pick => [pick.pick, sourceName(pick), pick.sport, pick.date, gameName(pick)].some(value => String(value).toLowerCase().includes(query)));
-  meta.textContent = `${picks.length} open pick${picks.length === 1 ? '' : 's'} for "${input.value.trim()}" | ${scope}`;
+  const picks = pending.filter(pick => [
+    pick.pick,
+    pick.player,
+    pick.team,
+    pick.market,
+    pick.reason,
+    pick.key_factors,
+    sourceName(pick),
+    pick.sport,
+    pick.date,
+    gameName(pick),
+  ].some(value => detailValues(value).some(detail => detail.toLowerCase().includes(query))));
+  meta.textContent = `${picks.length} open ${picks.length === 1 ? itemLabel.slice(0, -1) : itemLabel} for "${input.value.trim()}" | ${scope}`;
   results.innerHTML = picks.length ? picks.map(pick => `
     <div class="search-card"><div class="search-card-top">${resultBadge(pick.result)}<span class="badge badge-source">${escapeHtml(sourceName(pick))}</span><div class="search-card-pick">${escapeHtml(pick.pick)}</div><div class="search-card-odds">${escapeHtml(formatOdds(pick))}</div></div>
       <div class="search-card-row"><div class="search-card-field"><span class="search-card-field-label">GAME</span><span class="search-card-field-val">${escapeHtml(gameName(pick))}</span></div><div class="search-card-field"><span class="search-card-field-label">DATE</span><span class="search-card-field-val">${escapeHtml(pick.date)}</span></div><div class="search-card-field"><span class="search-card-field-label">P/L</span><span class="search-card-field-val">${signedUnits(pick.pl)}</span></div></div>
-    </div>`).join('') : '<div class="empty-state">No open picks match that search for the selected date</div>';
+    </div>`).join('') : `<div class="empty-state">No open ${itemLabel} match that search for the selected date</div>`;
 }
 
 function canonicalTeamForPick(pick: Pick, label: string): string {
@@ -1213,13 +1285,17 @@ async function refreshAutoGrades(): Promise<void> {
   try {
     await loadAllData();
     updateSyncStatus();
-    const pending = getAllPicks().filter(pick => pick.result === 'pending');
+    const pending = activePickMode === 'team'
+      ? getAllPicks().filter(pick => pick.result === 'pending')
+      : [];
     const byDate = new Map<string, Pick[]>();
     pending.forEach(pick => byDate.set(pickDateKey(pick), [...(byDate.get(pickDateKey(pick)) || []), pick]));
     let graded = 0;
     for (const [date, picks] of byDate) graded += await gradeDate(date, picks);
     render();
-    setRefreshStatus(graded ? `Updated ${graded} finished pick${graded === 1 ? '' : 's'}` : 'You’re up to date — no new final scores', 'ok');
+    setRefreshStatus(graded
+      ? `Updated ${graded} finished pick${graded === 1 ? '' : 's'}`
+      : activePickMode === 'player' ? 'Player props refreshed' : 'You’re up to date — no new final scores', 'ok');
   } catch {
     setRefreshStatus('Couldn’t check for updates right now', 'error');
   } finally {
@@ -1259,6 +1335,29 @@ function updateSyncStatus(): void {
     : 'Latest pick update time unavailable';
 }
 
+function switchPickMode(mode: PickMode): void {
+  activePickMode = mode;
+  setDataPickMode(mode);
+  activeFilter = 'ALL';
+  homeMode = 'pending';
+  dailyView = 'picks';
+  selectedDate = '';
+  followCentralToday = true;
+  calendarMonth = '';
+  calendarOpen = false;
+  expandedSourceKeys.clear();
+  homeScores.clear();
+  const search = document.getElementById('search-input') as HTMLInputElement | null;
+  if (search) {
+    search.value = '';
+    search.placeholder = mode === 'player'
+      ? 'Find a player, prop, matchup, or source in the selected date’s open props...'
+      : 'Find a team, matchup, or source in the selected date’s open picks...';
+  }
+  updateSyncStatus();
+  render();
+}
+
 function goHome(event?: Event): void {
   event?.preventDefault();
   switchTab('home');
@@ -1283,9 +1382,16 @@ document.addEventListener('click', event => {
   }
 });
 
+document.addEventListener('pickledger:modechange', event => {
+  const mode = (event as CustomEvent<{ mode?: PickMode }>).detail?.mode;
+  if (mode === 'team' || mode === 'player') switchPickMode(mode);
+});
+
 document.addEventListener('DOMContentLoaded', async () => {
   initTheme();
   initMobileMode();
+  activePickMode = initPickMode();
+  setDataPickMode(activePickMode);
   initSettingsUI();
   await loadAllData();
   lastCentralDate = centralDateKey();

@@ -1,4 +1,5 @@
 export type PickResult = 'pending' | 'win' | 'loss' | 'push';
+export type PickMode = 'team' | 'player';
 
 export interface Pick {
   id: string;
@@ -24,6 +25,17 @@ export interface Pick {
   market_edge?: number | null;
   line?: number | null;
   market_line?: number | null;
+  kelly?: number | string | null;
+  kelly_units?: number | string | null;
+  full_kelly?: number | string | null;
+  quarter_kelly?: number | string | null;
+  recommended_units?: number | string | null;
+  reason?: string | null;
+  rationale?: string | null;
+  key_factors?: unknown;
+  player?: string;
+  player_name?: string;
+  market?: string;
   [key: string]: unknown;
 }
 
@@ -52,6 +64,21 @@ interface CannonPayload {
   picks?: unknown[];
 }
 
+interface PlayerPropsPayload {
+  date?: string;
+  slate_date?: string;
+  generatedAt?: string;
+  updatedAt?: string;
+  picks?: unknown[];
+  props?: unknown[];
+  player_props?: unknown[];
+  recommendations?: unknown[];
+  models?: Record<string, unknown>;
+  sports?: Record<string, unknown>;
+  leagues?: Record<string, unknown>;
+  [key: string]: unknown;
+}
+
 const RESULT_STORAGE_KEY = 'pickledger_static_results_v2';
 const GAME_TIME_STORAGE_KEY = 'pickledger_static_game_times_v2';
 const SOURCE_LABELS: Record<string, string> = {
@@ -65,10 +92,13 @@ const SOURCE_LABELS: Record<string, string> = {
   sportsgambler: 'SportsGambler',
 };
 
-let allPicks: Pick[] = [];
+let activePickMode: PickMode = 'team';
+let teamPicks: Pick[] = [];
+let playerPicks: Pick[] = [];
 let resultOverrides: Record<string, PickResult> = {};
 let gameTimes: Record<string, string> = {};
-let latestCache: ModelCachePayload | null = null;
+let latestTeamCache: ModelCachePayload | null = null;
+let latestPlayerCache: PlayerPropsPayload | null = null;
 
 function readStorage<T>(key: string, fallback: T): T {
   try {
@@ -118,6 +148,9 @@ function stablePickId(raw: Record<string, unknown>, date: string, source: string
     raw.sport,
     date,
     raw.pick,
+    raw.selection || raw.prop || raw.bet,
+    raw.player || raw.player_name,
+    raw.market || raw.market_type,
     raw.matchup || raw.game,
     raw.away_team,
     raw.home_team,
@@ -137,21 +170,24 @@ function normalizePick(
   fallbackDate: string,
   fallbackSource: string,
   gameByMatchup: Map<string, Record<string, unknown>> = new Map(),
+  playerProp = false,
 ): Pick | null {
   if (!input || typeof input !== 'object') return null;
   const raw = input as Record<string, unknown>;
-  const pickText = String(raw.pick || '').trim();
+  const pickText = String(raw.pick || raw.selection || raw.prop || raw.bet || '').trim();
   if (!pickText) return null;
 
   const source = String(raw.source || fallbackSource || 'Unknown').trim();
-  const date = String(raw.date || raw.game_date || raw.Date || fallbackDate || '').trim();
-  const matchup = String(raw.matchup || raw.game || '').trim();
+  const date = String(raw.date || raw.game_date || raw.slate_date || raw.Date || fallbackDate || '').trim();
+  const matchup = String(raw.matchup || raw.game || raw.event || '').trim();
   const game = gameByMatchup.get(matchup);
   const id = stablePickId(raw, date, source);
   const embeddedResult = normalizeResult(raw.result);
   const localResult = normalizeResult(resultOverrides[id]);
   const result = embeddedResult === 'pending' ? localResult : embeddedResult;
-  const units = numberOrNull(raw.units) ?? 1;
+  const decision = String(raw.decision || '').trim().toUpperCase();
+  const units = numberOrNull(raw.units ?? raw.stake_units ?? raw.recommended_units ?? raw.quarter_kelly)
+    ?? (playerProp && decision === 'PASS' ? 0 : 1);
   const startTime = String(
     raw.start_time || raw.game_start_time ||
     game?.start_time || game?.game_start_time ||
@@ -164,9 +200,14 @@ function normalizePick(
     source,
     pick: pickText,
     sport: String(raw.sport || raw.league || 'OTHER').trim().toUpperCase(),
+    matchup: matchup || undefined,
+    player: String(raw.player || raw.player_name || '').trim() || undefined,
+    reason: String(raw.reason || raw.rationale || raw.notes || '').trim() || undefined,
+    key_factors: raw.key_factors ?? raw.factors ?? raw.guardrail_reasons,
     date,
     units,
-    odds: numberOrNull(raw.odds ?? raw.assumed_odds),
+    odds: numberOrNull(raw.odds ?? raw.assumed_odds ?? raw.american_odds ?? raw.price),
+    probability: numberOrNull(raw.probability ?? raw.model_probability ?? raw.predicted_probability),
     result,
     pl: 0,
     start_time: startTime,
@@ -179,6 +220,11 @@ function normalizePick(
 function isTrackedPick(pick: Pick): boolean {
   const decision = String(pick.decision || '').trim().toUpperCase();
   return decision === 'BET' || decision === 'LEAN';
+}
+
+function isTrackedPlayerProp(pick: Pick): boolean {
+  const decision = String(pick.decision || '').trim().toUpperCase();
+  return decision === 'BET' || decision === 'LEAN' || decision === 'PASS';
 }
 
 function picksFromCache(payload: ModelCachePayload): Pick[] {
@@ -212,6 +258,39 @@ function picksFromCannon(payload: CannonPayload): Pick[] {
     .filter((pick): pick is Pick => Boolean(pick) && isTrackedPick(pick));
 }
 
+function playerPropRecords(payload: PlayerPropsPayload): Array<{ raw: unknown; source: string }> {
+  const records: Array<{ raw: unknown; source: string }> = [];
+  const addBucket = (bucket: unknown, source: string): void => {
+    if (Array.isArray(bucket)) {
+      bucket.forEach(raw => records.push({ raw, source }));
+      return;
+    }
+    if (!bucket || typeof bucket !== 'object') return;
+    const value = bucket as Record<string, unknown>;
+    if (value.ok === false) return;
+    for (const key of ['picks', 'props', 'player_props', 'recommendations']) {
+      if (Array.isArray(value[key])) addBucket(value[key], source);
+    }
+  };
+
+  addBucket(payload, 'Player Props');
+  for (const containerKey of ['models', 'sports', 'leagues']) {
+    const container = payload[containerKey];
+    if (!container || typeof container !== 'object' || Array.isArray(container)) continue;
+    for (const [source, bucket] of Object.entries(container as Record<string, unknown>)) {
+      addBucket(bucket, source);
+    }
+  }
+  return records;
+}
+
+function picksFromPlayerProps(payload: PlayerPropsPayload): Pick[] {
+  const date = String(payload.date || payload.slate_date || '').trim();
+  return playerPropRecords(payload)
+    .map(({ raw, source }) => normalizePick(raw, date, source, new Map(), true))
+    .filter((pick): pick is Pick => Boolean(pick) && isTrackedPlayerProp(pick));
+}
+
 async function fetchJson<T>(path: string): Promise<T | null> {
   try {
     const response = await fetch(`${path}?v=${Date.now()}`, { cache: 'no-store' });
@@ -229,7 +308,7 @@ async function loadCacheFiles(): Promise<ModelCachePayload[]> {
     : [];
   if (!files.length) {
     const fallback = await fetchJson<ModelCachePayload>('./data/model_cache/latest.json');
-    latestCache = fallback;
+    latestTeamCache = fallback;
     return fallback ? [fallback] : [];
   }
 
@@ -237,31 +316,66 @@ async function loadCacheFiles(): Promise<ModelCachePayload[]> {
     files.map(file => fetchJson<ModelCachePayload>(`./data/model_cache/${file}`)),
   )).filter((payload): payload is ModelCachePayload => Boolean(payload));
   payloads.sort((a, b) => String(a.date || '').localeCompare(String(b.date || '')));
-  latestCache = payloads[payloads.length - 1] || null;
+  latestTeamCache = payloads[payloads.length - 1] || null;
   return payloads;
 }
 
-export async function loadAllData(): Promise<Pick[]> {
-  resultOverrides = readStorage<Record<string, PickResult>>(RESULT_STORAGE_KEY, {});
-  gameTimes = readStorage<Record<string, string>>(GAME_TIME_STORAGE_KEY, {});
-  const [cachePayloads, cannon] = await Promise.all([
-    loadCacheFiles(),
-    fetchJson<CannonPayload>('./data/cannon_mlb_daily.json'),
-  ]);
-  const byId = new Map<string, Pick>();
-  cachePayloads.flatMap(picksFromCache).forEach(pick => byId.set(pick.id, pick));
-  if (cannon) picksFromCannon(cannon).forEach(pick => byId.set(pick.id, pick));
-  allPicks = [...byId.values()].sort((a, b) => (
+async function loadPlayerCacheFiles(): Promise<PlayerPropsPayload[]> {
+  const manifest = await fetchJson<CacheManifest>('./data/player_props_cache/index.json');
+  const files = Array.isArray(manifest?.files)
+    ? manifest.files.filter(file => /^\d{4}-\d{2}-\d{2}\.json$/.test(file))
+    : [];
+  if (!files.length) {
+    const fallback = await fetchJson<PlayerPropsPayload>('./data/player_props_cache/latest.json');
+    latestPlayerCache = fallback;
+    return fallback ? [fallback] : [];
+  }
+
+  const payloads = (await Promise.all(
+    files.map(file => fetchJson<PlayerPropsPayload>(`./data/player_props_cache/${file}`)),
+  )).filter((payload): payload is PlayerPropsPayload => Boolean(payload));
+  payloads.sort((a, b) => String(a.date || a.slate_date || '').localeCompare(String(b.date || b.slate_date || '')));
+  latestPlayerCache = payloads[payloads.length - 1] || null;
+  return payloads;
+}
+
+function sortPicks(picks: Pick[]): Pick[] {
+  return picks.sort((a, b) => (
     a.date.localeCompare(b.date) ||
     a.sport.localeCompare(b.sport) ||
     a.source.localeCompare(b.source) ||
     a.pick.localeCompare(b.pick)
   ));
-  return allPicks;
+}
+
+export function setPickMode(mode: PickMode): void {
+  activePickMode = mode;
+}
+
+export function getPickMode(): PickMode {
+  return activePickMode;
+}
+
+export async function loadAllData(): Promise<Pick[]> {
+  resultOverrides = readStorage<Record<string, PickResult>>(RESULT_STORAGE_KEY, {});
+  gameTimes = readStorage<Record<string, string>>(GAME_TIME_STORAGE_KEY, {});
+  const [cachePayloads, cannon, playerPayloads] = await Promise.all([
+    loadCacheFiles(),
+    fetchJson<CannonPayload>('./data/cannon_mlb_daily.json'),
+    loadPlayerCacheFiles(),
+  ]);
+  const teamById = new Map<string, Pick>();
+  const playerById = new Map<string, Pick>();
+  cachePayloads.flatMap(picksFromCache).forEach(pick => teamById.set(pick.id, pick));
+  if (cannon) picksFromCannon(cannon).forEach(pick => teamById.set(pick.id, pick));
+  playerPayloads.flatMap(picksFromPlayerProps).forEach(pick => playerById.set(pick.id, pick));
+  teamPicks = sortPicks([...teamById.values()]);
+  playerPicks = sortPicks([...playerById.values()]);
+  return getAllPicks();
 }
 
 export function getAllPicks(): Pick[] {
-  return allPicks;
+  return activePickMode === 'player' ? playerPicks : teamPicks;
 }
 
 export function getResults(): Record<string, PickResult> {
@@ -271,7 +385,7 @@ export function getResults(): Record<string, PickResult> {
 export function setLocalResult(id: string, result: PickResult): void {
   resultOverrides[id] = result;
   writeStorage(RESULT_STORAGE_KEY, resultOverrides);
-  const pick = allPicks.find(item => item.id === id);
+  const pick = getAllPicks().find(item => item.id === id);
   if (pick) {
     pick.result = result;
     pick.pl = calculateProfit(pick, result);
@@ -281,7 +395,7 @@ export function setLocalResult(id: string, result: PickResult): void {
 export function setLocalGameTime(id: string, startTime: string): void {
   gameTimes[id] = startTime;
   writeStorage(GAME_TIME_STORAGE_KEY, gameTimes);
-  const pick = allPicks.find(item => item.id === id);
+  const pick = getAllPicks().find(item => item.id === id);
   if (pick) {
     pick.start_time = startTime;
     pick.game_start_time = startTime;
@@ -303,10 +417,11 @@ function latestPayloadTimestamp(value: unknown): number {
 }
 
 export function getCacheStatus(): { date: string; runTime: string; updatedAt: string; pickCount: number } {
+  const latestCache = activePickMode === 'player' ? latestPlayerCache : latestTeamCache;
   const latestTimestamp = latestPayloadTimestamp(latestCache);
   const parsed = new Date(latestTimestamp);
   return {
-    date: String(latestCache?.date || ''),
+    date: String(latestCache?.date || latestCache?.slate_date || ''),
     runTime: !latestTimestamp || Number.isNaN(parsed.getTime())
       ? ''
       : parsed.toLocaleTimeString('en-US', {
@@ -316,6 +431,6 @@ export function getCacheStatus(): { date: string; runTime: string; updatedAt: st
         timeZoneName: 'short',
       }),
     updatedAt: latestTimestamp ? parsed.toISOString() : '',
-    pickCount: allPicks.length,
+    pickCount: getAllPicks().length,
   };
 }

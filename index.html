@@ -35,6 +35,10 @@
           <span class="toggle-icon">&#9728;&#65039;</span>
           <span class="toggle-label" id="theme-label">DARK</span>
         </button>
+        <div class="pick-mode-segment" role="group" aria-label="Pick type">
+          <button type="button" class="pick-mode-btn active" data-pick-mode="team" aria-pressed="true" onclick="setPickMode('team')">Team</button>
+          <button type="button" class="pick-mode-btn" data-pick-mode="player" aria-pressed="false" onclick="setPickMode('player')">Player</button>
+        </div>
         <button id="mobile-mode-toggle" class="mobile-mode-toggle" onclick="toggleMobileMode()" aria-label="Toggle mobile app view" aria-pressed="false" title="Mobile app view">
           <svg class="mobile-phone-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <rect x="7" y="2.75" width="10" height="18.5" rx="2.4" stroke="currentColor" stroke-width="1.7"></rect>

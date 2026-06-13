@@ -31,6 +31,54 @@ def test_frontend_is_static_json_only():
     assert "See how every source has performed across the picks and results collected here." in html
 
 
+def test_frontend_player_mode_is_persisted_isolated_and_team_defaulted():
+    main = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
+    data = (ROOT / "src" / "data.ts").read_text(encoding="utf-8")
+    settings = (ROOT / "src" / "settings.ts").read_text(encoding="utf-8")
+    html = (ROOT / "index.html").read_text(encoding="utf-8")
+    css = (ROOT / "src" / "styles" / "pickledger.css").read_text(encoding="utf-8")
+
+    assert 'data-pick-mode="team"' in html
+    assert 'data-pick-mode="player"' in html
+    assert "const PICK_MODE_KEY = 'pickledger_pick_mode'" in settings
+    assert "const mode: PickMode = stored === 'player' ? 'player' : 'team'" in settings
+    assert "pickledger:modechange" in settings
+
+    assert "./data/model_cache/index.json" in data
+    assert "./data/cannon_mlb_daily.json" in data
+    assert "./data/player_props_cache/index.json" in data
+    assert "./data/player_props_cache/latest.json" in data
+    assert "let teamPicks: Pick[] = []" in data
+    assert "let playerPicks: Pick[] = []" in data
+    assert "return activePickMode === 'player' ? playerPicks : teamPicks" in data
+    assert "decision === 'BET' || decision === 'LEAN' || decision === 'PASS'" in data
+
+    assert "activeFilter = 'ALL'" in main
+    assert "selectedDate = ''" in main
+    assert "search.value = ''" in main
+    assert "const pending = activePickMode === 'team'" in main
+    assert ".pick-mode-segment" in css
+    assert "body.mobile-app-mode .pick-mode-segment" in css
+    assert "@media (max-width: 700px)" in css
+
+
+def test_player_home_details_use_generator_schema_fields():
+    main = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
+    data = (ROOT / "src" / "data.ts").read_text(encoding="utf-8")
+    css = (ROOT / "src" / "styles" / "pickledger.css").read_text(encoding="utf-8")
+
+    for field in ("full_kelly", "quarter_kelly", "confidence", "reason", "key_factors"):
+        assert f"{field}?" in data
+        assert f"pick.{field}" in main
+    assert "function playerDetailsHtml(" in main
+    assert "Quarter Kelly" in main
+    assert "Full Kelly" in main
+    assert "Key factors" in main
+    assert "activePickMode !== 'player'" in main
+    assert ".home-player-details" in css
+    assert ".home-player-factors" in css
+
+
 def test_header_brand_and_freshness_copy_are_friendly_and_accurate():
     main = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
     data = (ROOT / "src" / "data.ts").read_text(encoding="utf-8")
