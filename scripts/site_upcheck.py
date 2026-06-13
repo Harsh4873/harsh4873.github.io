@@ -14,6 +14,7 @@ from zoneinfo import ZoneInfo
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 MODEL_CACHE_DIR = REPO_ROOT / "data" / "model_cache"
+PLAYER_PROPS_CACHE_DIR = REPO_ROOT / "data" / "player_props_cache"
 REQUIRED_MODEL_KEYS = {
     "mlb_new",
     "mlb_inning",
@@ -21,6 +22,11 @@ REQUIRED_MODEL_KEYS = {
     "wnba",
     "nba",
     "nba_playoffs",
+}
+REQUIRED_PLAYER_PROP_KEYS = {
+    "mlb_player_props",
+    "nba_player_props",
+    "wnba_player_props",
 }
 
 
@@ -57,6 +63,27 @@ def main() -> int:
             failures.append(f"model bucket {key} is missing")
         elif bucket.get("ok") is not True:
             failures.append(f"model bucket {key} failed: {bucket.get('error') or 'unknown error'}")
+
+    player_latest = _read_json(PLAYER_PROPS_CACHE_DIR / "latest.json")
+    player_dated = _read_json(PLAYER_PROPS_CACHE_DIR / f"{today}.json")
+    player_manifest = _read_json(PLAYER_PROPS_CACHE_DIR / "index.json")
+    if not player_latest:
+        failures.append("data/player_props_cache/latest.json is missing or invalid")
+    elif str(player_latest.get("date") or "") != today:
+        failures.append(f"latest player-props cache is {player_latest.get('date') or 'undated'}, expected {today}")
+    if not player_dated:
+        failures.append(f"data/player_props_cache/{today}.json is missing or invalid")
+    if player_manifest and f"{today}.json" not in (player_manifest.get("files") or []):
+        failures.append(f"player-props manifest does not include {today}.json")
+
+    player_models = player_latest.get("models") if isinstance(player_latest, dict) else {}
+    player_models = player_models if isinstance(player_models, dict) else {}
+    for key in sorted(REQUIRED_PLAYER_PROP_KEYS):
+        bucket = player_models.get(key)
+        if not isinstance(bucket, dict):
+            failures.append(f"player-props bucket {key} is missing")
+        elif bucket.get("ok") is not True:
+            failures.append(f"player-props bucket {key} failed: {bucket.get('error') or 'unknown error'}")
 
     cannon = _read_json(REPO_ROOT / "data" / "cannon_mlb_daily.json")
     cannon_date = str((cannon or {}).get("slate_date") or (cannon or {}).get("as_of") or "")
@@ -98,10 +125,14 @@ def main() -> int:
         for key, bucket in models.items()
         if key in REQUIRED_MODEL_KEYS and isinstance(bucket, dict)
     }
-    print(f"[upcheck] healthy for {today}: {counts}")
+    player_counts = {
+        key: len(bucket.get("picks") or [])
+        for key, bucket in player_models.items()
+        if key in REQUIRED_PLAYER_PROP_KEYS and isinstance(bucket, dict)
+    }
+    print(f"[upcheck] healthy for {today}: teams={counts}, player_props={player_counts}")
     return 0
 
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

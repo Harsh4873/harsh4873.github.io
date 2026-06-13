@@ -1,0 +1,91 @@
+name: Player Props Refresh
+
+on:
+  schedule:
+    - cron: "0 13 * * *"
+    - cron: "20 14 * * *"
+    - cron: "50 15 * * *"
+    - cron: "50 20 * * *"
+  workflow_dispatch:
+    inputs:
+      date:
+        description: "Optional target date (YYYY-MM-DD)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: pick-cache-writer
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      PICKLEDGER_MLB_TIMEZONE: America/Chicago
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Sync latest main
+        run: |
+          git fetch origin main
+          git reset --hard origin/main
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Refresh in-house player props
+        run: python scripts/refresh_player_props.py --date "${{ github.event.inputs.date || '' }}"
+
+      - name: Commit player-props cache if changed
+        id: commit-props
+        run: |
+          ACTOR_EMAIL="${GITHUB_ACTOR_ID:-41898282}+${GITHUB_ACTOR}@users.noreply.github.com"
+          git config user.name  "${GITHUB_ACTOR}"
+          git config user.email "${ACTOR_EMAIL}"
+          BRANCH="${GITHUB_REF_NAME:-main}"
+          if [ -z "$(git status --porcelain -- data/player_props_cache)" ]; then
+            echo "No player-props cache change; skipping commit."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          GENERATED_CACHE="${RUNNER_TEMP}/player-props-latest.json"
+          cp data/player_props_cache/latest.json "$GENERATED_CACHE"
+          for attempt in 1 2 3; do
+            git fetch origin "$BRANCH"
+            git reset --hard "origin/${BRANCH}"
+            python scripts/merge_player_props_cache_payload.py "$GENERATED_CACHE"
+            git add data/player_props_cache
+            if git diff --cached --quiet; then
+              echo "No staged player-props change after merge; skipping commit."
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            CACHE_DATE=$(python -c "import json; print(json.load(open('data/player_props_cache/latest.json'))['date'])")
+            git commit -m "chore(props): refresh player props for ${CACHE_DATE}"
+            if git push origin "HEAD:${BRANCH}"; then
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            echo "Push failed on attempt ${attempt}; retrying merge on latest origin/${BRANCH}."
+          done
+          exit 1
+
+      - name: Deploy updated player props
+        if: steps.commit-props.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy-pages.yml --ref main

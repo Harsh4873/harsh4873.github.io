@@ -1698,21 +1698,64 @@ def parse_matchup(pick_text: str) -> tuple[str, str] | None:
     return parts[0].strip(), parts[1].strip()
 
 
-def parse_nba_player_prop_pick(pick_text: str) -> dict[str, Any] | None:
+def parse_player_prop_pick(pick: dict[str, Any] | str) -> dict[str, Any] | None:
+    payload = pick if isinstance(pick, dict) else {}
+    pick_text = str(payload.get("pick") if isinstance(pick, dict) else pick or "").strip()
+    stat_aliases = {
+        "pts": "points",
+        "point": "points",
+        "points": "points",
+        "reb": "rebounds",
+        "rebound": "rebounds",
+        "rebounds": "rebounds",
+        "ast": "assists",
+        "assist": "assists",
+        "assists": "assists",
+        "hit": "hits",
+        "hits": "hits",
+        "strikeout": "strikeouts",
+        "strikeouts": "strikeouts",
+        "ks": "strikeouts",
+    }
+    if isinstance(payload, dict):
+        player_name = str(payload.get("player_name") or "").strip()
+        stat_key = stat_aliases.get(str(payload.get("stat_key") or "").strip().lower())
+        selection = str(payload.get("selection") or payload.get("direction") or "").strip().upper()
+        line = payload.get("line")
+        try:
+            line_value = float(line)
+        except (TypeError, ValueError):
+            line_value = None
+        if player_name and stat_key and selection in {"OVER", "UNDER"} and line_value is not None:
+            return {
+                "player_name": player_name,
+                "stat_key": stat_key,
+                "selection": selection,
+                "line": line_value,
+                "opponent": str(payload.get("opponent") or "").strip(),
+            }
+
     prop_m = re.search(
-        r"^(.*?)\s+(points|rebounds|assists)\s+(OVER|UNDER)\s+(\d+(?:\.\d+)?)\s+vs\s+(.+?)(?:\s*\(|$)",
-        str(pick_text or "").strip(),
+        r"^(.*?)\s+(points|rebounds|assists|hits|strikeouts)\s+(OVER|UNDER)\s+(\d+(?:\.\d+)?)(?:\s+vs\s+(.+?))?(?:\s*\(|$)",
+        pick_text,
         flags=re.IGNORECASE,
     )
     if not prop_m:
         return None
     return {
         "player_name": prop_m.group(1).strip(),
-        "stat_key": prop_m.group(2).strip().lower(),
+        "stat_key": stat_aliases[prop_m.group(2).strip().lower()],
         "selection": prop_m.group(3).strip().upper(),
         "line": float(prop_m.group(4)),
-        "opponent": prop_m.group(5).strip(),
+        "opponent": str(prop_m.group(5) or "").strip(),
     }
+
+
+def parse_nba_player_prop_pick(pick_text: str) -> dict[str, Any] | None:
+    prop = parse_player_prop_pick(pick_text)
+    if prop and prop["stat_key"] in {"points", "rebounds", "assists"}:
+        return prop
+    return None
 
 
 def pick_matchup_from_fields(pick: dict[str, Any] | None) -> tuple[str, str] | None:
@@ -1793,7 +1836,7 @@ def find_game_for_pick(
             if direct or reverse:
                 return game
 
-    prop_descriptor = parse_nba_player_prop_pick(pick_text)
+    prop_descriptor = parse_player_prop_pick(pick or pick_text)
     if not prop_descriptor:
         return None
 
@@ -1958,6 +2001,8 @@ def _extract_nba_player_stat(summary: dict[str, Any], player_name: str, stat_key
         "points": {"PTS"},
         "rebounds": {"REB", "TREB", "TOTREB", "TOTAL REBOUNDS"},
         "assists": {"AST"},
+        "hits": {"H", "HITS"},
+        "strikeouts": {"K", "SO", "STRIKEOUTS"},
     }
     targets = label_targets.get(stat_key)
     if not targets:
@@ -1986,14 +2031,14 @@ def _extract_nba_player_stat(summary: dict[str, Any], player_name: str, stat_key
     return None
 
 
-def grade_nba_prop_pick(pick: dict[str, Any], game: dict[str, Any], summary: dict[str, Any] | None) -> str:
-    prop = parse_nba_player_prop_pick(str(pick.get("pick", "")))
+def grade_player_prop_pick(pick: dict[str, Any], game: dict[str, Any], summary: dict[str, Any] | None) -> str:
+    prop = parse_player_prop_pick(pick)
     if not prop or not summary:
-        return "push"
+        return "pending"
 
     actual = _extract_nba_player_stat(summary, str(prop["player_name"]), str(prop["stat_key"]))
     if actual is None:
-        return "push"
+        return "pending"
 
     line = float(prop["line"])
     selection = str(prop["selection"])
@@ -2002,6 +2047,10 @@ def grade_nba_prop_pick(pick: dict[str, Any], game: dict[str, Any], summary: dic
     if selection == "OVER":
         return "win" if actual > line else "loss"
     return "win" if actual < line else "loss"
+
+
+def grade_nba_prop_pick(pick: dict[str, Any], game: dict[str, Any], summary: dict[str, Any] | None) -> str:
+    return grade_player_prop_pick(pick, game, summary)
 
 
 def grade_pick(pick: dict[str, Any], game: dict[str, Any]) -> str:
@@ -2192,12 +2241,12 @@ def auto_grade(picks: list[dict[str, Any]], existing: dict[str, str], year: int)
                 "STATUS_POSTPONED",
             }:
                 result = "push"
-            elif sport_key == "NBA" and parse_nba_player_prop_pick(str(pick.get("pick", ""))):
+            elif parse_player_prop_pick(pick):
                 event_id = str(game.get("eventId") or "").strip()
                 summary_key = (sport_key, event_id)
                 if summary_key not in summary_cache:
                     summary_cache[summary_key] = fetch_event_summary(sport, league, event_id)
-                result = grade_nba_prop_pick(pick, game, summary_cache.get(summary_key))
+                result = grade_player_prop_pick(pick, game, summary_cache.get(summary_key))
             else:
                 result = grade_pick(pick, game)
             if result in {"win", "loss", "push"}:

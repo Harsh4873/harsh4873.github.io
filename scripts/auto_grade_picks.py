@@ -14,6 +14,7 @@ from typing import Any, Iterator
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 MODEL_CACHE_DIR = REPO_ROOT / "data" / "model_cache"
+PLAYER_PROPS_CACHE_DIR = REPO_ROOT / "data" / "player_props_cache"
 CANNON_JSON_PATH = REPO_ROOT / "data" / "cannon_mlb_daily.json"
 sys.path.insert(0, str(REPO_ROOT))
 
@@ -122,15 +123,15 @@ def grade_file(path: Path) -> int:
 
 def main() -> int:
     total = 0
-    dated_files = sorted(MODEL_CACHE_DIR.glob("20??-??-??.json"))
-    for path in dated_files:
-        total += grade_file(path)
+    for cache_dir in (MODEL_CACHE_DIR, PLAYER_PROPS_CACHE_DIR):
+        for path in sorted(cache_dir.glob("20??-??-??.json")):
+            total += grade_file(path)
 
-    latest = _read_json(MODEL_CACHE_DIR / "latest.json")
-    latest_date = str(latest.get("date") or "") if latest else ""
-    latest_source = MODEL_CACHE_DIR / f"{latest_date}.json"
-    if latest_date and latest_source.exists():
-        shutil.copyfile(latest_source, MODEL_CACHE_DIR / "latest.json")
+        latest = _read_json(cache_dir / "latest.json")
+        latest_date = str(latest.get("date") or "") if latest else ""
+        latest_source = cache_dir / f"{latest_date}.json"
+        if latest_date and latest_source.exists():
+            shutil.copyfile(latest_source, cache_dir / "latest.json")
 
     total += grade_file(CANNON_JSON_PATH)
     print(f"[auto-grade] complete: {total} update(s)")

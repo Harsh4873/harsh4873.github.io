@@ -261,3 +261,82 @@ def test_grade_mlb_first_five_markets_without_network():
         {"sport": "MLB", "pick": "Under 4.5 F5", "market": "f5_total"},
         game,
     ) == "win"
+
+
+def test_grade_structured_wnba_player_prop_from_boxscore():
+    import pickgrader_server
+
+    summary = {
+        "boxscore": {
+            "players": [{
+                "statistics": [{
+                    "labels": ["MIN", "PTS", "REB", "AST"],
+                    "athletes": [{
+                        "athlete": {"displayName": "Brittney Sykes"},
+                        "stats": ["34", "24", "5", "7"],
+                    }],
+                }],
+            }],
+        },
+    }
+    pick = {
+        "scope": "player",
+        "sport": "WNBA",
+        "player_name": "Brittney Sykes",
+        "stat_key": "points",
+        "selection": "OVER",
+        "line": 20.5,
+        "pick": "Brittney Sykes points OVER 20.5 vs Tempo",
+    }
+
+    assert pickgrader_server.parse_player_prop_pick(pick)["stat_key"] == "points"
+    assert pickgrader_server.parse_nba_player_prop_pick(pick["pick"])["stat_key"] == "points"
+    assert pickgrader_server.grade_player_prop_pick(pick, {}, summary) == "win"
+
+
+def test_grade_structured_mlb_player_props_from_boxscore():
+    import pickgrader_server
+
+    summary = {
+        "boxscore": {
+            "players": [{
+                "statistics": [
+                    {
+                        "labels": ["H-AB", "H", "K"],
+                        "athletes": [{
+                            "athlete": {"displayName": "Otto Lopez"},
+                            "stats": ["2-4", "2", "1"],
+                        }],
+                    },
+                    {
+                        "labels": ["IP", "H", "K"],
+                        "athletes": [{
+                            "athlete": {"displayName": "Sandy Alcantara"},
+                            "stats": ["6.0", "5", "7"],
+                        }],
+                    },
+                ],
+            }],
+        },
+    }
+    hitter = {
+        "scope": "player",
+        "sport": "MLB",
+        "player_name": "Otto Lopez",
+        "stat_key": "hits",
+        "selection": "OVER",
+        "line": 0.5,
+        "pick": "Otto Lopez hits OVER 0.5 vs Pirates",
+    }
+    pitcher = {
+        "scope": "player",
+        "sport": "MLB",
+        "player_name": "Sandy Alcantara",
+        "stat_key": "strikeouts",
+        "selection": "OVER",
+        "line": 5.5,
+        "pick": "Sandy Alcantara strikeouts OVER 5.5 vs Pirates",
+    }
+
+    assert pickgrader_server.grade_player_prop_pick(hitter, {}, summary) == "win"
+    assert pickgrader_server.grade_player_prop_pick(pitcher, {}, summary) == "win"
