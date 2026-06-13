@@ -188,6 +188,15 @@ def test_empty_leagues_are_healthy():
     assert all(model["picks"] == [] for model in payload["models"].values())
 
 
+def test_refresh_script_blank_date_uses_central_today(monkeypatch):
+    from scripts import refresh_player_props
+
+    monkeypatch.setattr(refresh_player_props, "_default_central_date", lambda: "2026-06-13")
+    assert refresh_player_props._target_date("") == "2026-06-13"
+    assert refresh_player_props._target_date("   ") == "2026-06-13"
+    assert refresh_player_props._target_date("2026-06-12") == "2026-06-12"
+
+
 def test_basketball_props_are_stable_and_apply_next_man_up():
     first = generate_payload(DATE, client=MockClient(), generated_at=STAMP)
     second = generate_payload(DATE, client=MockClient(), generated_at="2026-06-12T13:00:00Z")

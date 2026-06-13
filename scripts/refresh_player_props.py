@@ -20,9 +20,18 @@ sys.path.insert(0, str(REPO_ROOT))
 from player_props import generate_payload  # noqa: E402
 
 
+def _default_central_date() -> str:
+    return datetime.now(ZoneInfo("America/Chicago")).date().isoformat()
+
+
+def _target_date(raw: str | None) -> str:
+    value = str(raw or "").strip()
+    return value or _default_central_date()
+
+
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Refresh direct-API player-props cache.")
-    default_date = datetime.now(ZoneInfo("America/Chicago")).date().isoformat()
+    default_date = _default_central_date()
     parser.add_argument("--date", default=default_date, help="Target date in YYYY-MM-DD format.")
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
     return parser.parse_args()
@@ -39,9 +48,10 @@ def _write_json(path: Path, payload: Any) -> None:
 
 def main() -> int:
     args = _parse_args()
-    payload = generate_payload(args.date)
+    target_date = _target_date(args.date)
+    payload = generate_payload(target_date)
     output_dir = args.output_dir.resolve()
-    _write_json(output_dir / f"{args.date}.json", payload)
+    _write_json(output_dir / f"{target_date}.json", payload)
     _write_json(output_dir / "latest.json", payload)
     files = sorted(path.name for path in output_dir.glob("20??-??-??.json"))
     _write_json(output_dir / "index.json", {"files": files})
@@ -54,7 +64,7 @@ def main() -> int:
         print(f"[player-props] {model_name}: {'ok' if ok else 'error'} ({len(picks)} pick(s))")
         for error in model.get("errors") or []:
             print(f"[player-props] {model_name} warning: {error}")
-    print(f"[player-props] wrote {output_dir / f'{args.date}.json'}")
+    print(f"[player-props] wrote {output_dir / f'{target_date}.json'}")
     print(f"[player-props] wrote {output_dir / 'latest.json'}")
     return 1 if failed else 0
 
