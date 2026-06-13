@@ -44,6 +44,33 @@ def test_sportytrader_wnba_config_and_card_extraction():
     assert rows[0]["tip"] == "Indiana Fever -9.5"
 
 
+def test_sportytrader_fifa_world_cup_config_and_known_matchup_alias():
+    module = _load_module(
+        "sportytrader_fifa_scraper_test",
+        ROOT / "scripts" / "scrapers" / "sportytrader_scraper.py",
+    )
+    assert module.SPORT_CONFIG["fifa_world_cup"]["url"].endswith("/world-cup-1811/")
+    assert "team !== values[index - 1]" in module.SPORTYTRADER_CARDS_JS
+    rows = module._extract_rows(
+        [
+            {
+                "datetime": "Jun 13, 2026, 11:00 PM",
+                "league": "World - World Cup",
+                "home": "Australia",
+                "away": "Türkiye",
+                "tip": "Turkey to Win & Under 3.5 Goals",
+                "odds": "+130",
+                "href": "https://www.sportytrader.com/us/picks/australia-turkiye-123/",
+            }
+        ],
+        module._parse_target_date("2026-06-13"),
+        "fifa_world_cup",
+        ["Turkey @ Australia"],
+    )
+    assert rows[0]["league"] == "World - World Cup"
+    assert rows[0]["tip"] == "Turkey to Win & Under 3.5 Goals"
+
+
 def test_sportsgambler_wnba_listing_and_detail(monkeypatch):
     module = _load_module(
         "sportsgambler_scraper_test",
@@ -179,13 +206,45 @@ def test_sportsgambler_rejects_missing_known_matchup(monkeypatch):
         raise AssertionError("missing known slate matchup must fail instead of publishing")
 
 
+def test_sportsgambler_fifa_world_cup_preserves_asian_handicap(monkeypatch):
+    module = _load_module(
+        "sportsgambler_fifa_test",
+        ROOT / "scripts" / "scrapers" / "sportsgambler_scraper.py",
+    )
+    detail_url = "https://www.sportsgambler.com/betting-tips/football/qatar-vs-switzerland-prediction-lineups-odds-2026-06-13/"
+    listing = {
+        "item": {
+            "@type": "SportsEvent",
+            "name": "Qatar vs Switzerland",
+            "startDate": "2026-06-13T19:00:00Z",
+            "url": detail_url,
+        }
+    }
+    listing_html = f'<script type="application/ld+json">{json.dumps(listing)}</script>'
+    detail_html = '<div class="tpbot_container"><div class="tpbot_title">Our Match Prediction</div><a class="tpbot_tip"><span>Pick</span><span>Switzerland Asian Hcp -1.75 @ -114</span></a></div>'
+
+    class Response:
+        def __init__(self, text: str):
+            self.text = text
+
+    monkeypatch.setattr(
+        module.requests,
+        "get",
+        lambda url, **_kwargs: Response(detail_html if url == detail_url else listing_html),
+    )
+    rows = module.scrape_fifa_world_cup(date(2026, 6, 13), ["Switzerland @ Qatar"])
+    assert rows[0]["tip"] == "Switzerland Asian Hcp -1.75"
+    assert rows[0]["odds"] == "-114"
+    assert rows[0]["league"] == "FIFA WC"
+
+
 def test_server_passes_known_matchups_to_sportsgambler(monkeypatch):
     import pickgrader_server as server
 
     captured: list[str] = []
     monkeypatch.setattr(
         server,
-        "_known_basketball_slate_matchups",
+        "_known_external_slate_matchups",
         lambda _date, _sport: ["Phoenix Mercury @ Dallas Wings"],
     )
     monkeypatch.setattr(server, "_save_admin_picks_doc", lambda *_args, **_kwargs: None)
@@ -213,14 +272,79 @@ def test_server_passes_known_matchups_to_sportsgambler(monkeypatch):
     assert captured[-2:] == ["--expected-matchup", "Phoenix Mercury @ Dallas Wings"]
 
 
-def test_external_feed_schedule_requests_wnba():
+def test_server_preserves_fifa_asian_handicap_without_auto_grading(monkeypatch):
+    import pickgrader_server as server
+
+    captured: list[str] = []
+    monkeypatch.setattr(
+        server,
+        "_known_external_slate_matchups",
+        lambda _date, _sport: ["Switzerland @ Qatar"],
+    )
+    monkeypatch.setattr(server, "_save_admin_picks_doc", lambda *_args, **_kwargs: None)
+
+    def fake_run(command, **_kwargs):
+        captured.extend(command)
+        return subprocess.CompletedProcess(
+            command,
+            0,
+            stdout=(
+                "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+                "Match: Qatar vs Switzerland\n"
+                "League: FIFA WC\n"
+                "Tip: Switzerland Asian Hcp -1.75\n"
+                "Odds: -114\n"
+                "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+            ),
+            stderr="",
+        )
+
+    monkeypatch.setattr(server, "_subprocess_run", fake_run)
+    result = server.run_sportsgambler_scraper("2026-06-13", ["fifa_world_cup"])
+
+    assert result["ok"] is True
+    assert captured[-2:] == ["--expected-matchup", "Switzerland @ Qatar"]
+    assert result["picks"][0]["pick"] == "Switzerland Asian Hcp -1.75 (Qatar vs Switzerland)"
+    assert result["picks"][0]["market_type"] == "soccer_asian_handicap"
+    assert result["picks"][0]["grade_supported"] is False
+    assert result["picks"][0]["calibration_excluded"] is True
+
+
+def test_known_fifa_slate_uses_in_house_cache_before_external_scrapers(monkeypatch, tmp_path):
+    import pickgrader_server as server
+
+    cache_dir = tmp_path / "data" / "model_cache"
+    cache_dir.mkdir(parents=True)
+    (cache_dir / "2026-06-13.json").write_text(
+        json.dumps({
+            "date": "2026-06-13",
+            "models": {
+                "fifa_world_cup": {
+                    "games": [
+                        {"away_team": "Switzerland", "home_team": "Qatar"},
+                        {"matchup": "Türkiye @ Australia"},
+                    ]
+                }
+            },
+        }),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(server, "BASE_DIR", str(tmp_path))
+    monkeypatch.setattr(server, "fetch_scoreboard", lambda *_args, **_kwargs: {"events": []})
+
+    matchups = server._known_external_slate_matchups("2026-06-13", "fifa_world_cup")
+    assert matchups == ["Switzerland @ Qatar", "Türkiye @ Australia"]
+
+
+def test_external_feed_schedule_requests_wnba_and_fifa_world_cup():
     workflow = (ROOT / ".github" / "workflows" / "external-feed-refresh.yml").read_text(encoding="utf-8")
     refresh = (ROOT / "scripts" / "refresh_external_feeds.py").read_text(encoding="utf-8")
     server = (ROOT / "pickgrader_server.py").read_text(encoding="utf-8")
-    assert '--sports "nba,mlb,wnba"' in workflow
-    assert 'default="nba,mlb,wnba"' in refresh
+    assert '--sports "nba,mlb,wnba,fifa_world_cup"' in workflow
+    assert 'default="nba,mlb,wnba,fifa_world_cup"' in refresh
     assert '"wnba": "wnba"' in server
-    assert '{"NBA", "WNBA", "MLB"}' in server
+    assert '"fifa_world_cup": "fifa_world_cup"' in server
+    assert '"fifa_world_cup": {"label": "FIFA WC"' in server
 
 
 def test_scores24_extracts_our_choice_and_normalizes_pick():
@@ -263,8 +387,14 @@ def test_scores24_candidate_urls_cover_wrong_dates_and_site_team_aliases():
         "2026-06-12",
         {"away": "Detroit Tigers", "home": "Cleveland Guardians"},
     )
+    fifa_urls = module.candidate_prediction_urls(
+        "fifa_world_cup",
+        "2026-06-13",
+        {"away": "Switzerland", "home": "Qatar"},
+    )
     assert any("m-13-06-2026-seattle-storm-w-golden-state-valkyries-w--prediction" in url for url in wnba_urls)
     assert any("cleveland-gardians-detroit-tigers-prediction" in url for url in mlb_urls)
+    assert any("m-14-06-2026-qatar-switzerland-prediction" in url for url in fifa_urls)
 
 
 def test_scores24_matches_official_slate_and_keeps_separate_sources():
@@ -333,6 +463,26 @@ def test_scores24_matches_official_slate_and_keeps_separate_sources():
         }
     ]
     assert module.SPORT_CONFIG["mlb"]["source"] == "Scores24MLB"
+
+
+def test_scores24_fifa_world_cup_keeps_specialty_market_ungraded():
+    module = _load_module(
+        "scores24_fifa_test",
+        ROOT / "scripts" / "scrapers" / "scores24_scraper.py",
+    )
+    payload = module._pick_payload(
+        module.SPORT_CONFIG["fifa_world_cup"],
+        "2026-06-13",
+        {"away": "Morocco", "home": "Brazil", "start_time": "2026-06-13T22:00:00Z"},
+        "https://scores24.live/en/soccer/m-14-06-2026-brazil-morocco-prediction",
+        "Ismael Saibari 1+ Shot on Target",
+        115,
+    )
+    assert payload["source"] == "Scores24FIFAWorldCup"
+    assert payload["sport"] == "FIFA WC"
+    assert payload["market_type"] == "soccer_specialty"
+    assert payload["grade_supported"] is False
+    assert payload["calibration_excluded"] is True
 
 
 def test_scores24_retries_blocked_matchup_without_hammering_candidates(monkeypatch):
@@ -406,11 +556,12 @@ def test_local_scores24_publisher_registers_separate_models():
     workflow = (ROOT / ".github" / "workflows" / "external-feed-refresh.yml").read_text(encoding="utf-8")
     refresh = (ROOT / "scripts" / "refresh_external_feeds.py").read_text(encoding="utf-8")
     publisher = (ROOT / "scripts" / "scrapers" / "scores24_publish_local.sh").read_text(encoding="utf-8")
-    for model_key in ("scores24_wnba", "scores24_mlb"):
+    for model_key in ("scores24_wnba", "scores24_mlb", "scores24_fifa_world_cup"):
         assert model_key in refresh
         assert model_key in publisher
     assert 'default="sportytrader,sportsgambler"' in refresh
     assert "scores24_wnba" not in workflow
+    assert "scores24_fifa_world_cup" not in workflow
     assert "gh" not in publisher.split('GH_BIN="/opt/homebrew/bin/gh"', 1)[0]
     assert "workflow run deploy-pages.yml" in publisher
     assert 'cron: "10,40 14 * * *"' in workflow

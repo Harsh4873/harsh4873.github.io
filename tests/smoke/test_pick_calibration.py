@@ -84,6 +84,37 @@ def test_calibration_leaves_units_alone_when_no_edge_or_market_price_exists():
     assert payload["models"]["nba"]["picks"][0]["units"] == 1.13
 
 
+def test_pick_level_calibration_exclusion_skips_adjustment_and_training(tmp_path: Path):
+    active = {
+        "version": "test-v4",
+        "minimum_group_samples": 1,
+        "global": {"intercept": -3.0, "slope": 1.0, "samples": 100},
+        "groups": {},
+    }
+    pick = _pick(
+        source="SportsGambler",
+        sport="FIFA WC",
+        pick="Switzerland Asian Hcp -1.75",
+        calibration_excluded=True,
+        result="win",
+    )
+    payload = {"date": "2026-06-01", "models": {"sportsgambler": {"picks": [pick]}}}
+
+    apply_calibration_to_payload(payload, active)
+    assert payload["models"]["sportsgambler"]["picks"][0]["probability"] == 0.7
+    assert "calibration" not in payload["models"]["sportsgambler"]["picks"][0]
+
+    model_dir = tmp_path / "data" / "model_cache"
+    props_dir = tmp_path / "data" / "player_props_cache"
+    model_dir.mkdir(parents=True)
+    props_dir.mkdir(parents=True)
+    (model_dir / "2026-06-01.json").write_text(json.dumps(payload), encoding="utf-8")
+    (tmp_path / "data" / "cannon_mlb_daily.json").write_text('{"picks":[]}', encoding="utf-8")
+
+    ledger = build_outcome_ledger(tmp_path)
+    assert ledger["summary"]["total_picks"] == 0
+
+
 def test_universal_ledger_deduplicates_and_keeps_exact_pregame_context(tmp_path: Path):
     model_dir = tmp_path / "data" / "model_cache"
     props_dir = tmp_path / "data" / "player_props_cache"

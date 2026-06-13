@@ -26,8 +26,8 @@ SCORES24_BROWSER_FALLBACK=false \
 SCORES24_CAMOUFOX_FALLBACK=false \
 "${PYTHON_BIN}" "${TEMP_REPO}/scripts/refresh_external_feeds.py" \
   --date "${DATE_ISO}" \
-  --feeds "scores24_wnba,scores24_mlb" \
-  --sports "mlb,wnba" \
+  --feeds "scores24_wnba,scores24_mlb,scores24_fifa_world_cup" \
+  --sports "mlb,wnba,fifa_world_cup" \
   --skip-firestore
 
 cp "${TEMP_REPO}/data/model_cache/latest.json" "${GENERATED_CACHE}"

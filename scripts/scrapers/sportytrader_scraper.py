@@ -2,8 +2,8 @@
 """
 SportyTrader Scraper
 ====================
-    Scrapes NBA, WNBA, and MLB picks from SportyTrader and prints structured
-pick blocks for the backend parser.
+    Scrapes NBA, WNBA, MLB, and FIFA World Cup picks from SportyTrader and
+prints structured pick blocks for the backend parser.
 """
 
 from __future__ import annotations
@@ -12,6 +12,7 @@ import argparse
 import os
 import re
 import sys
+import unicodedata
 from datetime import datetime
 
 
@@ -51,6 +52,12 @@ SPORT_CONFIG = {
         "title": "MLB",
         "url": "https://www.sportytrader.com/us/picks/baseball/usa/mlb-597/",
     },
+    "fifa_world_cup": {
+        "aliases": {"fifa", "fifa_world_cup", "football", "soccer", "world_cup"},
+        "league": "World - World Cup",
+        "title": "FIFA World Cup",
+        "url": "https://www.sportytrader.com/us/picks/soccer/world/world-cup-1811/",
+    },
 }
 
 SPORT_ALIAS_MAP = {
@@ -81,12 +88,13 @@ SPORTYTRADER_CARDS_JS = r"""
 
         const teams = Array.from(card.querySelectorAll('span.font-semibold'))
             .map((node) => text(node.textContent))
-            .filter(Boolean);
+            .filter(Boolean)
+            .filter((team, index, values) => index === 0 || team !== values[index - 1]);
         const paragraphs = Array.from(card.querySelectorAll('p'))
             .map((node) => text(node.textContent))
             .filter(Boolean);
         const dateText = paragraphs.find((line) => /\b[A-Z][a-z]{2,8}\s+\d{1,2},\s+\d{4},\s+\d{1,2}:\d{2}/.test(line)) || '';
-        const league = paragraphs.find((line) => /\b-\s*(NBA|WNBA|MLB)\b/i.test(line)) || '';
+        const league = paragraphs.find((line) => /\b-\s*(NBA|WNBA|MLB|World Cup)\b/i.test(line)) || '';
         const tipNode = card.querySelector('.bg-gray-100 p.font-semibold');
         const tip = text(tipNode ? tipNode.textContent : '');
 
@@ -151,7 +159,14 @@ def _matchup_key(raw: str) -> tuple[str, str] | None:
     teams = re.split(r"\s+(?:vs\.?|@)\s+", _normalize_line(raw), maxsplit=1, flags=re.IGNORECASE)
     if len(teams) != 2:
         return None
-    normalized = sorted(re.sub(r"[^a-z0-9]+", "", team.lower()) for team in teams)
+    aliases = {"turkiye": "turkey"}
+    normalized = []
+    for team in teams:
+        text = unicodedata.normalize("NFKD", team)
+        text = "".join(char for char in text if not unicodedata.combining(char))
+        key = re.sub(r"[^a-z0-9]+", "", text.lower())
+        normalized.append(aliases.get(key, key))
+    normalized.sort()
     return (normalized[0], normalized[1]) if all(normalized) else None
 
 
@@ -274,14 +289,14 @@ def _print_pick(row: dict[str, str]) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description="SportyTrader scraper")
-    ap.add_argument("--sport", "-s", default="nba", help="Supported: nba/wnba/mlb")
+    ap.add_argument("--sport", "-s", default="nba", help="Supported: nba/wnba/mlb/fifa_world_cup")
     ap.add_argument("--date", "-d", help="Date in YYYY-MM-DD")
     ap.add_argument("--expected-matchup", action="append", default=[])
     args = ap.parse_args()
 
     sport_key = _normalize_sport(args.sport or "")
     if not sport_key:
-        print("Error: SportyTrader scraper supports NBA/basketball, WNBA, and MLB/baseball.")
+        print("Error: SportyTrader scraper supports NBA/basketball, WNBA, MLB/baseball, and FIFA World Cup/soccer.")
         sys.exit(1)
 
     target_date = _parse_target_date(args.date)

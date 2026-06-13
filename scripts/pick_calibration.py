@@ -260,13 +260,13 @@ def apply_calibration_to_payload(
             if not isinstance(bucket, dict) or not isinstance(bucket.get("picks"), list):
                 continue
             for pick in bucket["picks"]:
-                if isinstance(pick, dict):
+                if isinstance(pick, dict) and not pick.get("calibration_excluded"):
                     apply_calibration_to_pick(pick, str(model_key), active)
     elif isinstance(payload.get("picks"), list):
         if str(payload.get("model_key") or "") in CALIBRATION_EXCLUDED_MODEL_KEYS:
             return payload
         for pick in payload["picks"]:
-            if isinstance(pick, dict):
+            if isinstance(pick, dict) and not pick.get("calibration_excluded"):
                 apply_calibration_to_pick(pick, str(payload.get("model_key") or "unknown"), active)
     return payload
 
@@ -370,7 +370,7 @@ def _iter_bucket_records(
             if not isinstance(bucket, dict) or not isinstance(bucket.get("picks"), list):
                 continue
             for pick in bucket["picks"]:
-                if isinstance(pick, dict):
+                if isinstance(pick, dict) and not pick.get("calibration_excluded"):
                     yield ledger_record(
                         pick,
                         cache_type=cache_type,
@@ -379,7 +379,7 @@ def _iter_bucket_records(
                     )
         return
     for pick in payload.get("picks") or []:
-        if isinstance(pick, dict):
+        if isinstance(pick, dict) and not pick.get("calibration_excluded"):
             yield ledger_record(
                 pick,
                 cache_type=cache_type,

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""SportsGambler scraper — NBA, WNBA, and MLB picks."""
+"""SportsGambler scraper for NBA, WNBA, MLB, and FIFA World Cup picks."""
 from __future__ import annotations
-import argparse, json, re, sys
+import argparse, json, re, sys, unicodedata
 from datetime import date, datetime
 from typing import Any
 from zoneinfo import ZoneInfo
@@ -16,6 +16,7 @@ HEADERS = {
 NBA_URL = "https://www.sportsgambler.com/betting-tips/basketball/nba-predictions/"
 WNBA_URL = "https://www.sportsgambler.com/betting-tips/basketball/wnba-predictions/"
 MLB_URL = "https://www.sportsgambler.com/betting-tips/baseball/"
+FIFA_WORLD_CUP_URL = "https://www.sportsgambler.com/betting-tips/football/fifa-world-cup-predictions/"
 SLATE_TIME_ZONE = ZoneInfo("America/Chicago")
 
 def _norm(s: str) -> str:
@@ -78,7 +79,14 @@ def _matchup_key(raw: str) -> tuple[str, str] | None:
     teams = re.split(r"\s+(?:vs\.?|@)\s+", _norm(raw), maxsplit=1, flags=re.IGNORECASE)
     if len(teams) != 2:
         return None
-    normalized = sorted(re.sub(r"[^a-z0-9]+", "", team.lower()) for team in teams)
+    aliases = {"turkiye": "turkey"}
+    normalized = []
+    for team in teams:
+        text = unicodedata.normalize("NFKD", team)
+        text = "".join(char for char in text if not unicodedata.combining(char))
+        key = re.sub(r"[^a-z0-9]+", "", text.lower())
+        normalized.append(aliases.get(key, key))
+    normalized.sort()
     return (normalized[0], normalized[1]) if all(normalized) else None
 
 def scrape_basketball(
@@ -160,6 +168,9 @@ def scrape_nba(target: date | None, expected_matchups: list[str] | None = None) 
 def scrape_wnba(target: date | None, expected_matchups: list[str] | None = None) -> list[dict]:
     return scrape_basketball(target, WNBA_URL, "WNBA", expected_matchups)
 
+def scrape_fifa_world_cup(target: date | None, expected_matchups: list[str] | None = None) -> list[dict]:
+    return scrape_basketball(target, FIFA_WORLD_CUP_URL, "FIFA WC", expected_matchups)
+
 def scrape_mlb(target: date | None) -> list[dict]:
     html = requests.get(MLB_URL, headers=HEADERS, timeout=30).text
     soup = BeautifulSoup(html, "html.parser")
@@ -201,8 +212,10 @@ def main() -> None:
             rows = scrape_wnba(target, args.expected_matchup)
         elif sport in ("mlb", "baseball"):
             rows = scrape_mlb(target)
+        elif sport in ("fifa", "fifa_world_cup", "football", "soccer", "world_cup"):
+            rows = scrape_fifa_world_cup(target, args.expected_matchup)
         else:
-            raise ValueError("supported sports: nba/basketball, wnba, mlb/baseball")
+            raise ValueError("supported sports: nba/basketball, wnba, mlb/baseball, fifa_world_cup/soccer")
     except Exception as exc:
         print(f"Error: {exc}", file=sys.stderr)
         sys.exit(1)

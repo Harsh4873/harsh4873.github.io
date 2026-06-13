@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Scrape Scores24 WNBA and MLB editorial choices by official slate matchup."""
+"""Scrape Scores24 editorial choices by official slate matchup."""
 
 from __future__ import annotations
 
@@ -47,6 +47,15 @@ SPORT_CONFIG = {
         "label": "MLB",
         "cache_keys": ("mlb_first_five", "mlb_inning", "mlb_new"),
     },
+    "fifa_world_cup": {
+        "espn_sport": "soccer",
+        "espn_league": "fifa.world",
+        "scores24_sport": "soccer",
+        "listing_url": f"{BASE_URL}/en/soccer/l-international-world-championship/predictions",
+        "source": "Scores24FIFAWorldCup",
+        "label": "FIFA WC",
+        "cache_keys": ("fifa_world_cup",),
+    },
 }
 CLOUDFLARE_SIGNALS = (
     "attention required",
@@ -60,6 +69,7 @@ CLOUDFLARE_SIGNALS = (
 TEAM_TEXT_ALIASES = {
     "cleveland gardians": "cleveland guardians",
     "oakland athletics": "athletics",
+    "turkiye": "turkey",
 }
 TEAM_SLUG_ALIASES = {
     "Cleveland Guardians": ("Cleveland Gardians",),
@@ -550,6 +560,26 @@ def _clean_pick(tip: str, matchup: dict[str, str]) -> str:
     return f"{market} ({matchup['away']} @ {matchup['home']})"
 
 
+def _soccer_market_metadata(pick: str) -> dict[str, Any]:
+    selection = pick.split("(", 1)[0].strip()
+    lower = selection.lower()
+    asian = re.search(r"\basian\s+(?:hcp|handicap)\s*([+-]\d+(?:\.\d+)?)", lower)
+    spread = asian or re.fullmatch(r".+?\s+([+-]\d+(?:\.\d+)?)", selection)
+    if asian:
+        return {"market_type": "soccer_asian_handicap", "grade_supported": False}
+    if spread:
+        line = float(spread.group(1))
+        quarter_line = abs((line * 4) - round(line * 4)) < 1e-9 and abs((line * 2) - round(line * 2)) > 1e-9
+        return {"market_type": "soccer_handicap", "grade_supported": not quarter_line}
+    if re.fullmatch(r"(?:over|under)\s+\d+(?:\.\d+)?", lower):
+        return {"market_type": "soccer_total", "grade_supported": True}
+    if re.fullmatch(r".+?\s+(?:ml|moneyline|to win|wins?)", lower):
+        return {"market_type": "soccer_moneyline", "grade_supported": True}
+    if re.fullmatch(r"draw|btts\s+(?:yes|no)", lower):
+        return {"market_type": "soccer_standard", "grade_supported": True}
+    return {"market_type": "soccer_specialty", "grade_supported": False}
+
+
 def _matching_listing_urls(links: list[dict[str, str]], matchup: dict[str, str]) -> list[str]:
     return [
         link["url"]
@@ -567,7 +597,7 @@ def _pick_payload(
     odds: int | None,
 ) -> dict[str, Any]:
     matchup_label = f"{matchup['away']} @ {matchup['home']}"
-    return {
+    payload = {
         "source": config["source"],
         "pick": _clean_pick(tip, matchup),
         "tip": tip,
@@ -585,6 +615,10 @@ def _pick_payload(
         "start_time": matchup.get("start_time") or None,
         "source_url": source_url,
     }
+    if config["label"] == "FIFA WC":
+        payload.update(_soccer_market_metadata(payload["pick"]))
+        payload["calibration_excluded"] = True
+    return payload
 
 
 def scrape_scores24(
@@ -605,7 +639,7 @@ def scrape_scores24(
             "ok": False,
             "date": date_iso,
             "picks": [],
-            "error": f"Scores24{config['label']} could not resolve an official {date_iso} slate",
+            "error": f"{config['source']} could not resolve an official {date_iso} slate",
         }
 
     owns_client = client is None
@@ -704,7 +738,7 @@ def scrape_scores24(
             "date": date_iso,
             "picks": picks,
             "error": (
-                f"Scores24{config['label']} was blocked before it could finish today's official matchups: "
+                f"{config['source']} was blocked before it could finish today's official matchups: "
                 f"{', '.join(blocked_missing[:3])}"
             ),
             "meta": {
@@ -721,7 +755,7 @@ def scrape_scores24(
         "date": date_iso,
         "picks": picks,
         "note": (
-            f"Scores24{config['label']} matched {len(picks)} published editorial choice(s) "
+            f"{config['source']} matched {len(picks)} published editorial choice(s) "
             f"to {len(expected)} official {date_iso} matchup(s)."
         ),
         "meta": {
@@ -742,6 +776,10 @@ def run_scores24_wnba(date_iso: str, _sports: list[str] | None = None) -> dict[s
 
 def run_scores24_mlb(date_iso: str, _sports: list[str] | None = None) -> dict[str, Any]:
     return scrape_scores24("mlb", date_iso)
+
+
+def run_scores24_fifa_world_cup(date_iso: str, _sports: list[str] | None = None) -> dict[str, Any]:
+    return scrape_scores24("fifa_world_cup", date_iso)
 
 
 def main() -> int:

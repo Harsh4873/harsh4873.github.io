@@ -18,7 +18,11 @@ sys.path.insert(0, str(REPO_ROOT))
 import pickgrader_server as server  # noqa: E402
 from scripts.cache_manifest import write_cache_manifest  # noqa: E402
 from scripts.pick_calibration import apply_calibration_to_payload  # noqa: E402
-from scripts.scrapers.scores24_scraper import run_scores24_mlb, run_scores24_wnba  # noqa: E402
+from scripts.scrapers.scores24_scraper import (  # noqa: E402
+    run_scores24_fifa_world_cup,
+    run_scores24_mlb,
+    run_scores24_wnba,
+)
 
 
 FEED_RUNNERS: dict[str, Callable[[str, list[str]], dict[str, Any]]] = {
@@ -26,6 +30,7 @@ FEED_RUNNERS: dict[str, Callable[[str, list[str]], dict[str, Any]]] = {
     "sportsgambler": server.run_sportsgambler_scraper,
     "scores24_wnba": run_scores24_wnba,
     "scores24_mlb": run_scores24_mlb,
+    "scores24_fifa_world_cup": run_scores24_fifa_world_cup,
 }
 
 
@@ -37,7 +42,7 @@ def _parse_args() -> argparse.Namespace:
         default="sportytrader,sportsgambler",
         help="Comma-separated feeds to refresh, or 'all'.",
     )
-    parser.add_argument("--sports", default="nba,mlb,wnba", help="Comma-separated sports passed to each feed scraper.")
+    parser.add_argument("--sports", default="nba,mlb,wnba,fifa_world_cup", help="Comma-separated sports passed to each feed scraper.")
     parser.add_argument("--skip-firestore", action="store_true", help="Write JSON only; useful for local checks.")
     return parser.parse_args()
 
@@ -125,7 +130,7 @@ def main() -> int:
     args = _parse_args()
     date_iso, _ = server._parse_model_date_arg(args.date or None)  # noqa: SLF001
     feeds = _selected_feed_keys(args.feeds)
-    sports = _csv_values(args.sports) or ["nba", "mlb", "wnba"]
+    sports = _csv_values(args.sports) or ["nba", "mlb", "wnba", "fifa_world_cup"]
     now_iso = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
     print(f"[external-feeds] refreshing {', '.join(feeds)} for {date_iso} sports={','.join(sports)}")

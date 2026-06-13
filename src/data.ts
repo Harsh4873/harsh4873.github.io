@@ -91,6 +91,9 @@ const SOURCE_LABELS: Record<string, string> = {
   fifa_world_cup: 'FIFA WC In-House',
   sportytrader: 'SportyTrader',
   sportsgambler: 'SportsGambler',
+  scores24_wnba: 'Scores24WNBA',
+  scores24_mlb: 'Scores24MLB',
+  scores24_fifa_world_cup: 'Scores24FIFAWorldCup',
 };
 
 const PLAYER_PROP_SOURCE_LABELS: Record<string, string> = {

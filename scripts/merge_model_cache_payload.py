@@ -15,7 +15,13 @@ from cache_manifest import write_cache_manifest  # noqa: E402
 
 
 MODEL_CACHE_DIR = Path("data/model_cache")
-EXTERNAL_FEED_MODEL_KEYS = {"sportytrader", "sportsgambler", "scores24_wnba", "scores24_mlb"}
+EXTERNAL_FEED_MODEL_KEYS = {
+    "sportytrader",
+    "sportsgambler",
+    "scores24_wnba",
+    "scores24_mlb",
+    "scores24_fifa_world_cup",
+}
 DEPLOYED_MODEL_KEYS = {
     "mlb_new",
     "mlb_inning",

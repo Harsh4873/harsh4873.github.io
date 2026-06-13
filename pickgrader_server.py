@@ -2057,6 +2057,9 @@ def grade_nba_prop_pick(pick: dict[str, Any], game: dict[str, Any], summary: dic
 
 
 def grade_pick(pick: dict[str, Any], game: dict[str, Any]) -> str:
+    if pick.get("grade_supported") is False:
+        return "pending"
+
     pick_text = str(pick.get("pick", ""))
     head = pick_text.split("(", 1)[0].strip()
     lower = head.lower()
@@ -2185,6 +2188,8 @@ def auto_grade(picks: list[dict[str, Any]], existing: dict[str, str], year: int)
     for pick in picks:
         pid = str(pick.get("id"))
         if not pid:
+            continue
+        if pick.get("grade_supported") is False:
             continue
         sport_key = str(pick.get("sport", "")).upper()
         if sport_key not in SPORT_TO_ESPNSLUG:
@@ -3813,6 +3818,10 @@ _SPORTYTRADER_SPORT_ALIAS = {
     "USA - MLB": "MLB",
     "MLB": "MLB",
     "BASEBALL": "MLB",
+    "WORLD - WORLD CUP": "FIFA WC",
+    "WORLD CUP": "FIFA WC",
+    "FIFA WORLD CUP": "FIFA WC",
+    "FIFA WC": "FIFA WC",
 }
 
 
@@ -3833,6 +3842,8 @@ def _clean_sportytrader_pick(tip: str, matchup: str, sport: str = "NBA") -> str:
     home_short = _shorten_team(home)
     away_short = _shorten_team(away)
     matchup_short = f"{home_short} vs {away_short}"
+    if sport.upper() == "FIFA WC":
+        return f"{tip_clean} ({matchup})"
 
     tip_norm = _normalize_french_text(tip_clean)
     home_norm = _normalize_french_text(home)
@@ -4670,24 +4681,36 @@ def _matchup_pair_key(raw: str) -> tuple[str, str] | None:
     teams = re.split(r"\s+(?:vs\.?|@)\s+", str(raw or "").strip(), maxsplit=1, flags=re.IGNORECASE)
     if len(teams) != 2:
         return None
-    normalized = sorted(re.sub(r"[^a-z0-9]+", "", team.lower()) for team in teams)
+    aliases = {"turkiye": "turkey"}
+    normalized = []
+    for team in teams:
+        text = unicodedata.normalize("NFKD", team)
+        text = "".join(char for char in text if not unicodedata.combining(char))
+        key = re.sub(r"[^a-z0-9]+", "", text.lower())
+        normalized.append(aliases.get(key, key))
+    normalized.sort()
     return (normalized[0], normalized[1]) if all(normalized) else None
 
 
-def _known_basketball_slate_matchups(target_date: str, sport_code: str) -> list[str]:
-    sport = str(sport_code or "").strip().upper()
-    if sport not in {"NBA", "WNBA"}:
+_EXTERNAL_FEED_SPORT_CONFIG = {
+    "nba": {"label": "NBA", "model_keys": ("nba", "nba_playoffs")},
+    "wnba": {"label": "WNBA", "model_keys": ("wnba",)},
+    "mlb": {"label": "MLB", "model_keys": ("mlb_first_five", "mlb_inning", "mlb_new")},
+    "fifa_world_cup": {"label": "FIFA WC", "model_keys": ("fifa_world_cup",)},
+}
+
+
+def _known_external_slate_matchups(target_date: str, sport_code: str) -> list[str]:
+    config = _EXTERNAL_FEED_SPORT_CONFIG.get(str(sport_code or "").strip().lower())
+    if not config:
         return []
+    sport = str(config["label"])
 
     matchups: dict[tuple[str, str], str] = {}
     cache_paths = [
         os.path.join(BASE_DIR, "data", "model_cache", f"{target_date}.json"),
         os.path.join(BASE_DIR, "data", "model_cache", "latest.json"),
     ]
-    model_keys = {
-        "NBA": ("nba", "nba_playoffs"),
-        "WNBA": ("wnba",),
-    }[sport]
     for cache_path in cache_paths:
         try:
             with open(cache_path, encoding="utf-8") as handle:
@@ -4697,19 +4720,22 @@ def _known_basketball_slate_matchups(target_date: str, sport_code: str) -> list[
         if not isinstance(payload, dict) or str(payload.get("date") or "") != target_date:
             continue
         models = payload.get("models") if isinstance(payload.get("models"), dict) else {}
-        for model_key in model_keys:
+        for model_key in config["model_keys"]:
             bucket = models.get(model_key) if isinstance(models.get(model_key), dict) else payload.get(model_key)
-            picks = bucket.get("picks") if isinstance(bucket, dict) else []
-            for pick in picks if isinstance(picks, list) else []:
-                if not isinstance(pick, dict):
-                    continue
-                matchup = str(pick.get("matchup") or pick.get("game") or "").strip()
-                if not matchup:
-                    away = str(pick.get("away_team") or "").strip()
-                    home = str(pick.get("home_team") or "").strip()
-                    matchup = f"{away} @ {home}" if away and home else ""
-                if key := _matchup_pair_key(matchup):
-                    matchups.setdefault(key, matchup)
+            if not isinstance(bucket, dict):
+                continue
+            for collection_key in ("games", "picks"):
+                rows = bucket.get(collection_key)
+                for row in rows if isinstance(rows, list) else []:
+                    if not isinstance(row, dict):
+                        continue
+                    matchup = str(row.get("matchup") or row.get("game") or "").strip()
+                    if not matchup:
+                        away = str(row.get("away_team") or "").strip()
+                        home = str(row.get("home_team") or "").strip()
+                        matchup = f"{away} @ {home}" if away and home else ""
+                    if key := _matchup_pair_key(matchup):
+                        matchups.setdefault(key, matchup)
         break
 
     try:
@@ -4741,9 +4767,46 @@ def _known_basketball_slate_matchups(target_date: str, sport_code: str) -> list[
     return list(matchups.values())
 
 
+def _known_basketball_slate_matchups(target_date: str, sport_code: str) -> list[str]:
+    """Backward-compatible wrapper for callers that still use the old helper name."""
+    return _known_external_slate_matchups(target_date, sport_code)
+
+
+def _soccer_external_market_metadata(pick_text: str) -> dict[str, Any]:
+    selection = str(pick_text or "").split("(", 1)[0].strip()
+    lower = selection.lower()
+    asian = re.search(r"\basian\s+(?:hcp|handicap)\s*([+-]\d+(?:\.\d+)?)", lower)
+    spread = asian or re.fullmatch(r".+?\s+([+-]\d+(?:\.\d+)?)", selection)
+    if asian:
+        return {"market_type": "soccer_asian_handicap", "grade_supported": False}
+    if spread:
+        line = float(spread.group(1))
+        quarter_line = abs((line * 4) - round(line * 4)) < 1e-9 and abs((line * 2) - round(line * 2)) > 1e-9
+        return {"market_type": "soccer_handicap", "grade_supported": not quarter_line}
+    if re.fullmatch(r"(?:over|under)\s+\d+(?:\.\d+)?(?:\s+goals?)?", lower):
+        return {"market_type": "soccer_total", "grade_supported": True}
+    if re.fullmatch(r".+?\s+(?:ml|moneyline|to win|wins?)", lower):
+        return {"market_type": "soccer_moneyline", "grade_supported": True}
+    if re.fullmatch(r"draw|btts\s+(?:yes|no)", lower):
+        return {"market_type": "soccer_standard", "grade_supported": True}
+    return {"market_type": "soccer_specialty", "grade_supported": False}
+
+
+def _external_pick_context(matchup: str, target_date: str, sport: str, pick_text: str) -> dict[str, Any]:
+    context: dict[str, Any] = {
+        "date": target_date,
+        "matchup": matchup,
+        "game": matchup,
+    }
+    if sport == "FIFA WC":
+        context.update(_soccer_external_market_metadata(pick_text))
+        context["calibration_excluded"] = True
+    return context
+
+
 def _scraper_reported_empty_slate(output: str) -> bool:
     return "No picks found." in output or bool(
-        re.search(r"No SportyTrader \w+ picks parsed\.", output)
+        re.search(r"No SportyTrader .+? picks parsed\.", output)
     )
 
 
@@ -4751,7 +4814,7 @@ def run_sportytrader_scraper(
     date_str: str | None = None,
     sports: list[str] | None = None,
 ) -> dict[str, Any]:
-    """Execute the SportyTrader scraper for NBA, WNBA, and/or MLB."""
+    """Execute the SportyTrader scraper for supported scheduled feed sports."""
     python_bin = _resolve_python_bin(SPORTYTRADER_VENV)
     target_date = _resolve_scrape_date(date_str)
     scraper_path = os.path.join(BASE_DIR, "scripts", "scrapers", "sportytrader_scraper.py")
@@ -4770,15 +4833,20 @@ def run_sportytrader_scraper(
         "wnba": "wnba",
         "mlb": "mlb",
         "baseball": "mlb",
+        "fifa": "fifa_world_cup",
+        "fifa_world_cup": "fifa_world_cup",
+        "football": "fifa_world_cup",
+        "soccer": "fifa_world_cup",
+        "world_cup": "fifa_world_cup",
     }
-    default_sports = ["nba", "mlb", "wnba"]
+    default_sports = ["nba", "mlb", "wnba", "fifa_world_cup"]
     selected = [sport_map.get(str(s).strip().lower(), "") for s in (sports or default_sports)]
     selected = [sport for sport in selected if sport]
     if not selected:
         selected = default_sports
 
     expected_by_sport = {
-        sport_code: _known_basketball_slate_matchups(target_date, sport_code)
+        sport_code: _known_external_slate_matchups(target_date, sport_code)
         for sport_code in selected
     }
 
@@ -4819,7 +4887,7 @@ def run_sportytrader_scraper(
 
             picks: list[dict[str, Any]] = []
             blocks = re.split(r"━{10,}", output)
-            expected_sport = sport_code.upper()
+            expected_sport = str(_EXTERNAL_FEED_SPORT_CONFIG[sport_code]["label"])
             for block in blocks:
                 match_m = re.search(r"Match:\s*(.+)", block)
                 tip_m = re.search(r"Tip:\s*(.+)", block)
@@ -4845,15 +4913,17 @@ def run_sportytrader_scraper(
                     except ValueError:
                         odds_val = None
 
+                pick_text = _clean_sportytrader_pick(tip, matchup, sport=sport)
                 picks.append({
                     "source": "SportyTrader",
-                    "pick": _clean_sportytrader_pick(tip, matchup, sport=sport),
+                    "pick": pick_text,
                     "sport": sport,
                     "odds": odds_val,
                     "units": 1,
                     "probability": None,
                     "edge": None,
                     "decision": "BET",
+                    **_external_pick_context(matchup, target_date, sport, pick_text),
                 })
 
             if result.returncode != 0 and not picks:
@@ -4883,7 +4953,7 @@ def run_sportsgambler_scraper(
     date_str: str | None = None,
     sports: list[str] | None = None,
 ) -> dict[str, Any]:
-    """Execute the SportsGambler scraper for NBA, WNBA, and/or MLB."""
+    """Execute the SportsGambler scraper for supported scheduled feed sports."""
     python_bin = _resolve_python_bin(SPORTSGAMBLER_VENV)
     target_date = _resolve_scrape_date(date_str)
     scraper_path = os.path.join(BASE_DIR, "scripts", "scrapers", "sportsgambler_scraper.py")
@@ -4897,15 +4967,20 @@ def run_sportsgambler_scraper(
         "wnba": "wnba",
         "mlb": "mlb",
         "baseball": "mlb",
+        "fifa": "fifa_world_cup",
+        "fifa_world_cup": "fifa_world_cup",
+        "football": "fifa_world_cup",
+        "soccer": "fifa_world_cup",
+        "world_cup": "fifa_world_cup",
     }
-    default_sports = ["nba", "mlb", "wnba"]
+    default_sports = ["nba", "mlb", "wnba", "fifa_world_cup"]
     selected = [sport_map.get(str(s).strip().lower(), "") for s in (sports or default_sports)]
     selected = [sport for sport in selected if sport]
     if not selected:
         selected = default_sports
 
     expected_by_sport = {
-        sport_code: _known_basketball_slate_matchups(target_date, sport_code)
+        sport_code: _known_external_slate_matchups(target_date, sport_code)
         for sport_code in selected
     }
 
@@ -4931,7 +5006,7 @@ def run_sportsgambler_scraper(
 
             picks: list[dict[str, Any]] = []
             blocks = re.split(r"━{10,}", output)
-            expected_sport = sport_code.upper()
+            expected_sport = str(_EXTERNAL_FEED_SPORT_CONFIG[sport_code]["label"])
             for block in blocks:
                 match_m = re.search(r"Match:\s*(.+)", block)
                 tip_m = re.search(r"Tip:\s*(.+)", block)
@@ -4947,7 +5022,7 @@ def run_sportsgambler_scraper(
 
                 league = league_m.group(1).strip() if league_m else ""
                 sport = (league or expected_sport).upper()
-                if sport not in {"NBA", "WNBA", "MLB"}:
+                if sport not in {"NBA", "WNBA", "MLB", "FIFA WC"}:
                     sport = expected_sport
 
                 odds_val = None
@@ -4958,15 +5033,17 @@ def run_sportsgambler_scraper(
                     except ValueError:
                         odds_val = None
 
+                pick_text = f"{tip} ({matchup})"
                 picks.append({
                     "source": "SportsGambler",
-                    "pick": f"{tip} ({matchup})",
+                    "pick": pick_text,
                     "sport": sport,
                     "odds": odds_val,
                     "units": 1,
                     "probability": None,
                     "edge": None,
                     "decision": "BET",
+                    **_external_pick_context(matchup, target_date, sport, pick_text),
                 })
 
             if result.returncode != 0 and not picks:

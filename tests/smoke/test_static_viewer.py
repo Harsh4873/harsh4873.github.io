@@ -202,6 +202,15 @@ def test_daily_tab_uses_focused_views_and_merges_duplicate_markets():
     assert "daily-slate-grid" not in main
 
 
+def test_soccer_consensus_keeps_lines_and_specialty_markets_distinct():
+    main = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
+    signals = main[main.index("function canonicalTrendSignal("):main.index("function trendSignalGroups(")]
+    assert "asian-handicap" in signals
+    assert "spread:${canonicalTeamForPick(pick, spread[1])}:${spread[2]}" in signals
+    assert "total:${total[1].toLowerCase()}:${total[2]}" in signals
+    assert "(?:ML|moneyline|to win|wins?)$/i" in signals
+
+
 def test_player_mode_hides_unneeded_tabs_and_keeps_prop_sources_separate():
     main = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
     data = (ROOT / "src" / "data.ts").read_text(encoding="utf-8")
