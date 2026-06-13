@@ -92,6 +92,12 @@ const SOURCE_LABELS: Record<string, string> = {
   sportsgambler: 'SportsGambler',
 };
 
+const PLAYER_PROP_SOURCE_LABELS: Record<string, string> = {
+  nba_player_props: 'NBAPlayerProps',
+  mlb_player_props: 'MLBPlayerProps',
+  wnba_player_props: 'WNBAPlayerProps',
+};
+
 let activePickMode: PickMode = 'team';
 let teamPicks: Pick[] = [];
 let playerPicks: Pick[] = [];
@@ -177,7 +183,7 @@ function normalizePick(
   const pickText = String(raw.pick || raw.selection || raw.prop || raw.bet || '').trim();
   if (!pickText) return null;
 
-  const source = String(raw.source || fallbackSource || 'Unknown').trim();
+  const source = String((playerProp && fallbackSource) ? fallbackSource : (raw.source || fallbackSource || 'Unknown')).trim();
   const date = String(raw.date || raw.game_date || raw.slate_date || raw.Date || fallbackDate || '').trim();
   const matchup = String(raw.matchup || raw.game || raw.event || '').trim();
   const game = gameByMatchup.get(matchup);
@@ -278,7 +284,7 @@ function playerPropRecords(payload: PlayerPropsPayload): Array<{ raw: unknown; s
     const container = payload[containerKey];
     if (!container || typeof container !== 'object' || Array.isArray(container)) continue;
     for (const [source, bucket] of Object.entries(container as Record<string, unknown>)) {
-      addBucket(bucket, source);
+      addBucket(bucket, PLAYER_PROP_SOURCE_LABELS[source] || source);
     }
   }
   return records;

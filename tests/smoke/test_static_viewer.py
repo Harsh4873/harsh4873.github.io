@@ -102,7 +102,7 @@ def test_static_viewer_keeps_public_tabs_and_client_grading():
 
     for tab in ("home", "search", "rankings", "trends", "daily"):
         assert f"id=\"tab-{tab}\"" in html
-    assert 'onclick="switchTab(\'trends\')">TRENDS</button>' in html
+    assert 'data-player-hidden-tab="trends" onclick="switchTab(\'trends\')">TRENDS</button>' in html
     assert 'onclick="switchTab(\'daily\')">BEST BETS</button>' in html
     assert "async function refreshAutoGrades()" in main
     assert "async function gradeDate(" in main
@@ -188,6 +188,23 @@ def test_daily_tab_uses_focused_views_and_merges_duplicate_markets():
     assert ".daily-view-select-wrap" in css
     assert ".daily-pick-source-list" in css
     assert "daily-slate-grid" not in main
+
+
+def test_player_mode_hides_unneeded_tabs_and_keeps_prop_sources_separate():
+    main = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
+    data = (ROOT / "src" / "data.ts").read_text(encoding="utf-8")
+    html = (ROOT / "index.html").read_text(encoding="utf-8")
+
+    assert 'data-player-hidden-tab="trends"' in html
+    assert "function syncModeTabs(" in main
+    assert "activePickMode === 'player' && name === 'trends'" in main
+    assert "activePickMode !== 'player' || option.key !== 'consensus'" in main
+    assert "activePickMode === 'player' && view === 'consensus'" in main
+    assert "playerResearchPool" in main
+    assert "Next-best player prop candidates" in main
+    for source in ("NBAPlayerProps", "MLBPlayerProps", "WNBAPlayerProps"):
+        assert source in data
+    assert "playerProp && fallbackSource" in data
 
 
 def test_cache_manifest_lists_committed_dated_payloads():

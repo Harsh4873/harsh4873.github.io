@@ -48,6 +48,12 @@ type DailySourceForm = {
 };
 
 type DailyView = 'picks' | 'consensus' | 'sources' | 'research';
+type DailyViewOption = {
+  key: DailyView;
+  label: string;
+  count: number;
+  description: string;
+};
 
 type DailyPickGroup = {
   key: string;
@@ -879,6 +885,7 @@ function dailyConsensusCards(picks: Pick[]): string {
 }
 
 function setDailyView(view: string): void {
+  if (activePickMode === 'player' && view === 'consensus') view = 'picks';
   if (view === 'picks' || view === 'consensus' || view === 'sources' || view === 'research') {
     dailyView = view;
     renderDaily();
@@ -894,6 +901,7 @@ function renderDaily(): void {
   const picks = getAllPicks().filter(pick => pickDateKey(pick) === key);
   const stats = statsFor(picks);
   const pending = picks.filter(pick => pick.result === 'pending');
+  if (activePickMode === 'player' && dailyView === 'consensus') dailyView = 'picks';
   const forms = dailySourceForms(key, picks);
   const formsBySource = new Map(forms.map(form => [form.source, form]));
   const ranked = (candidates: Pick[]) => [...candidates].sort((a, b) => dailyPickScore(b, formsBySource) - dailyPickScore(a, formsBySource));
@@ -923,8 +931,17 @@ function renderDaily(): void {
   ).values()];
   const topGroups = dailyPickGroups(topCandidates, tagsById, formsBySource, pending);
   const topKeys = new Set(topGroups.map(group => group.key));
+  const playerResearchPool = activePickMode === 'player'
+    ? uniqueDailyPicks(ranked(pending.filter(pick => !topKeys.has(dailyPickKey(pick)) && (
+      dailyDecision(pick) !== 'BET' ||
+      pickProbability(pick) != null ||
+      pickEdgePercent(pick) != null ||
+      Boolean(pick.reason || pick.rationale || pick.key_factors)
+    )))).slice(0, 8)
+    : [];
+  addTag(playerResearchPool, 'RESEARCH');
   const researchCandidates = [...new Map(
-    [...researchQueue, ...probabilityLeaders.filter(pick => dailyDecision(pick) !== 'BET')]
+    [...researchQueue, ...playerResearchPool, ...probabilityLeaders.filter(pick => dailyDecision(pick) !== 'BET')]
       .filter(pick => !topKeys.has(dailyPickKey(pick)))
       .map(pick => [pick.id, pick]),
   ).values()];
@@ -933,22 +950,27 @@ function renderDaily(): void {
   const games = new Map<string, Pick[]>();
   pending.forEach(pick => games.set(gameKey(pick), [...(games.get(gameKey(pick)) || []), pick]));
   const consensusCount = [...games.values()].reduce((total, gamePicks) => total + trendSignalGroups(gamePicks).filter(signal => signal.matching).length, 0);
-  const viewOptions: Array<{ key: DailyView; label: string; count: number; description: string }> = [
+  const viewOptionsBase: DailyViewOption[] = [
     { key: 'picks', label: 'Top Picks', count: topGroups.length, description: 'Unique actionable markets' },
     { key: 'consensus', label: 'Consensus', count: consensusCount, description: 'All matching market signals' },
     { key: 'sources', label: 'Active Sources', count: hotForms.length, description: 'Sources issuing BET calls today' },
-    { key: 'research', label: 'Research', count: researchGroups.length, description: 'High probability and pricey spots' },
+    { key: 'research', label: 'Research', count: researchGroups.length, description: activePickMode === 'player' ? 'Next-best prop candidates' : 'High probability and pricey spots' },
   ];
+  const viewOptions = viewOptionsBase.filter(option => activePickMode !== 'player' || option.key !== 'consensus');
   const activeView = viewOptions.find(option => option.key === dailyView) || viewOptions[0];
+  const dailyFocus = activePickMode === 'player' ? 'top picks, sources, or research' : 'picks, consensus, sources, or research';
+  const researchSubtitle = activePickMode === 'player'
+    ? 'Next-best player prop candidates and lean/pass research, excluding anything already in Top Picks.'
+    : 'High-probability non-BET calls and expensive favorites, excluding anything already in Top Picks.';
   const activeBody = dailyView === 'picks'
     ? dailySection('Top Picks', 'Greenlights, value, and high-probability BET calls merged into one card per market.', dailyPickGrid(topGroups), `${topGroups.length} unique markets`)
     : dailyView === 'consensus'
       ? dailySection('Consensus Signals', 'Same market selection from at least two independent sources.', dailyConsensusCards(pending), `${consensusCount} matching signals`)
       : dailyView === 'sources'
         ? dailySection('Hot Sources', 'Recent three-slate form plus each source’s unique BET calls today.', hotForms.length ? `<div class="daily-model-grid">${hotForms.map(dailyHotModelCard).join('')}</div>` : '<div class="daily-empty"><div class="daily-empty-title">No hot source has a BET today</div><div class="daily-empty-sub">This view appears when a source has enough recent decisions and a current greenlight.</div></div>', `${hotForms.length} active sources`)
-        : dailySection('Research Queue', 'High-probability non-BET calls and expensive favorites, excluding anything already in Top Picks.', dailyPickGrid(researchGroups), `${researchGroups.length} unique markets`);
+        : dailySection('Research Queue', researchSubtitle, dailyPickGrid(researchGroups), `${researchGroups.length} unique markets`);
 
-  container.innerHTML = `<div class="daily-hero"><div class="daily-hero-row"><div><div class="daily-eyebrow">TODAY'S QUICK READ</div><div class="daily-title">The Shortlist</div><div class="daily-sub">${escapeHtml(dateLabel(key, true))} | Each unique market appears once. Choose a view to focus on picks, consensus, sources, or research.</div></div><div class="daily-clock-wrap"><div class="daily-clock-label">PICKS FOR</div><div class="daily-clock">${escapeHtml(key)}</div></div></div></div>
+  container.innerHTML = `<div class="daily-hero"><div class="daily-hero-row"><div><div class="daily-eyebrow">TODAY'S QUICK READ</div><div class="daily-title">The Shortlist</div><div class="daily-sub">${escapeHtml(dateLabel(key, true))} | Each unique market appears once. Choose a view to focus on ${dailyFocus}.</div></div><div class="daily-clock-wrap"><div class="daily-clock-label">PICKS FOR</div><div class="daily-clock">${escapeHtml(key)}</div></div></div></div>
     <div class="daily-view-shell">
       <div class="daily-view-copy"><div class="daily-view-eyebrow">CHOOSE A VIEW</div><div class="daily-view-title">${escapeHtml(activeView.label)}</div><div class="daily-view-description">${escapeHtml(activeView.description)}. ${stats.pending} picks remain open; ${priceyCount} are pricey favorites.</div></div>
       <div class="daily-view-nav" role="tablist" aria-label="Daily shortlist categories">${viewOptions.map(option => `<button class="daily-view-tab ${dailyView === option.key ? 'active' : ''}" type="button" role="tab" aria-selected="${dailyView === option.key}" onclick="setDailyView('${option.key}')"><span class="daily-view-tab-count">${option.count}</span><span class="daily-view-tab-label">${option.label}</span><span class="daily-view-tab-desc">${option.description}</span></button>`).join('')}</div>
@@ -968,7 +990,18 @@ function render(): void {
   if (active === 'tab-daily') renderDaily();
 }
 
+function syncModeTabs(): void {
+  const hidePlayerTabs = activePickMode === 'player';
+  document.querySelectorAll<HTMLButtonElement>('[data-player-hidden-tab]').forEach(tab => {
+    tab.hidden = hidePlayerTabs;
+    tab.setAttribute('aria-hidden', hidePlayerTabs ? 'true' : 'false');
+    if (hidePlayerTabs) tab.classList.remove('active');
+  });
+}
+
 function switchTab(name: string): void {
+  if (activePickMode === 'player' && name === 'trends') name = 'home';
+  syncModeTabs();
   document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
   document.querySelector<HTMLElement>(`.tab[onclick*="'${name}'"]`)?.classList.add('active');
@@ -1354,7 +1387,12 @@ function switchPickMode(mode: PickMode): void {
       ? 'Find a player, prop, matchup, or source in the selected date’s open props...'
       : 'Find a team, matchup, or source in the selected date’s open picks...';
   }
+  syncModeTabs();
   updateSyncStatus();
+  if (mode === 'player' && document.getElementById('tab-trends')?.classList.contains('active')) {
+    switchTab('home');
+    return;
+  }
   render();
 }
 
@@ -1392,6 +1430,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   initMobileMode();
   activePickMode = initPickMode();
   setDataPickMode(activePickMode);
+  syncModeTabs();
   initSettingsUI();
   await loadAllData();
   lastCentralDate = centralDateKey();
