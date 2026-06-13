@@ -103,6 +103,27 @@ class DirectApiClient:
             {"sportId": 1, "date": date_iso, "hydrate": "probablePitcher,venue"},
         )
 
+    def mlb_espn_scoreboard(self, date_iso: str) -> dict[str, Any]:
+        return self._get(
+            "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/scoreboard",
+            {"dates": date_iso.replace("-", ""), "limit": 100},
+        )
+
+    def mlb_espn_summary(self, event_id: str) -> dict[str, Any]:
+        return self._get(
+            "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/summary",
+            {"event": event_id},
+        )
+
+    def mlb_espn_prop_bets(self, event_id: str, provider_id: str = "100") -> dict[str, Any]:
+        return self._get(
+            (
+                "https://sports.core.api.espn.com/v2/sports/baseball/leagues/mlb/"
+                f"events/{event_id}/competitions/{event_id}/odds/{provider_id}/propBets"
+            ),
+            {"lang": "en", "region": "us", "limit": 1000},
+        )
+
     def mlb_live_feed(self, game_pk: int) -> dict[str, Any]:
         return self._get(f"https://statsapi.mlb.com/api/v1.1/game/{game_pk}/feed/live")
 

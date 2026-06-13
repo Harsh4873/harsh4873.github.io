@@ -10,7 +10,6 @@ from typing import Any
 
 SOURCE = "PickLedgerPro In-House Player Props"
 ODDS = -110
-MARKET_IMPLIED = 110.0 / 210.0
 
 
 def safe_float(value: Any, default: float = 0.0) -> float:
@@ -46,6 +45,14 @@ def normal_probability(projection: float, line: float, sigma: float, selection: 
     return max(0.01, min(0.99, probability))
 
 
+def american_implied_probability(odds: int | None) -> float | None:
+    if odds is None or odds == 0:
+        return None
+    if odds > 0:
+        return 100.0 / (odds + 100.0)
+    return abs(odds) / (abs(odds) + 100.0)
+
+
 def kelly(probability: float, odds: int = ODDS) -> tuple[float, float]:
     decimal_profit = 100.0 / abs(odds) if odds < 0 else odds / 100.0
     full = ((decimal_profit * probability) - (1.0 - probability)) / decimal_profit
@@ -53,15 +60,21 @@ def kelly(probability: float, odds: int = ODDS) -> tuple[float, float]:
     return round(full, 4), round(full / 4.0, 4)
 
 
-def decision_and_stake(probability: float) -> tuple[str, float, float, float, float]:
-    edge_pp = (probability - MARKET_IMPLIED) * 100.0
+def decision_and_stake(
+    probability: float,
+    odds: int | None = ODDS,
+) -> tuple[str, float | None, float, float, float]:
+    implied = american_implied_probability(odds)
+    if implied is None:
+        return "PASS", None, 0.0, 0.0, 0.0
+    edge_pp = (probability - implied) * 100.0
     if edge_pp >= 7.0:
         decision = "BET"
     elif edge_pp >= 3.0:
         decision = "LEAN"
     else:
         decision = "PASS"
-    full, quarter = kelly(probability)
+    full, quarter = kelly(probability, odds)
     units = 0.0 if decision == "PASS" else round(min(2.0, quarter * 100.0), 2)
     return decision, round(edge_pp, 2), full, quarter, units
 
@@ -109,9 +122,11 @@ def build_pick(
     probability: float,
     reason: str,
     key_factors: list[str],
+    odds: int | None = ODDS,
     extra: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    decision, edge, full_kelly, quarter_kelly, units = decision_and_stake(probability)
+    decision, edge, full_kelly, quarter_kelly, units = decision_and_stake(probability, odds)
+    market_implied = american_implied_probability(odds)
     matchup = f"{away_team} @ {home_team}"
     payload: dict[str, Any] = {
         "id": stable_id(sport, date_iso, game_id, player_id, stat_key, selection, line),
@@ -135,7 +150,8 @@ def build_pick(
         "confidence": confidence_label(probability),
         "edge": edge,
         "decision": decision,
-        "odds": ODDS,
+        "odds": odds,
+        "market_implied_probability": round(market_implied, 4) if market_implied is not None else None,
         "units": units,
         "full_kelly": full_kelly,
         "quarter_kelly": quarter_kelly,

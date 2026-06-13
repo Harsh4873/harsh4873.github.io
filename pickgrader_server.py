@@ -1716,6 +1716,8 @@ def parse_player_prop_pick(pick: dict[str, Any] | str) -> dict[str, Any] | None:
         "assists": "assists",
         "hit": "hits",
         "hits": "hits",
+        "hits_runs_rbis": "hits_runs_rbis",
+        "hrr": "hits_runs_rbis",
         "strikeout": "strikeouts",
         "strikeouts": "strikeouts",
         "ks": "strikeouts",
@@ -2000,11 +2002,20 @@ def _summary_stat_value_to_float(value: Any) -> float | None:
 
 
 def _extract_nba_player_stat(summary: dict[str, Any], player_name: str, stat_key: str) -> float | None:
+    if stat_key == "hits_runs_rbis":
+        values = [
+            _extract_nba_player_stat(summary, player_name, component)
+            for component in ("hits", "runs", "rbis")
+        ]
+        return sum(values) if all(value is not None for value in values) else None
+
     label_targets = {
         "points": {"PTS"},
         "rebounds": {"REB", "TREB", "TOTREB", "TOTAL REBOUNDS"},
         "assists": {"AST"},
         "hits": {"H", "HITS"},
+        "runs": {"R", "RUNS"},
+        "rbis": {"RBI", "RBIS", "RUNS BATTED IN"},
         "strikeouts": {"K", "SO", "STRIKEOUTS"},
     }
     targets = label_targets.get(stat_key)

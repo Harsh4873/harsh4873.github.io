@@ -333,10 +333,10 @@ def test_grade_structured_mlb_player_props_from_boxscore():
             "players": [{
                 "statistics": [
                     {
-                        "labels": ["H-AB", "H", "K"],
+                        "labels": ["H-AB", "H", "R", "RBI", "K"],
                         "athletes": [{
                             "athlete": {"displayName": "Otto Lopez"},
-                            "stats": ["2-4", "2", "1"],
+                            "stats": ["2-4", "2", "1", "2", "1"],
                         }],
                     },
                     {
@@ -368,6 +368,16 @@ def test_grade_structured_mlb_player_props_from_boxscore():
         "line": 5.5,
         "pick": "Sandy Alcantara strikeouts OVER 5.5 vs Pirates",
     }
+    hrr = {
+        "scope": "player",
+        "sport": "MLB",
+        "player_name": "Otto Lopez",
+        "stat_key": "hits_runs_rbis",
+        "selection": "OVER",
+        "line": 3.5,
+        "pick": "Otto Lopez Over 3.5 Hits + Runs + RBIs",
+    }
 
     assert pickgrader_server.grade_player_prop_pick(hitter, {}, summary) == "win"
     assert pickgrader_server.grade_player_prop_pick(pitcher, {}, summary) == "win"
+    assert pickgrader_server.grade_player_prop_pick(hrr, {}, summary) == "win"

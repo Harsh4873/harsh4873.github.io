@@ -52,6 +52,24 @@ def _statcast_rows(
     return rows
 
 
+def _market_pair(athlete_id: int, type_name: str, line: float, over_odds: int, under_odds: int) -> list[dict]:
+    def row(odds: int) -> dict:
+        return {
+            "athlete": {
+                "$ref": (
+                    "http://sports.core.api.espn.com/v2/sports/baseball/leagues/mlb/"
+                    f"seasons/2026/athletes/{athlete_id}?lang=en&region=us"
+                )
+            },
+            "type": {"name": type_name},
+            "odds": {"american": {"value": f"{odds:+d}"}, "total": {"value": str(line)}},
+            "current": {"target": {"value": line, "displayValue": str(line)}},
+            "lastUpdated": STAMP,
+        }
+
+    return [row(over_odds), row(under_odds)]
+
+
 class EmptyClient:
     def basketball_scoreboard(self, league, date_iso):
         return {"events": [], "season": {"year": 2026}}
@@ -165,7 +183,21 @@ class MockClient(EmptyClient):
                     "person": {
                         "id": team_id * 10 + index,
                         "fullName": f"Hitter {team_id}-{index}",
-                        "stats": [{"splits": [{"stat": {"atBats": 180, "hits": 55 - index, "avg": ".300", "ops": ".820", "strikeOuts": 35 + index, "plateAppearances": 200}}]}],
+                        "stats": [{
+                            "splits": [{
+                                "stat": {
+                                    "atBats": 180,
+                                    "hits": 55 - index,
+                                    "runs": 40 - index,
+                                    "rbi": 45 - index,
+                                    "gamesPlayed": 55,
+                                    "avg": ".300",
+                                    "ops": ".820",
+                                    "strikeOuts": 35 + index,
+                                    "plateAppearances": 200,
+                                }
+                            }]
+                        }],
                     },
                     "position": {"abbreviation": "OF"},
                 }
@@ -180,10 +212,11 @@ class MockClient(EmptyClient):
                     "splits": [
                         {
                             "stat": {
-                                "gamesStarted": 10,
-                                "inningsPitched": "60.0",
-                                "strikeOuts": 70,
-                                "hitsPer9Inn": "8.10",
+                                "gamesStarted": 2 if player_id == 101 else 10,
+                                "gamesPitched": 21 if player_id == 101 else 10,
+                                "inningsPitched": "36.1" if player_id == 101 else "60.0",
+                                "strikeOuts": 41 if player_id == 101 else 70,
+                                "hitsPer9Inn": "5.20" if player_id == 101 else "8.10",
                             }
                         }
                     ]
@@ -220,6 +253,41 @@ class MockClient(EmptyClient):
             + _statcast_rows("ST", pitches=30, whiffs=14, strikeouts=9, hits=2, outs=9)
         )
 
+    def mlb_espn_scoreboard(self, date_iso):
+        return {
+            "events": [{
+                "id": "espn-99",
+                "competitions": [{
+                    "competitors": [
+                        {"homeAway": "away", "team": {"displayName": "Away Nine"}},
+                        {"homeAway": "home", "team": {"displayName": "Home Nine"}},
+                    ],
+                    "odds": [{"provider": {"id": "100", "name": "DraftKings"}}],
+                }],
+            }]
+        }
+
+    def mlb_espn_summary(self, event_id):
+        athletes = [
+            {"id": "101", "displayName": "Away Pitcher"},
+            {"id": "202", "displayName": "Home Pitcher"},
+            *[
+                {"id": str(team_id * 10 + index), "displayName": f"Hitter {team_id}-{index}"}
+                for team_id in (1, 2)
+                for index in range(4)
+            ],
+        ]
+        return {"rosters": [{"roster": [{"athlete": athlete} for athlete in athletes]}]}
+
+    def mlb_espn_prop_bets(self, event_id, provider_id="100"):
+        items = _market_pair(202, "Total Strikeouts", 6.5, 105, -125)
+        for team_id in (1, 2):
+            for index in range(4):
+                athlete_id = team_id * 10 + index
+                items.extend(_market_pair(athlete_id, "Total Hits", 0.5, -400, 280))
+                items.extend(_market_pair(athlete_id, "Total Hits + Runs + RBIs", 1.5, 110, -135))
+        return {"items": items}
+
 
 def test_empty_leagues_are_healthy():
     payload = generate_payload(DATE, client=EmptyClient(), generated_at=STAMP)
@@ -251,21 +319,20 @@ def test_basketball_props_are_stable_and_apply_next_man_up():
     assert any("Next-man-up redistribution" in " ".join(pick["key_factors"]) for pick in picks)
 
 
-def test_mlb_props_are_gradeable_and_represent_h2h_environment():
+def test_mlb_props_use_actual_markets_and_reject_reliever_starter_lines():
     payload = generate_payload(DATE, client=MockClient(), generated_at=STAMP)
     model = payload["models"]["mlb_player_props"]
     picks = model["picks"]
 
     assert model["ok"] is True
     assert 3 <= len(picks) <= 5
-    assert {"hits", "strikeouts"} == {pick["stat_key"] for pick in picks}
-    assert all(pick["odds"] == -110 and pick["decision"] in {"BET", "LEAN", "PASS"} for pick in picks)
-    hit_props = [pick for pick in picks if pick["stat_key"] == "hits"]
-    assert hit_props and all("h2h" in pick for pick in hit_props)
-    assert any("H2H available" in " ".join(pick["key_factors"]) for pick in hit_props)
-    assert any(pick.get("prop_role") == "batter_strikeouts" for pick in picks)
-    assert any("cutters" in " ".join(pick["key_factors"]).lower() for pick in picks)
-    assert any("pitch-type" in " ".join(pick["key_factors"]).lower() for pick in picks)
+    assert "hits_runs_rbis" in {pick["stat_key"] for pick in picks}
+    assert all(pick["odds"] != -110 and pick["decision"] in {"BET", "LEAN", "PASS"} for pick in picks)
+    assert all(pick["market_source"] == "DraftKings via ESPN" for pick in picks)
+    assert all(pick["market_implied_probability"] is not None for pick in picks)
+    assert all(pick["player_name"] != "Away Pitcher" for pick in picks)
+    assert all(not (pick["stat_key"] == "hits" and pick["line"] == 0.5) for pick in picks)
+    assert any(pick.get("prop_role") == "batter_hrr" and pick["line"] == 1.5 for pick in picks)
     assert all("Venue Test Park" in " ".join(pick["key_factors"]) for pick in picks)
     assert all("Wind 12 mph, Out To CF" in " ".join(pick["key_factors"]) for pick in picks)
 
@@ -273,7 +340,11 @@ def test_mlb_props_are_gradeable_and_represent_h2h_environment():
 def test_units_follow_quarter_kelly_and_passes_are_zero():
     bet = decision_and_stake(0.64)
     passed = decision_and_stake(0.53)
+    overpriced = decision_and_stake(0.64, -250)
+    missing = decision_and_stake(0.75, None)
     assert bet[0] == "BET"
     assert bet[4] == min(2.0, round(bet[3] * 100.0, 2))
     assert passed[0] == "PASS"
     assert passed[4] == 0.0
+    assert overpriced[0] == "PASS"
+    assert missing == ("PASS", None, 0.0, 0.0, 0.0)

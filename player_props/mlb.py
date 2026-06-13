@@ -1,11 +1,19 @@
-"""MLB StatsAPI-backed hits and strikeouts player props."""
+"""Market-priced MLB hits, H+R+RBI, and pitcher strikeout props."""
 
 from __future__ import annotations
 
 import math
+from collections import defaultdict
 from typing import Any
 
-from .schema import build_pick, nearest_half, normal_probability, safe_float, safe_int
+from .schema import (
+    american_implied_probability,
+    build_pick,
+    normal_probability,
+    normalize_name,
+    safe_float,
+    safe_int,
+)
 
 
 PARK_FACTORS = {
@@ -60,6 +68,13 @@ OUT_EVENTS = {
 LEAGUE_WHIFF_PER_SWING = 0.245
 LEAGUE_K_PA_RATE = 0.225
 LEAGUE_HIT_PA_RATE = 0.235
+MAX_PITCHER_STRIKEOUT_LINE = 12.5
+
+ESPN_MARKET_TYPES = {
+    "Total Hits": ("hits", "Hits"),
+    "Total Hits + Runs + RBIs": ("hits_runs_rbis", "Hits + Runs + RBIs"),
+    "Total Strikeouts": ("strikeouts", "Strikeouts"),
+}
 
 MLB_TEAM_ABBREVIATIONS = {
     "Arizona Diamondbacks": "AZ",
@@ -334,6 +349,147 @@ def _binomial_over_probability(per_trial: float, trials: float, line: float) -> 
     return _clamp(probability, 0.01, 0.99)
 
 
+def _american_odds(value: Any) -> int | None:
+    text = str(value or "").strip().replace("+", "")
+    if not text:
+        return None
+    try:
+        odds = int(float(text))
+    except (TypeError, ValueError):
+        return None
+    return odds if odds else None
+
+
+def _espn_event_market(
+    scoreboard: dict[str, Any],
+    game: dict[str, Any],
+) -> tuple[str, str, str] | None:
+    away_target = normalize_name(game["away_team"])
+    home_target = normalize_name(game["home_team"])
+    for event in scoreboard.get("events") or []:
+        competition = (event.get("competitions") or [{}])[0]
+        competitors = competition.get("competitors") or []
+        away = next((row for row in competitors if row.get("homeAway") == "away"), {})
+        home = next((row for row in competitors if row.get("homeAway") == "home"), {})
+        if normalize_name((away.get("team") or {}).get("displayName")) != away_target:
+            continue
+        if normalize_name((home.get("team") or {}).get("displayName")) != home_target:
+            continue
+        odds_rows = competition.get("odds") or []
+        odds = odds_rows[0] if odds_rows else {}
+        provider = odds.get("provider") or {}
+        provider_id = str(provider.get("id") or "100")
+        provider_name = str(provider.get("name") or "DraftKings").strip()
+        return str(event.get("id") or ""), provider_id, f"{provider_name} via ESPN"
+    return None
+
+
+def _summary_athlete_names(summary: dict[str, Any]) -> dict[str, str]:
+    names: dict[str, str] = {}
+    for team in summary.get("rosters") or []:
+        for row in team.get("roster") or []:
+            athlete = row.get("athlete") or {}
+            athlete_id = str(athlete.get("id") or "")
+            name = str(athlete.get("displayName") or athlete.get("fullName") or "")
+            if athlete_id and name:
+                names[athlete_id] = name
+    return names
+
+
+def _athlete_ref_id(row: dict[str, Any]) -> str:
+    ref = str((row.get("athlete") or {}).get("$ref") or "").split("?", 1)[0].rstrip("/")
+    return ref.rsplit("/", 1)[-1] if "/athletes/" in ref else ""
+
+
+def _market_line(row: dict[str, Any]) -> float:
+    current = row.get("current") or {}
+    target = current.get("target") or {}
+    odds = row.get("odds") or {}
+    total = odds.get("total") or {}
+    return safe_float(target.get("value") if target.get("value") is not None else total.get("value"))
+
+
+def _market_index(
+    items: list[dict[str, Any]],
+    athlete_names: dict[str, str],
+    source: str,
+) -> dict[str, list[dict[str, Any]]]:
+    grouped: dict[tuple[str, str, float], list[dict[str, Any]]] = defaultdict(list)
+    for row in items:
+        type_name = str((row.get("type") or {}).get("name") or "")
+        athlete_id = _athlete_ref_id(row)
+        line = _market_line(row)
+        if type_name not in ESPN_MARKET_TYPES or not athlete_id or line <= 0:
+            continue
+        grouped[(athlete_id, type_name, line)].append(row)
+
+    markets: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for (athlete_id, type_name, line), sides in grouped.items():
+        if len(sides) < 2:
+            continue
+        name = athlete_names.get(athlete_id)
+        # ESPN's two-sided total collections consistently return over, then under.
+        over_odds = _american_odds((((sides[0].get("odds") or {}).get("american") or {}).get("value")))
+        under_odds = _american_odds((((sides[1].get("odds") or {}).get("american") or {}).get("value")))
+        if not name or over_odds is None or under_odds is None:
+            continue
+        stat_key, stat_label = ESPN_MARKET_TYPES[type_name]
+        markets[normalize_name(name)].append(
+            {
+                "stat_key": stat_key,
+                "stat_label": stat_label,
+                "line": line,
+                "over_odds": over_odds,
+                "under_odds": under_odds,
+                "market_type": type_name,
+                "market_source": source,
+                "market_updated_at": str(sides[0].get("lastUpdated") or ""),
+            }
+        )
+    return dict(markets)
+
+
+def _game_market_index(
+    client: Any,
+    scoreboard: dict[str, Any],
+    game: dict[str, Any],
+) -> dict[str, list[dict[str, Any]]]:
+    event_market = _espn_event_market(scoreboard, game)
+    if not event_market:
+        return {}
+    event_id, provider_id, source = event_market
+    try:
+        summary = client.mlb_espn_summary(event_id)
+        payload = client.mlb_espn_prop_bets(event_id, provider_id)
+    except Exception:
+        return {}
+    return _market_index(payload.get("items") or [], _summary_athlete_names(summary), source)
+
+
+def _best_market_side(
+    market: dict[str, Any],
+    over_probability: float,
+) -> tuple[str, float, int]:
+    choices = [
+        ("Over", over_probability, int(market["over_odds"])),
+        ("Under", 1.0 - over_probability, int(market["under_odds"])),
+    ]
+    return max(
+        choices,
+        key=lambda row: row[1] - safe_float(american_implied_probability(row[2])),
+    )
+
+
+def _candidate_sort_key(prop: dict[str, Any]) -> tuple[int, float, float, str]:
+    decision_rank = {"BET": 0, "LEAN": 1, "PASS": 2}
+    return (
+        decision_rank.get(str(prop.get("decision") or ""), 3),
+        -safe_float(prop.get("edge"), -100.0),
+        -safe_float(prop.get("probability")),
+        str(prop.get("id") or ""),
+    )
+
+
 def _first_stat(payload: dict[str, Any]) -> dict[str, Any]:
     for group in payload.get("stats") or []:
         splits = group.get("splits") or []
@@ -446,6 +602,7 @@ def _pitcher_prop(
     opponent_hitters: list[dict[str, Any]],
     pitcher_profile: dict[str, Any],
     opponent_pitch_profile: dict[str, Any],
+    market: dict[str, Any] | None,
     park_factor: float,
     weather_factor: float,
     environment_factors: list[str],
@@ -453,11 +610,27 @@ def _pitcher_prop(
     pitcher_id = safe_int(pitcher.get("id"))
     name = str(pitcher.get("fullName") or "")
     starts = safe_int(pitcher_stats.get("gamesStarted"))
+    appearances = safe_int(pitcher_stats.get("gamesPitched") or pitcher_stats.get("gamesPlayed"))
     innings = safe_float(pitcher_stats.get("inningsPitched"))
     strikeouts = safe_float(pitcher_stats.get("strikeOuts"))
-    if not pitcher_id or not name or starts < 2 or innings <= 0:
+    if (
+        not pitcher_id
+        or not name
+        or not market
+        or market.get("stat_key") != "strikeouts"
+        or starts < 2
+        or appearances <= 0
+        or starts / appearances < 0.25
+        or innings <= 0
+    ):
         return None
-    k_per_start = strikeouts / starts
+    line = safe_float(market.get("line"))
+    if line <= 0 or line > MAX_PITCHER_STRIKEOUT_LINE:
+        return None
+    innings_per_appearance = innings / appearances
+    expected_innings = _clamp(innings_per_appearance, 3.0, 7.5)
+    k_per_9 = strikeouts * 9.0 / innings
+    workload_projection = k_per_9 * expected_innings / 9.0
     opponent_k_rate = _team_strikeout_rate(opponent_hitters)
     opponent_adjustment = max(0.82, min(1.18, opponent_k_rate / 0.225))
     environment_adjustment = max(0.94, min(1.06, 2.0 - (park_factor * weather_factor)))
@@ -467,12 +640,12 @@ def _pitcher_prop(
         f"{opponent} lineup",
     )
     arsenal_factor, arsenal_reason = _pitcher_arsenal_signal(pitcher_profile)
-    projection = k_per_start * opponent_adjustment * environment_adjustment * pitch_type_factor * arsenal_factor
-    line = nearest_half(k_per_start)
-    selection = "Over" if projection >= line else "Under"
-    probability = normal_probability(projection, line, max(1.35, math.sqrt(projection) * 0.9), selection)
+    projection = workload_projection * opponent_adjustment * environment_adjustment * pitch_type_factor * arsenal_factor
+    over_probability = normal_probability(projection, line, max(1.35, math.sqrt(projection) * 0.9), "Over")
+    selection, probability, odds = _best_market_side(market, over_probability)
     factors = [
-        f"Season strikeouts/start {k_per_start:.2f} across {starts} starts",
+        f"Season workload {k_per_9:.2f} K/9 over {appearances} appearances ({starts} starts)",
+        f"Posted {line:.1f} strikeout line at {odds:+d}",
         f"Opponent lineup strikeout rate {opponent_k_rate:.1%}",
         pitch_type_reason,
         arsenal_reason,
@@ -495,9 +668,10 @@ def _pitcher_prop(
         line=line,
         projection=projection,
         probability=probability,
+        odds=odds,
         reason=(
             f"{name} projects for {projection:.2f} strikeouts against an opponent lineup with "
-            f"a {opponent_k_rate:.1%} strikeout rate, adjusted for pitch-type matchup, venue, and weather."
+            f"a {opponent_k_rate:.1%} strikeout rate versus a posted {line:.1f} line."
         ),
         key_factors=factors,
         extra={
@@ -506,11 +680,14 @@ def _pitcher_prop(
             "prop_role": "pitcher",
             "pitch_type_factor": round(pitch_type_factor * arsenal_factor, 4),
             "pitch_mix": _top_pitch_mix(pitcher_profile),
+            "market_source": market.get("market_source"),
+            "market_type": market.get("market_type"),
+            "market_updated_at": market.get("market_updated_at"),
         },
     )
 
 
-def _hitter_prop(
+def _hitter_props(
     *,
     client: Any,
     sport: str,
@@ -521,18 +698,23 @@ def _hitter_prop(
     pitcher_stats: dict[str, Any],
     pitcher_profile: dict[str, Any],
     hitter_pitch_profile: dict[str, Any],
+    markets: list[dict[str, Any]],
     team: str,
     opponent: str,
     is_home: bool,
     park_factor: float,
     weather_factor: float,
     environment_factors: list[str],
-) -> dict[str, Any] | None:
+) -> list[dict[str, Any]]:
     stats = hitter["stats"]
     at_bats = safe_int(stats.get("atBats"))
     hits = safe_float(stats.get("hits"))
-    if at_bats < 20 or not hitter.get("id") or not hitter.get("name"):
-        return None
+    relevant_markets = [
+        market for market in markets
+        if market.get("stat_key") in {"hits", "hits_runs_rbis"}
+    ]
+    if at_bats < 20 or not hitter.get("id") or not hitter.get("name") or not relevant_markets:
+        return []
     batting_average = hits / at_bats if at_bats else safe_float(stats.get("avg"), 0.245)
     pitcher_hits_per_9 = safe_float(pitcher_stats.get("hitsPer9Inn"), 8.4)
     pitcher_adjustment = max(0.82, min(1.20, pitcher_hits_per_9 / 8.4))
@@ -561,10 +743,6 @@ def _hitter_prop(
             * pitch_type_factor,
         ),
     )
-    projection = per_at_bat * expected_at_bats
-    probability = 1.0 - ((1.0 - per_at_bat) ** expected_at_bats)
-    line = 0.5
-    selection = "Over"
     h2h_factor = (
         f"H2H available: {h2h['hits']}-for-{h2h['at_bats']} ({safe_float(h2h['average']):.3f})"
         if h2h["available"]
@@ -577,142 +755,102 @@ def _hitter_prop(
         h2h_factor,
         *environment_factors,
     ]
-    return build_pick(
-        sport=sport,
-        date_iso=date_iso,
-        game_id=str(game["game_pk"]),
-        away_team=game["away_team"],
-        home_team=game["home_team"],
-        start_time=game["start_time"],
-        player_id=str(hitter["id"]),
-        player_name=hitter["name"],
-        team=team,
-        opponent=opponent,
-        stat_key="hits",
-        stat_label="Hits",
-        selection=selection,
-        line=line,
-        projection=projection,
-        probability=probability,
-        reason=(
-            f"{hitter['name']} has a modeled {probability:.1%} chance to record at least one hit "
-            f"after pitcher, pitch-type, park, weather, wind, and H2H-availability adjustments."
-        ),
-        key_factors=factors,
-        extra={
-            "game_id": str(game["game_pk"]),
-            "player_id": str(hitter["id"]),
-            "prop_role": "batter",
-            "h2h": h2h,
-            "pitch_type_factor": round(pitch_type_factor, 4),
-            "pitch_mix": _top_pitch_mix(pitcher_profile),
-        },
-    )
+    props: list[dict[str, Any]] = []
+    games_played = safe_float(stats.get("gamesPlayed")) or max(1.0, safe_float(stats.get("plateAppearances")) / 4.1)
+    hrr_per_game = (
+        hits + safe_float(stats.get("runs")) + safe_float(stats.get("rbi") or stats.get("rbis"))
+    ) / games_played
+    for market in relevant_markets:
+        stat_key = str(market.get("stat_key") or "")
+        line = safe_float(market.get("line"))
+        if line <= 0:
+            continue
+        if stat_key == "hits":
+            projection = per_at_bat * expected_at_bats
+            over_probability = _binomial_over_probability(per_at_bat, expected_at_bats, line)
+            market_factors = [
+                f"Posted {line:.1f} hits line at {int(market['over_odds']):+d} over / {int(market['under_odds']):+d} under",
+                *factors,
+            ]
+            reason = (
+                f"{hitter['name']} projects for {projection:.2f} hits versus the posted {line:.1f} line "
+                "after pitcher, pitch-type, park, weather, wind, and H2H adjustments."
+            )
+            prop_role = "batter"
+        else:
+            if games_played < 15 or hrr_per_game <= 0:
+                continue
+            run_creation_adjustment = _clamp(
+                pitcher_adjustment * park_factor * weather_factor,
+                0.82,
+                1.20,
+            )
+            projection = hrr_per_game * run_creation_adjustment
+            over_probability = normal_probability(
+                projection,
+                line,
+                max(1.20, math.sqrt(max(0.5, projection)) * 0.95),
+                "Over",
+            )
+            market_factors = [
+                f"Season hits + runs + RBIs per game {hrr_per_game:.2f} over {int(games_played)} games",
+                f"Posted {line:.1f} H+R+RBI line at {int(market['over_odds']):+d} over / {int(market['under_odds']):+d} under",
+                f"Opposing pitcher allows {pitcher_hits_per_9:.2f} hits/9",
+                *environment_factors,
+            ]
+            reason = (
+                f"{hitter['name']} projects for {projection:.2f} hits + runs + RBIs versus the posted "
+                f"{line:.1f} line after pitcher and run-environment adjustments."
+            )
+            prop_role = "batter_hrr"
+
+        selection, probability, odds = _best_market_side(market, over_probability)
+        props.append(
+            build_pick(
+                sport=sport,
+                date_iso=date_iso,
+                game_id=str(game["game_pk"]),
+                away_team=game["away_team"],
+                home_team=game["home_team"],
+                start_time=game["start_time"],
+                player_id=str(hitter["id"]),
+                player_name=hitter["name"],
+                team=team,
+                opponent=opponent,
+                stat_key=stat_key,
+                stat_label=str(market.get("stat_label") or stat_key),
+                selection=selection,
+                line=line,
+                projection=projection,
+                probability=probability,
+                odds=odds,
+                reason=reason,
+                key_factors=market_factors,
+                extra={
+                    "game_id": str(game["game_pk"]),
+                    "player_id": str(hitter["id"]),
+                    "prop_role": prop_role,
+                    "h2h": h2h,
+                    "pitch_type_factor": round(pitch_type_factor, 4),
+                    "pitch_mix": _top_pitch_mix(pitcher_profile),
+                    "market_source": market.get("market_source"),
+                    "market_type": market.get("market_type"),
+                    "market_updated_at": market.get("market_updated_at"),
+                },
+            )
+        )
+    return props
 
 
-def _batter_strikeout_prop(
-    *,
-    sport: str,
+def _game_props(
+    client: Any,
     date_iso: str,
-    game: dict[str, Any],
-    hitter: dict[str, Any],
-    pitcher: dict[str, Any],
-    pitcher_stats: dict[str, Any],
-    pitcher_profile: dict[str, Any],
-    hitter_pitch_profile: dict[str, Any],
-    team: str,
-    opponent: str,
-    is_home: bool,
-    environment_factors: list[str],
-) -> dict[str, Any] | None:
-    stats = hitter["stats"]
-    batter_id = safe_int(hitter.get("id"))
-    pitcher_id = safe_int(pitcher.get("id"))
-    name = str(hitter.get("name") or "")
-    plate_appearances = safe_float(stats.get("plateAppearances"))
-    strikeouts = safe_float(stats.get("strikeOuts"))
-    if not batter_id or not pitcher_id or not name or plate_appearances < 45 or strikeouts <= 0:
-        return None
-
-    season_k_rate = _clamp(strikeouts / plate_appearances, 0.06, 0.45)
-    estimated_games = safe_float(stats.get("gamesPlayed")) or max(1.0, plate_appearances / 4.1)
-    season_k_per_game = strikeouts / estimated_games
-    line = max(0.5, nearest_half(season_k_per_game))
-    expected_pa = 4.0 if is_home else 4.2
-
-    pitcher_innings = safe_float(pitcher_stats.get("inningsPitched"))
-    pitcher_strikeouts = safe_float(pitcher_stats.get("strikeOuts"))
-    pitcher_k_per_9 = (pitcher_strikeouts * 9.0 / pitcher_innings) if pitcher_innings else 8.5
-    pitcher_k_factor = _clamp(pitcher_k_per_9 / 8.5, 0.84, 1.18)
-
-    pitch_type_factor, pitch_type_reason = _pitch_type_k_signal(
-        pitcher_profile,
-        hitter_pitch_profile,
-        name,
-        min_pitch_sample=8,
-    )
-    arsenal_factor, arsenal_reason = _pitcher_arsenal_signal(pitcher_profile)
-
-    recent_k_rate = hitter_pitch_profile.get("overall_k_rate") if isinstance(hitter_pitch_profile, dict) else None
-    slump_factor = 1.0
-    slump_reason = "Recent batter strikeout trend unavailable"
-    if recent_k_rate is not None and safe_int(hitter_pitch_profile.get("sample_pa")) >= 8:
-        recent_k = safe_float(recent_k_rate)
-        slump_factor = 1.0 + _clamp(((recent_k - season_k_rate) / 0.18) * 0.10, -0.09, 0.11)
-        trend = "up" if slump_factor > 1.025 else "down" if slump_factor < 0.975 else "steady"
-        slump_reason = f"Recent strikeout trend {trend}: {recent_k:.1%} K rate vs {season_k_rate:.1%} season"
-
-    per_pa_k = _clamp(
-        season_k_rate * pitcher_k_factor * pitch_type_factor * arsenal_factor * slump_factor,
-        0.04,
-        0.55,
-    )
-    projection = per_pa_k * expected_pa
-    over_probability = _binomial_over_probability(per_pa_k, expected_pa, line)
-    selection = "Over" if projection >= line else "Under"
-    probability = over_probability if selection == "Over" else 1.0 - over_probability
-    factors = [
-        f"Season strikeout rate {season_k_rate:.1%} over {int(plate_appearances)} plate appearances",
-        f"Opposing pitcher K/9 {pitcher_k_per_9:.2f}",
-        pitch_type_reason,
-        arsenal_reason,
-        slump_reason,
-        *environment_factors,
-    ]
-    return build_pick(
-        sport=sport,
-        date_iso=date_iso,
-        game_id=str(game["game_pk"]),
-        away_team=game["away_team"],
-        home_team=game["home_team"],
-        start_time=game["start_time"],
-        player_id=str(batter_id),
-        player_name=name,
-        team=team,
-        opponent=opponent,
-        stat_key="strikeouts",
-        stat_label="Strikeouts",
-        selection=selection,
-        line=line,
-        projection=projection,
-        probability=probability,
-        reason=(
-            f"{name} projects for {projection:.2f} strikeouts against {opponent} after season K rate, "
-            "opposing pitcher K skill, pitch-type vulnerability, and recent strikeout trend."
-        ),
-        key_factors=factors,
-        extra={
-            "game_id": str(game["game_pk"]),
-            "player_id": str(batter_id),
-            "prop_role": "batter_strikeouts",
-            "pitch_type_factor": round(pitch_type_factor * arsenal_factor * slump_factor, 4),
-            "pitch_mix": _top_pitch_mix(pitcher_profile),
-        },
-    )
-
-
-def _game_props(client: Any, date_iso: str, raw_game: dict[str, Any], season: int) -> list[dict[str, Any]]:
+    raw_game: dict[str, Any],
+    season: int,
+    market_scoreboard: dict[str, Any],
+) -> list[dict[str, Any]]:
     game = _game_parts(raw_game)
+    market_index = _game_market_index(client, market_scoreboard, game)
     feed = client.mlb_live_feed(game["game_pk"])
     game_data = feed.get("gameData") or {}
     venue = game_data.get("venue") or game["venue"]
@@ -755,7 +893,15 @@ def _game_props(client: Any, date_iso: str, raw_game: dict[str, Any], season: in
         for side, rows in team_pitch_rows.items()
     }
 
-    picks: list[dict[str, Any]] = []
+    candidates: list[dict[str, Any]] = []
+    away_pitcher_markets = [
+        market for market in market_index.get(normalize_name(str(game["away_pitcher"].get("fullName") or "")), [])
+        if market.get("stat_key") == "strikeouts"
+    ]
+    home_pitcher_markets = [
+        market for market in market_index.get(normalize_name(str(game["home_pitcher"].get("fullName") or "")), [])
+        if market.get("stat_key") == "strikeouts"
+    ]
     away_pitcher_prop = _pitcher_prop(
         sport="MLB",
         date_iso=date_iso,
@@ -767,6 +913,7 @@ def _game_props(client: Any, date_iso: str, raw_game: dict[str, Any], season: in
         opponent_hitters=hitters["home"],
         pitcher_profile=pitcher_profiles["away"],
         opponent_pitch_profile=team_pitch_profiles["home"],
+        market=away_pitcher_markets[0] if away_pitcher_markets else None,
         park_factor=park_factor,
         weather_factor=weather_factor,
         environment_factors=environment_factors,
@@ -782,14 +929,13 @@ def _game_props(client: Any, date_iso: str, raw_game: dict[str, Any], season: in
         opponent_hitters=hitters["away"],
         pitcher_profile=pitcher_profiles["home"],
         opponent_pitch_profile=team_pitch_profiles["away"],
+        market=home_pitcher_markets[0] if home_pitcher_markets else None,
         park_factor=park_factor,
         weather_factor=weather_factor,
         environment_factors=environment_factors,
     )
-    picks.extend(prop for prop in (away_pitcher_prop, home_pitcher_prop) if prop)
+    candidates.extend(prop for prop in (away_pitcher_prop, home_pitcher_prop) if prop)
 
-    hit_candidates: list[dict[str, Any]] = []
-    strikeout_candidates: list[dict[str, Any]] = []
     hitter_profile_cache: dict[int, dict[str, Any]] = {}
     for side, opposing_side in (("away", "home"), ("home", "away")):
         ordered = sorted(
@@ -809,7 +955,7 @@ def _game_props(client: Any, date_iso: str, raw_game: dict[str, Any], season: in
                     hitter_profile = _profile_from_player_statcast(client, hitter_id, "batter", date_iso, days=45)
                 hitter_profile_cache[hitter_id] = hitter_profile
             hitter_profile = hitter_profile_cache[hitter_id]
-            hit_prop = _hitter_prop(
+            hitter_props = _hitter_props(
                 client=client,
                 sport="MLB",
                 date_iso=date_iso,
@@ -819,6 +965,7 @@ def _game_props(client: Any, date_iso: str, raw_game: dict[str, Any], season: in
                 pitcher_stats=pitcher_stats[opposing_side],
                 pitcher_profile=pitcher_profiles[opposing_side],
                 hitter_pitch_profile=hitter_profile,
+                markets=market_index.get(normalize_name(str(hitter.get("name") or "")), []),
                 team=game[f"{side}_team"],
                 opponent=game[f"{opposing_side}_team"],
                 is_home=side == "home",
@@ -826,41 +973,23 @@ def _game_props(client: Any, date_iso: str, raw_game: dict[str, Any], season: in
                 weather_factor=weather_factor,
                 environment_factors=environment_factors,
             )
-            if hit_prop:
-                hit_candidates.append(hit_prop)
-            strikeout_prop = _batter_strikeout_prop(
-                sport="MLB",
-                date_iso=date_iso,
-                game=game,
-                hitter=hitter,
-                pitcher=game[f"{opposing_side}_pitcher"],
-                pitcher_stats=pitcher_stats[opposing_side],
-                pitcher_profile=pitcher_profiles[opposing_side],
-                hitter_pitch_profile=hitter_profile,
-                team=game[f"{side}_team"],
-                opponent=game[f"{opposing_side}_team"],
-                is_home=side == "home",
-                environment_factors=environment_factors,
-            )
-            if strikeout_prop:
-                strikeout_candidates.append(strikeout_prop)
+            candidates.extend(hitter_props)
 
-    hit_candidates.sort(key=lambda prop: (-safe_float(prop.get("probability")), prop["id"]))
-    strikeout_candidates.sort(key=lambda prop: (-safe_float(prop.get("probability")), prop["id"]))
-    if hit_candidates and len(picks) < 5:
-        picks.append(hit_candidates.pop(0))
-    if strikeout_candidates and len(picks) < 5:
-        picks.append(strikeout_candidates.pop(0))
-    hitter_candidates = sorted(
-        [*hit_candidates, *strikeout_candidates],
-        key=lambda prop: (-safe_float(prop.get("probability")), prop["id"]),
-    )
-    picks.extend(hitter_candidates[: max(0, 5 - len(picks))])
-    return picks[:5]
+    selected: list[dict[str, Any]] = []
+    per_player: dict[str, int] = {}
+    for prop in sorted(candidates, key=_candidate_sort_key):
+        player_id = str(prop.get("player_id") or "")
+        if per_player.get(player_id, 0) >= 2:
+            continue
+        selected.append(prop)
+        per_player[player_id] = per_player.get(player_id, 0) + 1
+        if len(selected) >= 5:
+            break
+    return selected
 
 
 def generate_mlb_model(client: Any, date_iso: str) -> dict[str, Any]:
-    """Generate 3-5 gradeable hits/strikeouts props per MLB game."""
+    """Generate up to five gradeable, market-priced MLB props per game."""
     try:
         schedule = client.mlb_schedule(date_iso)
     except Exception as exc:
@@ -884,9 +1013,13 @@ def generate_mlb_model(client: Any, date_iso: str) -> dict[str, Any]:
     picks: list[dict[str, Any]] = []
     errors: list[str] = []
     season = int(date_iso[:4])
+    try:
+        market_scoreboard = client.mlb_espn_scoreboard(date_iso)
+    except Exception:
+        market_scoreboard = {}
     for game in games:
         try:
-            picks.extend(_game_props(client, date_iso, game, season))
+            picks.extend(_game_props(client, date_iso, game, season, market_scoreboard))
         except Exception as exc:
             errors.append(f"{game.get('gamePk')}: {exc}")
     return {
@@ -896,5 +1029,5 @@ def generate_mlb_model(client: Any, date_iso: str) -> dict[str, Any]:
         "games": len(games),
         "picks": picks,
         "errors": errors,
-        "method": "MLB StatsAPI probable pitchers, lineups/rosters, season stats, H2H, venue/weather, and Baseball Savant Statcast pitch-type matchup profiles",
+        "method": "MLB StatsAPI and Statcast projections compared with posted DraftKings player-prop lines and prices via ESPN",
     }
