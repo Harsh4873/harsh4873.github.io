@@ -155,3 +155,73 @@ def test_nba_schedule_falls_back_to_espn_scoreboard(monkeypatch):
             "schedule_source": "ESPN scoreboard fallback",
         }
     ]
+
+
+def test_nba_schedule_falls_back_when_scoreboard_row_is_incomplete(monkeypatch):
+    import importlib
+    import sys
+    import types
+
+    import pandas as pd
+
+    static = types.ModuleType("nba_api.stats.static")
+    static.teams = types.SimpleNamespace(get_teams=lambda: [])
+    endpoints = types.ModuleType("nba_api.stats.endpoints")
+    endpoints.commonteamroster = types.SimpleNamespace()
+    endpoints.leaguegamefinder = types.SimpleNamespace()
+    endpoints.leaguedashteamstats = types.SimpleNamespace()
+    endpoints.scoreboardv2 = types.SimpleNamespace(ScoreboardV2=object)
+
+    monkeypatch.setitem(sys.modules, "nba_api", types.ModuleType("nba_api"))
+    monkeypatch.setitem(sys.modules, "nba_api.stats", types.ModuleType("nba_api.stats"))
+    monkeypatch.setitem(sys.modules, "nba_api.stats.static", static)
+    monkeypatch.setitem(sys.modules, "nba_api.stats.endpoints", endpoints)
+    monkeypatch.delitem(sys.modules, "NBAPredictionModel.live_data", raising=False)
+
+    live_data = importlib.import_module("NBAPredictionModel.live_data")
+
+    class IncompleteScoreboard:
+        def __init__(self, **_kwargs):
+            pass
+
+        def get_data_frames(self):
+            return [
+                pd.DataFrame(
+                    [
+                        {
+                            "GAME_ID": "bad-row",
+                            "HOME_TEAM_ID": None,
+                            "VISITOR_TEAM_ID": 1610612752,
+                            "GAME_STATUS_TEXT": "8:30 pm ET",
+                            "ARENA_NAME": "",
+                        }
+                    ]
+                )
+            ]
+
+    payload = {
+        "events": [
+            {
+                "id": "401999002",
+                "competitions": [
+                    {
+                        "venue": {"fullName": "Frost Bank Center"},
+                        "status": {"type": {"shortDetail": "8:30 PM"}},
+                        "competitors": [
+                            {"homeAway": "away", "team": {"id": "18", "name": "Knicks"}},
+                            {"homeAway": "home", "team": {"id": "24", "name": "Spurs"}},
+                        ],
+                    }
+                ],
+            }
+        ]
+    }
+
+    monkeypatch.setattr(live_data.scoreboardv2, "ScoreboardV2", IncompleteScoreboard)
+    monkeypatch.setattr(live_data, "_fetch_espn_json", lambda _url: payload)
+
+    games = live_data.fetch_todays_games("2026-06-13")
+
+    assert games[0]["away_team"] == "Knicks"
+    assert games[0]["home_team"] == "Spurs"
+    assert games[0]["schedule_source"] == "ESPN scoreboard fallback"

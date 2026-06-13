@@ -481,6 +481,13 @@ def get_team_name(team_id: int) -> str:
             return t['nickname']
     return str(team_id)
 
+
+def _is_valid_scoreboard_team_name(value: object) -> bool:
+    text = str(value or "").strip()
+    if not text or text.lower() in {"none", "nan", "null"}:
+        return False
+    return not text.isdigit()
+
 def fetch_roster(team_name: str, season: str = '2025-26') -> list:
     """
     Fetch the current roster for a team.
@@ -672,21 +679,33 @@ def fetch_todays_games(date_str: str = None) -> list:
     
     games = []
     seen_game_ids = set()
+    invalid_rows_seen = False
     for _, row in header.iterrows():
         game_id = str(row['GAME_ID'])
         if game_id in seen_game_ids:
             continue
         seen_game_ids.add(game_id)
+        home_team = get_team_name(row['HOME_TEAM_ID'])
+        away_team = get_team_name(row['VISITOR_TEAM_ID'])
+        if not (_is_valid_scoreboard_team_name(home_team) and _is_valid_scoreboard_team_name(away_team)):
+            invalid_rows_seen = True
+            continue
 
         games.append({
             'game_id': game_id,
             'home_team_id': row['HOME_TEAM_ID'],
             'away_team_id': row['VISITOR_TEAM_ID'],
-            'home_team': get_team_name(row['HOME_TEAM_ID']),
-            'away_team': get_team_name(row['VISITOR_TEAM_ID']),
+            'home_team': home_team,
+            'away_team': away_team,
             'game_status': row.get('GAME_STATUS_TEXT', ''),
             'arena': row.get('ARENA_NAME', '')
         })
+
+    if invalid_rows_seen:
+        fallback_games = fetch_espn_scoreboard_games(date_str)
+        if fallback_games:
+            print("WARNING: NBA API scoreboard had incomplete team rows; using ESPN scoreboard fallback.")
+            return fallback_games
     
     return games
 
