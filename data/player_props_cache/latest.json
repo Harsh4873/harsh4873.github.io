@@ -1,6 +1,6 @@
 {
   "date": "2026-06-13",
-  "generatedAt": "2026-06-13T14:36:05.283255Z",
+  "generatedAt": "2026-06-13T15:18:29.404332Z",
   "models": {
     "mlb_player_props": {
       "date": "2026-06-13",
@@ -274,14 +274,14 @@
           "confidence": "Low",
           "date": "2026-06-13",
           "decision": "PASS",
-          "edge": -0.34,
+          "edge": -1.19,
           "full_kelly": 0.0,
           "game_id": "822802",
           "home_team": "Toronto Blue Jays",
-          "id": "pp_b29823d9c31ea72b32fc",
+          "id": "pp_c685703c6f934aa23fcb",
           "key_factors": [
             "Season strikeouts/start 5.64 across 14 starts",
-            "Opponent lineup strikeout rate 21.5%",
+            "Opponent lineup strikeout rate 22.2%",
             "Venue Rogers Centre, park factor 1.00",
             "Weather Unknown, 72F",
             "Wind Unknown"
@@ -290,17 +290,17 @@
           "matchup": "New York Yankees @ Toronto Blue Jays",
           "odds": -110,
           "opponent": "New York Yankees",
-          "pick": "Kevin Gausman Under 5.5 Strikeouts",
+          "pick": "Kevin Gausman Over 5.5 Strikeouts",
           "player_id": "592332",
           "player_name": "Kevin Gausman",
-          "probability": 0.5204,
-          "projection": 5.39,
+          "probability": 0.512,
+          "projection": 5.56,
           "prop_role": "pitcher",
           "quarter_kelly": 0.0,
-          "reason": "Kevin Gausman projects for 5.39 strikeouts against an opponent lineup with a 21.5% strikeout rate, adjusted for venue and weather.",
+          "reason": "Kevin Gausman projects for 5.56 strikeouts against an opponent lineup with a 22.2% strikeout rate, adjusted for venue and weather.",
           "result": "pending",
           "scope": "player",
-          "selection": "Under",
+          "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
           "start_time": "2026-06-13T19:07:00Z",
@@ -4999,5 +4999,5 @@
       "sport": "WNBA"
     }
   },
-  "updatedAt": "2026-06-13T14:36:05.283255Z"
+  "updatedAt": "2026-06-13T15:18:29.404332Z"
 }
