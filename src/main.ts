@@ -308,6 +308,64 @@ function statusClass(picks: Pick[]): string {
   return picks[0]?.result || 'live';
 }
 
+function pickStartTimestamp(pick: Pick): number | null {
+  const value = String(pick.start_time || pick.game_start_time || '').trim();
+  if (!value) return null;
+  const timestamp = new Date(value).getTime();
+  return Number.isFinite(timestamp) ? timestamp : null;
+}
+
+function gameStartTimestamp(picks: Pick[]): number | null {
+  const timestamps = picks.map(pickStartTimestamp).filter((value): value is number => value != null);
+  return timestamps.length ? Math.min(...timestamps) : null;
+}
+
+function compareStartAsc(left: number | null, right: number | null): number {
+  if (left == null && right == null) return 0;
+  if (left == null) return 1;
+  if (right == null) return -1;
+  return left - right;
+}
+
+function compareStartDesc(left: number | null, right: number | null): number {
+  if (left == null && right == null) return 0;
+  if (left == null) return 1;
+  if (right == null) return -1;
+  return right - left;
+}
+
+function compareGameStartAsc(left: Pick[], right: Pick[]): number {
+  return compareStartAsc(gameStartTimestamp(left), gameStartTimestamp(right))
+    || (left[0] ? gameName(left[0]) : '').localeCompare(right[0] ? gameName(right[0]) : '');
+}
+
+function compareGameStartDesc(left: Pick[], right: Pick[]): number {
+  return compareStartDesc(gameStartTimestamp(left), gameStartTimestamp(right))
+    || (left[0] ? gameName(left[0]) : '').localeCompare(right[0] ? gameName(right[0]) : '');
+}
+
+function comparePickStartDesc(left: Pick, right: Pick): number {
+  return compareStartDesc(pickStartTimestamp(left), pickStartTimestamp(right))
+    || gameName(left).localeCompare(gameName(right))
+    || left.pick.localeCompare(right.pick);
+}
+
+function homeDecisionRank(pick: Pick): number {
+  const decision = dailyDecision(pick);
+  if (decision === 'BET') return 0;
+  if (decision === 'LEAN') return 1;
+  if (decision === 'PASS') return 2;
+  return 3;
+}
+
+function compareHomePickRows(left: Pick, right: Pick): number {
+  return homeDecisionRank(left) - homeDecisionRank(right)
+    || (pickProbability(right) || 0) - (pickProbability(left) || 0)
+    || (pickEdgePercent(right) || 0) - (pickEdgePercent(left) || 0)
+    || sourceName(left).localeCompare(sourceName(right))
+    || left.pick.localeCompare(right.pick);
+}
+
 function ensureSelection(): void {
   const dates = [...new Set(getAllPicks().map(pickDateKey).filter(Boolean))].sort();
   const today = centralDateKey();
@@ -414,6 +472,7 @@ function renderHome(): void {
   const selectedAll = filteredPicks().filter(pick => pickDateKey(pick) === selectedDate);
   const groups = new Map<string, Pick[]>();
   picks.forEach(pick => groups.set(gameKey(pick), [...(groups.get(gameKey(pick)) || []), pick]));
+  const sortedGames = [...groups.entries()].sort((left, right) => compareGameStartAsc(left[1], right[1]));
 
   const title = document.getElementById('home-title');
   const eyebrow = document.getElementById('home-eyebrow');
@@ -462,11 +521,13 @@ function renderHome(): void {
     return;
   }
   const bySport = new Map<string, Array<[string, Pick[]]>>();
-  [...groups.entries()].forEach(entry => {
+  sortedGames.forEach(entry => {
     const sport = entry[1][0]?.sport || 'OTHER';
     bySport.set(sport, [...(bySport.get(sport) || []), entry]);
   });
-  feed.innerHTML = [...bySport.entries()].map(([sport, games]) => `
+  feed.innerHTML = [...bySport.entries()]
+    .sort((left, right) => compareGameStartAsc(left[1][0]?.[1] || [], right[1][0]?.[1] || []))
+    .map(([sport, games]) => `
     <section class="home-feed-section">
       <div class="home-feed-section-head"><div><div class="home-feed-section-title">${escapeHtml(sport)}</div><div class="home-feed-section-meta">${games.reduce((sum, game) => sum + game[1].length, 0)} ${itemLabel} | ${games.length} matchups</div></div></div>
       <div class="home-feed-grid">${games.map(([, gamePicks]) => renderGameCard(gamePicks)).join('')}</div>
@@ -476,6 +537,7 @@ function renderHome(): void {
 }
 
 function renderGameCard(picks: Pick[]): string {
+  const sortedPicks = [...picks].sort(compareHomePickRows);
   const stats = statsFor(picks);
   const pending = stats.pending > 0;
   const start = picks.map(pick => pick.start_time).filter(Boolean).sort()[0];
@@ -487,7 +549,7 @@ function renderGameCard(picks: Pick[]): string {
       <div class="home-game-right-stack">${scoreChip}<div class="home-game-pl ${stats.net > 0 ? 'positive' : stats.net < 0 ? 'negative' : 'neutral'}">${pending ? `${stats.pending} open` : signedUnits(stats.net)}</div><div class="home-game-caption">${formatStart(start)}</div></div>
     </div>
     <div><div class="home-game-title">${escapeHtml(gameName(picks[0]))}</div><div class="home-game-meta">${escapeHtml(dateLabel(pickDateKey(picks[0])))} | ${picks.length} ${itemLabel} | ${new Set(picks.map(sourceName)).size} sources</div></div>
-    <div class="home-game-picks">${picks.map(renderPickRow).join('')}</div>
+    <div class="home-game-picks">${sortedPicks.map(renderPickRow).join('')}</div>
   </article>`;
 }
 
@@ -673,7 +735,8 @@ function renderSearch(): void {
     pick.sport,
     pick.date,
     gameName(pick),
-  ].some(value => detailValues(value).some(detail => detail.toLowerCase().includes(query))));
+  ].some(value => detailValues(value).some(detail => detail.toLowerCase().includes(query))))
+    .sort(comparePickStartDesc);
   meta.textContent = `${picks.length} open ${picks.length === 1 ? itemLabel.slice(0, -1) : itemLabel} for "${input.value.trim()}" | ${scope}`;
   results.innerHTML = picks.length ? picks.map(pick => `
     <div class="search-card"><div class="search-card-top">${resultBadge(pick.result)}<span class="badge badge-source">${escapeHtml(sourceName(pick))}</span><div class="search-card-pick">${escapeHtml(pick.pick)}</div><div class="search-card-odds">${escapeHtml(formatOdds(pick))}</div></div>
@@ -764,7 +827,7 @@ function renderTrends(): void {
     const matching = signals.filter(signal => signal.matching).length;
     const actionable = signals.filter(signal => !signal.pass).length;
     return { picks, signals, matching, split: matching === 0 && actionable > 1 };
-  }).sort((a, b) => b.matching - a.matching || b.picks.length - a.picks.length);
+  }).sort((a, b) => compareGameStartDesc(a.picks, b.picks) || b.matching - a.matching || b.picks.length - a.picks.length);
   const matchingGroups = consensus.reduce((total, game) => total + game.matching, 0);
   const conflictGames = consensus.filter(game => game.split).length;
 
@@ -822,7 +885,9 @@ function dailySourceForms(date: string, todaysPicks: Pick[]): DailySourceForm[] 
     const last = recent.filter(pick => pickDateKey(pick) === lastDate);
     const recentStats = statsFor(recent);
     const lastStats = statsFor(last);
-    const todayBets = uniqueDailyPicks(todaysPicks.filter(pick => sourceName(pick) === source && pick.result === 'pending' && dailyDecision(pick) === 'BET'));
+    const todayBets = uniqueDailyPicks(todaysPicks
+      .filter(pick => sourceName(pick) === source && pick.result === 'pending' && dailyDecision(pick) === 'BET')
+      .sort(comparePickStartDesc));
     const score = (recentStats.winRate || 0) * 100 + Math.min(recentStats.wins + recentStats.losses, 20) * 0.35 + recentStats.net * 0.08;
     return { source, recentStats, lastStats, recentDates, todayBets, score };
   }).filter(form => form.recentStats.wins + form.recentStats.losses >= 3)
@@ -858,7 +923,7 @@ function dailyPickGroups(
     const ranked = [...bySource.values()].sort((a, b) => dailyPickScore(b, forms) - dailyPickScore(a, forms));
     const tags = [...new Set(groupedPicks.flatMap(pick => [...(tagById.get(pick.id) || [])]))];
     return { key, picks: ranked, primary: ranked[0], tags, score: dailyPickScore(ranked[0], forms) };
-  }).sort((a, b) => b.score - a.score || b.picks.length - a.picks.length);
+  }).sort((a, b) => comparePickStartDesc(a.primary, b.primary) || b.score - a.score || b.picks.length - a.picks.length);
 }
 
 function dailyPickGroupCard(group: DailyPickGroup): string {
@@ -923,7 +988,7 @@ function dailyConsensusCards(picks: Pick[]): string {
   const matching = [...games.values()].flatMap(gamePicks => trendSignalGroups(gamePicks)
     .filter(signal => signal.matching)
     .map(signal => ({ signal, game: gamePicks[0] })))
-    .sort((a, b) => b.signal.picks.length - a.signal.picks.length);
+    .sort((a, b) => comparePickStartDesc(a.game, b.game) || b.signal.picks.length - a.signal.picks.length);
   if (!matching.length) return '<div class="daily-empty"><div class="daily-empty-title">No true consensus yet</div><div class="daily-empty-sub">Two independent sources must make the same market selection.</div></div>';
   return `<div class="daily-consensus-grid">${matching.map(({ signal, game }) => `<article class="daily-consensus-card"><div class="daily-consensus-count">${new Set(signal.picks.map(sourceName)).size} SOURCES</div><div class="daily-consensus-pick">${escapeHtml(signal.label)}</div><div class="daily-consensus-game">${escapeHtml(gameName(game))}</div><div class="trend-source-row">${[...new Set(signal.picks.map(sourceName))].map(source => `<span class="trend-source-pill">${escapeHtml(source)}</span>`).join('')}</div></article>`).join('')}</div>`;
 }
@@ -990,7 +1055,9 @@ function renderDaily(): void {
       .map(pick => [pick.id, pick]),
   ).values()];
   const researchGroups = dailyPickGroups(researchCandidates, tagsById, formsBySource, pending);
-  const hotForms = forms.filter(form => form.todayBets.length).slice(0, 8);
+  const hotForms = forms.filter(form => form.todayBets.length)
+    .sort((a, b) => comparePickStartDesc(a.todayBets[0], b.todayBets[0]) || b.score - a.score)
+    .slice(0, 8);
   const games = new Map<string, Pick[]>();
   pending.forEach(pick => games.set(gameKey(pick), [...(games.get(gameKey(pick)) || []), pick]));
   const consensusCount = [...games.values()].reduce((total, gamePicks) => total + trendSignalGroups(gamePicks).filter(signal => signal.matching).length, 0);
