@@ -9439,7 +9439,7 @@
           "game": "Houston Astros @ Kansas City Royals",
           "game_id": "824100",
           "game_order": 0,
-          "game_start_time": "2026-06-13T23:10:00Z",
+          "game_start_time": "2026-06-13T23:10Z",
           "home_team": "Kansas City Royals",
           "league": "MLB",
           "line": 4.5,
@@ -9480,7 +9480,7 @@
           "raw_probability": 0.6251,
           "source": "MLB First Five",
           "sport": "MLB",
-          "start_time": "2026-06-13T23:10:00Z",
+          "start_time": "2026-06-13T23:10Z",
           "team": ""
         },
         {
@@ -11131,6 +11131,7 @@
           "decision": "BET",
           "direction": "Under",
           "edge": 3.94,
+          "game_start_time": "2026-06-13T20:05Z",
           "home_team": "Baltimore Orioles",
           "kelly": 4.76,
           "line": 9.5,
@@ -11171,6 +11172,7 @@
           "selection": "Under",
           "source": "MLB NEW",
           "sport": "MLB",
+          "start_time": "2026-06-13T20:05Z",
           "units": 0.03,
           "vegas": 9.5
         },
@@ -11331,6 +11333,7 @@
           "decision": "BET",
           "direction": "Over",
           "edge": 9.82,
+          "game_start_time": "2026-06-13T20:05Z",
           "home_team": "Pittsburgh Pirates",
           "kelly": 8.05,
           "line": 7.5,
@@ -11371,6 +11374,7 @@
           "selection": "Over",
           "source": "MLB NEW",
           "sport": "MLB",
+          "start_time": "2026-06-13T20:05Z",
           "units": 0.05,
           "vegas": 7.5
         },
@@ -12648,6 +12652,7 @@
           "odds": -143,
           "pick": "Switzerland -1.5 (Switzerland @ Qatar)",
           "probability": null,
+          "result": "loss",
           "source": "Scores24FIFAWorldCup",
           "source_url": "https://scores24.live/en/soccer/m-14-06-2026-qatar-switzerland-prediction",
           "sport": "FIFA WC",
@@ -12750,6 +12755,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-12-06-2026-minnesota-twins-st-louis-cardinals-prediction",
           "sport": "MLB",
@@ -12786,6 +12792,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-13-06-2026-toronto-blue-jays-new-york-yankees-prediction",
           "sport": "MLB",
@@ -14598,6 +14605,7 @@
           "decision": "BET",
           "edge": 18.0,
           "game": "Dallas Wings @ Portland Fire",
+          "game_start_time": "2026-06-14T00:30Z",
           "guardrail_reasons": [],
           "h2h_games": 0,
           "has_market_price": true,
@@ -14657,6 +14665,7 @@
           "selection": "Dallas Wings",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-14T00:30Z",
           "starters_out": [],
           "starters_questionable": [],
           "team": "Dallas Wings",
@@ -14915,6 +14924,7 @@
           "decision": "LEAN",
           "edge": 8.72,
           "game": "Los Angeles Sparks @ Phoenix Mercury",
+          "game_start_time": "2026-06-14T02:00Z",
           "guardrail_reasons": [],
           "h2h_games": 0,
           "has_market_price": true,
@@ -14970,6 +14980,7 @@
           "selection": "Under",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-14T02:00Z",
           "units": 0.01,
           "vegas": 173.5
         }
