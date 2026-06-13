@@ -14618,7 +14618,7 @@
           "game": "Cleveland Guardians vs Detroit Tigers",
           "game_id": "824426",
           "game_order": 6,
-          "game_start_time": "2026-06-13T20:10:00Z",
+          "game_start_time": "2026-06-13T20:10Z",
           "home_team": "Cleveland Guardians",
           "inning": 2,
           "league": "MLB",
@@ -14661,7 +14661,7 @@
           "raw_probability": 0.619,
           "source": "MLB Inning",
           "sport": "MLB",
-          "start_time": "2026-06-13T20:10:00Z",
+          "start_time": "2026-06-13T20:10Z",
           "team": ""
         },
         {
@@ -14684,7 +14684,7 @@
           "game": "Boston Red Sox vs Texas Rangers",
           "game_id": "824749",
           "game_order": 7,
-          "game_start_time": "2026-06-13T20:10:00Z",
+          "game_start_time": "2026-06-13T20:10Z",
           "home_team": "Boston Red Sox",
           "inning": 2,
           "league": "MLB",
@@ -14727,7 +14727,7 @@
           "raw_probability": 0.667,
           "source": "MLB Inning",
           "sport": "MLB",
-          "start_time": "2026-06-13T20:10:00Z",
+          "start_time": "2026-06-13T20:10Z",
           "team": ""
         },
         {
@@ -16521,6 +16521,7 @@
           },
           "decision": "LEAN",
           "edge": 2.83,
+          "game_start_time": "2026-06-13T20:10Z",
           "home_team": "Chicago White Sox",
           "market_pick_prob": null,
           "market_type": "h2h",
@@ -16549,6 +16550,7 @@
           "raw_units": 0.28,
           "source": "MLB NEW",
           "sport": "MLB",
+          "start_time": "2026-06-13T20:10Z",
           "team": "Dodgers",
           "units": 0.14
         },
@@ -17142,6 +17144,7 @@
           },
           "decision": "BET",
           "edge": null,
+          "game_start_time": "2026-06-14T00:30Z",
           "home_team": "Spurs",
           "odds": null,
           "pick": "Spurs -4.2 (Knicks @ Spurs)",
@@ -17167,6 +17170,7 @@
           "raw_units": 1.13,
           "source": "NBA New",
           "sport": "NBA",
+          "start_time": "2026-06-14T00:30Z",
           "team": "Spurs",
           "units": 1.13
         }
@@ -17826,6 +17830,7 @@
           "decision": "BET",
           "edge": 19.78,
           "game": "Indiana Fever @ Connecticut Sun",
+          "game_start_time": "2026-06-13T22:00Z",
           "guardrail_reasons": [],
           "h2h_games": 0,
           "has_market_price": true,
@@ -17887,6 +17892,7 @@
           "selection": "Indiana Fever",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-13T22:00Z",
           "starters_out": [],
           "starters_questionable": [
             "Caitlin Clark"
