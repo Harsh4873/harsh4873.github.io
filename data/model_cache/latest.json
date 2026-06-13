@@ -1,8 +1,6 @@
 {
   "date": "2026-06-13",
-  "errors": [
-    "nba: NBA New parser found no predictions ( | Fetching official NBA injury report... |     [injury_report] Using scraper-based injury report. |  |  | RUNNING PREDICTIONS FOR ALL GAMES |  |  | ================================================================================ | GAME: Knicks @ None (8:30 pm ET) | ================================================================================ | ERROR: Could not find team stats for Knicks or None)"
-  ],
+  "errors": [],
   "externalFeedsUpdatedAt": "2026-06-13T15:07:40.746096Z",
   "external_feeds": {
     "scores24_mlb": {
@@ -396,7 +394,7 @@
       "updatedAt": "2026-06-13T15:07:40.746096Z"
     }
   },
-  "generatedAt": "2026-06-13T15:49:29.340636Z",
+  "generatedAt": "2026-06-13T16:37:56.918309Z",
   "generatedBy": "github-actions:model-cache-refresh",
   "ipl": {},
   "mlb": {},
@@ -4779,7 +4777,7 @@
         "game": "Boston Red Sox vs Texas Rangers",
         "game_id": "824749",
         "game_order": 7,
-        "game_start_time": "2026-06-13T20:10:00Z",
+        "game_start_time": "2026-06-13T20:10Z",
         "home_team": "Boston Red Sox",
         "inning": 1,
         "league": "MLB",
@@ -4792,7 +4790,7 @@
         "probability": 0.521,
         "source": "MLB Inning",
         "sport": "MLB",
-        "start_time": "2026-06-13T20:10:00Z",
+        "start_time": "2026-06-13T20:10Z",
         "team": ""
       },
       {
@@ -5680,6 +5678,7 @@
         "decision": "BET",
         "direction": "Under",
         "edge": 29.3,
+        "game_start_time": "2026-06-14T02:05Z",
         "home_team": "Athletics",
         "kelly": 15.38,
         "line": 14.5,
@@ -5694,6 +5693,7 @@
         "selection": "Under",
         "source": "MLB NEW",
         "sport": "MLB",
+        "start_time": "2026-06-14T02:05Z",
         "units": 0.15,
         "vegas": 14.5
       },
@@ -11161,9 +11161,30 @@
       "raw_lines": 147
     },
     "nba": {
-      "error": "NBA New parser found no predictions ( | Fetching official NBA injury report... |     [injury_report] Using scraper-based injury report. |  |  | RUNNING PREDICTIONS FOR ALL GAMES |  |  | ================================================================================ | GAME: Knicks @ None (8:30 pm ET) | ================================================================================ | ERROR: Could not find team stats for Knicks or None)",
-      "ok": false,
-      "raw_lines": 30
+      "cache_date": "2026-06-13",
+      "cache_writes": {
+        "admin_picks/2026-06-13/nba": false,
+        "admin_picks/2026-06-13/nba_new": false
+      },
+      "ok": true,
+      "picks": [
+        {
+          "away_team": "Knicks",
+          "decision": "BET",
+          "edge": null,
+          "home_team": "Spurs",
+          "odds": null,
+          "pick": "Spurs -4.2 (Knicks @ Spurs)",
+          "predicted_spread": 4.21,
+          "prob": 0.691,
+          "probability": 0.691,
+          "source": "NBA New",
+          "sport": "NBA",
+          "team": "Spurs",
+          "units": 1.13
+        }
+      ],
+      "raw_lines": 77
     },
     "nba_playoffs": {
       "ok": true,
@@ -12067,9 +12088,30 @@
     }
   },
   "nba": {
-    "error": "NBA New parser found no predictions ( | Fetching official NBA injury report... |     [injury_report] Using scraper-based injury report. |  |  | RUNNING PREDICTIONS FOR ALL GAMES |  |  | ================================================================================ | GAME: Knicks @ None (8:30 pm ET) | ================================================================================ | ERROR: Could not find team stats for Knicks or None)",
-    "ok": false,
-    "raw_lines": 30
+    "cache_date": "2026-06-13",
+    "cache_writes": {
+      "admin_picks/2026-06-13/nba": false,
+      "admin_picks/2026-06-13/nba_new": false
+    },
+    "ok": true,
+    "picks": [
+      {
+        "away_team": "Knicks",
+        "decision": "BET",
+        "edge": null,
+        "home_team": "Spurs",
+        "odds": null,
+        "pick": "Spurs -4.2 (Knicks @ Spurs)",
+        "predicted_spread": 4.21,
+        "prob": 0.691,
+        "probability": 0.691,
+        "source": "NBA New",
+        "sport": "NBA",
+        "team": "Spurs",
+        "units": 1.13
+      }
+    ],
+    "raw_lines": 77
   },
   "nba_old": {},
   "nba_playoffs": {
@@ -12084,6 +12126,7 @@
         "edge": 8.86,
         "effective_margin_rmse": 11.5,
         "game_id": "401859967",
+        "game_start_time": "2026-06-14T00:30Z",
         "guardrail_adjustment_total_pp": 2.1,
         "guardrail_market_pick_spread": -5.5,
         "guardrail_reasons": [],
@@ -12130,6 +12173,7 @@
         "series_status": "NBA Finals - Game 5",
         "source": "NBA Playoffs",
         "sport": "NBA",
+        "start_time": "2026-06-14T00:30Z",
         "stats_source": "NBA API",
         "team": "Spurs",
         "total_components": {
@@ -12537,7 +12581,7 @@
     ],
     "updatedAt": "2026-06-13T15:07:40.746096Z"
   },
-  "updatedAt": "2026-06-13T15:49:29.340636Z",
+  "updatedAt": "2026-06-13T16:37:56.918309Z",
   "wnba": {
     "ok": true,
     "picks": [
@@ -12624,6 +12668,7 @@
         "decision": "LEAN",
         "edge": 17.04,
         "game": "Indiana Fever @ Connecticut Sun",
+        "game_start_time": "2026-06-13T22:00Z",
         "guardrail_reasons": [
           "questionable starter uncertainty"
         ],
@@ -12647,6 +12692,7 @@
         "selection": "Under",
         "source": "WNBA Model",
         "sport": "WNBA",
+        "start_time": "2026-06-13T22:00Z",
         "units": 0.03,
         "vegas": 170.5
       },
@@ -12802,6 +12848,7 @@
         "decision": "BET",
         "edge": 20.53,
         "game": "Dallas Wings @ Portland Fire",
+        "game_start_time": "2026-06-14T00:30Z",
         "guardrail_reasons": [],
         "h2h_games": 0,
         "has_market_price": true,
@@ -12823,6 +12870,7 @@
         "selection": "Dallas Wings",
         "source": "WNBA Model",
         "sport": "WNBA",
+        "start_time": "2026-06-14T00:30Z",
         "starters_out": [],
         "starters_questionable": [],
         "team": "Dallas Wings",
@@ -12939,6 +12987,7 @@
         "decision": "LEAN",
         "edge": 15.4,
         "game": "Los Angeles Sparks @ Phoenix Mercury",
+        "game_start_time": "2026-06-14T02:00Z",
         "guardrail_reasons": [],
         "h2h_games": 0,
         "has_market_price": true,
@@ -12960,6 +13009,7 @@
         "selection": "Under",
         "source": "WNBA Model",
         "sport": "WNBA",
+        "start_time": "2026-06-14T02:00Z",
         "units": 0.02,
         "vegas": 174.5
       }
