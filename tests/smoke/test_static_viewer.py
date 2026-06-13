@@ -77,6 +77,7 @@ def test_player_home_details_use_generator_schema_fields():
     assert "activePickMode !== 'player'" in main
     assert "expandedPlayerPickKeys" in main
     assert "data-player-pick-card" in main
+    assert "isPlayer ? '' : `<span class=\"home-feed-row-sport\"" in main
     assert "function bindPlayerHomeRows(" in main
     assert "Show research details" in main
     assert ".home-player-details" in css
@@ -87,6 +88,7 @@ def test_player_home_details_use_generator_schema_fields():
     player_pick_css = css[css.index('body[data-pick-mode="player"] .home-feed-row-pick'):]
     assert "white-space: normal" in player_pick_css[:350]
     assert "overflow: visible" in player_pick_css[:350]
+    assert 'body.mobile-app-mode[data-pick-mode="player"] .home-feed-row' in css
 
 
 def test_header_brand_and_freshness_copy_are_friendly_and_accurate():

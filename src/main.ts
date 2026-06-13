@@ -500,7 +500,7 @@ function renderPickRow(pick: Pick): string {
     ? ` data-player-pick-card="${escapeHtml(pick.id)}" role="button" tabindex="0" aria-expanded="${expanded}"`
     : '';
   return `<div class="home-feed-row result-${pick.result}${isPlayer ? ' player-row' : ''}${hasPlayerExtra ? ' is-expandable' : ''}${expanded ? ' expanded' : ''}"${playerAttrs}>
-    <span class="home-feed-row-sport">${escapeHtml(pick.sport)}</span>
+    ${isPlayer ? '' : `<span class="home-feed-row-sport">${escapeHtml(pick.sport)}</span>`}
     <div class="home-feed-row-body"><div class="home-feed-row-source">${escapeHtml(sourceName(pick))}</div><div class="home-feed-row-pick">${escapeHtml(pick.pick)}</div><div class="home-feed-row-meta">${escapeHtml([formatOdds(pick), decision === 'PASS' ? '' : `${pick.units}u`, formatStart(pick.start_time), activePickMode === 'player' ? '' : pick.decision].filter(Boolean).join(' | '))}</div>${playerDetailsHtml(pick, expanded)}</div>
     <div class="home-feed-row-pl ${pick.pl > 0 ? 'positive' : pick.pl < 0 ? 'negative' : 'neutral'}">${pick.result === 'pending' ? decision === 'PASS' ? 'Pass' : `${pick.units}u risk` : signedUnits(pick.pl)}</div>
     <div class="home-feed-row-control">${resultBadge(pick.result)}</div>
