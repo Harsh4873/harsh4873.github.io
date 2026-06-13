@@ -75,8 +75,18 @@ def test_player_home_details_use_generator_schema_fields():
     assert "Full Kelly" in main
     assert "Key factors" in main
     assert "activePickMode !== 'player'" in main
+    assert "expandedPlayerPickKeys" in main
+    assert "data-player-pick-card" in main
+    assert "function bindPlayerHomeRows(" in main
+    assert "Show research details" in main
     assert ".home-player-details" in css
+    assert ".home-player-extra" in css
+    assert ".home-feed-row.expanded .home-player-extra" in css
     assert ".home-player-factors" in css
+    assert 'body[data-pick-mode="player"] .home-feed-row-pick' in css
+    player_pick_css = css[css.index('body[data-pick-mode="player"] .home-feed-row-pick'):]
+    assert "white-space: normal" in player_pick_css[:350]
+    assert "overflow: visible" in player_pick_css[:350]
 
 
 def test_header_brand_and_freshness_copy_are_friendly_and_accurate():

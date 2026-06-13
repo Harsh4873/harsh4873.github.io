@@ -82,6 +82,7 @@ let refreshInFlight = false;
 const homeScores = new Map<string, HomeScoreInfo>();
 const homeScoreFetches = new Map<string, number>();
 const expandedSourceKeys = new Set<string>();
+const expandedPlayerPickKeys = new Set<string>();
 let homeScoreRefreshKey = '';
 let latestPicksUpdatedAt = '';
 const HOME_SCORE_TTL_MS = 45_000;
@@ -175,7 +176,14 @@ function formatPlayerMeasure(value: unknown, percent = false): string {
   return String(Number(number.toFixed(2)));
 }
 
-function playerDetailsHtml(pick: Pick): string {
+function playerExpandableDetails(pick: Pick): { reason: string; factors: string[] } {
+  return {
+    reason: detailValues(pick.reason ?? pick.rationale)[0] || '',
+    factors: detailValues(pick.key_factors),
+  };
+}
+
+function playerDetailsHtml(pick: Pick, expanded: boolean): string {
   if (activePickMode !== 'player') return '';
   const decision = String(pick.decision || 'PASS').trim().toUpperCase();
   const kellyUnits = pick.kelly_units ?? pick.recommended_units;
@@ -186,8 +194,8 @@ function playerDetailsHtml(pick: Pick): string {
     ? `${formatPlayerMeasure(kellyUnits)}u`
     : formatPlayerMeasure(kelly, true);
   const confidence = formatPlayerMeasure(pick.confidence, true);
-  const reason = detailValues(pick.reason ?? pick.rationale)[0] || '';
-  const factors = detailValues(pick.key_factors);
+  const { reason, factors } = playerExpandableDetails(pick);
+  const hasExtra = Boolean(reason || factors.length);
   return `<div class="home-player-details">
     <div class="home-player-metrics">
       <span class="home-player-decision decision-${escapeHtml(decision.toLowerCase())}">${escapeHtml(decision)}</span>
@@ -196,8 +204,11 @@ function playerDetailsHtml(pick: Pick): string {
       ${!quarterKelly && !fullKelly && kellyText ? `<span><strong>Kelly</strong>${escapeHtml(kellyText)}</span>` : ''}
       ${confidence ? `<span><strong>Confidence</strong>${escapeHtml(confidence)}</span>` : ''}
     </div>
-    ${reason ? `<div class="home-player-reason"><strong>Reason</strong><span>${escapeHtml(reason)}</span></div>` : ''}
-    ${factors.length ? `<div class="home-player-factors"><strong>Key factors</strong><div>${factors.map(factor => `<span>${escapeHtml(factor)}</span>`).join('')}</div></div>` : ''}
+    ${hasExtra ? `<div class="home-player-expand-control"><span data-player-expand-label>${expanded ? 'Hide research details' : 'Show research details'}</span><span class="home-player-expand-icon" aria-hidden="true">&#9662;</span></div>` : ''}
+    ${hasExtra ? `<div class="home-player-extra">
+      ${reason ? `<div class="home-player-reason"><strong>Reason</strong><span>${escapeHtml(reason)}</span></div>` : ''}
+      ${factors.length ? `<div class="home-player-factors"><strong>Key factors</strong><div>${factors.map(factor => `<span>${escapeHtml(factor)}</span>`).join('')}</div></div>` : ''}
+    </div>` : ''}
   </div>`;
 }
 
@@ -460,6 +471,7 @@ function renderHome(): void {
       <div class="home-feed-section-head"><div><div class="home-feed-section-title">${escapeHtml(sport)}</div><div class="home-feed-section-meta">${games.reduce((sum, game) => sum + game[1].length, 0)} ${itemLabel} | ${games.length} matchups</div></div></div>
       <div class="home-feed-grid">${games.map(([, gamePicks]) => renderGameCard(gamePicks)).join('')}</div>
     </section>`).join('');
+  bindPlayerHomeRows(feed);
   void refreshHomeScores(selectedDate, picks);
 }
 
@@ -481,12 +493,44 @@ function renderGameCard(picks: Pick[]): string {
 
 function renderPickRow(pick: Pick): string {
   const decision = String(pick.decision || '').trim().toUpperCase();
-  return `<div class="home-feed-row result-${pick.result}">
+  const isPlayer = activePickMode === 'player';
+  const hasPlayerExtra = isPlayer && Boolean(playerExpandableDetails(pick).reason || playerExpandableDetails(pick).factors.length);
+  const expanded = hasPlayerExtra && expandedPlayerPickKeys.has(pick.id);
+  const playerAttrs = hasPlayerExtra
+    ? ` data-player-pick-card="${escapeHtml(pick.id)}" role="button" tabindex="0" aria-expanded="${expanded}"`
+    : '';
+  return `<div class="home-feed-row result-${pick.result}${isPlayer ? ' player-row' : ''}${hasPlayerExtra ? ' is-expandable' : ''}${expanded ? ' expanded' : ''}"${playerAttrs}>
     <span class="home-feed-row-sport">${escapeHtml(pick.sport)}</span>
-    <div class="home-feed-row-body"><div class="home-feed-row-source">${escapeHtml(sourceName(pick))}</div><div class="home-feed-row-pick">${escapeHtml(pick.pick)}</div><div class="home-feed-row-meta">${escapeHtml([formatOdds(pick), decision === 'PASS' ? '' : `${pick.units}u`, formatStart(pick.start_time), activePickMode === 'player' ? '' : pick.decision].filter(Boolean).join(' | '))}</div>${playerDetailsHtml(pick)}</div>
+    <div class="home-feed-row-body"><div class="home-feed-row-source">${escapeHtml(sourceName(pick))}</div><div class="home-feed-row-pick">${escapeHtml(pick.pick)}</div><div class="home-feed-row-meta">${escapeHtml([formatOdds(pick), decision === 'PASS' ? '' : `${pick.units}u`, formatStart(pick.start_time), activePickMode === 'player' ? '' : pick.decision].filter(Boolean).join(' | '))}</div>${playerDetailsHtml(pick, expanded)}</div>
     <div class="home-feed-row-pl ${pick.pl > 0 ? 'positive' : pick.pl < 0 ? 'negative' : 'neutral'}">${pick.result === 'pending' ? decision === 'PASS' ? 'Pass' : `${pick.units}u risk` : signedUnits(pick.pl)}</div>
     <div class="home-feed-row-control">${resultBadge(pick.result)}</div>
   </div>`;
+}
+
+function bindPlayerHomeRows(feed: HTMLElement): void {
+  if (activePickMode !== 'player') return;
+  feed.querySelectorAll<HTMLElement>('[data-player-pick-card]').forEach(card => {
+    const toggle = (): void => {
+      const pickId = card.dataset.playerPickCard || '';
+      if (!pickId) return;
+      const expanded = !expandedPlayerPickKeys.has(pickId);
+      if (expanded) expandedPlayerPickKeys.add(pickId);
+      else expandedPlayerPickKeys.delete(pickId);
+      card.classList.toggle('expanded', expanded);
+      card.setAttribute('aria-expanded', String(expanded));
+      const label = card.querySelector<HTMLElement>('[data-player-expand-label]');
+      if (label) label.textContent = expanded ? 'Hide research details' : 'Show research details';
+    };
+    card.addEventListener('click', event => {
+      if ((event.target as HTMLElement).closest('a, button, input, select, textarea, label')) return;
+      toggle();
+    });
+    card.addEventListener('keydown', event => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      toggle();
+    });
+  });
 }
 
 function updateOverallStats(): void {
@@ -1379,6 +1423,7 @@ function switchPickMode(mode: PickMode): void {
   calendarMonth = '';
   calendarOpen = false;
   expandedSourceKeys.clear();
+  expandedPlayerPickKeys.clear();
   homeScores.clear();
   const search = document.getElementById('search-input') as HTMLInputElement | null;
   if (search) {
