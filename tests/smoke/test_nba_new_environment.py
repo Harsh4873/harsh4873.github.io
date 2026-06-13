@@ -93,3 +93,65 @@ def test_nba_fatigue_multiplier_no_rest_line_returns_none():
 
     ps._NBA_REST_LINE_BUFFER.clear()
     assert ps._nba_fatigue_multiplier("Heat", "Lakers", "Lakers") is None
+
+
+def test_nba_schedule_falls_back_to_espn_scoreboard(monkeypatch):
+    import importlib
+    import sys
+    import types
+
+    static = types.ModuleType("nba_api.stats.static")
+    static.teams = types.SimpleNamespace(get_teams=lambda: [])
+    endpoints = types.ModuleType("nba_api.stats.endpoints")
+    endpoints.commonteamroster = types.SimpleNamespace()
+    endpoints.leaguegamefinder = types.SimpleNamespace()
+    endpoints.leaguedashteamstats = types.SimpleNamespace()
+    endpoints.scoreboardv2 = types.SimpleNamespace(ScoreboardV2=object)
+
+    monkeypatch.setitem(sys.modules, "nba_api", types.ModuleType("nba_api"))
+    monkeypatch.setitem(sys.modules, "nba_api.stats", types.ModuleType("nba_api.stats"))
+    monkeypatch.setitem(sys.modules, "nba_api.stats.static", static)
+    monkeypatch.setitem(sys.modules, "nba_api.stats.endpoints", endpoints)
+    monkeypatch.delitem(sys.modules, "NBAPredictionModel.live_data", raising=False)
+
+    live_data = importlib.import_module("NBAPredictionModel.live_data")
+
+    class BrokenScoreboard:
+        def __init__(self, **_kwargs):
+            raise TimeoutError("stats.nba.com timed out")
+
+    payload = {
+        "events": [
+            {
+                "id": "401999001",
+                "competitions": [
+                    {
+                        "venue": {"fullName": "Frost Bank Center"},
+                        "status": {"type": {"shortDetail": "8:30 PM"}},
+                        "competitors": [
+                            {"homeAway": "away", "team": {"id": "18", "name": "Knicks"}},
+                            {"homeAway": "home", "team": {"id": "24", "name": "Spurs"}},
+                        ],
+                    }
+                ],
+            }
+        ]
+    }
+
+    monkeypatch.setattr(live_data.scoreboardv2, "ScoreboardV2", BrokenScoreboard)
+    monkeypatch.setattr(live_data, "_fetch_espn_json", lambda _url: payload)
+
+    games = live_data.fetch_todays_games("2026-06-13")
+
+    assert games == [
+        {
+            "game_id": "401999001",
+            "home_team_id": "24",
+            "away_team_id": "18",
+            "home_team": "Spurs",
+            "away_team": "Knicks",
+            "game_status": "8:30 PM",
+            "arena": "Frost Bank Center",
+            "schedule_source": "ESPN scoreboard fallback",
+        }
+    ]

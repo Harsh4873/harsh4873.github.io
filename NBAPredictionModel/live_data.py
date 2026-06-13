@@ -25,6 +25,7 @@ _nba_teams = teams.get_teams()
 _GARBAGE_TIME_MARGIN_CAP = 15.0
 REQUEST_PAUSE_SECONDS = 0.1 if os.environ.get("RENDER", "").strip().lower() == "true" else 0.6
 ESPN_NBA_TEAMS_URL = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams"
+ESPN_NBA_SCOREBOARD_URL = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard"
 ESPN_USER_AGENT = "Mozilla/5.0 PickLedgerPro NBA fallback/1.0"
 
 
@@ -224,6 +225,55 @@ def fetch_espn_roster_fallback(team_name: str) -> list:
         for athlete in athletes
         if isinstance(athlete, dict) and (athlete.get("displayName") or athlete.get("fullName"))
     ]
+
+
+def fetch_espn_scoreboard_games(date_str: str) -> list[dict]:
+    try:
+        dt = datetime.strptime(date_str, "%Y-%m-%d")
+    except ValueError:
+        return []
+
+    payload = _fetch_espn_json(f"{ESPN_NBA_SCOREBOARD_URL}?dates={dt.strftime('%Y%m%d')}")
+    games: list[dict] = []
+    for event in payload.get("events", []):
+        if not isinstance(event, dict):
+            continue
+        competitions = event.get("competitions") if isinstance(event.get("competitions"), list) else []
+        competition = competitions[0] if competitions and isinstance(competitions[0], dict) else {}
+        competitors = competition.get("competitors") if isinstance(competition.get("competitors"), list) else []
+        if len(competitors) != 2:
+            continue
+
+        teams_by_side: dict[str, dict] = {}
+        for competitor in competitors:
+            if not isinstance(competitor, dict):
+                continue
+            side = str(competitor.get("homeAway") or "").strip().lower()
+            team = competitor.get("team") if isinstance(competitor.get("team"), dict) else {}
+            if side in {"home", "away"}:
+                teams_by_side[side] = team
+
+        home_team = teams_by_side.get("home") or {}
+        away_team = teams_by_side.get("away") or {}
+        home_name = str(home_team.get("name") or home_team.get("shortDisplayName") or "").strip()
+        away_name = str(away_team.get("name") or away_team.get("shortDisplayName") or "").strip()
+        if not home_name or not away_name:
+            continue
+
+        venue = competition.get("venue") if isinstance(competition.get("venue"), dict) else {}
+        status = competition.get("status") if isinstance(competition.get("status"), dict) else {}
+        status_type = status.get("type") if isinstance(status.get("type"), dict) else {}
+        games.append({
+            "game_id": str(event.get("id") or competition.get("id") or ""),
+            "home_team_id": home_team.get("id") or 0,
+            "away_team_id": away_team.get("id") or 0,
+            "home_team": home_name,
+            "away_team": away_name,
+            "game_status": str(status_type.get("shortDetail") or status_type.get("description") or ""),
+            "arena": str(venue.get("fullName") or venue.get("name") or ""),
+            "schedule_source": "ESPN scoreboard fallback",
+        })
+    return games
 
 
 def _team_key(full_name: str) -> str:
@@ -609,11 +659,16 @@ def fetch_todays_games(date_str: str = None) -> list:
     formatted = f"{parts[1]}/{parts[2]}/{parts[0]}"
     
     _pause()
-    sb = scoreboardv2.ScoreboardV2(game_date=formatted)
-    dfs = sb.get_data_frames()
-    
-    # GameHeader is the first dataframe
-    header = dfs[0]
+    try:
+        sb = scoreboardv2.ScoreboardV2(game_date=formatted)
+        dfs = sb.get_data_frames()
+        header = dfs[0]
+    except Exception as exc:
+        fallback_games = fetch_espn_scoreboard_games(date_str)
+        if fallback_games:
+            print(f"WARNING: NBA API scoreboard failed ({exc}); using ESPN scoreboard fallback.")
+            return fallback_games
+        raise
     
     games = []
     seen_game_ids = set()
