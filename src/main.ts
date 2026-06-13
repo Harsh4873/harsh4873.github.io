@@ -75,7 +75,6 @@ type UserBet = {
   odds: number | null;
   units: number;
   result: PickResult;
-  manualResult?: PickResult;
   addedAt: string;
 };
 
@@ -101,7 +100,6 @@ const homeScores = new Map<string, HomeScoreInfo>();
 const homeScoreFetches = new Map<string, number>();
 const expandedSourceKeys = new Set<string>();
 const expandedResearchPickKeys = new Set<string>();
-const yourBetUndoStack: UserBet[][] = [];
 let yourBets: UserBet[] = [];
 let homeScoreRefreshKey = '';
 let latestPicksUpdatedAt = '';
@@ -285,7 +283,9 @@ function signedUnits(value: number): string {
 function readYourBets(): UserBet[] {
   try {
     const stored = JSON.parse(localStorage.getItem(YOUR_BETS_STORAGE_KEY) || '[]');
-    return Array.isArray(stored) ? stored.filter(item => item && typeof item === 'object') as UserBet[] : [];
+    return Array.isArray(stored)
+      ? stored.filter(item => item && typeof item === 'object' && item.pickId && (item.pickMode === 'team' || item.pickMode === 'player')) as UserBet[]
+      : [];
   } catch {
     return [];
   }
@@ -300,15 +300,12 @@ function saveYourBets(): void {
 }
 
 function mutateYourBets(change: () => void): void {
-  yourBetUndoStack.push(structuredClone(yourBets));
-  if (yourBetUndoStack.length > 25) yourBetUndoStack.shift();
   change();
   saveYourBets();
   renderYourBets();
 }
 
 function resolvedUserBetResult(bet: UserBet): PickResult {
-  if (bet.manualResult) return bet.manualResult;
   if (bet.pickId && bet.pickMode === activePickMode) {
     return getAllPicks().find(pick => pick.id === bet.pickId)?.result || bet.result;
   }
@@ -370,7 +367,7 @@ function userBetStats(bets: UserBet[]): Stats {
 function addPickToYourBets(pickId: string): void {
   const pick = getAllPicks().find(item => item.id === pickId);
   if (!pick) return;
-  const existing = yourBets.find(bet => bet.pickId === pick.id && bet.date === pickDateKey(pick));
+  const existing = yourBets.find(bet => bet.pickMode === activePickMode && bet.pickId === pick.id && bet.date === pickDateKey(pick));
   mutateYourBets(() => {
     if (existing) {
       existing.units = Number((existing.units + Math.max(pick.units, 1)).toFixed(2));
@@ -395,35 +392,6 @@ function addPickToYourBets(pickId: string): void {
   });
 }
 
-function addCustomYourBet(): void {
-  const selection = (document.getElementById('your-bet-selection') as HTMLInputElement | null)?.value.trim() || '';
-  const sport = (document.getElementById('your-bet-sport') as HTMLInputElement | null)?.value.trim().toUpperCase() || 'OTHER';
-  const date = (document.getElementById('your-bet-date') as HTMLInputElement | null)?.value || centralDateKey();
-  const oddsValue = (document.getElementById('your-bet-odds') as HTMLInputElement | null)?.value || '';
-  const unitsValue = (document.getElementById('your-bet-units') as HTMLInputElement | null)?.value || '1';
-  const error = document.getElementById('your-bet-form-error');
-  if (!selection) {
-    if (error) error.textContent = 'Enter a selection before adding it.';
-    return;
-  }
-  const oddsNumber = Number(oddsValue);
-  const unitsNumber = Number(unitsValue);
-  mutateYourBets(() => yourBets.unshift({
-    id: `custom-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-    pickMode: activePickMode,
-    selection,
-    sport,
-    source: 'Your Pick',
-    matchup: '',
-    date,
-    odds: oddsValue && Number.isFinite(oddsNumber) ? oddsNumber : null,
-    units: Number.isFinite(unitsNumber) && unitsNumber > 0 ? unitsNumber : 1,
-    result: 'pending',
-    manualResult: 'pending',
-    addedAt: new Date().toISOString(),
-  }));
-}
-
 function updateYourBetUnits(id: string, value: string): void {
   const units = Number(value);
   if (!Number.isFinite(units) || units <= 0) return;
@@ -433,38 +401,14 @@ function updateYourBetUnits(id: string, value: string): void {
   });
 }
 
-function addYourBetUnit(id: string): void {
-  mutateYourBets(() => {
-    const bet = yourBets.find(item => item.id === id);
-    if (bet) bet.units = Number((bet.units + 1).toFixed(2));
-  });
-}
-
-function updateYourBetResult(id: string, value: string): void {
-  mutateYourBets(() => {
-    const bet = yourBets.find(item => item.id === id);
-    if (!bet) return;
-    if (value === 'auto') delete bet.manualResult;
-    else if (value === 'pending' || value === 'win' || value === 'loss' || value === 'push') bet.manualResult = value;
-  });
-}
-
 function removeYourBet(id: string): void {
   mutateYourBets(() => {
     yourBets = yourBets.filter(bet => bet.id !== id);
   });
 }
 
-function undoYourBetChange(): void {
-  const previous = yourBetUndoStack.pop();
-  if (!previous) return;
-  yourBets = previous;
-  saveYourBets();
-  renderYourBets();
-}
-
 function yourBetAddButton(pick: Pick): string {
-  const existing = yourBets.find(bet => bet.pickId === pick.id && bet.date === pickDateKey(pick));
+  const existing = yourBets.find(bet => bet.pickMode === activePickMode && bet.pickId === pick.id && bet.date === pickDateKey(pick));
   return `<button type="button" class="add-ledger-btn ${existing ? 'is-added' : ''}" data-add-your-bet="${escapeHtml(pick.id)}">${existing ? `ADD 1U | ${escapeHtml(formatPlayerMeasure(existing.units))}U SAVED` : 'ADD TO YOUR BETS'}</button>`;
 }
 
@@ -829,7 +773,7 @@ function bindPickCards(container: HTMLElement): void {
       event.stopPropagation();
       const pickId = button.dataset.addYourBet || '';
       addPickToYourBets(pickId);
-      const saved = yourBets.find(bet => bet.pickId === pickId);
+      const saved = yourBets.find(bet => bet.pickMode === activePickMode && bet.pickId === pickId);
       button.classList.add('is-added');
       button.textContent = saved ? `ADD 1U | ${formatPlayerMeasure(saved.units)}U SAVED` : 'ADDED';
     });
@@ -1333,15 +1277,6 @@ function yourBetSummaryCard(label: string, bets: UserBet[]): string {
   </article>`;
 }
 
-function yourBetResultOptions(bet: UserBet): string {
-  const current = bet.manualResult || (bet.pickId ? 'auto' : bet.result);
-  const resolved = resolvedUserBetResult(bet);
-  const options = bet.pickId
-    ? [['auto', `AUTO: ${resolved === 'pending' ? 'OPEN' : resolved.toUpperCase()}`], ['pending', 'OPEN'], ['win', 'WIN'], ['loss', 'LOSS'], ['push', 'PUSH']]
-    : [['pending', 'OPEN'], ['win', 'WIN'], ['loss', 'LOSS'], ['push', 'PUSH']];
-  return options.map(([value, label]) => `<option value="${value}" ${current === value ? 'selected' : ''}>${label}</option>`).join('');
-}
-
 function yourBetCard(bet: UserBet): string {
   const result = resolvedUserBetResult(bet);
   const profit = userBetProfit(bet);
@@ -1349,10 +1284,10 @@ function yourBetCard(bet: UserBet): string {
     <div class="your-bet-card-head"><div><div class="your-bet-card-kicker">${escapeHtml(bet.sport)} | ${escapeHtml(bet.source)}</div><div class="your-bet-card-pick">${escapeHtml(bet.selection)}</div><div class="your-bet-card-game">${escapeHtml([bet.matchup, dateLabel(bet.date), bet.odds == null ? '' : bet.odds > 0 ? `+${bet.odds}` : bet.odds].filter(Boolean).join(' | '))}</div></div>${resultBadge(result)}</div>
     <div class="your-bet-card-controls">
       <label><span>Units</span><input type="number" min="0.01" step="0.25" value="${bet.units}" onchange="updateYourBetUnits('${escapeHtml(bet.id)}', this.value)"></label>
-      <label><span>Result</span><select onchange="updateYourBetResult('${escapeHtml(bet.id)}', this.value)">${yourBetResultOptions(bet)}</select></label>
-      <div class="your-bet-return"><span>${result === 'pending' ? 'To Win' : 'P/L'}</span><strong class="${profit > 0 ? 'positive' : profit < 0 ? 'negative' : 'neutral'}">${result === 'pending' ? bet.odds == null ? `${bet.units}u` : signedUnits(Math.max(0, userBetProfit({ ...bet, result: 'win', manualResult: 'win' }))) : signedUnits(profit)}</strong></div>
+      <div class="your-bet-locked-result"><span>Official Result</span><strong>${result === 'pending' ? 'OPEN' : result.toUpperCase()}</strong><small>Locked and graded by PickLedger</small></div>
+      <div class="your-bet-return"><span>${result === 'pending' ? 'To Win' : 'P/L'}</span><strong class="${profit > 0 ? 'positive' : profit < 0 ? 'negative' : 'neutral'}">${result === 'pending' ? bet.odds == null ? `${bet.units}u` : signedUnits(Math.max(0, userBetProfit({ ...bet, result: 'win' }))) : signedUnits(profit)}</strong></div>
     </div>
-    <div class="your-bet-card-actions"><button type="button" onclick="addYourBetUnit('${escapeHtml(bet.id)}')">+1 UNIT</button><button type="button" class="danger" onclick="removeYourBet('${escapeHtml(bet.id)}')">REMOVE</button></div>
+    <div class="your-bet-card-actions"><button type="button" class="danger" onclick="removeYourBet('${escapeHtml(bet.id)}')">REMOVE</button></div>
   </article>`;
 }
 
@@ -1362,23 +1297,20 @@ function renderYourBets(): void {
   syncYourBetResults();
   const today = centralDateKey();
   const yesterday = shiftedDateKey(today, -1);
-  const todayBets = yourBets.filter(bet => bet.date === today);
-  const yesterdayBets = yourBets.filter(bet => bet.date === yesterday);
-  const history = yourBets.filter(bet => bet.date !== today)
+  const modeBets = yourBets.filter(bet => bet.pickMode === activePickMode);
+  const todayBets = modeBets.filter(bet => bet.date === today);
+  const yesterdayBets = modeBets.filter(bet => bet.date === yesterday);
+  const history = modeBets.filter(bet => bet.date !== today)
     .sort((a, b) => b.date.localeCompare(a.date) || b.addedAt.localeCompare(a.addedAt));
   const sortedToday = [...todayBets].sort((a, b) => b.addedAt.localeCompare(a.addedAt));
+  const modeLabel = activePickMode === 'player' ? 'Player Props' : 'Team Picks';
   container.innerHTML = `<div class="your-bets-shell">
     <section class="your-bets-hero">
-      <div><div class="your-bets-eyebrow">DEVICE-LOCAL LEDGER</div><div class="your-bets-title">Your Bets</div><div class="your-bets-sub">Build an unlimited personal card and track the results. The daily pick board refreshes each day; your ledger history stays saved only on this device.</div></div>
-      <div class="your-bets-hero-actions"><button type="button" onclick="refreshAutoGrades()">REFRESH RESULTS</button><button type="button" onclick="undoYourBetChange()" ${yourBetUndoStack.length ? '' : 'disabled'}>UNDO CHANGE</button><button type="button" class="primary" onclick="switchTab('daily')">ADD MORE PICKS</button></div>
+      <div><div class="your-bets-eyebrow">${escapeHtml(modeLabel.toUpperCase())} | DEVICE-LOCAL LEDGER</div><div class="your-bets-title">Your Bets</div><div class="your-bets-sub">Your ${escapeHtml(modeLabel.toLowerCase())} stay separate from the other pick mode. Results are locked and graded by PickLedger; you can change units or remove a saved pick.</div></div>
+      <div class="your-bets-hero-actions"><button type="button" onclick="refreshAutoGrades()">REFRESH RESULTS</button><button type="button" class="primary" onclick="switchTab('daily')">ADD MORE PICKS</button></div>
     </section>
-    <div class="your-bets-summary-grid">${yourBetSummaryCard('TODAY', todayBets)}${yourBetSummaryCard('YESTERDAY', yesterdayBets)}${yourBetSummaryCard('ALL TIME', yourBets)}</div>
-    <section class="your-bet-composer">
-      <div class="your-bet-section-head"><div><div class="your-bet-section-title">Add A Custom Bet</div><div class="your-bet-section-sub">Use this for any pick that is not already on the board. There is no pick or unit limit.</div></div></div>
-      <div class="your-bet-form"><label class="wide"><span>Selection</span><input id="your-bet-selection" type="text" placeholder="Kelsey Plum over 21.5 points"></label><label><span>Sport</span><input id="your-bet-sport" type="text" placeholder="WNBA"></label><label><span>Odds</span><input id="your-bet-odds" type="number" placeholder="-110"></label><label><span>Units</span><input id="your-bet-units" type="number" min="0.01" step="0.25" value="1"></label><label><span>Date</span><input id="your-bet-date" type="date" value="${today}"></label><button type="button" onclick="addCustomYourBet()">ADD TO LEDGER</button></div>
-      <div class="your-bet-form-error" id="your-bet-form-error"></div>
-    </section>
-    <section class="your-bet-board"><div class="your-bet-section-head"><div><div class="your-bet-section-title">Today&rsquo;s Ticket</div><div class="your-bet-section-sub">${sortedToday.length} saved pick${sortedToday.length === 1 ? '' : 's'} for ${escapeHtml(dateLabel(today, true))}</div></div><span>${userBetStats(todayBets).pending} OPEN</span></div>${sortedToday.length ? `<div class="your-bet-grid">${sortedToday.map(yourBetCard).join('')}</div>` : '<div class="your-bet-empty"><strong>No picks saved for today yet.</strong><span>Add from Home, Find Picks, Best Bets, or enter a custom bet above.</span></div>'}</section>
+    <div class="your-bets-summary-grid">${yourBetSummaryCard('TODAY', todayBets)}${yourBetSummaryCard('YESTERDAY', yesterdayBets)}${yourBetSummaryCard('ALL TIME', modeBets)}</div>
+    <section class="your-bet-board"><div class="your-bet-section-head"><div><div class="your-bet-section-title">Today&rsquo;s ${escapeHtml(modeLabel)} Ticket</div><div class="your-bet-section-sub">${sortedToday.length} saved pick${sortedToday.length === 1 ? '' : 's'} for ${escapeHtml(dateLabel(today, true))}</div></div><span>${userBetStats(todayBets).pending} OPEN</span></div>${sortedToday.length ? `<div class="your-bet-grid">${sortedToday.map(yourBetCard).join('')}</div>` : '<div class="your-bet-empty"><strong>No picks saved for today yet.</strong><span>Add picks from Home, Find Picks, or Best Bets.</span></div>'}</section>
     <section class="your-bet-board"><div class="your-bet-section-head"><div><div class="your-bet-section-title">Previous Results</div><div class="your-bet-section-sub">Your recent device-local history, newest first.</div></div><span>${history.length} SAVED</span></div>${history.length ? `<div class="your-bet-grid">${history.map(yourBetCard).join('')}</div>` : '<div class="your-bet-empty"><strong>No previous bets yet.</strong><span>Yesterday and all-time performance will build here as you use the ledger.</span></div>'}</section>
   </div>`;
 }
@@ -1799,12 +1731,8 @@ Object.assign(window, {
   toggleHomeDatePicker,
   refreshAutoGrades,
   renderSearch,
-  addCustomYourBet,
   updateYourBetUnits,
-  addYourBetUnit,
-  updateYourBetResult,
   removeYourBet,
-  undoYourBetChange,
 });
 
 document.addEventListener('click', event => {

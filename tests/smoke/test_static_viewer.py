@@ -246,9 +246,13 @@ def test_home_filters_prioritize_primary_sports_and_use_more_menu():
     assert "extraFilters.map(filterButton)" in main
     assert ".filter-more-wrap" in css
     assert ".filter-dropdown.open" in css
+    assert "body.mobile-app-mode .filter-more-wrap" in css
+    assert "position: static" in css[css.index("body.mobile-app-mode .filter-more-wrap"):][:120]
+    mobile_filter = css[css.index("body.mobile-app-mode .filter-bar"):]
+    assert "overflow: visible" in mobile_filter[:220]
 
 
-def test_your_bets_is_unlimited_device_local_ledger_with_controls_and_history():
+def test_your_bets_is_mode_separated_locked_device_local_ledger():
     main = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
     html = (ROOT / "index.html").read_text(encoding="utf-8")
     css = (ROOT / "src" / "styles" / "pickledger.css").read_text(encoding="utf-8")
@@ -256,18 +260,34 @@ def test_your_bets_is_unlimited_device_local_ledger_with_controls_and_history():
     assert "const YOUR_BETS_STORAGE_KEY = 'pickledger_your_bets_v1'" in main
     assert "localStorage.setItem(YOUR_BETS_STORAGE_KEY" in main
     assert "function addPickToYourBets(" in main
-    assert "function addCustomYourBet(" in main
     assert "function updateYourBetUnits(" in main
-    assert "function updateYourBetResult(" in main
-    assert "function undoYourBetChange(" in main
     assert "function syncYourBetResults(" in main
-    assert "There is no pick or unit limit." in main
-    assert "saved only on this device" in main
+    assert "const modeBets = yourBets.filter(bet => bet.pickMode === activePickMode)" in main
+    assert "bet.pickMode === activePickMode && bet.pickId === pick.id" in main
+    assert "Results are locked and graded by PickLedger" in main
+    assert "Locked and graded by PickLedger" in main
+    assert "function addCustomYourBet(" not in main
+    assert "function updateYourBetResult(" not in main
+    assert "function undoYourBetChange(" not in main
+    assert "Add A Custom Bet" not in main
+    assert "UNDO CHANGE" not in main
     for label in ("TODAY", "YESTERDAY", "ALL TIME"):
         assert f"yourBetSummaryCard('{label}'" in main
     assert 'id="tab-your-bets"' in html
     assert ".your-bets-shell" in css
     assert ".your-bet-card" in css
+    assert ".your-bet-locked-result" in css
+
+
+def test_phone_toggle_keeps_brand_visible_and_more_menu_unclipped():
+    css = (ROOT / "src" / "styles" / "pickledger.css").read_text(encoding="utf-8")
+
+    mobile_header = css[css.index("body.mobile-app-mode header {"):]
+    assert "grid-template-columns: minmax(0, 1fr)" in mobile_header[:260]
+    assert "body.mobile-app-mode .brand-home" in css
+    brand = css[css.index("body.mobile-app-mode .brand-home"):]
+    assert "width: max-content" in brand[:180]
+    assert "overflow: visible" in brand[:180]
 
 
 def test_tab_ordering_prioritizes_home_start_time_and_actionable_picks_elsewhere():
