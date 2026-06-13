@@ -62,7 +62,7 @@ def test_frontend_player_mode_is_persisted_isolated_and_team_defaulted():
     assert "@media (max-width: 700px)" in css
 
 
-def test_player_home_details_use_generator_schema_fields():
+def test_research_details_use_generator_schema_fields_across_pick_views():
     main = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
     data = (ROOT / "src" / "data.ts").read_text(encoding="utf-8")
     css = (ROOT / "src" / "styles" / "pickledger.css").read_text(encoding="utf-8")
@@ -70,15 +70,16 @@ def test_player_home_details_use_generator_schema_fields():
     for field in ("full_kelly", "quarter_kelly", "confidence", "reason", "key_factors"):
         assert f"{field}?" in data
         assert f"pick.{field}" in main
-    assert "function playerDetailsHtml(" in main
+    assert "function researchDetailsHtml(" in main
     assert "Quarter Kelly" in main
     assert "Full Kelly" in main
     assert "Key factors" in main
-    assert "activePickMode !== 'player'" in main
-    assert "expandedPlayerPickKeys" in main
-    assert "data-player-pick-card" in main
+    assert "expandedResearchPickKeys" in main
+    assert "data-research-pick-card" in main
     assert "isPlayer ? '' : `<span class=\"home-feed-row-sport\"" in main
-    assert "function bindPlayerHomeRows(" in main
+    assert "function bindResearchDetailCards(" in main
+    assert "bindPickCards(results)" in main
+    assert "bindPickCards(container)" in main
     assert "Show research details" in main
     assert ".home-player-details" in css
     assert ".home-player-extra" in css
@@ -112,10 +113,13 @@ def test_static_viewer_keeps_public_tabs_and_client_grading():
     data = (ROOT / "src" / "data.ts").read_text(encoding="utf-8")
     html = (ROOT / "index.html").read_text(encoding="utf-8")
 
-    for tab in ("home", "search", "rankings", "trends", "daily"):
+    for tab in ("home", "search", "rankings", "daily", "your-bets"):
         assert f"id=\"tab-{tab}\"" in html
-    assert 'data-player-hidden-tab="trends" onclick="switchTab(\'trends\')">TRENDS</button>' in html
+    assert 'id="tab-trends"' not in html
+    assert ">TRENDS</button>" not in html
     assert 'onclick="switchTab(\'daily\')">BEST BETS</button>' in html
+    assert 'onclick="switchTab(\'your-bets\')">YOUR BETS</button>' in html
+    assert html.index(">BEST BETS</button>") < html.index(">YOUR BETS</button>")
     assert "async function refreshAutoGrades()" in main
     assert "async function gradeDate(" in main
     assert "site.api.espn.com" in main
@@ -191,6 +195,10 @@ def test_daily_tab_uses_focused_views_and_merges_duplicate_markets():
     assert "All matching market signals" in main
     assert "Sources issuing BET calls today" in main
     assert "function setDailyView(" in main
+    assert "researchDetailsHtml(pick, expanded)" in main
+    assert "yourBetAddButton(pick)" in main
+    assert "researchDetailsHtml(game, expanded)" in main
+    assert "yourBetAddButton(game)" in main
     assert "Each unique market appears once." in main
     assert "excluding anything already in Top Picks" in main
     assert ".daily-bet-card" in css
@@ -211,14 +219,14 @@ def test_soccer_consensus_keeps_lines_and_specialty_markets_distinct():
     assert "(?:ML|moneyline|to win|wins?)$/i" in signals
 
 
-def test_player_mode_hides_unneeded_tabs_and_keeps_prop_sources_separate():
+def test_player_mode_keeps_best_bets_available_and_prop_sources_separate():
     main = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
     data = (ROOT / "src" / "data.ts").read_text(encoding="utf-8")
     html = (ROOT / "index.html").read_text(encoding="utf-8")
 
-    assert 'data-player-hidden-tab="trends"' in html
-    assert "function syncModeTabs(" in main
-    assert "activePickMode === 'player' && name === 'trends'" in main
+    assert 'data-player-hidden-tab="trends"' not in html
+    assert "function syncModeTabs(" not in main
+    assert 'onclick="switchTab(\'daily\')">BEST BETS</button>' in html
     assert "activePickMode !== 'player' || option.key !== 'consensus'" in main
     assert "activePickMode === 'player' && view === 'consensus'" in main
     assert "playerResearchPool" in main
@@ -226,6 +234,40 @@ def test_player_mode_hides_unneeded_tabs_and_keeps_prop_sources_separate():
     for source in ("NBAPlayerProps", "MLBPlayerProps", "WNBAPlayerProps"):
         assert source in data
     assert "playerProp && fallbackSource" in data
+
+
+def test_home_filters_prioritize_primary_sports_and_use_more_menu():
+    main = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
+    css = (ROOT / "src" / "styles" / "pickledger.css").read_text(encoding="utf-8")
+
+    assert "const PRIMARY_FILTERS = ['ALL', 'NBA', 'MLB', 'WNBA', 'FIFA WC']" in main
+    assert "filter === 'FIFA WC' ? 'FIFA' : filter" in main
+    assert 'id="filter-more-btn"' in main
+    assert "extraFilters.map(filterButton)" in main
+    assert ".filter-more-wrap" in css
+    assert ".filter-dropdown.open" in css
+
+
+def test_your_bets_is_unlimited_device_local_ledger_with_controls_and_history():
+    main = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
+    html = (ROOT / "index.html").read_text(encoding="utf-8")
+    css = (ROOT / "src" / "styles" / "pickledger.css").read_text(encoding="utf-8")
+
+    assert "const YOUR_BETS_STORAGE_KEY = 'pickledger_your_bets_v1'" in main
+    assert "localStorage.setItem(YOUR_BETS_STORAGE_KEY" in main
+    assert "function addPickToYourBets(" in main
+    assert "function addCustomYourBet(" in main
+    assert "function updateYourBetUnits(" in main
+    assert "function updateYourBetResult(" in main
+    assert "function undoYourBetChange(" in main
+    assert "function syncYourBetResults(" in main
+    assert "There is no pick or unit limit." in main
+    assert "saved only on this device" in main
+    for label in ("TODAY", "YESTERDAY", "ALL TIME"):
+        assert f"yourBetSummaryCard('{label}'" in main
+    assert 'id="tab-your-bets"' in html
+    assert ".your-bets-shell" in css
+    assert ".your-bet-card" in css
 
 
 def test_tab_ordering_prioritizes_home_start_time_and_actionable_picks_elsewhere():
@@ -237,7 +279,6 @@ def test_tab_ordering_prioritizes_home_start_time_and_actionable_picks_elsewhere
         "function compareGameStartAsc(",
         "function startBucket(",
         "function compareActionableStart(",
-        "function compareGameActionableStart(",
         "function comparePickActionableStart(",
         "function compareHomePickRows(",
     ):
@@ -250,7 +291,6 @@ def test_tab_ordering_prioritizes_home_start_time_and_actionable_picks_elsewhere
     assert "homeDecisionRank(left) - homeDecisionRank(right)" in main
     assert "(pickProbability(right) || 0) - (pickProbability(left) || 0)" in main
     assert ".sort(comparePickActionableStart);" in main
-    assert "compareGameActionableStart(a.picks, b.picks)" in main
     assert "comparePickActionableStart(a.primary, b.primary)" in main
     assert "comparePickActionableStart(a.game, b.game)" in main
     assert ".sort(comparePickActionableStart));" in main

@@ -63,6 +63,22 @@ type DailyPickGroup = {
   score: number;
 };
 
+type UserBet = {
+  id: string;
+  pickId?: string;
+  pickMode: PickMode;
+  selection: string;
+  sport: string;
+  source: string;
+  matchup: string;
+  date: string;
+  odds: number | null;
+  units: number;
+  result: PickResult;
+  manualResult?: PickResult;
+  addedAt: string;
+};
+
 const ESPN_ENDPOINTS: Record<string, [string, string]> = {
   MLB: ['baseball', 'mlb'],
   NBA: ['basketball', 'nba'],
@@ -79,16 +95,21 @@ let selectedDate = '';
 let followCentralToday = true;
 let calendarMonth = '';
 let calendarOpen = false;
+let filterMoreOpen = false;
 let refreshInFlight = false;
 const homeScores = new Map<string, HomeScoreInfo>();
 const homeScoreFetches = new Map<string, number>();
 const expandedSourceKeys = new Set<string>();
-const expandedPlayerPickKeys = new Set<string>();
+const expandedResearchPickKeys = new Set<string>();
+const yourBetUndoStack: UserBet[][] = [];
+let yourBets: UserBet[] = [];
 let homeScoreRefreshKey = '';
 let latestPicksUpdatedAt = '';
 const HOME_SCORE_TTL_MS = 45_000;
 const DISPLAY_TIME_ZONE = 'America/Chicago';
 const AUTO_REFRESH_MS = 5 * 60_000;
+const YOUR_BETS_STORAGE_KEY = 'pickledger_your_bets_v1';
+const PRIMARY_FILTERS = ['ALL', 'NBA', 'MLB', 'WNBA', 'FIFA WC'];
 let lastCentralDate = '';
 
 function escapeHtml(value: unknown): string {
@@ -177,15 +198,14 @@ function formatPlayerMeasure(value: unknown, percent = false): string {
   return String(Number(number.toFixed(2)));
 }
 
-function playerExpandableDetails(pick: Pick): { reason: string; factors: string[] } {
+function pickExpandableDetails(pick: Pick): { reason: string; factors: string[] } {
   return {
     reason: detailValues(pick.reason ?? pick.rationale)[0] || '',
     factors: detailValues(pick.key_factors),
   };
 }
 
-function playerDetailsHtml(pick: Pick, expanded: boolean): string {
-  if (activePickMode !== 'player') return '';
+function researchDetailsHtml(pick: Pick, expanded: boolean): string {
   const decision = String(pick.decision || 'PASS').trim().toUpperCase();
   const kellyUnits = pick.kelly_units ?? pick.recommended_units;
   const kelly = kellyUnits ?? pick.kelly;
@@ -195,16 +215,17 @@ function playerDetailsHtml(pick: Pick, expanded: boolean): string {
     ? `${formatPlayerMeasure(kellyUnits)}u`
     : formatPlayerMeasure(kelly, true);
   const confidence = formatPlayerMeasure(pick.confidence, true);
-  const { reason, factors } = playerExpandableDetails(pick);
+  const { reason, factors } = pickExpandableDetails(pick);
   const hasExtra = Boolean(reason || factors.length);
+  if (!hasExtra && activePickMode !== 'player') return '';
   return `<div class="home-player-details">
-    <div class="home-player-metrics">
+    ${activePickMode === 'player' ? `<div class="home-player-metrics">
       <span class="home-player-decision decision-${escapeHtml(decision.toLowerCase())}">${escapeHtml(decision)}</span>
       ${quarterKelly ? `<span><strong>Quarter Kelly</strong>${escapeHtml(quarterKelly)}</span>` : ''}
       ${fullKelly ? `<span><strong>Full Kelly</strong>${escapeHtml(fullKelly)}</span>` : ''}
       ${!quarterKelly && !fullKelly && kellyText ? `<span><strong>Kelly</strong>${escapeHtml(kellyText)}</span>` : ''}
       ${confidence ? `<span><strong>Confidence</strong>${escapeHtml(confidence)}</span>` : ''}
-    </div>
+    </div>` : ''}
     ${hasExtra ? `<div class="home-player-expand-control"><span data-player-expand-label>${expanded ? 'Hide research details' : 'Show research details'}</span><span class="home-player-expand-icon" aria-hidden="true">&#9662;</span></div>` : ''}
     ${hasExtra ? `<div class="home-player-extra">
       ${reason ? `<div class="home-player-reason"><strong>Reason</strong><span>${escapeHtml(reason)}</span></div>` : ''}
@@ -259,6 +280,192 @@ function statsFor(picks: Pick[]): Stats {
 
 function signedUnits(value: number): string {
   return `${value >= 0 ? '+' : ''}${Number(value.toFixed(2))}u`;
+}
+
+function readYourBets(): UserBet[] {
+  try {
+    const stored = JSON.parse(localStorage.getItem(YOUR_BETS_STORAGE_KEY) || '[]');
+    return Array.isArray(stored) ? stored.filter(item => item && typeof item === 'object') as UserBet[] : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveYourBets(): void {
+  try {
+    localStorage.setItem(YOUR_BETS_STORAGE_KEY, JSON.stringify(yourBets));
+  } catch {
+    // The rest of the viewer remains usable if device storage is blocked.
+  }
+}
+
+function mutateYourBets(change: () => void): void {
+  yourBetUndoStack.push(structuredClone(yourBets));
+  if (yourBetUndoStack.length > 25) yourBetUndoStack.shift();
+  change();
+  saveYourBets();
+  renderYourBets();
+}
+
+function resolvedUserBetResult(bet: UserBet): PickResult {
+  if (bet.manualResult) return bet.manualResult;
+  if (bet.pickId && bet.pickMode === activePickMode) {
+    return getAllPicks().find(pick => pick.id === bet.pickId)?.result || bet.result;
+  }
+  return bet.result;
+}
+
+function syncYourBetResults(): void {
+  const currentPicks = new Map(getAllPicks().map(pick => [pick.id, pick]));
+  let changed = false;
+  yourBets.forEach(bet => {
+    if (!bet.pickId || bet.pickMode !== activePickMode) return;
+    const pick = currentPicks.get(bet.pickId);
+    if (!pick) return;
+    if (bet.result !== pick.result) {
+      bet.result = pick.result;
+      changed = true;
+    }
+    if (bet.odds !== pick.odds) {
+      bet.odds = pick.odds;
+      changed = true;
+    }
+  });
+  if (changed) saveYourBets();
+}
+
+function userBetProfit(bet: UserBet): number {
+  const result = resolvedUserBetResult(bet);
+  if (result === 'pending' || result === 'push') return 0;
+  if (result === 'loss') return -bet.units;
+  if (bet.odds == null || bet.odds === 0) return bet.units;
+  return Number((bet.odds > 0 ? bet.units * bet.odds / 100 : bet.units * 100 / Math.abs(bet.odds)).toFixed(2));
+}
+
+function userBetStats(bets: UserBet[]): Stats {
+  const results = bets.map(resolvedUserBetResult);
+  const wins = results.filter(result => result === 'win').length;
+  const losses = results.filter(result => result === 'loss').length;
+  const pushes = results.filter(result => result === 'push').length;
+  const pending = results.filter(result => result === 'pending').length;
+  const decided = wins + losses;
+  const net = Number(bets.reduce((sum, bet) => sum + userBetProfit(bet), 0).toFixed(2));
+  const risk = Number(bets.filter(bet => {
+    const result = resolvedUserBetResult(bet);
+    return result !== 'pending' && result !== 'push';
+  }).reduce((sum, bet) => sum + bet.units, 0).toFixed(2));
+  return {
+    total: bets.length,
+    wins,
+    losses,
+    pushes,
+    pending,
+    net,
+    risk,
+    winRate: decided ? wins / decided : null,
+    roi: risk ? net / risk : null,
+  };
+}
+
+function addPickToYourBets(pickId: string): void {
+  const pick = getAllPicks().find(item => item.id === pickId);
+  if (!pick) return;
+  const existing = yourBets.find(bet => bet.pickId === pick.id && bet.date === pickDateKey(pick));
+  mutateYourBets(() => {
+    if (existing) {
+      existing.units = Number((existing.units + Math.max(pick.units, 1)).toFixed(2));
+      existing.odds = pick.odds;
+      existing.result = pick.result;
+      return;
+    }
+    yourBets.unshift({
+      id: `board-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      pickId: pick.id,
+      pickMode: activePickMode,
+      selection: pick.pick,
+      sport: pick.sport,
+      source: sourceName(pick),
+      matchup: gameName(pick),
+      date: pickDateKey(pick),
+      odds: pick.odds,
+      units: Math.max(pick.units, 1),
+      result: pick.result,
+      addedAt: new Date().toISOString(),
+    });
+  });
+}
+
+function addCustomYourBet(): void {
+  const selection = (document.getElementById('your-bet-selection') as HTMLInputElement | null)?.value.trim() || '';
+  const sport = (document.getElementById('your-bet-sport') as HTMLInputElement | null)?.value.trim().toUpperCase() || 'OTHER';
+  const date = (document.getElementById('your-bet-date') as HTMLInputElement | null)?.value || centralDateKey();
+  const oddsValue = (document.getElementById('your-bet-odds') as HTMLInputElement | null)?.value || '';
+  const unitsValue = (document.getElementById('your-bet-units') as HTMLInputElement | null)?.value || '1';
+  const error = document.getElementById('your-bet-form-error');
+  if (!selection) {
+    if (error) error.textContent = 'Enter a selection before adding it.';
+    return;
+  }
+  const oddsNumber = Number(oddsValue);
+  const unitsNumber = Number(unitsValue);
+  mutateYourBets(() => yourBets.unshift({
+    id: `custom-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    pickMode: activePickMode,
+    selection,
+    sport,
+    source: 'Your Pick',
+    matchup: '',
+    date,
+    odds: oddsValue && Number.isFinite(oddsNumber) ? oddsNumber : null,
+    units: Number.isFinite(unitsNumber) && unitsNumber > 0 ? unitsNumber : 1,
+    result: 'pending',
+    manualResult: 'pending',
+    addedAt: new Date().toISOString(),
+  }));
+}
+
+function updateYourBetUnits(id: string, value: string): void {
+  const units = Number(value);
+  if (!Number.isFinite(units) || units <= 0) return;
+  mutateYourBets(() => {
+    const bet = yourBets.find(item => item.id === id);
+    if (bet) bet.units = Number(units.toFixed(2));
+  });
+}
+
+function addYourBetUnit(id: string): void {
+  mutateYourBets(() => {
+    const bet = yourBets.find(item => item.id === id);
+    if (bet) bet.units = Number((bet.units + 1).toFixed(2));
+  });
+}
+
+function updateYourBetResult(id: string, value: string): void {
+  mutateYourBets(() => {
+    const bet = yourBets.find(item => item.id === id);
+    if (!bet) return;
+    if (value === 'auto') delete bet.manualResult;
+    else if (value === 'pending' || value === 'win' || value === 'loss' || value === 'push') bet.manualResult = value;
+  });
+}
+
+function removeYourBet(id: string): void {
+  mutateYourBets(() => {
+    yourBets = yourBets.filter(bet => bet.id !== id);
+  });
+}
+
+function undoYourBetChange(): void {
+  const previous = yourBetUndoStack.pop();
+  if (!previous) return;
+  yourBets = previous;
+  saveYourBets();
+  renderYourBets();
+}
+
+function yourBetAddButton(pick: Pick): string {
+  const existing = yourBets.find(bet => bet.pickId === pick.id && bet.date === pickDateKey(pick));
+  return `<button type="button" class="add-ledger-btn ${existing ? 'is-added' : ''}" data-add-your-bet="${escapeHtml(pick.id)}">${existing ? `ADD 1U | ${escapeHtml(formatPlayerMeasure(existing.units))}U SAVED` : 'ADD TO YOUR BETS'}</button>`;
 }
 
 function shiftedDateKey(key: string, days: number): string {
@@ -348,11 +555,6 @@ function compareGameStartAsc(left: Pick[], right: Pick[]): number {
     || (left[0] ? gameName(left[0]) : '').localeCompare(right[0] ? gameName(right[0]) : '');
 }
 
-function compareGameActionableStart(left: Pick[], right: Pick[]): number {
-  return compareActionableStart(gameStartTimestamp(left), gameStartTimestamp(right))
-    || (left[0] ? gameName(left[0]) : '').localeCompare(right[0] ? gameName(right[0]) : '');
-}
-
 function comparePickActionableStart(left: Pick, right: Pick): number {
   return compareActionableStart(pickStartTimestamp(left), pickStartTimestamp(right))
     || gameName(left).localeCompare(gameName(right))
@@ -413,18 +615,34 @@ function renderFilters(): void {
   const container = document.getElementById('filter-bar');
   if (!container) return;
   const picks = getAllPicks();
-  const filters = ['ALL', ...new Set([
+  const available = [...new Set([
     ...picks.map(pick => pick.sport),
     ...picks.map(sourceName),
   ])];
-  container.innerHTML = filters.map(filter => (
-    `<button class="filter-btn ${activeFilter === filter ? 'active' : ''}" data-filter="${escapeHtml(filter)}">${escapeHtml(filter)}</button>`
-  )).join('');
+  const extraFilters = available.filter(filter => !PRIMARY_FILTERS.includes(filter)).sort((a, b) => a.localeCompare(b));
+  const label = (filter: string): string => filter === 'FIFA WC' ? 'FIFA' : filter;
+  const filterButton = (filter: string): string => (
+    `<button class="filter-btn ${activeFilter === filter ? 'active' : ''}" data-filter="${escapeHtml(filter)}">${escapeHtml(label(filter))}</button>`
+  );
+  const extraSelected = extraFilters.includes(activeFilter);
+  container.innerHTML = `${PRIMARY_FILTERS.map(filterButton).join('')}
+    <div class="filter-more-wrap" id="filter-more-wrap">
+      <button type="button" class="filter-more-btn ${extraSelected ? 'has-selection' : ''}" id="filter-more-btn" aria-label="Show more sports and sources" aria-expanded="${filterMoreOpen}">+</button>
+      <div class="filter-dropdown ${filterMoreOpen ? 'open' : ''}" id="filter-dropdown">
+        ${extraFilters.length ? extraFilters.map(filterButton).join('') : '<div class="filter-dropdown-empty">No other sources in this view</div>'}
+      </div>
+    </div>`;
   container.querySelectorAll<HTMLButtonElement>('[data-filter]').forEach(button => {
     button.addEventListener('click', () => {
       activeFilter = button.dataset.filter || 'ALL';
+      filterMoreOpen = false;
       render();
     });
+  });
+  document.getElementById('filter-more-btn')?.addEventListener('click', event => {
+    event.stopPropagation();
+    filterMoreOpen = !filterMoreOpen;
+    renderFilters();
   });
 }
 
@@ -541,7 +759,7 @@ function renderHome(): void {
       <div class="home-feed-section-head"><div><div class="home-feed-section-title">${escapeHtml(sport)}</div><div class="home-feed-section-meta">${games.reduce((sum, game) => sum + game[1].length, 0)} ${itemLabel} | ${games.length} matchups</div></div></div>
       <div class="home-feed-grid">${games.map(([, gamePicks]) => renderGameCard(gamePicks)).join('')}</div>
     </section>`).join('');
-  bindPlayerHomeRows(feed);
+  bindPickCards(feed);
   void refreshHomeScores(selectedDate, picks);
 }
 
@@ -565,28 +783,28 @@ function renderGameCard(picks: Pick[]): string {
 function renderPickRow(pick: Pick): string {
   const decision = String(pick.decision || '').trim().toUpperCase();
   const isPlayer = activePickMode === 'player';
-  const hasPlayerExtra = isPlayer && Boolean(playerExpandableDetails(pick).reason || playerExpandableDetails(pick).factors.length);
-  const expanded = hasPlayerExtra && expandedPlayerPickKeys.has(pick.id);
-  const playerAttrs = hasPlayerExtra
-    ? ` data-player-pick-card="${escapeHtml(pick.id)}" role="button" tabindex="0" aria-expanded="${expanded}"`
+  const details = pickExpandableDetails(pick);
+  const hasResearch = Boolean(details.reason || details.factors.length);
+  const expanded = hasResearch && expandedResearchPickKeys.has(pick.id);
+  const researchAttrs = hasResearch
+    ? ` data-research-pick-card="${escapeHtml(pick.id)}" role="button" tabindex="0" aria-expanded="${expanded}"`
     : '';
-  return `<div class="home-feed-row result-${pick.result}${isPlayer ? ' player-row' : ''}${hasPlayerExtra ? ' is-expandable' : ''}${expanded ? ' expanded' : ''}"${playerAttrs}>
+  return `<div class="home-feed-row result-${pick.result}${isPlayer ? ' player-row' : ''}${hasResearch ? ' is-expandable' : ''}${expanded ? ' expanded' : ''}"${researchAttrs}>
     ${isPlayer ? '' : `<span class="home-feed-row-sport">${escapeHtml(pick.sport)}</span>`}
-    <div class="home-feed-row-body"><div class="home-feed-row-source">${escapeHtml(sourceName(pick))}</div><div class="home-feed-row-pick">${escapeHtml(pick.pick)}</div><div class="home-feed-row-meta">${escapeHtml([formatOdds(pick), decision === 'PASS' ? '' : `${pick.units}u`, formatStart(pick.start_time), activePickMode === 'player' ? '' : pick.decision].filter(Boolean).join(' | '))}</div>${playerDetailsHtml(pick, expanded)}</div>
+    <div class="home-feed-row-body"><div class="home-feed-row-source">${escapeHtml(sourceName(pick))}</div><div class="home-feed-row-pick">${escapeHtml(pick.pick)}</div><div class="home-feed-row-meta">${escapeHtml([formatOdds(pick), decision === 'PASS' ? '' : `${pick.units}u`, formatStart(pick.start_time), activePickMode === 'player' ? '' : pick.decision].filter(Boolean).join(' | '))}</div>${researchDetailsHtml(pick, expanded)}</div>
     <div class="home-feed-row-pl ${pick.pl > 0 ? 'positive' : pick.pl < 0 ? 'negative' : 'neutral'}">${pick.result === 'pending' ? decision === 'PASS' ? 'Pass' : `${pick.units}u risk` : signedUnits(pick.pl)}</div>
-    <div class="home-feed-row-control">${resultBadge(pick.result)}</div>
+    <div class="home-feed-row-control">${resultBadge(pick.result)}${yourBetAddButton(pick)}</div>
   </div>`;
 }
 
-function bindPlayerHomeRows(feed: HTMLElement): void {
-  if (activePickMode !== 'player') return;
-  feed.querySelectorAll<HTMLElement>('[data-player-pick-card]').forEach(card => {
+function bindResearchDetailCards(container: HTMLElement): void {
+  container.querySelectorAll<HTMLElement>('[data-research-pick-card]').forEach(card => {
     const toggle = (): void => {
-      const pickId = card.dataset.playerPickCard || '';
+      const pickId = card.dataset.researchPickCard || '';
       if (!pickId) return;
-      const expanded = !expandedPlayerPickKeys.has(pickId);
-      if (expanded) expandedPlayerPickKeys.add(pickId);
-      else expandedPlayerPickKeys.delete(pickId);
+      const expanded = !expandedResearchPickKeys.has(pickId);
+      if (expanded) expandedResearchPickKeys.add(pickId);
+      else expandedResearchPickKeys.delete(pickId);
       card.classList.toggle('expanded', expanded);
       card.setAttribute('aria-expanded', String(expanded));
       const label = card.querySelector<HTMLElement>('[data-player-expand-label]');
@@ -600,6 +818,20 @@ function bindPlayerHomeRows(feed: HTMLElement): void {
       if (event.key !== 'Enter' && event.key !== ' ') return;
       event.preventDefault();
       toggle();
+    });
+  });
+}
+
+function bindPickCards(container: HTMLElement): void {
+  bindResearchDetailCards(container);
+  container.querySelectorAll<HTMLButtonElement>('[data-add-your-bet]').forEach(button => {
+    button.addEventListener('click', event => {
+      event.stopPropagation();
+      const pickId = button.dataset.addYourBet || '';
+      addPickToYourBets(pickId);
+      const saved = yourBets.find(bet => bet.pickId === pickId);
+      button.classList.add('is-added');
+      button.textContent = saved ? `ADD 1U | ${formatPlayerMeasure(saved.units)}U SAVED` : 'ADDED';
     });
   });
 }
@@ -747,10 +979,18 @@ function renderSearch(): void {
   ].some(value => detailValues(value).some(detail => detail.toLowerCase().includes(query))))
     .sort(comparePickActionableStart);
   meta.textContent = `${picks.length} open ${picks.length === 1 ? itemLabel.slice(0, -1) : itemLabel} for "${input.value.trim()}" | ${scope}`;
-  results.innerHTML = picks.length ? picks.map(pick => `
-    <div class="search-card"><div class="search-card-top">${resultBadge(pick.result)}<span class="badge badge-source">${escapeHtml(sourceName(pick))}</span><div class="search-card-pick">${escapeHtml(pick.pick)}</div><div class="search-card-odds">${escapeHtml(formatOdds(pick))}</div></div>
+  results.innerHTML = picks.length ? picks.map(pick => {
+    const details = pickExpandableDetails(pick);
+    const hasResearch = Boolean(details.reason || details.factors.length);
+    const expanded = hasResearch && expandedResearchPickKeys.has(pick.id);
+    return `<article class="search-card ${hasResearch ? 'is-expandable' : ''} ${expanded ? 'expanded' : ''}" ${hasResearch ? `data-research-pick-card="${escapeHtml(pick.id)}" role="button" tabindex="0" aria-expanded="${expanded}"` : ''}>
+      <div class="search-card-top">${resultBadge(pick.result)}<span class="badge badge-source">${escapeHtml(sourceName(pick))}</span><div class="search-card-pick">${escapeHtml(pick.pick)}</div><div class="search-card-odds">${escapeHtml(formatOdds(pick))}</div></div>
       <div class="search-card-row"><div class="search-card-field"><span class="search-card-field-label">GAME</span><span class="search-card-field-val">${escapeHtml(gameName(pick))}</span></div><div class="search-card-field"><span class="search-card-field-label">DATE</span><span class="search-card-field-val">${escapeHtml(pick.date)}</span></div><div class="search-card-field"><span class="search-card-field-label">P/L</span><span class="search-card-field-val">${signedUnits(pick.pl)}</span></div></div>
-    </div>`).join('') : `<div class="empty-state">No open ${itemLabel} match that search for the selected date</div>`;
+      ${researchDetailsHtml(pick, expanded)}
+      <div class="search-card-actions">${yourBetAddButton(pick)}</div>
+    </article>`;
+  }).join('') : `<div class="empty-state">No open ${itemLabel} match that search for the selected date</div>`;
+  bindPickCards(results);
 }
 
 function canonicalTeamForPick(pick: Pick, label: string): string {
@@ -812,40 +1052,6 @@ function trendSignalGroups(picks: Pick[]): TrendSignalGroup[] {
     matching: !group.pass && new Set(group.picks.map(sourceName)).size >= 2,
     pass: group.pass,
   })).sort((a, b) => Number(b.matching) - Number(a.matching) || b.picks.length - a.picks.length);
-}
-
-function renderTrendSignal(group: TrendSignalGroup): string {
-  const sources = [...new Set(group.picks.map(sourceName))];
-  const details = [...new Set(group.picks.flatMap(pick => [
-    formatOdds(pick),
-    pick.edge != null ? `edge ${pick.edge}` : '',
-  ]).filter(Boolean))];
-  return `<div class="trend-market ${group.matching ? 'matching' : ''} ${group.pass ? 'pass' : ''}">
-    <div class="trend-market-row"><span class="trend-market-label">${group.matching ? `${sources.length} MATCHING SOURCES` : group.pass ? 'PASS' : 'SINGLE SIGNAL'}</span><span class="trend-market-signal">${escapeHtml(group.label)}</span></div>
-    <div class="trend-source-row">${sources.map(source => `<span class="trend-source-pill">${escapeHtml(source)}</span>`).join('')}</div>
-    ${details.length ? `<div class="trend-market-detail">${escapeHtml(details.join(' | '))}</div>` : ''}
-  </div>`;
-}
-
-function renderTrends(): void {
-  const container = document.getElementById('trends-container');
-  if (!container) return;
-  ensureSelection();
-  const pending = getAllPicks().filter(pick => pick.result === 'pending' && pickDateKey(pick) === selectedDate);
-  const games = new Map<string, Pick[]>();
-  pending.forEach(pick => games.set(gameKey(pick), [...(games.get(gameKey(pick)) || []), pick]));
-  const consensus = [...games.values()].map(picks => {
-    const signals = trendSignalGroups(picks);
-    const matching = signals.filter(signal => signal.matching).length;
-    const actionable = signals.filter(signal => !signal.pass).length;
-    return { picks, signals, matching, split: matching === 0 && actionable > 1 };
-  }).sort((a, b) => compareGameActionableStart(a.picks, b.picks) || b.matching - a.matching || b.picks.length - a.picks.length);
-  const matchingGroups = consensus.reduce((total, game) => total + game.matching, 0);
-  const conflictGames = consensus.filter(game => game.split).length;
-
-  container.innerHTML = `<div class="trend-head"><div class="trend-title">Consensus Radar</div><div class="trend-subtitle">${escapeHtml(dateLabel(selectedDate, true))} open picks. Green appears when two or more sources make the same market selection.</div></div>
-    <div class="trend-summary-grid"><div class="trend-summary-box"><div class="trend-summary-val">${matchingGroups}</div><div class="trend-summary-label">MATCHING SIGNALS</div></div><div class="trend-summary-box"><div class="trend-summary-val">${games.size}</div><div class="trend-summary-label">MATCHUPS</div></div><div class="trend-summary-box"><div class="trend-summary-val">${conflictGames}</div><div class="trend-summary-label">CONFLICT GAMES</div></div><div class="trend-summary-box"><div class="trend-summary-val">${new Set(pending.map(sourceName)).size}</div><div class="trend-summary-label">SOURCES</div></div></div>
-    ${consensus.length ? `<div class="trend-board">${consensus.map(game => `<div class="trend-game-card ${game.split ? 'split' : ''}"><div class="trend-game-head"><div><div class="trend-game-name">${escapeHtml(gameName(game.picks[0]))}</div><div class="trend-game-meta">${escapeHtml(game.picks[0].sport)} | ${escapeHtml(dateLabel(pickDateKey(game.picks[0])))}</div></div><div class="trend-strength-pill ${game.matching ? 'strong' : game.split ? 'split' : 'lean'}">${game.matching ? `${game.matching} MATCHING` : game.split ? 'MIXED SIGNALS' : 'LEAN'}</div></div>${game.signals.map(renderTrendSignal).join('')}</div>`).join('')}</div>` : '<div class="empty-state">No consensus signals for these open picks yet.</div>'}`;
 }
 
 function pickProbability(pick: Pick): number | null {
@@ -954,7 +1160,10 @@ function dailyPickGroupCard(group: DailyPickGroup): string {
     : group.tags.includes('PROBABILITY LEADER')
       ? 'High expected win probability, but price and the official model decision still matter.'
       : 'Useful context for review, but it does not currently qualify as a top actionable pick.';
-  return `<article class="daily-bet-card decision-${decision.toLowerCase()} ${pricey ? 'is-pricey' : ''}">
+  const details = pickExpandableDetails(pick);
+  const hasResearch = Boolean(details.reason || details.factors.length);
+  const expanded = hasResearch && expandedResearchPickKeys.has(pick.id);
+  return `<article class="daily-bet-card decision-${decision.toLowerCase()} ${pricey ? 'is-pricey' : ''} ${hasResearch ? 'is-expandable' : ''} ${expanded ? 'expanded' : ''}" ${hasResearch ? `data-research-pick-card="${escapeHtml(pick.id)}" role="button" tabindex="0" aria-expanded="${expanded}"` : ''}>
     <div class="daily-bet-top"><div><div class="daily-bet-source">${sources.length} ${sources.length === 1 ? 'SOURCE' : 'SOURCES'} | ${escapeHtml(pick.sport)}</div><div class="daily-bet-pick">${escapeHtml(pick.pick)}</div></div><div class="daily-bet-score"><strong>${escapeHtml(metric)}</strong><span>${metricLabel}</span></div></div>
     <div class="daily-bet-game">${escapeHtml(gameName(pick))} | ${escapeHtml(formatStart(pick.start_time))}</div>
     <div class="daily-bet-tags">${group.tags.map(tag => `<span class="${tag === 'PRICEY FAVORITE' ? 'pricey' : 'daily-qualifier-tag'}">${escapeHtml(tag)}</span>`).join('')}${pricey && !group.tags.includes('PRICEY FAVORITE') ? '<span class="pricey">PRICEY FAVORITE</span>' : ''}</div>
@@ -970,6 +1179,8 @@ function dailyPickGroupCard(group: DailyPickGroup): string {
       return `<div class="daily-pick-source-row"><strong>${escapeHtml(sourceName(sourcePick))}</strong><span>${escapeHtml(sourceMeta)}</span></div>`;
     }).join('')}</div>
     <div class="daily-bet-note">${escapeHtml(note)}</div>
+    ${researchDetailsHtml(pick, expanded)}
+    <div class="daily-bet-actions">${yourBetAddButton(pick)}</div>
   </article>`;
 }
 
@@ -1002,7 +1213,12 @@ function dailyConsensusCards(picks: Pick[]): string {
     .map(signal => ({ signal, game: gamePicks[0] })))
     .sort((a, b) => comparePickActionableStart(a.game, b.game) || b.signal.picks.length - a.signal.picks.length);
   if (!matching.length) return '<div class="daily-empty"><div class="daily-empty-title">No true consensus yet</div><div class="daily-empty-sub">Two independent sources must make the same market selection.</div></div>';
-  return `<div class="daily-consensus-grid">${matching.map(({ signal, game }) => `<article class="daily-consensus-card"><div class="daily-consensus-count">${new Set(signal.picks.map(sourceName)).size} SOURCES</div><div class="daily-consensus-pick">${escapeHtml(signal.label)}</div><div class="daily-consensus-game">${escapeHtml(gameName(game))}</div><div class="trend-source-row">${[...new Set(signal.picks.map(sourceName))].map(source => `<span class="trend-source-pill">${escapeHtml(source)}</span>`).join('')}</div></article>`).join('')}</div>`;
+  return `<div class="daily-consensus-grid">${matching.map(({ signal, game }) => {
+    const details = pickExpandableDetails(game);
+    const hasResearch = Boolean(details.reason || details.factors.length);
+    const expanded = hasResearch && expandedResearchPickKeys.has(game.id);
+    return `<article class="daily-consensus-card ${hasResearch ? 'is-expandable' : ''} ${expanded ? 'expanded' : ''}" ${hasResearch ? `data-research-pick-card="${escapeHtml(game.id)}" role="button" tabindex="0" aria-expanded="${expanded}"` : ''}><div class="daily-consensus-count">${new Set(signal.picks.map(sourceName)).size} SOURCES</div><div class="daily-consensus-pick">${escapeHtml(signal.label)}</div><div class="daily-consensus-game">${escapeHtml(gameName(game))}</div><div class="trend-source-row">${[...new Set(signal.picks.map(sourceName))].map(source => `<span class="trend-source-pill">${escapeHtml(source)}</span>`).join('')}</div>${researchDetailsHtml(game, expanded)}<div class="daily-bet-actions">${yourBetAddButton(game)}</div></article>`;
+  }).join('')}</div>`;
 }
 
 function setDailyView(view: string): void {
@@ -1101,38 +1317,91 @@ function renderDaily(): void {
     </div>
     <div class="daily-active-content">${activeBody}</div>
     <div class="daily-disclaimer"><strong>Quick read, not a blind card.</strong> Model probability estimates the chance of winning. Edge compares that chance with the market price. Recent records and consensus add context, but none guarantees the next result. Duplicate market cards are merged, with every contributing source shown inside the card.</div>`;
+  bindPickCards(container);
+}
+
+function yourBetRecord(stats: Stats): string {
+  return `${stats.wins}-${stats.losses}${stats.pushes ? `-${stats.pushes}` : ''}`;
+}
+
+function yourBetSummaryCard(label: string, bets: UserBet[]): string {
+  const stats = userBetStats(bets);
+  return `<article class="your-bets-summary-card">
+    <div class="your-bets-summary-label">${escapeHtml(label)}</div>
+    <div class="your-bets-summary-record">${yourBetRecord(stats)}</div>
+    <div class="your-bets-summary-meta"><span class="${stats.net > 0 ? 'positive' : stats.net < 0 ? 'negative' : 'neutral'}">${signedUnits(stats.net)}</span><span>${stats.roi == null ? 'ROI —' : `${(stats.roi * 100).toFixed(1)}% ROI`}</span><span>${stats.pending} open</span></div>
+  </article>`;
+}
+
+function yourBetResultOptions(bet: UserBet): string {
+  const current = bet.manualResult || (bet.pickId ? 'auto' : bet.result);
+  const resolved = resolvedUserBetResult(bet);
+  const options = bet.pickId
+    ? [['auto', `AUTO: ${resolved === 'pending' ? 'OPEN' : resolved.toUpperCase()}`], ['pending', 'OPEN'], ['win', 'WIN'], ['loss', 'LOSS'], ['push', 'PUSH']]
+    : [['pending', 'OPEN'], ['win', 'WIN'], ['loss', 'LOSS'], ['push', 'PUSH']];
+  return options.map(([value, label]) => `<option value="${value}" ${current === value ? 'selected' : ''}>${label}</option>`).join('');
+}
+
+function yourBetCard(bet: UserBet): string {
+  const result = resolvedUserBetResult(bet);
+  const profit = userBetProfit(bet);
+  return `<article class="your-bet-card result-${result}">
+    <div class="your-bet-card-head"><div><div class="your-bet-card-kicker">${escapeHtml(bet.sport)} | ${escapeHtml(bet.source)}</div><div class="your-bet-card-pick">${escapeHtml(bet.selection)}</div><div class="your-bet-card-game">${escapeHtml([bet.matchup, dateLabel(bet.date), bet.odds == null ? '' : bet.odds > 0 ? `+${bet.odds}` : bet.odds].filter(Boolean).join(' | '))}</div></div>${resultBadge(result)}</div>
+    <div class="your-bet-card-controls">
+      <label><span>Units</span><input type="number" min="0.01" step="0.25" value="${bet.units}" onchange="updateYourBetUnits('${escapeHtml(bet.id)}', this.value)"></label>
+      <label><span>Result</span><select onchange="updateYourBetResult('${escapeHtml(bet.id)}', this.value)">${yourBetResultOptions(bet)}</select></label>
+      <div class="your-bet-return"><span>${result === 'pending' ? 'To Win' : 'P/L'}</span><strong class="${profit > 0 ? 'positive' : profit < 0 ? 'negative' : 'neutral'}">${result === 'pending' ? bet.odds == null ? `${bet.units}u` : signedUnits(Math.max(0, userBetProfit({ ...bet, result: 'win', manualResult: 'win' }))) : signedUnits(profit)}</strong></div>
+    </div>
+    <div class="your-bet-card-actions"><button type="button" onclick="addYourBetUnit('${escapeHtml(bet.id)}')">+1 UNIT</button><button type="button" class="danger" onclick="removeYourBet('${escapeHtml(bet.id)}')">REMOVE</button></div>
+  </article>`;
+}
+
+function renderYourBets(): void {
+  const container = document.getElementById('your-bets-container');
+  if (!container) return;
+  syncYourBetResults();
+  const today = centralDateKey();
+  const yesterday = shiftedDateKey(today, -1);
+  const todayBets = yourBets.filter(bet => bet.date === today);
+  const yesterdayBets = yourBets.filter(bet => bet.date === yesterday);
+  const history = yourBets.filter(bet => bet.date !== today)
+    .sort((a, b) => b.date.localeCompare(a.date) || b.addedAt.localeCompare(a.addedAt));
+  const sortedToday = [...todayBets].sort((a, b) => b.addedAt.localeCompare(a.addedAt));
+  container.innerHTML = `<div class="your-bets-shell">
+    <section class="your-bets-hero">
+      <div><div class="your-bets-eyebrow">DEVICE-LOCAL LEDGER</div><div class="your-bets-title">Your Bets</div><div class="your-bets-sub">Build an unlimited personal card and track the results. The daily pick board refreshes each day; your ledger history stays saved only on this device.</div></div>
+      <div class="your-bets-hero-actions"><button type="button" onclick="refreshAutoGrades()">REFRESH RESULTS</button><button type="button" onclick="undoYourBetChange()" ${yourBetUndoStack.length ? '' : 'disabled'}>UNDO CHANGE</button><button type="button" class="primary" onclick="switchTab('daily')">ADD MORE PICKS</button></div>
+    </section>
+    <div class="your-bets-summary-grid">${yourBetSummaryCard('TODAY', todayBets)}${yourBetSummaryCard('YESTERDAY', yesterdayBets)}${yourBetSummaryCard('ALL TIME', yourBets)}</div>
+    <section class="your-bet-composer">
+      <div class="your-bet-section-head"><div><div class="your-bet-section-title">Add A Custom Bet</div><div class="your-bet-section-sub">Use this for any pick that is not already on the board. There is no pick or unit limit.</div></div></div>
+      <div class="your-bet-form"><label class="wide"><span>Selection</span><input id="your-bet-selection" type="text" placeholder="Kelsey Plum over 21.5 points"></label><label><span>Sport</span><input id="your-bet-sport" type="text" placeholder="WNBA"></label><label><span>Odds</span><input id="your-bet-odds" type="number" placeholder="-110"></label><label><span>Units</span><input id="your-bet-units" type="number" min="0.01" step="0.25" value="1"></label><label><span>Date</span><input id="your-bet-date" type="date" value="${today}"></label><button type="button" onclick="addCustomYourBet()">ADD TO LEDGER</button></div>
+      <div class="your-bet-form-error" id="your-bet-form-error"></div>
+    </section>
+    <section class="your-bet-board"><div class="your-bet-section-head"><div><div class="your-bet-section-title">Today&rsquo;s Ticket</div><div class="your-bet-section-sub">${sortedToday.length} saved pick${sortedToday.length === 1 ? '' : 's'} for ${escapeHtml(dateLabel(today, true))}</div></div><span>${userBetStats(todayBets).pending} OPEN</span></div>${sortedToday.length ? `<div class="your-bet-grid">${sortedToday.map(yourBetCard).join('')}</div>` : '<div class="your-bet-empty"><strong>No picks saved for today yet.</strong><span>Add from Home, Find Picks, Best Bets, or enter a custom bet above.</span></div>'}</section>
+    <section class="your-bet-board"><div class="your-bet-section-head"><div><div class="your-bet-section-title">Previous Results</div><div class="your-bet-section-sub">Your recent device-local history, newest first.</div></div><span>${history.length} SAVED</span></div>${history.length ? `<div class="your-bet-grid">${history.map(yourBetCard).join('')}</div>` : '<div class="your-bet-empty"><strong>No previous bets yet.</strong><span>Yesterday and all-time performance will build here as you use the ledger.</span></div>'}</section>
+  </div>`;
 }
 
 function render(): void {
   renderHome();
   updateOverallStats();
   renderRankings();
+  renderYourBets();
   const active = document.querySelector('.tab-content.active')?.id;
   if (active === 'tab-search') renderSearch();
-  if (active === 'tab-trends') renderTrends();
   if (active === 'tab-daily') renderDaily();
 }
 
-function syncModeTabs(): void {
-  const hidePlayerTabs = activePickMode === 'player';
-  document.querySelectorAll<HTMLButtonElement>('[data-player-hidden-tab]').forEach(tab => {
-    tab.hidden = hidePlayerTabs;
-    tab.setAttribute('aria-hidden', hidePlayerTabs ? 'true' : 'false');
-    if (hidePlayerTabs) tab.classList.remove('active');
-  });
-}
-
 function switchTab(name: string): void {
-  if (activePickMode === 'player' && name === 'trends') name = 'home';
-  syncModeTabs();
   document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
   document.querySelector<HTMLElement>(`.tab[onclick*="'${name}'"]`)?.classList.add('active');
   document.getElementById(`tab-${name}`)?.classList.add('active');
   if (name === 'home') renderHome();
   if (name === 'search') renderSearch();
-  if (name === 'trends') renderTrends();
   if (name === 'daily') renderDaily();
+  if (name === 'your-bets') renderYourBets();
 }
 
 function setHomeResultMode(mode: string): void {
@@ -1501,8 +1770,9 @@ function switchPickMode(mode: PickMode): void {
   followCentralToday = true;
   calendarMonth = '';
   calendarOpen = false;
+  filterMoreOpen = false;
   expandedSourceKeys.clear();
-  expandedPlayerPickKeys.clear();
+  expandedResearchPickKeys.clear();
   homeScores.clear();
   const search = document.getElementById('search-input') as HTMLInputElement | null;
   if (search) {
@@ -1511,12 +1781,7 @@ function switchPickMode(mode: PickMode): void {
       ? 'Find a player, prop, matchup, or source in the selected date’s open props...'
       : 'Find a team, matchup, or source in the selected date’s open picks...';
   }
-  syncModeTabs();
   updateSyncStatus();
-  if (mode === 'player' && document.getElementById('tab-trends')?.classList.contains('active')) {
-    switchTab('home');
-    return;
-  }
   render();
 }
 
@@ -1534,6 +1799,12 @@ Object.assign(window, {
   toggleHomeDatePicker,
   refreshAutoGrades,
   renderSearch,
+  addCustomYourBet,
+  updateYourBetUnits,
+  addYourBetUnit,
+  updateYourBetResult,
+  removeYourBet,
+  undoYourBetChange,
 });
 
 document.addEventListener('click', event => {
@@ -1541,6 +1812,11 @@ document.addEventListener('click', event => {
   if (calendarOpen && wrap && !wrap.contains(event.target as Node)) {
     calendarOpen = false;
     renderHome();
+  }
+  const filterWrap = document.getElementById('filter-more-wrap');
+  if (filterMoreOpen && filterWrap && !filterWrap.contains(event.target as Node)) {
+    filterMoreOpen = false;
+    renderFilters();
   }
 });
 
@@ -1554,8 +1830,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   initMobileMode();
   activePickMode = initPickMode();
   setDataPickMode(activePickMode);
-  syncModeTabs();
   initSettingsUI();
+  yourBets = readYourBets();
   await loadAllData();
   lastCentralDate = centralDateKey();
   updateSyncStatus();
