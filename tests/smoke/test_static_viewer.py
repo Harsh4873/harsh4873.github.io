@@ -219,27 +219,32 @@ def test_player_mode_hides_unneeded_tabs_and_keeps_prop_sources_separate():
     assert "playerProp && fallbackSource" in data
 
 
-def test_tab_ordering_prioritizes_home_start_time_and_late_open_picks_elsewhere():
+def test_tab_ordering_prioritizes_home_start_time_and_actionable_picks_elsewhere():
     main = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
 
     for helper in (
         "function pickStartTimestamp(",
         "function gameStartTimestamp(",
         "function compareGameStartAsc(",
-        "function compareGameStartDesc(",
-        "function comparePickStartDesc(",
+        "function startBucket(",
+        "function compareActionableStart(",
+        "function compareGameActionableStart(",
+        "function comparePickActionableStart(",
         "function compareHomePickRows(",
     ):
         assert helper in main
+    assert "return timestamp > now ? 0 : 2" in main
+    assert "if (leftBucket !== rightBucket) return leftBucket - rightBucket" in main
+    assert "return leftBucket === 2 ? right - left : left - right" in main
     assert "const sortedGames = [...groups.entries()].sort((left, right) => compareGameStartAsc(left[1], right[1]))" in main
     assert "const sortedPicks = [...picks].sort(compareHomePickRows)" in main
     assert "homeDecisionRank(left) - homeDecisionRank(right)" in main
     assert "(pickProbability(right) || 0) - (pickProbability(left) || 0)" in main
-    assert ".sort(comparePickStartDesc);" in main
-    assert "compareGameStartDesc(a.picks, b.picks)" in main
-    assert "comparePickStartDesc(a.primary, b.primary)" in main
-    assert "comparePickStartDesc(a.game, b.game)" in main
-    assert ".sort(comparePickStartDesc));" in main
+    assert ".sort(comparePickActionableStart);" in main
+    assert "compareGameActionableStart(a.picks, b.picks)" in main
+    assert "comparePickActionableStart(a.primary, b.primary)" in main
+    assert "comparePickActionableStart(a.game, b.game)" in main
+    assert ".sort(comparePickActionableStart));" in main
 
 
 def test_cache_manifest_lists_committed_dated_payloads():

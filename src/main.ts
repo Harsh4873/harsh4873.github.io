@@ -327,11 +327,19 @@ function compareStartAsc(left: number | null, right: number | null): number {
   return left - right;
 }
 
-function compareStartDesc(left: number | null, right: number | null): number {
+function startBucket(timestamp: number | null, now = Date.now()): number {
+  if (timestamp == null) return 1;
+  return timestamp > now ? 0 : 2;
+}
+
+function compareActionableStart(left: number | null, right: number | null, now = Date.now()): number {
+  const leftBucket = startBucket(left, now);
+  const rightBucket = startBucket(right, now);
+  if (leftBucket !== rightBucket) return leftBucket - rightBucket;
   if (left == null && right == null) return 0;
   if (left == null) return 1;
   if (right == null) return -1;
-  return right - left;
+  return leftBucket === 2 ? right - left : left - right;
 }
 
 function compareGameStartAsc(left: Pick[], right: Pick[]): number {
@@ -339,13 +347,13 @@ function compareGameStartAsc(left: Pick[], right: Pick[]): number {
     || (left[0] ? gameName(left[0]) : '').localeCompare(right[0] ? gameName(right[0]) : '');
 }
 
-function compareGameStartDesc(left: Pick[], right: Pick[]): number {
-  return compareStartDesc(gameStartTimestamp(left), gameStartTimestamp(right))
+function compareGameActionableStart(left: Pick[], right: Pick[]): number {
+  return compareActionableStart(gameStartTimestamp(left), gameStartTimestamp(right))
     || (left[0] ? gameName(left[0]) : '').localeCompare(right[0] ? gameName(right[0]) : '');
 }
 
-function comparePickStartDesc(left: Pick, right: Pick): number {
-  return compareStartDesc(pickStartTimestamp(left), pickStartTimestamp(right))
+function comparePickActionableStart(left: Pick, right: Pick): number {
+  return compareActionableStart(pickStartTimestamp(left), pickStartTimestamp(right))
     || gameName(left).localeCompare(gameName(right))
     || left.pick.localeCompare(right.pick);
 }
@@ -736,7 +744,7 @@ function renderSearch(): void {
     pick.date,
     gameName(pick),
   ].some(value => detailValues(value).some(detail => detail.toLowerCase().includes(query))))
-    .sort(comparePickStartDesc);
+    .sort(comparePickActionableStart);
   meta.textContent = `${picks.length} open ${picks.length === 1 ? itemLabel.slice(0, -1) : itemLabel} for "${input.value.trim()}" | ${scope}`;
   results.innerHTML = picks.length ? picks.map(pick => `
     <div class="search-card"><div class="search-card-top">${resultBadge(pick.result)}<span class="badge badge-source">${escapeHtml(sourceName(pick))}</span><div class="search-card-pick">${escapeHtml(pick.pick)}</div><div class="search-card-odds">${escapeHtml(formatOdds(pick))}</div></div>
@@ -827,7 +835,7 @@ function renderTrends(): void {
     const matching = signals.filter(signal => signal.matching).length;
     const actionable = signals.filter(signal => !signal.pass).length;
     return { picks, signals, matching, split: matching === 0 && actionable > 1 };
-  }).sort((a, b) => compareGameStartDesc(a.picks, b.picks) || b.matching - a.matching || b.picks.length - a.picks.length);
+  }).sort((a, b) => compareGameActionableStart(a.picks, b.picks) || b.matching - a.matching || b.picks.length - a.picks.length);
   const matchingGroups = consensus.reduce((total, game) => total + game.matching, 0);
   const conflictGames = consensus.filter(game => game.split).length;
 
@@ -887,7 +895,7 @@ function dailySourceForms(date: string, todaysPicks: Pick[]): DailySourceForm[] 
     const lastStats = statsFor(last);
     const todayBets = uniqueDailyPicks(todaysPicks
       .filter(pick => sourceName(pick) === source && pick.result === 'pending' && dailyDecision(pick) === 'BET')
-      .sort(comparePickStartDesc));
+      .sort(comparePickActionableStart));
     const score = (recentStats.winRate || 0) * 100 + Math.min(recentStats.wins + recentStats.losses, 20) * 0.35 + recentStats.net * 0.08;
     return { source, recentStats, lastStats, recentDates, todayBets, score };
   }).filter(form => form.recentStats.wins + form.recentStats.losses >= 3)
@@ -923,7 +931,7 @@ function dailyPickGroups(
     const ranked = [...bySource.values()].sort((a, b) => dailyPickScore(b, forms) - dailyPickScore(a, forms));
     const tags = [...new Set(groupedPicks.flatMap(pick => [...(tagById.get(pick.id) || [])]))];
     return { key, picks: ranked, primary: ranked[0], tags, score: dailyPickScore(ranked[0], forms) };
-  }).sort((a, b) => comparePickStartDesc(a.primary, b.primary) || b.score - a.score || b.picks.length - a.picks.length);
+  }).sort((a, b) => comparePickActionableStart(a.primary, b.primary) || b.score - a.score || b.picks.length - a.picks.length);
 }
 
 function dailyPickGroupCard(group: DailyPickGroup): string {
@@ -988,7 +996,7 @@ function dailyConsensusCards(picks: Pick[]): string {
   const matching = [...games.values()].flatMap(gamePicks => trendSignalGroups(gamePicks)
     .filter(signal => signal.matching)
     .map(signal => ({ signal, game: gamePicks[0] })))
-    .sort((a, b) => comparePickStartDesc(a.game, b.game) || b.signal.picks.length - a.signal.picks.length);
+    .sort((a, b) => comparePickActionableStart(a.game, b.game) || b.signal.picks.length - a.signal.picks.length);
   if (!matching.length) return '<div class="daily-empty"><div class="daily-empty-title">No true consensus yet</div><div class="daily-empty-sub">Two independent sources must make the same market selection.</div></div>';
   return `<div class="daily-consensus-grid">${matching.map(({ signal, game }) => `<article class="daily-consensus-card"><div class="daily-consensus-count">${new Set(signal.picks.map(sourceName)).size} SOURCES</div><div class="daily-consensus-pick">${escapeHtml(signal.label)}</div><div class="daily-consensus-game">${escapeHtml(gameName(game))}</div><div class="trend-source-row">${[...new Set(signal.picks.map(sourceName))].map(source => `<span class="trend-source-pill">${escapeHtml(source)}</span>`).join('')}</div></article>`).join('')}</div>`;
 }
@@ -1056,7 +1064,7 @@ function renderDaily(): void {
   ).values()];
   const researchGroups = dailyPickGroups(researchCandidates, tagsById, formsBySource, pending);
   const hotForms = forms.filter(form => form.todayBets.length)
-    .sort((a, b) => comparePickStartDesc(a.todayBets[0], b.todayBets[0]) || b.score - a.score)
+    .sort((a, b) => comparePickActionableStart(a.todayBets[0], b.todayBets[0]) || b.score - a.score)
     .slice(0, 8);
   const games = new Map<string, Pick[]>();
   pending.forEach(pick => games.set(gameKey(pick), [...(games.get(gameKey(pick)) || []), pick]));
