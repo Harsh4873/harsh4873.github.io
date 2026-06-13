@@ -1,8 +1,6 @@
 {
   "date": "2026-06-13",
-  "errors": [
-    "nba: NBA New runtime failed (  File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 671, in get |     return self.request(\"GET\", url, params=params, **kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 651, in request |     resp = self.send(prep, **send_kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 784, in send |     r = adapter.send(request, **kwargs) |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/adapters.py\", line 742, in send |     raise ReadTimeout(e, request=request) | requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='stats.nba.com', port=443): Read timed out. (read timeout=30))"
-  ],
+  "errors": [],
   "externalFeedsUpdatedAt": "2026-06-13T15:07:40.746096Z",
   "external_feeds": {
     "scores24_mlb": {
@@ -396,7 +394,7 @@
       "updatedAt": "2026-06-13T15:07:40.746096Z"
     }
   },
-  "generatedAt": "2026-06-13T15:02:29.230906Z",
+  "generatedAt": "2026-06-13T15:26:51.517596Z",
   "generatedBy": "github-actions:model-cache-refresh",
   "ipl": {},
   "mlb": {},
@@ -11167,8 +11165,30 @@
       "raw_lines": 147
     },
     "nba": {
-      "error": "NBA New runtime failed (  File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 671, in get |     return self.request(\"GET\", url, params=params, **kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 651, in request |     resp = self.send(prep, **send_kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 784, in send |     r = adapter.send(request, **kwargs) |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/adapters.py\", line 742, in send |     raise ReadTimeout(e, request=request) | requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='stats.nba.com', port=443): Read timed out. (read timeout=30))",
-      "ok": false
+      "cache_date": "2026-06-13",
+      "cache_writes": {
+        "admin_picks/2026-06-13/nba": false,
+        "admin_picks/2026-06-13/nba_new": false
+      },
+      "ok": true,
+      "picks": [
+        {
+          "away_team": "Knicks",
+          "decision": "BET",
+          "edge": null,
+          "home_team": "Spurs",
+          "odds": null,
+          "pick": "Spurs -4.2 (Knicks @ Spurs)",
+          "predicted_spread": 4.21,
+          "prob": 0.691,
+          "probability": 0.691,
+          "source": "NBA New",
+          "sport": "NBA",
+          "team": "Spurs",
+          "units": 1.13
+        }
+      ],
+      "raw_lines": 77
     },
     "nba_playoffs": {
       "ok": true,
@@ -12069,8 +12089,30 @@
     }
   },
   "nba": {
-    "error": "NBA New runtime failed (  File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 671, in get |     return self.request(\"GET\", url, params=params, **kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 651, in request |     resp = self.send(prep, **send_kwargs) |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/sessions.py\", line 784, in send |     r = adapter.send(request, **kwargs) |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |   File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/adapters.py\", line 742, in send |     raise ReadTimeout(e, request=request) | requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='stats.nba.com', port=443): Read timed out. (read timeout=30))",
-    "ok": false
+    "cache_date": "2026-06-13",
+    "cache_writes": {
+      "admin_picks/2026-06-13/nba": false,
+      "admin_picks/2026-06-13/nba_new": false
+    },
+    "ok": true,
+    "picks": [
+      {
+        "away_team": "Knicks",
+        "decision": "BET",
+        "edge": null,
+        "home_team": "Spurs",
+        "odds": null,
+        "pick": "Spurs -4.2 (Knicks @ Spurs)",
+        "predicted_spread": 4.21,
+        "prob": 0.691,
+        "probability": 0.691,
+        "source": "NBA New",
+        "sport": "NBA",
+        "team": "Spurs",
+        "units": 1.13
+      }
+    ],
+    "raw_lines": 77
   },
   "nba_old": {},
   "nba_playoffs": {
@@ -12541,7 +12583,7 @@
     ],
     "updatedAt": "2026-06-13T15:07:40.746096Z"
   },
-  "updatedAt": "2026-06-13T15:07:40.746096Z",
+  "updatedAt": "2026-06-13T15:26:51.517596Z",
   "wnba": {
     "ok": true,
     "picks": [
