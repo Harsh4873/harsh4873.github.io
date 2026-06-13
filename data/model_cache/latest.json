@@ -11169,6 +11169,7 @@
           "raw_edge": 9.07,
           "raw_probability": 0.6145,
           "raw_units": 0.05,
+          "result": "loss",
           "selection": "Under",
           "source": "MLB NEW",
           "sport": "MLB",
@@ -11371,6 +11372,7 @@
           "raw_edge": 15.33,
           "raw_probability": 0.6771,
           "raw_units": 0.08,
+          "result": "loss",
           "selection": "Over",
           "source": "MLB NEW",
           "sport": "MLB",
@@ -11473,6 +11475,7 @@
           "raw_edge": 4.95,
           "raw_probability": 0.5733,
           "raw_units": 0.02,
+          "result": "win",
           "selection": "Under",
           "source": "MLB NEW",
           "sport": "MLB",
@@ -11621,6 +11624,7 @@
           "raw_edge": 10.1,
           "raw_probability": 0.601,
           "raw_units": 0.57,
+          "result": "win",
           "source": "MLB NEW",
           "sport": "MLB",
           "start_time": "2026-06-13T20:10Z",
@@ -11679,6 +11683,7 @@
           "raw_edge": 8.54,
           "raw_probability": 0.6092,
           "raw_units": 0.04,
+          "result": "win",
           "selection": "Over",
           "source": "MLB NEW",
           "sport": "MLB",
@@ -11827,6 +11832,7 @@
           "raw_edge": 5.56,
           "raw_probability": 0.5556,
           "raw_units": 0.28,
+          "result": "win",
           "source": "MLB NEW",
           "sport": "MLB",
           "start_time": "2026-06-13T20:10Z",
@@ -12829,6 +12835,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-13-06-2026-pittsburgh-pirates-miami-marlins-prediction",
           "sport": "MLB",
@@ -12865,6 +12872,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-13-06-2026-baltimore-orioles-san-diego-padres-prediction",
           "sport": "MLB",
@@ -12901,6 +12909,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-13-06-2026-washington-nationals-seattle-mariners-prediction",
           "sport": "MLB",
@@ -12937,6 +12946,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-13-06-2026-cincinnati-reds-arizona-diamondbacks-prediction",
           "sport": "MLB",
@@ -12973,6 +12983,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-13-06-2026-new-york-mets-atlanta-braves-prediction",
           "sport": "MLB",
@@ -13009,6 +13020,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-13-06-2026-cleveland-guardians-detroit-tigers-prediction",
           "sport": "MLB",
@@ -13045,6 +13057,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-13-06-2026-boston-red-sox-texas-rangers-prediction",
           "sport": "MLB",
@@ -13081,6 +13094,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-13-06-2026-chicago-white-sox-los-angeles-dodgers-prediction",
           "sport": "MLB",
