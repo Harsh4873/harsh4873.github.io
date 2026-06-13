@@ -67,6 +67,7 @@ const ESPN_ENDPOINTS: Record<string, [string, string]> = {
   MLB: ['baseball', 'mlb'],
   NBA: ['basketball', 'nba'],
   WNBA: ['basketball', 'wnba'],
+  'FIFA WC': ['soccer', 'fifa.world'],
   NHL: ['hockey', 'nhl'],
 };
 

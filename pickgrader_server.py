@@ -350,6 +350,7 @@ SPORT_TO_ESPNSLUG = {
     "NHL": ("hockey", "nhl"),
     "MLB": ("baseball", "mlb"),
     "EPL": ("soccer", "eng.1"),
+    "FIFA WC": ("soccer", "fifa.world"),
     "WBC": ("baseball", "world-baseball-classic"),
 }
 
@@ -1344,6 +1345,7 @@ def run_daily_model_caches_to_firestore(date_str: str | None = None) -> dict[str
         "mlb_new": (run_mlb_model, (date_iso, "new")),
         "mlb_inning": (run_mlb_inning_model, (date_iso,)),
         "mlb_first_five": (run_mlb_first_five_model, (date_iso,)),
+        "fifa_world_cup": (run_fifa_world_cup_model, (date_iso,)),
     }
     if IPL_AVAILABLE:
         model_jobs["ipl"] = (_run_ipl_model_subprocess, (None, None, None, None, None, LEDGER_DB_FILE))
@@ -1383,6 +1385,7 @@ def run_daily_model_caches_to_firestore(date_str: str | None = None) -> dict[str
         "mlb_new": results.get("mlb_new", {}),
         "mlb_inning": results.get("mlb_inning", {}),
         "mlb_first_five": results.get("mlb_first_five", {}),
+        "fifa_world_cup": results.get("fifa_world_cup", {}),
         "ipl": results.get("ipl", {}),
         "props_games": props_games,
     }
@@ -2159,7 +2162,7 @@ def grade_pick(pick: dict[str, Any], game: dict[str, Any]) -> str:
             return "pending"
         team_score, opp_score = resolved
         if team_score == opp_score:
-            return "push"
+            return "loss" if str(pick.get("market_type") or "") == "soccer_moneyline" else "push"
         return "win" if team_score > opp_score else "loss"
 
     # Fallback: treat leading team label as winner pick.
@@ -2374,6 +2377,7 @@ WNBA_MODEL_DIR = os.path.join(BASE_DIR, "WNBAPredictionModel")
 MLB_MODEL_DIR = os.path.join(BASE_DIR, "MLBPredictionModel")
 MLB_INNING_MODEL_DIR = os.path.join(BASE_DIR, "models", "mlb_inning")
 MLB_FIRST_FIVE_MODEL_DIR = os.path.join(BASE_DIR, "models", "mlb_first_five")
+FIFA_WORLD_CUP_MODEL_DIR = os.path.join(BASE_DIR, "FIFAWorldCupPredictionModel")
 NBA_PROPS_MODEL_DIR = os.path.join(BASE_DIR, "NBAPlayerBettingModel")
 IPL_MODEL_RUNNER = os.path.join(BASE_DIR, "ipl", "run_api.py")
 IPL_AVAILABLE = os.path.exists(IPL_MODEL_RUNNER)
@@ -4297,6 +4301,23 @@ else:
         return {"ok": False, "error": str(exc)}
 
 
+def run_fifa_world_cup_model(date_str: str | None = None) -> dict[str, Any]:
+    """Execute the player-centric FIFA World Cup algorithmic model."""
+    target_iso, _ = _parse_model_date_arg(date_str)
+    if not os.path.exists(FIFA_WORLD_CUP_MODEL_DIR):
+        return {"ok": False, "error": "FIFA World Cup model directory not found"}
+    try:
+        from FIFAWorldCupPredictionModel import generate_fifa_world_cup_picks
+
+        result = generate_fifa_world_cup_picks(target_iso)
+        if not isinstance(result, dict):
+            return {"ok": False, "error": "FIFA World Cup model returned an invalid payload"}
+        _save_admin_picks_doc("fifa_world_cup", result, target_iso)
+        return result
+    except Exception as exc:
+        return {"ok": False, "error": str(exc)}
+
+
 def run_mlb_model(date_str: str | None = None, variant: str = "old") -> dict[str, Any]:
     """Execute an MLB model variant and return parsed picks."""
     python_bin = _resolve_python_bin(os.path.join(MLB_MODEL_DIR, "venv", "bin", "python"))
@@ -5026,6 +5047,7 @@ def _public_endpoints() -> list[str]:
         "/run-nba-playoffs-model",
         "/run-wnba-model",
         "/api/run-wnba-model",
+        "/run-fifa-world-cup-model",
         "/refresh-nba-props-games",
         "/run-nba-props-model",
         "/run-mlb-model",
@@ -5174,6 +5196,7 @@ SIGNED_IN_POST_ENDPOINTS = {
     "/run-nba-playoffs-model",
     "/run-nba-props-model",
     "/run-wnba-model",
+    "/run-fifa-world-cup-model",
 }
 
 ADMIN_POST_ENDPOINTS = {
@@ -5689,6 +5712,17 @@ class Handler(BaseHTTPRequestHandler):
                 "wnba",
                 date_str,
                 run_wnba_model,
+                (date_str,),
+                async_mode,
+                force_refresh,
+            )
+            self._send_json(200, result)
+
+        elif path == "/run-fifa-world-cup-model":
+            result = _cached_or_model_response(
+                "fifa_world_cup",
+                date_str,
+                run_fifa_world_cup_model,
                 (date_str,),
                 async_mode,
                 force_refresh,

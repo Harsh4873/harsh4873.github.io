@@ -23,6 +23,7 @@ DEPLOYED_MODEL_KEYS = {
     "wnba",
     "nba",
     "nba_playoffs",
+    "fifa_world_cup",
     *EXTERNAL_FEED_MODEL_KEYS,
 }
 MODEL_ALIAS_KEYS = {
@@ -37,6 +38,7 @@ MODEL_ALIAS_KEYS = {
     "mlb_inning",
     "mlb_first_five",
     "ipl",
+    "fifa_world_cup",
 }
 MODEL_ALIAS_TO_MODEL_KEY = {
     "mlb": "mlb_old",

@@ -27,7 +27,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--date", default="", help="Target date in YYYY-MM-DD or MM/DD/YYYY format.")
     parser.add_argument(
         "--models",
-        default="mlb_new,mlb_inning,mlb_first_five,wnba,nba,nba_playoffs",
+        default="mlb_new,mlb_inning,mlb_first_five,wnba,nba,nba_playoffs,fifa_world_cup",
         help="Comma-separated model keys to refresh, or 'all'.",
     )
     parser.add_argument("--max-workers", type=int, default=3, help="Maximum parallel model jobs.")
@@ -46,6 +46,7 @@ def _model_jobs(date_iso: str) -> dict[str, Callable[[], dict[str, Any]]]:
         "mlb_new": lambda: server.run_mlb_model(date_iso, "new"),
         "mlb_inning": lambda: server.run_mlb_inning_model(date_iso),
         "mlb_first_five": lambda: server.run_mlb_first_five_model(date_iso),
+        "fifa_world_cup": lambda: server.run_fifa_world_cup_model(date_iso),
     }
     if getattr(server, "IPL_AVAILABLE", False):
         jobs["ipl"] = lambda: server._run_ipl_model_subprocess(  # noqa: SLF001
@@ -88,6 +89,7 @@ def _build_payload(date_iso: str, models: dict[str, Any], errors: list[str]) -> 
         "mlb_new": models.get("mlb_new", {}),
         "mlb_inning": models.get("mlb_inning", {}),
         "mlb_first_five": models.get("mlb_first_five", {}),
+        "fifa_world_cup": models.get("fifa_world_cup", {}),
         "ipl": models.get("ipl", {}),
         "errors": errors,
     }

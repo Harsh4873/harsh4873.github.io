@@ -17,6 +17,7 @@ ACTIVE_CALIBRATION_PATH = CALIBRATION_DIR / "active.json"
 LEDGER_PATH = CALIBRATION_DIR / "outcome_ledger.json"
 CALIBRATION_SCHEMA_VERSION = 1
 MIN_GROUP_SAMPLES = 30
+CALIBRATION_EXCLUDED_MODEL_KEYS = {"fifa_world_cup"}
 
 SNAPSHOT_EXCLUDED_FIELDS = {
     "result",
@@ -254,12 +255,16 @@ def apply_calibration_to_payload(
     models = payload.get("models")
     if isinstance(models, dict):
         for model_key, bucket in models.items():
+            if str(model_key) in CALIBRATION_EXCLUDED_MODEL_KEYS:
+                continue
             if not isinstance(bucket, dict) or not isinstance(bucket.get("picks"), list):
                 continue
             for pick in bucket["picks"]:
                 if isinstance(pick, dict):
                     apply_calibration_to_pick(pick, str(model_key), active)
     elif isinstance(payload.get("picks"), list):
+        if str(payload.get("model_key") or "") in CALIBRATION_EXCLUDED_MODEL_KEYS:
+            return payload
         for pick in payload["picks"]:
             if isinstance(pick, dict):
                 apply_calibration_to_pick(pick, str(payload.get("model_key") or "unknown"), active)
@@ -360,6 +365,8 @@ def _iter_bucket_records(
     models = payload.get("models")
     if isinstance(models, dict):
         for model_key, bucket in models.items():
+            if str(model_key) in CALIBRATION_EXCLUDED_MODEL_KEYS:
+                continue
             if not isinstance(bucket, dict) or not isinstance(bucket.get("picks"), list):
                 continue
             for pick in bucket["picks"]:

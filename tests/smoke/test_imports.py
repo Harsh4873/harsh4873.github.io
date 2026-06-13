@@ -36,6 +36,7 @@ def test_locked_runtime_imports_still_resolve(monkeypatch):
         ("MLBPredictionModel.date_utils", (REPO_ROOT,)),
         ("NBAPredictionModel.run_live", (REPO_ROOT / "NBAPredictionModel", REPO_ROOT)),
         ("WNBAPredictionModel.wnba_picks", (REPO_ROOT,)),
+        ("FIFAWorldCupPredictionModel.fifa_world_cup_model", (REPO_ROOT,)),
         ("NBAPlayerBettingModel.run_props", (REPO_ROOT / "NBAPlayerBettingModel", REPO_ROOT)),
         ("NBAPlayoffsPredictionModel.run_live", (REPO_ROOT,)),
         ("models.mlb_inning.mlb_inning_model", (REPO_ROOT,)),

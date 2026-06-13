@@ -88,6 +88,7 @@ const SOURCE_LABELS: Record<string, string> = {
   wnba: 'WNBA Model',
   nba: 'NBA New',
   nba_playoffs: 'NBA Playoffs',
+  fifa_world_cup: 'FIFA WC In-House',
   sportytrader: 'SportyTrader',
   sportsgambler: 'SportsGambler',
 };

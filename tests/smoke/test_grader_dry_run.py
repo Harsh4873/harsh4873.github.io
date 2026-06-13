@@ -153,6 +153,37 @@ def test_grade_pick_moneyline_result_without_network():
     ) == "win"
 
 
+def test_soccer_three_way_moneyline_loses_on_draw():
+    import pickgrader_server
+
+    game = {
+        "competitors": [
+            {
+                "raw": {"team": {"displayName": "Brazil", "name": "Brazil", "abbreviation": "BRA"}},
+                "score": 1,
+                "homeAway": "home",
+                "linescores": [],
+            },
+            {
+                "raw": {"team": {"displayName": "Morocco", "name": "Morocco", "abbreviation": "MAR"}},
+                "score": 1,
+                "homeAway": "away",
+                "linescores": [],
+            },
+        ],
+        "startTime": "2026-06-13T22:00:00Z",
+        "eventId": "wc-smoke",
+    }
+    pick = {
+        "id": "wc-moneyline",
+        "sport": "FIFA WC",
+        "pick": "Brazil ML (Morocco @ Brazil)",
+        "market_type": "soccer_moneyline",
+    }
+
+    assert pickgrader_server.grade_pick(pick, game) == "loss"
+
+
 def test_auto_grade_accepts_iso_dates_and_pushes_canceled_games(monkeypatch):
     import pickgrader_server
 
