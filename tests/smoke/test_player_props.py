@@ -29,6 +29,29 @@ def _gamelog(name: str, values: list[list[str]]) -> dict:
     }
 
 
+def _statcast_rows(
+    pitch_type: str,
+    *,
+    pitches: int,
+    whiffs: int,
+    strikeouts: int,
+    hits: int = 0,
+    outs: int = 0,
+) -> list[dict[str, str]]:
+    rows: list[dict[str, str]] = []
+    for index in range(pitches):
+        description = "swinging_strike" if index < whiffs else "foul"
+        event = ""
+        if index < strikeouts:
+            event = "strikeout"
+        elif index < strikeouts + hits:
+            event = "single"
+        elif index < strikeouts + hits + outs:
+            event = "field_out"
+        rows.append({"pitch_type": pitch_type, "description": description, "events": event})
+    return rows
+
+
 class EmptyClient:
     def basketball_scoreboard(self, league, date_iso):
         return {"events": [], "season": {"year": 2026}}
@@ -180,6 +203,23 @@ class MockClient(EmptyClient):
             ]
         }
 
+    def mlb_statcast_player_pitches(self, player_id, player_type, end_date_iso, days=45):
+        if player_type == "pitcher":
+            return (
+                _statcast_rows("FC", pitches=36, whiffs=16, strikeouts=6, outs=10)
+                + _statcast_rows("ST", pitches=24, whiffs=12, strikeouts=5, outs=8)
+            )
+        return (
+            _statcast_rows("FC", pitches=22, whiffs=10, strikeouts=5, hits=2, outs=8)
+            + _statcast_rows("ST", pitches=18, whiffs=8, strikeouts=4, hits=1, outs=6)
+        )
+
+    def mlb_statcast_team_pitches(self, team_abbr, end_date_iso, days=30):
+        return (
+            _statcast_rows("FC", pitches=42, whiffs=20, strikeouts=12, hits=3, outs=14)
+            + _statcast_rows("ST", pitches=30, whiffs=14, strikeouts=9, hits=2, outs=9)
+        )
+
 
 def test_empty_leagues_are_healthy():
     payload = generate_payload(DATE, client=EmptyClient(), generated_at=STAMP)
@@ -223,6 +263,9 @@ def test_mlb_props_are_gradeable_and_represent_h2h_environment():
     hit_props = [pick for pick in picks if pick["stat_key"] == "hits"]
     assert hit_props and all("h2h" in pick for pick in hit_props)
     assert any("H2H available" in " ".join(pick["key_factors"]) for pick in hit_props)
+    assert any(pick.get("prop_role") == "batter_strikeouts" for pick in picks)
+    assert any("cutters" in " ".join(pick["key_factors"]).lower() for pick in picks)
+    assert any("pitch-type" in " ".join(pick["key_factors"]).lower() for pick in picks)
     assert all("Venue Test Park" in " ".join(pick["key_factors"]) for pick in picks)
     assert all("Wind 12 mph, Out To CF" in " ".join(pick["key_factors"]) for pick in picks)
 

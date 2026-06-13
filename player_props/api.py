@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+import csv
+import io
 import time
+from datetime import date, timedelta
 from typing import Any
 
 import requests
@@ -17,6 +20,7 @@ class DirectApiClient:
         self.session = requests.Session()
         self.session.headers.update({"User-Agent": "PickLedgerPro-player-props/1.0"})
         self._cache: dict[tuple[str, tuple[tuple[str, str], ...]], dict[str, Any]] = {}
+        self._csv_cache: dict[tuple[str, tuple[tuple[str, str], ...]], list[dict[str, str]]] = {}
 
     def _get(self, url: str, params: dict[str, Any] | None = None) -> dict[str, Any]:
         normalized = tuple(sorted((str(key), str(value)) for key, value in (params or {}).items()))
@@ -39,6 +43,27 @@ class DirectApiClient:
                 if attempt + 1 < self.attempts:
                     time.sleep(0.5 * (attempt + 1))
         raise RuntimeError(f"Direct API request failed for {url}: {last_error}") from last_error
+
+    def _get_csv(self, url: str, params: dict[str, Any] | None = None) -> list[dict[str, str]]:
+        normalized = tuple(sorted((str(key), str(value)) for key, value in (params or {}).items()))
+        cache_key = (url, normalized)
+        if cache_key in self._csv_cache:
+            return self._csv_cache[cache_key]
+
+        last_error: Exception | None = None
+        for attempt in range(self.attempts):
+            try:
+                response = self.session.get(url, params=params, timeout=self.timeout)
+                response.raise_for_status()
+                text = response.text.lstrip("\ufeff")
+                rows = [dict(row) for row in csv.DictReader(io.StringIO(text)) if isinstance(row, dict)]
+                self._csv_cache[cache_key] = rows
+                return rows
+            except requests.RequestException as exc:
+                last_error = exc
+                if attempt + 1 < self.attempts:
+                    time.sleep(0.5 * (attempt + 1))
+        raise RuntimeError(f"Direct CSV request failed for {url}: {last_error}") from last_error
 
     def basketball_scoreboard(self, league: str, date_iso: str) -> dict[str, Any]:
         return self._get(
@@ -101,4 +126,54 @@ class DirectApiClient:
         return self._get(
             f"https://statsapi.mlb.com/api/v1/people/{batter_id}/stats",
             {"stats": "vsPlayer", "group": "hitting", "opposingPlayerId": pitcher_id},
+        )
+
+    def mlb_statcast_player_pitches(
+        self,
+        player_id: int,
+        player_type: str,
+        end_date_iso: str,
+        days: int = 45,
+    ) -> list[dict[str, str]]:
+        try:
+            end_date = date.fromisoformat(str(end_date_iso))
+        except ValueError:
+            return []
+        player_type = "pitcher" if str(player_type).lower() == "pitcher" else "batter"
+        lookup_key = "pitchers_lookup[]" if player_type == "pitcher" else "batters_lookup[]"
+        return self._get_csv(
+            "https://baseballsavant.mlb.com/statcast_search/csv",
+            {
+                "all": "true",
+                "type": "details",
+                "player_type": player_type,
+                "game_date_gt": (end_date - timedelta(days=max(7, days))).isoformat(),
+                "game_date_lt": end_date.isoformat(),
+                lookup_key: int(player_id),
+            },
+        )
+
+    def mlb_statcast_team_pitches(
+        self,
+        team_abbr: str,
+        end_date_iso: str,
+        days: int = 30,
+    ) -> list[dict[str, str]]:
+        try:
+            end_date = date.fromisoformat(str(end_date_iso))
+        except ValueError:
+            return []
+        team = str(team_abbr or "").strip().upper()
+        if not team:
+            return []
+        return self._get_csv(
+            "https://baseballsavant.mlb.com/statcast_search/csv",
+            {
+                "all": "true",
+                "type": "details",
+                "player_type": "batter",
+                "game_date_gt": (end_date - timedelta(days=max(7, days))).isoformat(),
+                "game_date_lt": end_date.isoformat(),
+                "team": team,
+            },
         )
