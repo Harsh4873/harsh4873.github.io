@@ -12,7 +12,7 @@ from cache_manifest import write_cache_manifest
 
 
 PLAYER_PROPS_CACHE_DIR = Path("data/player_props_cache")
-PICK_METADATA_FIELDS = {"result", "start_time", "game_start_time"}
+PICK_METADATA_FIELDS = {"result", "start_time", "game_start_time", "pregame_snapshot"}
 
 
 def _read_json(path: Path) -> dict[str, Any] | None:

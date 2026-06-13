@@ -8,7 +8,10 @@ The active production automation uses GitHub Actions plus local Codex morning an
 | `refresh_external_feeds.py` | Refreshes SportyTrader, SportsGambler, Scores24WNBA, and Scores24MLB cache buckets. |
 | `merge_model_cache_payload.py` | Merges model output while preserving other buckets and grades. |
 | `merge_external_feed_cache_payload.py` | Merges feed output while preserving model buckets and grades. |
-| `auto_grade_picks.py` | Traverses committed model/Cannon picks and grades completed games through ESPN. |
+| `auto_grade_picks.py` | Grades completed games through ESPN and rebuilds the universal outcome ledger. |
+| `rebuild_pick_outcome_ledger.py` | Deduplicates all model, player-prop, and Cannon picks into `data/calibration/outcome_ledger.json`. |
+| `train_pick_calibration.py` | Evaluates a shrinkage-based probability calibrator against the active champion. |
+| `pick_calibration.py` | Preserves immutable pregame snapshots and applies the promoted calibrator to refresh payloads. |
 | `cache_manifest.py` | Maintains `data/model_cache/index.json` for the static frontend. |
 | `scrapers/scores24_publish_local.sh` | Publishes Scores24WNBA and Scores24MLB from the local Codex morning and afternoon upchecks because Scores24 blocks GitHub-hosted runner IPs. |
 
@@ -18,5 +21,7 @@ Useful local checks:
 
 ```bash
 python3 scripts/auto_grade_picks.py
+python3 scripts/rebuild_pick_outcome_ledger.py
+python3 scripts/train_pick_calibration.py
 python3 -m pytest tests/smoke/test_static_viewer.py -q
 ```

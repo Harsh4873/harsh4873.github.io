@@ -19,6 +19,7 @@ sys.path.insert(0, str(REPO_ROOT))
 
 import pickgrader_server as server  # noqa: E402
 from scripts.cache_manifest import write_cache_manifest  # noqa: E402
+from scripts.pick_calibration import apply_calibration_to_payload  # noqa: E402
 
 
 def _parse_args() -> argparse.Namespace:
@@ -167,7 +168,7 @@ def main() -> int:
                 errors.append(f"{key}: {result.get('error') if isinstance(result, dict) else result}")
             print(f"[model-cache] {key}: {'ok' if ok else 'error'} ({pick_count} pick(s))")
 
-    payload = _build_payload(date_iso, results, errors)
+    payload = apply_calibration_to_payload(_build_payload(date_iso, results, errors))
     _write_json_cache(date_iso, payload)
     if args.skip_firestore:
         print("[model-cache] skipped Firestore write")

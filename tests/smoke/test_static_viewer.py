@@ -333,7 +333,9 @@ def test_auto_grader_only_tracks_bet_and_lean_decisions(monkeypatch):
 def test_scheduled_refreshes_are_json_only_and_use_shared_writer_lock():
     workflow_names = (
         "auto-grade.yml",
+        "calibration-refresh.yml",
         "model-cache-refresh.yml",
+        "player-props-refresh.yml",
         "external-feed-refresh.yml",
         "cannon-daily-refresh.yml",
     )
@@ -356,6 +358,8 @@ def test_refresh_timing_and_pages_deploy_are_deterministic():
     feeds = (workflows / "external-feed-refresh.yml").read_text(encoding="utf-8")
     cannon = (workflows / "cannon-daily-refresh.yml").read_text(encoding="utf-8")
     grader = (workflows / "auto-grade.yml").read_text(encoding="utf-8")
+    calibration = (workflows / "calibration-refresh.yml").read_text(encoding="utf-8")
+    props = (workflows / "player-props-refresh.yml").read_text(encoding="utf-8")
     deploy = (workflows / "deploy-pages.yml").read_text(encoding="utf-8")
 
     assert "cache-gate" not in model
@@ -364,7 +368,11 @@ def test_refresh_timing_and_pages_deploy_are_deterministic():
     assert 'cron: "45 12 * * *"' in model
     assert 'cron: "10,40 14 * * *"' in feeds
     assert 'cron: "55 13 * * *"' in cannon
-    for workflow in (model, feeds, cannon, grader):
+    assert "gh workflow run calibration-refresh.yml --ref main" in grader
+    assert "decided - last >= 100" in grader
+    assert "python scripts/train_pick_calibration.py" in calibration
+    assert "gh workflow run player-props-refresh.yml --ref main" in calibration
+    for workflow in (model, props, feeds, cannon, grader, calibration):
         assert "gh workflow run deploy-pages.yml --ref main" in workflow
         assert "actions: write" in workflow
     assert "Verify styled Pages artifact" in deploy
@@ -376,7 +384,9 @@ def test_refresh_timing_and_pages_deploy_are_deterministic():
 def test_refresh_workflows_commit_as_triggering_actor():
     for name in (
         "auto-grade.yml",
+        "calibration-refresh.yml",
         "model-cache-refresh.yml",
+        "player-props-refresh.yml",
         "external-feed-refresh.yml",
         "cannon-daily-refresh.yml",
     ):
@@ -423,7 +433,13 @@ def test_model_cache_merge_preserves_committed_grades(tmp_path):
         "date": "2026-06-08",
         "models": {
             "mlb_new": {
-                "picks": [{"source": "X", "sport": "MLB", "pick": "Cubs ML", "result": "win"}]
+                "picks": [{
+                    "source": "X",
+                    "sport": "MLB",
+                    "pick": "Cubs ML",
+                    "result": "win",
+                    "pregame_snapshot": {"probability": 0.61},
+                }]
             }
         },
     }
@@ -438,3 +454,4 @@ def test_model_cache_merge_preserves_committed_grades(tmp_path):
     (cache_dir / "2026-06-08.json").write_text(json.dumps(current), encoding="utf-8")
     merged = module.merge_payload(generated, cache_dir)
     assert merged["models"]["mlb_new"]["picks"][0]["result"] == "win"
+    assert merged["models"]["mlb_new"]["picks"][0]["pregame_snapshot"]["probability"] == 0.61

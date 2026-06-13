@@ -18,6 +18,7 @@ DEFAULT_OUTPUT_DIR = REPO_ROOT / "data" / "player_props_cache"
 sys.path.insert(0, str(REPO_ROOT))
 
 from player_props import generate_payload  # noqa: E402
+from scripts.pick_calibration import apply_calibration_to_payload  # noqa: E402
 
 
 def _default_central_date() -> str:
@@ -49,7 +50,7 @@ def _write_json(path: Path, payload: Any) -> None:
 def main() -> int:
     args = _parse_args()
     target_date = _target_date(args.date)
-    payload = generate_payload(target_date)
+    payload = apply_calibration_to_payload(generate_payload(target_date))
     output_dir = args.output_dir.resolve()
     _write_json(output_dir / f"{target_date}.json", payload)
     _write_json(output_dir / "latest.json", payload)

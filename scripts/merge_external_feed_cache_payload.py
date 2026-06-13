@@ -16,7 +16,7 @@ from cache_manifest import write_cache_manifest  # noqa: E402
 
 MODEL_CACHE_DIR = Path("data/model_cache")
 EXTERNAL_FEED_MODEL_KEYS = {"sportytrader", "sportsgambler", "scores24_wnba", "scores24_mlb"}
-PICK_METADATA_FIELDS = {"result", "start_time", "game_start_time"}
+PICK_METADATA_FIELDS = {"result", "start_time", "game_start_time", "pregame_snapshot"}
 
 
 def _parse_args() -> argparse.Namespace:

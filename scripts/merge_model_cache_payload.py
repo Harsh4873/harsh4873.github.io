@@ -42,7 +42,7 @@ MODEL_ALIAS_TO_MODEL_KEY = {
     "mlb": "mlb_old",
     **{key: key for key in MODEL_ALIAS_KEYS if key != "mlb"},
 }
-PICK_METADATA_FIELDS = {"result", "start_time", "game_start_time"}
+PICK_METADATA_FIELDS = {"result", "start_time", "game_start_time", "pregame_snapshot"}
 
 
 def _parse_args() -> argparse.Namespace:

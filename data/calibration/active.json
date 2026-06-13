@@ -1,0 +1,80 @@
+{
+  "decided_count": 749,
+  "evaluated_at": "2026-06-13T16:57:21.936985Z",
+  "global": {
+    "intercept": -0.10850571,
+    "samples": 626,
+    "shrinkage_prior_samples": 120.0,
+    "slope": 0.90678501
+  },
+  "groups": {
+    "model:mlb_first_five|source:mlb first five|sport:mlb|bet:f5_side": {
+      "intercept": -0.02862728,
+      "samples": 72,
+      "shrinkage_prior_samples": 80.0,
+      "slope": 0.93122427
+    },
+    "model:mlb_first_five|source:mlb first five|sport:mlb|bet:f5_total": {
+      "intercept": -0.14844316,
+      "samples": 84,
+      "shrinkage_prior_samples": 80.0,
+      "slope": 0.87943329
+    },
+    "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning": {
+      "intercept": -0.15657776,
+      "samples": 162,
+      "shrinkage_prior_samples": 80.0,
+      "slope": 0.89135301
+    },
+    "model:mlb_new|source:mlb new|sport:mlb|bet:h2h": {
+      "intercept": -0.08889425,
+      "samples": 94,
+      "shrinkage_prior_samples": 80.0,
+      "slope": 0.90593842
+    },
+    "model:mlb_new|source:mlb new|sport:mlb|bet:totals": {
+      "intercept": -0.16041968,
+      "samples": 90,
+      "shrinkage_prior_samples": 80.0,
+      "slope": 0.88929986
+    },
+    "model:mlb_player_props|source:pickledgerpro in-house player props|sport:mlb|bet:hits": {
+      "intercept": -0.16183931,
+      "samples": 48,
+      "shrinkage_prior_samples": 80.0,
+      "slope": 0.83979457
+    }
+  },
+  "holdout": {
+    "challenger": {
+      "brier_score": 0.23962127,
+      "calibration_error": 0.06208866,
+      "log_loss": 0.67427183,
+      "qualified_bets": 95,
+      "roi": 0.18959735,
+      "samples": 125
+    },
+    "champion": {
+      "brier_score": 0.2432372,
+      "calibration_error": 0.0843608,
+      "log_loss": 0.68397575,
+      "qualified_bets": 110,
+      "roi": 0.18213387,
+      "samples": 125
+    }
+  },
+  "minimum_group_samples": 30,
+  "promoted_at": "2026-06-13T16:57:21.936985Z",
+  "promotion": {
+    "approved": true,
+    "reasons": [
+      "brier_improved=True",
+      "calibration_improved=True",
+      "log_loss_safe=True",
+      "roi_safe=True"
+    ]
+  },
+  "schema_version": 1,
+  "trainable_decided_count": 626,
+  "version": "cal-749-2026-06-13"
+}

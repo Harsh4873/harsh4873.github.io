@@ -19,6 +19,7 @@ CANNON_JSON_PATH = REPO_ROOT / "data" / "cannon_mlb_daily.json"
 sys.path.insert(0, str(REPO_ROOT))
 
 import pickgrader_server  # noqa: E402
+from scripts.pick_calibration import rebuild_outcome_ledger  # noqa: E402
 
 
 def _read_json(path: Path) -> dict[str, Any] | None:
@@ -134,6 +135,13 @@ def main() -> int:
             shutil.copyfile(latest_source, cache_dir / "latest.json")
 
     total += grade_file(CANNON_JSON_PATH)
+    ledger, ledger_changed = rebuild_outcome_ledger()
+    print(
+        "[auto-grade] outcome ledger: "
+        f"{ledger['summary']['total_picks']} pick(s), "
+        f"{ledger['summary']['decided_picks']} decided, "
+        f"changed={ledger_changed}"
+    )
     print(f"[auto-grade] complete: {total} update(s)")
     return 0
 

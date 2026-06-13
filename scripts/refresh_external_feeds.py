@@ -17,6 +17,7 @@ sys.path.insert(0, str(REPO_ROOT))
 
 import pickgrader_server as server  # noqa: E402
 from scripts.cache_manifest import write_cache_manifest  # noqa: E402
+from scripts.pick_calibration import apply_calibration_to_payload  # noqa: E402
 from scripts.scrapers.scores24_scraper import run_scores24_mlb, run_scores24_wnba  # noqa: E402
 
 
@@ -164,6 +165,7 @@ def main() -> int:
         **results,
     }
 
+    apply_calibration_to_payload(payload)
     _write_json_cache(date_iso, payload)
     if args.skip_firestore:
         print("[external-feeds] skipped Firestore write")
