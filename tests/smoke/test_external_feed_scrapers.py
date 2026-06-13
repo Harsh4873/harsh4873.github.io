@@ -208,6 +208,40 @@ def test_sportsgambler_uses_known_matchups_as_a_whitelist(monkeypatch):
     assert [row["matchup"] for row in rows] == ["Indiana Fever vs Chicago Sky"]
 
 
+def test_sportsgambler_mlb_uses_known_matchups_as_a_whitelist(monkeypatch):
+    module = _load_module(
+        "sportsgambler_mlb_slate_test",
+        ROOT / "scripts" / "scrapers" / "sportsgambler_scraper.py",
+    )
+    listing_html = """
+    <div class="tipbox_item" id="official">
+      <div class="tipsbox_title">
+        <h3><span>Chicago Cubs vs St. Louis Cardinals</span></h3>
+        <div class="tipsbox_meta"><span>Jun 13, 2026</span><span>- MLB</span></div>
+      </div>
+      <div class="tipbox_tip"><span>Pick</span><span>Chicago Cubs to Win @ -115</span></div>
+    </div>
+    <div class="tipbox_item" id="other-date">
+      <div class="tipsbox_title">
+        <h3><span>Boston Red Sox vs New York Yankees</span></h3>
+        <div class="tipsbox_meta"><span>Jun 14, 2026</span><span>- MLB</span></div>
+      </div>
+      <div class="tipbox_tip"><span>Pick</span><span>New York Yankees to Win @ -120</span></div>
+    </div>
+    """
+
+    class Response:
+        text = listing_html
+
+    monkeypatch.setattr(module.requests, "get", lambda *_args, **_kwargs: Response())
+    rows = module.scrape_mlb(
+        date(2026, 6, 13),
+        ["St. Louis Cardinals @ Chicago Cubs"],
+    )
+
+    assert [row["matchup"] for row in rows] == ["Chicago Cubs vs St. Louis Cardinals"]
+
+
 def test_sportsgambler_fifa_world_cup_preserves_asian_handicap(monkeypatch):
     module = _load_module(
         "sportsgambler_fifa_test",

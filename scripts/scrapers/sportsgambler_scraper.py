@@ -161,10 +161,15 @@ def scrape_wnba(target: date | None, expected_matchups: list[str] | None = None)
 def scrape_fifa_world_cup(target: date | None, expected_matchups: list[str] | None = None) -> list[dict]:
     return scrape_basketball(target, FIFA_WORLD_CUP_URL, "FIFA WC", expected_matchups)
 
-def scrape_mlb(target: date | None) -> list[dict]:
+def scrape_mlb(target: date | None, expected_matchups: list[str] | None = None) -> list[dict]:
     html = requests.get(MLB_URL, headers=HEADERS, timeout=30).text
     soup = BeautifulSoup(html, "html.parser")
     rows, seen = [], set()
+    expected = {
+        key: matchup
+        for matchup in expected_matchups or []
+        if (key := _matchup_key(matchup))
+    }
     for item in soup.select("div.tipbox_item"):
         title_spans = item.select(".tipsbox_title h3 > span")
         matchup = _norm(title_spans[0].get_text(" ", strip=True)) if title_spans else ""
@@ -177,6 +182,8 @@ def scrape_mlb(target: date | None) -> list[dict]:
         prediction = _norm(tip_spans[-1].get_text(" ", strip=True)) if tip_spans else ""
         tip, odds = _split_tip_odds(prediction)
         if not matchup or not tip:
+            continue
+        if expected and _matchup_key(matchup) not in expected:
             continue
         key = (matchup, tip)
         if key in seen:
@@ -201,7 +208,7 @@ def main() -> None:
         elif sport == "wnba":
             rows = scrape_wnba(target, args.expected_matchup)
         elif sport in ("mlb", "baseball"):
-            rows = scrape_mlb(target)
+            rows = scrape_mlb(target, args.expected_matchup)
         elif sport in ("fifa", "fifa_world_cup", "football", "soccer", "world_cup"):
             rows = scrape_fifa_world_cup(target, args.expected_matchup)
         else:
