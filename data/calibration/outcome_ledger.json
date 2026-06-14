@@ -41824,7 +41824,7 @@
       "matchup": "Chicago Cubs @ San Francisco Giants",
       "model_key": "mlb_first_five",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Chicago Cubs F5 ML",
       "pregame_snapshot": {
         "assumed_odds": -110,
@@ -41858,7 +41858,7 @@
       "raw_edge": 6.43,
       "raw_probability": 0.5881,
       "raw_units": null,
-      "result": "pending",
+      "result": "win",
       "source": "MLB First Five",
       "sport": "MLB",
       "units": null
@@ -41875,7 +41875,7 @@
       "matchup": "Houston Astros @ Kansas City Royals",
       "model_key": "mlb_first_five",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Over 4.5 F5",
       "pregame_snapshot": {
         "assumed_odds": -110,
@@ -41909,7 +41909,7 @@
       "raw_edge": 5.97,
       "raw_probability": 0.5835,
       "raw_units": null,
-      "result": "pending",
+      "result": "win",
       "source": "MLB First Five",
       "sport": "MLB",
       "units": null
@@ -42108,12 +42108,12 @@
         "team": "Milwaukee Brewers"
       },
       "probability": 0.6067,
-      "profit": null,
+      "profit": 0.0,
       "raw_decision": "LEAN",
       "raw_edge": 10.39,
       "raw_probability": 0.6277,
       "raw_units": null,
-      "result": "pending",
+      "result": "push",
       "source": "MLB First Five",
       "sport": "MLB",
       "units": null
@@ -42130,7 +42130,7 @@
       "matchup": "Colorado Rockies @ Athletics",
       "model_key": "mlb_first_five",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Over 6.5 F5",
       "pregame_snapshot": {
         "assumed_odds": -110,
@@ -42164,7 +42164,7 @@
       "raw_edge": 17.24,
       "raw_probability": 0.6962,
       "raw_units": null,
-      "result": "pending",
+      "result": "win",
       "source": "MLB First Five",
       "sport": "MLB",
       "units": null
@@ -42312,12 +42312,12 @@
         "team": "Kansas City Royals"
       },
       "probability": 0.5634,
-      "profit": null,
+      "profit": 0.0,
       "raw_decision": "LEAN",
       "raw_edge": 4.66,
       "raw_probability": 0.5704,
       "raw_units": null,
-      "result": "pending",
+      "result": "push",
       "source": "MLB First Five",
       "sport": "MLB",
       "units": null
@@ -42334,7 +42334,7 @@
       "matchup": "Milwaukee Brewers vs Philadelphia Phillies",
       "model_key": "mlb_inning",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Inning 3 - No Run Scored",
       "pregame_snapshot": {
         "assumed_odds": -110,
@@ -42370,7 +42370,7 @@
       "raw_edge": 14.66,
       "raw_probability": 0.637,
       "raw_units": null,
-      "result": "pending",
+      "result": "win",
       "source": "MLB Inning",
       "sport": "MLB",
       "units": null
@@ -42387,7 +42387,7 @@
       "matchup": "Kansas City Royals vs Houston Astros",
       "model_key": "mlb_inning",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Inning 2 - No Run Scored",
       "pregame_snapshot": {
         "assumed_odds": -110,
@@ -42423,7 +42423,7 @@
       "raw_edge": 6.2,
       "raw_probability": 0.58,
       "raw_units": null,
-      "result": "pending",
+      "result": "loss",
       "source": "MLB Inning",
       "sport": "MLB",
       "units": null
@@ -42599,7 +42599,7 @@
       "matchup": "Los Angeles Angels vs Tampa Bay Rays",
       "model_key": "mlb_inning",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Inning 3 - No Run Scored",
       "pregame_snapshot": {
         "assumed_odds": -110,
@@ -42635,7 +42635,7 @@
       "raw_edge": 8.91,
       "raw_probability": 0.579,
       "raw_units": null,
-      "result": "pending",
+      "result": "win",
       "source": "MLB Inning",
       "sport": "MLB",
       "units": null
@@ -42881,7 +42881,7 @@
       "matchup": "",
       "model_key": "mlb_new",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Under 14.5 (Colorado Rockies vs Athletics)",
       "pregame_snapshot": {
         "assumed_odds": -110,
@@ -42907,12 +42907,12 @@
         "vegas": 14.5
       },
       "probability": 0.7629,
-      "profit": null,
+      "profit": 0.10909090909090909,
       "raw_decision": "BET",
       "raw_edge": 29.3,
       "raw_probability": 0.8168,
       "raw_units": 0.15,
-      "result": "pending",
+      "result": "win",
       "source": "MLB NEW",
       "sport": "MLB",
       "units": 0.12
@@ -43641,7 +43641,7 @@
       "matchup": "",
       "model_key": "mlb_new",
       "odds": null,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Athletics ML (Rockies vs Athletics)",
       "pregame_snapshot": {
         "away_team": "Colorado Rockies",
@@ -43660,12 +43660,12 @@
         "units": 1.19
       },
       "probability": 0.6634,
-      "profit": null,
+      "profit": 0.97,
       "raw_decision": "BET",
       "raw_edge": 20.0,
       "raw_probability": 0.7,
       "raw_units": 1.19,
-      "result": "pending",
+      "result": "win",
       "source": "MLB NEW",
       "sport": "MLB",
       "units": 0.97
@@ -43956,7 +43956,7 @@
       "matchup": "",
       "model_key": "mlb_new",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Under 9.5 (Houston Astros vs Kansas City Royals)",
       "pregame_snapshot": {
         "assumed_odds": -110,
@@ -43982,12 +43982,12 @@
         "vegas": 9.5
       },
       "probability": 0.5722,
-      "profit": null,
+      "profit": -0.03,
       "raw_decision": "BET",
       "raw_edge": 17.62,
       "raw_probability": 0.7,
       "raw_units": 0.09,
-      "result": "pending",
+      "result": "loss",
       "source": "MLB NEW",
       "sport": "MLB",
       "units": 0.03
@@ -44321,7 +44321,7 @@
       "matchup": "Philadelphia Phillies @ Milwaukee Brewers",
       "model_key": "mlb_player_props",
       "odds": -174.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Jake Bauers Over 0.5 Hits",
       "pregame_snapshot": {
         "away_team": "Philadelphia Phillies",
@@ -44377,12 +44377,12 @@
         "units": 2.0
       },
       "probability": 0.7272,
-      "profit": null,
+      "profit": 0.660919540229885,
       "raw_decision": "BET",
       "raw_edge": 16.08,
       "raw_probability": 0.7958,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 1.15
@@ -44629,7 +44629,7 @@
       "matchup": "Houston Astros @ Kansas City Royals",
       "model_key": "mlb_player_props",
       "odds": -232.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Maikel Garcia Over 0.5 Hits",
       "pregame_snapshot": {
         "away_team": "Houston Astros",
@@ -44685,12 +44685,12 @@
         "units": 2.0
       },
       "probability": 0.7743,
-      "profit": null,
+      "profit": -1.07,
       "raw_decision": "BET",
       "raw_edge": 14.15,
       "raw_probability": 0.8403,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 1.07
@@ -44783,7 +44783,7 @@
       "matchup": "Philadelphia Phillies @ Milwaukee Brewers",
       "model_key": "mlb_player_props",
       "odds": -128.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Christian Yelich Over 1.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "away_team": "Philadelphia Phillies",
@@ -44837,12 +44837,12 @@
         "units": 2.0
       },
       "probability": 0.7583,
-      "profit": null,
+      "profit": 1.296875,
       "raw_decision": "BET",
       "raw_edge": 23.77,
       "raw_probability": 0.7991,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 1.66
@@ -45089,7 +45089,7 @@
       "matchup": "Houston Astros @ Kansas City Royals",
       "model_key": "mlb_player_props",
       "odds": -193.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Michael Massey Over 0.5 Hits",
       "pregame_snapshot": {
         "away_team": "Houston Astros",
@@ -45145,12 +45145,12 @@
         "units": 2.0
       },
       "probability": 0.7703,
-      "profit": null,
+      "profit": 0.6476683937823834,
       "raw_decision": "BET",
       "raw_edge": 17.8,
       "raw_probability": 0.8367,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 1.25
@@ -45397,7 +45397,7 @@
       "matchup": "Houston Astros @ Kansas City Royals",
       "model_key": "mlb_player_props",
       "odds": -214.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Jac Caglianone Over 0.5 Hits",
       "pregame_snapshot": {
         "away_team": "Houston Astros",
@@ -45453,12 +45453,12 @@
         "units": 2.0
       },
       "probability": 0.7605,
-      "profit": null,
+      "profit": -1.08,
       "raw_decision": "BET",
       "raw_edge": 14.61,
       "raw_probability": 0.8276,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 1.08
@@ -46158,7 +46158,7 @@
       "matchup": "Houston Astros @ Kansas City Royals",
       "model_key": "mlb_player_props",
       "odds": -124.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Maikel Garcia Over 1.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "away_team": "Houston Astros",
@@ -46212,12 +46212,12 @@
         "units": 2.0
       },
       "probability": 0.6672,
-      "profit": null,
+      "profit": -1.47,
       "raw_decision": "BET",
       "raw_edge": 15.46,
       "raw_probability": 0.7082,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 1.47
@@ -46234,7 +46234,7 @@
       "matchup": "Philadelphia Phillies @ Milwaukee Brewers",
       "model_key": "mlb_player_props",
       "odds": -129.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "William Contreras Over 1.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "away_team": "Philadelphia Phillies",
@@ -46288,12 +46288,12 @@
         "units": 2.0
       },
       "probability": 0.7524,
-      "profit": null,
+      "profit": 1.2713178294573644,
       "raw_decision": "BET",
       "raw_edge": 23.01,
       "raw_probability": 0.7934,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 1.64
@@ -46462,7 +46462,7 @@
       "matchup": "Philadelphia Phillies @ Milwaukee Brewers",
       "model_key": "mlb_player_props",
       "odds": -107.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Jake Bauers Over 1.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "away_team": "Philadelphia Phillies",
@@ -46516,12 +46516,12 @@
         "units": 2.0
       },
       "probability": 0.7539,
-      "profit": null,
+      "profit": -1.71,
       "raw_decision": "BET",
       "raw_edge": 27.79,
       "raw_probability": 0.7948,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 1.71
@@ -46538,7 +46538,7 @@
       "matchup": "Houston Astros @ Kansas City Royals",
       "model_key": "mlb_player_props",
       "odds": -115.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Christian Walker Over 1.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "away_team": "Houston Astros",
@@ -46592,12 +46592,12 @@
         "units": 2.0
       },
       "probability": 0.6754,
-      "profit": null,
+      "profit": 1.3478260869565217,
       "raw_decision": "BET",
       "raw_edge": 18.18,
       "raw_probability": 0.7166,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 1.55
@@ -47454,7 +47454,7 @@
       "matchup": "Philadelphia Phillies @ Milwaukee Brewers",
       "model_key": "mlb_player_props",
       "odds": -147.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Jackson Chourio Over 1.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "away_team": "Philadelphia Phillies",
@@ -47508,12 +47508,12 @@
         "units": 2.0
       },
       "probability": 0.7856,
-      "profit": null,
+      "profit": 1.129251700680272,
       "raw_decision": "BET",
       "raw_edge": 23.01,
       "raw_probability": 0.8252,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 1.66
@@ -48669,7 +48669,7 @@
       "matchup": "",
       "model_key": "nba",
       "odds": null,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Spurs -4.2 (Knicks @ Spurs)",
       "pregame_snapshot": {
         "away_team": "Knicks",
@@ -48687,12 +48687,12 @@
         "units": 1.13
       },
       "probability": 0.6505,
-      "profit": null,
+      "profit": -1.13,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": 0.691,
       "raw_units": 1.13,
-      "result": "pending",
+      "result": "loss",
       "source": "NBA New",
       "sport": "NBA",
       "units": 1.13
@@ -48709,7 +48709,7 @@
       "matchup": "New York Knicks @ San Antonio Spurs",
       "model_key": "nba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Luke Kornet Under 5.5 Rebounds",
       "pregame_snapshot": {
         "away_team": "New York Knicks",
@@ -48753,12 +48753,12 @@
         "units": 2.0
       },
       "probability": 0.6302,
-      "profit": null,
+      "profit": -1.46,
       "raw_decision": "BET",
       "raw_edge": 14.61,
       "raw_probability": 0.6699,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "NBA",
       "units": 1.46
@@ -48775,7 +48775,7 @@
       "matchup": "New York Knicks @ San Antonio Spurs",
       "model_key": "nba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Devin Vassell Over 4.5 Rebounds",
       "pregame_snapshot": {
         "away_team": "New York Knicks",
@@ -48818,12 +48818,12 @@
         "units": 2.0
       },
       "probability": 0.6426,
-      "profit": null,
+      "profit": 1.3545454545454545,
       "raw_decision": "BET",
       "raw_edge": 15.9,
       "raw_probability": 0.6828,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "NBA",
       "units": 1.49
@@ -48840,7 +48840,7 @@
       "matchup": "New York Knicks @ San Antonio Spurs",
       "model_key": "nba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Dylan Harper Over 3.5 Rebounds",
       "pregame_snapshot": {
         "away_team": "New York Knicks",
@@ -48883,12 +48883,12 @@
         "units": 2.0
       },
       "probability": 0.7692,
-      "profit": null,
+      "profit": 1.5636363636363635,
       "raw_decision": "BET",
       "raw_edge": 28.57,
       "raw_probability": 0.8096,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "NBA",
       "units": 1.72
@@ -48905,7 +48905,7 @@
       "matchup": "New York Knicks @ San Antonio Spurs",
       "model_key": "nba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Luke Kornet Under 5.5 Points",
       "pregame_snapshot": {
         "away_team": "New York Knicks",
@@ -48949,12 +48949,12 @@
         "units": 2.0
       },
       "probability": 0.6129,
-      "profit": null,
+      "profit": 1.2636363636363634,
       "raw_decision": "BET",
       "raw_edge": 12.79,
       "raw_probability": 0.6517,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "NBA",
       "units": 1.39
@@ -48971,7 +48971,7 @@
       "matchup": "New York Knicks @ San Antonio Spurs",
       "model_key": "nba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Miles McBride Under 2.5 Rebounds",
       "pregame_snapshot": {
         "away_team": "New York Knicks",
@@ -49014,12 +49014,12 @@
         "units": 2.0
       },
       "probability": 0.6703,
-      "profit": null,
+      "profit": -1.56,
       "raw_decision": "BET",
       "raw_edge": 18.76,
       "raw_probability": 0.7114,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "NBA",
       "units": 1.56
@@ -49036,7 +49036,7 @@
       "matchup": "New York Knicks @ San Antonio Spurs",
       "model_key": "nba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Stephon Castle Under 7.5 Assists",
       "pregame_snapshot": {
         "away_team": "New York Knicks",
@@ -49079,12 +49079,12 @@
         "units": 2.0
       },
       "probability": 0.6204,
-      "profit": null,
+      "profit": 1.2909090909090908,
       "raw_decision": "BET",
       "raw_edge": 13.58,
       "raw_probability": 0.6596,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "NBA",
       "units": 1.42
@@ -49101,7 +49101,7 @@
       "matchup": "New York Knicks @ San Antonio Spurs",
       "model_key": "nba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Harrison Barnes Under 2.5 Rebounds",
       "pregame_snapshot": {
         "away_team": "New York Knicks",
@@ -49144,12 +49144,12 @@
         "units": 2.0
       },
       "probability": 0.6127,
-      "profit": null,
+      "profit": -1.39,
       "raw_decision": "BET",
       "raw_edge": 12.77,
       "raw_probability": 0.6515,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "NBA",
       "units": 1.39
@@ -49413,7 +49413,7 @@
       "matchup": "Houston Astros @ Kansas City Royals",
       "model_key": "scores24_mlb",
       "odds": -141.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Over 8.5 (Houston Astros @ Kansas City Royals)",
       "pregame_snapshot": {
         "away_team": "Houston Astros",
@@ -49434,12 +49434,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.7092198581560284,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "Scores24MLB",
       "sport": "MLB",
       "units": 1.0
@@ -49542,7 +49542,7 @@
       "matchup": "Colorado Rockies @ Athletics",
       "model_key": "scores24_mlb",
       "odds": -182.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Oakland Athletics ML (Colorado Rockies @ Athletics)",
       "pregame_snapshot": {
         "away_team": "Colorado Rockies",
@@ -49563,12 +49563,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.5494505494505495,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "Scores24MLB",
       "sport": "MLB",
       "units": 1.0
@@ -49628,7 +49628,7 @@
       "matchup": "Philadelphia Phillies @ Milwaukee Brewers",
       "model_key": "scores24_mlb",
       "odds": -238.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Milwaukee Brewers ML (Philadelphia Phillies @ Milwaukee Brewers)",
       "pregame_snapshot": {
         "away_team": "Philadelphia Phillies",
@@ -49649,12 +49649,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "Scores24MLB",
       "sport": "MLB",
       "units": 1.0
@@ -49757,7 +49757,7 @@
       "matchup": "Chicago Cubs @ San Francisco Giants",
       "model_key": "scores24_mlb",
       "odds": -111.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "San Francisco Giants ML (Chicago Cubs @ San Francisco Giants)",
       "pregame_snapshot": {
         "away_team": "Chicago Cubs",
@@ -49778,12 +49778,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "Scores24MLB",
       "sport": "MLB",
       "units": 1.0
@@ -49886,7 +49886,7 @@
       "matchup": "Tampa Bay Rays @ Los Angeles Angels",
       "model_key": "scores24_mlb",
       "odds": -179.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Tampa Bay Rays ML (Tampa Bay Rays @ Los Angeles Angels)",
       "pregame_snapshot": {
         "away_team": "Tampa Bay Rays",
@@ -49907,12 +49907,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "Scores24MLB",
       "sport": "MLB",
       "units": 1.0
@@ -49972,7 +49972,7 @@
       "matchup": "Minnesota Lynx @ Las Vegas Aces",
       "model_key": "scores24_wnba",
       "odds": -118.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Las Vegas Aces (W) Total points Under (87.5) (Minnesota Lynx @ Las Vegas Aces)",
       "pregame_snapshot": {
         "away_team": "Minnesota Lynx",
@@ -49993,12 +49993,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.847457627118644,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "Scores24WNBA",
       "sport": "WNBA",
       "units": 1.0
@@ -50015,7 +50015,7 @@
       "matchup": "Los Angeles Sparks @ Phoenix Mercury",
       "model_key": "scores24_wnba",
       "odds": -106.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Under 176.5 (Los Angeles Sparks @ Phoenix Mercury)",
       "pregame_snapshot": {
         "away_team": "Los Angeles Sparks",
@@ -50036,12 +50036,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "Scores24WNBA",
       "sport": "WNBA",
       "units": 1.0
@@ -50058,7 +50058,7 @@
       "matchup": "Dallas Wings @ Portland Fire",
       "model_key": "scores24_wnba",
       "odds": -179.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Over 166.5 (Dallas Wings @ Portland Fire)",
       "pregame_snapshot": {
         "away_team": "Dallas Wings",
@@ -50079,12 +50079,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.5586592178770949,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "Scores24WNBA",
       "sport": "WNBA",
       "units": 1.0
@@ -50144,7 +50144,7 @@
       "matchup": "Phoenix Mercury vs Los Angeles Sparks",
       "model_key": "sportsgambler",
       "odds": -122.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Sparks Moneyline (Phoenix Mercury vs Los Angeles Sparks)",
       "pregame_snapshot": {
         "date": "2026-06-13",
@@ -50160,12 +50160,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.819672131147541,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "SportsGambler",
       "sport": "WNBA",
       "units": 1.0
@@ -50182,7 +50182,7 @@
       "matchup": "Portland Fire vs Dallas Wings",
       "model_key": "sportsgambler",
       "odds": -112.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Wings -5.5 (Portland Fire vs Dallas Wings)",
       "pregame_snapshot": {
         "date": "2026-06-13",
@@ -50198,12 +50198,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "SportsGambler",
       "sport": "WNBA",
       "units": 1.0
@@ -50220,7 +50220,7 @@
       "matchup": "Los Angeles Angels vs Tampa Bay Rays",
       "model_key": "sportsgambler",
       "odds": -100.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Los Angeles Angels to Win (Los Angeles Angels vs Tampa Bay Rays)",
       "pregame_snapshot": {
         "date": "2026-06-13",
@@ -50236,12 +50236,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "SportsGambler",
       "sport": "MLB",
       "units": 1.0
@@ -50258,7 +50258,7 @@
       "matchup": "San Francisco Giants vs Chicago Cubs",
       "model_key": "sportsgambler",
       "odds": -128.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Chicago Cubs to Win (San Francisco Giants vs Chicago Cubs)",
       "pregame_snapshot": {
         "date": "2026-06-13",
@@ -50274,12 +50274,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.78125,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "SportsGambler",
       "sport": "MLB",
       "units": 1.0
@@ -50296,7 +50296,7 @@
       "matchup": "Las Vegas Aces vs Minnesota Lynx",
       "model_key": "sportsgambler",
       "odds": -115.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Lynx +4.5 (Las Vegas Aces vs Minnesota Lynx)",
       "pregame_snapshot": {
         "date": "2026-06-13",
@@ -50312,12 +50312,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.8695652173913043,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "SportsGambler",
       "sport": "WNBA",
       "units": 1.0
@@ -50334,7 +50334,7 @@
       "matchup": "Milwaukee Brewers vs Philadelphia Phillies",
       "model_key": "sportsgambler",
       "odds": 132.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Philadelphia Phillies to Win (Milwaukee Brewers vs Philadelphia Phillies)",
       "pregame_snapshot": {
         "date": "2026-06-13",
@@ -50350,12 +50350,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 1.32,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "SportsGambler",
       "sport": "MLB",
       "units": 1.0
@@ -50372,7 +50372,7 @@
       "matchup": "Athletics vs Colorado Rockies",
       "model_key": "sportsgambler",
       "odds": -159.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Athletics to Win (Athletics vs Colorado Rockies)",
       "pregame_snapshot": {
         "date": "2026-06-13",
@@ -50388,12 +50388,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.6289308176100629,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "SportsGambler",
       "sport": "MLB",
       "units": 1.0
@@ -50410,7 +50410,7 @@
       "matchup": "San Antonio Spurs vs New York Knicks",
       "model_key": "sportsgambler",
       "odds": -115.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Knicks +5.5 (San Antonio Spurs vs New York Knicks)",
       "pregame_snapshot": {
         "date": "2026-06-13",
@@ -50426,12 +50426,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.8695652173913043,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "SportsGambler",
       "sport": "NBA",
       "units": 1.0
@@ -50486,7 +50486,7 @@
       "matchup": "Kansas City Royals vs Houston Astros",
       "model_key": "sportsgambler",
       "odds": 107.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Houston Astros to Win (Kansas City Royals vs Houston Astros)",
       "pregame_snapshot": {
         "date": "2026-06-13",
@@ -50502,12 +50502,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 1.07,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "SportsGambler",
       "sport": "MLB",
       "units": 1.0
@@ -50524,7 +50524,7 @@
       "matchup": "Las Vegas Aces vs Minnesota Lynx",
       "model_key": "sportytrader",
       "odds": 122.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Lynx ML (Aces vs Lynx)",
       "pregame_snapshot": {
         "date": "2026-06-13",
@@ -50540,12 +50540,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "SportyTrader",
       "sport": "WNBA",
       "units": 1.0
@@ -50562,7 +50562,7 @@
       "matchup": "Portland Fire vs Dallas Wings",
       "model_key": "sportytrader",
       "odds": 120.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Under 173.5 (Fire vs Wings)",
       "pregame_snapshot": {
         "date": "2026-06-13",
@@ -50578,12 +50578,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 1.2,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "SportyTrader",
       "sport": "WNBA",
       "units": 1.0
@@ -50600,7 +50600,7 @@
       "matchup": "Kansas City Royals vs Houston Astros",
       "model_key": "sportytrader",
       "odds": 153.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Royals -1.5 (Royals vs Astros)",
       "pregame_snapshot": {
         "date": "2026-06-13",
@@ -50616,12 +50616,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "SportyTrader",
       "sport": "MLB",
       "units": 1.0
@@ -50676,7 +50676,7 @@
       "matchup": "San Antonio Spurs vs New York Knicks",
       "model_key": "sportytrader",
       "odds": -112.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Knicks +5.5 (Spurs vs Knicks)",
       "pregame_snapshot": {
         "date": "2026-06-13",
@@ -50692,12 +50692,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.8928571428571429,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "SportyTrader",
       "sport": "NBA",
       "units": 1.0
@@ -50730,12 +50730,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "push",
       "source": "SportyTrader",
       "sport": "MLB",
       "units": 1.0
@@ -50752,7 +50752,7 @@
       "matchup": "Athletics vs Colorado Rockies",
       "model_key": "sportytrader",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Under 14.5 (Athletics vs Rockies)",
       "pregame_snapshot": {
         "date": "2026-06-13",
@@ -50768,12 +50768,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.9090909090909091,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "SportyTrader",
       "sport": "MLB",
       "units": 1.0
@@ -50850,7 +50850,7 @@
       "matchup": "Los Angeles Sparks @ Phoenix Mercury",
       "model_key": "wnba",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Under 173.5 (Los Angeles Sparks vs Phoenix Mercury)",
       "pregame_snapshot": {
         "away_team": "Los Angeles Sparks",
@@ -50884,12 +50884,12 @@
         "vegas": 173.5
       },
       "probability": 0.611,
-      "profit": null,
+      "profit": -0.01,
       "raw_decision": "LEAN",
       "raw_edge": 12.59,
       "raw_probability": 0.6497,
       "raw_units": 0.02,
-      "result": "pending",
+      "result": "loss",
       "source": "WNBA Model",
       "sport": "WNBA",
       "units": 0.01
@@ -50968,7 +50968,7 @@
       "matchup": "Los Angeles Sparks @ Phoenix Mercury",
       "model_key": "wnba",
       "odds": -125.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Los Angeles Sparks ML (Los Angeles Sparks @ Phoenix Mercury)",
       "pregame_snapshot": {
         "away_team": "Los Angeles Sparks",
@@ -51002,12 +51002,12 @@
         "units": 0.02
       },
       "probability": 0.5765,
-      "profit": null,
+      "profit": 0.016,
       "raw_decision": "LEAN",
       "raw_edge": null,
       "raw_probability": 0.613,
       "raw_units": 0.02,
-      "result": "pending",
+      "result": "win",
       "source": "WNBA Model",
       "sport": "WNBA",
       "units": 0.02
@@ -51086,7 +51086,7 @@
       "matchup": "Minnesota Lynx @ Las Vegas Aces",
       "model_key": "wnba",
       "odds": 120.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Minnesota Lynx ML (Minnesota Lynx @ Las Vegas Aces)",
       "pregame_snapshot": {
         "away_team": "Minnesota Lynx",
@@ -51124,12 +51124,12 @@
         "units": 0.02
       },
       "probability": 0.7336,
-      "profit": null,
+      "profit": -0.02,
       "raw_decision": "LEAN",
       "raw_edge": null,
       "raw_probability": 0.775,
       "raw_units": 0.02,
-      "result": "pending",
+      "result": "loss",
       "source": "WNBA Model",
       "sport": "WNBA",
       "units": 0.02
@@ -51146,7 +51146,7 @@
       "matchup": "Dallas Wings @ Portland Fire",
       "model_key": "wnba",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Dallas Wings -4.5 (Dallas Wings @ Portland Fire)",
       "pregame_snapshot": {
         "away_team": "Dallas Wings",
@@ -51184,12 +51184,12 @@
         "vegas": -4.5
       },
       "probability": 0.7038,
-      "profit": null,
+      "profit": -0.05,
       "raw_decision": "BET",
       "raw_edge": 22.16,
       "raw_probability": 0.7454,
       "raw_units": 0.06,
-      "result": "pending",
+      "result": "loss",
       "source": "WNBA Model",
       "sport": "WNBA",
       "units": 0.05
@@ -51264,7 +51264,7 @@
       "matchup": "Dallas Wings @ Portland Fire",
       "model_key": "wnba",
       "odds": -238.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Dallas Wings ML (Dallas Wings @ Portland Fire)",
       "pregame_snapshot": {
         "away_team": "Dallas Wings",
@@ -51298,12 +51298,12 @@
         "units": 0.12
       },
       "probability": 0.8386,
-      "profit": null,
+      "profit": -0.12,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": 0.882,
       "raw_units": 0.12,
-      "result": "pending",
+      "result": "loss",
       "source": "WNBA Model",
       "sport": "WNBA",
       "units": 0.12
@@ -51378,7 +51378,7 @@
       "matchup": "Minnesota Lynx @ Las Vegas Aces",
       "model_key": "wnba",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Minnesota Lynx +2.5 (Minnesota Lynx @ Las Vegas Aces)",
       "pregame_snapshot": {
         "away_team": "Minnesota Lynx",
@@ -51420,12 +51420,12 @@
         "vegas": 2.5
       },
       "probability": 0.7784,
-      "profit": null,
+      "profit": -0.04,
       "raw_decision": "LEAN",
       "raw_edge": 29.45,
       "raw_probability": 0.8183,
       "raw_units": 0.05,
-      "result": "pending",
+      "result": "loss",
       "source": "WNBA Model",
       "sport": "WNBA",
       "units": 0.04
@@ -51566,7 +51566,7 @@
       "matchup": "Minnesota Lynx @ Las Vegas Aces",
       "model_key": "wnba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Stephanie Talbot Over 1.5 Assists",
       "pregame_snapshot": {
         "away_team": "Minnesota Lynx",
@@ -51609,12 +51609,12 @@
         "units": 2.0
       },
       "probability": 0.6866,
-      "profit": null,
+      "profit": -1.59,
       "raw_decision": "BET",
       "raw_edge": 20.42,
       "raw_probability": 0.728,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 1.59
@@ -51631,7 +51631,7 @@
       "matchup": "Los Angeles Sparks @ Phoenix Mercury",
       "model_key": "wnba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Ariel Atkins Over 3.5 Rebounds",
       "pregame_snapshot": {
         "away_team": "Los Angeles Sparks",
@@ -51674,12 +51674,12 @@
         "units": 2.0
       },
       "probability": 0.5886,
-      "profit": null,
+      "profit": 1.1545454545454545,
       "raw_decision": "BET",
       "raw_edge": 10.21,
       "raw_probability": 0.6259,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 1.27
@@ -51696,7 +51696,7 @@
       "matchup": "Minnesota Lynx @ Las Vegas Aces",
       "model_key": "wnba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Jackie Young Over 4.5 Rebounds",
       "pregame_snapshot": {
         "away_team": "Minnesota Lynx",
@@ -51739,12 +51739,12 @@
         "units": 2.0
       },
       "probability": 0.6106,
-      "profit": null,
+      "profit": 1.2545454545454544,
       "raw_decision": "BET",
       "raw_edge": 12.54,
       "raw_probability": 0.6492,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 1.38
@@ -51761,7 +51761,7 @@
       "matchup": "Minnesota Lynx @ Las Vegas Aces",
       "model_key": "wnba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Natasha Howard Under 3.5 Assists",
       "pregame_snapshot": {
         "away_team": "Minnesota Lynx",
@@ -51804,12 +51804,12 @@
         "units": 2.0
       },
       "probability": 0.5948,
-      "profit": null,
+      "profit": 1.190909090909091,
       "raw_decision": "BET",
       "raw_edge": 10.87,
       "raw_probability": 0.6325,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 1.31
@@ -51826,7 +51826,7 @@
       "matchup": "Los Angeles Sparks @ Phoenix Mercury",
       "model_key": "wnba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Monique Akoa Makani Over 2.5 Assists",
       "pregame_snapshot": {
         "away_team": "Los Angeles Sparks",
@@ -51869,12 +51869,12 @@
         "units": 2.0
       },
       "probability": 0.5784,
-      "profit": null,
+      "profit": 1.0909090909090908,
       "raw_decision": "BET",
       "raw_edge": 9.12,
       "raw_probability": 0.615,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 1.2
@@ -51956,7 +51956,7 @@
       "matchup": "Minnesota Lynx @ Las Vegas Aces",
       "model_key": "wnba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "NaLyssa Smith Under 1.5 Assists",
       "pregame_snapshot": {
         "away_team": "Minnesota Lynx",
@@ -51999,12 +51999,12 @@
         "units": 2.0
       },
       "probability": 0.653,
-      "profit": null,
+      "profit": 1.3818181818181818,
       "raw_decision": "BET",
       "raw_edge": 16.98,
       "raw_probability": 0.6936,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 1.52
@@ -52021,7 +52021,7 @@
       "matchup": "Los Angeles Sparks @ Phoenix Mercury",
       "model_key": "wnba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Kahleah Copper Over 2.5 Rebounds",
       "pregame_snapshot": {
         "away_team": "Los Angeles Sparks",
@@ -52064,12 +52064,12 @@
         "units": 2.0
       },
       "probability": 0.6219,
-      "profit": null,
+      "profit": 1.2999999999999998,
       "raw_decision": "BET",
       "raw_edge": 13.73,
       "raw_probability": 0.6611,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 1.43
@@ -52086,7 +52086,7 @@
       "matchup": "Los Angeles Sparks @ Phoenix Mercury",
       "model_key": "wnba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Dearica Hamby Under 15.5 Points",
       "pregame_snapshot": {
         "away_team": "Los Angeles Sparks",
@@ -52129,12 +52129,12 @@
         "units": 2.0
       },
       "probability": 0.5863,
-      "profit": null,
+      "profit": 1.1363636363636362,
       "raw_decision": "BET",
       "raw_edge": 9.96,
       "raw_probability": 0.6234,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 1.25
@@ -52216,7 +52216,7 @@
       "matchup": "Minnesota Lynx @ Las Vegas Aces",
       "model_key": "wnba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Olivia Miles Over 17.5 Points",
       "pregame_snapshot": {
         "away_team": "Minnesota Lynx",
@@ -52259,12 +52259,12 @@
         "units": 2.0
       },
       "probability": 0.6527,
-      "profit": null,
+      "profit": 1.3818181818181818,
       "raw_decision": "BET",
       "raw_edge": 16.95,
       "raw_probability": 0.6933,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 1.52
@@ -52281,7 +52281,7 @@
       "matchup": "Dallas Wings @ Portland Fire",
       "model_key": "wnba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Megan Gustafson Over 11.5 Points",
       "pregame_snapshot": {
         "away_team": "Dallas Wings",
@@ -52324,12 +52324,12 @@
         "units": 2.0
       },
       "probability": 0.6029,
-      "profit": null,
+      "profit": 1.2272727272727273,
       "raw_decision": "BET",
       "raw_edge": 11.73,
       "raw_probability": 0.6411,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 1.35
@@ -52346,7 +52346,7 @@
       "matchup": "Los Angeles Sparks @ Phoenix Mercury",
       "model_key": "wnba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Noemie Brochant Over 5.5 Points",
       "pregame_snapshot": {
         "away_team": "Los Angeles Sparks",
@@ -52389,12 +52389,12 @@
         "units": 2.0
       },
       "probability": 0.5923,
-      "profit": null,
+      "profit": 1.1727272727272726,
       "raw_decision": "BET",
       "raw_edge": 10.6,
       "raw_probability": 0.6298,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 1.29
@@ -52411,7 +52411,7 @@
       "matchup": "Dallas Wings @ Portland Fire",
       "model_key": "wnba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Jessica Shepard Over 13.5 Points",
       "pregame_snapshot": {
         "away_team": "Dallas Wings",
@@ -52454,12 +52454,12 @@
         "units": 2.0
       },
       "probability": 0.6636,
-      "profit": null,
+      "profit": -1.55,
       "raw_decision": "BET",
       "raw_edge": 8.92,
       "raw_probability": 0.613,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 1.55
@@ -52541,7 +52541,7 @@
       "matchup": "Dallas Wings @ Portland Fire",
       "model_key": "wnba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Azzi Fudd Over 11.5 Points",
       "pregame_snapshot": {
         "away_team": "Dallas Wings",
@@ -52588,12 +52588,12 @@
         "units": 2.0
       },
       "probability": 0.5817,
-      "profit": null,
+      "profit": 1.1090909090909091,
       "raw_decision": "BET",
       "raw_edge": 9.47,
       "raw_probability": 0.6185,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 1.22
@@ -52676,7 +52676,7 @@
       "matchup": "Los Angeles Sparks @ Phoenix Mercury",
       "model_key": "wnba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Kelsey Plum Over 6.5 Assists",
       "pregame_snapshot": {
         "away_team": "Los Angeles Sparks",
@@ -52719,12 +52719,12 @@
         "units": 2.0
       },
       "probability": 0.5913,
-      "profit": null,
+      "profit": 1.1727272727272726,
       "raw_decision": "BET",
       "raw_edge": 10.5,
       "raw_probability": 0.6288,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 1.29
@@ -52741,7 +52741,7 @@
       "matchup": "Dallas Wings @ Portland Fire",
       "model_key": "wnba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Emily Engstler Over 4.5 Rebounds",
       "pregame_snapshot": {
         "away_team": "Dallas Wings",
@@ -52784,12 +52784,12 @@
         "units": 2.0
       },
       "probability": 0.683,
-      "profit": null,
+      "profit": 1.4454545454545455,
       "raw_decision": "BET",
       "raw_edge": 20.06,
       "raw_probability": 0.7244,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 1.59
@@ -52806,7 +52806,7 @@
       "matchup": "Minnesota Lynx @ Las Vegas Aces",
       "model_key": "wnba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Stephanie Talbot Over 4.5 Points",
       "pregame_snapshot": {
         "away_team": "Minnesota Lynx",
@@ -52849,12 +52849,12 @@
         "units": 2.0
       },
       "probability": 0.6142,
-      "profit": null,
+      "profit": -1.4,
       "raw_decision": "BET",
       "raw_edge": 12.93,
       "raw_probability": 0.6531,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 1.4
@@ -52871,7 +52871,7 @@
       "matchup": "Dallas Wings @ Portland Fire",
       "model_key": "wnba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Sarah Ashlee Barker Over 2.5 Assists",
       "pregame_snapshot": {
         "away_team": "Dallas Wings",
@@ -52914,12 +52914,12 @@
         "units": 2.0
       },
       "probability": 0.6406,
-      "profit": null,
+      "profit": 1.3545454545454545,
       "raw_decision": "BET",
       "raw_edge": 15.69,
       "raw_probability": 0.6807,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 1.49
@@ -52936,7 +52936,7 @@
       "matchup": "Los Angeles Sparks @ Phoenix Mercury",
       "model_key": "wnba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Ariel Atkins Under 2.5 Assists",
       "pregame_snapshot": {
         "away_team": "Los Angeles Sparks",
@@ -52979,12 +52979,12 @@
         "units": 2.0
       },
       "probability": 0.5642,
-      "profit": null,
+      "profit": -1.06,
       "raw_decision": "BET",
       "raw_edge": 7.6,
       "raw_probability": 0.5998,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 1.06
@@ -53001,7 +53001,7 @@
       "matchup": "Dallas Wings @ Portland Fire",
       "model_key": "wnba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Arike Ogunbowale Over 2.5 Rebounds",
       "pregame_snapshot": {
         "away_team": "Dallas Wings",
@@ -53044,12 +53044,12 @@
         "units": 2.0
       },
       "probability": 0.6398,
-      "profit": null,
+      "profit": 1.3545454545454545,
       "raw_decision": "BET",
       "raw_edge": 13.36,
       "raw_probability": 0.6574,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 1.49
@@ -53066,7 +53066,7 @@
       "matchup": "Los Angeles Sparks @ Phoenix Mercury",
       "model_key": "wnba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Cameron Brink Under 1.5 Assists",
       "pregame_snapshot": {
         "away_team": "Los Angeles Sparks",
@@ -53109,12 +53109,12 @@
         "units": 2.0
       },
       "probability": 0.5725,
-      "profit": null,
+      "profit": -1.15,
       "raw_decision": "BET",
       "raw_edge": 8.48,
       "raw_probability": 0.6087,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 1.15
@@ -53196,7 +53196,7 @@
       "matchup": "Minnesota Lynx @ Las Vegas Aces",
       "model_key": "wnba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Jackie Young Over 15.5 Points",
       "pregame_snapshot": {
         "away_team": "Minnesota Lynx",
@@ -53239,12 +53239,12 @@
         "units": 2.0
       },
       "probability": 0.6199,
-      "profit": null,
+      "profit": 1.2909090909090908,
       "raw_decision": "BET",
       "raw_edge": 13.53,
       "raw_probability": 0.6591,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 1.42
@@ -53261,7 +53261,7 @@
       "matchup": "Minnesota Lynx @ Las Vegas Aces",
       "model_key": "wnba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "A'ja Wilson Over 26.5 Points",
       "pregame_snapshot": {
         "away_team": "Minnesota Lynx",
@@ -53304,12 +53304,12 @@
         "units": 2.0
       },
       "probability": 0.582,
-      "profit": null,
+      "profit": -1.22,
       "raw_decision": "BET",
       "raw_edge": 9.5,
       "raw_probability": 0.6188,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 1.22
@@ -53391,7 +53391,7 @@
       "matchup": "Dallas Wings @ Portland Fire",
       "model_key": "wnba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Carla Leite Over 1.5 Rebounds",
       "pregame_snapshot": {
         "away_team": "Dallas Wings",
@@ -53435,12 +53435,12 @@
         "units": 2.0
       },
       "probability": 0.5903,
-      "profit": null,
+      "profit": 1.1636363636363636,
       "raw_decision": "BET",
       "raw_edge": 10.39,
       "raw_probability": 0.6277,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 1.28
@@ -53522,7 +53522,7 @@
       "matchup": "Dallas Wings @ Portland Fire",
       "model_key": "wnba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Carla Leite Under 14.5 Points",
       "pregame_snapshot": {
         "away_team": "Dallas Wings",
@@ -53566,12 +53566,12 @@
         "units": 2.0
       },
       "probability": 0.5782,
-      "profit": null,
+      "profit": 1.0909090909090908,
       "raw_decision": "BET",
       "raw_edge": 9.1,
       "raw_probability": 0.6148,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 1.2
@@ -53579,9 +53579,9 @@
   ],
   "schema_version": 1,
   "summary": {
-    "decided_picks": 826,
-    "pending_picks": 167,
+    "decided_picks": 905,
+    "pending_picks": 85,
     "total_picks": 1025,
-    "trainable_decided_picks": 690
+    "trainable_decided_picks": 747
   }
 }
