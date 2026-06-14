@@ -54358,7 +54358,7 @@
       "matchup": "Seattle Mariners @ Washington Nationals",
       "model_key": "mlb_first_five",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Seattle Mariners F5 ML",
       "pregame_snapshot": {
         "assumed_odds": -110,
@@ -54392,7 +54392,7 @@
       "raw_edge": 16.65,
       "raw_probability": 0.6903,
       "raw_units": null,
-      "result": "pending",
+      "result": "loss",
       "source": "MLB First Five",
       "sport": "MLB",
       "units": null
@@ -56714,7 +56714,7 @@
       "matchup": "",
       "model_key": "mlb_new",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Under 10.5 (Seattle Mariners vs Washington Nationals)",
       "pregame_snapshot": {
         "assumed_odds": -110,
@@ -56740,12 +56740,12 @@
         "vegas": 10.5
       },
       "probability": 0.5493,
-      "profit": null,
+      "profit": -0.02,
       "raw_decision": "BET",
       "raw_edge": 7.56,
       "raw_probability": 0.5994,
       "raw_units": 0.04,
-      "result": "pending",
+      "result": "loss",
       "source": "MLB NEW",
       "sport": "MLB",
       "units": 0.02
@@ -57982,7 +57982,7 @@
       "matchup": "Seattle Mariners @ Washington Nationals",
       "model_key": "mlb_player_props",
       "odds": 119.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Dominic Canzone Under 1.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "away_team": "Seattle Mariners",
@@ -58036,12 +58036,12 @@
         "units": 2.0
       },
       "probability": 0.512,
-      "profit": null,
+      "profit": 1.5231999999999999,
       "raw_decision": "BET",
       "raw_edge": 8.64,
       "raw_probability": 0.543,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 1.28
@@ -58210,7 +58210,7 @@
       "matchup": "Miami Marlins @ Pittsburgh Pirates",
       "model_key": "mlb_player_props",
       "odds": -144.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Tyler Callihan Over 0.5 Hits",
       "pregame_snapshot": {
         "away_team": "Miami Marlins",
@@ -58266,12 +58266,12 @@
         "units": 2.0
       },
       "probability": 0.6752,
-      "profit": null,
+      "profit": 0.7708333333333334,
       "raw_decision": "BET",
       "raw_edge": 17.02,
       "raw_probability": 0.7604,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 1.11
@@ -58366,7 +58366,7 @@
       "matchup": "Miami Marlins @ Pittsburgh Pirates",
       "model_key": "mlb_player_props",
       "odds": 100.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Liam Hicks Over 1.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "away_team": "Miami Marlins",
@@ -58420,12 +58420,12 @@
         "units": 2.0
       },
       "probability": 0.5703,
-      "profit": null,
+      "profit": 1.4,
       "raw_decision": "BET",
       "raw_edge": 11.03,
       "raw_probability": 0.6103,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 1.4
@@ -58442,7 +58442,7 @@
       "matchup": "Seattle Mariners @ Washington Nationals",
       "model_key": "mlb_player_props",
       "odds": -204.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Cole Young Under 1.5 Hits",
       "pregame_snapshot": {
         "away_team": "Seattle Mariners",
@@ -58498,12 +58498,12 @@
         "units": 2.0
       },
       "probability": 0.7108,
-      "profit": null,
+      "profit": 0.49019607843137253,
       "raw_decision": "BET",
       "raw_edge": 10.85,
       "raw_probability": 0.7796,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 1.0
@@ -58906,7 +58906,7 @@
       "matchup": "Miami Marlins @ Pittsburgh Pirates",
       "model_key": "mlb_player_props",
       "odds": 100.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Xavier Edwards Over 1.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "away_team": "Miami Marlins",
@@ -58960,12 +58960,12 @@
         "units": 2.0
       },
       "probability": 0.5316,
-      "profit": null,
+      "profit": 1.11,
       "raw_decision": "LEAN",
       "raw_edge": 6.85,
       "raw_probability": 0.5685,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 1.11
@@ -59288,7 +59288,7 @@
       "matchup": "Seattle Mariners @ Washington Nationals",
       "model_key": "mlb_player_props",
       "odds": -145.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "CJ Abrams Over 1.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "away_team": "Seattle Mariners",
@@ -59342,12 +59342,12 @@
         "units": 2.0
       },
       "probability": 0.6308,
-      "profit": null,
+      "profit": 0.6896551724137931,
       "raw_decision": "BET",
       "raw_edge": 7.87,
       "raw_probability": 0.6705,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 1.0
@@ -59518,7 +59518,7 @@
       "matchup": "Miami Marlins @ Pittsburgh Pirates",
       "model_key": "mlb_player_props",
       "odds": -134.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Joe Mack Over 0.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "away_team": "Miami Marlins",
@@ -59572,12 +59572,12 @@
         "units": 2.0
       },
       "probability": 0.7151,
-      "profit": null,
+      "profit": 1.1567164179104479,
       "raw_decision": "BET",
       "raw_edge": 16.5,
       "raw_probability": 0.7377,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 1.55
@@ -59822,7 +59822,7 @@
       "matchup": "Miami Marlins @ Pittsburgh Pirates",
       "model_key": "mlb_player_props",
       "odds": -116.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Otto Lopez Over 1.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "away_team": "Miami Marlins",
@@ -59876,12 +59876,12 @@
         "units": 2.0
       },
       "probability": 0.6118,
-      "profit": null,
+      "profit": 1.146551724137931,
       "raw_decision": "BET",
       "raw_edge": 11.73,
       "raw_probability": 0.6544,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 1.33
@@ -61892,7 +61892,7 @@
       "matchup": "Seattle Mariners @ Washington Nationals",
       "model_key": "mlb_player_props",
       "odds": -101.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Victor Robles Under 1.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "away_team": "Seattle Mariners",
@@ -61946,12 +61946,12 @@
         "units": 2.0
       },
       "probability": 0.7036,
-      "profit": null,
+      "profit": 1.6336633663366336,
       "raw_decision": "BET",
       "raw_edge": 24.27,
       "raw_probability": 0.7452,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 1.65
@@ -62120,7 +62120,7 @@
       "matchup": "Seattle Mariners @ Washington Nationals",
       "model_key": "mlb_player_props",
       "odds": -154.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Cole Young Under 2.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "away_team": "Seattle Mariners",
@@ -62174,12 +62174,12 @@
         "units": 2.0
       },
       "probability": 0.7376,
-      "profit": null,
+      "profit": 0.987012987012987,
       "raw_decision": "BET",
       "raw_edge": 17.26,
       "raw_probability": 0.7789,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 1.52
@@ -62586,7 +62586,7 @@
       "matchup": "Miami Marlins @ Pittsburgh Pirates",
       "model_key": "scores24_mlb",
       "odds": -164.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Pittsburgh Pirates ML (Miami Marlins @ Pittsburgh Pirates)",
       "pregame_snapshot": {
         "away_team": "Miami Marlins",
@@ -62607,12 +62607,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "Scores24MLB",
       "sport": "MLB",
       "units": 1.0
@@ -63016,7 +63016,7 @@
       "matchup": "Seattle Mariners @ Washington Nationals",
       "model_key": "scores24_mlb",
       "odds": -141.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Seattle Mariners ML (Seattle Mariners @ Washington Nationals)",
       "pregame_snapshot": {
         "away_team": "Seattle Mariners",
@@ -63037,12 +63037,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "Scores24MLB",
       "sport": "MLB",
       "units": 1.0
@@ -63345,7 +63345,7 @@
       "matchup": "Washington Nationals vs Seattle Mariners",
       "model_key": "sportsgambler",
       "odds": -156.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Seattle Mariners to Win (Washington Nationals vs Seattle Mariners)",
       "pregame_snapshot": {
         "date": "2026-06-14",
@@ -63361,12 +63361,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "SportsGambler",
       "sport": "MLB",
       "units": 1.0
@@ -63725,7 +63725,7 @@
       "matchup": "Pittsburgh Pirates vs Miami Marlins",
       "model_key": "sportsgambler",
       "odds": -172.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Pittsburgh Pirates to Win (Pittsburgh Pirates vs Miami Marlins)",
       "pregame_snapshot": {
         "date": "2026-06-14",
@@ -63741,12 +63741,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "SportsGambler",
       "sport": "MLB",
       "units": 1.0
@@ -64105,7 +64105,7 @@
       "matchup": "Pittsburgh Pirates vs Miami Marlins",
       "model_key": "sportytrader",
       "odds": -115.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Under 7.0 (Pirates vs Marlins)",
       "pregame_snapshot": {
         "date": "2026-06-14",
@@ -64121,12 +64121,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.8695652173913043,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "SportyTrader",
       "sport": "MLB",
       "units": 1.0
@@ -65738,9 +65738,9 @@
   ],
   "schema_version": 1,
   "summary": {
-    "decided_picks": 905,
-    "pending_picks": 290,
+    "decided_picks": 922,
+    "pending_picks": 273,
     "total_picks": 1238,
-    "trainable_decided_picks": 747
+    "trainable_decided_picks": 759
   }
 }
