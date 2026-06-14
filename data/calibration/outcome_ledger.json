@@ -54424,7 +54424,7 @@
       "matchup": "",
       "model_key": "mlb_new",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Under 9.0 (Tampa Bay Rays vs Los Angeles Angels)",
       "pregame_snapshot": {
         "assumed_odds": -110,
@@ -54450,12 +54450,12 @@
         "vegas": 9.0
       },
       "probability": 0.5555,
-      "profit": null,
+      "profit": -0.03,
       "raw_decision": "LEAN",
       "raw_edge": 3.59,
       "raw_probability": 0.5597,
       "raw_units": 0.01,
-      "result": "pending",
+      "result": "loss",
       "source": "MLB NEW",
       "sport": "MLB",
       "units": 0.03
@@ -55826,7 +55826,7 @@
       "matchup": "Tampa Bay Rays @ Los Angeles Angels",
       "model_key": "mlb_player_props",
       "odds": -128.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Jose Siri Over 0.5 Hits",
       "pregame_snapshot": {
         "away_team": "Tampa Bay Rays",
@@ -55882,12 +55882,12 @@
         "units": 2.0
       },
       "probability": 0.799,
-      "profit": null,
+      "profit": -1.49,
       "raw_decision": "BET",
       "raw_edge": 31.83,
       "raw_probability": 0.8797,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 1.49
@@ -58436,7 +58436,7 @@
       "matchup": "Tampa Bay Rays @ Los Angeles Angels",
       "model_key": "mlb_player_props",
       "odds": -192.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Nick Madrigal Over 0.5 Hits",
       "pregame_snapshot": {
         "away_team": "Tampa Bay Rays",
@@ -58492,12 +58492,12 @@
         "units": 2.0
       },
       "probability": 0.8182,
-      "profit": null,
+      "profit": -1.35,
       "raw_decision": "BET",
       "raw_edge": 25.1,
       "raw_probability": 0.9085,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 1.35
@@ -58592,7 +58592,7 @@
       "matchup": "Tampa Bay Rays @ Los Angeles Angels",
       "model_key": "mlb_player_props",
       "odds": -158.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Jose Siri Over 0.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "away_team": "Tampa Bay Rays",
@@ -58646,12 +58646,12 @@
         "units": 2.0
       },
       "probability": 0.7966,
-      "profit": null,
+      "profit": -1.47,
       "raw_decision": "BET",
       "raw_edge": 25.04,
       "raw_probability": 0.8628,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 1.47
@@ -59204,7 +59204,7 @@
       "matchup": "Tampa Bay Rays @ Los Angeles Angels",
       "model_key": "mlb_player_props",
       "odds": 128.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Donovan Walton Over 1.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "away_team": "Tampa Bay Rays",
@@ -59258,12 +59258,12 @@
         "units": 2.0
       },
       "probability": 0.5756,
-      "profit": null,
+      "profit": 1.8432,
       "raw_decision": "BET",
       "raw_edge": 19.0,
       "raw_probability": 0.6286,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 1.44
@@ -60274,7 +60274,7 @@
       "matchup": "Tampa Bay Rays @ Los Angeles Angels",
       "model_key": "mlb_player_props",
       "odds": -152.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Donovan Walton Over 0.5 Hits",
       "pregame_snapshot": {
         "away_team": "Tampa Bay Rays",
@@ -60330,12 +60330,12 @@
         "units": 2.0
       },
       "probability": 0.7375,
-      "profit": null,
+      "profit": 0.8026315789473685,
       "raw_decision": "BET",
       "raw_edge": 21.07,
       "raw_probability": 0.8138,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 1.22
@@ -60676,7 +60676,7 @@
       "matchup": "Tampa Bay Rays @ Los Angeles Angels",
       "model_key": "scores24_mlb",
       "odds": -125.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Under 8.5 (Tampa Bay Rays @ Los Angeles Angels)",
       "pregame_snapshot": {
         "away_team": "Tampa Bay Rays",
@@ -60697,12 +60697,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "Scores24MLB",
       "sport": "MLB",
       "units": 1.0
@@ -62439,9 +62439,9 @@
   ],
   "schema_version": 1,
   "summary": {
-    "decided_picks": 998,
-    "pending_picks": 129,
+    "decided_picks": 1005,
+    "pending_picks": 122,
     "total_picks": 1165,
-    "trainable_decided_picks": 826
+    "trainable_decided_picks": 832
   }
 }
