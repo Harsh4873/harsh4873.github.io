@@ -50101,7 +50101,7 @@
       "matchup": "Indiana Fever @ Connecticut Sun",
       "model_key": "scores24_wnba",
       "odds": 110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Under 168.5 (Indiana Fever @ Connecticut Sun)",
       "pregame_snapshot": {
         "away_team": "Indiana Fever",
@@ -50122,12 +50122,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 1.1,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "Scores24WNBA",
       "sport": "WNBA",
       "units": 1.0
@@ -50448,7 +50448,7 @@
       "matchup": "Connecticut Sun vs Indiana Fever",
       "model_key": "sportsgambler",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Fever -10.5 (Connecticut Sun vs Indiana Fever)",
       "pregame_snapshot": {
         "date": "2026-06-13",
@@ -50464,12 +50464,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "SportsGambler",
       "sport": "WNBA",
       "units": 1.0
@@ -50638,7 +50638,7 @@
       "matchup": "Connecticut Sun vs Indiana Fever",
       "model_key": "sportytrader",
       "odds": -180.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Connecticut Sun to cover the +13.5 spread (Sun vs Fever)",
       "pregame_snapshot": {
         "date": "2026-06-13",
@@ -50654,12 +50654,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.5555555555555556,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "SportyTrader",
       "sport": "WNBA",
       "units": 1.0
@@ -50790,7 +50790,7 @@
       "matchup": "Indiana Fever @ Connecticut Sun",
       "model_key": "wnba",
       "odds": -410.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Indiana Fever ML (Indiana Fever @ Connecticut Sun)",
       "pregame_snapshot": {
         "away_team": "Indiana Fever",
@@ -50828,12 +50828,12 @@
         "units": 0.14
       },
       "probability": 0.9146,
-      "profit": null,
+      "profit": 0.041463414634146344,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": 0.937,
       "raw_units": 0.14,
-      "result": "pending",
+      "result": "win",
       "source": "WNBA Model",
       "sport": "WNBA",
       "units": 0.17
@@ -50906,7 +50906,7 @@
       "matchup": "Indiana Fever @ Connecticut Sun",
       "model_key": "wnba",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Indiana Fever -8.5 (Indiana Fever @ Connecticut Sun)",
       "pregame_snapshot": {
         "away_team": "Indiana Fever",
@@ -50946,12 +50946,12 @@
         "vegas": -8.5
       },
       "probability": 0.728,
-      "profit": null,
+      "profit": 0.05454545454545454,
       "raw_decision": "BET",
       "raw_edge": 23.93,
       "raw_probability": 0.7631,
       "raw_units": 0.06,
-      "result": "pending",
+      "result": "win",
       "source": "WNBA Model",
       "sport": "WNBA",
       "units": 0.06
@@ -51442,7 +51442,7 @@
       "matchup": "Indiana Fever @ Connecticut Sun",
       "model_key": "wnba",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Under 170.5 (Indiana Fever vs Connecticut Sun)",
       "pregame_snapshot": {
         "away_team": "Indiana Fever",
@@ -51478,12 +51478,12 @@
         "vegas": 170.5
       },
       "probability": 0.6793,
-      "profit": null,
+      "profit": 0.01818181818181818,
       "raw_decision": "LEAN",
       "raw_edge": 17.04,
       "raw_probability": 0.6942,
       "raw_units": 0.03,
-      "result": "pending",
+      "result": "win",
       "source": "WNBA Model",
       "sport": "WNBA",
       "units": 0.02
@@ -51500,7 +51500,7 @@
       "matchup": "Indiana Fever @ Connecticut Sun",
       "model_key": "wnba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Sophie Cunningham Over 1.5 Assists",
       "pregame_snapshot": {
         "away_team": "Indiana Fever",
@@ -51544,12 +51544,12 @@
         "units": 2.0
       },
       "probability": 0.5924,
-      "profit": null,
+      "profit": -1.29,
       "raw_decision": "BET",
       "raw_edge": 10.62,
       "raw_probability": 0.63,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 1.29
@@ -51891,7 +51891,7 @@
       "matchup": "Indiana Fever @ Connecticut Sun",
       "model_key": "wnba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Saniya Rivers Over 7.5 Points",
       "pregame_snapshot": {
         "away_team": "Indiana Fever",
@@ -51934,12 +51934,12 @@
         "units": 2.0
       },
       "probability": 0.6611,
-      "profit": null,
+      "profit": 1.4,
       "raw_decision": "BET",
       "raw_edge": 17.8,
       "raw_probability": 0.7019,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 1.54
@@ -52151,7 +52151,7 @@
       "matchup": "Indiana Fever @ Connecticut Sun",
       "model_key": "wnba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Charlisse Leger-Walker Under 6.5 Points",
       "pregame_snapshot": {
         "away_team": "Indiana Fever",
@@ -52194,12 +52194,12 @@
         "units": 2.0
       },
       "probability": 0.6005,
-      "profit": null,
+      "profit": 1.2181818181818183,
       "raw_decision": "BET",
       "raw_edge": 11.48,
       "raw_probability": 0.6386,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 1.34
@@ -52476,7 +52476,7 @@
       "matchup": "Indiana Fever @ Connecticut Sun",
       "model_key": "wnba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Leila Lacan Under 1.5 Rebounds",
       "pregame_snapshot": {
         "away_team": "Indiana Fever",
@@ -52519,12 +52519,12 @@
         "units": 2.0
       },
       "probability": 0.5908,
-      "profit": null,
+      "profit": -1.28,
       "raw_decision": "BET",
       "raw_edge": 10.44,
       "raw_probability": 0.6282,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 1.28
@@ -52610,7 +52610,7 @@
       "matchup": "Indiana Fever @ Connecticut Sun",
       "model_key": "wnba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Caitlin Clark Under 8.5 Assists",
       "pregame_snapshot": {
         "away_team": "Indiana Fever",
@@ -52654,12 +52654,12 @@
         "units": 2.0
       },
       "probability": 0.6135,
-      "profit": null,
+      "profit": 1.2727272727272727,
       "raw_decision": "BET",
       "raw_edge": 25.45,
       "raw_probability": 0.7783,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 1.4
@@ -53131,7 +53131,7 @@
       "matchup": "Indiana Fever @ Connecticut Sun",
       "model_key": "wnba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Aneesah Morrow Over 10.5 Rebounds",
       "pregame_snapshot": {
         "away_team": "Indiana Fever",
@@ -53174,12 +53174,12 @@
         "units": 2.0
       },
       "probability": 0.6505,
-      "profit": null,
+      "profit": 1.3818181818181818,
       "raw_decision": "BET",
       "raw_edge": 16.72,
       "raw_probability": 0.691,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 1.52
@@ -53326,7 +53326,7 @@
       "matchup": "Indiana Fever @ Connecticut Sun",
       "model_key": "wnba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Myisha Hines-Allen Under 2.5 Assists",
       "pregame_snapshot": {
         "away_team": "Indiana Fever",
@@ -53369,12 +53369,12 @@
         "units": 2.0
       },
       "probability": 0.6382,
-      "profit": null,
+      "profit": 1.3454545454545455,
       "raw_decision": "BET",
       "raw_edge": 15.44,
       "raw_probability": 0.6782,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 1.48
@@ -53457,7 +53457,7 @@
       "matchup": "Indiana Fever @ Connecticut Sun",
       "model_key": "wnba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Monique Billings Under 1.5 Assists",
       "pregame_snapshot": {
         "away_team": "Indiana Fever",
@@ -53500,12 +53500,12 @@
         "units": 2.0
       },
       "probability": 0.7465,
-      "profit": null,
+      "profit": -1.69,
       "raw_decision": "BET",
       "raw_edge": 26.38,
       "raw_probability": 0.7876,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 1.69
@@ -53579,9 +53579,9 @@
   ],
   "schema_version": 1,
   "summary": {
-    "decided_picks": 812,
-    "pending_picks": 181,
+    "decided_picks": 826,
+    "pending_picks": 167,
     "total_picks": 1025,
-    "trainable_decided_picks": 679
+    "trainable_decided_picks": 690
   }
 }
