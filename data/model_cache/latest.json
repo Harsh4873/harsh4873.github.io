@@ -16765,6 +16765,7 @@
           "probability": 0.5879,
           "raw_edge": 11.56,
           "raw_probability": 0.6394,
+          "result": "push",
           "source": "MLB First Five",
           "sport": "MLB",
           "start_time": "2026-06-14T17:40Z",
@@ -19282,6 +19283,7 @@
           "probability": 0.5825,
           "raw_edge": 11.58,
           "raw_probability": 0.634,
+          "result": "push",
           "source": "MLB Inning",
           "sport": "MLB",
           "start_time": "2026-06-14T17:40Z",
@@ -19373,7 +19375,7 @@
           "game": "New York Mets vs Atlanta Braves",
           "game_id": "823615",
           "game_order": 5,
-          "game_start_time": "2026-06-14T17:40:00Z",
+          "game_start_time": "2026-06-14T17:40Z",
           "home_team": "New York Mets",
           "inning": 3,
           "league": "MLB",
@@ -19416,7 +19418,7 @@
           "raw_probability": 0.599,
           "source": "MLB Inning",
           "sport": "MLB",
-          "start_time": "2026-06-14T17:40:00Z",
+          "start_time": "2026-06-14T17:40Z",
           "team": ""
         },
         {
@@ -20033,7 +20035,7 @@
           "game": "San Francisco Giants vs Chicago Cubs",
           "game_id": "823212",
           "game_order": 11,
-          "game_start_time": "2026-06-14T19:10:00Z",
+          "game_start_time": "2026-06-14T19:10Z",
           "home_team": "San Francisco Giants",
           "inning": 3,
           "league": "MLB",
@@ -20076,7 +20078,7 @@
           "raw_probability": 0.577,
           "source": "MLB Inning",
           "sport": "MLB",
-          "start_time": "2026-06-14T19:10:00Z",
+          "start_time": "2026-06-14T19:10Z",
           "team": ""
         },
         {
@@ -20375,6 +20377,7 @@
           "decision": "BET",
           "direction": "Under",
           "edge": 8.63,
+          "game_start_time": "2026-06-14T17:35Z",
           "home_team": "Baltimore Orioles",
           "kelly": 7.39,
           "line": 10.5,
@@ -20415,6 +20418,7 @@
           "selection": "Under",
           "source": "MLB NEW",
           "sport": "MLB",
+          "start_time": "2026-06-14T17:35Z",
           "units": 0.04,
           "vegas": 10.5
         },
@@ -22156,6 +22160,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "push",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-14-06-2026-cleveland-guardians-detroit-tigers-prediction",
           "sport": "MLB",
@@ -22700,6 +22705,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "push",
           "source": "SportsGambler",
           "sport": "MLB",
           "start_time": "2026-06-14T17:40Z",
