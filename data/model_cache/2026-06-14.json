@@ -17979,7 +17979,7 @@
           "game": "Los Angeles Dodgers @ Chicago White Sox",
           "game_id": "824586",
           "game_order": 9,
-          "game_start_time": "2026-06-14T18:10:00Z",
+          "game_start_time": "2026-06-14T18:10Z",
           "home_team": "Chicago White Sox",
           "league": "MLB",
           "line": 5.5,
@@ -18020,7 +18020,7 @@
           "raw_probability": 0.6394,
           "source": "MLB First Five",
           "sport": "MLB",
-          "start_time": "2026-06-14T18:10:00Z",
+          "start_time": "2026-06-14T18:10Z",
           "team": ""
         },
         {
@@ -20389,7 +20389,7 @@
           "game": "Kansas City Royals vs Houston Astros",
           "game_id": "824099",
           "game_order": 7,
-          "game_start_time": "2026-06-14T18:10:00Z",
+          "game_start_time": "2026-06-14T18:10Z",
           "home_team": "Kansas City Royals",
           "inning": 3,
           "league": "MLB",
@@ -20432,7 +20432,7 @@
           "raw_probability": 0.619,
           "source": "MLB Inning",
           "sport": "MLB",
-          "start_time": "2026-06-14T18:10:00Z",
+          "start_time": "2026-06-14T18:10Z",
           "team": ""
         },
         {
@@ -20455,7 +20455,7 @@
           "game": "Kansas City Royals vs Houston Astros",
           "game_id": "824099",
           "game_order": 7,
-          "game_start_time": "2026-06-14T18:10:00Z",
+          "game_start_time": "2026-06-14T18:10Z",
           "home_team": "Kansas City Royals",
           "inning": 6,
           "league": "MLB",
@@ -20498,7 +20498,7 @@
           "raw_probability": 0.624,
           "source": "MLB Inning",
           "sport": "MLB",
-          "start_time": "2026-06-14T18:10:00Z",
+          "start_time": "2026-06-14T18:10Z",
           "team": ""
         },
         {
@@ -20983,7 +20983,7 @@
           "game": "San Francisco Giants vs Chicago Cubs",
           "game_id": "823212",
           "game_order": 12,
-          "game_start_time": "2026-06-14T19:10:00Z",
+          "game_start_time": "2026-06-14T19:10Z",
           "home_team": "San Francisco Giants",
           "inning": 2,
           "league": "MLB",
@@ -21026,7 +21026,7 @@
           "raw_probability": 0.606,
           "source": "MLB Inning",
           "sport": "MLB",
-          "start_time": "2026-06-14T19:10:00Z",
+          "start_time": "2026-06-14T19:10Z",
           "team": ""
         },
         {
@@ -21425,6 +21425,7 @@
           "decision": "BET",
           "direction": "Under",
           "edge": 2.55,
+          "game_start_time": "2026-06-14T17:35Z",
           "home_team": "Washington Nationals",
           "kelly": 3.97,
           "line": 10.5,
@@ -21465,6 +21466,7 @@
           "selection": "Under",
           "source": "MLB NEW",
           "sport": "MLB",
+          "start_time": "2026-06-14T17:35Z",
           "units": 0.02,
           "vegas": 10.5
         },
