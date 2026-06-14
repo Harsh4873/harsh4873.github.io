@@ -346,6 +346,57 @@ def test_server_preserves_fifa_asian_handicap_without_auto_grading(monkeypatch):
     assert result["picks"][0]["calibration_excluded"] is True
 
 
+def test_server_routes_external_player_prop_out_of_team_markets(monkeypatch):
+    import pickgrader_server as server
+
+    monkeypatch.setattr(
+        server,
+        "_known_external_slate_matchups",
+        lambda _date, _sport: ["Pittsburgh Pirates @ Los Angeles Dodgers"],
+    )
+    monkeypatch.setattr(server, "_save_admin_picks_doc", lambda *_args, **_kwargs: None)
+
+    def fake_run(command, **_kwargs):
+        return subprocess.CompletedProcess(
+            command,
+            0,
+            stdout=(
+                "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+                "Match: Pittsburgh Pirates vs Los Angeles Dodgers\n"
+                "League: MLB\n"
+                "Tip: Shohei Ohtani 7+ Strikeouts\n"
+                "Odds: +110\n"
+                "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+            ),
+            stderr="",
+        )
+
+    monkeypatch.setattr(server, "_subprocess_run", fake_run)
+    result = server.run_sportytrader_scraper("2026-06-13", ["mlb"])
+    pick = result["picks"][0]
+
+    assert pick["scope"] == "player"
+    assert pick["market_type"] == "external_player_prop"
+    assert pick["grade_supported"] is True
+
+
+def test_external_compound_market_is_not_auto_graded():
+    import pickgrader_server as server
+
+    pick = {
+        "source": "SportyTrader",
+        "sport": "MLB",
+        "pick": "Brewers to win and over 7.5 runs (Brewers vs Phillies)",
+        "decision": "BET",
+        "result": "win",
+    }
+
+    assert server.apply_external_pick_metadata(pick) == 3
+    assert pick["market_type"] == "compound"
+    assert pick["grade_supported"] is False
+    assert pick["result"] == "pending"
+
+
 def test_known_fifa_slate_uses_in_house_cache_before_external_scrapers(monkeypatch, tmp_path):
     import pickgrader_server as server
 
@@ -516,7 +567,8 @@ def test_scores24_fifa_world_cup_keeps_specialty_market_ungraded():
     )
     assert payload["source"] == "Scores24FIFAWorldCup"
     assert payload["sport"] == "FIFA WC"
-    assert payload["market_type"] == "soccer_specialty"
+    assert payload["scope"] == "player"
+    assert payload["market_type"] == "external_player_prop"
     assert payload["grade_supported"] is False
     assert payload["calibration_excluded"] is True
 

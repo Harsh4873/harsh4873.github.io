@@ -50,6 +50,8 @@ def test_frontend_player_mode_is_persisted_isolated_and_team_defaulted():
     assert "./data/player_props_cache/latest.json" in data
     assert "let teamPicks: Pick[] = []" in data
     assert "let playerPicks: Pick[] = []" in data
+    assert "function isPlayerScopedPick(" in data
+    assert "if (isPlayerScopedPick(pick)) playerById.set(pick.id, pick)" in data
     assert "return activePickMode === 'player' ? playerPicks : teamPicks" in data
     assert "decision === 'BET' || decision === 'LEAN' || decision === 'PASS'" in data
 
@@ -357,6 +359,34 @@ def test_auto_grader_updates_nested_model_picks(monkeypatch):
     pick = payload["models"]["mlb_new"]["picks"][0]
     assert pick["result"] == "win"
     assert pick["start_time"] == "2026-06-08T20:00:00Z"
+
+
+def test_auto_grader_rechecks_previously_decided_tracked_picks(monkeypatch):
+    module = _load_module("auto_grade_recheck_test", ROOT / "scripts" / "auto_grade_picks.py")
+    payload = {
+        "date": "2026-06-13",
+        "models": {
+            "wnba_player_props": {
+                "picks": [{
+                    "id": "aneesah-morrow-rebounds",
+                    "source": "PickLedgerPro In-House Player Props",
+                    "scope": "player",
+                    "sport": "WNBA",
+                    "pick": "Aneesah Morrow Over 10.5 Rebounds",
+                    "decision": "BET",
+                    "result": "win",
+                }]
+            }
+        },
+    }
+
+    def fake_grade(picks, existing, year):
+        assert picks[0]["result"] == "pending"
+        return {"graded": {"aneesah-morrow-rebounds": "loss"}, "startTimes": {}}
+
+    monkeypatch.setattr(module.pickgrader_server, "auto_grade", fake_grade)
+    assert module.grade_payload(payload) == 1
+    assert payload["models"]["wnba_player_props"]["picks"][0]["result"] == "loss"
 
 
 def test_auto_grader_only_tracks_bet_and_lean_decisions(monkeypatch):

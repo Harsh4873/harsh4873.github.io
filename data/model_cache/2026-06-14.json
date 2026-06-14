@@ -16983,7 +16983,7 @@
           "game": "San Diego Padres @ Baltimore Orioles",
           "game_id": "824823",
           "game_order": 1,
-          "game_start_time": "2026-06-14T17:35:00Z",
+          "game_start_time": "2026-06-14T17:35Z",
           "home_team": "Baltimore Orioles",
           "league": "MLB",
           "line": null,
@@ -17024,7 +17024,7 @@
           "raw_probability": 0.5704,
           "source": "MLB First Five",
           "sport": "MLB",
-          "start_time": "2026-06-14T17:35:00Z",
+          "start_time": "2026-06-14T17:35Z",
           "team": "San Diego Padres"
         },
         {
@@ -17603,7 +17603,7 @@
           "game": "Atlanta Braves @ New York Mets",
           "game_id": "823615",
           "game_order": 6,
-          "game_start_time": "2026-06-14T17:40:00Z",
+          "game_start_time": "2026-06-14T17:40Z",
           "home_team": "New York Mets",
           "league": "MLB",
           "line": 4.5,
@@ -17644,7 +17644,7 @@
           "raw_probability": 0.679,
           "source": "MLB First Five",
           "sport": "MLB",
-          "start_time": "2026-06-14T17:40:00Z",
+          "start_time": "2026-06-14T17:40Z",
           "team": ""
         },
         {
@@ -17727,7 +17727,7 @@
           "game": "Houston Astros @ Kansas City Royals",
           "game_id": "824099",
           "game_order": 7,
-          "game_start_time": "2026-06-14T18:10:00Z",
+          "game_start_time": "2026-06-14T18:10Z",
           "home_team": "Kansas City Royals",
           "league": "MLB",
           "line": 4.5,
@@ -17768,7 +17768,7 @@
           "raw_probability": 0.6148,
           "source": "MLB First Five",
           "sport": "MLB",
-          "start_time": "2026-06-14T18:10:00Z",
+          "start_time": "2026-06-14T18:10Z",
           "team": ""
         },
         {
@@ -20187,7 +20187,7 @@
           "game": "Cleveland Guardians vs Detroit Tigers",
           "game_id": "824424",
           "game_order": 5,
-          "game_start_time": "2026-06-14T17:40:00Z",
+          "game_start_time": "2026-06-14T17:40Z",
           "home_team": "Cleveland Guardians",
           "inning": 6,
           "league": "MLB",
@@ -20230,7 +20230,7 @@
           "raw_probability": 0.634,
           "source": "MLB Inning",
           "sport": "MLB",
-          "start_time": "2026-06-14T17:40:00Z",
+          "start_time": "2026-06-14T17:40Z",
           "team": ""
         },
         {
@@ -21782,6 +21782,7 @@
           },
           "decision": "LEAN",
           "edge": 2.83,
+          "game_start_time": "2026-06-14T17:40Z",
           "home_team": "New York Mets",
           "market_pick_prob": null,
           "market_type": "h2h",
@@ -21810,6 +21811,7 @@
           "raw_units": 0.28,
           "source": "MLB NEW",
           "sport": "MLB",
+          "start_time": "2026-06-14T17:40Z",
           "team": "Braves",
           "units": 0.14
         },

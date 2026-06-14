@@ -36,6 +36,7 @@ export interface Pick {
   player?: string;
   player_name?: string;
   market?: string;
+  scope?: string;
   [key: string]: unknown;
 }
 
@@ -237,6 +238,10 @@ function isTrackedPlayerProp(pick: Pick): boolean {
   return decision === 'BET' || decision === 'LEAN' || decision === 'PASS';
 }
 
+function isPlayerScopedPick(pick: Pick): boolean {
+  return String(pick.scope || '').trim().toLowerCase() === 'player';
+}
+
 function picksFromCache(payload: ModelCachePayload): Pick[] {
   const date = String(payload.date || '').trim();
   const models = payload.models && typeof payload.models === 'object' ? payload.models : {};
@@ -376,7 +381,10 @@ export async function loadAllData(): Promise<Pick[]> {
   ]);
   const teamById = new Map<string, Pick>();
   const playerById = new Map<string, Pick>();
-  cachePayloads.flatMap(picksFromCache).forEach(pick => teamById.set(pick.id, pick));
+  cachePayloads.flatMap(picksFromCache).forEach(pick => {
+    if (isPlayerScopedPick(pick)) playerById.set(pick.id, pick);
+    else teamById.set(pick.id, pick);
+  });
   if (cannon) picksFromCannon(cannon).forEach(pick => teamById.set(pick.id, pick));
   playerPayloads.flatMap(picksFromPlayerProps).forEach(pick => playerById.set(pick.id, pick));
   teamPicks = sortPicks([...teamById.values()]);

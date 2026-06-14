@@ -580,6 +580,43 @@ def _soccer_market_metadata(pick: str) -> dict[str, Any]:
     return {"market_type": "soccer_specialty", "grade_supported": False}
 
 
+def _player_market_metadata(pick: str) -> dict[str, Any] | None:
+    selection = pick.split("(", 1)[0].strip()
+    supported = any(
+        re.search(pattern, selection, flags=re.IGNORECASE)
+        for pattern in (
+            r"^.+?\s+(?:(?:over|under)\s+\d+(?:\.\d+)?\s+|\d+(?:\.\d+)?\+\s+)"
+            r"(?:points|rebounds|assists|hits|strikeouts)\b",
+            r"^.+?\s+(?:points|rebounds|assists|hits|strikeouts)\s+(?:over|under)\s+\d+(?:\.\d+)?\b",
+        )
+    )
+    looks_like_player_market = supported or bool(
+        re.search(
+            r"\b\d+(?:\.\d+)?\+\s+(?:shots?(?:\s+on\s+target)?|goals?|cards?)\b",
+            selection,
+            flags=re.IGNORECASE,
+        )
+    )
+    if not looks_like_player_market:
+        return None
+    return {
+        "scope": "player",
+        "market_type": "external_player_prop",
+        "grade_supported": supported,
+    }
+
+
+def _external_market_metadata(sport: str, pick: str) -> dict[str, Any]:
+    if player_metadata := _player_market_metadata(pick):
+        return player_metadata
+    selection = pick.split("(", 1)[0].strip()
+    if re.search(r"\b(?:and|&)\b", selection, flags=re.IGNORECASE):
+        return {"market_type": "compound", "grade_supported": False}
+    if sport == "FIFA WC":
+        return _soccer_market_metadata(pick)
+    return {}
+
+
 def _matching_listing_urls(links: list[dict[str, str]], matchup: dict[str, str]) -> list[str]:
     return [
         link["url"]
@@ -615,8 +652,8 @@ def _pick_payload(
         "start_time": matchup.get("start_time") or None,
         "source_url": source_url,
     }
+    payload.update(_external_market_metadata(config["label"], payload["pick"]))
     if config["label"] == "FIFA WC":
-        payload.update(_soccer_market_metadata(payload["pick"]))
         payload["calibration_excluded"] = True
     return payload
 

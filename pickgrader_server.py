@@ -1717,14 +1717,21 @@ def parse_player_prop_pick(pick: dict[str, Any] | str) -> dict[str, Any] | None:
         "hit": "hits",
         "hits": "hits",
         "hits_runs_rbis": "hits_runs_rbis",
+        "hitsrunsrbis": "hits_runs_rbis",
         "hrr": "hits_runs_rbis",
         "strikeout": "strikeouts",
         "strikeouts": "strikeouts",
         "ks": "strikeouts",
+        "totalpoints": "points",
+        "totalrebounds": "rebounds",
+        "totalassists": "assists",
+        "totalhits": "hits",
+        "totalstrikeouts": "strikeouts",
     }
     if isinstance(payload, dict):
         player_name = str(payload.get("player_name") or "").strip()
-        stat_key = stat_aliases.get(str(payload.get("stat_key") or "").strip().lower())
+        raw_stat_key = re.sub(r"[^a-z0-9]+", "", str(payload.get("stat_key") or "").strip().lower())
+        stat_key = stat_aliases.get(raw_stat_key)
         selection = str(payload.get("selection") or payload.get("direction") or "").strip().upper()
         line = payload.get("line")
         try:
@@ -1740,20 +1747,40 @@ def parse_player_prop_pick(pick: dict[str, Any] | str) -> dict[str, Any] | None:
                 "opponent": str(payload.get("opponent") or "").strip(),
             }
 
-    prop_m = re.search(
+    text_patterns = (
         r"^(.*?)\s+(points|rebounds|assists|hits|strikeouts)\s+(OVER|UNDER)\s+(\d+(?:\.\d+)?)(?:\s+vs\s+(.+?))?(?:\s*\(|$)",
+        r"^(.*?)\s+(OVER|UNDER)\s+(\d+(?:\.\d+)?)\s+(points|rebounds|assists|hits|strikeouts)(?:\s+vs\s+(.+?))?(?:\s*\(|$)",
+    )
+    for pattern_index, pattern in enumerate(text_patterns):
+        prop_m = re.search(pattern, pick_text, flags=re.IGNORECASE)
+        if not prop_m:
+            continue
+        if pattern_index == 0:
+            player_name, stat_label, selection, line, opponent = prop_m.groups()
+        else:
+            player_name, selection, line, stat_label, opponent = prop_m.groups()
+        return {
+            "player_name": player_name.strip(),
+            "stat_key": stat_aliases[stat_label.strip().lower()],
+            "selection": selection.strip().upper(),
+            "line": float(line),
+            "opponent": str(opponent or "").strip(),
+        }
+
+    threshold_m = re.search(
+        r"^(.*?)\s+(\d+(?:\.\d+)?)\+\s+(points|rebounds|assists|hits|strikeouts)(?:\s+vs\s+(.+?))?(?:\s*\(|$)",
         pick_text,
         flags=re.IGNORECASE,
     )
-    if not prop_m:
-        return None
-    return {
-        "player_name": prop_m.group(1).strip(),
-        "stat_key": stat_aliases[prop_m.group(2).strip().lower()],
-        "selection": prop_m.group(3).strip().upper(),
-        "line": float(prop_m.group(4)),
-        "opponent": str(prop_m.group(5) or "").strip(),
-    }
+    if threshold_m:
+        return {
+            "player_name": threshold_m.group(1).strip(),
+            "stat_key": stat_aliases[threshold_m.group(3).strip().lower()],
+            "selection": "AT_LEAST",
+            "line": float(threshold_m.group(2)),
+            "opponent": str(threshold_m.group(4) or "").strip(),
+        }
+    return None
 
 
 def parse_nba_player_prop_pick(pick_text: str) -> dict[str, Any] | None:
@@ -2056,6 +2083,8 @@ def grade_player_prop_pick(pick: dict[str, Any], game: dict[str, Any], summary: 
 
     line = float(prop["line"])
     selection = str(prop["selection"])
+    if selection == "AT_LEAST":
+        return "win" if actual >= line else "loss"
     if abs(actual - line) < 1e-9:
         return "push"
     if selection == "OVER":
@@ -2069,6 +2098,8 @@ def grade_nba_prop_pick(pick: dict[str, Any], game: dict[str, Any], summary: dic
 
 def grade_pick(pick: dict[str, Any], game: dict[str, Any]) -> str:
     if pick.get("grade_supported") is False:
+        return "pending"
+    if str(pick.get("scope") or "").strip().lower() == "player":
         return "pending"
 
     pick_text = str(pick.get("pick", ""))
@@ -4803,14 +4834,67 @@ def _soccer_external_market_metadata(pick_text: str) -> dict[str, Any]:
     return {"market_type": "soccer_specialty", "grade_supported": False}
 
 
+def _external_player_market_metadata(pick_text: str) -> dict[str, Any] | None:
+    selection = str(pick_text or "").split("(", 1)[0].strip()
+    supported = parse_player_prop_pick(pick_text) is not None
+    looks_like_player_market = supported or bool(
+        re.search(
+            r"\b\d+(?:\.\d+)?\+\s+(?:shots?(?:\s+on\s+target)?|goals?|cards?)\b",
+            selection,
+            flags=re.IGNORECASE,
+        )
+    )
+    if not looks_like_player_market:
+        return None
+    return {
+        "scope": "player",
+        "market_type": "external_player_prop",
+        "grade_supported": supported,
+    }
+
+
+def _external_pick_market_metadata(sport: str, pick_text: str) -> dict[str, Any]:
+    if player_metadata := _external_player_market_metadata(pick_text):
+        return player_metadata
+
+    selection = str(pick_text or "").split("(", 1)[0].strip()
+    if re.search(r"\b(?:and|&)\b", selection, flags=re.IGNORECASE):
+        return {"market_type": "compound", "grade_supported": False}
+    if sport == "FIFA WC":
+        return _soccer_external_market_metadata(pick_text)
+    return {}
+
+
+def apply_external_pick_metadata(pick: dict[str, Any]) -> int:
+    source = str(pick.get("source") or "").strip()
+    if source not in {"SportyTrader", "SportsGambler"} and not source.startswith("Scores24"):
+        return 0
+
+    changed = 0
+    metadata = _external_pick_market_metadata(
+        str(pick.get("sport") or "").strip().upper(),
+        str(pick.get("pick") or ""),
+    )
+    for key, value in metadata.items():
+        if pick.get(key) == value:
+            continue
+        pick[key] = value
+        changed += 1
+
+    if pick.get("grade_supported") is False and str(pick.get("result") or "pending").lower() not in {"", "pending"}:
+        pick["result"] = "pending"
+        changed += 1
+    return changed
+
+
 def _external_pick_context(matchup: str, target_date: str, sport: str, pick_text: str) -> dict[str, Any]:
     context: dict[str, Any] = {
         "date": target_date,
         "matchup": matchup,
         "game": matchup,
     }
+    context.update(_external_pick_market_metadata(sport, pick_text))
     if sport == "FIFA WC":
-        context.update(_soccer_external_market_metadata(pick_text))
         context["calibration_excluded"] = True
     return context
 

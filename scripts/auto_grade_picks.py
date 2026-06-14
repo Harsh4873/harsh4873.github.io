@@ -72,12 +72,14 @@ def grade_payload(payload: dict[str, Any]) -> int:
     fallback_date = str(payload.get("date") or payload.get("slate_date") or payload.get("as_of") or "").strip()
     pending: list[dict[str, Any]] = []
     refs: dict[str, dict[str, Any]] = {}
+    changed = 0
 
     for scope, picks in _iter_pick_lists(payload):
         for index, pick in enumerate(picks):
+            changed += pickgrader_server.apply_external_pick_metadata(pick)
             if str(pick.get("decision") or "").strip().upper() not in {"BET", "LEAN"}:
                 continue
-            if str(pick.get("result") or "pending").lower() not in {"", "pending"}:
+            if pick.get("grade_supported") is False:
                 continue
             grade_id = _grade_id(scope, index, pick)
             candidate = dict(pick)
@@ -88,7 +90,7 @@ def grade_payload(payload: dict[str, Any]) -> int:
             refs[grade_id] = pick
 
     if not pending:
-        return 0
+        return changed
 
     response = pickgrader_server.auto_grade(pending, {}, datetime.now().year)
     grades = response.get("graded") if isinstance(response, dict) else {}
@@ -96,7 +98,6 @@ def grade_payload(payload: dict[str, Any]) -> int:
     grades = grades if isinstance(grades, dict) else {}
     start_times = start_times if isinstance(start_times, dict) else {}
 
-    changed = 0
     for grade_id, pick in refs.items():
         result = str(grades.get(grade_id) or "pending").lower()
         if result in {"win", "loss", "push"} and pick.get("result") != result:

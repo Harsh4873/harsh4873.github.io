@@ -14043,11 +14043,12 @@
           "edge": null,
           "game": "Brazil vs Morocco",
           "grade_supported": false,
-          "market_type": "soccer_specialty",
+          "market_type": "external_player_prop",
           "matchup": "Brazil vs Morocco",
           "odds": 115,
           "pick": "Ismael Saibari 1+ Shot on Target (Brazil vs Morocco)",
           "probability": null,
+          "scope": "player",
           "source": "SportyTrader",
           "sport": "FIFA WC",
           "units": 1

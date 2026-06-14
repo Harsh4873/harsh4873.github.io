@@ -184,6 +184,42 @@ def test_soccer_three_way_moneyline_loses_on_draw():
     assert pickgrader_server.grade_pick(pick, game) == "loss"
 
 
+def test_fifa_world_cup_moneyline_total_and_handicap_results():
+    import pickgrader_server
+
+    draw = {
+        "competitors": [
+            {"raw": {"team": {"displayName": "Qatar"}}, "score": 1},
+            {"raw": {"team": {"displayName": "Switzerland"}}, "score": 1},
+        ],
+    }
+    scotland_win = {
+        "competitors": [
+            {"raw": {"team": {"displayName": "Haiti"}}, "score": 0},
+            {"raw": {"team": {"displayName": "Scotland"}}, "score": 1},
+        ],
+    }
+    brazil_draw = {
+        "competitors": [
+            {"raw": {"team": {"displayName": "Brazil"}}, "score": 1},
+            {"raw": {"team": {"displayName": "Morocco"}}, "score": 1},
+        ],
+    }
+
+    assert pickgrader_server.grade_pick(
+        {"sport": "FIFA WC", "pick": "Switzerland -1.5 (Switzerland @ Qatar)", "market_type": "soccer_handicap"},
+        draw,
+    ) == "loss"
+    assert pickgrader_server.grade_pick(
+        {"sport": "FIFA WC", "pick": "Scotland ML (Scotland @ Haiti)", "market_type": "soccer_moneyline"},
+        scotland_win,
+    ) == "win"
+    assert pickgrader_server.grade_pick(
+        {"sport": "FIFA WC", "pick": "Under 2.5 Goals (Brazil vs Morocco)", "market_type": "soccer_total"},
+        brazil_draw,
+    ) == "win"
+
+
 def test_auto_grade_accepts_iso_dates_and_pushes_canceled_games(monkeypatch):
     import pickgrader_server
 
@@ -322,6 +358,64 @@ def test_grade_structured_wnba_player_prop_from_boxscore():
 
     assert pickgrader_server.parse_player_prop_pick(pick)["stat_key"] == "points"
     assert pickgrader_server.parse_nba_player_prop_pick(pick["pick"])["stat_key"] == "points"
+    assert pickgrader_server.grade_player_prop_pick(pick, {}, summary) == "win"
+
+
+def test_grade_aneesah_morrow_total_rebounds_from_boxscore():
+    import pickgrader_server
+
+    summary = {
+        "boxscore": {
+            "players": [{
+                "statistics": [{
+                    "labels": ["MIN", "PTS", "REB", "AST"],
+                    "athletes": [{
+                        "athlete": {"displayName": "Aneesah Morrow"},
+                        "stats": ["21", "8", "5", "2"],
+                    }],
+                }],
+            }],
+        },
+    }
+    pick = {
+        "scope": "player",
+        "sport": "WNBA",
+        "player_name": "Aneesah Morrow",
+        "stat_key": "totalRebounds",
+        "selection": "Over",
+        "line": 10.5,
+        "pick": "Aneesah Morrow Over 10.5 Rebounds",
+    }
+    high_scoring_game = {"competitors": [{"score": 80}, {"score": 75}]}
+
+    assert pickgrader_server.parse_player_prop_pick(pick)["stat_key"] == "rebounds"
+    assert pickgrader_server.grade_player_prop_pick(pick, high_scoring_game, summary) == "loss"
+    assert pickgrader_server.grade_pick(pick, high_scoring_game) == "pending"
+
+
+def test_grade_external_threshold_player_prop():
+    import pickgrader_server
+
+    summary = {
+        "boxscore": {
+            "players": [{
+                "statistics": [{
+                    "labels": ["IP", "H", "K"],
+                    "athletes": [{
+                        "athlete": {"displayName": "Shohei Ohtani"},
+                        "stats": ["6.0", "4", "7"],
+                    }],
+                }],
+            }],
+        },
+    }
+    pick = {
+        "scope": "player",
+        "sport": "MLB",
+        "pick": "Shohei Ohtani 7+ Strikeouts (Pirates vs Dodgers)",
+    }
+
+    assert pickgrader_server.parse_player_prop_pick(pick)["selection"] == "AT_LEAST"
     assert pickgrader_server.grade_player_prop_pick(pick, {}, summary) == "win"
 
 
