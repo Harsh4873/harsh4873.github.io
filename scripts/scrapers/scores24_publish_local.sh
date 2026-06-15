@@ -35,10 +35,12 @@ cp "${TEMP_REPO}/data/model_cache/latest.json" "${GENERATED_CACHE}"
 for attempt in 1 2 3; do
   git -C "${TEMP_REPO}" fetch --quiet origin main
   git -C "${TEMP_REPO}" reset --hard --quiet origin/main
-  (
+  MERGE_RESULT="$(
     cd "${TEMP_REPO}"
     "${PYTHON_BIN}" scripts/merge_external_feed_cache_payload.py "${GENERATED_CACHE}"
-  )
+  )"
+  echo "${MERGE_RESULT}"
+  DEPLOYABLE="$("${PYTHON_BIN}" -c 'import json,sys; print(str(json.load(sys.stdin)["latestUpdated"]).lower())' <<< "${MERGE_RESULT}")"
   git -C "${TEMP_REPO}" add data/model_cache
   if git -C "${TEMP_REPO}" diff --cached --quiet; then
     echo "Scores24 cache already current for ${DATE_ISO}."
@@ -46,7 +48,11 @@ for attempt in 1 2 3; do
   fi
   git -C "${TEMP_REPO}" commit -m "chore(feeds): refresh Scores24 feeds for ${DATE_ISO}"
   if git -C "${TEMP_REPO}" push origin HEAD:main; then
-    "${GH_BIN}" workflow run deploy-pages.yml --repo Harsh4873/PickLedgerPro --ref main
+    if [[ "${DEPLOYABLE}" == "true" ]]; then
+      "${GH_BIN}" workflow run deploy-pages.yml --repo Harsh4873/PickLedgerPro --ref main
+    else
+      echo "Skipped Pages deploy until the full ${DATE_ISO} team-model cache is available."
+    fi
     echo "Published Scores24 feeds for ${DATE_ISO}."
     exit 0
   fi

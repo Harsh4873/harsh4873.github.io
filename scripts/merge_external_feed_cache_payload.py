@@ -22,6 +22,15 @@ EXTERNAL_FEED_MODEL_KEYS = {
     "scores24_mlb",
     "scores24_fifa_world_cup",
 }
+REQUIRED_TEAM_MODEL_KEYS = {
+    "mlb_new",
+    "mlb_inning",
+    "mlb_first_five",
+    "wnba",
+    "nba",
+    "nba_playoffs",
+    "fifa_world_cup",
+}
 PICK_METADATA_FIELDS = {"result", "start_time", "game_start_time", "pregame_snapshot"}
 
 
@@ -127,6 +136,21 @@ def merge_payload(generated: dict[str, Any], cache_dir: Path) -> dict[str, Any]:
     return merged
 
 
+def write_merged_payload(merged: dict[str, Any], cache_dir: Path) -> bool:
+    date_iso = str(merged["date"])
+    models = merged.get("models") if isinstance(merged.get("models"), dict) else {}
+    latest_updated = all(
+        isinstance(models.get(key), dict) and models[key].get("ok") is True
+        for key in REQUIRED_TEAM_MODEL_KEYS
+    )
+
+    _write_json(cache_dir / f"{date_iso}.json", merged)
+    if latest_updated:
+        _write_json(cache_dir / "latest.json", merged)
+    write_cache_manifest(cache_dir)
+    return latest_updated
+
+
 def main() -> int:
     args = _parse_args()
     generated_path = Path(args.generated)
@@ -137,13 +161,12 @@ def main() -> int:
 
     merged = merge_payload(generated, cache_dir)
     date_iso = str(merged["date"])
-    _write_json(cache_dir / f"{date_iso}.json", merged)
-    _write_json(cache_dir / "latest.json", merged)
-    write_cache_manifest(cache_dir)
+    latest_updated = write_merged_payload(merged, cache_dir)
     print(json.dumps({
         "date": date_iso,
         "models": sorted((merged.get("models") or {}).keys()),
         "generated": str(generated_path),
+        "latestUpdated": latest_updated,
     }, indent=2))
     return 0
 

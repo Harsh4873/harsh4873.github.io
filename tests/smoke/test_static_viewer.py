@@ -554,3 +554,40 @@ def test_model_cache_merge_preserves_committed_grades(tmp_path):
     merged = module.merge_payload(generated, cache_dir)
     assert merged["models"]["mlb_new"]["picks"][0]["result"] == "win"
     assert merged["models"]["mlb_new"]["picks"][0]["pregame_snapshot"]["probability"] == 0.61
+
+
+def test_external_feed_merge_does_not_promote_partial_cache_to_latest(tmp_path):
+    module = _load_module("merge_external_feed_cache_payload", ROOT / "scripts" / "merge_external_feed_cache_payload.py")
+    cache_dir = tmp_path / "data" / "model_cache"
+    cache_dir.mkdir(parents=True)
+    previous = {"date": "2026-06-14", "models": {"mlb_new": {"ok": True, "picks": []}}}
+    partial = {
+        "date": "2026-06-15",
+        "models": {"scores24_mlb": {"ok": True, "picks": [{"pick": "Cubs ML"}]}},
+    }
+    (cache_dir / "latest.json").write_text(json.dumps(previous), encoding="utf-8")
+
+    merged = module.merge_payload(partial, cache_dir)
+    latest_updated = module.write_merged_payload(merged, cache_dir)
+
+    assert latest_updated is False
+    assert json.loads((cache_dir / "latest.json").read_text(encoding="utf-8"))["date"] == "2026-06-14"
+    assert json.loads((cache_dir / "2026-06-15.json").read_text(encoding="utf-8"))["models"]["scores24_mlb"]["ok"] is True
+
+
+def test_external_feed_merge_promotes_complete_cache_to_latest(tmp_path):
+    module = _load_module("merge_external_feed_cache_payload_complete", ROOT / "scripts" / "merge_external_feed_cache_payload.py")
+    cache_dir = tmp_path / "data" / "model_cache"
+    cache_dir.mkdir(parents=True)
+    complete = {
+        "date": "2026-06-15",
+        "models": {
+            key: {"ok": True, "picks": []}
+            for key in module.REQUIRED_TEAM_MODEL_KEYS
+        },
+    }
+
+    latest_updated = module.write_merged_payload(complete, cache_dir)
+
+    assert latest_updated is True
+    assert json.loads((cache_dir / "latest.json").read_text(encoding="utf-8"))["date"] == "2026-06-15"

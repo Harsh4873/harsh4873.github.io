@@ -76,6 +76,7 @@ jobs:
           if [ -z "$(git status --porcelain -- data/model_cache)" ]; then
             echo "No change in data/model_cache — skipping commit."
             echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "deployable=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           GENERATED_CACHE="${RUNNER_TEMP}/external-feed-cache-latest.json"
@@ -83,17 +84,21 @@ jobs:
           for attempt in 1 2 3; do
             git fetch origin "$BRANCH"
             git reset --hard "origin/${BRANCH}"
-            python scripts/merge_external_feed_cache_payload.py "$GENERATED_CACHE"
+            MERGE_RESULT=$(python scripts/merge_external_feed_cache_payload.py "$GENERATED_CACHE")
+            echo "$MERGE_RESULT"
+            DEPLOYABLE=$(python -c 'import json,sys; print(str(json.load(sys.stdin)["latestUpdated"]).lower())' <<< "$MERGE_RESULT")
             git add data/model_cache
             if git diff --cached --quiet; then
               echo "No staged feed cache change after merge — skipping commit."
               echo "changed=false" >> "$GITHUB_OUTPUT"
+              echo "deployable=false" >> "$GITHUB_OUTPUT"
               exit 0
             fi
-            CACHE_DATE=$(python -c "import json; print(json.load(open('data/model_cache/latest.json'))['date'])")
+            CACHE_DATE=$(python -c 'import json,sys; print(json.load(open(sys.argv[1]))["date"])' "$GENERATED_CACHE")
             git commit -m "chore(feeds): refresh external feeds for ${CACHE_DATE}"
             if git push origin "HEAD:${BRANCH}"; then
               echo "changed=true" >> "$GITHUB_OUTPUT"
+              echo "deployable=${DEPLOYABLE}" >> "$GITHUB_OUTPUT"
               exit 0
             fi
             echo "Push failed on attempt ${attempt}; retrying merge on latest origin/${BRANCH}."
@@ -102,7 +107,7 @@ jobs:
           exit 1
 
       - name: Deploy updated external feeds
-        if: steps.commit-feeds.outputs.changed == 'true'
+        if: steps.commit-feeds.outputs.changed == 'true' && steps.commit-feeds.outputs.deployable == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh workflow run deploy-pages.yml --ref main

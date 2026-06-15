@@ -652,5 +652,7 @@ def test_local_scores24_publisher_registers_separate_models():
     assert "scores24_fifa_world_cup" not in workflow
     assert "gh" not in publisher.split('GH_BIN="/opt/homebrew/bin/gh"', 1)[0]
     assert "workflow run deploy-pages.yml" in publisher
+    assert "Skipped Pages deploy until the full" in publisher
+    assert "steps.commit-feeds.outputs.deployable == 'true'" in workflow
     assert 'cron: "10,40 14 * * *"' in workflow
     assert 'cron: "10 20 * * *"' in workflow
