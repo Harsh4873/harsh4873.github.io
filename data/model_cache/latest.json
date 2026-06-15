@@ -1227,41 +1227,6 @@
     "date": "2026-06-15",
     "games": [
       {
-        "away_team": "Cape Verde",
-        "away_unit_ratings": {
-          "attack": 80.66,
-          "defense": 83.42,
-          "goalkeeper": 80.12,
-          "midfield": 81.39,
-          "overall": 81.84
-        },
-        "away_win_probability": 0.1149,
-        "calibration_excluded": true,
-        "date": "2026-06-15",
-        "draw_probability": 0.1989,
-        "game": "Cape Verde @ Spain",
-        "game_id": "760428",
-        "game_start_time": "2026-06-15T16:00Z",
-        "home_team": "Spain",
-        "home_unit_ratings": {
-          "attack": 94.38,
-          "defense": 95.19,
-          "goalkeeper": 96.35,
-          "midfield": 96.96,
-          "overall": 95.18
-        },
-        "home_win_probability": 0.6862,
-        "league": "FIFA World Cup",
-        "matchup": "Cape Verde @ Spain",
-        "model_basis": "current squad player power and position-unit matchup; no head-to-head input",
-        "projected_away_goals": 0.668,
-        "projected_home_goals": 1.993,
-        "projected_total": 2.66,
-        "source": "FIFA Model",
-        "sport": "FIFA WC",
-        "start_time": "2026-06-15T16:00Z"
-      },
-      {
         "away_team": "Egypt",
         "away_unit_ratings": {
           "attack": 83.58,
@@ -1305,28 +1270,28 @@
           "midfield": 95.53,
           "overall": 89.76
         },
-        "away_win_probability": 0.4584,
+        "away_win_probability": 0.4543,
         "calibration_excluded": true,
         "date": "2026-06-15",
-        "draw_probability": 0.2744,
+        "draw_probability": 0.2758,
         "game": "Uruguay @ Saudi Arabia",
         "game_id": "760429",
         "game_start_time": "2026-06-15T22:00Z",
         "home_team": "Saudi Arabia",
         "home_unit_ratings": {
           "attack": 84.94,
-          "defense": 86.23,
+          "defense": 86.52,
           "goalkeeper": 85.37,
           "midfield": 86.26,
-          "overall": 85.67
+          "overall": 85.79
         },
-        "home_win_probability": 0.2673,
+        "home_win_probability": 0.2699,
         "league": "FIFA World Cup",
         "matchup": "Uruguay @ Saudi Arabia",
         "model_basis": "current squad player power and position-unit matchup; no head-to-head input",
-        "projected_away_goals": 1.363,
-        "projected_home_goals": 0.971,
-        "projected_total": 2.33,
+        "projected_away_goals": 1.349,
+        "projected_home_goals": 0.972,
+        "projected_total": 2.32,
         "source": "FIFA Model",
         "sport": "FIFA WC",
         "start_time": "2026-06-15T22:00Z"
@@ -1368,108 +1333,9 @@
       }
     ],
     "model": "FIFAWorldCupPlayerPower",
-    "note": "Rated 208 current-squad players across 8 teams; generated 8 moneyline/total rows without head-to-head or trained-model inputs.",
+    "note": "Rated 156 current-squad players across 6 teams; generated 6 moneyline/total rows without head-to-head or trained-model inputs.",
     "ok": true,
     "picks": [
-      {
-        "away_team": "Cape Verde",
-        "away_unit_ratings": {
-          "attack": 80.66,
-          "defense": 83.42,
-          "goalkeeper": 80.12,
-          "midfield": 81.39,
-          "overall": 81.84
-        },
-        "calibration_excluded": true,
-        "date": "2026-06-15",
-        "decision": "PASS",
-        "draw_probability": 0.1989,
-        "edge": -18.15,
-        "game": "Cape Verde @ Spain",
-        "game_id": "760428",
-        "game_start_time": "2026-06-15T16:00Z",
-        "home_team": "Spain",
-        "home_unit_ratings": {
-          "attack": 94.38,
-          "defense": 95.19,
-          "goalkeeper": 96.35,
-          "midfield": 96.96,
-          "overall": 95.18
-        },
-        "key_factors": [
-          "Current World Cup roster and availability",
-          "Player club-league and club-table power rankings",
-          "Attack/midfield/defense/goalkeeper unit matchup",
-          "No historical head-to-head input"
-        ],
-        "league": "FIFA World Cup",
-        "market": "moneyline",
-        "market_probability": 0.8678,
-        "market_type": "soccer_moneyline",
-        "matchup": "Cape Verde @ Spain",
-        "model_basis": "current squad player power and position-unit matchup; no head-to-head input",
-        "odds": -1000,
-        "pick": "Spain ML (Cape Verde @ Spain)",
-        "probability": 0.6862,
-        "projected_away_goals": 0.668,
-        "projected_home_goals": 1.993,
-        "projected_total": 2.66,
-        "reason": "Spain owns the stronger current-squad projection. Attack 94.4, midfield 97.0, defense 95.2, goalkeeper 96.3. Top player ranks: David Raya 97.0, Eric Garc\u00eda 97.0, Mikel Merino 97.0.",
-        "source": "FIFA Model",
-        "sport": "FIFA WC",
-        "start_time": "2026-06-15T16:00Z",
-        "team": "Spain",
-        "units": 0.0
-      },
-      {
-        "away_team": "Cape Verde",
-        "away_unit_ratings": {
-          "attack": 80.66,
-          "defense": 83.42,
-          "goalkeeper": 80.12,
-          "midfield": 81.39,
-          "overall": 81.84
-        },
-        "calibration_excluded": true,
-        "date": "2026-06-15",
-        "decision": "BET",
-        "edge": 22.29,
-        "game": "Cape Verde @ Spain",
-        "game_id": "760428",
-        "game_start_time": "2026-06-15T16:00Z",
-        "home_team": "Spain",
-        "home_unit_ratings": {
-          "attack": 94.38,
-          "defense": 95.19,
-          "goalkeeper": 96.35,
-          "midfield": 96.96,
-          "overall": 95.18
-        },
-        "key_factors": [
-          "Cape Verde attack 80.7 vs Spain defense 95.2",
-          "Spain attack 94.4 vs Cape Verde defense 83.4",
-          "Projected total 2.66"
-        ],
-        "league": "FIFA World Cup",
-        "line": 3.5,
-        "market": "total",
-        "market_probability": 0.5,
-        "market_type": "soccer_total",
-        "matchup": "Cape Verde @ Spain",
-        "model_basis": "current squad player power and position-unit matchup; no head-to-head input",
-        "odds": 100,
-        "pick": "Under 3.5 (Cape Verde @ Spain)",
-        "probability": 0.7229,
-        "projected_away_goals": 0.668,
-        "projected_home_goals": 1.993,
-        "projected_total": 2.66,
-        "reason": "Projected goals Cape Verde 0.67, Spain 1.99 from the two attacking engines against the opposing defensive units.",
-        "source": "FIFA Model",
-        "sport": "FIFA WC",
-        "start_time": "2026-06-15T16:00Z",
-        "team": "",
-        "units": 1.0
-      },
       {
         "away_team": "Egypt",
         "away_unit_ratings": {
@@ -1483,7 +1349,7 @@
         "date": "2026-06-15",
         "decision": "BET",
         "draw_probability": 0.1338,
-        "edge": 18.13,
+        "edge": 16.37,
         "game": "Egypt @ Belgium",
         "game_id": "760426",
         "game_start_time": "2026-06-15T19:00Z",
@@ -1503,11 +1369,11 @@
         ],
         "league": "FIFA World Cup",
         "market": "moneyline",
-        "market_probability": 0.6067,
+        "market_probability": 0.6243,
         "market_type": "soccer_moneyline",
         "matchup": "Egypt @ Belgium",
         "model_basis": "current squad player power and position-unit matchup; no head-to-head input",
-        "odds": -180,
+        "odds": -195,
         "pick": "Belgium ML (Egypt @ Belgium)",
         "probability": 0.788,
         "projected_away_goals": 0.771,
@@ -1581,18 +1447,18 @@
         "calibration_excluded": true,
         "date": "2026-06-15",
         "decision": "PASS",
-        "draw_probability": 0.2744,
-        "edge": -21.53,
+        "draw_probability": 0.2758,
+        "edge": -21.94,
         "game": "Uruguay @ Saudi Arabia",
         "game_id": "760429",
         "game_start_time": "2026-06-15T22:00Z",
         "home_team": "Saudi Arabia",
         "home_unit_ratings": {
           "attack": 84.94,
-          "defense": 86.23,
+          "defense": 86.52,
           "goalkeeper": 85.37,
           "midfield": 86.26,
-          "overall": 85.67
+          "overall": 85.79
         },
         "key_factors": [
           "Current World Cup roster and availability",
@@ -1608,10 +1474,10 @@
         "model_basis": "current squad player power and position-unit matchup; no head-to-head input",
         "odds": -235,
         "pick": "Uruguay ML (Uruguay @ Saudi Arabia)",
-        "probability": 0.4584,
-        "projected_away_goals": 1.363,
-        "projected_home_goals": 0.971,
-        "projected_total": 2.33,
+        "probability": 0.4543,
+        "projected_away_goals": 1.349,
+        "projected_home_goals": 0.972,
+        "projected_total": 2.32,
         "reason": "Uruguay owns the stronger current-squad projection. Attack 88.3, midfield 95.5, defense 90.8, goalkeeper 82.4. Top player ranks: Ronald Ara\u00fajo 97.0, Federico Valverde 97.0, Manuel Ugarte 97.0.",
         "source": "FIFA Model",
         "sport": "FIFA WC",
@@ -1630,23 +1496,23 @@
         },
         "calibration_excluded": true,
         "date": "2026-06-15",
-        "decision": "LEAN",
-        "edge": 2.29,
+        "decision": "BET",
+        "edge": 2.55,
         "game": "Uruguay @ Saudi Arabia",
         "game_id": "760429",
         "game_start_time": "2026-06-15T22:00Z",
         "home_team": "Saudi Arabia",
         "home_unit_ratings": {
           "attack": 84.94,
-          "defense": 86.23,
+          "defense": 86.52,
           "goalkeeper": 85.37,
           "midfield": 86.26,
-          "overall": 85.67
+          "overall": 85.79
         },
         "key_factors": [
-          "Uruguay attack 88.3 vs Saudi Arabia defense 86.2",
+          "Uruguay attack 88.3 vs Saudi Arabia defense 86.5",
           "Saudi Arabia attack 84.9 vs Uruguay defense 90.8",
-          "Projected total 2.33"
+          "Projected total 2.32"
         ],
         "league": "FIFA World Cup",
         "line": 2.5,
@@ -1657,16 +1523,16 @@
         "model_basis": "current squad player power and position-unit matchup; no head-to-head input",
         "odds": -130,
         "pick": "Under 2.5 (Uruguay @ Saudi Arabia)",
-        "probability": 0.5881,
-        "projected_away_goals": 1.363,
-        "projected_home_goals": 0.971,
-        "projected_total": 2.33,
-        "reason": "Projected goals Uruguay 1.36, Saudi Arabia 0.97 from the two attacking engines against the opposing defensive units.",
+        "probability": 0.5907,
+        "projected_away_goals": 1.349,
+        "projected_home_goals": 0.972,
+        "projected_total": 2.32,
+        "reason": "Projected goals Uruguay 1.35, Saudi Arabia 0.97 from the two attacking engines against the opposing defensive units.",
         "source": "FIFA Model",
         "sport": "FIFA WC",
         "start_time": "2026-06-15T22:00Z",
         "team": "",
-        "units": 0.49
+        "units": 0.51
       },
       {
         "away_team": "New Zealand",
@@ -1770,134 +1636,6 @@
     ],
     "player_rankings": [
       {
-        "age": 30,
-        "available": true,
-        "club": "Arsenal",
-        "club_id": "359",
-        "injury_count": 0,
-        "league": "English Premier League",
-        "league_slug": "eng.1",
-        "name": "David Raya",
-        "national_team": "Spain",
-        "player_id": "196176",
-        "position": "goalkeeper",
-        "profile_available": true,
-        "rating": 97.0,
-        "slate_rank": 1
-      },
-      {
-        "age": 25,
-        "available": true,
-        "club": "Barcelona",
-        "club_id": "83",
-        "injury_count": 0,
-        "league": "Spanish LALIGA",
-        "league_slug": "esp.1",
-        "name": "Eric Garc\u00eda",
-        "national_team": "Spain",
-        "player_id": "128714",
-        "position": "defender",
-        "profile_available": true,
-        "rating": 97.0,
-        "slate_rank": 2
-      },
-      {
-        "age": 29,
-        "available": true,
-        "club": "Arsenal",
-        "club_id": "359",
-        "injury_count": 0,
-        "league": "English Premier League",
-        "league_slug": "eng.1",
-        "name": "Mikel Merino",
-        "national_team": "Spain",
-        "player_id": "209581",
-        "position": "midfielder",
-        "profile_available": true,
-        "rating": 97.0,
-        "slate_rank": 3
-      },
-      {
-        "age": 28,
-        "available": true,
-        "club": "Barcelona",
-        "club_id": "83",
-        "injury_count": 0,
-        "league": "Spanish LALIGA",
-        "league_slug": "esp.1",
-        "name": "Dani Olmo",
-        "national_team": "Spain",
-        "player_id": "227765",
-        "position": "midfielder",
-        "profile_available": true,
-        "rating": 97.0,
-        "slate_rank": 4
-      },
-      {
-        "age": 29,
-        "available": true,
-        "club": "Manchester City",
-        "club_id": "382",
-        "injury_count": 0,
-        "league": "English Premier League",
-        "league_slug": "eng.1",
-        "name": "Rodri",
-        "national_team": "Spain",
-        "player_id": "231828",
-        "position": "midfielder",
-        "profile_available": true,
-        "rating": 97.0,
-        "slate_rank": 5
-      },
-      {
-        "age": 27,
-        "available": true,
-        "club": "Arsenal",
-        "club_id": "359",
-        "injury_count": 0,
-        "league": "English Premier League",
-        "league_slug": "eng.1",
-        "name": "Mart\u00edn Zubimendi",
-        "national_team": "Spain",
-        "player_id": "287266",
-        "position": "midfielder",
-        "profile_available": true,
-        "rating": 97.0,
-        "slate_rank": 6
-      },
-      {
-        "age": 26,
-        "available": true,
-        "club": "Barcelona",
-        "club_id": "83",
-        "injury_count": 0,
-        "league": "Spanish LALIGA",
-        "league_slug": "esp.1",
-        "name": "Ferran Torres",
-        "national_team": "Spain",
-        "player_id": "265869",
-        "position": "forward",
-        "profile_available": true,
-        "rating": 97.0,
-        "slate_rank": 7
-      },
-      {
-        "age": 25,
-        "available": true,
-        "club": "Villarreal",
-        "club_id": "102",
-        "injury_count": 0,
-        "league": "Spanish LALIGA",
-        "league_slug": "esp.1",
-        "name": "Logan Costa",
-        "national_team": "Cape Verde",
-        "player_id": "271129",
-        "position": "defender",
-        "profile_available": true,
-        "rating": 97.0,
-        "slate_rank": 8
-      },
-      {
         "age": 24,
         "available": true,
         "club": "Manchester City",
@@ -1911,7 +1649,7 @@
         "position": "forward",
         "profile_available": true,
         "rating": 97.0,
-        "slate_rank": 9
+        "slate_rank": 1
       },
       {
         "age": 27,
@@ -1927,7 +1665,7 @@
         "position": "forward",
         "profile_available": true,
         "rating": 97.0,
-        "slate_rank": 10
+        "slate_rank": 2
       },
       {
         "age": 27,
@@ -1943,7 +1681,7 @@
         "position": "defender",
         "profile_available": true,
         "rating": 97.0,
-        "slate_rank": 11
+        "slate_rank": 3
       },
       {
         "age": 27,
@@ -1959,7 +1697,7 @@
         "position": "midfielder",
         "profile_available": true,
         "rating": 97.0,
-        "slate_rank": 12
+        "slate_rank": 4
       },
       {
         "age": 25,
@@ -1975,23 +1713,7 @@
         "position": "midfielder",
         "profile_available": true,
         "rating": 97.0,
-        "slate_rank": 13
-      },
-      {
-        "age": 24,
-        "available": true,
-        "club": "Atl\u00e9tico de Madrid",
-        "club_id": "1068",
-        "injury_count": 0,
-        "league": "Spanish LALIGA",
-        "league_slug": "esp.1",
-        "name": "\u00c1lex Baena",
-        "national_team": "Spain",
-        "player_id": "297373",
-        "position": "midfielder",
-        "profile_available": true,
-        "rating": 96.9,
-        "slate_rank": 14
+        "slate_rank": 5
       },
       {
         "age": 29,
@@ -2007,7 +1729,7 @@
         "position": "midfielder",
         "profile_available": true,
         "rating": 96.79,
-        "slate_rank": 15
+        "slate_rank": 6
       },
       {
         "age": 24,
@@ -2023,39 +1745,7 @@
         "position": "midfielder",
         "profile_available": true,
         "rating": 96.79,
-        "slate_rank": 16
-      },
-      {
-        "age": 25,
-        "available": true,
-        "club": "Barcelona",
-        "club_id": "83",
-        "injury_count": 0,
-        "league": "Spanish LALIGA",
-        "league_slug": "esp.1",
-        "name": "Joan Garc\u00eda",
-        "national_team": "Spain",
-        "player_id": "297362",
-        "position": "goalkeeper",
-        "profile_available": true,
-        "rating": 96.5,
-        "slate_rank": 17
-      },
-      {
-        "age": 23,
-        "available": true,
-        "club": "Barcelona",
-        "club_id": "83",
-        "injury_count": 0,
-        "league": "Spanish LALIGA",
-        "league_slug": "esp.1",
-        "name": "Pedri",
-        "national_team": "Spain",
-        "player_id": "250465",
-        "position": "midfielder",
-        "profile_available": true,
-        "rating": 96.5,
-        "slate_rank": 18
+        "slate_rank": 7
       },
       {
         "age": 34,
@@ -2071,7 +1761,7 @@
         "position": "goalkeeper",
         "profile_available": true,
         "rating": 96.5,
-        "slate_rank": 19
+        "slate_rank": 8
       },
       {
         "age": 31,
@@ -2087,39 +1777,7 @@
         "position": "forward",
         "profile_available": true,
         "rating": 96.5,
-        "slate_rank": 20
-      },
-      {
-        "age": 22,
-        "available": true,
-        "club": "Atl\u00e9tico de Madrid",
-        "club_id": "1068",
-        "injury_count": 0,
-        "league": "Spanish LALIGA",
-        "league_slug": "esp.1",
-        "name": "Marc Pubill",
-        "national_team": "Spain",
-        "player_id": "332613",
-        "position": "defender",
-        "profile_available": true,
-        "rating": 95.9,
-        "slate_rank": 21
-      },
-      {
-        "age": 31,
-        "available": true,
-        "club": "Atl\u00e9tico de Madrid",
-        "club_id": "1068",
-        "injury_count": 0,
-        "league": "Spanish LALIGA",
-        "league_slug": "esp.1",
-        "name": "Marcos Llorente",
-        "national_team": "Spain",
-        "player_id": "206474",
-        "position": "midfielder",
-        "profile_available": true,
-        "rating": 95.9,
-        "slate_rank": 22
+        "slate_rank": 9
       },
       {
         "age": 31,
@@ -2135,23 +1793,7 @@
         "position": "defender",
         "profile_available": true,
         "rating": 95.9,
-        "slate_rank": 23
-      },
-      {
-        "age": 21,
-        "available": true,
-        "club": "Barcelona",
-        "club_id": "83",
-        "injury_count": 0,
-        "league": "Spanish LALIGA",
-        "league_slug": "esp.1",
-        "name": "Gavi",
-        "national_team": "Spain",
-        "player_id": "323702",
-        "position": "midfielder",
-        "profile_available": true,
-        "rating": 95.25,
-        "slate_rank": 24
+        "slate_rank": 10
       },
       {
         "age": 23,
@@ -2167,7 +1809,7 @@
         "position": "goalkeeper",
         "profile_available": true,
         "rating": 95.25,
-        "slate_rank": 25
+        "slate_rank": 11
       },
       {
         "age": 26,
@@ -2183,23 +1825,7 @@
         "position": "midfielder",
         "profile_available": true,
         "rating": 94.81,
-        "slate_rank": 26
-      },
-      {
-        "age": 30,
-        "available": true,
-        "club": "Bayer Leverkusen",
-        "club_id": "131",
-        "injury_count": 0,
-        "league": "German Bundesliga",
-        "league_slug": "ger.1",
-        "name": "Alejandro Grimaldo",
-        "national_team": "Spain",
-        "player_id": "166396",
-        "position": "defender",
-        "profile_available": true,
-        "rating": 94.34,
-        "slate_rank": 27
+        "slate_rank": 12
       },
       {
         "age": 25,
@@ -2215,7 +1841,7 @@
         "position": "defender",
         "profile_available": true,
         "rating": 94.28,
-        "slate_rank": 28
+        "slate_rank": 13
       },
       {
         "age": 28,
@@ -2231,39 +1857,7 @@
         "position": "forward",
         "profile_available": true,
         "rating": 94.24,
-        "slate_rank": 29
-      },
-      {
-        "age": 19,
-        "available": true,
-        "club": "Barcelona",
-        "club_id": "83",
-        "injury_count": 0,
-        "league": "Spanish LALIGA",
-        "league_slug": "esp.1",
-        "name": "Pau Cubars\u00ed",
-        "national_team": "Spain",
-        "player_id": "368992",
-        "position": "defender",
-        "profile_available": true,
-        "rating": 94.0,
-        "slate_rank": 30
-      },
-      {
-        "age": 18,
-        "available": true,
-        "club": "Barcelona",
-        "club_id": "83",
-        "injury_count": 0,
-        "league": "Spanish LALIGA",
-        "league_slug": "esp.1",
-        "name": "Lamine Yamal",
-        "national_team": "Spain",
-        "player_id": "362150",
-        "position": "forward",
-        "profile_available": true,
-        "rating": 94.0,
-        "slate_rank": 31
+        "slate_rank": 14
       },
       {
         "age": 34,
@@ -2279,7 +1873,7 @@
         "position": "forward",
         "profile_available": true,
         "rating": 93.82,
-        "slate_rank": 32
+        "slate_rank": 15
       },
       {
         "age": 22,
@@ -2295,23 +1889,7 @@
         "position": "defender",
         "profile_available": true,
         "rating": 93.81,
-        "slate_rank": 33
-      },
-      {
-        "age": 27,
-        "available": true,
-        "club": "Chelsea",
-        "club_id": "363",
-        "injury_count": 0,
-        "league": "English Premier League",
-        "league_slug": "eng.1",
-        "name": "Marc Cucurella",
-        "national_team": "Spain",
-        "player_id": "259910",
-        "position": "defender",
-        "profile_available": true,
-        "rating": 93.71,
-        "slate_rank": 34
+        "slate_rank": 16
       },
       {
         "age": 27,
@@ -2327,7 +1905,7 @@
         "position": "defender",
         "profile_available": true,
         "rating": 93.53,
-        "slate_rank": 35
+        "slate_rank": 17
       },
       {
         "age": 26,
@@ -2343,23 +1921,7 @@
         "position": "midfielder",
         "profile_available": true,
         "rating": 93.53,
-        "slate_rank": 36
-      },
-      {
-        "age": 23,
-        "available": true,
-        "club": "Benfica",
-        "club_id": "1929",
-        "injury_count": 0,
-        "league": "Portuguese Primeira Liga",
-        "league_slug": "por.1",
-        "name": "Sidny Lopes Cabral",
-        "national_team": "Cape Verde",
-        "player_id": "332394",
-        "position": "defender",
-        "profile_available": true,
-        "rating": 93.24,
-        "slate_rank": 37
+        "slate_rank": 18
       },
       {
         "age": 30,
@@ -2375,7 +1937,7 @@
         "position": "defender",
         "profile_available": true,
         "rating": 92.96,
-        "slate_rank": 38
+        "slate_rank": 19
       },
       {
         "age": 32,
@@ -2391,7 +1953,7 @@
         "position": "midfielder",
         "profile_available": true,
         "rating": 92.9,
-        "slate_rank": 39
+        "slate_rank": 20
       },
       {
         "age": 23,
@@ -2407,7 +1969,7 @@
         "position": "goalkeeper",
         "profile_available": true,
         "rating": 92.89,
-        "slate_rank": 40
+        "slate_rank": 21
       },
       {
         "age": 29,
@@ -2423,39 +1985,7 @@
         "position": "midfielder",
         "profile_available": true,
         "rating": 92.01,
-        "slate_rank": 41
-      },
-      {
-        "age": 33,
-        "available": true,
-        "club": "Celta Vigo",
-        "club_id": "85",
-        "injury_count": 0,
-        "league": "Spanish LALIGA",
-        "league_slug": "esp.1",
-        "name": "Borja Iglesias",
-        "national_team": "Spain",
-        "player_id": "214995",
-        "position": "forward",
-        "profile_available": true,
-        "rating": 91.55,
-        "slate_rank": 42
-      },
-      {
-        "age": 29,
-        "available": true,
-        "club": "Real Sociedad",
-        "club_id": "89",
-        "injury_count": 0,
-        "league": "Spanish LALIGA",
-        "league_slug": "esp.1",
-        "name": "Mikel Oyarzabal",
-        "national_team": "Spain",
-        "player_id": "229018",
-        "position": "forward",
-        "profile_available": true,
-        "rating": 91.5,
-        "slate_rank": 43
+        "slate_rank": 22
       },
       {
         "age": 32,
@@ -2471,7 +2001,7 @@
         "position": "midfielder",
         "profile_available": true,
         "rating": 91.01,
-        "slate_rank": 44
+        "slate_rank": 23
       },
       {
         "age": 24,
@@ -2487,7 +2017,7 @@
         "position": "defender",
         "profile_available": true,
         "rating": 91.0,
-        "slate_rank": 45
+        "slate_rank": 24
       },
       {
         "age": 26,
@@ -2503,7 +2033,7 @@
         "position": "forward",
         "profile_available": true,
         "rating": 91.0,
-        "slate_rank": 46
+        "slate_rank": 25
       },
       {
         "age": 25,
@@ -2519,7 +2049,7 @@
         "position": "forward",
         "profile_available": true,
         "rating": 91.0,
-        "slate_rank": 47
+        "slate_rank": 26
       },
       {
         "age": 28,
@@ -2535,23 +2065,7 @@
         "position": "defender",
         "profile_available": true,
         "rating": 91.0,
-        "slate_rank": 48
-      },
-      {
-        "age": 29,
-        "available": true,
-        "club": "Athletic Club",
-        "club_id": "93",
-        "injury_count": 0,
-        "league": "Spanish LALIGA",
-        "league_slug": "esp.1",
-        "name": "Unai Sim\u00f3n",
-        "national_team": "Spain",
-        "player_id": "222375",
-        "position": "goalkeeper",
-        "profile_available": true,
-        "rating": 90.24,
-        "slate_rank": 49
+        "slate_rank": 27
       },
       {
         "age": 26,
@@ -2567,23 +2081,7 @@
         "position": "defender",
         "profile_available": true,
         "rating": 90.23,
-        "slate_rank": 50
-      },
-      {
-        "age": 26,
-        "available": true,
-        "club": "Tottenham Hotspur",
-        "club_id": "367",
-        "injury_count": 0,
-        "league": "English Premier League",
-        "league_slug": "eng.1",
-        "name": "Pedro Porro",
-        "national_team": "Spain",
-        "player_id": "268533",
-        "position": "defender",
-        "profile_available": true,
-        "rating": 89.93,
-        "slate_rank": 51
+        "slate_rank": 28
       },
       {
         "age": 28,
@@ -2599,23 +2097,7 @@
         "position": "midfielder",
         "profile_available": true,
         "rating": 89.93,
-        "slate_rank": 52
-      },
-      {
-        "age": 23,
-        "available": true,
-        "club": "Crystal Palace",
-        "club_id": "384",
-        "injury_count": 0,
-        "league": "English Premier League",
-        "league_slug": "eng.1",
-        "name": "Y\u00e9remy Pino",
-        "national_team": "Spain",
-        "player_id": "297370",
-        "position": "midfielder",
-        "profile_available": true,
-        "rating": 89.84,
-        "slate_rank": 53
+        "slate_rank": 29
       },
       {
         "age": 33,
@@ -2631,7 +2113,7 @@
         "position": "defender",
         "profile_available": true,
         "rating": 89.76,
-        "slate_rank": 54
+        "slate_rank": 30
       },
       {
         "age": 26,
@@ -2647,7 +2129,7 @@
         "position": "midfielder",
         "profile_available": true,
         "rating": 89.69,
-        "slate_rank": 55
+        "slate_rank": 31
       },
       {
         "age": 27,
@@ -2663,55 +2145,7 @@
         "position": "forward",
         "profile_available": true,
         "rating": 89.26,
-        "slate_rank": 56
-      },
-      {
-        "age": 32,
-        "available": true,
-        "club": "Athletic Club",
-        "club_id": "93",
-        "injury_count": 0,
-        "league": "Spanish LALIGA",
-        "league_slug": "esp.1",
-        "name": "Aymeric Laporte",
-        "national_team": "Spain",
-        "player_id": "159317",
-        "position": "defender",
-        "profile_available": true,
-        "rating": 89.24,
-        "slate_rank": 57
-      },
-      {
-        "age": 23,
-        "available": true,
-        "club": "Athletic Club",
-        "club_id": "93",
-        "injury_count": 0,
-        "league": "Spanish LALIGA",
-        "league_slug": "esp.1",
-        "name": "Nico Williams",
-        "national_team": "Spain",
-        "player_id": "312146",
-        "position": "forward",
-        "profile_available": true,
-        "rating": 89.24,
-        "slate_rank": 58
-      },
-      {
-        "age": 30,
-        "available": true,
-        "club": "Paris Saint-Germain",
-        "club_id": "160",
-        "injury_count": 0,
-        "league": "French Ligue 1",
-        "league_slug": "fra.1",
-        "name": "Fabi\u00e1n Ruiz",
-        "national_team": "Spain",
-        "player_id": "214596",
-        "position": "midfielder",
-        "profile_available": true,
-        "rating": 89.0,
-        "slate_rank": 59
+        "slate_rank": 32
       },
       {
         "age": 27,
@@ -2727,7 +2161,7 @@
         "position": "defender",
         "profile_available": true,
         "rating": 89.0,
-        "slate_rank": 60
+        "slate_rank": 33
       },
       {
         "age": 26,
@@ -2743,7 +2177,7 @@
         "position": "defender",
         "profile_available": true,
         "rating": 89.0,
-        "slate_rank": 61
+        "slate_rank": 34
       },
       {
         "age": 34,
@@ -2759,7 +2193,7 @@
         "position": "midfielder",
         "profile_available": true,
         "rating": 88.75,
-        "slate_rank": 62
+        "slate_rank": 35
       },
       {
         "age": 33,
@@ -2775,7 +2209,7 @@
         "position": "forward",
         "profile_available": true,
         "rating": 88.75,
-        "slate_rank": 63
+        "slate_rank": 36
       },
       {
         "age": 34,
@@ -2791,23 +2225,7 @@
         "position": "forward",
         "profile_available": true,
         "rating": 88.61,
-        "slate_rank": 64
-      },
-      {
-        "age": 22,
-        "available": true,
-        "club": "Osasuna",
-        "club_id": "97",
-        "injury_count": 0,
-        "league": "Spanish LALIGA",
-        "league_slug": "esp.1",
-        "name": "V\u00edctor Mu\u00f1oz",
-        "national_team": "Spain",
-        "player_id": "397545",
-        "position": "forward",
-        "profile_available": true,
-        "rating": 88.22,
-        "slate_rank": 65
+        "slate_rank": 37
       },
       {
         "age": 23,
@@ -2823,7 +2241,7 @@
         "position": "defender",
         "profile_available": true,
         "rating": 88.0,
-        "slate_rank": 66
+        "slate_rank": 38
       },
       {
         "age": 20,
@@ -2839,7 +2257,7 @@
         "position": "goalkeeper",
         "profile_available": true,
         "rating": 86.75,
-        "slate_rank": 67
+        "slate_rank": 39
       },
       {
         "age": 34,
@@ -2855,7 +2273,7 @@
         "position": "defender",
         "profile_available": true,
         "rating": 86.75,
-        "slate_rank": 68
+        "slate_rank": 40
       },
       {
         "age": 21,
@@ -2871,7 +2289,7 @@
         "position": "forward",
         "profile_available": true,
         "rating": 86.75,
-        "slate_rank": 69
+        "slate_rank": 41
       },
       {
         "age": 21,
@@ -2887,7 +2305,7 @@
         "position": "forward",
         "profile_available": true,
         "rating": 86.75,
-        "slate_rank": 70
+        "slate_rank": 42
       },
       {
         "age": 27,
@@ -2903,7 +2321,7 @@
         "position": "defender",
         "profile_available": true,
         "rating": 86.5,
-        "slate_rank": 71
+        "slate_rank": 43
       },
       {
         "age": 29,
@@ -2919,7 +2337,7 @@
         "position": "defender",
         "profile_available": true,
         "rating": 86.5,
-        "slate_rank": 72
+        "slate_rank": 44
       },
       {
         "age": 30,
@@ -2935,7 +2353,7 @@
         "position": "defender",
         "profile_available": true,
         "rating": 86.5,
-        "slate_rank": 73
+        "slate_rank": 45
       },
       {
         "age": 26,
@@ -2951,7 +2369,23 @@
         "position": "defender",
         "profile_available": true,
         "rating": 86.5,
-        "slate_rank": 74
+        "slate_rank": 46
+      },
+      {
+        "age": 26,
+        "available": true,
+        "club": "Al Nassr",
+        "club_id": "817",
+        "injury_count": 0,
+        "league": "Saudi Pro League",
+        "league_slug": "ksa.1",
+        "name": "Nawaf Boushal",
+        "national_team": "Saudi Arabia",
+        "player_id": "331918",
+        "position": "defender",
+        "profile_available": true,
+        "rating": 86.5,
+        "slate_rank": 47
       },
       {
         "age": 27,
@@ -2967,70 +2401,444 @@
         "position": "midfielder",
         "profile_available": true,
         "rating": 86.5,
+        "slate_rank": 48
+      },
+      {
+        "age": 29,
+        "available": true,
+        "club": "Al Nassr",
+        "club_id": "817",
+        "injury_count": 0,
+        "league": "Saudi Pro League",
+        "league_slug": "ksa.1",
+        "name": "Abdullah Al-Khaibari",
+        "national_team": "Saudi Arabia",
+        "player_id": "271461",
+        "position": "midfielder",
+        "profile_available": true,
+        "rating": 86.5,
+        "slate_rank": 49
+      },
+      {
+        "age": 25,
+        "available": true,
+        "club": "Al Nassr",
+        "club_id": "817",
+        "injury_count": 0,
+        "league": "Saudi Pro League",
+        "league_slug": "ksa.1",
+        "name": "Aiman Yahya",
+        "national_team": "Saudi Arabia",
+        "player_id": "296602",
+        "position": "midfielder",
+        "profile_available": true,
+        "rating": 86.5,
+        "slate_rank": 50
+      },
+      {
+        "age": 26,
+        "available": true,
+        "club": "Al Nassr",
+        "club_id": "817",
+        "injury_count": 0,
+        "league": "Saudi Pro League",
+        "league_slug": "ksa.1",
+        "name": "Abdullah Al-Hamdan",
+        "national_team": "Saudi Arabia",
+        "player_id": "294239",
+        "position": "forward",
+        "profile_available": true,
+        "rating": 86.5,
+        "slate_rank": 51
+      },
+      {
+        "age": 26,
+        "available": true,
+        "club": "Al Hilal",
+        "club_id": "929",
+        "injury_count": 0,
+        "league": "Saudi Pro League",
+        "league_slug": "ksa.1",
+        "name": "Darwin N\u00fa\u00f1ez",
+        "national_team": "Uruguay",
+        "player_id": "271788",
+        "position": "forward",
+        "profile_available": true,
+        "rating": 86.5,
+        "slate_rank": 52
+      },
+      {
+        "age": 26,
+        "available": true,
+        "club": "Al Ahli",
+        "club_id": "8346",
+        "injury_count": 0,
+        "league": "Saudi Pro League",
+        "league_slug": "ksa.1",
+        "name": "Ali Majrashi",
+        "national_team": "Saudi Arabia",
+        "player_id": "331920",
+        "position": "defender",
+        "profile_available": true,
+        "rating": 85.71,
+        "slate_rank": 53
+      },
+      {
+        "age": 24,
+        "available": true,
+        "club": "Al Ahli",
+        "club_id": "8346",
+        "injury_count": 0,
+        "league": "Saudi Pro League",
+        "league_slug": "ksa.1",
+        "name": "Ziyad Al-Johani",
+        "national_team": "Saudi Arabia",
+        "player_id": "306692",
+        "position": "midfielder",
+        "profile_available": true,
+        "rating": 85.71,
+        "slate_rank": 54
+      },
+      {
+        "age": 26,
+        "available": true,
+        "club": "Al Ahli",
+        "club_id": "8346",
+        "injury_count": 0,
+        "league": "Saudi Pro League",
+        "league_slug": "ksa.1",
+        "name": "Feras Al-Brikan",
+        "national_team": "Saudi Arabia",
+        "player_id": "283331",
+        "position": "forward",
+        "profile_available": true,
+        "rating": 85.71,
+        "slate_rank": 55
+      },
+      {
+        "age": 34,
+        "available": true,
+        "club": "Al Hilal",
+        "club_id": "929",
+        "injury_count": 0,
+        "league": "Saudi Pro League",
+        "league_slug": "ksa.1",
+        "name": "Mohammed Al-Owais",
+        "national_team": "Saudi Arabia",
+        "player_id": "247018",
+        "position": "goalkeeper",
+        "profile_available": true,
+        "rating": 85.5,
+        "slate_rank": 56
+      },
+      {
+        "age": 26,
+        "available": true,
+        "club": "Al Nassr",
+        "club_id": "817",
+        "injury_count": 0,
+        "league": "Saudi Pro League",
+        "league_slug": "ksa.1",
+        "name": "Nawaf Al-Aqidi",
+        "national_team": "Saudi Arabia",
+        "player_id": "302332",
+        "position": "goalkeeper",
+        "profile_available": true,
+        "rating": 85.5,
+        "slate_rank": 57
+      },
+      {
+        "age": 31,
+        "available": true,
+        "club": "Al Hilal",
+        "club_id": "929",
+        "injury_count": 0,
+        "league": "Saudi Pro League",
+        "league_slug": "ksa.1",
+        "name": "Mohamed Kanno",
+        "national_team": "Saudi Arabia",
+        "player_id": "262468",
+        "position": "midfielder",
+        "profile_available": true,
+        "rating": 85.5,
+        "slate_rank": 58
+      },
+      {
+        "age": 31,
+        "available": true,
+        "club": "Al Hilal",
+        "club_id": "929",
+        "injury_count": 0,
+        "league": "Saudi Pro League",
+        "league_slug": "ksa.1",
+        "name": "Sultan Mandash",
+        "national_team": "Saudi Arabia",
+        "player_id": "287054",
+        "position": "forward",
+        "profile_available": true,
+        "rating": 85.5,
+        "slate_rank": 59
+      },
+      {
+        "age": 27,
+        "available": true,
+        "club": "Wolverhampton Wanderers",
+        "club_id": "380",
+        "injury_count": 0,
+        "league": "English Premier League",
+        "league_slug": "eng.1",
+        "name": "Santiago Bueno",
+        "national_team": "Uruguay",
+        "player_id": "241225",
+        "position": "defender",
+        "profile_available": true,
+        "rating": 85.44,
+        "slate_rank": 60
+      },
+      {
+        "age": 24,
+        "available": true,
+        "club": "Real Oviedo",
+        "club_id": "92",
+        "injury_count": 0,
+        "league": "Spanish LALIGA",
+        "league_slug": "esp.1",
+        "name": "Haissem Hassan",
+        "national_team": "Egypt",
+        "player_id": "276440",
+        "position": "forward",
+        "profile_available": true,
+        "rating": 85.38,
+        "slate_rank": 61
+      },
+      {
+        "age": 27,
+        "available": true,
+        "club": "Real Oviedo",
+        "club_id": "92",
+        "injury_count": 0,
+        "league": "Spanish LALIGA",
+        "league_slug": "esp.1",
+        "name": "Federico Vi\u00f1as",
+        "national_team": "Uruguay",
+        "player_id": "295847",
+        "position": "forward",
+        "profile_available": true,
+        "rating": 85.38,
+        "slate_rank": 62
+      },
+      {
+        "age": 24,
+        "available": true,
+        "club": "Al Qadsiah",
+        "club_id": "22022",
+        "injury_count": 0,
+        "league": "Saudi Pro League",
+        "league_slug": "ksa.1",
+        "name": "Jehad Thakri",
+        "national_team": "Saudi Arabia",
+        "player_id": "371796",
+        "position": "defender",
+        "profile_available": true,
+        "rating": 85.08,
+        "slate_rank": 63
+      },
+      {
+        "age": 37,
+        "available": true,
+        "club": "Girona",
+        "club_id": "9812",
+        "injury_count": 0,
+        "league": "Spanish LALIGA",
+        "league_slug": "esp.1",
+        "name": "Axel Witsel",
+        "national_team": "Belgium",
+        "player_id": "164895",
+        "position": "midfielder",
+        "profile_available": true,
+        "rating": 84.62,
+        "slate_rank": 64
+      },
+      {
+        "age": 34,
+        "available": true,
+        "club": "Al Hilal",
+        "club_id": "929",
+        "injury_count": 0,
+        "league": "Saudi Pro League",
+        "league_slug": "ksa.1",
+        "name": "Salem Al-Dawsari",
+        "national_team": "Saudi Arabia",
+        "player_id": "163850",
+        "position": "midfielder",
+        "profile_available": true,
+        "rating": 84.25,
+        "slate_rank": 65
+      },
+      {
+        "age": 35,
+        "available": true,
+        "club": "Al Qadsiah",
+        "club_id": "22022",
+        "injury_count": 0,
+        "league": "Saudi Pro League",
+        "league_slug": "ksa.1",
+        "name": "Ahmed Al-Kassar",
+        "national_team": "Saudi Arabia",
+        "player_id": "171878",
+        "position": "goalkeeper",
+        "profile_available": true,
+        "rating": 84.08,
+        "slate_rank": 66
+      },
+      {
+        "age": 22,
+        "available": true,
+        "club": "Al Qadsiah",
+        "club_id": "22022",
+        "injury_count": 0,
+        "league": "Saudi Pro League",
+        "league_slug": "ksa.1",
+        "name": "Musab Al-Juwayr",
+        "national_team": "Saudi Arabia",
+        "player_id": "315523",
+        "position": "midfielder",
+        "profile_available": true,
+        "rating": 84.08,
+        "slate_rank": 67
+      },
+      {
+        "age": 23,
+        "available": true,
+        "club": "Al Qadsiah",
+        "club_id": "22022",
+        "injury_count": 0,
+        "league": "Saudi Pro League",
+        "league_slug": "ksa.1",
+        "name": "Mohammed Abu Al-Shamat",
+        "national_team": "Saudi Arabia",
+        "player_id": "361692",
+        "position": "midfielder",
+        "profile_available": true,
+        "rating": 84.08,
+        "slate_rank": 68
+      },
+      {
+        "age": 33,
+        "available": true,
+        "club": "Internacional",
+        "club_id": "1936",
+        "injury_count": 0,
+        "league": "Brazilian Serie A",
+        "league_slug": "bra.1",
+        "name": "Sergio Rochet",
+        "national_team": "Uruguay",
+        "player_id": "184206",
+        "position": "goalkeeper",
+        "profile_available": true,
+        "rating": 83.39,
+        "slate_rank": 69
+      },
+      {
+        "age": 31,
+        "available": true,
+        "club": "PEC Zwolle",
+        "club_id": "2565",
+        "injury_count": 0,
+        "league": "Dutch Eredivisie",
+        "league_slug": "ned.1",
+        "name": "Ryan Thomas",
+        "national_team": "New Zealand",
+        "player_id": "156146",
+        "position": "midfielder",
+        "profile_available": true,
+        "rating": 83.0,
+        "slate_rank": 70
+      },
+      {
+        "age": 26,
+        "available": true,
+        "club": "Real Salt Lake",
+        "club_id": "4771",
+        "injury_count": 0,
+        "league": "MLS",
+        "league_slug": "usa.1",
+        "name": "Juan Manuel Sanabria",
+        "national_team": "Uruguay",
+        "player_id": "287497",
+        "position": "midfielder",
+        "profile_available": true,
+        "rating": 82.88,
+        "slate_rank": 71
+      },
+      {
+        "age": 25,
+        "available": true,
+        "club": "Rangers",
+        "club_id": "257",
+        "injury_count": 0,
+        "league": "Scottish Premiership",
+        "league_slug": "sco.1",
+        "name": "Nicolas Raskin",
+        "national_team": "Belgium",
+        "player_id": "260027",
+        "position": "midfielder",
+        "profile_available": true,
+        "rating": 82.8,
+        "slate_rank": 72
+      },
+      {
+        "age": 27,
+        "available": true,
+        "club": "Viking FK",
+        "club_id": "510",
+        "injury_count": 0,
+        "league": "Norwegian Eliteserien",
+        "league_slug": "nor.1",
+        "name": "Joe Bell",
+        "national_team": "New Zealand",
+        "player_id": "228294",
+        "position": "midfielder",
+        "profile_available": true,
+        "rating": 81.5,
+        "slate_rank": 73
+      },
+      {
+        "age": 29,
+        "available": true,
+        "club": "Standard Liege",
+        "club_id": "559",
+        "injury_count": 0,
+        "league": "Belgian Pro League",
+        "league_slug": "bel.1",
+        "name": "Dennis Dargahi",
+        "national_team": "Iran",
+        "player_id": "272489",
+        "position": "forward",
+        "profile_available": true,
+        "rating": 81.0,
+        "slate_rank": 74
+      },
+      {
+        "age": 26,
+        "available": true,
+        "club": "Motherwell",
+        "club_id": "266",
+        "injury_count": 0,
+        "league": "Scottish Premiership",
+        "league_slug": "sco.1",
+        "name": "Elijah Just",
+        "national_team": "New Zealand",
+        "player_id": "266555",
+        "position": "forward",
+        "profile_available": true,
+        "rating": 80.61,
         "slate_rank": 75
       }
     ],
     "player_rating_source": "ESPN tournament rosters, player current clubs/leagues, and club table records",
     "schedule_source": "ESPN FIFA World Cup scoreboard",
     "team_ratings": [
-      {
-        "abbreviation": "ESP",
-        "attack": 94.38,
-        "availability": 1.0,
-        "defense": 95.19,
-        "goalkeeper": 96.35,
-        "midfield": 96.96,
-        "overall": 95.18,
-        "players_rated": 26,
-        "position_counts": {
-          "defender": 7,
-          "forward": 6,
-          "goalkeeper": 3,
-          "midfielder": 10
-        },
-        "profile_coverage": 1.0,
-        "roster_ready": true,
-        "slate_rank": 1,
-        "team": "Spain",
-        "team_id": "164",
-        "top_players": [
-          {
-            "club": "Arsenal",
-            "league": "English Premier League",
-            "name": "David Raya",
-            "position": "goalkeeper",
-            "rating": 97.0
-          },
-          {
-            "club": "Barcelona",
-            "league": "Spanish LALIGA",
-            "name": "Eric Garc\u00eda",
-            "position": "defender",
-            "rating": 97.0
-          },
-          {
-            "club": "Arsenal",
-            "league": "English Premier League",
-            "name": "Mikel Merino",
-            "position": "midfielder",
-            "rating": 97.0
-          },
-          {
-            "club": "Barcelona",
-            "league": "Spanish LALIGA",
-            "name": "Dani Olmo",
-            "position": "midfielder",
-            "rating": 97.0
-          },
-          {
-            "club": "Manchester City",
-            "league": "English Premier League",
-            "name": "Rodri",
-            "position": "midfielder",
-            "rating": 97.0
-          }
-        ]
-      },
       {
         "abbreviation": "BEL",
         "attack": 94.06,
@@ -3048,7 +2856,7 @@
         },
         "profile_coverage": 1.0,
         "roster_ready": true,
-        "slate_rank": 2,
+        "slate_rank": 1,
         "team": "Belgium",
         "team_id": "459",
         "top_players": [
@@ -3106,7 +2914,7 @@
         },
         "profile_coverage": 1.0,
         "roster_ready": true,
-        "slate_rank": 3,
+        "slate_rank": 2,
         "team": "Uruguay",
         "team_id": "212",
         "top_players": [
@@ -3151,10 +2959,10 @@
         "abbreviation": "KSA",
         "attack": 84.94,
         "availability": 1.0,
-        "defense": 86.23,
+        "defense": 86.52,
         "goalkeeper": 85.37,
         "midfield": 86.26,
-        "overall": 85.67,
+        "overall": 85.79,
         "players_rated": 26,
         "position_counts": {
           "defender": 9,
@@ -3162,9 +2970,9 @@
           "goalkeeper": 3,
           "midfielder": 9
         },
-        "profile_coverage": 0.962,
+        "profile_coverage": 1.0,
         "roster_ready": true,
-        "slate_rank": 4,
+        "slate_rank": 3,
         "team": "Saudi Arabia",
         "team_id": "655",
         "top_players": [
@@ -3206,64 +3014,6 @@
         ]
       },
       {
-        "abbreviation": "CPV",
-        "attack": 80.66,
-        "availability": 1.0,
-        "defense": 83.42,
-        "goalkeeper": 80.12,
-        "midfield": 81.39,
-        "overall": 81.84,
-        "players_rated": 26,
-        "position_counts": {
-          "defender": 8,
-          "forward": 8,
-          "goalkeeper": 3,
-          "midfielder": 7
-        },
-        "profile_coverage": 1.0,
-        "roster_ready": true,
-        "slate_rank": 5,
-        "team": "Cape Verde",
-        "team_id": "2597",
-        "top_players": [
-          {
-            "club": "Villarreal",
-            "league": "Spanish LALIGA",
-            "name": "Logan Costa",
-            "position": "defender",
-            "rating": 97.0
-          },
-          {
-            "club": "Benfica",
-            "league": "Portuguese Primeira Liga",
-            "name": "Sidny Lopes Cabral",
-            "position": "defender",
-            "rating": 93.24
-          },
-          {
-            "club": "Trabzonspor",
-            "league": "Turkish Super Lig",
-            "name": "Wagner Pina",
-            "position": "defender",
-            "rating": 85.53
-          },
-          {
-            "club": "Vit\u00f3ria de Guimaraes",
-            "league": "Portuguese Primeira Liga",
-            "name": "Telmo Arcanjo",
-            "position": "midfielder",
-            "rating": 83.74
-          },
-          {
-            "club": "PEC Zwolle",
-            "league": "Dutch Eredivisie",
-            "name": "Jamiro Monteiro",
-            "position": "midfielder",
-            "rating": 83.0
-          }
-        ]
-      },
-      {
         "abbreviation": "NZL",
         "attack": 78.97,
         "availability": 1.0,
@@ -3280,7 +3030,7 @@
         },
         "profile_coverage": 1.0,
         "roster_ready": true,
-        "slate_rank": 6,
+        "slate_rank": 4,
         "team": "New Zealand",
         "team_id": "2666",
         "top_players": [
@@ -3338,7 +3088,7 @@
         },
         "profile_coverage": 1.0,
         "roster_ready": true,
-        "slate_rank": 7,
+        "slate_rank": 5,
         "team": "Egypt",
         "team_id": "2620",
         "top_players": [
@@ -3396,7 +3146,7 @@
         },
         "profile_coverage": 1.0,
         "roster_ready": true,
-        "slate_rank": 8,
+        "slate_rank": 6,
         "team": "Iran",
         "team_id": "469",
         "top_players": [
@@ -3439,7 +3189,7 @@
       }
     ]
   },
-  "generatedAt": "2026-06-15T17:39:47.804719Z",
+  "generatedAt": "2026-06-15T18:48:21.876301Z",
   "generatedBy": "github-actions:model-cache-refresh",
   "mlb_first_five": {
     "date": "2026-06-15",
@@ -3797,8 +3547,8 @@
             "team_recent_f5_runs": 2.667,
             "team_venue_f5_runs": 2.275,
             "venue_delta": 0.18,
-            "wind_direction": "",
-            "wind_mph": 0.0,
+            "wind_direction": "out",
+            "wind_mph": 3.0,
             "wind_run_delta_per_team": 0.0
           },
           "away_pitcher": {
@@ -3821,14 +3571,14 @@
             "venue_starts": 1
           },
           "home_lineup_matchup": {
-            "current_bvp_pa": 5,
-            "older_bvp_pa": 21,
-            "run_delta": 0.001,
+            "current_bvp_pa": 6,
+            "older_bvp_pa": 24,
+            "run_delta": 0.008,
             "sampled_batters": 9,
-            "threat_score": 0.3498
+            "threat_score": 0.3526
           },
           "home_offense": {
-            "lineup_delta": 0.001,
+            "lineup_delta": 0.008,
             "park_run_delta_per_team": 0.18,
             "pitcher_current_f5_allowed": 1.722,
             "pitcher_current_vs_opponent": 2.083,
@@ -3838,14 +3588,14 @@
             "pitcher_rest_label": "extended layoff (23d) +0.15",
             "pitcher_rest_runs_modifier": 0.15,
             "pitcher_venue_f5_allowed": 2.312,
-            "projected_runs": 2.37,
+            "projected_runs": 2.38,
             "team_current_f5_runs": 2.713,
             "team_prior_f5_runs": 2.537,
             "team_recent_f5_runs": 2.583,
             "team_venue_f5_runs": 2.417,
             "venue_delta": 0.18,
-            "wind_direction": "",
-            "wind_mph": 0.0,
+            "wind_direction": "out",
+            "wind_mph": 3.0,
             "wind_run_delta_per_team": 0.0
           },
           "home_pitcher": {
@@ -3879,9 +3629,9 @@
             },
             "park_run_delta_per_team": 0.18,
             "run_delta_per_team": 0.18,
-            "weather_raw": "",
-            "wind_direction": "",
-            "wind_mph": 0.0,
+            "weather_raw": "3 mph, Out To LF",
+            "wind_direction": "out",
+            "wind_mph": 3.0,
             "wind_run_delta_per_team": 0.0
           }
         },
@@ -3891,39 +3641,39 @@
         "home_pitcher": "Chase Burns",
         "home_team": "Cincinnati Reds",
         "matchup": "New York Mets @ Cincinnati Reds",
-        "notes": "F5 projection New York Mets 1.8, Cincinnati Reds 2.37 (total 4.17). BvP PA away/home: 22+0/5+21; venue F5 total 4.95 over 60 games.",
+        "notes": "F5 projection New York Mets 1.8, Cincinnati Reds 2.38 (total 4.18). BvP PA away/home: 22+0/6+24; venue F5 total 4.95 over 60 games.",
         "projected_first_five": {
-          "away_lead_probability": 0.4271,
+          "away_lead_probability": 0.4258,
           "away_runs": 1.8,
-          "home_lead_probability": 0.5729,
-          "home_runs": 2.37,
-          "total_runs": 4.17
+          "home_lead_probability": 0.5742,
+          "home_runs": 2.38,
+          "total_runs": 4.18
         },
         "top_picks": [
           {
             "assumed_odds": -110,
             "confidence": "Medium",
             "decision": "LEAN",
-            "edge_pct": 4.91,
+            "edge_pct": 5.04,
             "guardrail": "thin starter sample",
             "market": "f5_side",
-            "model_prediction": "Cincinnati Reds +0.57 F5 runs",
+            "model_prediction": "Cincinnati Reds +0.58 F5 runs",
             "pick": "Cincinnati Reds F5 ML",
-            "probability": 0.5729,
-            "projected_margin": 0.57,
+            "probability": 0.5742,
+            "projected_margin": 0.58,
             "team": "Cincinnati Reds"
           },
           {
             "assumed_odds": -110,
             "confidence": "Low",
             "decision": "PASS",
-            "edge_pct": 4.7,
+            "edge_pct": 4.49,
             "guardrail": "projection too close to F5 line",
             "market": "f5_total",
-            "model_prediction": "4.17 F5 total",
+            "model_prediction": "4.18 F5 total",
             "pick": "Under 4.5 F5",
-            "probability": 0.5708,
-            "projection_gap": 0.33,
+            "probability": 0.5687,
+            "projection_gap": 0.32,
             "team": "",
             "vegas_line": 4.5
           }
@@ -5319,18 +5069,18 @@
       {
         "assumed_odds": -110,
         "away_team": "New York Mets",
-        "calibrated_probability": 0.557735,
+        "calibrated_probability": 0.558883,
         "calibration": {
           "applied": true,
           "key": "model:mlb_first_five|source:mlb first five|sport:mlb|bet:f5_side",
-          "probability_delta": -0.015165,
+          "probability_delta": -0.015317,
           "samples": 74,
           "version": "cal-1013-2026-06-14"
         },
         "confidence": "Medium",
         "date": "2026-06-15",
         "decision": "LEAN",
-        "edge": 3.39,
+        "edge": 3.51,
         "game": "New York Mets @ Cincinnati Reds",
         "game_id": "824505",
         "game_order": 2,
@@ -5340,8 +5090,8 @@
         "line": null,
         "market": "f5_side",
         "matchup": "New York Mets @ Cincinnati Reds",
-        "model_prediction": "Cincinnati Reds +0.57 F5 runs",
-        "notes": "F5 projection New York Mets 1.8, Cincinnati Reds 2.37 (total 4.17). BvP PA away/home: 22+0/5+21; venue F5 total 4.95 over 60 games. Projection: New York Mets 1.8, Cincinnati Reds 2.37; total 4.17.",
+        "model_prediction": "Cincinnati Reds +0.58 F5 runs",
+        "notes": "F5 projection New York Mets 1.8, Cincinnati Reds 2.38 (total 4.18). BvP PA away/home: 22+0/6+24; venue F5 total 4.95 over 60 games. Projection: New York Mets 1.8, Cincinnati Reds 2.38; total 4.18.",
         "odds": null,
         "pick": "Cincinnati Reds F5 ML",
         "pregame_snapshot": {
@@ -5370,9 +5120,9 @@
           "start_time": "2026-06-15T23:10:00Z",
           "team": "Cincinnati Reds"
         },
-        "probability": 0.5577,
-        "raw_edge": 4.91,
-        "raw_probability": 0.5729,
+        "probability": 0.5589,
+        "raw_edge": 5.04,
+        "raw_probability": 0.5742,
         "source": "MLB First Five",
         "sport": "MLB",
         "start_time": "2026-06-15T23:10Z",
@@ -5381,18 +5131,18 @@
       {
         "assumed_odds": -110,
         "away_team": "New York Mets",
-        "calibrated_probability": 0.526536,
+        "calibrated_probability": 0.52476,
         "calibration": {
           "applied": true,
           "key": "model:mlb_first_five|source:mlb first five|sport:mlb|bet:f5_total",
-          "probability_delta": -0.044264,
+          "probability_delta": -0.04394,
           "samples": 89,
           "version": "cal-1013-2026-06-14"
         },
         "confidence": "Low",
         "date": "2026-06-15",
         "decision": "PASS",
-        "edge": 0.27,
+        "edge": 0.1,
         "game": "New York Mets @ Cincinnati Reds",
         "game_id": "824505",
         "game_order": 2,
@@ -5402,8 +5152,8 @@
         "line": 4.5,
         "market": "f5_total",
         "matchup": "New York Mets @ Cincinnati Reds",
-        "model_prediction": "4.17 F5 total",
-        "notes": "F5 projection New York Mets 1.8, Cincinnati Reds 2.37 (total 4.17). BvP PA away/home: 22+0/5+21; venue F5 total 4.95 over 60 games. Projection: New York Mets 1.8, Cincinnati Reds 2.37; total 4.17.",
+        "model_prediction": "4.18 F5 total",
+        "notes": "F5 projection New York Mets 1.8, Cincinnati Reds 2.38 (total 4.18). BvP PA away/home: 22+0/6+24; venue F5 total 4.95 over 60 games. Projection: New York Mets 1.8, Cincinnati Reds 2.38; total 4.18.",
         "odds": null,
         "pick": "Under 4.5 F5",
         "pregame_snapshot": {
@@ -5432,9 +5182,9 @@
           "start_time": "2026-06-15T23:10:00Z",
           "team": ""
         },
-        "probability": 0.5265,
-        "raw_edge": 4.7,
-        "raw_probability": 0.5708,
+        "probability": 0.5248,
+        "raw_edge": 4.49,
+        "raw_probability": 0.5687,
         "source": "MLB First Five",
         "sport": "MLB",
         "start_time": "2026-06-15T23:10:00Z",
@@ -6608,20 +6358,20 @@
         "edge_table": {
           "1": 0.0928,
           "2": -0.0082,
-          "3": 0.0417,
+          "3": 0.1063,
           "4": -0.0416,
           "5": -0.0056,
-          "6": 0.0373,
+          "6": 0.1101,
           "7": -0.1127,
           "8": -0.1548
         },
         "full_inning_table": {
           "1": 0.477,
           "2": 0.51,
-          "3": 0.532,
+          "3": 0.596,
           "4": 0.477,
           "5": 0.499,
-          "6": 0.556,
+          "6": 0.628,
           "7": 0.435,
           "8": 0.408
         },
@@ -6633,22 +6383,22 @@
         "matchup": "Texas Rangers vs Minnesota Twins",
         "top_2_picks": [
           {
-            "baseline": 0.3844,
-            "confidence": "Medium",
-            "decision": "LEAN",
-            "edge_pp": 9.28,
-            "inning": 1,
-            "label": "Inning 1 - No Run Scored (47.7%, edge +9.3pp)",
-            "probability_scoreless": 0.477
+            "baseline": 0.5184,
+            "confidence": "High",
+            "decision": "BET",
+            "edge_pp": 11.01,
+            "inning": 6,
+            "label": "Inning 6 - No Run Scored (62.8%, edge +11.0pp)",
+            "probability_scoreless": 0.628
           },
           {
             "baseline": 0.49,
-            "confidence": "Medium",
-            "decision": "LEAN",
-            "edge_pp": 4.17,
+            "confidence": "High",
+            "decision": "BET",
+            "edge_pp": 10.63,
             "inning": 3,
-            "label": "Inning 3 - No Run Scored (53.2%, edge +4.2pp)",
-            "probability_scoreless": 0.532
+            "label": "Inning 3 - No Run Scored (59.6%, edge +10.6pp)",
+            "probability_scoreless": 0.596
           }
         ],
         "venue_factor": 1.0
@@ -6850,23 +6600,23 @@
           "8": 0.5625
         },
         "edge_table": {
-          "1": 0.0345,
+          "1": 0.0515,
           "2": 0.0081,
           "3": 0.0147,
-          "4": -0.0249,
+          "4": -0.005,
           "5": 0.0228,
           "6": -0.0681,
-          "7": -0.1232,
+          "7": -0.1002,
           "8": -0.1535
         },
         "full_inning_table": {
-          "1": 0.419,
+          "1": 0.436,
           "2": 0.526,
           "3": 0.505,
-          "4": 0.493,
+          "4": 0.513,
           "5": 0.527,
           "6": 0.45,
-          "7": 0.424,
+          "7": 0.447,
           "8": 0.409
         },
         "game_id": "823938",
@@ -7348,86 +7098,20 @@
       {
         "assumed_odds": -110,
         "away_team": "Minnesota Twins",
-        "baseline_probability": 0.3844,
-        "calibrated_probability": 0.445553,
-        "calibration": {
-          "applied": true,
-          "key": "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning",
-          "probability_delta": -0.031447,
-          "samples": 169,
-          "version": "cal-1013-2026-06-14"
-        },
-        "confidence": "Medium",
-        "date": "2026-06-15",
-        "decision": "PASS",
-        "edge": -7.83,
-        "edge_pp": 9.28,
-        "game": "Texas Rangers vs Minnesota Twins",
-        "game_id": "822887",
-        "game_order": 5,
-        "game_start_time": "2026-06-16T00:05:00Z",
-        "home_team": "Texas Rangers",
-        "inning": 1,
-        "league": "MLB",
-        "market": "no_run_inning",
-        "matchup": "Texas Rangers vs Minnesota Twins",
-        "model_prediction": "47.7%",
-        "notes": "Top no-run inning candidate (edge +9.3pp vs baseline). Full table: {\"1\": 0.477, \"2\": 0.51, \"3\": 0.532, \"4\": 0.477, \"5\": 0.499, \"6\": 0.556, \"7\": 0.435, \"8\": 0.408}",
-        "odds": null,
-        "pick": "Inning 1 - No Run Scored",
-        "pregame_snapshot": {
-          "assumed_odds": -110,
-          "away_team": "Minnesota Twins",
-          "baseline_probability": 0.3844,
-          "confidence": "Medium",
-          "date": "2026-06-15",
-          "decision": "LEAN",
-          "edge": 9.28,
-          "edge_pp": 9.28,
-          "game": "Texas Rangers vs Minnesota Twins",
-          "game_id": "822887",
-          "game_order": 5,
-          "game_start_time": "2026-06-16T00:05:00Z",
-          "home_team": "Texas Rangers",
-          "inning": 1,
-          "league": "MLB",
-          "market": "no_run_inning",
-          "matchup": "Texas Rangers vs Minnesota Twins",
-          "model_prediction": "47.7%",
-          "notes": "Top no-run inning candidate (edge +9.3pp vs baseline). Full table: {\"1\": 0.477, \"2\": 0.51, \"3\": 0.532, \"4\": 0.477, \"5\": 0.499, \"6\": 0.556, \"7\": 0.435, \"8\": 0.408}",
-          "odds": null,
-          "pick": "Inning 1 - No Run Scored",
-          "probability": 0.477,
-          "source": "MLB Inning",
-          "sport": "MLB",
-          "start_time": "2026-06-16T00:05:00Z",
-          "team": ""
-        },
-        "probability": 0.4456,
-        "raw_edge": 9.28,
-        "raw_probability": 0.477,
-        "source": "MLB Inning",
-        "sport": "MLB",
-        "start_time": "2026-06-16T00:05:00Z",
-        "team": ""
-      },
-      {
-        "assumed_odds": -110,
-        "away_team": "Minnesota Twins",
         "baseline_probability": 0.49,
-        "calibrated_probability": 0.491834,
+        "calibrated_probability": 0.546725,
         "calibration": {
           "applied": true,
           "key": "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning",
-          "probability_delta": -0.040166,
+          "probability_delta": -0.049275,
           "samples": 169,
           "version": "cal-1013-2026-06-14"
         },
-        "confidence": "Medium",
+        "confidence": "High",
         "date": "2026-06-15",
-        "decision": "PASS",
-        "edge": -3.2,
-        "edge_pp": 4.17,
+        "decision": "BET",
+        "edge": 2.29,
+        "edge_pp": 10.63,
         "game": "Texas Rangers vs Minnesota Twins",
         "game_id": "822887",
         "game_order": 5,
@@ -7437,8 +7121,8 @@
         "league": "MLB",
         "market": "no_run_inning",
         "matchup": "Texas Rangers vs Minnesota Twins",
-        "model_prediction": "53.2%",
-        "notes": "Top no-run inning candidate (edge +4.2pp vs baseline). Full table: {\"1\": 0.477, \"2\": 0.51, \"3\": 0.532, \"4\": 0.477, \"5\": 0.499, \"6\": 0.556, \"7\": 0.435, \"8\": 0.408}",
+        "model_prediction": "59.6%",
+        "notes": "Top no-run inning candidate (edge +10.6pp vs baseline). Full table: {\"1\": 0.477, \"2\": 0.51, \"3\": 0.596, \"4\": 0.477, \"5\": 0.499, \"6\": 0.628, \"7\": 0.435, \"8\": 0.408}",
         "odds": null,
         "pick": "Inning 3 - No Run Scored",
         "pregame_snapshot": {
@@ -7469,12 +7153,78 @@
           "start_time": "2026-06-16T00:05:00Z",
           "team": ""
         },
-        "probability": 0.4918,
-        "raw_edge": 4.17,
-        "raw_probability": 0.532,
+        "probability": 0.5467,
+        "raw_edge": 10.63,
+        "raw_probability": 0.596,
         "source": "MLB Inning",
         "sport": "MLB",
         "start_time": "2026-06-16T00:05Z",
+        "team": ""
+      },
+      {
+        "assumed_odds": -110,
+        "away_team": "Minnesota Twins",
+        "baseline_probability": 0.5184,
+        "calibrated_probability": 0.57476,
+        "calibration": {
+          "applied": true,
+          "key": "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning",
+          "probability_delta": -0.05324,
+          "samples": 169,
+          "version": "cal-1013-2026-06-14"
+        },
+        "confidence": "High",
+        "date": "2026-06-15",
+        "decision": "BET",
+        "edge": 5.1,
+        "edge_pp": 11.01,
+        "game": "Texas Rangers vs Minnesota Twins",
+        "game_id": "822887",
+        "game_order": 5,
+        "game_start_time": "2026-06-16T00:05:00Z",
+        "home_team": "Texas Rangers",
+        "inning": 6,
+        "league": "MLB",
+        "market": "no_run_inning",
+        "matchup": "Texas Rangers vs Minnesota Twins",
+        "model_prediction": "62.8%",
+        "notes": "Top no-run inning candidate (edge +11.0pp vs baseline). Full table: {\"1\": 0.477, \"2\": 0.51, \"3\": 0.596, \"4\": 0.477, \"5\": 0.499, \"6\": 0.628, \"7\": 0.435, \"8\": 0.408}",
+        "odds": null,
+        "pick": "Inning 6 - No Run Scored",
+        "pregame_snapshot": {
+          "assumed_odds": -110,
+          "away_team": "Minnesota Twins",
+          "baseline_probability": 0.5184,
+          "confidence": "High",
+          "date": "2026-06-15",
+          "decision": "BET",
+          "edge": 11.01,
+          "edge_pp": 11.01,
+          "game": "Texas Rangers vs Minnesota Twins",
+          "game_id": "822887",
+          "game_order": 5,
+          "game_start_time": "2026-06-16T00:05:00Z",
+          "home_team": "Texas Rangers",
+          "inning": 6,
+          "league": "MLB",
+          "market": "no_run_inning",
+          "matchup": "Texas Rangers vs Minnesota Twins",
+          "model_prediction": "62.8%",
+          "notes": "Top no-run inning candidate (edge +11.0pp vs baseline). Full table: {\"1\": 0.477, \"2\": 0.51, \"3\": 0.596, \"4\": 0.477, \"5\": 0.499, \"6\": 0.628, \"7\": 0.435, \"8\": 0.408}",
+          "odds": null,
+          "pick": "Inning 6 - No Run Scored",
+          "probability": 0.628,
+          "source": "MLB Inning",
+          "sport": "MLB",
+          "start_time": "2026-06-16T00:05:00Z",
+          "team": ""
+        },
+        "probability": 0.5748,
+        "raw_edge": 11.01,
+        "raw_probability": 0.628,
+        "source": "MLB Inning",
+        "sport": "MLB",
+        "start_time": "2026-06-16T00:05:00Z",
         "team": ""
       },
       {
@@ -8026,76 +7776,76 @@
       {
         "assumed_odds": -110,
         "away_team": "Kansas City Royals",
-        "calibrated_probability": 0.509948,
+        "calibrated_probability": 0.549286,
         "calibration": {
           "applied": true,
           "key": "global",
-          "probability_delta": -0.032352,
+          "probability_delta": -0.038414,
           "samples": 825,
           "version": "cal-1013-2026-06-14"
         },
-        "decision": "PASS",
+        "decision": "BET",
         "direction": "Under",
-        "edge": -1.39,
+        "edge": 2.55,
         "home_team": "Washington Nationals",
-        "kelly": 0.97,
-        "line": 9.0,
-        "market_line": 9.0,
+        "kelly": 3.35,
+        "line": 9.5,
+        "market_line": 9.5,
         "market_total_source": "model_output",
         "market_type": "totals",
         "model_prediction": 8.5,
         "odds": -110,
-        "pick": "Under 9.0 (Kansas City Royals vs Washington Nationals)",
+        "pick": "Under 9.5 (Kansas City Royals vs Washington Nationals)",
         "pregame_snapshot": {
           "assumed_odds": -110,
           "away_team": "Kansas City Royals",
-          "decision": "PASS",
+          "decision": "BET",
           "direction": "Under",
-          "edge": 1.85,
+          "edge": 6.39,
           "home_team": "Washington Nationals",
-          "kelly": 0.97,
-          "line": 9.0,
-          "market_line": 9.0,
+          "kelly": 3.35,
+          "line": 9.5,
+          "market_line": 9.5,
           "market_total_source": "model_output",
           "market_type": "totals",
           "model_prediction": 8.5,
           "odds": -110,
-          "pick": "Under 9.0 (Kansas City Royals vs Washington Nationals)",
-          "prob": 0.5423,
-          "probability": 0.5423,
+          "pick": "Under 9.5 (Kansas City Royals vs Washington Nationals)",
+          "prob": 0.5877,
+          "probability": 0.5877,
           "selection": "Under",
           "source": "MLB Model",
           "sport": "MLB",
-          "units": 0.0,
-          "vegas": 9.0
+          "units": 0.03,
+          "vegas": 9.5
         },
-        "prob": 0.5423,
-        "probability": 0.5099,
-        "raw_edge": 1.85,
-        "raw_probability": 0.5423,
-        "raw_units": 0.0,
+        "prob": 0.5877,
+        "probability": 0.5493,
+        "raw_edge": 6.39,
+        "raw_probability": 0.5877,
+        "raw_units": 0.03,
         "selection": "Under",
         "source": "MLB Model",
         "sport": "MLB",
-        "units": 0,
-        "vegas": 9.0
+        "units": 0.01,
+        "vegas": 9.5
       },
       {
         "away_team": "New York Mets",
-        "calibrated_probability": 0.56093,
+        "calibrated_probability": 0.482694,
         "calibration": {
           "applied": true,
           "key": "global",
-          "probability_delta": -0.04007,
+          "probability_delta": -0.027806,
           "samples": 825,
           "version": "cal-1013-2026-06-14"
         },
-        "decision": "LEAN",
-        "edge": 6.09,
+        "decision": "PASS",
+        "edge": -1.73,
         "home_team": "Cincinnati Reds",
         "market_pick_prob": null,
         "market_type": "h2h",
-        "model_odds": -151,
+        "model_odds": -104,
         "odds": null,
         "pick": "Reds ML (Mets vs Reds)",
         "pregame_snapshot": {
@@ -8114,36 +7864,36 @@
           "team": "Reds",
           "units": 0.57
         },
-        "probability": 0.5609,
-        "raw_edge": 10.1,
-        "raw_probability": 0.601,
-        "raw_units": 0.57,
+        "probability": 0.4827,
+        "raw_edge": 1.05,
+        "raw_probability": 0.5105,
+        "raw_units": 0.0,
         "source": "MLB Model",
         "sport": "MLB",
         "team": "Reds",
-        "units": 0.34
+        "units": 0
       },
       {
         "assumed_odds": -110,
         "away_team": "New York Mets",
-        "calibrated_probability": 0.514684,
+        "calibrated_probability": 0.517012,
         "calibration": {
           "applied": true,
           "key": "global",
-          "probability_delta": -0.033116,
+          "probability_delta": -0.033488,
           "samples": 825,
           "version": "cal-1013-2026-06-14"
         },
         "decision": "PASS",
         "direction": "Over",
-        "edge": -0.91,
+        "edge": -0.68,
         "home_team": "Cincinnati Reds",
-        "kelly": 1.26,
+        "kelly": 1.4,
         "line": 8.5,
         "market_line": 8.5,
         "market_total_source": "model_output",
         "market_type": "totals",
-        "model_prediction": 9.0,
+        "model_prediction": 9.1,
         "odds": -110,
         "pick": "Over 8.5 (New York Mets vs Cincinnati Reds)",
         "pregame_snapshot": {
@@ -8169,10 +7919,10 @@
           "units": 0.0,
           "vegas": 8.5
         },
-        "prob": 0.5478,
-        "probability": 0.5147,
-        "raw_edge": 2.4,
-        "raw_probability": 0.5478,
+        "prob": 0.5505,
+        "probability": 0.517,
+        "raw_edge": 2.67,
+        "raw_probability": 0.5505,
         "raw_units": 0.0,
         "selection": "Over",
         "source": "MLB Model",
@@ -8889,41 +8639,6 @@
       "date": "2026-06-15",
       "games": [
         {
-          "away_team": "Cape Verde",
-          "away_unit_ratings": {
-            "attack": 80.66,
-            "defense": 83.42,
-            "goalkeeper": 80.12,
-            "midfield": 81.39,
-            "overall": 81.84
-          },
-          "away_win_probability": 0.1149,
-          "calibration_excluded": true,
-          "date": "2026-06-15",
-          "draw_probability": 0.1989,
-          "game": "Cape Verde @ Spain",
-          "game_id": "760428",
-          "game_start_time": "2026-06-15T16:00Z",
-          "home_team": "Spain",
-          "home_unit_ratings": {
-            "attack": 94.38,
-            "defense": 95.19,
-            "goalkeeper": 96.35,
-            "midfield": 96.96,
-            "overall": 95.18
-          },
-          "home_win_probability": 0.6862,
-          "league": "FIFA World Cup",
-          "matchup": "Cape Verde @ Spain",
-          "model_basis": "current squad player power and position-unit matchup; no head-to-head input",
-          "projected_away_goals": 0.668,
-          "projected_home_goals": 1.993,
-          "projected_total": 2.66,
-          "source": "FIFA Model",
-          "sport": "FIFA WC",
-          "start_time": "2026-06-15T16:00Z"
-        },
-        {
           "away_team": "Egypt",
           "away_unit_ratings": {
             "attack": 83.58,
@@ -8967,28 +8682,28 @@
             "midfield": 95.53,
             "overall": 89.76
           },
-          "away_win_probability": 0.4584,
+          "away_win_probability": 0.4543,
           "calibration_excluded": true,
           "date": "2026-06-15",
-          "draw_probability": 0.2744,
+          "draw_probability": 0.2758,
           "game": "Uruguay @ Saudi Arabia",
           "game_id": "760429",
           "game_start_time": "2026-06-15T22:00Z",
           "home_team": "Saudi Arabia",
           "home_unit_ratings": {
             "attack": 84.94,
-            "defense": 86.23,
+            "defense": 86.52,
             "goalkeeper": 85.37,
             "midfield": 86.26,
-            "overall": 85.67
+            "overall": 85.79
           },
-          "home_win_probability": 0.2673,
+          "home_win_probability": 0.2699,
           "league": "FIFA World Cup",
           "matchup": "Uruguay @ Saudi Arabia",
           "model_basis": "current squad player power and position-unit matchup; no head-to-head input",
-          "projected_away_goals": 1.363,
-          "projected_home_goals": 0.971,
-          "projected_total": 2.33,
+          "projected_away_goals": 1.349,
+          "projected_home_goals": 0.972,
+          "projected_total": 2.32,
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-06-15T22:00Z"
@@ -9030,108 +8745,9 @@
         }
       ],
       "model": "FIFAWorldCupPlayerPower",
-      "note": "Rated 208 current-squad players across 8 teams; generated 8 moneyline/total rows without head-to-head or trained-model inputs.",
+      "note": "Rated 156 current-squad players across 6 teams; generated 6 moneyline/total rows without head-to-head or trained-model inputs.",
       "ok": true,
       "picks": [
-        {
-          "away_team": "Cape Verde",
-          "away_unit_ratings": {
-            "attack": 80.66,
-            "defense": 83.42,
-            "goalkeeper": 80.12,
-            "midfield": 81.39,
-            "overall": 81.84
-          },
-          "calibration_excluded": true,
-          "date": "2026-06-15",
-          "decision": "PASS",
-          "draw_probability": 0.1989,
-          "edge": -18.15,
-          "game": "Cape Verde @ Spain",
-          "game_id": "760428",
-          "game_start_time": "2026-06-15T16:00Z",
-          "home_team": "Spain",
-          "home_unit_ratings": {
-            "attack": 94.38,
-            "defense": 95.19,
-            "goalkeeper": 96.35,
-            "midfield": 96.96,
-            "overall": 95.18
-          },
-          "key_factors": [
-            "Current World Cup roster and availability",
-            "Player club-league and club-table power rankings",
-            "Attack/midfield/defense/goalkeeper unit matchup",
-            "No historical head-to-head input"
-          ],
-          "league": "FIFA World Cup",
-          "market": "moneyline",
-          "market_probability": 0.8678,
-          "market_type": "soccer_moneyline",
-          "matchup": "Cape Verde @ Spain",
-          "model_basis": "current squad player power and position-unit matchup; no head-to-head input",
-          "odds": -1000,
-          "pick": "Spain ML (Cape Verde @ Spain)",
-          "probability": 0.6862,
-          "projected_away_goals": 0.668,
-          "projected_home_goals": 1.993,
-          "projected_total": 2.66,
-          "reason": "Spain owns the stronger current-squad projection. Attack 94.4, midfield 97.0, defense 95.2, goalkeeper 96.3. Top player ranks: David Raya 97.0, Eric Garc\u00eda 97.0, Mikel Merino 97.0.",
-          "source": "FIFA Model",
-          "sport": "FIFA WC",
-          "start_time": "2026-06-15T16:00Z",
-          "team": "Spain",
-          "units": 0.0
-        },
-        {
-          "away_team": "Cape Verde",
-          "away_unit_ratings": {
-            "attack": 80.66,
-            "defense": 83.42,
-            "goalkeeper": 80.12,
-            "midfield": 81.39,
-            "overall": 81.84
-          },
-          "calibration_excluded": true,
-          "date": "2026-06-15",
-          "decision": "BET",
-          "edge": 22.29,
-          "game": "Cape Verde @ Spain",
-          "game_id": "760428",
-          "game_start_time": "2026-06-15T16:00Z",
-          "home_team": "Spain",
-          "home_unit_ratings": {
-            "attack": 94.38,
-            "defense": 95.19,
-            "goalkeeper": 96.35,
-            "midfield": 96.96,
-            "overall": 95.18
-          },
-          "key_factors": [
-            "Cape Verde attack 80.7 vs Spain defense 95.2",
-            "Spain attack 94.4 vs Cape Verde defense 83.4",
-            "Projected total 2.66"
-          ],
-          "league": "FIFA World Cup",
-          "line": 3.5,
-          "market": "total",
-          "market_probability": 0.5,
-          "market_type": "soccer_total",
-          "matchup": "Cape Verde @ Spain",
-          "model_basis": "current squad player power and position-unit matchup; no head-to-head input",
-          "odds": 100,
-          "pick": "Under 3.5 (Cape Verde @ Spain)",
-          "probability": 0.7229,
-          "projected_away_goals": 0.668,
-          "projected_home_goals": 1.993,
-          "projected_total": 2.66,
-          "reason": "Projected goals Cape Verde 0.67, Spain 1.99 from the two attacking engines against the opposing defensive units.",
-          "source": "FIFA Model",
-          "sport": "FIFA WC",
-          "start_time": "2026-06-15T16:00Z",
-          "team": "",
-          "units": 1.0
-        },
         {
           "away_team": "Egypt",
           "away_unit_ratings": {
@@ -9145,7 +8761,7 @@
           "date": "2026-06-15",
           "decision": "BET",
           "draw_probability": 0.1338,
-          "edge": 18.13,
+          "edge": 16.37,
           "game": "Egypt @ Belgium",
           "game_id": "760426",
           "game_start_time": "2026-06-15T19:00Z",
@@ -9165,11 +8781,11 @@
           ],
           "league": "FIFA World Cup",
           "market": "moneyline",
-          "market_probability": 0.6067,
+          "market_probability": 0.6243,
           "market_type": "soccer_moneyline",
           "matchup": "Egypt @ Belgium",
           "model_basis": "current squad player power and position-unit matchup; no head-to-head input",
-          "odds": -180,
+          "odds": -195,
           "pick": "Belgium ML (Egypt @ Belgium)",
           "probability": 0.788,
           "projected_away_goals": 0.771,
@@ -9243,18 +8859,18 @@
           "calibration_excluded": true,
           "date": "2026-06-15",
           "decision": "PASS",
-          "draw_probability": 0.2744,
-          "edge": -21.53,
+          "draw_probability": 0.2758,
+          "edge": -21.94,
           "game": "Uruguay @ Saudi Arabia",
           "game_id": "760429",
           "game_start_time": "2026-06-15T22:00Z",
           "home_team": "Saudi Arabia",
           "home_unit_ratings": {
             "attack": 84.94,
-            "defense": 86.23,
+            "defense": 86.52,
             "goalkeeper": 85.37,
             "midfield": 86.26,
-            "overall": 85.67
+            "overall": 85.79
           },
           "key_factors": [
             "Current World Cup roster and availability",
@@ -9270,10 +8886,10 @@
           "model_basis": "current squad player power and position-unit matchup; no head-to-head input",
           "odds": -235,
           "pick": "Uruguay ML (Uruguay @ Saudi Arabia)",
-          "probability": 0.4584,
-          "projected_away_goals": 1.363,
-          "projected_home_goals": 0.971,
-          "projected_total": 2.33,
+          "probability": 0.4543,
+          "projected_away_goals": 1.349,
+          "projected_home_goals": 0.972,
+          "projected_total": 2.32,
           "reason": "Uruguay owns the stronger current-squad projection. Attack 88.3, midfield 95.5, defense 90.8, goalkeeper 82.4. Top player ranks: Ronald Ara\u00fajo 97.0, Federico Valverde 97.0, Manuel Ugarte 97.0.",
           "source": "FIFA Model",
           "sport": "FIFA WC",
@@ -9292,23 +8908,23 @@
           },
           "calibration_excluded": true,
           "date": "2026-06-15",
-          "decision": "LEAN",
-          "edge": 2.29,
+          "decision": "BET",
+          "edge": 2.55,
           "game": "Uruguay @ Saudi Arabia",
           "game_id": "760429",
           "game_start_time": "2026-06-15T22:00Z",
           "home_team": "Saudi Arabia",
           "home_unit_ratings": {
             "attack": 84.94,
-            "defense": 86.23,
+            "defense": 86.52,
             "goalkeeper": 85.37,
             "midfield": 86.26,
-            "overall": 85.67
+            "overall": 85.79
           },
           "key_factors": [
-            "Uruguay attack 88.3 vs Saudi Arabia defense 86.2",
+            "Uruguay attack 88.3 vs Saudi Arabia defense 86.5",
             "Saudi Arabia attack 84.9 vs Uruguay defense 90.8",
-            "Projected total 2.33"
+            "Projected total 2.32"
           ],
           "league": "FIFA World Cup",
           "line": 2.5,
@@ -9319,16 +8935,16 @@
           "model_basis": "current squad player power and position-unit matchup; no head-to-head input",
           "odds": -130,
           "pick": "Under 2.5 (Uruguay @ Saudi Arabia)",
-          "probability": 0.5881,
-          "projected_away_goals": 1.363,
-          "projected_home_goals": 0.971,
-          "projected_total": 2.33,
-          "reason": "Projected goals Uruguay 1.36, Saudi Arabia 0.97 from the two attacking engines against the opposing defensive units.",
+          "probability": 0.5907,
+          "projected_away_goals": 1.349,
+          "projected_home_goals": 0.972,
+          "projected_total": 2.32,
+          "reason": "Projected goals Uruguay 1.35, Saudi Arabia 0.97 from the two attacking engines against the opposing defensive units.",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-06-15T22:00Z",
           "team": "",
-          "units": 0.49
+          "units": 0.51
         },
         {
           "away_team": "New Zealand",
@@ -9432,134 +9048,6 @@
       ],
       "player_rankings": [
         {
-          "age": 30,
-          "available": true,
-          "club": "Arsenal",
-          "club_id": "359",
-          "injury_count": 0,
-          "league": "English Premier League",
-          "league_slug": "eng.1",
-          "name": "David Raya",
-          "national_team": "Spain",
-          "player_id": "196176",
-          "position": "goalkeeper",
-          "profile_available": true,
-          "rating": 97.0,
-          "slate_rank": 1
-        },
-        {
-          "age": 25,
-          "available": true,
-          "club": "Barcelona",
-          "club_id": "83",
-          "injury_count": 0,
-          "league": "Spanish LALIGA",
-          "league_slug": "esp.1",
-          "name": "Eric Garc\u00eda",
-          "national_team": "Spain",
-          "player_id": "128714",
-          "position": "defender",
-          "profile_available": true,
-          "rating": 97.0,
-          "slate_rank": 2
-        },
-        {
-          "age": 29,
-          "available": true,
-          "club": "Arsenal",
-          "club_id": "359",
-          "injury_count": 0,
-          "league": "English Premier League",
-          "league_slug": "eng.1",
-          "name": "Mikel Merino",
-          "national_team": "Spain",
-          "player_id": "209581",
-          "position": "midfielder",
-          "profile_available": true,
-          "rating": 97.0,
-          "slate_rank": 3
-        },
-        {
-          "age": 28,
-          "available": true,
-          "club": "Barcelona",
-          "club_id": "83",
-          "injury_count": 0,
-          "league": "Spanish LALIGA",
-          "league_slug": "esp.1",
-          "name": "Dani Olmo",
-          "national_team": "Spain",
-          "player_id": "227765",
-          "position": "midfielder",
-          "profile_available": true,
-          "rating": 97.0,
-          "slate_rank": 4
-        },
-        {
-          "age": 29,
-          "available": true,
-          "club": "Manchester City",
-          "club_id": "382",
-          "injury_count": 0,
-          "league": "English Premier League",
-          "league_slug": "eng.1",
-          "name": "Rodri",
-          "national_team": "Spain",
-          "player_id": "231828",
-          "position": "midfielder",
-          "profile_available": true,
-          "rating": 97.0,
-          "slate_rank": 5
-        },
-        {
-          "age": 27,
-          "available": true,
-          "club": "Arsenal",
-          "club_id": "359",
-          "injury_count": 0,
-          "league": "English Premier League",
-          "league_slug": "eng.1",
-          "name": "Mart\u00edn Zubimendi",
-          "national_team": "Spain",
-          "player_id": "287266",
-          "position": "midfielder",
-          "profile_available": true,
-          "rating": 97.0,
-          "slate_rank": 6
-        },
-        {
-          "age": 26,
-          "available": true,
-          "club": "Barcelona",
-          "club_id": "83",
-          "injury_count": 0,
-          "league": "Spanish LALIGA",
-          "league_slug": "esp.1",
-          "name": "Ferran Torres",
-          "national_team": "Spain",
-          "player_id": "265869",
-          "position": "forward",
-          "profile_available": true,
-          "rating": 97.0,
-          "slate_rank": 7
-        },
-        {
-          "age": 25,
-          "available": true,
-          "club": "Villarreal",
-          "club_id": "102",
-          "injury_count": 0,
-          "league": "Spanish LALIGA",
-          "league_slug": "esp.1",
-          "name": "Logan Costa",
-          "national_team": "Cape Verde",
-          "player_id": "271129",
-          "position": "defender",
-          "profile_available": true,
-          "rating": 97.0,
-          "slate_rank": 8
-        },
-        {
           "age": 24,
           "available": true,
           "club": "Manchester City",
@@ -9573,7 +9061,7 @@
           "position": "forward",
           "profile_available": true,
           "rating": 97.0,
-          "slate_rank": 9
+          "slate_rank": 1
         },
         {
           "age": 27,
@@ -9589,7 +9077,7 @@
           "position": "forward",
           "profile_available": true,
           "rating": 97.0,
-          "slate_rank": 10
+          "slate_rank": 2
         },
         {
           "age": 27,
@@ -9605,7 +9093,7 @@
           "position": "defender",
           "profile_available": true,
           "rating": 97.0,
-          "slate_rank": 11
+          "slate_rank": 3
         },
         {
           "age": 27,
@@ -9621,7 +9109,7 @@
           "position": "midfielder",
           "profile_available": true,
           "rating": 97.0,
-          "slate_rank": 12
+          "slate_rank": 4
         },
         {
           "age": 25,
@@ -9637,23 +9125,7 @@
           "position": "midfielder",
           "profile_available": true,
           "rating": 97.0,
-          "slate_rank": 13
-        },
-        {
-          "age": 24,
-          "available": true,
-          "club": "Atl\u00e9tico de Madrid",
-          "club_id": "1068",
-          "injury_count": 0,
-          "league": "Spanish LALIGA",
-          "league_slug": "esp.1",
-          "name": "\u00c1lex Baena",
-          "national_team": "Spain",
-          "player_id": "297373",
-          "position": "midfielder",
-          "profile_available": true,
-          "rating": 96.9,
-          "slate_rank": 14
+          "slate_rank": 5
         },
         {
           "age": 29,
@@ -9669,7 +9141,7 @@
           "position": "midfielder",
           "profile_available": true,
           "rating": 96.79,
-          "slate_rank": 15
+          "slate_rank": 6
         },
         {
           "age": 24,
@@ -9685,39 +9157,7 @@
           "position": "midfielder",
           "profile_available": true,
           "rating": 96.79,
-          "slate_rank": 16
-        },
-        {
-          "age": 25,
-          "available": true,
-          "club": "Barcelona",
-          "club_id": "83",
-          "injury_count": 0,
-          "league": "Spanish LALIGA",
-          "league_slug": "esp.1",
-          "name": "Joan Garc\u00eda",
-          "national_team": "Spain",
-          "player_id": "297362",
-          "position": "goalkeeper",
-          "profile_available": true,
-          "rating": 96.5,
-          "slate_rank": 17
-        },
-        {
-          "age": 23,
-          "available": true,
-          "club": "Barcelona",
-          "club_id": "83",
-          "injury_count": 0,
-          "league": "Spanish LALIGA",
-          "league_slug": "esp.1",
-          "name": "Pedri",
-          "national_team": "Spain",
-          "player_id": "250465",
-          "position": "midfielder",
-          "profile_available": true,
-          "rating": 96.5,
-          "slate_rank": 18
+          "slate_rank": 7
         },
         {
           "age": 34,
@@ -9733,7 +9173,7 @@
           "position": "goalkeeper",
           "profile_available": true,
           "rating": 96.5,
-          "slate_rank": 19
+          "slate_rank": 8
         },
         {
           "age": 31,
@@ -9749,39 +9189,7 @@
           "position": "forward",
           "profile_available": true,
           "rating": 96.5,
-          "slate_rank": 20
-        },
-        {
-          "age": 22,
-          "available": true,
-          "club": "Atl\u00e9tico de Madrid",
-          "club_id": "1068",
-          "injury_count": 0,
-          "league": "Spanish LALIGA",
-          "league_slug": "esp.1",
-          "name": "Marc Pubill",
-          "national_team": "Spain",
-          "player_id": "332613",
-          "position": "defender",
-          "profile_available": true,
-          "rating": 95.9,
-          "slate_rank": 21
-        },
-        {
-          "age": 31,
-          "available": true,
-          "club": "Atl\u00e9tico de Madrid",
-          "club_id": "1068",
-          "injury_count": 0,
-          "league": "Spanish LALIGA",
-          "league_slug": "esp.1",
-          "name": "Marcos Llorente",
-          "national_team": "Spain",
-          "player_id": "206474",
-          "position": "midfielder",
-          "profile_available": true,
-          "rating": 95.9,
-          "slate_rank": 22
+          "slate_rank": 9
         },
         {
           "age": 31,
@@ -9797,23 +9205,7 @@
           "position": "defender",
           "profile_available": true,
           "rating": 95.9,
-          "slate_rank": 23
-        },
-        {
-          "age": 21,
-          "available": true,
-          "club": "Barcelona",
-          "club_id": "83",
-          "injury_count": 0,
-          "league": "Spanish LALIGA",
-          "league_slug": "esp.1",
-          "name": "Gavi",
-          "national_team": "Spain",
-          "player_id": "323702",
-          "position": "midfielder",
-          "profile_available": true,
-          "rating": 95.25,
-          "slate_rank": 24
+          "slate_rank": 10
         },
         {
           "age": 23,
@@ -9829,7 +9221,7 @@
           "position": "goalkeeper",
           "profile_available": true,
           "rating": 95.25,
-          "slate_rank": 25
+          "slate_rank": 11
         },
         {
           "age": 26,
@@ -9845,23 +9237,7 @@
           "position": "midfielder",
           "profile_available": true,
           "rating": 94.81,
-          "slate_rank": 26
-        },
-        {
-          "age": 30,
-          "available": true,
-          "club": "Bayer Leverkusen",
-          "club_id": "131",
-          "injury_count": 0,
-          "league": "German Bundesliga",
-          "league_slug": "ger.1",
-          "name": "Alejandro Grimaldo",
-          "national_team": "Spain",
-          "player_id": "166396",
-          "position": "defender",
-          "profile_available": true,
-          "rating": 94.34,
-          "slate_rank": 27
+          "slate_rank": 12
         },
         {
           "age": 25,
@@ -9877,7 +9253,7 @@
           "position": "defender",
           "profile_available": true,
           "rating": 94.28,
-          "slate_rank": 28
+          "slate_rank": 13
         },
         {
           "age": 28,
@@ -9893,39 +9269,7 @@
           "position": "forward",
           "profile_available": true,
           "rating": 94.24,
-          "slate_rank": 29
-        },
-        {
-          "age": 19,
-          "available": true,
-          "club": "Barcelona",
-          "club_id": "83",
-          "injury_count": 0,
-          "league": "Spanish LALIGA",
-          "league_slug": "esp.1",
-          "name": "Pau Cubars\u00ed",
-          "national_team": "Spain",
-          "player_id": "368992",
-          "position": "defender",
-          "profile_available": true,
-          "rating": 94.0,
-          "slate_rank": 30
-        },
-        {
-          "age": 18,
-          "available": true,
-          "club": "Barcelona",
-          "club_id": "83",
-          "injury_count": 0,
-          "league": "Spanish LALIGA",
-          "league_slug": "esp.1",
-          "name": "Lamine Yamal",
-          "national_team": "Spain",
-          "player_id": "362150",
-          "position": "forward",
-          "profile_available": true,
-          "rating": 94.0,
-          "slate_rank": 31
+          "slate_rank": 14
         },
         {
           "age": 34,
@@ -9941,7 +9285,7 @@
           "position": "forward",
           "profile_available": true,
           "rating": 93.82,
-          "slate_rank": 32
+          "slate_rank": 15
         },
         {
           "age": 22,
@@ -9957,23 +9301,7 @@
           "position": "defender",
           "profile_available": true,
           "rating": 93.81,
-          "slate_rank": 33
-        },
-        {
-          "age": 27,
-          "available": true,
-          "club": "Chelsea",
-          "club_id": "363",
-          "injury_count": 0,
-          "league": "English Premier League",
-          "league_slug": "eng.1",
-          "name": "Marc Cucurella",
-          "national_team": "Spain",
-          "player_id": "259910",
-          "position": "defender",
-          "profile_available": true,
-          "rating": 93.71,
-          "slate_rank": 34
+          "slate_rank": 16
         },
         {
           "age": 27,
@@ -9989,7 +9317,7 @@
           "position": "defender",
           "profile_available": true,
           "rating": 93.53,
-          "slate_rank": 35
+          "slate_rank": 17
         },
         {
           "age": 26,
@@ -10005,23 +9333,7 @@
           "position": "midfielder",
           "profile_available": true,
           "rating": 93.53,
-          "slate_rank": 36
-        },
-        {
-          "age": 23,
-          "available": true,
-          "club": "Benfica",
-          "club_id": "1929",
-          "injury_count": 0,
-          "league": "Portuguese Primeira Liga",
-          "league_slug": "por.1",
-          "name": "Sidny Lopes Cabral",
-          "national_team": "Cape Verde",
-          "player_id": "332394",
-          "position": "defender",
-          "profile_available": true,
-          "rating": 93.24,
-          "slate_rank": 37
+          "slate_rank": 18
         },
         {
           "age": 30,
@@ -10037,7 +9349,7 @@
           "position": "defender",
           "profile_available": true,
           "rating": 92.96,
-          "slate_rank": 38
+          "slate_rank": 19
         },
         {
           "age": 32,
@@ -10053,7 +9365,7 @@
           "position": "midfielder",
           "profile_available": true,
           "rating": 92.9,
-          "slate_rank": 39
+          "slate_rank": 20
         },
         {
           "age": 23,
@@ -10069,7 +9381,7 @@
           "position": "goalkeeper",
           "profile_available": true,
           "rating": 92.89,
-          "slate_rank": 40
+          "slate_rank": 21
         },
         {
           "age": 29,
@@ -10085,39 +9397,7 @@
           "position": "midfielder",
           "profile_available": true,
           "rating": 92.01,
-          "slate_rank": 41
-        },
-        {
-          "age": 33,
-          "available": true,
-          "club": "Celta Vigo",
-          "club_id": "85",
-          "injury_count": 0,
-          "league": "Spanish LALIGA",
-          "league_slug": "esp.1",
-          "name": "Borja Iglesias",
-          "national_team": "Spain",
-          "player_id": "214995",
-          "position": "forward",
-          "profile_available": true,
-          "rating": 91.55,
-          "slate_rank": 42
-        },
-        {
-          "age": 29,
-          "available": true,
-          "club": "Real Sociedad",
-          "club_id": "89",
-          "injury_count": 0,
-          "league": "Spanish LALIGA",
-          "league_slug": "esp.1",
-          "name": "Mikel Oyarzabal",
-          "national_team": "Spain",
-          "player_id": "229018",
-          "position": "forward",
-          "profile_available": true,
-          "rating": 91.5,
-          "slate_rank": 43
+          "slate_rank": 22
         },
         {
           "age": 32,
@@ -10133,7 +9413,7 @@
           "position": "midfielder",
           "profile_available": true,
           "rating": 91.01,
-          "slate_rank": 44
+          "slate_rank": 23
         },
         {
           "age": 24,
@@ -10149,7 +9429,7 @@
           "position": "defender",
           "profile_available": true,
           "rating": 91.0,
-          "slate_rank": 45
+          "slate_rank": 24
         },
         {
           "age": 26,
@@ -10165,7 +9445,7 @@
           "position": "forward",
           "profile_available": true,
           "rating": 91.0,
-          "slate_rank": 46
+          "slate_rank": 25
         },
         {
           "age": 25,
@@ -10181,7 +9461,7 @@
           "position": "forward",
           "profile_available": true,
           "rating": 91.0,
-          "slate_rank": 47
+          "slate_rank": 26
         },
         {
           "age": 28,
@@ -10197,23 +9477,7 @@
           "position": "defender",
           "profile_available": true,
           "rating": 91.0,
-          "slate_rank": 48
-        },
-        {
-          "age": 29,
-          "available": true,
-          "club": "Athletic Club",
-          "club_id": "93",
-          "injury_count": 0,
-          "league": "Spanish LALIGA",
-          "league_slug": "esp.1",
-          "name": "Unai Sim\u00f3n",
-          "national_team": "Spain",
-          "player_id": "222375",
-          "position": "goalkeeper",
-          "profile_available": true,
-          "rating": 90.24,
-          "slate_rank": 49
+          "slate_rank": 27
         },
         {
           "age": 26,
@@ -10229,23 +9493,7 @@
           "position": "defender",
           "profile_available": true,
           "rating": 90.23,
-          "slate_rank": 50
-        },
-        {
-          "age": 26,
-          "available": true,
-          "club": "Tottenham Hotspur",
-          "club_id": "367",
-          "injury_count": 0,
-          "league": "English Premier League",
-          "league_slug": "eng.1",
-          "name": "Pedro Porro",
-          "national_team": "Spain",
-          "player_id": "268533",
-          "position": "defender",
-          "profile_available": true,
-          "rating": 89.93,
-          "slate_rank": 51
+          "slate_rank": 28
         },
         {
           "age": 28,
@@ -10261,23 +9509,7 @@
           "position": "midfielder",
           "profile_available": true,
           "rating": 89.93,
-          "slate_rank": 52
-        },
-        {
-          "age": 23,
-          "available": true,
-          "club": "Crystal Palace",
-          "club_id": "384",
-          "injury_count": 0,
-          "league": "English Premier League",
-          "league_slug": "eng.1",
-          "name": "Y\u00e9remy Pino",
-          "national_team": "Spain",
-          "player_id": "297370",
-          "position": "midfielder",
-          "profile_available": true,
-          "rating": 89.84,
-          "slate_rank": 53
+          "slate_rank": 29
         },
         {
           "age": 33,
@@ -10293,7 +9525,7 @@
           "position": "defender",
           "profile_available": true,
           "rating": 89.76,
-          "slate_rank": 54
+          "slate_rank": 30
         },
         {
           "age": 26,
@@ -10309,7 +9541,7 @@
           "position": "midfielder",
           "profile_available": true,
           "rating": 89.69,
-          "slate_rank": 55
+          "slate_rank": 31
         },
         {
           "age": 27,
@@ -10325,55 +9557,7 @@
           "position": "forward",
           "profile_available": true,
           "rating": 89.26,
-          "slate_rank": 56
-        },
-        {
-          "age": 32,
-          "available": true,
-          "club": "Athletic Club",
-          "club_id": "93",
-          "injury_count": 0,
-          "league": "Spanish LALIGA",
-          "league_slug": "esp.1",
-          "name": "Aymeric Laporte",
-          "national_team": "Spain",
-          "player_id": "159317",
-          "position": "defender",
-          "profile_available": true,
-          "rating": 89.24,
-          "slate_rank": 57
-        },
-        {
-          "age": 23,
-          "available": true,
-          "club": "Athletic Club",
-          "club_id": "93",
-          "injury_count": 0,
-          "league": "Spanish LALIGA",
-          "league_slug": "esp.1",
-          "name": "Nico Williams",
-          "national_team": "Spain",
-          "player_id": "312146",
-          "position": "forward",
-          "profile_available": true,
-          "rating": 89.24,
-          "slate_rank": 58
-        },
-        {
-          "age": 30,
-          "available": true,
-          "club": "Paris Saint-Germain",
-          "club_id": "160",
-          "injury_count": 0,
-          "league": "French Ligue 1",
-          "league_slug": "fra.1",
-          "name": "Fabi\u00e1n Ruiz",
-          "national_team": "Spain",
-          "player_id": "214596",
-          "position": "midfielder",
-          "profile_available": true,
-          "rating": 89.0,
-          "slate_rank": 59
+          "slate_rank": 32
         },
         {
           "age": 27,
@@ -10389,7 +9573,7 @@
           "position": "defender",
           "profile_available": true,
           "rating": 89.0,
-          "slate_rank": 60
+          "slate_rank": 33
         },
         {
           "age": 26,
@@ -10405,7 +9589,7 @@
           "position": "defender",
           "profile_available": true,
           "rating": 89.0,
-          "slate_rank": 61
+          "slate_rank": 34
         },
         {
           "age": 34,
@@ -10421,7 +9605,7 @@
           "position": "midfielder",
           "profile_available": true,
           "rating": 88.75,
-          "slate_rank": 62
+          "slate_rank": 35
         },
         {
           "age": 33,
@@ -10437,7 +9621,7 @@
           "position": "forward",
           "profile_available": true,
           "rating": 88.75,
-          "slate_rank": 63
+          "slate_rank": 36
         },
         {
           "age": 34,
@@ -10453,23 +9637,7 @@
           "position": "forward",
           "profile_available": true,
           "rating": 88.61,
-          "slate_rank": 64
-        },
-        {
-          "age": 22,
-          "available": true,
-          "club": "Osasuna",
-          "club_id": "97",
-          "injury_count": 0,
-          "league": "Spanish LALIGA",
-          "league_slug": "esp.1",
-          "name": "V\u00edctor Mu\u00f1oz",
-          "national_team": "Spain",
-          "player_id": "397545",
-          "position": "forward",
-          "profile_available": true,
-          "rating": 88.22,
-          "slate_rank": 65
+          "slate_rank": 37
         },
         {
           "age": 23,
@@ -10485,7 +9653,7 @@
           "position": "defender",
           "profile_available": true,
           "rating": 88.0,
-          "slate_rank": 66
+          "slate_rank": 38
         },
         {
           "age": 20,
@@ -10501,7 +9669,7 @@
           "position": "goalkeeper",
           "profile_available": true,
           "rating": 86.75,
-          "slate_rank": 67
+          "slate_rank": 39
         },
         {
           "age": 34,
@@ -10517,7 +9685,7 @@
           "position": "defender",
           "profile_available": true,
           "rating": 86.75,
-          "slate_rank": 68
+          "slate_rank": 40
         },
         {
           "age": 21,
@@ -10533,7 +9701,7 @@
           "position": "forward",
           "profile_available": true,
           "rating": 86.75,
-          "slate_rank": 69
+          "slate_rank": 41
         },
         {
           "age": 21,
@@ -10549,7 +9717,7 @@
           "position": "forward",
           "profile_available": true,
           "rating": 86.75,
-          "slate_rank": 70
+          "slate_rank": 42
         },
         {
           "age": 27,
@@ -10565,7 +9733,7 @@
           "position": "defender",
           "profile_available": true,
           "rating": 86.5,
-          "slate_rank": 71
+          "slate_rank": 43
         },
         {
           "age": 29,
@@ -10581,7 +9749,7 @@
           "position": "defender",
           "profile_available": true,
           "rating": 86.5,
-          "slate_rank": 72
+          "slate_rank": 44
         },
         {
           "age": 30,
@@ -10597,7 +9765,7 @@
           "position": "defender",
           "profile_available": true,
           "rating": 86.5,
-          "slate_rank": 73
+          "slate_rank": 45
         },
         {
           "age": 26,
@@ -10613,7 +9781,23 @@
           "position": "defender",
           "profile_available": true,
           "rating": 86.5,
-          "slate_rank": 74
+          "slate_rank": 46
+        },
+        {
+          "age": 26,
+          "available": true,
+          "club": "Al Nassr",
+          "club_id": "817",
+          "injury_count": 0,
+          "league": "Saudi Pro League",
+          "league_slug": "ksa.1",
+          "name": "Nawaf Boushal",
+          "national_team": "Saudi Arabia",
+          "player_id": "331918",
+          "position": "defender",
+          "profile_available": true,
+          "rating": 86.5,
+          "slate_rank": 47
         },
         {
           "age": 27,
@@ -10629,70 +9813,444 @@
           "position": "midfielder",
           "profile_available": true,
           "rating": 86.5,
+          "slate_rank": 48
+        },
+        {
+          "age": 29,
+          "available": true,
+          "club": "Al Nassr",
+          "club_id": "817",
+          "injury_count": 0,
+          "league": "Saudi Pro League",
+          "league_slug": "ksa.1",
+          "name": "Abdullah Al-Khaibari",
+          "national_team": "Saudi Arabia",
+          "player_id": "271461",
+          "position": "midfielder",
+          "profile_available": true,
+          "rating": 86.5,
+          "slate_rank": 49
+        },
+        {
+          "age": 25,
+          "available": true,
+          "club": "Al Nassr",
+          "club_id": "817",
+          "injury_count": 0,
+          "league": "Saudi Pro League",
+          "league_slug": "ksa.1",
+          "name": "Aiman Yahya",
+          "national_team": "Saudi Arabia",
+          "player_id": "296602",
+          "position": "midfielder",
+          "profile_available": true,
+          "rating": 86.5,
+          "slate_rank": 50
+        },
+        {
+          "age": 26,
+          "available": true,
+          "club": "Al Nassr",
+          "club_id": "817",
+          "injury_count": 0,
+          "league": "Saudi Pro League",
+          "league_slug": "ksa.1",
+          "name": "Abdullah Al-Hamdan",
+          "national_team": "Saudi Arabia",
+          "player_id": "294239",
+          "position": "forward",
+          "profile_available": true,
+          "rating": 86.5,
+          "slate_rank": 51
+        },
+        {
+          "age": 26,
+          "available": true,
+          "club": "Al Hilal",
+          "club_id": "929",
+          "injury_count": 0,
+          "league": "Saudi Pro League",
+          "league_slug": "ksa.1",
+          "name": "Darwin N\u00fa\u00f1ez",
+          "national_team": "Uruguay",
+          "player_id": "271788",
+          "position": "forward",
+          "profile_available": true,
+          "rating": 86.5,
+          "slate_rank": 52
+        },
+        {
+          "age": 26,
+          "available": true,
+          "club": "Al Ahli",
+          "club_id": "8346",
+          "injury_count": 0,
+          "league": "Saudi Pro League",
+          "league_slug": "ksa.1",
+          "name": "Ali Majrashi",
+          "national_team": "Saudi Arabia",
+          "player_id": "331920",
+          "position": "defender",
+          "profile_available": true,
+          "rating": 85.71,
+          "slate_rank": 53
+        },
+        {
+          "age": 24,
+          "available": true,
+          "club": "Al Ahli",
+          "club_id": "8346",
+          "injury_count": 0,
+          "league": "Saudi Pro League",
+          "league_slug": "ksa.1",
+          "name": "Ziyad Al-Johani",
+          "national_team": "Saudi Arabia",
+          "player_id": "306692",
+          "position": "midfielder",
+          "profile_available": true,
+          "rating": 85.71,
+          "slate_rank": 54
+        },
+        {
+          "age": 26,
+          "available": true,
+          "club": "Al Ahli",
+          "club_id": "8346",
+          "injury_count": 0,
+          "league": "Saudi Pro League",
+          "league_slug": "ksa.1",
+          "name": "Feras Al-Brikan",
+          "national_team": "Saudi Arabia",
+          "player_id": "283331",
+          "position": "forward",
+          "profile_available": true,
+          "rating": 85.71,
+          "slate_rank": 55
+        },
+        {
+          "age": 34,
+          "available": true,
+          "club": "Al Hilal",
+          "club_id": "929",
+          "injury_count": 0,
+          "league": "Saudi Pro League",
+          "league_slug": "ksa.1",
+          "name": "Mohammed Al-Owais",
+          "national_team": "Saudi Arabia",
+          "player_id": "247018",
+          "position": "goalkeeper",
+          "profile_available": true,
+          "rating": 85.5,
+          "slate_rank": 56
+        },
+        {
+          "age": 26,
+          "available": true,
+          "club": "Al Nassr",
+          "club_id": "817",
+          "injury_count": 0,
+          "league": "Saudi Pro League",
+          "league_slug": "ksa.1",
+          "name": "Nawaf Al-Aqidi",
+          "national_team": "Saudi Arabia",
+          "player_id": "302332",
+          "position": "goalkeeper",
+          "profile_available": true,
+          "rating": 85.5,
+          "slate_rank": 57
+        },
+        {
+          "age": 31,
+          "available": true,
+          "club": "Al Hilal",
+          "club_id": "929",
+          "injury_count": 0,
+          "league": "Saudi Pro League",
+          "league_slug": "ksa.1",
+          "name": "Mohamed Kanno",
+          "national_team": "Saudi Arabia",
+          "player_id": "262468",
+          "position": "midfielder",
+          "profile_available": true,
+          "rating": 85.5,
+          "slate_rank": 58
+        },
+        {
+          "age": 31,
+          "available": true,
+          "club": "Al Hilal",
+          "club_id": "929",
+          "injury_count": 0,
+          "league": "Saudi Pro League",
+          "league_slug": "ksa.1",
+          "name": "Sultan Mandash",
+          "national_team": "Saudi Arabia",
+          "player_id": "287054",
+          "position": "forward",
+          "profile_available": true,
+          "rating": 85.5,
+          "slate_rank": 59
+        },
+        {
+          "age": 27,
+          "available": true,
+          "club": "Wolverhampton Wanderers",
+          "club_id": "380",
+          "injury_count": 0,
+          "league": "English Premier League",
+          "league_slug": "eng.1",
+          "name": "Santiago Bueno",
+          "national_team": "Uruguay",
+          "player_id": "241225",
+          "position": "defender",
+          "profile_available": true,
+          "rating": 85.44,
+          "slate_rank": 60
+        },
+        {
+          "age": 24,
+          "available": true,
+          "club": "Real Oviedo",
+          "club_id": "92",
+          "injury_count": 0,
+          "league": "Spanish LALIGA",
+          "league_slug": "esp.1",
+          "name": "Haissem Hassan",
+          "national_team": "Egypt",
+          "player_id": "276440",
+          "position": "forward",
+          "profile_available": true,
+          "rating": 85.38,
+          "slate_rank": 61
+        },
+        {
+          "age": 27,
+          "available": true,
+          "club": "Real Oviedo",
+          "club_id": "92",
+          "injury_count": 0,
+          "league": "Spanish LALIGA",
+          "league_slug": "esp.1",
+          "name": "Federico Vi\u00f1as",
+          "national_team": "Uruguay",
+          "player_id": "295847",
+          "position": "forward",
+          "profile_available": true,
+          "rating": 85.38,
+          "slate_rank": 62
+        },
+        {
+          "age": 24,
+          "available": true,
+          "club": "Al Qadsiah",
+          "club_id": "22022",
+          "injury_count": 0,
+          "league": "Saudi Pro League",
+          "league_slug": "ksa.1",
+          "name": "Jehad Thakri",
+          "national_team": "Saudi Arabia",
+          "player_id": "371796",
+          "position": "defender",
+          "profile_available": true,
+          "rating": 85.08,
+          "slate_rank": 63
+        },
+        {
+          "age": 37,
+          "available": true,
+          "club": "Girona",
+          "club_id": "9812",
+          "injury_count": 0,
+          "league": "Spanish LALIGA",
+          "league_slug": "esp.1",
+          "name": "Axel Witsel",
+          "national_team": "Belgium",
+          "player_id": "164895",
+          "position": "midfielder",
+          "profile_available": true,
+          "rating": 84.62,
+          "slate_rank": 64
+        },
+        {
+          "age": 34,
+          "available": true,
+          "club": "Al Hilal",
+          "club_id": "929",
+          "injury_count": 0,
+          "league": "Saudi Pro League",
+          "league_slug": "ksa.1",
+          "name": "Salem Al-Dawsari",
+          "national_team": "Saudi Arabia",
+          "player_id": "163850",
+          "position": "midfielder",
+          "profile_available": true,
+          "rating": 84.25,
+          "slate_rank": 65
+        },
+        {
+          "age": 35,
+          "available": true,
+          "club": "Al Qadsiah",
+          "club_id": "22022",
+          "injury_count": 0,
+          "league": "Saudi Pro League",
+          "league_slug": "ksa.1",
+          "name": "Ahmed Al-Kassar",
+          "national_team": "Saudi Arabia",
+          "player_id": "171878",
+          "position": "goalkeeper",
+          "profile_available": true,
+          "rating": 84.08,
+          "slate_rank": 66
+        },
+        {
+          "age": 22,
+          "available": true,
+          "club": "Al Qadsiah",
+          "club_id": "22022",
+          "injury_count": 0,
+          "league": "Saudi Pro League",
+          "league_slug": "ksa.1",
+          "name": "Musab Al-Juwayr",
+          "national_team": "Saudi Arabia",
+          "player_id": "315523",
+          "position": "midfielder",
+          "profile_available": true,
+          "rating": 84.08,
+          "slate_rank": 67
+        },
+        {
+          "age": 23,
+          "available": true,
+          "club": "Al Qadsiah",
+          "club_id": "22022",
+          "injury_count": 0,
+          "league": "Saudi Pro League",
+          "league_slug": "ksa.1",
+          "name": "Mohammed Abu Al-Shamat",
+          "national_team": "Saudi Arabia",
+          "player_id": "361692",
+          "position": "midfielder",
+          "profile_available": true,
+          "rating": 84.08,
+          "slate_rank": 68
+        },
+        {
+          "age": 33,
+          "available": true,
+          "club": "Internacional",
+          "club_id": "1936",
+          "injury_count": 0,
+          "league": "Brazilian Serie A",
+          "league_slug": "bra.1",
+          "name": "Sergio Rochet",
+          "national_team": "Uruguay",
+          "player_id": "184206",
+          "position": "goalkeeper",
+          "profile_available": true,
+          "rating": 83.39,
+          "slate_rank": 69
+        },
+        {
+          "age": 31,
+          "available": true,
+          "club": "PEC Zwolle",
+          "club_id": "2565",
+          "injury_count": 0,
+          "league": "Dutch Eredivisie",
+          "league_slug": "ned.1",
+          "name": "Ryan Thomas",
+          "national_team": "New Zealand",
+          "player_id": "156146",
+          "position": "midfielder",
+          "profile_available": true,
+          "rating": 83.0,
+          "slate_rank": 70
+        },
+        {
+          "age": 26,
+          "available": true,
+          "club": "Real Salt Lake",
+          "club_id": "4771",
+          "injury_count": 0,
+          "league": "MLS",
+          "league_slug": "usa.1",
+          "name": "Juan Manuel Sanabria",
+          "national_team": "Uruguay",
+          "player_id": "287497",
+          "position": "midfielder",
+          "profile_available": true,
+          "rating": 82.88,
+          "slate_rank": 71
+        },
+        {
+          "age": 25,
+          "available": true,
+          "club": "Rangers",
+          "club_id": "257",
+          "injury_count": 0,
+          "league": "Scottish Premiership",
+          "league_slug": "sco.1",
+          "name": "Nicolas Raskin",
+          "national_team": "Belgium",
+          "player_id": "260027",
+          "position": "midfielder",
+          "profile_available": true,
+          "rating": 82.8,
+          "slate_rank": 72
+        },
+        {
+          "age": 27,
+          "available": true,
+          "club": "Viking FK",
+          "club_id": "510",
+          "injury_count": 0,
+          "league": "Norwegian Eliteserien",
+          "league_slug": "nor.1",
+          "name": "Joe Bell",
+          "national_team": "New Zealand",
+          "player_id": "228294",
+          "position": "midfielder",
+          "profile_available": true,
+          "rating": 81.5,
+          "slate_rank": 73
+        },
+        {
+          "age": 29,
+          "available": true,
+          "club": "Standard Liege",
+          "club_id": "559",
+          "injury_count": 0,
+          "league": "Belgian Pro League",
+          "league_slug": "bel.1",
+          "name": "Dennis Dargahi",
+          "national_team": "Iran",
+          "player_id": "272489",
+          "position": "forward",
+          "profile_available": true,
+          "rating": 81.0,
+          "slate_rank": 74
+        },
+        {
+          "age": 26,
+          "available": true,
+          "club": "Motherwell",
+          "club_id": "266",
+          "injury_count": 0,
+          "league": "Scottish Premiership",
+          "league_slug": "sco.1",
+          "name": "Elijah Just",
+          "national_team": "New Zealand",
+          "player_id": "266555",
+          "position": "forward",
+          "profile_available": true,
+          "rating": 80.61,
           "slate_rank": 75
         }
       ],
       "player_rating_source": "ESPN tournament rosters, player current clubs/leagues, and club table records",
       "schedule_source": "ESPN FIFA World Cup scoreboard",
       "team_ratings": [
-        {
-          "abbreviation": "ESP",
-          "attack": 94.38,
-          "availability": 1.0,
-          "defense": 95.19,
-          "goalkeeper": 96.35,
-          "midfield": 96.96,
-          "overall": 95.18,
-          "players_rated": 26,
-          "position_counts": {
-            "defender": 7,
-            "forward": 6,
-            "goalkeeper": 3,
-            "midfielder": 10
-          },
-          "profile_coverage": 1.0,
-          "roster_ready": true,
-          "slate_rank": 1,
-          "team": "Spain",
-          "team_id": "164",
-          "top_players": [
-            {
-              "club": "Arsenal",
-              "league": "English Premier League",
-              "name": "David Raya",
-              "position": "goalkeeper",
-              "rating": 97.0
-            },
-            {
-              "club": "Barcelona",
-              "league": "Spanish LALIGA",
-              "name": "Eric Garc\u00eda",
-              "position": "defender",
-              "rating": 97.0
-            },
-            {
-              "club": "Arsenal",
-              "league": "English Premier League",
-              "name": "Mikel Merino",
-              "position": "midfielder",
-              "rating": 97.0
-            },
-            {
-              "club": "Barcelona",
-              "league": "Spanish LALIGA",
-              "name": "Dani Olmo",
-              "position": "midfielder",
-              "rating": 97.0
-            },
-            {
-              "club": "Manchester City",
-              "league": "English Premier League",
-              "name": "Rodri",
-              "position": "midfielder",
-              "rating": 97.0
-            }
-          ]
-        },
         {
           "abbreviation": "BEL",
           "attack": 94.06,
@@ -10710,7 +10268,7 @@
           },
           "profile_coverage": 1.0,
           "roster_ready": true,
-          "slate_rank": 2,
+          "slate_rank": 1,
           "team": "Belgium",
           "team_id": "459",
           "top_players": [
@@ -10768,7 +10326,7 @@
           },
           "profile_coverage": 1.0,
           "roster_ready": true,
-          "slate_rank": 3,
+          "slate_rank": 2,
           "team": "Uruguay",
           "team_id": "212",
           "top_players": [
@@ -10813,10 +10371,10 @@
           "abbreviation": "KSA",
           "attack": 84.94,
           "availability": 1.0,
-          "defense": 86.23,
+          "defense": 86.52,
           "goalkeeper": 85.37,
           "midfield": 86.26,
-          "overall": 85.67,
+          "overall": 85.79,
           "players_rated": 26,
           "position_counts": {
             "defender": 9,
@@ -10824,9 +10382,9 @@
             "goalkeeper": 3,
             "midfielder": 9
           },
-          "profile_coverage": 0.962,
+          "profile_coverage": 1.0,
           "roster_ready": true,
-          "slate_rank": 4,
+          "slate_rank": 3,
           "team": "Saudi Arabia",
           "team_id": "655",
           "top_players": [
@@ -10868,64 +10426,6 @@
           ]
         },
         {
-          "abbreviation": "CPV",
-          "attack": 80.66,
-          "availability": 1.0,
-          "defense": 83.42,
-          "goalkeeper": 80.12,
-          "midfield": 81.39,
-          "overall": 81.84,
-          "players_rated": 26,
-          "position_counts": {
-            "defender": 8,
-            "forward": 8,
-            "goalkeeper": 3,
-            "midfielder": 7
-          },
-          "profile_coverage": 1.0,
-          "roster_ready": true,
-          "slate_rank": 5,
-          "team": "Cape Verde",
-          "team_id": "2597",
-          "top_players": [
-            {
-              "club": "Villarreal",
-              "league": "Spanish LALIGA",
-              "name": "Logan Costa",
-              "position": "defender",
-              "rating": 97.0
-            },
-            {
-              "club": "Benfica",
-              "league": "Portuguese Primeira Liga",
-              "name": "Sidny Lopes Cabral",
-              "position": "defender",
-              "rating": 93.24
-            },
-            {
-              "club": "Trabzonspor",
-              "league": "Turkish Super Lig",
-              "name": "Wagner Pina",
-              "position": "defender",
-              "rating": 85.53
-            },
-            {
-              "club": "Vit\u00f3ria de Guimaraes",
-              "league": "Portuguese Primeira Liga",
-              "name": "Telmo Arcanjo",
-              "position": "midfielder",
-              "rating": 83.74
-            },
-            {
-              "club": "PEC Zwolle",
-              "league": "Dutch Eredivisie",
-              "name": "Jamiro Monteiro",
-              "position": "midfielder",
-              "rating": 83.0
-            }
-          ]
-        },
-        {
           "abbreviation": "NZL",
           "attack": 78.97,
           "availability": 1.0,
@@ -10942,7 +10442,7 @@
           },
           "profile_coverage": 1.0,
           "roster_ready": true,
-          "slate_rank": 6,
+          "slate_rank": 4,
           "team": "New Zealand",
           "team_id": "2666",
           "top_players": [
@@ -11000,7 +10500,7 @@
           },
           "profile_coverage": 1.0,
           "roster_ready": true,
-          "slate_rank": 7,
+          "slate_rank": 5,
           "team": "Egypt",
           "team_id": "2620",
           "top_players": [
@@ -11058,7 +10558,7 @@
           },
           "profile_coverage": 1.0,
           "roster_ready": true,
-          "slate_rank": 8,
+          "slate_rank": 6,
           "team": "Iran",
           "team_id": "469",
           "top_players": [
@@ -11457,8 +10957,8 @@
               "team_recent_f5_runs": 2.667,
               "team_venue_f5_runs": 2.275,
               "venue_delta": 0.18,
-              "wind_direction": "",
-              "wind_mph": 0.0,
+              "wind_direction": "out",
+              "wind_mph": 3.0,
               "wind_run_delta_per_team": 0.0
             },
             "away_pitcher": {
@@ -11481,14 +10981,14 @@
               "venue_starts": 1
             },
             "home_lineup_matchup": {
-              "current_bvp_pa": 5,
-              "older_bvp_pa": 21,
-              "run_delta": 0.001,
+              "current_bvp_pa": 6,
+              "older_bvp_pa": 24,
+              "run_delta": 0.008,
               "sampled_batters": 9,
-              "threat_score": 0.3498
+              "threat_score": 0.3526
             },
             "home_offense": {
-              "lineup_delta": 0.001,
+              "lineup_delta": 0.008,
               "park_run_delta_per_team": 0.18,
               "pitcher_current_f5_allowed": 1.722,
               "pitcher_current_vs_opponent": 2.083,
@@ -11498,14 +10998,14 @@
               "pitcher_rest_label": "extended layoff (23d) +0.15",
               "pitcher_rest_runs_modifier": 0.15,
               "pitcher_venue_f5_allowed": 2.312,
-              "projected_runs": 2.37,
+              "projected_runs": 2.38,
               "team_current_f5_runs": 2.713,
               "team_prior_f5_runs": 2.537,
               "team_recent_f5_runs": 2.583,
               "team_venue_f5_runs": 2.417,
               "venue_delta": 0.18,
-              "wind_direction": "",
-              "wind_mph": 0.0,
+              "wind_direction": "out",
+              "wind_mph": 3.0,
               "wind_run_delta_per_team": 0.0
             },
             "home_pitcher": {
@@ -11539,9 +11039,9 @@
               },
               "park_run_delta_per_team": 0.18,
               "run_delta_per_team": 0.18,
-              "weather_raw": "",
-              "wind_direction": "",
-              "wind_mph": 0.0,
+              "weather_raw": "3 mph, Out To LF",
+              "wind_direction": "out",
+              "wind_mph": 3.0,
               "wind_run_delta_per_team": 0.0
             }
           },
@@ -11551,39 +11051,39 @@
           "home_pitcher": "Chase Burns",
           "home_team": "Cincinnati Reds",
           "matchup": "New York Mets @ Cincinnati Reds",
-          "notes": "F5 projection New York Mets 1.8, Cincinnati Reds 2.37 (total 4.17). BvP PA away/home: 22+0/5+21; venue F5 total 4.95 over 60 games.",
+          "notes": "F5 projection New York Mets 1.8, Cincinnati Reds 2.38 (total 4.18). BvP PA away/home: 22+0/6+24; venue F5 total 4.95 over 60 games.",
           "projected_first_five": {
-            "away_lead_probability": 0.4271,
+            "away_lead_probability": 0.4258,
             "away_runs": 1.8,
-            "home_lead_probability": 0.5729,
-            "home_runs": 2.37,
-            "total_runs": 4.17
+            "home_lead_probability": 0.5742,
+            "home_runs": 2.38,
+            "total_runs": 4.18
           },
           "top_picks": [
             {
               "assumed_odds": -110,
               "confidence": "Medium",
               "decision": "LEAN",
-              "edge_pct": 4.91,
+              "edge_pct": 5.04,
               "guardrail": "thin starter sample",
               "market": "f5_side",
-              "model_prediction": "Cincinnati Reds +0.57 F5 runs",
+              "model_prediction": "Cincinnati Reds +0.58 F5 runs",
               "pick": "Cincinnati Reds F5 ML",
-              "probability": 0.5729,
-              "projected_margin": 0.57,
+              "probability": 0.5742,
+              "projected_margin": 0.58,
               "team": "Cincinnati Reds"
             },
             {
               "assumed_odds": -110,
               "confidence": "Low",
               "decision": "PASS",
-              "edge_pct": 4.7,
+              "edge_pct": 4.49,
               "guardrail": "projection too close to F5 line",
               "market": "f5_total",
-              "model_prediction": "4.17 F5 total",
+              "model_prediction": "4.18 F5 total",
               "pick": "Under 4.5 F5",
-              "probability": 0.5708,
-              "projection_gap": 0.33,
+              "probability": 0.5687,
+              "projection_gap": 0.32,
               "team": "",
               "vegas_line": 4.5
             }
@@ -12979,18 +12479,18 @@
         {
           "assumed_odds": -110,
           "away_team": "New York Mets",
-          "calibrated_probability": 0.557735,
+          "calibrated_probability": 0.558883,
           "calibration": {
             "applied": true,
             "key": "model:mlb_first_five|source:mlb first five|sport:mlb|bet:f5_side",
-            "probability_delta": -0.015165,
+            "probability_delta": -0.015317,
             "samples": 74,
             "version": "cal-1013-2026-06-14"
           },
           "confidence": "Medium",
           "date": "2026-06-15",
           "decision": "LEAN",
-          "edge": 3.39,
+          "edge": 3.51,
           "game": "New York Mets @ Cincinnati Reds",
           "game_id": "824505",
           "game_order": 2,
@@ -13000,8 +12500,8 @@
           "line": null,
           "market": "f5_side",
           "matchup": "New York Mets @ Cincinnati Reds",
-          "model_prediction": "Cincinnati Reds +0.57 F5 runs",
-          "notes": "F5 projection New York Mets 1.8, Cincinnati Reds 2.37 (total 4.17). BvP PA away/home: 22+0/5+21; venue F5 total 4.95 over 60 games. Projection: New York Mets 1.8, Cincinnati Reds 2.37; total 4.17.",
+          "model_prediction": "Cincinnati Reds +0.58 F5 runs",
+          "notes": "F5 projection New York Mets 1.8, Cincinnati Reds 2.38 (total 4.18). BvP PA away/home: 22+0/6+24; venue F5 total 4.95 over 60 games. Projection: New York Mets 1.8, Cincinnati Reds 2.38; total 4.18.",
           "odds": null,
           "pick": "Cincinnati Reds F5 ML",
           "pregame_snapshot": {
@@ -13030,9 +12530,9 @@
             "start_time": "2026-06-15T23:10:00Z",
             "team": "Cincinnati Reds"
           },
-          "probability": 0.5577,
-          "raw_edge": 4.91,
-          "raw_probability": 0.5729,
+          "probability": 0.5589,
+          "raw_edge": 5.04,
+          "raw_probability": 0.5742,
           "source": "MLB First Five",
           "sport": "MLB",
           "start_time": "2026-06-15T23:10Z",
@@ -13041,18 +12541,18 @@
         {
           "assumed_odds": -110,
           "away_team": "New York Mets",
-          "calibrated_probability": 0.526536,
+          "calibrated_probability": 0.52476,
           "calibration": {
             "applied": true,
             "key": "model:mlb_first_five|source:mlb first five|sport:mlb|bet:f5_total",
-            "probability_delta": -0.044264,
+            "probability_delta": -0.04394,
             "samples": 89,
             "version": "cal-1013-2026-06-14"
           },
           "confidence": "Low",
           "date": "2026-06-15",
           "decision": "PASS",
-          "edge": 0.27,
+          "edge": 0.1,
           "game": "New York Mets @ Cincinnati Reds",
           "game_id": "824505",
           "game_order": 2,
@@ -13062,8 +12562,8 @@
           "line": 4.5,
           "market": "f5_total",
           "matchup": "New York Mets @ Cincinnati Reds",
-          "model_prediction": "4.17 F5 total",
-          "notes": "F5 projection New York Mets 1.8, Cincinnati Reds 2.37 (total 4.17). BvP PA away/home: 22+0/5+21; venue F5 total 4.95 over 60 games. Projection: New York Mets 1.8, Cincinnati Reds 2.37; total 4.17.",
+          "model_prediction": "4.18 F5 total",
+          "notes": "F5 projection New York Mets 1.8, Cincinnati Reds 2.38 (total 4.18). BvP PA away/home: 22+0/6+24; venue F5 total 4.95 over 60 games. Projection: New York Mets 1.8, Cincinnati Reds 2.38; total 4.18.",
           "odds": null,
           "pick": "Under 4.5 F5",
           "pregame_snapshot": {
@@ -13092,9 +12592,9 @@
             "start_time": "2026-06-15T23:10:00Z",
             "team": ""
           },
-          "probability": 0.5265,
-          "raw_edge": 4.7,
-          "raw_probability": 0.5708,
+          "probability": 0.5248,
+          "raw_edge": 4.49,
+          "raw_probability": 0.5687,
           "source": "MLB First Five",
           "sport": "MLB",
           "start_time": "2026-06-15T23:10:00Z",
@@ -14268,20 +13768,20 @@
           "edge_table": {
             "1": 0.0928,
             "2": -0.0082,
-            "3": 0.0417,
+            "3": 0.1063,
             "4": -0.0416,
             "5": -0.0056,
-            "6": 0.0373,
+            "6": 0.1101,
             "7": -0.1127,
             "8": -0.1548
           },
           "full_inning_table": {
             "1": 0.477,
             "2": 0.51,
-            "3": 0.532,
+            "3": 0.596,
             "4": 0.477,
             "5": 0.499,
-            "6": 0.556,
+            "6": 0.628,
             "7": 0.435,
             "8": 0.408
           },
@@ -14293,22 +13793,22 @@
           "matchup": "Texas Rangers vs Minnesota Twins",
           "top_2_picks": [
             {
-              "baseline": 0.3844,
-              "confidence": "Medium",
-              "decision": "LEAN",
-              "edge_pp": 9.28,
-              "inning": 1,
-              "label": "Inning 1 - No Run Scored (47.7%, edge +9.3pp)",
-              "probability_scoreless": 0.477
+              "baseline": 0.5184,
+              "confidence": "High",
+              "decision": "BET",
+              "edge_pp": 11.01,
+              "inning": 6,
+              "label": "Inning 6 - No Run Scored (62.8%, edge +11.0pp)",
+              "probability_scoreless": 0.628
             },
             {
               "baseline": 0.49,
-              "confidence": "Medium",
-              "decision": "LEAN",
-              "edge_pp": 4.17,
+              "confidence": "High",
+              "decision": "BET",
+              "edge_pp": 10.63,
               "inning": 3,
-              "label": "Inning 3 - No Run Scored (53.2%, edge +4.2pp)",
-              "probability_scoreless": 0.532
+              "label": "Inning 3 - No Run Scored (59.6%, edge +10.6pp)",
+              "probability_scoreless": 0.596
             }
           ],
           "venue_factor": 1.0
@@ -14510,23 +14010,23 @@
             "8": 0.5625
           },
           "edge_table": {
-            "1": 0.0345,
+            "1": 0.0515,
             "2": 0.0081,
             "3": 0.0147,
-            "4": -0.0249,
+            "4": -0.005,
             "5": 0.0228,
             "6": -0.0681,
-            "7": -0.1232,
+            "7": -0.1002,
             "8": -0.1535
           },
           "full_inning_table": {
-            "1": 0.419,
+            "1": 0.436,
             "2": 0.526,
             "3": 0.505,
-            "4": 0.493,
+            "4": 0.513,
             "5": 0.527,
             "6": 0.45,
-            "7": 0.424,
+            "7": 0.447,
             "8": 0.409
           },
           "game_id": "823938",
@@ -15008,86 +14508,20 @@
         {
           "assumed_odds": -110,
           "away_team": "Minnesota Twins",
-          "baseline_probability": 0.3844,
-          "calibrated_probability": 0.445553,
-          "calibration": {
-            "applied": true,
-            "key": "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning",
-            "probability_delta": -0.031447,
-            "samples": 169,
-            "version": "cal-1013-2026-06-14"
-          },
-          "confidence": "Medium",
-          "date": "2026-06-15",
-          "decision": "PASS",
-          "edge": -7.83,
-          "edge_pp": 9.28,
-          "game": "Texas Rangers vs Minnesota Twins",
-          "game_id": "822887",
-          "game_order": 5,
-          "game_start_time": "2026-06-16T00:05:00Z",
-          "home_team": "Texas Rangers",
-          "inning": 1,
-          "league": "MLB",
-          "market": "no_run_inning",
-          "matchup": "Texas Rangers vs Minnesota Twins",
-          "model_prediction": "47.7%",
-          "notes": "Top no-run inning candidate (edge +9.3pp vs baseline). Full table: {\"1\": 0.477, \"2\": 0.51, \"3\": 0.532, \"4\": 0.477, \"5\": 0.499, \"6\": 0.556, \"7\": 0.435, \"8\": 0.408}",
-          "odds": null,
-          "pick": "Inning 1 - No Run Scored",
-          "pregame_snapshot": {
-            "assumed_odds": -110,
-            "away_team": "Minnesota Twins",
-            "baseline_probability": 0.3844,
-            "confidence": "Medium",
-            "date": "2026-06-15",
-            "decision": "LEAN",
-            "edge": 9.28,
-            "edge_pp": 9.28,
-            "game": "Texas Rangers vs Minnesota Twins",
-            "game_id": "822887",
-            "game_order": 5,
-            "game_start_time": "2026-06-16T00:05:00Z",
-            "home_team": "Texas Rangers",
-            "inning": 1,
-            "league": "MLB",
-            "market": "no_run_inning",
-            "matchup": "Texas Rangers vs Minnesota Twins",
-            "model_prediction": "47.7%",
-            "notes": "Top no-run inning candidate (edge +9.3pp vs baseline). Full table: {\"1\": 0.477, \"2\": 0.51, \"3\": 0.532, \"4\": 0.477, \"5\": 0.499, \"6\": 0.556, \"7\": 0.435, \"8\": 0.408}",
-            "odds": null,
-            "pick": "Inning 1 - No Run Scored",
-            "probability": 0.477,
-            "source": "MLB Inning",
-            "sport": "MLB",
-            "start_time": "2026-06-16T00:05:00Z",
-            "team": ""
-          },
-          "probability": 0.4456,
-          "raw_edge": 9.28,
-          "raw_probability": 0.477,
-          "source": "MLB Inning",
-          "sport": "MLB",
-          "start_time": "2026-06-16T00:05:00Z",
-          "team": ""
-        },
-        {
-          "assumed_odds": -110,
-          "away_team": "Minnesota Twins",
           "baseline_probability": 0.49,
-          "calibrated_probability": 0.491834,
+          "calibrated_probability": 0.546725,
           "calibration": {
             "applied": true,
             "key": "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning",
-            "probability_delta": -0.040166,
+            "probability_delta": -0.049275,
             "samples": 169,
             "version": "cal-1013-2026-06-14"
           },
-          "confidence": "Medium",
+          "confidence": "High",
           "date": "2026-06-15",
-          "decision": "PASS",
-          "edge": -3.2,
-          "edge_pp": 4.17,
+          "decision": "BET",
+          "edge": 2.29,
+          "edge_pp": 10.63,
           "game": "Texas Rangers vs Minnesota Twins",
           "game_id": "822887",
           "game_order": 5,
@@ -15097,8 +14531,8 @@
           "league": "MLB",
           "market": "no_run_inning",
           "matchup": "Texas Rangers vs Minnesota Twins",
-          "model_prediction": "53.2%",
-          "notes": "Top no-run inning candidate (edge +4.2pp vs baseline). Full table: {\"1\": 0.477, \"2\": 0.51, \"3\": 0.532, \"4\": 0.477, \"5\": 0.499, \"6\": 0.556, \"7\": 0.435, \"8\": 0.408}",
+          "model_prediction": "59.6%",
+          "notes": "Top no-run inning candidate (edge +10.6pp vs baseline). Full table: {\"1\": 0.477, \"2\": 0.51, \"3\": 0.596, \"4\": 0.477, \"5\": 0.499, \"6\": 0.628, \"7\": 0.435, \"8\": 0.408}",
           "odds": null,
           "pick": "Inning 3 - No Run Scored",
           "pregame_snapshot": {
@@ -15129,12 +14563,78 @@
             "start_time": "2026-06-16T00:05:00Z",
             "team": ""
           },
-          "probability": 0.4918,
-          "raw_edge": 4.17,
-          "raw_probability": 0.532,
+          "probability": 0.5467,
+          "raw_edge": 10.63,
+          "raw_probability": 0.596,
           "source": "MLB Inning",
           "sport": "MLB",
           "start_time": "2026-06-16T00:05Z",
+          "team": ""
+        },
+        {
+          "assumed_odds": -110,
+          "away_team": "Minnesota Twins",
+          "baseline_probability": 0.5184,
+          "calibrated_probability": 0.57476,
+          "calibration": {
+            "applied": true,
+            "key": "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning",
+            "probability_delta": -0.05324,
+            "samples": 169,
+            "version": "cal-1013-2026-06-14"
+          },
+          "confidence": "High",
+          "date": "2026-06-15",
+          "decision": "BET",
+          "edge": 5.1,
+          "edge_pp": 11.01,
+          "game": "Texas Rangers vs Minnesota Twins",
+          "game_id": "822887",
+          "game_order": 5,
+          "game_start_time": "2026-06-16T00:05:00Z",
+          "home_team": "Texas Rangers",
+          "inning": 6,
+          "league": "MLB",
+          "market": "no_run_inning",
+          "matchup": "Texas Rangers vs Minnesota Twins",
+          "model_prediction": "62.8%",
+          "notes": "Top no-run inning candidate (edge +11.0pp vs baseline). Full table: {\"1\": 0.477, \"2\": 0.51, \"3\": 0.596, \"4\": 0.477, \"5\": 0.499, \"6\": 0.628, \"7\": 0.435, \"8\": 0.408}",
+          "odds": null,
+          "pick": "Inning 6 - No Run Scored",
+          "pregame_snapshot": {
+            "assumed_odds": -110,
+            "away_team": "Minnesota Twins",
+            "baseline_probability": 0.5184,
+            "confidence": "High",
+            "date": "2026-06-15",
+            "decision": "BET",
+            "edge": 11.01,
+            "edge_pp": 11.01,
+            "game": "Texas Rangers vs Minnesota Twins",
+            "game_id": "822887",
+            "game_order": 5,
+            "game_start_time": "2026-06-16T00:05:00Z",
+            "home_team": "Texas Rangers",
+            "inning": 6,
+            "league": "MLB",
+            "market": "no_run_inning",
+            "matchup": "Texas Rangers vs Minnesota Twins",
+            "model_prediction": "62.8%",
+            "notes": "Top no-run inning candidate (edge +11.0pp vs baseline). Full table: {\"1\": 0.477, \"2\": 0.51, \"3\": 0.596, \"4\": 0.477, \"5\": 0.499, \"6\": 0.628, \"7\": 0.435, \"8\": 0.408}",
+            "odds": null,
+            "pick": "Inning 6 - No Run Scored",
+            "probability": 0.628,
+            "source": "MLB Inning",
+            "sport": "MLB",
+            "start_time": "2026-06-16T00:05:00Z",
+            "team": ""
+          },
+          "probability": 0.5748,
+          "raw_edge": 11.01,
+          "raw_probability": 0.628,
+          "source": "MLB Inning",
+          "sport": "MLB",
+          "start_time": "2026-06-16T00:05:00Z",
           "team": ""
         },
         {
@@ -15686,76 +15186,76 @@
         {
           "assumed_odds": -110,
           "away_team": "Kansas City Royals",
-          "calibrated_probability": 0.509948,
+          "calibrated_probability": 0.549286,
           "calibration": {
             "applied": true,
             "key": "global",
-            "probability_delta": -0.032352,
+            "probability_delta": -0.038414,
             "samples": 825,
             "version": "cal-1013-2026-06-14"
           },
-          "decision": "PASS",
+          "decision": "BET",
           "direction": "Under",
-          "edge": -1.39,
+          "edge": 2.55,
           "home_team": "Washington Nationals",
-          "kelly": 0.97,
-          "line": 9.0,
-          "market_line": 9.0,
+          "kelly": 3.35,
+          "line": 9.5,
+          "market_line": 9.5,
           "market_total_source": "model_output",
           "market_type": "totals",
           "model_prediction": 8.5,
           "odds": -110,
-          "pick": "Under 9.0 (Kansas City Royals vs Washington Nationals)",
+          "pick": "Under 9.5 (Kansas City Royals vs Washington Nationals)",
           "pregame_snapshot": {
             "assumed_odds": -110,
             "away_team": "Kansas City Royals",
-            "decision": "PASS",
+            "decision": "BET",
             "direction": "Under",
-            "edge": 1.85,
+            "edge": 6.39,
             "home_team": "Washington Nationals",
-            "kelly": 0.97,
-            "line": 9.0,
-            "market_line": 9.0,
+            "kelly": 3.35,
+            "line": 9.5,
+            "market_line": 9.5,
             "market_total_source": "model_output",
             "market_type": "totals",
             "model_prediction": 8.5,
             "odds": -110,
-            "pick": "Under 9.0 (Kansas City Royals vs Washington Nationals)",
-            "prob": 0.5423,
-            "probability": 0.5423,
+            "pick": "Under 9.5 (Kansas City Royals vs Washington Nationals)",
+            "prob": 0.5877,
+            "probability": 0.5877,
             "selection": "Under",
             "source": "MLB Model",
             "sport": "MLB",
-            "units": 0.0,
-            "vegas": 9.0
+            "units": 0.03,
+            "vegas": 9.5
           },
-          "prob": 0.5423,
-          "probability": 0.5099,
-          "raw_edge": 1.85,
-          "raw_probability": 0.5423,
-          "raw_units": 0.0,
+          "prob": 0.5877,
+          "probability": 0.5493,
+          "raw_edge": 6.39,
+          "raw_probability": 0.5877,
+          "raw_units": 0.03,
           "selection": "Under",
           "source": "MLB Model",
           "sport": "MLB",
-          "units": 0,
-          "vegas": 9.0
+          "units": 0.01,
+          "vegas": 9.5
         },
         {
           "away_team": "New York Mets",
-          "calibrated_probability": 0.56093,
+          "calibrated_probability": 0.482694,
           "calibration": {
             "applied": true,
             "key": "global",
-            "probability_delta": -0.04007,
+            "probability_delta": -0.027806,
             "samples": 825,
             "version": "cal-1013-2026-06-14"
           },
-          "decision": "LEAN",
-          "edge": 6.09,
+          "decision": "PASS",
+          "edge": -1.73,
           "home_team": "Cincinnati Reds",
           "market_pick_prob": null,
           "market_type": "h2h",
-          "model_odds": -151,
+          "model_odds": -104,
           "odds": null,
           "pick": "Reds ML (Mets vs Reds)",
           "pregame_snapshot": {
@@ -15774,36 +15274,36 @@
             "team": "Reds",
             "units": 0.57
           },
-          "probability": 0.5609,
-          "raw_edge": 10.1,
-          "raw_probability": 0.601,
-          "raw_units": 0.57,
+          "probability": 0.4827,
+          "raw_edge": 1.05,
+          "raw_probability": 0.5105,
+          "raw_units": 0.0,
           "source": "MLB Model",
           "sport": "MLB",
           "team": "Reds",
-          "units": 0.34
+          "units": 0
         },
         {
           "assumed_odds": -110,
           "away_team": "New York Mets",
-          "calibrated_probability": 0.514684,
+          "calibrated_probability": 0.517012,
           "calibration": {
             "applied": true,
             "key": "global",
-            "probability_delta": -0.033116,
+            "probability_delta": -0.033488,
             "samples": 825,
             "version": "cal-1013-2026-06-14"
           },
           "decision": "PASS",
           "direction": "Over",
-          "edge": -0.91,
+          "edge": -0.68,
           "home_team": "Cincinnati Reds",
-          "kelly": 1.26,
+          "kelly": 1.4,
           "line": 8.5,
           "market_line": 8.5,
           "market_total_source": "model_output",
           "market_type": "totals",
-          "model_prediction": 9.0,
+          "model_prediction": 9.1,
           "odds": -110,
           "pick": "Over 8.5 (New York Mets vs Cincinnati Reds)",
           "pregame_snapshot": {
@@ -15829,10 +15329,10 @@
             "units": 0.0,
             "vegas": 8.5
           },
-          "prob": 0.5478,
-          "probability": 0.5147,
-          "raw_edge": 2.4,
-          "raw_probability": 0.5478,
+          "prob": 0.5505,
+          "probability": 0.517,
+          "raw_edge": 2.67,
+          "raw_probability": 0.5505,
           "raw_units": 0.0,
           "selection": "Over",
           "source": "MLB Model",
@@ -19783,7 +19283,7 @@
     ],
     "updatedAt": "2026-06-15T13:06:01.261613Z"
   },
-  "updatedAt": "2026-06-15T17:39:47.804719Z",
+  "updatedAt": "2026-06-15T18:48:21.876301Z",
   "wnba": {
     "ok": true,
     "picks": [
