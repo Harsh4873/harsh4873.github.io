@@ -240,9 +240,14 @@ def test_player_mode_keeps_best_bets_available_and_prop_sources_separate():
 
 def test_home_filters_prioritize_primary_sports_and_use_more_menu():
     main = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
+    data = (ROOT / "src" / "data.ts").read_text(encoding="utf-8")
     css = (ROOT / "src" / "styles" / "pickledger.css").read_text(encoding="utf-8")
 
-    assert "const PRIMARY_FILTERS = ['ALL', 'NBA', 'MLB', 'WNBA', 'FIFA WC']" in main
+    assert "const PRIMARY_FILTERS = ['ALL', 'MLB', 'WNBA', 'FIFA WC']" in main
+    assert "const ARCHIVED_SPORTS = new Set(['NBA'])" in data
+    assert "!ARCHIVED_SPORTS.has(pick.sport)" in data
+    assert "'MLB NEW': 'MLB Model'" in data
+    assert "'FIFA WC In-House': 'FIFA Model'" in data
     assert "filter === 'FIFA WC' ? 'FIFA' : filter" in main
     assert 'id="filter-more-btn"' in main
     assert "extraFilters.map(filterButton)" in main
@@ -478,6 +483,9 @@ def test_refresh_timing_and_pages_deploy_are_deterministic():
     assert "find dist/assets -maxdepth 1 -name '*.js'" in deploy
     assert "! grep -q 'src/main.ts' dist/index.html" in deploy
     assert "python scripts/site_upcheck.py" in deploy
+    guard = (workflows / "model-cache-freshness-guard.yml").read_text(encoding="utf-8")
+    assert 'PLAYER_CACHE_HEALTHY="$(python - <<\'PY\'' in guard
+    assert 'int(mlb.get("games") or 0) > 0 and not (mlb.get("picks") or [])' in guard
 
 
 def test_refresh_workflows_commit_as_triggering_actor():

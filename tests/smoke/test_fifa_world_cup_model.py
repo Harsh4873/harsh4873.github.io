@@ -133,7 +133,7 @@ def test_fifa_model_passes_when_player_profile_coverage_is_incomplete():
 
 def test_fifa_bucket_is_excluded_from_calibration_and_training_ledger(tmp_path):
     pick = {
-        "source": "FIFA WC In-House",
+        "source": "FIFA Model",
         "sport": "FIFA WC",
         "pick": "Strongland ML (Weakland @ Strongland)",
         "market_type": "soccer_moneyline",

@@ -417,7 +417,7 @@ def _matchup_picks(
     market = _market_probabilities(odds)
     matchup = f"{away['team']} @ {home['team']}"
     common = {
-        "source": "FIFA WC In-House",
+        "source": "FIFA Model",
         "sport": "FIFA WC",
         "league": "FIFA World Cup",
         "date": date_iso,

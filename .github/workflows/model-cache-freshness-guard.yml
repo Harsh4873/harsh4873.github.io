@@ -52,6 +52,23 @@ jobs:
           print(str(payload.get("date") or ""))
           PY
           )"
+          PLAYER_CACHE_HEALTHY="$(python - <<'PY'
+          import json
+          from pathlib import Path
+
+          required = {"mlb_player_props", "nba_player_props", "wnba_player_props"}
+          try:
+              payload = json.loads(Path("data/player_props_cache/latest.json").read_text(encoding="utf-8"))
+          except Exception:
+              payload = {}
+          models = payload.get("models") if isinstance(payload.get("models"), dict) else {}
+          healthy = all(isinstance(models.get(key), dict) and models[key].get("ok") is True for key in required)
+          mlb = models.get("mlb_player_props") if isinstance(models.get("mlb_player_props"), dict) else {}
+          if int(mlb.get("games") or 0) > 0 and not (mlb.get("picks") or []):
+              healthy = False
+          print("true" if healthy else "false")
+          PY
+          )"
           echo "target_date=${TARGET_DATE}" >> "$GITHUB_OUTPUT"
           echo "cache_date=${CACHE_DATE}" >> "$GITHUB_OUTPUT"
           echo "player_cache_date=${PLAYER_CACHE_DATE}" >> "$GITHUB_OUTPUT"
@@ -62,12 +79,12 @@ jobs:
             echo "fresh=false" >> "$GITHUB_OUTPUT"
             echo "Model cache is stale: cache=${CACHE_DATE:-missing}, target=${TARGET_DATE}."
           fi
-          if [ "$PLAYER_CACHE_DATE" = "$TARGET_DATE" ]; then
+          if [ "$PLAYER_CACHE_DATE" = "$TARGET_DATE" ] && [ "$PLAYER_CACHE_HEALTHY" = "true" ]; then
             echo "player_fresh=true" >> "$GITHUB_OUTPUT"
             echo "Player-props cache is fresh for ${TARGET_DATE}."
           else
             echo "player_fresh=false" >> "$GITHUB_OUTPUT"
-            echo "Player-props cache is stale: cache=${PLAYER_CACHE_DATE:-missing}, target=${TARGET_DATE}."
+            echo "Player-props cache is stale or unhealthy: cache=${PLAYER_CACHE_DATE:-missing}, target=${TARGET_DATE}, healthy=${PLAYER_CACHE_HEALTHY}."
           fi
 
       - name: Dispatch model cache refresh if stale

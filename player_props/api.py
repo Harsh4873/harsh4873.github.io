@@ -124,6 +124,11 @@ class DirectApiClient:
             {"lang": "en", "region": "us", "limit": 1000},
         )
 
+    def mlb_espn_athlete(self, athlete_id: str) -> dict[str, Any]:
+        return self._get(
+            f"https://site.web.api.espn.com/apis/common/v3/sports/baseball/mlb/athletes/{athlete_id}"
+        )
+
     def mlb_live_feed(self, game_pk: int) -> dict[str, Any]:
         return self._get(f"https://statsapi.mlb.com/api/v1.1/game/{game_pk}/feed/live")
 

@@ -4374,7 +4374,7 @@ def run_fifa_world_cup_model(date_str: str | None = None) -> dict[str, Any]:
 def run_mlb_model(date_str: str | None = None, variant: str = "old") -> dict[str, Any]:
     """Execute an MLB model variant and return parsed picks."""
     python_bin = _resolve_python_bin(os.path.join(MLB_MODEL_DIR, "venv", "bin", "python"))
-    source_label = "MLB NEW" if variant == "new" else "MLB OLD"
+    source_label = "MLB Model" if variant == "new" else "MLB OLD"
     cache_key = "mlb_new" if variant == "new" else "mlb_old"
     timeout_s = _env_timeout_seconds("PICKLEDGER_MLB_MODEL_TIMEOUT_SECONDS", 300)
 

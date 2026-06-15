@@ -289,6 +289,28 @@ class MockClient(EmptyClient):
         return {"items": items}
 
 
+class MissingSummaryRosterClient(MockClient):
+    def mlb_espn_summary(self, event_id):
+        return {"rosters": []}
+
+    def mlb_espn_athlete(self, athlete_id):
+        names = {
+            "101": "Away Pitcher",
+            "202": "Home Pitcher",
+            **{
+                str(team_id * 10 + index): f"Hitter {team_id}-{index}"
+                for team_id in (1, 2)
+                for index in range(4)
+            },
+        }
+        return {"athlete": {"displayName": names[str(athlete_id)]}}
+
+
+class ScheduledWithoutMarketsClient(MockClient):
+    def mlb_espn_prop_bets(self, event_id, provider_id="100"):
+        return {"items": []}
+
+
 def test_empty_leagues_are_healthy():
     payload = generate_payload(DATE, client=EmptyClient(), generated_at=STAMP)
     assert set(payload) == {"date", "generatedAt", "updatedAt", "models"}
@@ -335,6 +357,22 @@ def test_mlb_props_use_actual_markets_and_reject_reliever_starter_lines():
     assert any(pick.get("prop_role") == "batter_hrr" and pick["line"] == 1.5 for pick in picks)
     assert all("Venue Test Park" in " ".join(pick["key_factors"]) for pick in picks)
     assert all("Wind 12 mph, Out To CF" in " ".join(pick["key_factors"]) for pick in picks)
+
+
+def test_mlb_props_resolve_athletes_when_pregame_summary_has_no_rosters():
+    model = generate_payload(DATE, client=MissingSummaryRosterClient(), generated_at=STAMP)["models"]["mlb_player_props"]
+
+    assert model["ok"] is True
+    assert model["picks"]
+
+
+def test_scheduled_mlb_games_with_no_usable_markets_fail_health_check():
+    model = generate_payload(DATE, client=ScheduledWithoutMarketsClient(), generated_at=STAMP)["models"]["mlb_player_props"]
+
+    assert model["ok"] is False
+    assert model["games"] == 1
+    assert model["picks"] == []
+    assert "No MLB player props generated" in model["error"]
 
 
 def test_units_follow_quarter_kelly_and_passes_are_zero():

@@ -82,6 +82,7 @@ interface PlayerPropsPayload {
 
 const RESULT_STORAGE_KEY = 'pickledger_static_results_v2';
 const GAME_TIME_STORAGE_KEY = 'pickledger_static_game_times_v2';
+const ARCHIVED_SPORTS = new Set(['NBA']);
 const SOURCE_LABELS: Record<string, string> = {
   mlb_new: 'MLB Model',
   mlb_inning: 'MLB Inning',
@@ -89,12 +90,18 @@ const SOURCE_LABELS: Record<string, string> = {
   wnba: 'WNBA Model',
   nba: 'NBA New',
   nba_playoffs: 'NBA Playoffs',
-  fifa_world_cup: 'FIFA WC In-House',
+  fifa_world_cup: 'FIFA Model',
   sportytrader: 'SportyTrader',
   sportsgambler: 'SportsGambler',
   scores24_wnba: 'Scores24WNBA',
   scores24_mlb: 'Scores24MLB',
   scores24_fifa_world_cup: 'Scores24FIFAWorldCup',
+};
+
+const SOURCE_ALIASES: Record<string, string> = {
+  'MLB NEW': 'MLB Model',
+  'MLB New': 'MLB Model',
+  'FIFA WC In-House': 'FIFA Model',
 };
 
 const PLAYER_PROP_SOURCE_LABELS: Record<string, string> = {
@@ -188,11 +195,12 @@ function normalizePick(
   const pickText = String(raw.pick || raw.selection || raw.prop || raw.bet || '').trim();
   if (!pickText) return null;
 
-  const source = String((playerProp && fallbackSource) ? fallbackSource : (raw.source || fallbackSource || 'Unknown')).trim();
+  const rawSource = String((playerProp && fallbackSource) ? fallbackSource : (raw.source || fallbackSource || 'Unknown')).trim();
+  const source = SOURCE_ALIASES[rawSource] || rawSource;
   const date = String(raw.date || raw.game_date || raw.slate_date || raw.Date || fallbackDate || '').trim();
   const matchup = String(raw.matchup || raw.game || raw.event || '').trim();
   const game = gameByMatchup.get(matchup);
-  const id = stablePickId(raw, date, source);
+  const id = stablePickId(raw, date, rawSource);
   const embeddedResult = normalizeResult(raw.result);
   const localResult = normalizeResult(resultOverrides[id]);
   const result = embeddedResult === 'pending' ? localResult : embeddedResult;
@@ -387,8 +395,8 @@ export async function loadAllData(): Promise<Pick[]> {
   });
   if (cannon) picksFromCannon(cannon).forEach(pick => teamById.set(pick.id, pick));
   playerPayloads.flatMap(picksFromPlayerProps).forEach(pick => playerById.set(pick.id, pick));
-  teamPicks = sortPicks([...teamById.values()]);
-  playerPicks = sortPicks([...playerById.values()]);
+  teamPicks = sortPicks([...teamById.values()].filter(pick => !ARCHIVED_SPORTS.has(pick.sport)));
+  playerPicks = sortPicks([...playerById.values()].filter(pick => !ARCHIVED_SPORTS.has(pick.sport)));
   return getAllPicks();
 }
 

@@ -85,6 +85,8 @@ def main() -> int:
             failures.append(f"player-props bucket {key} is missing")
         elif bucket.get("ok") is not True:
             failures.append(f"player-props bucket {key} failed: {bucket.get('error') or 'unknown error'}")
+        elif key == "mlb_player_props" and int(bucket.get("games") or 0) > 0 and not (bucket.get("picks") or []):
+            failures.append("player-props bucket mlb_player_props has scheduled games but zero picks")
 
     cannon = _read_json(REPO_ROOT / "data" / "cannon_mlb_daily.json")
     cannon_date = str((cannon or {}).get("slate_date") or (cannon or {}).get("as_of") or "")

@@ -401,6 +401,11 @@ def _athlete_ref_id(row: dict[str, Any]) -> str:
     return ref.rsplit("/", 1)[-1] if "/athletes/" in ref else ""
 
 
+def _athlete_name(payload: dict[str, Any]) -> str:
+    athlete = payload.get("athlete") if isinstance(payload.get("athlete"), dict) else payload
+    return str(athlete.get("displayName") or athlete.get("fullName") or "").strip()
+
+
 def _market_line(row: dict[str, Any]) -> float:
     current = row.get("current") or {}
     target = current.get("target") or {}
@@ -463,7 +468,23 @@ def _game_market_index(
         payload = client.mlb_espn_prop_bets(event_id, provider_id)
     except Exception:
         return {}
-    return _market_index(payload.get("items") or [], _summary_athlete_names(summary), source)
+    items = payload.get("items") or []
+    athlete_names = _summary_athlete_names(summary)
+    relevant_athlete_ids = {
+        _athlete_ref_id(row)
+        for row in items
+        if str((row.get("type") or {}).get("name") or "") in ESPN_MARKET_TYPES
+    }
+    for athlete_id in sorted(relevant_athlete_ids - athlete_names.keys()):
+        if not athlete_id:
+            continue
+        try:
+            name = _athlete_name(client.mlb_espn_athlete(athlete_id))
+        except Exception:
+            continue
+        if name:
+            athlete_names[athlete_id] = name
+    return _market_index(items, athlete_names, source)
 
 
 def _best_market_side(
@@ -1015,13 +1036,29 @@ def generate_mlb_model(client: Any, date_iso: str) -> dict[str, Any]:
     season = int(date_iso[:4])
     try:
         market_scoreboard = client.mlb_espn_scoreboard(date_iso)
-    except Exception:
+    except Exception as exc:
         market_scoreboard = {}
+        errors.append(f"ESPN MLB market scoreboard failed: {exc}")
     for game in games:
         try:
             picks.extend(_game_props(client, date_iso, game, season, market_scoreboard))
         except Exception as exc:
             errors.append(f"{game.get('gamePk')}: {exc}")
+    if not picks:
+        error = (
+            f"No MLB player props generated for {len(games)} scheduled game(s); "
+            "posted sportsbook markets were unavailable or could not be parsed."
+        )
+        errors.append(error)
+        return {
+            "ok": False,
+            "sport": "MLB",
+            "date": date_iso,
+            "games": len(games),
+            "picks": [],
+            "error": error,
+            "errors": errors,
+        }
     return {
         "ok": True,
         "sport": "MLB",

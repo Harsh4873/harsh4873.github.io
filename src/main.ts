@@ -107,7 +107,7 @@ const HOME_SCORE_TTL_MS = 45_000;
 const DISPLAY_TIME_ZONE = 'America/Chicago';
 const AUTO_REFRESH_MS = 5 * 60_000;
 const YOUR_BETS_STORAGE_KEY = 'pickledger_your_bets_v1';
-const PRIMARY_FILTERS = ['ALL', 'NBA', 'MLB', 'WNBA', 'FIFA WC'];
+const PRIMARY_FILTERS = ['ALL', 'MLB', 'WNBA', 'FIFA WC'];
 let lastCentralDate = '';
 
 function escapeHtml(value: unknown): string {

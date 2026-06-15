@@ -60,7 +60,7 @@ def get_mlb_model_artifacts(variant: str | None = None) -> dict[str, Path]:
 
 
 def get_mlb_cache_label(variant: str | None = None) -> str:
-    return "MLB New" if normalize_mlb_model_variant(variant) == "new" else "MLB Model"
+    return "MLB Model"
 
 
 def get_mlb_log_label(variant: str | None = None) -> str:
