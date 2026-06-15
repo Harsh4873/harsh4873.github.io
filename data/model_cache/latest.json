@@ -1,16 +1,16 @@
 {
   "date": "2026-06-15",
   "errors": [],
-  "externalFeedsUpdatedAt": "2026-06-15T22:27:22.479158Z",
+  "externalFeedsUpdatedAt": "2026-06-15T23:10:54.794321Z",
   "external_feeds": {
     "scores24_fifa_world_cup": {
       "date": "2026-06-15",
-      "generatedAt": "2026-06-15T13:01:38.646505Z",
+      "generatedAt": "2026-06-15T23:10:54.794321Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
-        "attemptedUrls": 4,
-        "blockRetryRounds": 0,
-        "blockedUrls": 0,
+        "attemptedUrls": 8,
+        "blockRetryRounds": 1,
+        "blockedUrls": 3,
         "date": "2026-06-15",
         "expectedMatchups": 4,
         "feed": "scores24_fifa_world_cup",
@@ -19,7 +19,7 @@
         "listingLinks": 12,
         "matchedPicks": 4,
         "missingMatchups": [],
-        "updatedAt": "2026-06-15T13:01:38.646505Z"
+        "updatedAt": "2026-06-15T23:10:54.794321Z"
       },
       "note": "Scores24FIFAWorldCup matched 4 published editorial choice(s) to 4 official 2026-06-15 matchup(s).",
       "ok": true,
@@ -109,16 +109,16 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-15T13:01:38.646505Z"
+      "updatedAt": "2026-06-15T23:10:54.794321Z"
     },
     "scores24_mlb": {
       "date": "2026-06-15",
-      "generatedAt": "2026-06-15T13:01:38.646505Z",
+      "generatedAt": "2026-06-15T23:10:54.794321Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
-        "attemptedUrls": 15,
+        "attemptedUrls": 14,
         "blockRetryRounds": 1,
-        "blockedUrls": 5,
+        "blockedUrls": 4,
         "date": "2026-06-15",
         "expectedMatchups": 10,
         "feed": "scores24_mlb",
@@ -127,7 +127,7 @@
         "listingLinks": 12,
         "matchedPicks": 10,
         "missingMatchups": [],
-        "updatedAt": "2026-06-15T13:01:38.646505Z"
+        "updatedAt": "2026-06-15T23:10:54.794321Z"
       },
       "note": "Scores24MLB matched 10 published editorial choice(s) to 10 official 2026-06-15 matchup(s).",
       "ok": true,
@@ -493,11 +493,11 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-15T13:01:38.646505Z"
+      "updatedAt": "2026-06-15T23:10:54.794321Z"
     },
     "scores24_wnba": {
       "date": "2026-06-15",
-      "generatedAt": "2026-06-15T13:01:38.646505Z",
+      "generatedAt": "2026-06-15T23:10:54.794321Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "attemptedUrls": 3,
@@ -511,7 +511,7 @@
         "listingLinks": 10,
         "matchedPicks": 3,
         "missingMatchups": [],
-        "updatedAt": "2026-06-15T13:01:38.646505Z"
+        "updatedAt": "2026-06-15T23:10:54.794321Z"
       },
       "note": "Scores24WNBA matched 3 published editorial choice(s) to 3 official 2026-06-15 matchup(s).",
       "ok": true,
@@ -625,7 +625,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-15T13:01:38.646505Z"
+      "updatedAt": "2026-06-15T23:10:54.794321Z"
     },
     "sportsgambler": {
       "date": "2026-06-15",
@@ -15838,12 +15838,12 @@
     },
     "scores24_fifa_world_cup": {
       "date": "2026-06-15",
-      "generatedAt": "2026-06-15T13:01:38.646505Z",
+      "generatedAt": "2026-06-15T23:10:54.794321Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
-        "attemptedUrls": 4,
-        "blockRetryRounds": 0,
-        "blockedUrls": 0,
+        "attemptedUrls": 8,
+        "blockRetryRounds": 1,
+        "blockedUrls": 3,
         "date": "2026-06-15",
         "expectedMatchups": 4,
         "feed": "scores24_fifa_world_cup",
@@ -15852,7 +15852,7 @@
         "listingLinks": 12,
         "matchedPicks": 4,
         "missingMatchups": [],
-        "updatedAt": "2026-06-15T13:01:38.646505Z"
+        "updatedAt": "2026-06-15T23:10:54.794321Z"
       },
       "note": "Scores24FIFAWorldCup matched 4 published editorial choice(s) to 4 official 2026-06-15 matchup(s).",
       "ok": true,
@@ -15943,16 +15943,16 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-15T13:01:38.646505Z"
+      "updatedAt": "2026-06-15T23:10:54.794321Z"
     },
     "scores24_mlb": {
       "date": "2026-06-15",
-      "generatedAt": "2026-06-15T13:01:38.646505Z",
+      "generatedAt": "2026-06-15T23:10:54.794321Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
-        "attemptedUrls": 15,
+        "attemptedUrls": 14,
         "blockRetryRounds": 1,
-        "blockedUrls": 5,
+        "blockedUrls": 4,
         "date": "2026-06-15",
         "expectedMatchups": 10,
         "feed": "scores24_mlb",
@@ -15961,7 +15961,7 @@
         "listingLinks": 12,
         "matchedPicks": 10,
         "missingMatchups": [],
-        "updatedAt": "2026-06-15T13:01:38.646505Z"
+        "updatedAt": "2026-06-15T23:10:54.794321Z"
       },
       "note": "Scores24MLB matched 10 published editorial choice(s) to 10 official 2026-06-15 matchup(s).",
       "ok": true,
@@ -16327,11 +16327,11 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-15T13:01:38.646505Z"
+      "updatedAt": "2026-06-15T23:10:54.794321Z"
     },
     "scores24_wnba": {
       "date": "2026-06-15",
-      "generatedAt": "2026-06-15T13:01:38.646505Z",
+      "generatedAt": "2026-06-15T23:10:54.794321Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "attemptedUrls": 3,
@@ -16345,7 +16345,7 @@
         "listingLinks": 10,
         "matchedPicks": 3,
         "missingMatchups": [],
-        "updatedAt": "2026-06-15T13:01:38.646505Z"
+        "updatedAt": "2026-06-15T23:10:54.794321Z"
       },
       "note": "Scores24WNBA matched 3 published editorial choice(s) to 3 official 2026-06-15 matchup(s).",
       "ok": true,
@@ -16459,7 +16459,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-15T13:01:38.646505Z"
+      "updatedAt": "2026-06-15T23:10:54.794321Z"
     },
     "sportsgambler": {
       "date": "2026-06-15",
@@ -17942,12 +17942,12 @@
   },
   "scores24_fifa_world_cup": {
     "date": "2026-06-15",
-    "generatedAt": "2026-06-15T13:01:38.646505Z",
+    "generatedAt": "2026-06-15T23:10:54.794321Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
-      "attemptedUrls": 4,
-      "blockRetryRounds": 0,
-      "blockedUrls": 0,
+      "attemptedUrls": 8,
+      "blockRetryRounds": 1,
+      "blockedUrls": 3,
       "date": "2026-06-15",
       "expectedMatchups": 4,
       "feed": "scores24_fifa_world_cup",
@@ -17956,7 +17956,7 @@
       "listingLinks": 12,
       "matchedPicks": 4,
       "missingMatchups": [],
-      "updatedAt": "2026-06-15T13:01:38.646505Z"
+      "updatedAt": "2026-06-15T23:10:54.794321Z"
     },
     "note": "Scores24FIFAWorldCup matched 4 published editorial choice(s) to 4 official 2026-06-15 matchup(s).",
     "ok": true,
@@ -18046,16 +18046,16 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-15T13:01:38.646505Z"
+    "updatedAt": "2026-06-15T23:10:54.794321Z"
   },
   "scores24_mlb": {
     "date": "2026-06-15",
-    "generatedAt": "2026-06-15T13:01:38.646505Z",
+    "generatedAt": "2026-06-15T23:10:54.794321Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
-      "attemptedUrls": 15,
+      "attemptedUrls": 14,
       "blockRetryRounds": 1,
-      "blockedUrls": 5,
+      "blockedUrls": 4,
       "date": "2026-06-15",
       "expectedMatchups": 10,
       "feed": "scores24_mlb",
@@ -18064,7 +18064,7 @@
       "listingLinks": 12,
       "matchedPicks": 10,
       "missingMatchups": [],
-      "updatedAt": "2026-06-15T13:01:38.646505Z"
+      "updatedAt": "2026-06-15T23:10:54.794321Z"
     },
     "note": "Scores24MLB matched 10 published editorial choice(s) to 10 official 2026-06-15 matchup(s).",
     "ok": true,
@@ -18430,11 +18430,11 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-15T13:01:38.646505Z"
+    "updatedAt": "2026-06-15T23:10:54.794321Z"
   },
   "scores24_wnba": {
     "date": "2026-06-15",
-    "generatedAt": "2026-06-15T13:01:38.646505Z",
+    "generatedAt": "2026-06-15T23:10:54.794321Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "attemptedUrls": 3,
@@ -18448,7 +18448,7 @@
       "listingLinks": 10,
       "matchedPicks": 3,
       "missingMatchups": [],
-      "updatedAt": "2026-06-15T13:01:38.646505Z"
+      "updatedAt": "2026-06-15T23:10:54.794321Z"
     },
     "note": "Scores24WNBA matched 3 published editorial choice(s) to 3 official 2026-06-15 matchup(s).",
     "ok": true,
@@ -18562,7 +18562,7 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-15T13:01:38.646505Z"
+    "updatedAt": "2026-06-15T23:10:54.794321Z"
   },
   "sportsgambler": {
     "date": "2026-06-15",
@@ -19250,7 +19250,7 @@
     ],
     "updatedAt": "2026-06-15T22:27:22.479158Z"
   },
-  "updatedAt": "2026-06-15T22:39:30.102228Z",
+  "updatedAt": "2026-06-15T23:10:54.794321Z",
   "wnba": {
     "ok": true,
     "picks": [
