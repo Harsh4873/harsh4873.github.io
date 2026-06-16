@@ -4,16 +4,29 @@ from __future__ import annotations
 
 import math
 import statistics
+from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Any
 
-from .schema import build_pick, nearest_half, normal_probability, normalize_name, safe_float
+from .schema import (
+    american_implied_probability,
+    build_pick,
+    nearest_half,
+    normal_probability,
+    normalize_name,
+    safe_float,
+)
 
 
 STAT_LABELS = {
     "points": "Points",
     "totalRebounds": "Rebounds",
     "assists": "Assists",
+}
+BASKETBALL_MARKET_TYPES = {
+    "Points Milestones": ("points", "Points"),
+    "Rebounds Milestones": ("totalRebounds", "Rebounds"),
+    "Assists Milestones": ("assists", "Assists"),
 }
 OUT_STATUSES = {"out", "doubtful", "injured reserve", "suspension"}
 
@@ -48,6 +61,114 @@ def _team_stats(payload: dict[str, Any]) -> dict[str, float]:
         for item in category.get("stats") or []:
             result[str(item.get("name") or "")] = safe_float(item.get("value"))
     return result
+
+
+def _american_odds(value: Any) -> int | None:
+    text = str(value or "").strip().replace("+", "")
+    if not text:
+        return None
+    try:
+        odds = int(float(text))
+    except (TypeError, ValueError):
+        return None
+    return odds if odds else None
+
+
+def _athlete_ref_id(row: dict[str, Any]) -> str:
+    ref = str((row.get("athlete") or {}).get("$ref") or "").split("?", 1)[0].rstrip("/")
+    return ref.rsplit("/", 1)[-1] if "/athletes/" in ref else ""
+
+
+def _event_market_provider(event: dict[str, Any]) -> tuple[str, str] | None:
+    event_id = str(event.get("id") or "").strip()
+    competition = (event.get("competitions") or [{}])[0]
+    odds_rows = competition.get("odds") or []
+    odds = odds_rows[0] if odds_rows else {}
+    provider = odds.get("provider") or {}
+    provider_id = str(provider.get("id") or "100").strip() or "100"
+    provider_name = str(provider.get("displayName") or provider.get("name") or "DraftKings").strip()
+    if not event_id:
+        return None
+    return provider_id, f"{provider_name} via ESPN"
+
+
+def _target_value(row: dict[str, Any]) -> tuple[float, str]:
+    current = row.get("current") or {}
+    target = current.get("target") or {}
+    odds = row.get("odds") or {}
+    total = odds.get("total") or {}
+    raw_value = target.get("value") if target.get("value") is not None else total.get("value")
+    display = str(target.get("displayValue") or total.get("value") or raw_value or "").strip()
+    return safe_float(str(raw_value).replace("+", "")), display
+
+
+def _basketball_market_index(
+    client: Any,
+    league: str,
+    event: dict[str, Any],
+) -> dict[str, dict[str, list[dict[str, Any]]]]:
+    market_method = getattr(client, "basketball_espn_prop_bets", None)
+    provider = _event_market_provider(event)
+    if not callable(market_method) or provider is None:
+        return {}
+    provider_id, source = provider
+    try:
+        payload = market_method(league, str(event.get("id") or ""), provider_id)
+    except Exception:
+        return {}
+
+    markets: dict[str, dict[str, list[dict[str, Any]]]] = defaultdict(lambda: defaultdict(list))
+    for row in payload.get("items") or []:
+        type_name = str((row.get("type") or {}).get("name") or "")
+        if type_name not in BASKETBALL_MARKET_TYPES:
+            continue
+        athlete_id = _athlete_ref_id(row)
+        if not athlete_id:
+            continue
+        threshold, display = _target_value(row)
+        odds = _american_odds((((row.get("odds") or {}).get("american") or {}).get("value")))
+        if threshold <= 0 or odds is None:
+            continue
+        stat_key, stat_label = BASKETBALL_MARKET_TYPES[type_name]
+        markets[athlete_id][stat_key].append(
+            {
+                "stat_key": stat_key,
+                "stat_label": stat_label,
+                "line": threshold - 0.5,
+                "threshold": threshold,
+                "display": display or f"{threshold:g}+",
+                "odds": odds,
+                "market_type": type_name,
+                "market_source": source,
+                "market_updated_at": str(row.get("lastUpdated") or ""),
+            }
+        )
+    return {player_id: dict(by_stat) for player_id, by_stat in markets.items()}
+
+
+def _best_milestone_market(
+    markets: list[dict[str, Any]],
+    projection: float,
+    sigma: float,
+) -> dict[str, Any] | None:
+    best: dict[str, Any] | None = None
+    best_key: tuple[float, float, float] | None = None
+    for market in markets:
+        line = safe_float(market.get("line"))
+        odds = _american_odds(market.get("odds"))
+        implied = american_implied_probability(odds)
+        if line < 0 or odds is None or implied is None:
+            continue
+        probability = normal_probability(projection, line, sigma, "Over")
+        key = (
+            probability - implied,
+            probability,
+            -abs(projection - line),
+        )
+        if best_key is None or key > best_key:
+            best_key = key
+            best = {**market, "probability": probability, "market_implied_probability": implied}
+    return best
 
 
 def _parse_gamelog(payload: dict[str, Any]) -> dict[str, Any] | None:
@@ -157,6 +278,7 @@ def _game_props(
     away, home = _event_teams(event)
     if not away.get("id") or not home.get("id"):
         return []
+    market_index = _basketball_market_index(client, league, event)
 
     team_payloads: dict[str, dict[str, Any]] = {}
     for side, team in (("away", away), ("home", home)):
@@ -225,19 +347,54 @@ def _game_props(
                         f"Next-man-up redistribution from unavailable star(s): {', '.join(injured_stars)}"
                     )
 
-                line = nearest_half(season_avg)
-                selection = "Over" if projection >= line else "Under"
-                probability = normal_probability(
+                sigma = max(player["deviation"][stat_key], math.sqrt(max(1.0, projection)) * 0.65)
+                market = _best_milestone_market(
+                    (market_index.get(player["id"]) or {}).get(stat_key, []),
                     projection,
-                    line,
-                    max(player["deviation"][stat_key], math.sqrt(max(1.0, projection)) * 0.65),
-                    selection,
+                    sigma,
                 )
-                reason = (
-                    f"{player['name']} projects for {projection:.2f} {stat_label.lower()} versus "
-                    f"an in-house {line:.1f} baseline after recent form, availability, opponent, "
-                    f"and {'home' if side == 'home' else 'road'} context."
-                )
+                if market:
+                    line = safe_float(market.get("line"))
+                    selection = "Over"
+                    probability = safe_float(market.get("probability"))
+                    odds = _american_odds(market.get("odds"))
+                    factors = [
+                        f"Posted {market['display']} {stat_label.lower()} milestone at {int(odds):+d}",
+                        *factors,
+                    ]
+                    reason = (
+                        f"{player['name']} projects for {projection:.2f} {stat_label.lower()} versus "
+                        f"a posted {market['display']} milestone after recent form, availability, opponent, "
+                        f"and {'home' if side == 'home' else 'road'} context."
+                    )
+                    extra_pricing = {
+                        "pricing_type": "market",
+                        "line_source": "posted_market",
+                        "odds_source": "posted_market",
+                        "market_priced": True,
+                        "actionability": "market_priced",
+                        "market_source": market.get("market_source"),
+                        "market_type": market.get("market_type"),
+                        "market_updated_at": market.get("market_updated_at"),
+                        "market_threshold": market.get("display"),
+                    }
+                else:
+                    line = nearest_half(season_avg)
+                    selection = "Over" if projection >= line else "Under"
+                    probability = normal_probability(projection, line, sigma, selection)
+                    odds = -110
+                    reason = (
+                        f"{player['name']} projects for {projection:.2f} {stat_label.lower()} versus "
+                        f"an in-house {line:.1f} baseline after recent form, availability, opponent, "
+                        f"and {'home' if side == 'home' else 'road'} context."
+                    )
+                    extra_pricing = {
+                        "pricing_type": "synthetic",
+                        "line_source": "in_house_baseline",
+                        "odds_source": "default_assumed",
+                        "market_priced": False,
+                        "actionability": "research_signal",
+                    }
                 pick = build_pick(
                     sport=sport,
                     date_iso=date_iso,
@@ -255,6 +412,7 @@ def _game_props(
                     line=line,
                     projection=projection,
                     probability=probability,
+                    odds=odds,
                     reason=reason,
                     key_factors=factors,
                     extra={
@@ -263,20 +421,18 @@ def _game_props(
                         "sample_games": player["games"],
                         "injury_status": str(injury.get("status") or "Healthy"),
                         "redistribution_from": injured_stars,
-                        "pricing_type": "synthetic",
-                        "line_source": "in_house_baseline",
-                        "odds_source": "default_assumed",
-                        "market_priced": False,
-                        "actionability": "research_signal",
+                        **extra_pricing,
                     },
                 )
                 score = abs(projection - line) / max(0.5, player["deviation"][stat_key]) + probability
                 candidates.append((score, pick))
 
-    candidates.sort(key=lambda row: (-row[0], row[1]["id"]))
+    market_candidates = [row for row in candidates if row[1].get("market_priced") is True]
+    selection_pool = market_candidates or candidates
+    selection_pool.sort(key=lambda row: (-row[0], row[1]["id"]))
     selected: list[dict[str, Any]] = []
     per_player: dict[str, int] = {}
-    for _score, pick in candidates:
+    for _score, pick in selection_pool:
         player_key = str(pick.get("player_id"))
         if per_player.get(player_key, 0) >= 2:
             continue

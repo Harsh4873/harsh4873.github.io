@@ -97,6 +97,15 @@ class DirectApiClient:
             {"season": season},
         )
 
+    def basketball_espn_prop_bets(self, league: str, event_id: str, provider_id: str = "100") -> dict[str, Any]:
+        return self._get(
+            (
+                f"https://sports.core.api.espn.com/v2/sports/basketball/leagues/{league}/"
+                f"events/{event_id}/competitions/{event_id}/odds/{provider_id}/propBets"
+            ),
+            {"lang": "en", "region": "us", "limit": 1000},
+        )
+
     def mlb_schedule(self, date_iso: str) -> dict[str, Any]:
         return self._get(
             "https://statsapi.mlb.com/api/v1/schedule",

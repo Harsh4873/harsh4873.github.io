@@ -234,8 +234,12 @@ def apply_calibration_to_pick(
             pick["units"] = round(raw_units * ratio, 2)
 
     raw_decision = str(snapshot.get("decision") or pick.get("decision") or "").strip().upper()
-    if raw_decision in {"BET", "LEAN"} and adjusted_edge is not None and adjusted_edge <= 0:
-        pick["decision"] = "PASS"
+    if raw_decision in {"BET", "LEAN"} and adjusted_edge is not None:
+        if adjusted_edge < 3:
+            pick["decision"] = "PASS"
+            pick["units"] = 0
+        elif raw_decision == "BET" and adjusted_edge < 7:
+            pick["decision"] = "LEAN"
 
     pick["calibration"] = {
         "applied": True,

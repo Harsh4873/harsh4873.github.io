@@ -69,6 +69,23 @@ def test_calibration_can_downgrade_a_bet_without_overwriting_original_decision()
     assert adjusted["pregame_snapshot"]["decision"] == "BET"
 
 
+def test_calibration_downgrades_bet_to_lean_when_adjusted_edge_is_midrange():
+    active = {
+        "version": "test-v2b",
+        "minimum_group_samples": 30,
+        "global": {"intercept": -0.55, "slope": 1.0, "samples": 100},
+        "groups": {},
+    }
+    payload = {"models": {"wnba_player_props": {"picks": [_pick(sport="WNBA")]}}}
+
+    apply_calibration_to_payload(payload, active)
+    adjusted = payload["models"]["wnba_player_props"]["picks"][0]
+
+    assert 3 <= adjusted["edge"] < 7
+    assert adjusted["decision"] == "LEAN"
+    assert adjusted["pregame_snapshot"]["decision"] == "BET"
+
+
 def test_calibration_leaves_units_alone_when_no_edge_or_market_price_exists():
     active = {
         "version": "test-v3",
