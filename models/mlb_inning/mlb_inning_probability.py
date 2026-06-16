@@ -27,7 +27,10 @@ MLB_AVG_FULL_SCORELESS = {
     for inning in range(1, 10)
 }
 
-INNING_BET_EDGE = 0.07  # need +7 percentage points over baseline to BET
+# Recent grading showed +7pp was not enough separation from baseline: committed
+# BET rows were running break-even. Keep +3pp as a research LEAN, but require a
+# double-digit edge before calling an inning a BET.
+INNING_BET_EDGE = 0.10  # need +10 percentage points over baseline to BET
 INNING_LEAN_EDGE = 0.03  # +3 pp over baseline qualifies for LEAN
 
 

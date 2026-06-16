@@ -704,6 +704,11 @@ def _pitcher_prop(
             "market_source": market.get("market_source"),
             "market_type": market.get("market_type"),
             "market_updated_at": market.get("market_updated_at"),
+            "pricing_type": "market",
+            "line_source": "posted_market",
+            "odds_source": "posted_market",
+            "market_priced": True,
+            "actionability": "market_priced",
         },
     )
 
@@ -857,6 +862,11 @@ def _hitter_props(
                     "market_source": market.get("market_source"),
                     "market_type": market.get("market_type"),
                     "market_updated_at": market.get("market_updated_at"),
+                    "pricing_type": "market",
+                    "line_source": "posted_market",
+                    "odds_source": "posted_market",
+                    "market_priced": True,
+                    "actionability": "market_priced",
                 },
             )
         )

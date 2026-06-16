@@ -915,6 +915,7 @@ def _apply_pick_guardrails(
         if market == "f5_total":
             gap = safe_float(pick.get("projection_gap"), 0.0)
             reasons: list[str] = []
+            synthetic_total_line = pick.get("vegas_line") is not None
             if min_starts < TOTAL_MIN_STARTER_SAMPLE and gap < 1.20:
                 reasons.append("thin starter sample")
             if gap < TOTAL_LEAN_GAP:
@@ -924,6 +925,9 @@ def _apply_pick_guardrails(
                 pick["decision"] = "LEAN" if probability >= 0.55 and edge_pct > 2.0 else "PASS"
             else:
                 pick["decision"] = _decision(probability, edge_pct)
+            if synthetic_total_line and pick["decision"] == "BET":
+                pick["decision"] = "LEAN"
+                reasons.append("model-generated F5 total line; capped at LEAN until real market line is available")
             if reasons or gap < TOTAL_BET_GAP:
                 pick["guardrail"] = ", ".join(reasons or ["line gap below bet threshold"])
             pick["confidence"] = _confidence_for_decision(pick["decision"], probability, edge_pct)

@@ -7,6 +7,8 @@ moneyline. So a 56% pick at -160 (61.5% true implied) was recorded as
 """
 from __future__ import annotations
 
+import json
+
 
 def _stub_sl_get_ml(monkeypatch, ml_home: int | None, ml_away: int | None):
     import pickgrader_server as ps
@@ -167,3 +169,95 @@ def test_mlb_totals_pass_rows_emit_from_model_line_when_market_missing(monkeypat
     assert ou["decision"] == "PASS"
     assert ou["units"] == 0.0
     assert ou["line"] == 8.5
+
+
+def test_mlb_new_artifact_status_detects_legacy_metadata(tmp_path):
+    from pickgrader_server import _mlb_new_artifact_status
+
+    (tmp_path / "mlb_moneyline_model_new_metadata.json").write_text(
+        json.dumps({"variant": "new", "architecture": "HistGradientBoostingClassifier"}),
+        encoding="utf-8",
+    )
+    (tmp_path / "mlb_totals_model_new_metadata.json").write_text(
+        json.dumps({"architecture": "legacy regressor"}),
+        encoding="utf-8",
+    )
+    (tmp_path / "mlb_probability_calibration_new_metadata.json").write_text(
+        json.dumps({"mode": "isotonic"}),
+        encoding="utf-8",
+    )
+
+    status = _mlb_new_artifact_status(str(tmp_path))
+    assert status["stack"] == "legacy_fallback"
+    assert status["ready"] is False
+    assert any(component["name"] == "totals" and not component["ready"] for component in status["components"])
+
+
+def test_mlb_new_artifact_status_accepts_v2_metadata(tmp_path):
+    from pickgrader_server import _mlb_new_artifact_status
+
+    (tmp_path / "mlb_moneyline_model_new_metadata.json").write_text(
+        json.dumps({"variant": "new", "architecture": "HistGradientBoostingClassifier"}),
+        encoding="utf-8",
+    )
+    (tmp_path / "mlb_totals_model_new_metadata.json").write_text(
+        json.dumps({"variant": "new", "architecture": "HistGradientBoostingRegressor (residual-to-market)"}),
+        encoding="utf-8",
+    )
+    (tmp_path / "mlb_probability_calibration_new_metadata.json").write_text(
+        json.dumps({"mode": "isotonic", "variant": "new"}),
+        encoding="utf-8",
+    )
+
+    status = _mlb_new_artifact_status(str(tmp_path))
+    assert status["stack"] == "v2"
+    assert status["ready"] is True
+
+
+def test_synthetic_mlb_specialty_rows_are_labeled_research_signals():
+    from pickgrader_server import _mlb_first_five_pick_rows, _mlb_inning_pick_rows
+
+    inning_rows = _mlb_inning_pick_rows({
+        "date": "2026-06-12",
+        "picks": [{
+            "game_id": "1",
+            "matchup": "Home vs Away",
+            "home_team": "Home",
+            "away_team": "Away",
+            "full_inning_table": {"1": 0.55},
+            "top_2_picks": [{
+                "inning": 1,
+                "probability_scoreless": 0.55,
+                "baseline": 0.44,
+                "edge_pp": 11.0,
+                "decision": "BET",
+                "confidence": "High",
+            }],
+        }],
+    })
+    f5_rows = _mlb_first_five_pick_rows({
+        "date": "2026-06-12",
+        "picks": [{
+            "game_id": "2",
+            "matchup": "Away @ Home",
+            "home_team": "Home",
+            "away_team": "Away",
+            "projected_first_five": {"away_runs": 2.0, "home_runs": 1.0, "total_runs": 3.0},
+            "top_picks": [{
+                "market": "f5_total",
+                "pick": "Under 3.5 F5",
+                "vegas_line": 3.5,
+                "assumed_odds": -110,
+                "probability": 0.58,
+                "edge_pct": 5.6,
+                "decision": "LEAN",
+            }],
+        }],
+    })
+
+    for row in [*inning_rows, *f5_rows]:
+        assert row["pricing_type"] == "assumed"
+        assert row["odds_source"] == "default_assumed"
+        assert row["market_priced"] is False
+        assert row["actionability"] == "research_signal"
+        assert row["assumed_odds"] == -110

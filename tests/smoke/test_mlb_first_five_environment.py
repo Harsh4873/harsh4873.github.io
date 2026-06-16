@@ -74,3 +74,25 @@ def test_blend_handles_unknown_venue_gracefully():
     result = blend_park_run_delta(learned_delta=0.05, learned_games=10, venue_id=None)
     assert result["static_delta"] == 0.0
     assert result["park_factor"] == 1.0
+
+
+def test_model_generated_f5_total_is_capped_at_lean():
+    from models.mlb_first_five.mlb_first_five_model import _apply_pick_guardrails
+
+    picks = [{
+        "market": "f5_total",
+        "probability": 0.64,
+        "edge_pct": 11.6,
+        "projection_gap": 1.1,
+        "vegas_line": 4.5,
+        "decision": "BET",
+    }]
+
+    _apply_pick_guardrails(
+        picks,
+        {"current_starts": 7},
+        {"current_starts": 8},
+    )
+
+    assert picks[0]["decision"] == "LEAN"
+    assert "model-generated F5 total line" in picks[0]["guardrail"]

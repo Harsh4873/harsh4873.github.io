@@ -2485,6 +2485,67 @@ def _resolve_python_bin(preferred_path: str) -> str:
     return sys.executable
 
 
+def _read_json_file(path: str) -> dict[str, Any] | None:
+    try:
+        with open(path, encoding="utf-8") as handle:
+            payload = json.load(handle)
+    except (OSError, json.JSONDecodeError):
+        return None
+    return payload if isinstance(payload, dict) else None
+
+
+def _mlb_new_artifact_status(artifact_dir: str | None = None) -> dict[str, Any]:
+    """Return a structured status for the MLB New v2 artifact set.
+
+    `run_today.py` can fall back to legacy artifacts when the `_new` files are
+    stale. That keeps the cache alive, but audits need to see the fallback
+    explicitly in the model bucket.
+    """
+    artifact_dir = artifact_dir or os.path.join(MLB_MODEL_DIR, "artifacts")
+    specs = (
+        ("moneyline", "mlb_moneyline_model_new_metadata.json", "HistGradientBoostingClassifier"),
+        ("totals", "mlb_totals_model_new_metadata.json", "HistGradientBoostingRegressor"),
+    )
+    components: list[dict[str, Any]] = []
+    ready = True
+    for name, filename, expected_architecture in specs:
+        path = os.path.join(artifact_dir, filename)
+        metadata = _read_json_file(path)
+        architecture = str((metadata or {}).get("architecture") or "")
+        variant = str((metadata or {}).get("variant") or "")
+        component_ready = (
+            metadata is not None
+            and variant == "new"
+            and expected_architecture in architecture
+        )
+        ready = ready and component_ready
+        components.append({
+            "name": name,
+            "metadata_file": filename,
+            "present": metadata is not None,
+            "variant": variant or None,
+            "architecture": architecture or None,
+            "ready": component_ready,
+        })
+
+    calibration_path = os.path.join(artifact_dir, "mlb_probability_calibration_new_metadata.json")
+    calibration_metadata = _read_json_file(calibration_path)
+    components.append({
+        "name": "calibration",
+        "metadata_file": "mlb_probability_calibration_new_metadata.json",
+        "present": calibration_metadata is not None,
+        "method": (calibration_metadata or {}).get("method"),
+        "mode": (calibration_metadata or {}).get("mode"),
+        "ready": calibration_metadata is not None,
+    })
+
+    return {
+        "stack": "v2" if ready else "legacy_fallback",
+        "ready": ready,
+        "components": components,
+    }
+
+
 _MODEL_CACHE_KEY_ALIASES: dict[str, tuple[str, ...]] = {
     "nba": ("nba", "nba_new"),
     "nba_new": ("nba_new", "nba"),
@@ -4377,6 +4438,7 @@ def run_mlb_model(date_str: str | None = None, variant: str = "old") -> dict[str
     source_label = "MLB Model" if variant == "new" else "MLB OLD"
     cache_key = "mlb_new" if variant == "new" else "mlb_old"
     timeout_s = _env_timeout_seconds("PICKLEDGER_MLB_MODEL_TIMEOUT_SECONDS", 300)
+    artifact_status = _mlb_new_artifact_status() if variant == "new" else None
 
     try:
         output = _run_script(
@@ -4404,6 +4466,11 @@ def run_mlb_model(date_str: str | None = None, variant: str = "old") -> dict[str
                     "raw_lines": len(output.split("\n")),
                     "note": f"No MLB games found for requested date ({source_label})",
                 }
+                if artifact_status is not None:
+                    result["model_stack"] = artifact_status["stack"]
+                    result["artifact_status"] = artifact_status
+                    if not artifact_status.get("ready"):
+                        result["warnings"] = ["MLB New is using legacy fallback artifacts; retrain v2 artifacts."]
                 if variant == "new":
                     _save_admin_picks_doc("mlb_new", result)
                 else:
@@ -4417,6 +4484,16 @@ def run_mlb_model(date_str: str | None = None, variant: str = "old") -> dict[str
                 "raw_lines": len(output.split("\n")),
             }
         result = {"ok": True, "picks": picks, "raw_lines": len(output.split("\n"))}
+        if artifact_status is not None:
+            result["model_stack"] = artifact_status["stack"]
+            result["artifact_status"] = artifact_status
+            warnings: list[str] = []
+            if not artifact_status.get("ready"):
+                warnings.append("MLB New is using legacy fallback artifacts; retrain v2 artifacts.")
+            if "[run_today] MLB NEW: stale v2" in output:
+                warnings.append("Runtime fell back from stale v2 artifact to legacy variant=new pipeline.")
+            if warnings:
+                result["warnings"] = warnings
         if variant == "new":
             _save_admin_picks_doc("mlb_new", result)
         else:
@@ -4503,6 +4580,11 @@ def _mlb_inning_pick_rows(payload: dict[str, Any]) -> list[dict[str, Any]]:
                 "inning": inning,
                 "odds": None,
                 "assumed_odds": -110,
+                "pricing_type": "assumed",
+                "line_source": "in_house_probability_baseline",
+                "odds_source": "default_assumed",
+                "market_priced": False,
+                "actionability": "research_signal",
                 "probability": probability_f,
                 "edge": edge_value,
                 "edge_pp": edge_value,
@@ -4637,6 +4719,11 @@ def _mlb_first_five_pick_rows(payload: dict[str, Any]) -> list[dict[str, Any]]:
                 "line": pick.get("vegas_line"),
                 "odds": None,
                 "assumed_odds": pick.get("assumed_odds", -110),
+                "pricing_type": "assumed",
+                "line_source": "model_generated" if market == "f5_total" else "in_house_projection",
+                "odds_source": "default_assumed",
+                "market_priced": False,
+                "actionability": "research_signal",
                 "probability": probability_f,
                 "edge": edge_f,
                 "decision": str(pick.get("decision") or "PASS").upper(),

@@ -31,12 +31,13 @@ def _stub_game(home="Yankees", away="Red Sox", **kwargs):
 
 def test_decision_for_edge_gate_thresholds():
     """The edge gate is the core anti-noise improvement: only innings
-    that beat the league baseline by 3pp (LEAN) or 7pp (BET) qualify."""
+    that beat the league baseline by 3pp (LEAN) or 10pp (BET) qualify."""
     from models.mlb_inning.mlb_inning_probability import _decision_for_edge
 
     assert _decision_for_edge(probability=0.50, edge=0.02) == "PASS"   # too small
     assert _decision_for_edge(probability=0.45, edge=0.04) == "LEAN"   # clears LEAN gate
-    assert _decision_for_edge(probability=0.55, edge=0.08) == "BET"    # clears BET gate
+    assert _decision_for_edge(probability=0.55, edge=0.08) == "LEAN"   # below stricter BET gate
+    assert _decision_for_edge(probability=0.55, edge=0.11) == "BET"    # clears BET gate
     assert _decision_for_edge(probability=0.42, edge=0.05) == "PASS"   # edge OK but prob too low
 
 

@@ -250,6 +250,7 @@ def fit_calibration(
         shift = mean_actual - mean_pred
         metadata = {
             "mode": "platt_shift",
+            "variant": "new",
             "shift": shift,
             "validation_rows": int(len(validation_y)),
         }
@@ -260,6 +261,7 @@ def fit_calibration(
     calibrated = np.clip(calibrator.predict(raw_probabilities), 0.03, 0.97)
     metadata = {
         "mode": "isotonic",
+        "variant": "new",
         "validation_rows": int(len(validation_y)),
         "pre_calibration": _evaluate_probabilities(validation_y, raw_probabilities),
         "post_calibration": _evaluate_probabilities(validation_y, calibrated),
@@ -364,7 +366,8 @@ def _is_v2_artifact(artifact: dict[str, Any]) -> bool:
     would crash at `predict_proba`).
     """
     metadata = artifact.get("metadata") or {}
-    return metadata.get("variant") == "new"
+    architecture = str(metadata.get("architecture") or "")
+    return metadata.get("variant") == "new" and "HistGradientBoosting" in architecture
 
 
 def load_moneyline_v2() -> dict[str, Any]:

@@ -338,6 +338,11 @@ def test_basketball_props_are_stable_and_apply_next_man_up():
     ]
     assert all(pick["scope"] == "player" and pick["result"] == "pending" for pick in picks)
     assert all(pick["player_name"] != "Star Player" for pick in picks)
+    assert all(pick["pricing_type"] == "synthetic" for pick in picks)
+    assert all(pick["line_source"] == "in_house_baseline" for pick in picks)
+    assert all(pick["odds_source"] == "default_assumed" for pick in picks)
+    assert all(pick["market_priced"] is False for pick in picks)
+    assert all(pick["actionability"] == "research_signal" for pick in picks)
     assert any("Next-man-up redistribution" in " ".join(pick["key_factors"]) for pick in picks)
 
 
@@ -351,6 +356,11 @@ def test_mlb_props_use_actual_markets_and_reject_reliever_starter_lines():
     assert "hits_runs_rbis" in {pick["stat_key"] for pick in picks}
     assert all(pick["odds"] != -110 and pick["decision"] in {"BET", "LEAN", "PASS"} for pick in picks)
     assert all(pick["market_source"] == "DraftKings via ESPN" for pick in picks)
+    assert all(pick["pricing_type"] == "market" for pick in picks)
+    assert all(pick["line_source"] == "posted_market" for pick in picks)
+    assert all(pick["odds_source"] == "posted_market" for pick in picks)
+    assert all(pick["market_priced"] is True for pick in picks)
+    assert all(pick["actionability"] == "market_priced" for pick in picks)
     assert all(pick["market_implied_probability"] is not None for pick in picks)
     assert all(pick["player_name"] != "Away Pitcher" for pick in picks)
     assert all(not (pick["stat_key"] == "hits" and pick["line"] == 0.5) for pick in picks)

@@ -263,6 +263,11 @@ def _game_props(
                         "sample_games": player["games"],
                         "injury_status": str(injury.get("status") or "Healthy"),
                         "redistribution_from": injured_stars,
+                        "pricing_type": "synthetic",
+                        "line_source": "in_house_baseline",
+                        "odds_source": "default_assumed",
+                        "market_priced": False,
+                        "actionability": "research_signal",
                     },
                 )
                 score = abs(projection - line) / max(0.5, player["deviation"][stat_key]) + probability
