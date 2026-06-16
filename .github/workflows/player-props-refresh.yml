@@ -47,6 +47,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Rebuild player-prop outcome ledger
+        run: python scripts/rebuild_pick_outcome_ledger.py
+
+      - name: Train player-prop ML artifacts
+        run: python scripts/train_player_prop_ml.py --force
+
       - name: Refresh in-house player props
         run: python scripts/refresh_player_props.py --date "${{ github.event.inputs.date || '' }}"
 
@@ -57,25 +63,33 @@ jobs:
           git config user.name  "${GITHUB_ACTOR}"
           git config user.email "${ACTOR_EMAIL}"
           BRANCH="${GITHUB_REF_NAME:-main}"
-          if [ -z "$(git status --porcelain -- data/player_props_cache)" ]; then
-            echo "No player-props cache change; skipping commit."
+          if [ -z "$(git status --porcelain -- data/player_props_cache data/calibration/outcome_ledger.json player_props/artifacts)" ]; then
+            echo "No player-props cache or ML artifact change; skipping commit."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           GENERATED_CACHE="${RUNNER_TEMP}/player-props-latest.json"
+          GENERATED_LEDGER="${RUNNER_TEMP}/player-props-outcome-ledger.json"
+          GENERATED_ARTIFACTS="${RUNNER_TEMP}/player-props-artifacts"
           cp data/player_props_cache/latest.json "$GENERATED_CACHE"
+          cp data/calibration/outcome_ledger.json "$GENERATED_LEDGER"
+          mkdir -p "$GENERATED_ARTIFACTS"
+          cp -R player_props/artifacts/. "$GENERATED_ARTIFACTS"/
           for attempt in 1 2 3; do
             git fetch origin "$BRANCH"
             git reset --hard "origin/${BRANCH}"
             python scripts/merge_player_props_cache_payload.py "$GENERATED_CACHE"
-            git add data/player_props_cache
+            mkdir -p player_props/artifacts data/calibration
+            cp "$GENERATED_LEDGER" data/calibration/outcome_ledger.json
+            cp -R "$GENERATED_ARTIFACTS"/. player_props/artifacts/
+            git add data/player_props_cache data/calibration/outcome_ledger.json player_props/artifacts
             if git diff --cached --quiet; then
               echo "No staged player-props change after merge; skipping commit."
               echo "changed=false" >> "$GITHUB_OUTPUT"
               exit 0
             fi
             CACHE_DATE=$(python -c "import json; print(json.load(open('data/player_props_cache/latest.json'))['date'])")
-            git commit -m "chore(props): refresh player props for ${CACHE_DATE}"
+            git commit -m "chore(props): refresh ML player props for ${CACHE_DATE}"
             if git push origin "HEAD:${BRANCH}"; then
               echo "changed=true" >> "$GITHUB_OUTPUT"
               exit 0

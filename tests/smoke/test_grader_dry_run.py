@@ -393,6 +393,64 @@ def test_grade_aneesah_morrow_total_rebounds_from_boxscore():
     assert pickgrader_server.grade_pick(pick, high_scoring_game) == "pending"
 
 
+def test_grade_expanded_wnba_combo_props_from_boxscore():
+    import pickgrader_server
+
+    summary = {
+        "boxscore": {
+            "players": [{
+                "statistics": [{
+                    "labels": ["MIN", "PTS", "REB", "AST", "3PM", "STL", "BLK"],
+                    "athletes": [{
+                        "athlete": {"displayName": "Napheesa Collier"},
+                        "stats": ["35", "22", "9", "5", "3", "2", "1"],
+                    }],
+                }],
+            }],
+        },
+    }
+
+    assert pickgrader_server.grade_player_prop_pick(
+        {
+            "scope": "player",
+            "sport": "WNBA",
+            "player_name": "Napheesa Collier",
+            "stat_key": "points_rebounds_assists",
+            "selection": "Over",
+            "line": 34.5,
+            "pick": "Napheesa Collier Over 34.5 Points + Rebounds + Assists",
+        },
+        {},
+        summary,
+    ) == "win"
+    assert pickgrader_server.grade_player_prop_pick(
+        {
+            "scope": "player",
+            "sport": "WNBA",
+            "player_name": "Napheesa Collier",
+            "stat_key": "steals_blocks",
+            "selection": "Over",
+            "line": 2.5,
+            "pick": "Napheesa Collier Over 2.5 Steals + Blocks",
+        },
+        {},
+        summary,
+    ) == "win"
+    assert pickgrader_server.grade_player_prop_pick(
+        {
+            "scope": "player",
+            "sport": "WNBA",
+            "player_name": "Napheesa Collier",
+            "stat_key": "three_pointers_made",
+            "selection": "Under",
+            "line": 3.5,
+            "pick": "Napheesa Collier Under 3.5 3PM",
+        },
+        {},
+        summary,
+    ) == "win"
+
+
 def test_grade_external_threshold_player_prop():
     import pickgrader_server
 
@@ -475,3 +533,56 @@ def test_grade_structured_mlb_player_props_from_boxscore():
     assert pickgrader_server.grade_player_prop_pick(hitter, {}, summary) == "win"
     assert pickgrader_server.grade_player_prop_pick(pitcher, {}, summary) == "win"
     assert pickgrader_server.grade_player_prop_pick(hrr, {}, summary) == "win"
+
+
+def test_grade_expanded_mlb_player_props_from_boxscore():
+    import pickgrader_server
+
+    summary = {
+        "boxscore": {
+            "players": [{
+                "statistics": [
+                    {
+                        "labels": ["H-AB", "H", "R", "RBI", "BB", "K", "2B", "3B", "HR", "SB"],
+                        "athletes": [{
+                            "athlete": {"displayName": "Otto Lopez"},
+                            "stats": ["3-5", "3", "2", "1", "1", "0", "1", "0", "1", "1"],
+                        }],
+                    },
+                    {
+                        "labels": ["IP", "H", "ER", "BB", "K"],
+                        "athletes": [{
+                            "athlete": {"displayName": "Sandy Alcantara"},
+                            "stats": ["6.1", "4", "2", "1", "8"],
+                        }],
+                    },
+                ],
+            }],
+        },
+    }
+
+    assert pickgrader_server.grade_player_prop_pick(
+        {"scope": "player", "sport": "MLB", "player_name": "Otto Lopez", "stat_key": "total_bases", "selection": "Over", "line": 6.5, "pick": "Otto Lopez Over 6.5 Total Bases"},
+        {},
+        summary,
+    ) == "win"
+    assert pickgrader_server.grade_player_prop_pick(
+        {"scope": "player", "sport": "MLB", "player_name": "Otto Lopez", "stat_key": "singles", "selection": "Under", "line": 1.5, "pick": "Otto Lopez Under 1.5 Singles"},
+        {},
+        summary,
+    ) == "win"
+    assert pickgrader_server.grade_player_prop_pick(
+        {"scope": "player", "sport": "MLB", "player_name": "Otto Lopez", "stat_key": "batter_walks", "selection": "Over", "line": 0.5, "pick": "Otto Lopez Over 0.5 Walks"},
+        {},
+        summary,
+    ) == "win"
+    assert pickgrader_server.grade_player_prop_pick(
+        {"scope": "player", "sport": "MLB", "player_name": "Sandy Alcantara", "stat_key": "pitcher_outs_recorded", "selection": "Over", "line": 18.5, "pick": "Sandy Alcantara Over 18.5 Outs Recorded"},
+        {},
+        summary,
+    ) == "win"
+    assert pickgrader_server.grade_player_prop_pick(
+        {"scope": "player", "sport": "MLB", "player_name": "Sandy Alcantara", "stat_key": "pitcher_earned_runs_allowed", "selection": "Under", "line": 2.5, "pick": "Sandy Alcantara Under 2.5 Earned Runs Allowed"},
+        {},
+        summary,
+    ) == "win"

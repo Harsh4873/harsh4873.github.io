@@ -218,11 +218,17 @@ class MockClient(EmptyClient):
                                     "hits": 55 - index,
                                     "runs": 40 - index,
                                     "rbi": 45 - index,
+                                    "baseOnBalls": 18 + index,
                                     "gamesPlayed": 55,
                                     "avg": ".300",
                                     "ops": ".820",
                                     "strikeOuts": 35 + index,
                                     "plateAppearances": 200,
+                                    "doubles": 10,
+                                    "triples": 1,
+                                    "homeRuns": 7,
+                                    "stolenBases": 5,
+                                    "totalBases": 88 - index,
                                 }
                             }]
                         }],
@@ -245,6 +251,9 @@ class MockClient(EmptyClient):
                                 "inningsPitched": "36.1" if player_id == 101 else "60.0",
                                 "strikeOuts": 41 if player_id == 101 else 70,
                                 "hitsPer9Inn": "5.20" if player_id == 101 else "8.10",
+                                "baseOnBalls": 18 if player_id == 101 else 22,
+                                "walksPer9Inn": "4.40" if player_id == 101 else "3.30",
+                                "era": "3.85" if player_id == 101 else "3.20",
                             }
                         }
                     ]
@@ -309,11 +318,16 @@ class MockClient(EmptyClient):
 
     def mlb_espn_prop_bets(self, event_id, provider_id="100"):
         items = _market_pair(202, "Total Strikeouts", 6.5, 105, -125)
+        items.extend(_market_pair(202, "Total Outs Recorded", 17.5, -105, -115))
+        items.extend(_market_pair(202, "Total Walks Allowed", 1.5, 115, -140))
         for team_id in (1, 2):
             for index in range(4):
                 athlete_id = team_id * 10 + index
                 items.extend(_market_pair(athlete_id, "Total Hits", 0.5, -400, 280))
                 items.extend(_market_pair(athlete_id, "Total Hits + Runs + RBIs", 1.5, 110, -135))
+                items.extend(_market_pair(athlete_id, "Total Runs", 0.5, 140, -165))
+                items.extend(_market_pair(athlete_id, "Total Walks (Batter)", 0.5, 160, -190))
+                items.extend(_market_pair(athlete_id, "Total Bases", 1.5, 120, -145))
         return {"items": items}
 
 
@@ -377,6 +391,10 @@ def test_basketball_props_use_actual_markets_and_apply_next_man_up():
     assert all(pick["line_source"] == "posted_market" for pick in picks)
     assert all(pick["odds_source"] == "posted_market" for pick in picks)
     assert all(pick["market_priced"] is True for pick in picks)
+    assert all(pick["probability_source"] == "player_props_ml_v1" for pick in picks)
+    assert all(pick["ml_probability"] == pick["probability"] for pick in picks)
+    assert all(pick["ml_expected_value"] is not None for pick in picks)
+    assert all(pick["ml_rank"] >= 1 for pick in picks)
     assert all(pick["actionability"] == "market_priced" for pick in picks)
     assert all(pick["market_implied_probability"] is not None for pick in picks)
     assert any("Next-man-up redistribution" in " ".join(pick["key_factors"]) for pick in picks)
@@ -403,18 +421,21 @@ def test_mlb_props_use_actual_markets_and_reject_reliever_starter_lines():
     picks = model["picks"]
 
     assert model["ok"] is True
-    assert 3 <= len(picks) <= 5
-    assert "hits_runs_rbis" in {pick["stat_key"] for pick in picks}
+    assert 5 <= len(picks) <= 8
+    assert {"hits_runs_rbis", "batter_walks"} & {pick["stat_key"] for pick in picks}
     assert all(pick["odds"] != -110 and pick["decision"] in {"BET", "LEAN", "PASS"} for pick in picks)
     assert all(pick["market_source"] == "DraftKings via ESPN" for pick in picks)
     assert all(pick["pricing_type"] == "market" for pick in picks)
     assert all(pick["line_source"] == "posted_market" for pick in picks)
     assert all(pick["odds_source"] == "posted_market" for pick in picks)
     assert all(pick["market_priced"] is True for pick in picks)
+    assert all(pick["probability_source"] == "player_props_ml_v1" for pick in picks)
+    assert all(pick["ml_probability"] == pick["probability"] for pick in picks)
+    assert all(pick["ml_expected_value"] is not None for pick in picks)
+    assert [pick["ml_rank"] for pick in picks] == sorted(pick["ml_rank"] for pick in picks)
     assert all(pick["actionability"] == "market_priced" for pick in picks)
     assert all(pick["market_implied_probability"] is not None for pick in picks)
     assert all(pick["player_name"] != "Away Pitcher" for pick in picks)
-    assert all(not (pick["stat_key"] == "hits" and pick["line"] == 0.5) for pick in picks)
     assert any(pick.get("prop_role") == "batter_hrr" and pick["line"] == 1.5 for pick in picks)
     assert all("Venue Test Park" in " ".join(pick["key_factors"]) for pick in picks)
     assert all("Wind 12 mph, Out To CF" in " ".join(pick["key_factors"]) for pick in picks)

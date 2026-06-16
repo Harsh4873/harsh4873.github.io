@@ -101,6 +101,39 @@ def test_calibration_leaves_units_alone_when_no_edge_or_market_price_exists():
     assert payload["models"]["nba"]["picks"][0]["units"] == 1.13
 
 
+def test_ml_player_props_skip_old_calibration_but_remain_ledger_trainable(tmp_path: Path):
+    active = {
+        "version": "test-ml-skip",
+        "minimum_group_samples": 1,
+        "global": {"intercept": -3.0, "slope": 1.0, "samples": 100},
+        "groups": {},
+    }
+    pick = _pick(
+        probability_source="player_props_ml_v1",
+        ml_probability=0.7,
+        ml_calibration_excluded=True,
+        result="win",
+    )
+    payload = {"date": "2026-06-01", "models": {"mlb_player_props": {"picks": [pick]}}}
+
+    apply_calibration_to_payload(payload, active)
+    adjusted = payload["models"]["mlb_player_props"]["picks"][0]
+
+    assert adjusted["probability"] == 0.7
+    assert "calibration" not in adjusted
+
+    props_dir = tmp_path / "data" / "player_props_cache"
+    model_dir = tmp_path / "data" / "model_cache"
+    props_dir.mkdir(parents=True)
+    model_dir.mkdir(parents=True)
+    (props_dir / "2026-06-01.json").write_text(json.dumps(payload), encoding="utf-8")
+    (tmp_path / "data" / "cannon_mlb_daily.json").write_text('{"picks":[]}', encoding="utf-8")
+
+    ledger = build_outcome_ledger(tmp_path)
+    assert ledger["summary"]["total_picks"] == 1
+    assert ledger["records"][0]["raw_probability"] == 0.7
+
+
 def test_pick_level_calibration_exclusion_skips_adjustment_and_training(tmp_path: Path):
     active = {
         "version": "test-v4",

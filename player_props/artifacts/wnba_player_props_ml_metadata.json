@@ -1,0 +1,35 @@
+{
+  "bootstrap_samples": 3360,
+  "feature_names": [
+    "line",
+    "odds_implied",
+    "baseline_probability",
+    "baseline_projection",
+    "projection_over_line",
+    "selection_over",
+    "market_family_hash",
+    "market_priced"
+  ],
+  "force_active": true,
+  "ledger_samples": 88,
+  "market_families": [
+    "points",
+    "rebounds",
+    "assists",
+    "pr",
+    "pa",
+    "pra",
+    "3pm",
+    "steals",
+    "blocks",
+    "stocks"
+  ],
+  "model_type": "GradientBoostingClassifier",
+  "sport": "WNBA",
+  "training_fingerprint": "06457d59ac257339fa3c5cf0857ae0284e5020750cef37d5b5f31d4a3e72d664",
+  "training_sources": [
+    "historical_player_game_stat_family_priors",
+    "pickledger_outcome_ledger"
+  ],
+  "version": "player_props_ml_v1.0.0"
+}

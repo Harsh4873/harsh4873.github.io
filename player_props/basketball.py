@@ -16,19 +16,88 @@ from .schema import (
     normalize_name,
     safe_float,
 )
+from .ml import apply_ml_to_pick, assign_ml_ranks, ev_sort_key, market_family_for_stat
 
 
-STAT_LABELS = {
-    "points": "Points",
-    "totalRebounds": "Rebounds",
-    "assists": "Assists",
-}
-BASKETBALL_MARKET_TYPES = {
-    "Points Milestones": ("points", "Points"),
-    "Rebounds Milestones": ("totalRebounds", "Rebounds"),
-    "Assists Milestones": ("assists", "Assists"),
+BASKETBALL_STAT_DEFINITIONS = {
+    "points": {"label": "Points", "components": ("points",)},
+    "totalRebounds": {"label": "Rebounds", "components": ("totalRebounds",)},
+    "assists": {"label": "Assists", "components": ("assists",)},
+    "points_rebounds": {"label": "Points + Rebounds", "components": ("points", "totalRebounds")},
+    "points_assists": {"label": "Points + Assists", "components": ("points", "assists")},
+    "points_rebounds_assists": {
+        "label": "Points + Rebounds + Assists",
+        "components": ("points", "totalRebounds", "assists"),
+    },
+    "three_pointers_made": {"label": "3-Point Field Goals", "components": ("three_pointers_made",)},
+    "steals": {"label": "Steals", "components": ("steals",)},
+    "blocks": {"label": "Blocks", "components": ("blocks",)},
+    "steals_blocks": {"label": "Steals + Blocks", "components": ("steals", "blocks")},
 }
 OUT_STATUSES = {"out", "doubtful", "injured reserve", "suspension"}
+
+STAT_LABELS = {
+    key: str(definition["label"])
+    for key, definition in BASKETBALL_STAT_DEFINITIONS.items()
+}
+
+BASKETBALL_GAMELOG_ALIASES = {
+    "min": "minutes",
+    "minutes": "minutes",
+    "pts": "points",
+    "points": "points",
+    "reb": "totalRebounds",
+    "rebounds": "totalRebounds",
+    "totalrebounds": "totalRebounds",
+    "ast": "assists",
+    "assists": "assists",
+    "3pm": "three_pointers_made",
+    "fg3m": "three_pointers_made",
+    "threepointfieldgoalsmade": "three_pointers_made",
+    "threepointfieldgoals": "three_pointers_made",
+    "stl": "steals",
+    "steals": "steals",
+    "blk": "blocks",
+    "blocks": "blocks",
+}
+
+BASKETBALL_MARKET_TYPES = {
+    "points": ("points", "Points"),
+    "playerpoints": ("points", "Points"),
+    "totalpoints": ("points", "Points"),
+    "pointsmilestones": ("points", "Points"),
+    "rebounds": ("totalRebounds", "Rebounds"),
+    "playerrebounds": ("totalRebounds", "Rebounds"),
+    "totalrebounds": ("totalRebounds", "Rebounds"),
+    "reboundsmilestones": ("totalRebounds", "Rebounds"),
+    "assists": ("assists", "Assists"),
+    "playerassists": ("assists", "Assists"),
+    "totalassists": ("assists", "Assists"),
+    "assistsmilestones": ("assists", "Assists"),
+    "pointsrebounds": ("points_rebounds", "Points + Rebounds"),
+    "pointstotalrebounds": ("points_rebounds", "Points + Rebounds"),
+    "pointsreboundsmilestones": ("points_rebounds", "Points + Rebounds"),
+    "pointsassists": ("points_assists", "Points + Assists"),
+    "pointsassistsmilestones": ("points_assists", "Points + Assists"),
+    "pointsassistsrebounds": ("points_rebounds_assists", "Points + Rebounds + Assists"),
+    "pointsreboundsassists": ("points_rebounds_assists", "Points + Rebounds + Assists"),
+    "pramilestones": ("points_rebounds_assists", "Points + Rebounds + Assists"),
+    "threepointfieldgoals": ("three_pointers_made", "3-Point Field Goals"),
+    "threepointfieldgoalsmade": ("three_pointers_made", "3-Point Field Goals"),
+    "threepointsmade": ("three_pointers_made", "3-Point Field Goals"),
+    "3pointfieldgoals": ("three_pointers_made", "3-Point Field Goals"),
+    "3ptfieldgoals": ("three_pointers_made", "3-Point Field Goals"),
+    "3pm": ("three_pointers_made", "3-Point Field Goals"),
+    "steals": ("steals", "Steals"),
+    "totalsteals": ("steals", "Steals"),
+    "stealsmilestones": ("steals", "Steals"),
+    "blocks": ("blocks", "Blocks"),
+    "totalblocks": ("blocks", "Blocks"),
+    "blocksmilestones": ("blocks", "Blocks"),
+    "stealsblocks": ("steals_blocks", "Steals + Blocks"),
+    "stocks": ("steals_blocks", "Steals + Blocks"),
+    "stealsblocksmilestones": ("steals_blocks", "Steals + Blocks"),
+}
 
 
 def _event_teams(event: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
@@ -102,6 +171,14 @@ def _target_value(row: dict[str, Any]) -> tuple[float, str]:
     return safe_float(str(raw_value).replace("+", "")), display
 
 
+def _canonical_market_name(value: str) -> str:
+    return "".join(ch for ch in str(value or "").lower() if ch.isalnum())
+
+
+def _is_milestone_market(type_name: str, display: str) -> bool:
+    return "milestone" in str(type_name or "").lower() or "+" in str(display or "")
+
+
 def _basketball_market_index(
     client: Any,
     league: str,
@@ -117,10 +194,12 @@ def _basketball_market_index(
     except Exception:
         return {}
 
+    grouped: dict[tuple[str, str, float, str], list[dict[str, Any]]] = defaultdict(list)
     markets: dict[str, dict[str, list[dict[str, Any]]]] = defaultdict(lambda: defaultdict(list))
     for row in payload.get("items") or []:
         type_name = str((row.get("type") or {}).get("name") or "")
-        if type_name not in BASKETBALL_MARKET_TYPES:
+        market_type = BASKETBALL_MARKET_TYPES.get(_canonical_market_name(type_name))
+        if not market_type:
             continue
         athlete_id = _athlete_ref_id(row)
         if not athlete_id:
@@ -129,52 +208,100 @@ def _basketball_market_index(
         odds = _american_odds((((row.get("odds") or {}).get("american") or {}).get("value")))
         if threshold <= 0 or odds is None:
             continue
-        stat_key, stat_label = BASKETBALL_MARKET_TYPES[type_name]
+        stat_key, stat_label = market_type
+        if _is_milestone_market(type_name, display):
+            markets[athlete_id][stat_key].append(
+                {
+                    "stat_key": stat_key,
+                    "stat_label": stat_label,
+                    "line": max(0.0, threshold - 0.5),
+                    "threshold": threshold,
+                    "display": display or f"{threshold:g}+",
+                    "over_odds": odds,
+                    "market_type": type_name,
+                    "market_source": source,
+                    "market_updated_at": str(row.get("lastUpdated") or ""),
+                    "market_format": "milestone",
+                }
+            )
+            continue
+        grouped[(athlete_id, stat_key, threshold, type_name)].append(row)
+
+    for (athlete_id, stat_key, line, type_name), sides in grouped.items():
+        if len(sides) < 2:
+            continue
+        market_type = BASKETBALL_MARKET_TYPES.get(_canonical_market_name(type_name))
+        if not market_type:
+            continue
+        _, stat_label = market_type
+        over_odds = _american_odds((((sides[0].get("odds") or {}).get("american") or {}).get("value")))
+        under_odds = _american_odds((((sides[1].get("odds") or {}).get("american") or {}).get("value")))
+        if over_odds is None or under_odds is None:
+            continue
         markets[athlete_id][stat_key].append(
             {
                 "stat_key": stat_key,
                 "stat_label": stat_label,
-                "line": threshold - 0.5,
-                "threshold": threshold,
-                "display": display or f"{threshold:g}+",
-                "odds": odds,
+                "line": line,
+                "display": f"{line:g}",
+                "over_odds": over_odds,
+                "under_odds": under_odds,
                 "market_type": type_name,
                 "market_source": source,
-                "market_updated_at": str(row.get("lastUpdated") or ""),
+                "market_updated_at": str(sides[0].get("lastUpdated") or ""),
+                "market_format": "total",
             }
         )
     return {player_id: dict(by_stat) for player_id, by_stat in markets.items()}
 
 
-def _best_milestone_market(
+def _best_basketball_market(
     markets: list[dict[str, Any]],
     projection: float,
     sigma: float,
 ) -> dict[str, Any] | None:
     best: dict[str, Any] | None = None
-    best_key: tuple[float, float, float] | None = None
+    best_key: tuple[float, float, float, str] | None = None
     for market in markets:
         line = safe_float(market.get("line"))
-        odds = _american_odds(market.get("odds"))
-        implied = american_implied_probability(odds)
-        if line < 0 or odds is None or implied is None:
+        over_odds = _american_odds(market.get("over_odds") or market.get("odds"))
+        if line < 0 or over_odds is None:
             continue
-        probability = normal_probability(projection, line, sigma, "Over")
-        key = (
-            probability - implied,
-            probability,
-            -abs(projection - line),
-        )
-        if best_key is None or key > best_key:
-            best_key = key
-            best = {**market, "probability": probability, "market_implied_probability": implied}
+        over_probability = normal_probability(projection, line, sigma, "Over")
+        choices = [("Over", over_probability, over_odds)]
+        under_odds = _american_odds(market.get("under_odds"))
+        if under_odds is not None:
+            choices.append(("Under", 1.0 - over_probability, under_odds))
+        for selection, probability, odds in choices:
+            implied = american_implied_probability(odds)
+            if implied is None:
+                continue
+            key = (
+                probability - implied,
+                probability,
+                -abs(projection - line),
+                selection,
+            )
+            if best_key is None or key > best_key:
+                best_key = key
+                best = {
+                    **market,
+                    "selection": selection,
+                    "probability": probability,
+                    "odds": odds,
+                    "market_implied_probability": implied,
+                }
     return best
 
 
 def _parse_gamelog(payload: dict[str, Any]) -> dict[str, Any] | None:
-    names = [str(value) for value in payload.get("names") or []]
-    wanted = {"minutes", *STAT_LABELS}
-    if not wanted.issubset(set(names)):
+    raw_names = [str(value) for value in payload.get("names") or []]
+    names = [
+        BASKETBALL_GAMELOG_ALIASES.get(_canonical_market_name(value), str(value))
+        for value in raw_names
+    ]
+    minimum = {"minutes", "points", "totalRebounds", "assists"}
+    if not minimum.issubset(set(names)):
         return None
 
     rows: list[dict[str, float]] = []
@@ -188,27 +315,40 @@ def _parse_gamelog(payload: dict[str, Any]) -> dict[str, Any] | None:
                 values = event.get("stats") or []
                 if len(values) < len(names):
                     continue
-                rows.append({name: safe_float(values[index]) for index, name in enumerate(names)})
+                row = {name: safe_float(values[index]) for index, name in enumerate(names)}
+                for stat_key, definition in BASKETBALL_STAT_DEFINITIONS.items():
+                    components = tuple(definition["components"])
+                    if stat_key in row:
+                        continue
+                    if all(component in row for component in components):
+                        row[stat_key] = sum(row[component] for component in components)
+                rows.append(row)
     if not rows:
         return None
 
+    available_stats = [
+        stat_key
+        for stat_key in BASKETBALL_STAT_DEFINITIONS
+        if all(stat_key in row for row in rows)
+    ]
     averages = {
         stat: statistics.fmean(row[stat] for row in rows)
-        for stat in ("minutes", *STAT_LABELS)
+        for stat in ("minutes", *available_stats)
     }
     recent = {
         stat: statistics.fmean(row[stat] for row in rows[:5])
-        for stat in ("minutes", *STAT_LABELS)
+        for stat in ("minutes", *available_stats)
     }
     deviations = {
         stat: statistics.pstdev([row[stat] for row in rows]) if len(rows) > 1 else max(1.0, averages[stat] * 0.25)
-        for stat in STAT_LABELS
+        for stat in available_stats
     }
     return {
         "games": len(rows),
         "average": averages,
         "recent": recent,
         "deviation": deviations,
+        "available_stats": available_stats,
     }
 
 
@@ -295,7 +435,7 @@ def _game_props(
             max_workers,
         )
 
-    candidates: list[tuple[float, dict[str, Any]]] = []
+    candidates: list[dict[str, Any]] = []
     for side, opponent_side in (("away", "home"), ("home", "away")):
         team_data = team_payloads[side]
         opponent_data = team_payloads[opponent_side]
@@ -318,7 +458,10 @@ def _game_props(
         next_men = {player["id"] for player in healthy[:3]} if injured_stars else set()
         opponent_factor, opponent_factors = _opponent_context(opponent_data["stats"])
         for player in healthy:
+            available_stats = set(player.get("available_stats") or player["average"].keys())
             for stat_key, stat_label in STAT_LABELS.items():
+                if stat_key not in available_stats:
+                    continue
                 season_avg = player["average"][stat_key]
                 recent_avg = player["recent"][stat_key]
                 if season_avg <= 0:
@@ -341,30 +484,38 @@ def _game_props(
                     projection *= 0.92
                     factors.append(f"Player injury status {injury.get('status')}: -8% availability adjustment")
                 if player["id"] in next_men:
-                    redistribution = {"points": 1.08, "assists": 1.06, "totalRebounds": 1.04}[stat_key]
+                    redistribution = {
+                        "points": 1.08,
+                        "assists": 1.06,
+                        "totalRebounds": 1.04,
+                        "points_rebounds": 1.06,
+                        "points_assists": 1.07,
+                        "points_rebounds_assists": 1.065,
+                        "three_pointers_made": 1.05,
+                    }.get(stat_key, 1.03)
                     projection *= redistribution
                     factors.append(
                         f"Next-man-up redistribution from unavailable star(s): {', '.join(injured_stars)}"
                     )
 
                 sigma = max(player["deviation"][stat_key], math.sqrt(max(1.0, projection)) * 0.65)
-                market = _best_milestone_market(
+                market = _best_basketball_market(
                     (market_index.get(player["id"]) or {}).get(stat_key, []),
                     projection,
                     sigma,
                 )
                 if market:
                     line = safe_float(market.get("line"))
-                    selection = "Over"
+                    selection = str(market.get("selection") or "Over")
                     probability = safe_float(market.get("probability"))
                     odds = _american_odds(market.get("odds"))
                     factors = [
-                        f"Posted {market['display']} {stat_label.lower()} milestone at {int(odds):+d}",
+                        f"Posted {market['display']} {stat_label.lower()} at {int(odds):+d}",
                         *factors,
                     ]
                     reason = (
                         f"{player['name']} projects for {projection:.2f} {stat_label.lower()} versus "
-                        f"a posted {market['display']} milestone after recent form, availability, opponent, "
+                        f"a posted {market['display']} market after recent form, availability, opponent, "
                         f"and {'home' if side == 'home' else 'road'} context."
                     )
                     extra_pricing = {
@@ -375,6 +526,7 @@ def _game_props(
                         "actionability": "market_priced",
                         "market_source": market.get("market_source"),
                         "market_type": market.get("market_type"),
+                        "market_format": market.get("market_format"),
                         "market_updated_at": market.get("market_updated_at"),
                         "market_threshold": market.get("display"),
                     }
@@ -395,6 +547,7 @@ def _game_props(
                         "market_priced": False,
                         "actionability": "research_signal",
                     }
+                baseline_probability = probability
                 pick = build_pick(
                     sport=sport,
                     date_iso=date_iso,
@@ -424,15 +577,20 @@ def _game_props(
                         **extra_pricing,
                     },
                 )
-                score = abs(projection - line) / max(0.5, player["deviation"][stat_key]) + probability
-                candidates.append((score, pick))
+                apply_ml_to_pick(
+                    pick,
+                    baseline_probability=baseline_probability,
+                    baseline_projection=projection,
+                    market_family=market_family_for_stat(stat_key),
+                )
+                candidates.append(pick)
 
-    market_candidates = [row for row in candidates if row[1].get("market_priced") is True]
+    market_candidates = [row for row in candidates if row.get("market_priced") is True]
     selection_pool = market_candidates or candidates
-    selection_pool.sort(key=lambda row: (-row[0], row[1]["id"]))
+    selection_pool = assign_ml_ranks(selection_pool)
     selected: list[dict[str, Any]] = []
     per_player: dict[str, int] = {}
-    for _score, pick in selection_pool:
+    for pick in sorted(selection_pool, key=ev_sort_key):
         player_key = str(pick.get("player_id"))
         if per_player.get(player_key, 0) >= 2:
             continue

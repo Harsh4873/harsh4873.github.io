@@ -87,6 +87,11 @@ def main() -> int:
             failures.append(f"player-props bucket {key} failed: {bucket.get('error') or 'unknown error'}")
         elif key == "mlb_player_props" and int(bucket.get("games") or 0) > 0 and not (bucket.get("picks") or []):
             failures.append("player-props bucket mlb_player_props has scheduled games but zero picks")
+        else:
+            picks = bucket.get("picks") or []
+            market_picks = [pick for pick in picks if isinstance(pick, dict) and pick.get("market_priced") is True]
+            if market_picks and any(str(pick.get("probability_source") or "") != "player_props_ml_v1" for pick in market_picks):
+                failures.append(f"player-props bucket {key} has market-priced picks without player_props_ml_v1 probability")
 
     cannon = _read_json(REPO_ROOT / "data" / "cannon_mlb_daily.json")
     cannon_date = str((cannon or {}).get("slate_date") or (cannon or {}).get("as_of") or "")

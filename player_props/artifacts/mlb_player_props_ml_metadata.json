@@ -1,0 +1,42 @@
+{
+  "bootstrap_samples": 5712,
+  "feature_names": [
+    "line",
+    "odds_implied",
+    "baseline_probability",
+    "baseline_projection",
+    "projection_over_line",
+    "selection_over",
+    "market_family_hash",
+    "market_priced"
+  ],
+  "force_active": true,
+  "ledger_samples": 239,
+  "market_families": [
+    "hits",
+    "hrr",
+    "runs",
+    "rbis",
+    "batter_walks",
+    "batter_strikeouts",
+    "total_bases",
+    "singles",
+    "doubles",
+    "triples",
+    "home_runs",
+    "stolen_bases",
+    "strikeouts",
+    "pitcher_walks_allowed",
+    "pitcher_outs_recorded",
+    "pitcher_hits_allowed",
+    "pitcher_earned_runs_allowed"
+  ],
+  "model_type": "GradientBoostingClassifier",
+  "sport": "MLB",
+  "training_fingerprint": "6d9aa632cea09a81a146a856bbbe49c964c07f8145648d6b8e21d1fbb163fe68",
+  "training_sources": [
+    "historical_player_game_stat_family_priors",
+    "pickledger_outcome_ledger"
+  ],
+  "version": "player_props_ml_v1.0.0"
+}

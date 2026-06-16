@@ -1714,14 +1714,67 @@ def parse_player_prop_pick(pick: dict[str, Any] | str) -> dict[str, Any] | None:
         "ast": "assists",
         "assist": "assists",
         "assists": "assists",
+        "pra": "points_rebounds_assists",
+        "pointsreboundsassists": "points_rebounds_assists",
+        "pointsassistsrebounds": "points_rebounds_assists",
+        "points_rebounds_assists": "points_rebounds_assists",
+        "pr": "points_rebounds",
+        "pointsrebounds": "points_rebounds",
+        "points_rebounds": "points_rebounds",
+        "pa": "points_assists",
+        "pointsassists": "points_assists",
+        "points_assists": "points_assists",
+        "3pm": "three_pointers_made",
+        "threepointersmade": "three_pointers_made",
+        "threepointfieldgoals": "three_pointers_made",
+        "threepointfieldgoalsmade": "three_pointers_made",
+        "steal": "steals",
+        "steals": "steals",
+        "block": "blocks",
+        "blocks": "blocks",
+        "stocks": "steals_blocks",
+        "stealsblocks": "steals_blocks",
+        "steals_blocks": "steals_blocks",
         "hit": "hits",
         "hits": "hits",
         "hits_runs_rbis": "hits_runs_rbis",
         "hitsrunsrbis": "hits_runs_rbis",
         "hrr": "hits_runs_rbis",
+        "run": "runs",
+        "runs": "runs",
+        "rbi": "rbis",
+        "rbis": "rbis",
+        "batterwalks": "batter_walks",
+        "walks": "batter_walks",
+        "walksbatter": "batter_walks",
+        "batter_walks": "batter_walks",
+        "batterstrikeouts": "batter_strikeouts",
+        "strikeoutsbatter": "batter_strikeouts",
+        "batter_strikeouts": "batter_strikeouts",
+        "totalbases": "total_bases",
+        "total_bases": "total_bases",
+        "singles": "singles",
+        "doubles": "doubles",
+        "triples": "triples",
+        "homeruns": "home_runs",
+        "home_runs": "home_runs",
+        "stolenbases": "stolen_bases",
+        "stolen_bases": "stolen_bases",
         "strikeout": "strikeouts",
         "strikeouts": "strikeouts",
         "ks": "strikeouts",
+        "pitcherwalksallowed": "pitcher_walks_allowed",
+        "pitcher_walks_allowed": "pitcher_walks_allowed",
+        "walksallowed": "pitcher_walks_allowed",
+        "pitcheroutsrecorded": "pitcher_outs_recorded",
+        "pitcher_outs_recorded": "pitcher_outs_recorded",
+        "outsrecorded": "pitcher_outs_recorded",
+        "pitcherhitsallowed": "pitcher_hits_allowed",
+        "pitcher_hits_allowed": "pitcher_hits_allowed",
+        "hitsallowed": "pitcher_hits_allowed",
+        "pitcherearnedrunsallowed": "pitcher_earned_runs_allowed",
+        "pitcher_earned_runs_allowed": "pitcher_earned_runs_allowed",
+        "earnedrunsallowed": "pitcher_earned_runs_allowed",
         "totalpoints": "points",
         "totalrebounds": "rebounds",
         "totalassists": "assists",
@@ -1747,9 +1800,17 @@ def parse_player_prop_pick(pick: dict[str, Any] | str) -> dict[str, Any] | None:
                 "opponent": str(payload.get("opponent") or "").strip(),
             }
 
+    stat_text = (
+        r"points\s*\+\s*rebounds\s*\+\s*assists|points\s*\+\s*assists|"
+        r"points\s*\+\s*rebounds|steals\s*\+\s*blocks|hits\s*\+\s*runs\s*\+\s*rbis|"
+        r"earned runs allowed|outs recorded|hits allowed|walks allowed|batter strikeouts|"
+        r"stolen bases|total bases|home runs|3-?point field goals|3pm|"
+        r"points|rebounds|assists|steals|blocks|hits|runs|rbis|walks|"
+        r"strikeouts|singles|doubles|triples"
+    )
     text_patterns = (
-        r"^(.*?)\s+(points|rebounds|assists|hits|strikeouts)\s+(OVER|UNDER)\s+(\d+(?:\.\d+)?)(?:\s+vs\s+(.+?))?(?:\s*\(|$)",
-        r"^(.*?)\s+(OVER|UNDER)\s+(\d+(?:\.\d+)?)\s+(points|rebounds|assists|hits|strikeouts)(?:\s+vs\s+(.+?))?(?:\s*\(|$)",
+        rf"^(.*?)\s+({stat_text})\s+(OVER|UNDER)\s+(\d+(?:\.\d+)?)(?:\s+vs\s+(.+?))?(?:\s*\(|$)",
+        rf"^(.*?)\s+(OVER|UNDER)\s+(\d+(?:\.\d+)?)\s+({stat_text})(?:\s+vs\s+(.+?))?(?:\s*\(|$)",
     )
     for pattern_index, pattern in enumerate(text_patterns):
         prop_m = re.search(pattern, pick_text, flags=re.IGNORECASE)
@@ -1759,23 +1820,29 @@ def parse_player_prop_pick(pick: dict[str, Any] | str) -> dict[str, Any] | None:
             player_name, stat_label, selection, line, opponent = prop_m.groups()
         else:
             player_name, selection, line, stat_label, opponent = prop_m.groups()
+        player_lower = normalize(player_name)
+        if " to win" in f" {player_lower}" or " moneyline" in f" {player_lower}" or player_lower.endswith(" ml"):
+            continue
         return {
             "player_name": player_name.strip(),
-            "stat_key": stat_aliases[stat_label.strip().lower()],
+            "stat_key": stat_aliases[re.sub(r"[^a-z0-9]+", "", stat_label.strip().lower())],
             "selection": selection.strip().upper(),
             "line": float(line),
             "opponent": str(opponent or "").strip(),
         }
 
     threshold_m = re.search(
-        r"^(.*?)\s+(\d+(?:\.\d+)?)\+\s+(points|rebounds|assists|hits|strikeouts)(?:\s+vs\s+(.+?))?(?:\s*\(|$)",
+        rf"^(.*?)\s+(\d+(?:\.\d+)?)\+\s+({stat_text})(?:\s+vs\s+(.+?))?(?:\s*\(|$)",
         pick_text,
         flags=re.IGNORECASE,
     )
     if threshold_m:
+        normalized_stat = re.sub(r"[^a-z0-9]+", "", threshold_m.group(3).strip().lower())
+        if normalized_stat not in stat_aliases:
+            return None
         return {
             "player_name": threshold_m.group(1).strip(),
-            "stat_key": stat_aliases[threshold_m.group(3).strip().lower()],
+            "stat_key": stat_aliases[normalized_stat],
             "selection": "AT_LEAST",
             "line": float(threshold_m.group(2)),
             "opponent": str(threshold_m.group(4) or "").strip(),
@@ -2028,37 +2095,31 @@ def _summary_stat_value_to_float(value: Any) -> float | None:
         return None
 
 
-def _extract_nba_player_stat(summary: dict[str, Any], player_name: str, stat_key: str) -> float | None:
-    if stat_key == "hits_runs_rbis":
-        values = [
-            _extract_nba_player_stat(summary, player_name, component)
-            for component in ("hits", "runs", "rbis")
-        ]
-        return sum(values) if all(value is not None for value in values) else None
-
-    label_targets = {
-        "points": {"PTS"},
-        "rebounds": {"REB", "TREB", "TOTREB", "TOTAL REBOUNDS"},
-        "assists": {"AST"},
-        "hits": {"H", "HITS"},
-        "runs": {"R", "RUNS"},
-        "rbis": {"RBI", "RBIS", "RUNS BATTED IN"},
-        "strikeouts": {"K", "SO", "STRIKEOUTS"},
-    }
-    targets = label_targets.get(stat_key)
-    if not targets:
+def _summary_innings_to_outs(value: Any) -> float | None:
+    text = str(value or "").strip()
+    if not text:
+        return None
+    if "." not in text:
+        try:
+            return float(text) * 3.0
+        except (TypeError, ValueError):
+            return None
+    whole, partial = text.split(".", 1)
+    try:
+        return (float(whole) * 3.0) + min(2.0, max(0.0, float(partial[:1] or 0)))
+    except (TypeError, ValueError):
         return None
 
+
+def _extract_player_label_values(summary: dict[str, Any], player_name: str) -> dict[str, float]:
+    values: dict[str, float] = {}
     boxscore = summary.get("boxscore", {}) if isinstance(summary, dict) else {}
     players = boxscore.get("players", []) if isinstance(boxscore, dict) else []
     for team_block in players if isinstance(players, list) else []:
         stat_sections = team_block.get("statistics", []) if isinstance(team_block, dict) else []
         for section in stat_sections if isinstance(stat_sections, list) else []:
             raw_labels = section.get("labels", []) if isinstance(section, dict) else []
-            labels = [str(label).strip().upper() for label in raw_labels if str(label).strip()]
-            stat_idx = next((idx for idx, label in enumerate(labels) if label in targets), None)
-            if stat_idx is None:
-                continue
+            labels = [str(label).strip().upper() for label in raw_labels]
             athletes = section.get("athletes", []) if isinstance(section, dict) else []
             for athlete in athletes if isinstance(athletes, list) else []:
                 athlete_info = athlete.get("athlete", {}) if isinstance(athlete, dict) else {}
@@ -2066,9 +2127,76 @@ def _extract_nba_player_stat(summary: dict[str, Any], player_name: str, stat_key
                 if not _person_names_match_loose(player_name, display_name):
                     continue
                 stats = athlete.get("stats", []) if isinstance(athlete, dict) else []
-                if stat_idx >= len(stats):
-                    return None
-                return _summary_stat_value_to_float(stats[stat_idx])
+                for idx, label in enumerate(labels):
+                    if idx >= len(stats):
+                        continue
+                    if label == "IP":
+                        value = _summary_innings_to_outs(stats[idx])
+                    else:
+                        value = _summary_stat_value_to_float(stats[idx])
+                    if value is not None:
+                        values[label] = value
+    return values
+
+
+def _extract_nba_player_stat(summary: dict[str, Any], player_name: str, stat_key: str) -> float | None:
+    combo_components = {
+        "hits_runs_rbis": ("hits", "runs", "rbis"),
+        "points_rebounds": ("points", "rebounds"),
+        "points_assists": ("points", "assists"),
+        "points_rebounds_assists": ("points", "rebounds", "assists"),
+        "steals_blocks": ("steals", "blocks"),
+    }
+    if stat_key in combo_components:
+        component_values = [
+            _extract_nba_player_stat(summary, player_name, component)
+            for component in combo_components[stat_key]
+        ]
+        return sum(component_values) if all(value is not None for value in component_values) else None
+
+    labels = _extract_player_label_values(summary, player_name)
+    if not labels:
+        return None
+    if stat_key == "singles":
+        required = [labels.get("H"), labels.get("2B"), labels.get("3B"), labels.get("HR")]
+        return max(0.0, required[0] - required[1] - required[2] - required[3]) if all(v is not None for v in required) else None
+    if stat_key == "total_bases":
+        if labels.get("TB") is not None:
+            return labels["TB"]
+        required = [labels.get("H"), labels.get("2B"), labels.get("3B"), labels.get("HR")]
+        if all(v is not None for v in required):
+            singles = max(0.0, required[0] - required[1] - required[2] - required[3])
+            return singles + (2 * required[1]) + (3 * required[2]) + (4 * required[3])
+        return None
+
+    label_targets = {
+        "points": {"PTS"},
+        "rebounds": {"REB", "TREB", "TOTREB", "TOTAL REBOUNDS"},
+        "assists": {"AST"},
+        "three_pointers_made": {"3PM", "3PT", "3FGM", "FG3M"},
+        "steals": {"STL"},
+        "blocks": {"BLK"},
+        "hits": {"H", "HITS"},
+        "runs": {"R", "RUNS"},
+        "rbis": {"RBI", "RBIS", "RUNS BATTED IN"},
+        "batter_walks": {"BB", "WALKS"},
+        "batter_strikeouts": {"K", "SO", "STRIKEOUTS"},
+        "doubles": {"2B"},
+        "triples": {"3B"},
+        "home_runs": {"HR", "HOME RUNS"},
+        "stolen_bases": {"SB", "STOLEN BASES"},
+        "strikeouts": {"K", "SO", "STRIKEOUTS"},
+        "pitcher_walks_allowed": {"BB", "WALKS"},
+        "pitcher_outs_recorded": {"IP"},
+        "pitcher_hits_allowed": {"H", "HITS"},
+        "pitcher_earned_runs_allowed": {"ER", "EARNED RUNS"},
+    }
+    targets = label_targets.get(stat_key)
+    if not targets:
+        return None
+    for target in targets:
+        if target in labels:
+            return labels[target]
     return None
 
 

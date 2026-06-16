@@ -18,6 +18,7 @@ LEDGER_PATH = CALIBRATION_DIR / "outcome_ledger.json"
 CALIBRATION_SCHEMA_VERSION = 1
 MIN_GROUP_SAMPLES = 30
 CALIBRATION_EXCLUDED_MODEL_KEYS = {"fifa_world_cup"}
+ML_OWNED_PROBABILITY_SOURCE = "player_props_ml_v1"
 
 SNAPSHOT_EXCLUDED_FIELDS = {
     "result",
@@ -264,13 +265,23 @@ def apply_calibration_to_payload(
             if not isinstance(bucket, dict) or not isinstance(bucket.get("picks"), list):
                 continue
             for pick in bucket["picks"]:
-                if isinstance(pick, dict) and not pick.get("calibration_excluded"):
+                if (
+                    isinstance(pick, dict)
+                    and not pick.get("calibration_excluded")
+                    and str(pick.get("probability_source") or "") != ML_OWNED_PROBABILITY_SOURCE
+                    and not pick.get("ml_calibration_excluded")
+                ):
                     apply_calibration_to_pick(pick, str(model_key), active)
     elif isinstance(payload.get("picks"), list):
         if str(payload.get("model_key") or "") in CALIBRATION_EXCLUDED_MODEL_KEYS:
             return payload
         for pick in payload["picks"]:
-            if isinstance(pick, dict) and not pick.get("calibration_excluded"):
+            if (
+                isinstance(pick, dict)
+                and not pick.get("calibration_excluded")
+                and str(pick.get("probability_source") or "") != ML_OWNED_PROBABILITY_SOURCE
+                and not pick.get("ml_calibration_excluded")
+            ):
                 apply_calibration_to_pick(pick, str(payload.get("model_key") or "unknown"), active)
     return payload
 
