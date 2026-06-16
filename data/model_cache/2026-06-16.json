@@ -1598,7 +1598,7 @@
         "date": "2026-06-16",
         "decision": "PASS",
         "draw_probability": 0.2627,
-        "edge": -20.8,
+        "edge": -19.84,
         "game": "Senegal @ France",
         "game_id": "760432",
         "game_start_time": "2026-06-16T19:00Z",
@@ -1618,11 +1618,11 @@
         ],
         "league": "FIFA World Cup",
         "market": "moneyline",
-        "market_probability": 0.6545,
+        "market_probability": 0.6449,
         "market_type": "soccer_moneyline",
         "matchup": "Senegal @ France",
         "model_basis": "current squad player power and position-unit matchup; no head-to-head input",
-        "odds": -215,
+        "odds": -205,
         "pick": "France ML (Senegal @ France)",
         "probability": 0.4465,
         "projected_away_goals": 1.108,
@@ -1647,7 +1647,7 @@
         "calibration_excluded": true,
         "date": "2026-06-16",
         "decision": "LEAN",
-        "edge": 5.49,
+        "edge": 3.11,
         "game": "Senegal @ France",
         "game_id": "760432",
         "game_start_time": "2026-06-16T19:00Z",
@@ -1667,11 +1667,11 @@
         "league": "FIFA World Cup",
         "line": 2.5,
         "market": "total",
-        "market_probability": 0.4762,
+        "market_probability": 0.5,
         "market_type": "soccer_total",
         "matchup": "Senegal @ France",
         "model_basis": "current squad player power and position-unit matchup; no head-to-head input",
-        "odds": 110,
+        "odds": 100,
         "pick": "Under 2.5 (Senegal @ France)",
         "probability": 0.5311,
         "projected_away_goals": 1.108,
@@ -1682,7 +1682,7 @@
         "sport": "FIFA WC",
         "start_time": "2026-06-16T19:00Z",
         "team": "",
-        "units": 0.48
+        "units": 0.41
       },
       {
         "away_team": "Norway",
@@ -3438,7 +3438,7 @@
       }
     ]
   },
-  "generatedAt": "2026-06-16T17:55:07.978656Z",
+  "generatedAt": "2026-06-16T18:42:44.630345Z",
   "generatedBy": "github-actions:model-cache-refresh",
   "mlb_first_five": {
     "date": "2026-06-16",
@@ -3628,15 +3628,15 @@
             "pitcher_rest_label": "normal rest (5d)",
             "pitcher_rest_runs_modifier": 0.0,
             "pitcher_venue_f5_allowed": 3.0,
-            "projected_runs": 2.6,
+            "projected_runs": 2.65,
             "team_current_f5_runs": 2.052,
             "team_prior_f5_runs": 2.396,
             "team_recent_f5_runs": 2.333,
             "team_venue_f5_runs": 2.325,
             "venue_delta": 0.18,
-            "wind_direction": "",
-            "wind_mph": 0.0,
-            "wind_run_delta_per_team": 0.0
+            "wind_direction": "out",
+            "wind_mph": 7.0,
+            "wind_run_delta_per_team": 0.05
           },
           "away_pitcher": {
             "current_f5_allowed": 2.0,
@@ -3659,13 +3659,13 @@
           },
           "home_lineup_matchup": {
             "current_bvp_pa": 0,
-            "older_bvp_pa": 25,
-            "run_delta": 0.041,
+            "older_bvp_pa": 23,
+            "run_delta": 0.024,
             "sampled_batters": 9,
-            "threat_score": 0.3667
+            "threat_score": 0.3596
           },
           "home_offense": {
-            "lineup_delta": 0.041,
+            "lineup_delta": 0.024,
             "park_run_delta_per_team": 0.18,
             "pitcher_current_f5_allowed": 2.0,
             "pitcher_current_vs_opponent": 2.012,
@@ -3675,15 +3675,15 @@
             "pitcher_rest_label": "normal rest (4d)",
             "pitcher_rest_runs_modifier": 0.0,
             "pitcher_venue_f5_allowed": 2.012,
-            "projected_runs": 2.54,
+            "projected_runs": 2.58,
             "team_current_f5_runs": 2.667,
             "team_prior_f5_runs": 2.33,
             "team_recent_f5_runs": 2.833,
             "team_venue_f5_runs": 2.083,
             "venue_delta": 0.18,
-            "wind_direction": "",
-            "wind_mph": 0.0,
-            "wind_run_delta_per_team": 0.0
+            "wind_direction": "out",
+            "wind_mph": 7.0,
+            "wind_run_delta_per_team": 0.05
           },
           "home_pitcher": {
             "current_f5_allowed": 2.357,
@@ -3716,10 +3716,10 @@
             },
             "park_run_delta_per_team": 0.18,
             "run_delta_per_team": 0.18,
-            "weather_raw": "",
-            "wind_direction": "",
-            "wind_mph": 0.0,
-            "wind_run_delta_per_team": 0.0
+            "weather_raw": "7 mph, Out To RF",
+            "wind_direction": "out",
+            "wind_mph": 7.0,
+            "wind_run_delta_per_team": 0.05
           }
         },
         "game_id": "822723",
@@ -3728,26 +3728,26 @@
         "home_pitcher": "Foster Griffin",
         "home_team": "Washington Nationals",
         "matchup": "Kansas City Royals @ Washington Nationals",
-        "notes": "F5 projection Kansas City Royals 2.6, Washington Nationals 2.54 (total 5.14). BvP PA away/home: 0+0/0+25; venue F5 total 5.52 over 60 games.",
+        "notes": "F5 projection Kansas City Royals 2.65, Washington Nationals 2.58 (total 5.23). BvP PA away/home: 0+0/0+23; venue F5 total 5.52 over 60 games.",
         "projected_first_five": {
-          "away_lead_probability": 0.5077,
-          "away_runs": 2.6,
-          "home_lead_probability": 0.4923,
-          "home_runs": 2.54,
-          "total_runs": 5.14
+          "away_lead_probability": 0.509,
+          "away_runs": 2.65,
+          "home_lead_probability": 0.491,
+          "home_runs": 2.58,
+          "total_runs": 5.23
         },
         "top_picks": [
           {
             "assumed_odds": -110,
             "confidence": "Medium",
             "decision": "LEAN",
-            "edge_pct": 11.15,
-            "guardrail": "line gap below bet threshold",
+            "edge_pct": 12.96,
+            "guardrail": "model-generated F5 total line; capped at LEAN until real market line is available",
             "market": "f5_total",
-            "model_prediction": "5.14 F5 total",
+            "model_prediction": "5.23 F5 total",
             "pick": "Over 4.5 F5",
-            "probability": 0.6353,
-            "projection_gap": 0.64,
+            "probability": 0.6534,
+            "projection_gap": 0.73,
             "team": "",
             "vegas_line": 4.5
           },
@@ -3755,13 +3755,13 @@
             "assumed_odds": -110,
             "confidence": "Low",
             "decision": "PASS",
-            "edge_pct": -1.61,
+            "edge_pct": -1.48,
             "guardrail": "margin too small",
             "market": "f5_side",
-            "model_prediction": "Kansas City Royals +0.06 F5 runs",
+            "model_prediction": "Kansas City Royals +0.07 F5 runs",
             "pick": "Kansas City Royals F5 ML",
-            "probability": 0.5077,
-            "projected_margin": 0.06,
+            "probability": 0.509,
+            "projected_margin": 0.07,
             "team": "Kansas City Royals"
           }
         ],
@@ -3796,8 +3796,8 @@
             "team_recent_f5_runs": 1.708,
             "team_venue_f5_runs": 1.975,
             "venue_delta": 0.18,
-            "wind_direction": "",
-            "wind_mph": 0.0,
+            "wind_direction": "out",
+            "wind_mph": 3.0,
             "wind_run_delta_per_team": 0.0
           },
           "away_pitcher": {
@@ -3821,13 +3821,13 @@
           },
           "home_lineup_matchup": {
             "current_bvp_pa": 18,
-            "older_bvp_pa": 43,
-            "run_delta": 0.023,
+            "older_bvp_pa": 40,
+            "run_delta": 0.046,
             "sampled_batters": 9,
-            "threat_score": 0.359
+            "threat_score": 0.3692
           },
           "home_offense": {
-            "lineup_delta": 0.023,
+            "lineup_delta": 0.046,
             "park_run_delta_per_team": 0.18,
             "pitcher_current_f5_allowed": 1.75,
             "pitcher_current_vs_opponent": 2.592,
@@ -3837,14 +3837,14 @@
             "pitcher_rest_label": "normal rest (6d)",
             "pitcher_rest_runs_modifier": 0.0,
             "pitcher_venue_f5_allowed": 1.775,
-            "projected_runs": 2.3,
+            "projected_runs": 2.32,
             "team_current_f5_runs": 2.211,
             "team_prior_f5_runs": 2.696,
             "team_recent_f5_runs": 2.458,
             "team_venue_f5_runs": 2.639,
             "venue_delta": 0.18,
-            "wind_direction": "",
-            "wind_mph": 0.0,
+            "wind_direction": "out",
+            "wind_mph": 3.0,
             "wind_run_delta_per_team": 0.0
           },
           "home_pitcher": {
@@ -3878,9 +3878,9 @@
             },
             "park_run_delta_per_team": 0.18,
             "run_delta_per_team": 0.18,
-            "weather_raw": "",
-            "wind_direction": "",
-            "wind_mph": 0.0,
+            "weather_raw": "3 mph, Out To RF",
+            "wind_direction": "out",
+            "wind_mph": 3.0,
             "wind_run_delta_per_team": 0.0
           }
         },
@@ -3890,26 +3890,26 @@
         "home_pitcher": "Payton Tolle",
         "home_team": "Boston Red Sox",
         "matchup": "Toronto Blue Jays @ Boston Red Sox",
-        "notes": "F5 projection Toronto Blue Jays 2.19, Boston Red Sox 2.3 (total 4.49). BvP PA away/home: 10+3/18+43; venue F5 total 4.93 over 60 games.",
+        "notes": "F5 projection Toronto Blue Jays 2.19, Boston Red Sox 2.32 (total 4.51). BvP PA away/home: 10+3/18+40; venue F5 total 4.93 over 60 games.",
         "projected_first_five": {
-          "away_lead_probability": 0.4858,
+          "away_lead_probability": 0.4833,
           "away_runs": 2.19,
-          "home_lead_probability": 0.5142,
-          "home_runs": 2.3,
-          "total_runs": 4.49
+          "home_lead_probability": 0.5167,
+          "home_runs": 2.32,
+          "total_runs": 4.51
         },
         "top_picks": [
           {
             "assumed_odds": -110,
             "confidence": "Low",
             "decision": "PASS",
-            "edge_pct": -0.96,
+            "edge_pct": -0.71,
             "guardrail": "margin too small",
             "market": "f5_side",
-            "model_prediction": "Boston Red Sox +0.11 F5 runs",
+            "model_prediction": "Boston Red Sox +0.13 F5 runs",
             "pick": "Boston Red Sox F5 ML",
-            "probability": 0.5142,
-            "projected_margin": 0.11,
+            "probability": 0.5167,
+            "projected_margin": 0.13,
             "team": "Boston Red Sox"
           },
           {
@@ -3919,8 +3919,8 @@
             "edge_pct": -2.16,
             "guardrail": "projection too close to F5 line",
             "market": "f5_total",
-            "model_prediction": "4.49 F5 total",
-            "pick": "Under 4.5 F5",
+            "model_prediction": "4.51 F5 total",
+            "pick": "Over 4.5 F5",
             "probability": 0.5022,
             "projection_gap": 0.01,
             "team": "",
@@ -5893,7 +5893,7 @@
         },
         "confidence": "Medium",
         "date": "2026-06-16",
-        "decision": "LEAN",
+        "decision": "PASS",
         "edge": 2.88,
         "game": "Miami Marlins @ Philadelphia Phillies",
         "game_id": "823451",
@@ -5949,7 +5949,8 @@
         "source": "MLB First Five",
         "sport": "MLB",
         "start_time": "2026-06-16T22:40Z",
-        "team": ""
+        "team": "",
+        "units": 0
       },
       {
         "actionability": "research_signal",
@@ -6027,18 +6028,18 @@
         "actionability": "research_signal",
         "assumed_odds": -110,
         "away_team": "Kansas City Royals",
-        "calibrated_probability": 0.568737,
+        "calibrated_probability": 0.583164,
         "calibration": {
           "applied": true,
           "key": "model:mlb_first_five|source:mlb first five|sport:mlb|bet:f5_total",
-          "probability_delta": -0.066563,
+          "probability_delta": -0.070236,
           "samples": 92,
           "version": "cal-1147-2026-06-16"
         },
         "confidence": "Medium",
         "date": "2026-06-16",
         "decision": "LEAN",
-        "edge": 4.49,
+        "edge": 5.94,
         "game": "Kansas City Royals @ Washington Nationals",
         "game_id": "822723",
         "game_order": 1,
@@ -6050,8 +6051,8 @@
         "market": "f5_total",
         "market_priced": false,
         "matchup": "Kansas City Royals @ Washington Nationals",
-        "model_prediction": "5.14 F5 total",
-        "notes": "F5 projection Kansas City Royals 2.6, Washington Nationals 2.54 (total 5.14). BvP PA away/home: 0+0/0+25; venue F5 total 5.52 over 60 games. Projection: Kansas City Royals 2.6, Washington Nationals 2.54; total 5.14.",
+        "model_prediction": "5.23 F5 total",
+        "notes": "F5 projection Kansas City Royals 2.65, Washington Nationals 2.58 (total 5.23). BvP PA away/home: 0+0/0+23; venue F5 total 5.52 over 60 games. Projection: Kansas City Royals 2.65, Washington Nationals 2.58; total 5.23.",
         "odds": null,
         "odds_source": "default_assumed",
         "pick": "Over 4.5 F5",
@@ -6087,9 +6088,9 @@
           "team": ""
         },
         "pricing_type": "assumed",
-        "probability": 0.5687,
-        "raw_edge": 11.15,
-        "raw_probability": 0.6353,
+        "probability": 0.5832,
+        "raw_edge": 12.96,
+        "raw_probability": 0.6534,
         "source": "MLB First Five",
         "sport": "MLB",
         "start_time": "2026-06-16T22:45Z",
@@ -6099,18 +6100,18 @@
         "actionability": "research_signal",
         "assumed_odds": -110,
         "away_team": "Kansas City Royals",
-        "calibrated_probability": 0.50182,
+        "calibrated_probability": 0.50286,
         "calibration": {
           "applied": true,
           "key": "model:mlb_first_five|source:mlb first five|sport:mlb|bet:f5_side",
-          "probability_delta": -0.00588,
+          "probability_delta": -0.00614,
           "samples": 77,
           "version": "cal-1147-2026-06-16"
         },
         "confidence": "Low",
         "date": "2026-06-16",
         "decision": "PASS",
-        "edge": -2.2,
+        "edge": -2.09,
         "game": "Kansas City Royals @ Washington Nationals",
         "game_id": "822723",
         "game_order": 1,
@@ -6122,8 +6123,8 @@
         "market": "f5_side",
         "market_priced": false,
         "matchup": "Kansas City Royals @ Washington Nationals",
-        "model_prediction": "Kansas City Royals +0.06 F5 runs",
-        "notes": "F5 projection Kansas City Royals 2.6, Washington Nationals 2.54 (total 5.14). BvP PA away/home: 0+0/0+25; venue F5 total 5.52 over 60 games. Projection: Kansas City Royals 2.6, Washington Nationals 2.54; total 5.14.",
+        "model_prediction": "Kansas City Royals +0.07 F5 runs",
+        "notes": "F5 projection Kansas City Royals 2.65, Washington Nationals 2.58 (total 5.23). BvP PA away/home: 0+0/0+23; venue F5 total 5.52 over 60 games. Projection: Kansas City Royals 2.65, Washington Nationals 2.58; total 5.23.",
         "odds": null,
         "odds_source": "default_assumed",
         "pick": "Kansas City Royals F5 ML",
@@ -6159,9 +6160,9 @@
           "team": "Kansas City Royals"
         },
         "pricing_type": "assumed",
-        "probability": 0.5018,
-        "raw_edge": -1.61,
-        "raw_probability": 0.5077,
+        "probability": 0.5029,
+        "raw_edge": -1.48,
+        "raw_probability": 0.509,
         "source": "MLB First Five",
         "sport": "MLB",
         "start_time": "2026-06-16T22:45:00Z",
@@ -6171,18 +6172,18 @@
         "actionability": "research_signal",
         "assumed_odds": -110,
         "away_team": "Toronto Blue Jays",
-        "calibrated_probability": 0.507019,
+        "calibrated_probability": 0.509019,
         "calibration": {
           "applied": true,
           "key": "model:mlb_first_five|source:mlb first five|sport:mlb|bet:f5_side",
-          "probability_delta": -0.007181,
+          "probability_delta": -0.007681,
           "samples": 77,
           "version": "cal-1147-2026-06-16"
         },
         "confidence": "Low",
         "date": "2026-06-16",
         "decision": "PASS",
-        "edge": -1.68,
+        "edge": -1.48,
         "game": "Toronto Blue Jays @ Boston Red Sox",
         "game_id": "824750",
         "game_order": 2,
@@ -6194,8 +6195,8 @@
         "market": "f5_side",
         "market_priced": false,
         "matchup": "Toronto Blue Jays @ Boston Red Sox",
-        "model_prediction": "Boston Red Sox +0.11 F5 runs",
-        "notes": "F5 projection Toronto Blue Jays 2.19, Boston Red Sox 2.3 (total 4.49). BvP PA away/home: 10+3/18+43; venue F5 total 4.93 over 60 games. Projection: Toronto Blue Jays 2.19, Boston Red Sox 2.3; total 4.49.",
+        "model_prediction": "Boston Red Sox +0.13 F5 runs",
+        "notes": "F5 projection Toronto Blue Jays 2.19, Boston Red Sox 2.32 (total 4.51). BvP PA away/home: 10+3/18+40; venue F5 total 4.93 over 60 games. Projection: Toronto Blue Jays 2.19, Boston Red Sox 2.32; total 4.51.",
         "odds": null,
         "odds_source": "default_assumed",
         "pick": "Boston Red Sox F5 ML",
@@ -6231,9 +6232,9 @@
           "team": "Boston Red Sox"
         },
         "pricing_type": "assumed",
-        "probability": 0.507,
-        "raw_edge": -0.96,
-        "raw_probability": 0.5142,
+        "probability": 0.509,
+        "raw_edge": -0.71,
+        "raw_probability": 0.5167,
         "source": "MLB First Five",
         "sport": "MLB",
         "start_time": "2026-06-16T22:45Z",
@@ -6266,11 +6267,11 @@
         "market": "f5_total",
         "market_priced": false,
         "matchup": "Toronto Blue Jays @ Boston Red Sox",
-        "model_prediction": "4.49 F5 total",
-        "notes": "F5 projection Toronto Blue Jays 2.19, Boston Red Sox 2.3 (total 4.49). BvP PA away/home: 10+3/18+43; venue F5 total 4.93 over 60 games. Projection: Toronto Blue Jays 2.19, Boston Red Sox 2.3; total 4.49.",
+        "model_prediction": "4.51 F5 total",
+        "notes": "F5 projection Toronto Blue Jays 2.19, Boston Red Sox 2.32 (total 4.51). BvP PA away/home: 10+3/18+40; venue F5 total 4.93 over 60 games. Projection: Toronto Blue Jays 2.19, Boston Red Sox 2.32; total 4.51.",
         "odds": null,
         "odds_source": "default_assumed",
-        "pick": "Under 4.5 F5",
+        "pick": "Over 4.5 F5",
         "pregame_snapshot": {
           "actionability": "research_signal",
           "assumed_odds": -110,
@@ -6290,11 +6291,11 @@
           "market": "f5_total",
           "market_priced": false,
           "matchup": "Toronto Blue Jays @ Boston Red Sox",
-          "model_prediction": "4.49 F5 total",
-          "notes": "F5 projection Toronto Blue Jays 2.19, Boston Red Sox 2.3 (total 4.49). BvP PA away/home: 10+3/18+43; venue F5 total 4.93 over 60 games. Projection: Toronto Blue Jays 2.19, Boston Red Sox 2.3; total 4.49.",
+          "model_prediction": "4.51 F5 total",
+          "notes": "F5 projection Toronto Blue Jays 2.19, Boston Red Sox 2.32 (total 4.51). BvP PA away/home: 10+3/18+40; venue F5 total 4.93 over 60 games. Projection: Toronto Blue Jays 2.19, Boston Red Sox 2.32; total 4.51.",
           "odds": null,
           "odds_source": "default_assumed",
-          "pick": "Under 4.5 F5",
+          "pick": "Over 4.5 F5",
           "pricing_type": "assumed",
           "probability": 0.5022,
           "source": "MLB First Five",
@@ -7909,7 +7910,7 @@
         },
         "confidence": "Medium",
         "date": "2026-06-16",
-        "decision": "LEAN",
+        "decision": "PASS",
         "edge": 2.88,
         "game": "Tampa Bay Rays @ Los Angeles Dodgers",
         "game_id": "823939",
@@ -7965,7 +7966,8 @@
         "source": "MLB First Five",
         "sport": "MLB",
         "start_time": "2026-06-17T02:10Z",
-        "team": ""
+        "team": "",
+        "units": 0
       },
       {
         "actionability": "research_signal",
@@ -8060,23 +8062,23 @@
           "8": 0.5625
         },
         "edge_table": {
-          "1": 0.2058,
+          "1": 0.1594,
           "2": 0.027,
           "3": 0.0538,
-          "4": 0.0718,
+          "4": 0.0254,
           "5": 0.0288,
           "6": 0.0022,
-          "7": -0.0295,
+          "7": -0.0796,
           "8": -0.1328
         },
         "full_inning_table": {
-          "1": 0.59,
+          "1": 0.544,
           "2": 0.545,
           "3": 0.544,
-          "4": 0.59,
+          "4": 0.544,
           "5": 0.533,
           "6": 0.521,
-          "7": 0.518,
+          "7": 0.468,
           "8": 0.43
         },
         "game_id": "823451",
@@ -8088,21 +8090,21 @@
         "top_2_picks": [
           {
             "baseline": 0.3844,
-            "confidence": "High",
+            "confidence": "Medium",
             "decision": "BET",
-            "edge_pp": 20.58,
+            "edge_pp": 15.94,
             "inning": 1,
-            "label": "Inning 1 - No Run Scored (59.0%, edge +20.6pp)",
-            "probability_scoreless": 0.59
+            "label": "Inning 1 - No Run Scored (54.4%, edge +15.9pp)",
+            "probability_scoreless": 0.544
           },
           {
-            "baseline": 0.5184,
+            "baseline": 0.49,
             "confidence": "Medium",
             "decision": "LEAN",
-            "edge_pp": 7.18,
-            "inning": 4,
-            "label": "Inning 4 - No Run Scored (59.0%, edge +7.2pp)",
-            "probability_scoreless": 0.59
+            "edge_pp": 5.38,
+            "inning": 3,
+            "label": "Inning 3 - No Run Scored (54.4%, edge +5.4pp)",
+            "probability_scoreless": 0.544
           }
         ],
         "venue_factor": 1.0
@@ -8914,19 +8916,19 @@
         "assumed_odds": -110,
         "away_team": "Miami Marlins",
         "baseline_probability": 0.3844,
-        "calibrated_probability": 0.530573,
+        "calibrated_probability": 0.495127,
         "calibration": {
           "applied": true,
           "key": "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning",
-          "probability_delta": -0.059427,
+          "probability_delta": -0.048873,
           "samples": 168,
           "version": "cal-1147-2026-06-16"
         },
-        "confidence": "High",
+        "confidence": "Medium",
         "date": "2026-06-16",
-        "decision": "BET",
-        "edge": 0.68,
-        "edge_pp": 20.58,
+        "decision": "PASS",
+        "edge": -2.87,
+        "edge_pp": 15.94,
         "game": "Philadelphia Phillies vs Miami Marlins",
         "game_id": "823451",
         "game_order": 0,
@@ -8938,8 +8940,8 @@
         "market": "no_run_inning",
         "market_priced": false,
         "matchup": "Philadelphia Phillies vs Miami Marlins",
-        "model_prediction": "59.0%",
-        "notes": "Top no-run inning candidate (edge +20.6pp vs baseline). Full table: {\"1\": 0.59, \"2\": 0.545, \"3\": 0.544, \"4\": 0.59, \"5\": 0.533, \"6\": 0.521, \"7\": 0.518, \"8\": 0.43}",
+        "model_prediction": "54.4%",
+        "notes": "Top no-run inning candidate (edge +15.9pp vs baseline). Full table: {\"1\": 0.544, \"2\": 0.545, \"3\": 0.544, \"4\": 0.544, \"5\": 0.533, \"6\": 0.521, \"7\": 0.468, \"8\": 0.43}",
         "odds": null,
         "odds_source": "default_assumed",
         "pick": "Inning 1 - No Run Scored",
@@ -8977,89 +8979,91 @@
           "team": ""
         },
         "pricing_type": "assumed",
-        "probability": 0.5306,
-        "raw_edge": 20.58,
-        "raw_probability": 0.59,
+        "probability": 0.4951,
+        "raw_edge": 15.94,
+        "raw_probability": 0.544,
         "source": "MLB Inning",
         "sport": "MLB",
         "start_time": "2026-06-16T22:40Z",
-        "team": ""
+        "team": "",
+        "units": 0
       },
       {
         "actionability": "research_signal",
         "assumed_odds": -110,
         "away_team": "Miami Marlins",
-        "baseline_probability": 0.5184,
-        "calibrated_probability": 0.530573,
+        "baseline_probability": 0.49,
+        "calibrated_probability": 0.495127,
         "calibration": {
           "applied": true,
           "key": "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning",
-          "probability_delta": -0.059427,
+          "probability_delta": -0.048873,
           "samples": 168,
           "version": "cal-1147-2026-06-16"
         },
         "confidence": "Medium",
         "date": "2026-06-16",
-        "decision": "LEAN",
-        "edge": 0.68,
-        "edge_pp": 7.18,
+        "decision": "PASS",
+        "edge": -2.87,
+        "edge_pp": 5.38,
         "game": "Philadelphia Phillies vs Miami Marlins",
         "game_id": "823451",
         "game_order": 0,
-        "game_start_time": "2026-06-16T22:40Z",
+        "game_start_time": "2026-06-16T22:40:00Z",
         "home_team": "Philadelphia Phillies",
-        "inning": 4,
+        "inning": 3,
         "league": "MLB",
         "line_source": "in_house_probability_baseline",
         "market": "no_run_inning",
         "market_priced": false,
         "matchup": "Philadelphia Phillies vs Miami Marlins",
-        "model_prediction": "59.0%",
-        "notes": "Top no-run inning candidate (edge +7.2pp vs baseline). Full table: {\"1\": 0.59, \"2\": 0.545, \"3\": 0.544, \"4\": 0.59, \"5\": 0.533, \"6\": 0.521, \"7\": 0.518, \"8\": 0.43}",
+        "model_prediction": "54.4%",
+        "notes": "Top no-run inning candidate (edge +5.4pp vs baseline). Full table: {\"1\": 0.544, \"2\": 0.545, \"3\": 0.544, \"4\": 0.544, \"5\": 0.533, \"6\": 0.521, \"7\": 0.468, \"8\": 0.43}",
         "odds": null,
         "odds_source": "default_assumed",
-        "pick": "Inning 4 - No Run Scored",
+        "pick": "Inning 3 - No Run Scored",
         "pregame_snapshot": {
           "actionability": "research_signal",
           "assumed_odds": -110,
           "away_team": "Miami Marlins",
-          "baseline_probability": 0.5184,
+          "baseline_probability": 0.49,
           "confidence": "Medium",
           "date": "2026-06-16",
           "decision": "LEAN",
-          "edge": 7.18,
-          "edge_pp": 7.18,
+          "edge": 5.38,
+          "edge_pp": 5.38,
           "game": "Philadelphia Phillies vs Miami Marlins",
           "game_id": "823451",
           "game_order": 0,
           "game_start_time": "2026-06-16T22:40:00Z",
           "home_team": "Philadelphia Phillies",
-          "inning": 4,
+          "inning": 3,
           "league": "MLB",
           "line_source": "in_house_probability_baseline",
           "market": "no_run_inning",
           "market_priced": false,
           "matchup": "Philadelphia Phillies vs Miami Marlins",
-          "model_prediction": "59.0%",
-          "notes": "Top no-run inning candidate (edge +7.2pp vs baseline). Full table: {\"1\": 0.59, \"2\": 0.545, \"3\": 0.544, \"4\": 0.59, \"5\": 0.533, \"6\": 0.521, \"7\": 0.518, \"8\": 0.43}",
+          "model_prediction": "54.4%",
+          "notes": "Top no-run inning candidate (edge +5.4pp vs baseline). Full table: {\"1\": 0.544, \"2\": 0.545, \"3\": 0.544, \"4\": 0.544, \"5\": 0.533, \"6\": 0.521, \"7\": 0.468, \"8\": 0.43}",
           "odds": null,
           "odds_source": "default_assumed",
-          "pick": "Inning 4 - No Run Scored",
+          "pick": "Inning 3 - No Run Scored",
           "pricing_type": "assumed",
-          "probability": 0.59,
+          "probability": 0.544,
           "source": "MLB Inning",
           "sport": "MLB",
           "start_time": "2026-06-16T22:40:00Z",
           "team": ""
         },
         "pricing_type": "assumed",
-        "probability": 0.5306,
-        "raw_edge": 7.18,
-        "raw_probability": 0.59,
+        "probability": 0.4951,
+        "raw_edge": 5.38,
+        "raw_probability": 0.544,
         "source": "MLB Inning",
         "sport": "MLB",
-        "start_time": "2026-06-16T22:40Z",
-        "team": ""
+        "start_time": "2026-06-16T22:40:00Z",
+        "team": "",
+        "units": 0
       },
       {
         "actionability": "research_signal",
@@ -9135,7 +9139,8 @@
         "source": "MLB Inning",
         "sport": "MLB",
         "start_time": "2026-06-16T22:45:00Z",
-        "team": ""
+        "team": "",
+        "units": 0
       },
       {
         "actionability": "research_signal",
@@ -9211,7 +9216,8 @@
         "source": "MLB Inning",
         "sport": "MLB",
         "start_time": "2026-06-16T22:45:00Z",
-        "team": ""
+        "team": "",
+        "units": 0
       },
       {
         "actionability": "research_signal",
@@ -9287,7 +9293,8 @@
         "source": "MLB Inning",
         "sport": "MLB",
         "start_time": "2026-06-16T22:45:00Z",
-        "team": ""
+        "team": "",
+        "units": 0
       },
       {
         "actionability": "research_signal",
@@ -9304,7 +9311,7 @@
         },
         "confidence": "Medium",
         "date": "2026-06-16",
-        "decision": "LEAN",
+        "decision": "PASS",
         "edge": 1.69,
         "edge_pp": 8.47,
         "game": "Boston Red Sox vs Toronto Blue Jays",
@@ -9363,7 +9370,8 @@
         "source": "MLB Inning",
         "sport": "MLB",
         "start_time": "2026-06-16T22:45Z",
-        "team": ""
+        "team": "",
+        "units": 0
       },
       {
         "actionability": "research_signal",
@@ -9439,7 +9447,8 @@
         "source": "MLB Inning",
         "sport": "MLB",
         "start_time": "2026-06-16T23:05:00Z",
-        "team": ""
+        "team": "",
+        "units": 0
       },
       {
         "actionability": "research_signal",
@@ -9515,7 +9524,8 @@
         "source": "MLB Inning",
         "sport": "MLB",
         "start_time": "2026-06-16T23:05:00Z",
-        "team": ""
+        "team": "",
+        "units": 0
       },
       {
         "actionability": "research_signal",
@@ -9591,7 +9601,8 @@
         "source": "MLB Inning",
         "sport": "MLB",
         "start_time": "2026-06-16T23:15:00Z",
-        "team": ""
+        "team": "",
+        "units": 0
       },
       {
         "actionability": "research_signal",
@@ -9667,7 +9678,8 @@
         "source": "MLB Inning",
         "sport": "MLB",
         "start_time": "2026-06-16T23:15:00Z",
-        "team": ""
+        "team": "",
+        "units": 0
       },
       {
         "actionability": "research_signal",
@@ -9743,7 +9755,8 @@
         "source": "MLB Inning",
         "sport": "MLB",
         "start_time": "2026-06-16T23:45:00Z",
-        "team": ""
+        "team": "",
+        "units": 0
       },
       {
         "actionability": "research_signal",
@@ -9760,7 +9773,7 @@
         },
         "confidence": "Medium",
         "date": "2026-06-16",
-        "decision": "LEAN",
+        "decision": "PASS",
         "edge": 0.75,
         "edge_pp": 7.26,
         "game": "St. Louis Cardinals vs San Diego Padres",
@@ -9819,7 +9832,8 @@
         "source": "MLB Inning",
         "sport": "MLB",
         "start_time": "2026-06-16T23:45Z",
-        "team": ""
+        "team": "",
+        "units": 0
       },
       {
         "actionability": "research_signal",
@@ -9895,7 +9909,8 @@
         "source": "MLB Inning",
         "sport": "MLB",
         "start_time": "2026-06-17T00:05:00Z",
-        "team": ""
+        "team": "",
+        "units": 0
       },
       {
         "actionability": "research_signal",
@@ -9971,7 +9986,8 @@
         "source": "MLB Inning",
         "sport": "MLB",
         "start_time": "2026-06-17T00:05:00Z",
-        "team": ""
+        "team": "",
+        "units": 0
       },
       {
         "actionability": "research_signal",
@@ -10047,7 +10063,8 @@
         "source": "MLB Inning",
         "sport": "MLB",
         "start_time": "2026-06-17T00:05:00Z",
-        "team": ""
+        "team": "",
+        "units": 0
       },
       {
         "actionability": "research_signal",
@@ -10123,7 +10140,8 @@
         "source": "MLB Inning",
         "sport": "MLB",
         "start_time": "2026-06-17T00:05:00Z",
-        "team": ""
+        "team": "",
+        "units": 0
       },
       {
         "actionability": "research_signal",
@@ -10199,7 +10217,8 @@
         "source": "MLB Inning",
         "sport": "MLB",
         "start_time": "2026-06-17T00:10:00Z",
-        "team": ""
+        "team": "",
+        "units": 0
       },
       {
         "actionability": "research_signal",
@@ -10216,7 +10235,7 @@
         },
         "confidence": "High",
         "date": "2026-06-16",
-        "decision": "BET",
+        "decision": "LEAN",
         "edge": 4.55,
         "edge_pp": 12.08,
         "game": "Houston Astros vs Detroit Tigers",
@@ -10351,7 +10370,8 @@
         "source": "MLB Inning",
         "sport": "MLB",
         "start_time": "2026-06-17T01:40:00Z",
-        "team": ""
+        "team": "",
+        "units": 0
       },
       {
         "actionability": "research_signal",
@@ -10427,7 +10447,8 @@
         "source": "MLB Inning",
         "sport": "MLB",
         "start_time": "2026-06-17T01:40:00Z",
-        "team": ""
+        "team": "",
+        "units": 0
       },
       {
         "actionability": "research_signal",
@@ -10503,7 +10524,8 @@
         "source": "MLB Inning",
         "sport": "MLB",
         "start_time": "2026-06-17T01:40:00Z",
-        "team": ""
+        "team": "",
+        "units": 0
       },
       {
         "actionability": "research_signal",
@@ -10579,7 +10601,8 @@
         "source": "MLB Inning",
         "sport": "MLB",
         "start_time": "2026-06-17T01:40:00Z",
-        "team": ""
+        "team": "",
+        "units": 0
       },
       {
         "actionability": "research_signal",
@@ -10655,7 +10678,8 @@
         "source": "MLB Inning",
         "sport": "MLB",
         "start_time": "2026-06-17T02:10:00Z",
-        "team": ""
+        "team": "",
+        "units": 0
       },
       {
         "actionability": "research_signal",
@@ -10731,7 +10755,8 @@
         "source": "MLB Inning",
         "sport": "MLB",
         "start_time": "2026-06-17T02:10:00Z",
-        "team": ""
+        "team": "",
+        "units": 0
       }
     ],
     "raw_lines": 2,
@@ -10781,7 +10806,7 @@
           "samples": 937,
           "version": "cal-1147-2026-06-16"
         },
-        "decision": "LEAN",
+        "decision": "PASS",
         "edge": 2.45,
         "game_start_time": "2026-06-16T22:40Z",
         "home_team": "Philadelphia Phillies",
@@ -10814,7 +10839,7 @@
         "sport": "MLB",
         "start_time": "2026-06-16T22:40Z",
         "team": "Phillies",
-        "units": 0.2
+        "units": 0
       },
       {
         "assumed_odds": -110,
@@ -10832,13 +10857,13 @@
         "edge": -2.52,
         "home_team": "Philadelphia Phillies",
         "kelly": 0.88,
-        "line": 8.0,
-        "market_line": 8.0,
+        "line": 8.5,
+        "market_line": 8.5,
         "market_total_source": "model_output",
         "market_type": "totals",
-        "model_prediction": 7.6,
+        "model_prediction": 8.1,
         "odds": -110,
-        "pick": "Under 8.0 (Miami Marlins vs Philadelphia Phillies)",
+        "pick": "Under 8.5 (Miami Marlins vs Philadelphia Phillies)",
         "pregame_snapshot": {
           "assumed_odds": -110,
           "away_team": "Miami Marlins",
@@ -10847,20 +10872,20 @@
           "edge": 1.67,
           "home_team": "Philadelphia Phillies",
           "kelly": 0.88,
-          "line": 8.0,
-          "market_line": 8.0,
+          "line": 8.5,
+          "market_line": 8.5,
           "market_total_source": "model_output",
           "market_type": "totals",
-          "model_prediction": 7.6,
+          "model_prediction": 8.1,
           "odds": -110,
-          "pick": "Under 8.0 (Miami Marlins vs Philadelphia Phillies)",
+          "pick": "Under 8.5 (Miami Marlins vs Philadelphia Phillies)",
           "prob": 0.5405,
           "probability": 0.5405,
           "selection": "PASS",
           "source": "MLB Model",
           "sport": "MLB",
           "units": 0.0,
-          "vegas": 8.0
+          "vegas": 8.5
         },
         "prob": 0.5405,
         "probability": 0.4986,
@@ -10871,7 +10896,7 @@
         "source": "MLB Model",
         "sport": "MLB",
         "units": 0,
-        "vegas": 8.0
+        "vegas": 8.5
       },
       {
         "away_team": "Kansas City Royals",
@@ -10883,7 +10908,7 @@
           "samples": 937,
           "version": "cal-1147-2026-06-16"
         },
-        "decision": "LEAN",
+        "decision": "PASS",
         "edge": 2.45,
         "game_start_time": "2026-06-16T22:45Z",
         "home_team": "Washington Nationals",
@@ -10916,29 +10941,29 @@
         "sport": "MLB",
         "start_time": "2026-06-16T22:45Z",
         "team": "Nationals",
-        "units": 0.2
+        "units": 0
       },
       {
         "assumed_odds": -110,
         "away_team": "Kansas City Royals",
-        "calibrated_probability": 0.516769,
+        "calibrated_probability": 0.501322,
         "calibration": {
           "applied": true,
           "key": "global",
-          "probability_delta": -0.047431,
+          "probability_delta": -0.042778,
           "samples": 937,
           "version": "cal-1147-2026-06-16"
         },
         "decision": "PASS",
         "direction": "Under",
-        "edge": -0.7,
+        "edge": -2.25,
         "home_team": "Washington Nationals",
-        "kelly": 2.12,
+        "kelly": 1.07,
         "line": 8.5,
         "market_line": 8.5,
         "market_total_source": "model_output",
         "market_type": "totals",
-        "model_prediction": 7.8,
+        "model_prediction": 8.0,
         "odds": -110,
         "pick": "Under 8.5 (Kansas City Royals vs Washington Nationals)",
         "pregame_snapshot": {
@@ -10964,11 +10989,11 @@
           "units": 0.01,
           "vegas": 8.5
         },
-        "prob": 0.5642,
-        "probability": 0.5168,
-        "raw_edge": 4.04,
-        "raw_probability": 0.5642,
-        "raw_units": 0.01,
+        "prob": 0.5441,
+        "probability": 0.5013,
+        "raw_edge": 2.03,
+        "raw_probability": 0.5441,
+        "raw_units": 0.0,
         "selection": "Under",
         "source": "MLB Model",
         "sport": "MLB",
@@ -10977,20 +11002,20 @@
       },
       {
         "away_team": "Toronto Blue Jays",
-        "calibrated_probability": 0.50002,
+        "calibrated_probability": 0.524501,
         "calibration": {
           "applied": true,
           "key": "global",
-          "probability_delta": -0.04238,
+          "probability_delta": -0.049699,
           "samples": 937,
           "version": "cal-1147-2026-06-16"
         },
         "decision": "PASS",
-        "edge": 0.0,
+        "edge": 2.45,
         "home_team": "Boston Red Sox",
         "market_pick_prob": null,
         "market_type": "h2h",
-        "model_odds": -119,
+        "model_odds": -135,
         "odds": null,
         "pick": "Red Sox ML (Blue Jays vs Red Sox)",
         "pregame_snapshot": {
@@ -11009,36 +11034,36 @@
           "team": "Red Sox",
           "units": 0.0
         },
-        "probability": 0.5,
-        "raw_edge": 4.24,
-        "raw_probability": 0.5424,
-        "raw_units": 0.0,
+        "probability": 0.5245,
+        "raw_edge": 7.42,
+        "raw_probability": 0.5742,
+        "raw_units": 0.4,
         "source": "MLB Model",
         "sport": "MLB",
         "team": "Red Sox",
-        "units": 0.0
+        "units": 0
       },
       {
         "assumed_odds": -110,
         "away_team": "Toronto Blue Jays",
-        "calibrated_probability": 0.471258,
+        "calibrated_probability": 0.478232,
         "calibration": {
           "applied": true,
           "key": "global",
-          "probability_delta": -0.033342,
+          "probability_delta": -0.035568,
           "samples": 937,
           "version": "cal-1147-2026-06-16"
         },
         "decision": "PASS",
         "direction": "Over",
-        "edge": -5.26,
+        "edge": -4.56,
         "home_team": "Boston Red Sox",
         "kelly": 0.0,
         "line": 7.5,
         "market_line": 7.5,
         "market_total_source": "model_output",
         "market_type": "totals",
-        "model_prediction": 7.5,
+        "model_prediction": 7.7,
         "odds": -110,
         "pick": "Over 7.5 (Toronto Blue Jays vs Boston Red Sox)",
         "pregame_snapshot": {
@@ -11064,10 +11089,10 @@
           "units": 0.0,
           "vegas": 7.5
         },
-        "prob": 0.5046,
-        "probability": 0.4713,
-        "raw_edge": -1.92,
-        "raw_probability": 0.5046,
+        "prob": 0.5138,
+        "probability": 0.4782,
+        "raw_edge": -1.0,
+        "raw_probability": 0.5138,
         "raw_units": 0.0,
         "selection": "PASS",
         "source": "MLB Model",
@@ -11221,53 +11246,53 @@
       {
         "assumed_odds": -110,
         "away_team": "New York Mets",
-        "calibrated_probability": 0.486667,
+        "calibrated_probability": 0.470577,
         "calibration": {
           "applied": true,
           "key": "global",
-          "probability_delta": -0.038233,
+          "probability_delta": -0.033123,
           "samples": 937,
           "version": "cal-1147-2026-06-16"
         },
         "decision": "PASS",
-        "direction": "Under",
-        "edge": -3.71,
+        "direction": "Over",
+        "edge": -5.32,
         "home_team": "Cincinnati Reds",
-        "kelly": 0.06,
+        "kelly": 0.0,
         "line": 10.0,
         "market_line": 10.0,
         "market_total_source": "model_output",
         "market_type": "totals",
-        "model_prediction": 9.7,
+        "model_prediction": 10.0,
         "odds": -110,
-        "pick": "Under 10.0 (New York Mets vs Cincinnati Reds)",
+        "pick": "Over 10.0 (New York Mets vs Cincinnati Reds)",
         "pregame_snapshot": {
           "assumed_odds": -110,
           "away_team": "New York Mets",
           "decision": "PASS",
-          "direction": "Under",
-          "edge": 0.11,
+          "direction": "Over",
+          "edge": -2.01,
           "home_team": "Cincinnati Reds",
-          "kelly": 0.06,
+          "kelly": 0.0,
           "line": 10.0,
           "market_line": 10.0,
           "market_total_source": "model_output",
           "market_type": "totals",
-          "model_prediction": 9.7,
+          "model_prediction": 10.0,
           "odds": -110,
-          "pick": "Under 10.0 (New York Mets vs Cincinnati Reds)",
-          "prob": 0.5249,
-          "probability": 0.5249,
+          "pick": "Over 10.0 (New York Mets vs Cincinnati Reds)",
+          "prob": 0.5037,
+          "probability": 0.5037,
           "selection": "PASS",
           "source": "MLB Model",
           "sport": "MLB",
           "units": 0.0,
           "vegas": 10.0
         },
-        "prob": 0.5249,
-        "probability": 0.4867,
-        "raw_edge": 0.11,
-        "raw_probability": 0.5249,
+        "prob": 0.5037,
+        "probability": 0.4706,
+        "raw_edge": -2.01,
+        "raw_probability": 0.5037,
         "raw_units": 0.0,
         "selection": "PASS",
         "source": "MLB Model",
@@ -11285,7 +11310,7 @@
           "samples": 937,
           "version": "cal-1147-2026-06-16"
         },
-        "decision": "LEAN",
+        "decision": "PASS",
         "edge": 2.45,
         "game_start_time": "2026-06-16T23:15Z",
         "home_team": "Atlanta Braves",
@@ -11318,7 +11343,7 @@
         "sport": "MLB",
         "start_time": "2026-06-16T23:15Z",
         "team": "Braves",
-        "units": 0.2
+        "units": 0
       },
       {
         "assumed_odds": -110,
@@ -11387,7 +11412,7 @@
           "samples": 937,
           "version": "cal-1147-2026-06-16"
         },
-        "decision": "LEAN",
+        "decision": "PASS",
         "edge": 2.45,
         "game_start_time": "2026-06-16T23:40Z",
         "home_team": "Milwaukee Brewers",
@@ -11420,7 +11445,7 @@
         "sport": "MLB",
         "start_time": "2026-06-16T23:40Z",
         "team": "Brewers",
-        "units": 0.2
+        "units": 0
       },
       {
         "assumed_odds": -110,
@@ -11635,7 +11660,7 @@
           "samples": 937,
           "version": "cal-1147-2026-06-16"
         },
-        "decision": "BET",
+        "decision": "PASS",
         "direction": "Under",
         "edge": 2.03,
         "game_start_time": "2026-06-17T00:05Z",
@@ -11680,7 +11705,7 @@
         "source": "MLB Model",
         "sport": "MLB",
         "start_time": "2026-06-17T00:05Z",
-        "units": 0.02,
+        "units": 0,
         "vegas": 9.5
       },
       {
@@ -11693,7 +11718,7 @@
           "samples": 937,
           "version": "cal-1147-2026-06-16"
         },
-        "decision": "LEAN",
+        "decision": "PASS",
         "edge": 2.45,
         "game_start_time": "2026-06-17T00:05Z",
         "home_team": "Texas Rangers",
@@ -11726,7 +11751,7 @@
         "sport": "MLB",
         "start_time": "2026-06-17T00:05Z",
         "team": "Rangers",
-        "units": 0.2
+        "units": 0
       },
       {
         "assumed_odds": -110,
@@ -11739,7 +11764,7 @@
           "samples": 937,
           "version": "cal-1147-2026-06-16"
         },
-        "decision": "BET",
+        "decision": "PASS",
         "direction": "Under",
         "edge": 0.98,
         "game_start_time": "2026-06-17T00:05Z",
@@ -11784,7 +11809,7 @@
         "source": "MLB Model",
         "sport": "MLB",
         "start_time": "2026-06-17T00:05Z",
-        "units": 0.01,
+        "units": 0,
         "vegas": 8.5
       },
       {
@@ -11797,7 +11822,7 @@
           "samples": 937,
           "version": "cal-1147-2026-06-16"
         },
-        "decision": "LEAN",
+        "decision": "PASS",
         "edge": 2.45,
         "game_start_time": "2026-06-17T00:10Z",
         "home_team": "Houston Astros",
@@ -11830,7 +11855,7 @@
         "sport": "MLB",
         "start_time": "2026-06-17T00:10Z",
         "team": "Astros",
-        "units": 0.2
+        "units": 0
       },
       {
         "assumed_odds": -110,
@@ -11999,7 +12024,7 @@
           "samples": 937,
           "version": "cal-1147-2026-06-16"
         },
-        "decision": "LEAN",
+        "decision": "PASS",
         "edge": 2.45,
         "game_start_time": "2026-06-17T01:40Z",
         "home_team": "Athletics",
@@ -12032,7 +12057,7 @@
         "sport": "MLB",
         "start_time": "2026-06-17T01:40Z",
         "team": "Athletics",
-        "units": 0.2
+        "units": 0
       },
       {
         "assumed_odds": -110,
@@ -12101,7 +12126,7 @@
           "samples": 937,
           "version": "cal-1147-2026-06-16"
         },
-        "decision": "LEAN",
+        "decision": "PASS",
         "edge": 2.45,
         "game_start_time": "2026-06-17T01:40Z",
         "home_team": "Seattle Mariners",
@@ -12134,7 +12159,7 @@
         "sport": "MLB",
         "start_time": "2026-06-17T01:40Z",
         "team": "Mariners",
-        "units": 0.2
+        "units": 0
       },
       {
         "assumed_odds": -110,
@@ -12147,7 +12172,7 @@
           "samples": 937,
           "version": "cal-1147-2026-06-16"
         },
-        "decision": "BET",
+        "decision": "PASS",
         "direction": "Under",
         "edge": 0.49,
         "game_start_time": "2026-06-17T01:40Z",
@@ -12192,7 +12217,7 @@
         "source": "MLB Model",
         "sport": "MLB",
         "start_time": "2026-06-17T01:40Z",
-        "units": 0.01,
+        "units": 0,
         "vegas": 7.5
       },
       {
@@ -12205,7 +12230,7 @@
           "samples": 937,
           "version": "cal-1147-2026-06-16"
         },
-        "decision": "LEAN",
+        "decision": "PASS",
         "edge": 2.45,
         "game_start_time": "2026-06-17T02:10Z",
         "home_team": "Los Angeles Dodgers",
@@ -12238,7 +12263,7 @@
         "sport": "MLB",
         "start_time": "2026-06-17T02:10Z",
         "team": "Dodgers",
-        "units": 0.2
+        "units": 0
       },
       {
         "assumed_odds": -110,
@@ -12251,7 +12276,7 @@
           "samples": 937,
           "version": "cal-1147-2026-06-16"
         },
-        "decision": "BET",
+        "decision": "PASS",
         "direction": "Under",
         "edge": 0.91,
         "home_team": "Los Angeles Dodgers",
@@ -12294,7 +12319,7 @@
         "selection": "Under",
         "source": "MLB Model",
         "sport": "MLB",
-        "units": 0.01,
+        "units": 0,
         "vegas": 8.0
       }
     ],
@@ -12428,7 +12453,7 @@
           "date": "2026-06-16",
           "decision": "PASS",
           "draw_probability": 0.2627,
-          "edge": -20.8,
+          "edge": -19.84,
           "game": "Senegal @ France",
           "game_id": "760432",
           "game_start_time": "2026-06-16T19:00Z",
@@ -12448,11 +12473,11 @@
           ],
           "league": "FIFA World Cup",
           "market": "moneyline",
-          "market_probability": 0.6545,
+          "market_probability": 0.6449,
           "market_type": "soccer_moneyline",
           "matchup": "Senegal @ France",
           "model_basis": "current squad player power and position-unit matchup; no head-to-head input",
-          "odds": -215,
+          "odds": -205,
           "pick": "France ML (Senegal @ France)",
           "probability": 0.4465,
           "projected_away_goals": 1.108,
@@ -12477,7 +12502,7 @@
           "calibration_excluded": true,
           "date": "2026-06-16",
           "decision": "LEAN",
-          "edge": 5.49,
+          "edge": 3.11,
           "game": "Senegal @ France",
           "game_id": "760432",
           "game_start_time": "2026-06-16T19:00Z",
@@ -12497,11 +12522,11 @@
           "league": "FIFA World Cup",
           "line": 2.5,
           "market": "total",
-          "market_probability": 0.4762,
+          "market_probability": 0.5,
           "market_type": "soccer_total",
           "matchup": "Senegal @ France",
           "model_basis": "current squad player power and position-unit matchup; no head-to-head input",
-          "odds": 110,
+          "odds": 100,
           "pick": "Under 2.5 (Senegal @ France)",
           "probability": 0.5311,
           "projected_away_goals": 1.108,
@@ -12512,7 +12537,7 @@
           "sport": "FIFA WC",
           "start_time": "2026-06-16T19:00Z",
           "team": "",
-          "units": 0.48
+          "units": 0.41
         },
         {
           "away_team": "Norway",
@@ -14456,15 +14481,15 @@
               "pitcher_rest_label": "normal rest (5d)",
               "pitcher_rest_runs_modifier": 0.0,
               "pitcher_venue_f5_allowed": 3.0,
-              "projected_runs": 2.6,
+              "projected_runs": 2.65,
               "team_current_f5_runs": 2.052,
               "team_prior_f5_runs": 2.396,
               "team_recent_f5_runs": 2.333,
               "team_venue_f5_runs": 2.325,
               "venue_delta": 0.18,
-              "wind_direction": "",
-              "wind_mph": 0.0,
-              "wind_run_delta_per_team": 0.0
+              "wind_direction": "out",
+              "wind_mph": 7.0,
+              "wind_run_delta_per_team": 0.05
             },
             "away_pitcher": {
               "current_f5_allowed": 2.0,
@@ -14487,13 +14512,13 @@
             },
             "home_lineup_matchup": {
               "current_bvp_pa": 0,
-              "older_bvp_pa": 25,
-              "run_delta": 0.041,
+              "older_bvp_pa": 23,
+              "run_delta": 0.024,
               "sampled_batters": 9,
-              "threat_score": 0.3667
+              "threat_score": 0.3596
             },
             "home_offense": {
-              "lineup_delta": 0.041,
+              "lineup_delta": 0.024,
               "park_run_delta_per_team": 0.18,
               "pitcher_current_f5_allowed": 2.0,
               "pitcher_current_vs_opponent": 2.012,
@@ -14503,15 +14528,15 @@
               "pitcher_rest_label": "normal rest (4d)",
               "pitcher_rest_runs_modifier": 0.0,
               "pitcher_venue_f5_allowed": 2.012,
-              "projected_runs": 2.54,
+              "projected_runs": 2.58,
               "team_current_f5_runs": 2.667,
               "team_prior_f5_runs": 2.33,
               "team_recent_f5_runs": 2.833,
               "team_venue_f5_runs": 2.083,
               "venue_delta": 0.18,
-              "wind_direction": "",
-              "wind_mph": 0.0,
-              "wind_run_delta_per_team": 0.0
+              "wind_direction": "out",
+              "wind_mph": 7.0,
+              "wind_run_delta_per_team": 0.05
             },
             "home_pitcher": {
               "current_f5_allowed": 2.357,
@@ -14544,10 +14569,10 @@
               },
               "park_run_delta_per_team": 0.18,
               "run_delta_per_team": 0.18,
-              "weather_raw": "",
-              "wind_direction": "",
-              "wind_mph": 0.0,
-              "wind_run_delta_per_team": 0.0
+              "weather_raw": "7 mph, Out To RF",
+              "wind_direction": "out",
+              "wind_mph": 7.0,
+              "wind_run_delta_per_team": 0.05
             }
           },
           "game_id": "822723",
@@ -14556,26 +14581,26 @@
           "home_pitcher": "Foster Griffin",
           "home_team": "Washington Nationals",
           "matchup": "Kansas City Royals @ Washington Nationals",
-          "notes": "F5 projection Kansas City Royals 2.6, Washington Nationals 2.54 (total 5.14). BvP PA away/home: 0+0/0+25; venue F5 total 5.52 over 60 games.",
+          "notes": "F5 projection Kansas City Royals 2.65, Washington Nationals 2.58 (total 5.23). BvP PA away/home: 0+0/0+23; venue F5 total 5.52 over 60 games.",
           "projected_first_five": {
-            "away_lead_probability": 0.5077,
-            "away_runs": 2.6,
-            "home_lead_probability": 0.4923,
-            "home_runs": 2.54,
-            "total_runs": 5.14
+            "away_lead_probability": 0.509,
+            "away_runs": 2.65,
+            "home_lead_probability": 0.491,
+            "home_runs": 2.58,
+            "total_runs": 5.23
           },
           "top_picks": [
             {
               "assumed_odds": -110,
               "confidence": "Medium",
               "decision": "LEAN",
-              "edge_pct": 11.15,
-              "guardrail": "line gap below bet threshold",
+              "edge_pct": 12.96,
+              "guardrail": "model-generated F5 total line; capped at LEAN until real market line is available",
               "market": "f5_total",
-              "model_prediction": "5.14 F5 total",
+              "model_prediction": "5.23 F5 total",
               "pick": "Over 4.5 F5",
-              "probability": 0.6353,
-              "projection_gap": 0.64,
+              "probability": 0.6534,
+              "projection_gap": 0.73,
               "team": "",
               "vegas_line": 4.5
             },
@@ -14583,13 +14608,13 @@
               "assumed_odds": -110,
               "confidence": "Low",
               "decision": "PASS",
-              "edge_pct": -1.61,
+              "edge_pct": -1.48,
               "guardrail": "margin too small",
               "market": "f5_side",
-              "model_prediction": "Kansas City Royals +0.06 F5 runs",
+              "model_prediction": "Kansas City Royals +0.07 F5 runs",
               "pick": "Kansas City Royals F5 ML",
-              "probability": 0.5077,
-              "projected_margin": 0.06,
+              "probability": 0.509,
+              "projected_margin": 0.07,
               "team": "Kansas City Royals"
             }
           ],
@@ -14624,8 +14649,8 @@
               "team_recent_f5_runs": 1.708,
               "team_venue_f5_runs": 1.975,
               "venue_delta": 0.18,
-              "wind_direction": "",
-              "wind_mph": 0.0,
+              "wind_direction": "out",
+              "wind_mph": 3.0,
               "wind_run_delta_per_team": 0.0
             },
             "away_pitcher": {
@@ -14649,13 +14674,13 @@
             },
             "home_lineup_matchup": {
               "current_bvp_pa": 18,
-              "older_bvp_pa": 43,
-              "run_delta": 0.023,
+              "older_bvp_pa": 40,
+              "run_delta": 0.046,
               "sampled_batters": 9,
-              "threat_score": 0.359
+              "threat_score": 0.3692
             },
             "home_offense": {
-              "lineup_delta": 0.023,
+              "lineup_delta": 0.046,
               "park_run_delta_per_team": 0.18,
               "pitcher_current_f5_allowed": 1.75,
               "pitcher_current_vs_opponent": 2.592,
@@ -14665,14 +14690,14 @@
               "pitcher_rest_label": "normal rest (6d)",
               "pitcher_rest_runs_modifier": 0.0,
               "pitcher_venue_f5_allowed": 1.775,
-              "projected_runs": 2.3,
+              "projected_runs": 2.32,
               "team_current_f5_runs": 2.211,
               "team_prior_f5_runs": 2.696,
               "team_recent_f5_runs": 2.458,
               "team_venue_f5_runs": 2.639,
               "venue_delta": 0.18,
-              "wind_direction": "",
-              "wind_mph": 0.0,
+              "wind_direction": "out",
+              "wind_mph": 3.0,
               "wind_run_delta_per_team": 0.0
             },
             "home_pitcher": {
@@ -14706,9 +14731,9 @@
               },
               "park_run_delta_per_team": 0.18,
               "run_delta_per_team": 0.18,
-              "weather_raw": "",
-              "wind_direction": "",
-              "wind_mph": 0.0,
+              "weather_raw": "3 mph, Out To RF",
+              "wind_direction": "out",
+              "wind_mph": 3.0,
               "wind_run_delta_per_team": 0.0
             }
           },
@@ -14718,26 +14743,26 @@
           "home_pitcher": "Payton Tolle",
           "home_team": "Boston Red Sox",
           "matchup": "Toronto Blue Jays @ Boston Red Sox",
-          "notes": "F5 projection Toronto Blue Jays 2.19, Boston Red Sox 2.3 (total 4.49). BvP PA away/home: 10+3/18+43; venue F5 total 4.93 over 60 games.",
+          "notes": "F5 projection Toronto Blue Jays 2.19, Boston Red Sox 2.32 (total 4.51). BvP PA away/home: 10+3/18+40; venue F5 total 4.93 over 60 games.",
           "projected_first_five": {
-            "away_lead_probability": 0.4858,
+            "away_lead_probability": 0.4833,
             "away_runs": 2.19,
-            "home_lead_probability": 0.5142,
-            "home_runs": 2.3,
-            "total_runs": 4.49
+            "home_lead_probability": 0.5167,
+            "home_runs": 2.32,
+            "total_runs": 4.51
           },
           "top_picks": [
             {
               "assumed_odds": -110,
               "confidence": "Low",
               "decision": "PASS",
-              "edge_pct": -0.96,
+              "edge_pct": -0.71,
               "guardrail": "margin too small",
               "market": "f5_side",
-              "model_prediction": "Boston Red Sox +0.11 F5 runs",
+              "model_prediction": "Boston Red Sox +0.13 F5 runs",
               "pick": "Boston Red Sox F5 ML",
-              "probability": 0.5142,
-              "projected_margin": 0.11,
+              "probability": 0.5167,
+              "projected_margin": 0.13,
               "team": "Boston Red Sox"
             },
             {
@@ -14747,8 +14772,8 @@
               "edge_pct": -2.16,
               "guardrail": "projection too close to F5 line",
               "market": "f5_total",
-              "model_prediction": "4.49 F5 total",
-              "pick": "Under 4.5 F5",
+              "model_prediction": "4.51 F5 total",
+              "pick": "Over 4.5 F5",
               "probability": 0.5022,
               "projection_gap": 0.01,
               "team": "",
@@ -16721,7 +16746,7 @@
           },
           "confidence": "Medium",
           "date": "2026-06-16",
-          "decision": "LEAN",
+          "decision": "PASS",
           "edge": 2.88,
           "game": "Miami Marlins @ Philadelphia Phillies",
           "game_id": "823451",
@@ -16777,7 +16802,8 @@
           "source": "MLB First Five",
           "sport": "MLB",
           "start_time": "2026-06-16T22:40Z",
-          "team": ""
+          "team": "",
+          "units": 0
         },
         {
           "actionability": "research_signal",
@@ -16855,18 +16881,18 @@
           "actionability": "research_signal",
           "assumed_odds": -110,
           "away_team": "Kansas City Royals",
-          "calibrated_probability": 0.568737,
+          "calibrated_probability": 0.583164,
           "calibration": {
             "applied": true,
             "key": "model:mlb_first_five|source:mlb first five|sport:mlb|bet:f5_total",
-            "probability_delta": -0.066563,
+            "probability_delta": -0.070236,
             "samples": 92,
             "version": "cal-1147-2026-06-16"
           },
           "confidence": "Medium",
           "date": "2026-06-16",
           "decision": "LEAN",
-          "edge": 4.49,
+          "edge": 5.94,
           "game": "Kansas City Royals @ Washington Nationals",
           "game_id": "822723",
           "game_order": 1,
@@ -16878,8 +16904,8 @@
           "market": "f5_total",
           "market_priced": false,
           "matchup": "Kansas City Royals @ Washington Nationals",
-          "model_prediction": "5.14 F5 total",
-          "notes": "F5 projection Kansas City Royals 2.6, Washington Nationals 2.54 (total 5.14). BvP PA away/home: 0+0/0+25; venue F5 total 5.52 over 60 games. Projection: Kansas City Royals 2.6, Washington Nationals 2.54; total 5.14.",
+          "model_prediction": "5.23 F5 total",
+          "notes": "F5 projection Kansas City Royals 2.65, Washington Nationals 2.58 (total 5.23). BvP PA away/home: 0+0/0+23; venue F5 total 5.52 over 60 games. Projection: Kansas City Royals 2.65, Washington Nationals 2.58; total 5.23.",
           "odds": null,
           "odds_source": "default_assumed",
           "pick": "Over 4.5 F5",
@@ -16915,9 +16941,9 @@
             "team": ""
           },
           "pricing_type": "assumed",
-          "probability": 0.5687,
-          "raw_edge": 11.15,
-          "raw_probability": 0.6353,
+          "probability": 0.5832,
+          "raw_edge": 12.96,
+          "raw_probability": 0.6534,
           "source": "MLB First Five",
           "sport": "MLB",
           "start_time": "2026-06-16T22:45Z",
@@ -16927,18 +16953,18 @@
           "actionability": "research_signal",
           "assumed_odds": -110,
           "away_team": "Kansas City Royals",
-          "calibrated_probability": 0.50182,
+          "calibrated_probability": 0.50286,
           "calibration": {
             "applied": true,
             "key": "model:mlb_first_five|source:mlb first five|sport:mlb|bet:f5_side",
-            "probability_delta": -0.00588,
+            "probability_delta": -0.00614,
             "samples": 77,
             "version": "cal-1147-2026-06-16"
           },
           "confidence": "Low",
           "date": "2026-06-16",
           "decision": "PASS",
-          "edge": -2.2,
+          "edge": -2.09,
           "game": "Kansas City Royals @ Washington Nationals",
           "game_id": "822723",
           "game_order": 1,
@@ -16950,8 +16976,8 @@
           "market": "f5_side",
           "market_priced": false,
           "matchup": "Kansas City Royals @ Washington Nationals",
-          "model_prediction": "Kansas City Royals +0.06 F5 runs",
-          "notes": "F5 projection Kansas City Royals 2.6, Washington Nationals 2.54 (total 5.14). BvP PA away/home: 0+0/0+25; venue F5 total 5.52 over 60 games. Projection: Kansas City Royals 2.6, Washington Nationals 2.54; total 5.14.",
+          "model_prediction": "Kansas City Royals +0.07 F5 runs",
+          "notes": "F5 projection Kansas City Royals 2.65, Washington Nationals 2.58 (total 5.23). BvP PA away/home: 0+0/0+23; venue F5 total 5.52 over 60 games. Projection: Kansas City Royals 2.65, Washington Nationals 2.58; total 5.23.",
           "odds": null,
           "odds_source": "default_assumed",
           "pick": "Kansas City Royals F5 ML",
@@ -16987,9 +17013,9 @@
             "team": "Kansas City Royals"
           },
           "pricing_type": "assumed",
-          "probability": 0.5018,
-          "raw_edge": -1.61,
-          "raw_probability": 0.5077,
+          "probability": 0.5029,
+          "raw_edge": -1.48,
+          "raw_probability": 0.509,
           "source": "MLB First Five",
           "sport": "MLB",
           "start_time": "2026-06-16T22:45:00Z",
@@ -16999,18 +17025,18 @@
           "actionability": "research_signal",
           "assumed_odds": -110,
           "away_team": "Toronto Blue Jays",
-          "calibrated_probability": 0.507019,
+          "calibrated_probability": 0.509019,
           "calibration": {
             "applied": true,
             "key": "model:mlb_first_five|source:mlb first five|sport:mlb|bet:f5_side",
-            "probability_delta": -0.007181,
+            "probability_delta": -0.007681,
             "samples": 77,
             "version": "cal-1147-2026-06-16"
           },
           "confidence": "Low",
           "date": "2026-06-16",
           "decision": "PASS",
-          "edge": -1.68,
+          "edge": -1.48,
           "game": "Toronto Blue Jays @ Boston Red Sox",
           "game_id": "824750",
           "game_order": 2,
@@ -17022,8 +17048,8 @@
           "market": "f5_side",
           "market_priced": false,
           "matchup": "Toronto Blue Jays @ Boston Red Sox",
-          "model_prediction": "Boston Red Sox +0.11 F5 runs",
-          "notes": "F5 projection Toronto Blue Jays 2.19, Boston Red Sox 2.3 (total 4.49). BvP PA away/home: 10+3/18+43; venue F5 total 4.93 over 60 games. Projection: Toronto Blue Jays 2.19, Boston Red Sox 2.3; total 4.49.",
+          "model_prediction": "Boston Red Sox +0.13 F5 runs",
+          "notes": "F5 projection Toronto Blue Jays 2.19, Boston Red Sox 2.32 (total 4.51). BvP PA away/home: 10+3/18+40; venue F5 total 4.93 over 60 games. Projection: Toronto Blue Jays 2.19, Boston Red Sox 2.32; total 4.51.",
           "odds": null,
           "odds_source": "default_assumed",
           "pick": "Boston Red Sox F5 ML",
@@ -17059,9 +17085,9 @@
             "team": "Boston Red Sox"
           },
           "pricing_type": "assumed",
-          "probability": 0.507,
-          "raw_edge": -0.96,
-          "raw_probability": 0.5142,
+          "probability": 0.509,
+          "raw_edge": -0.71,
+          "raw_probability": 0.5167,
           "source": "MLB First Five",
           "sport": "MLB",
           "start_time": "2026-06-16T22:45Z",
@@ -17094,11 +17120,11 @@
           "market": "f5_total",
           "market_priced": false,
           "matchup": "Toronto Blue Jays @ Boston Red Sox",
-          "model_prediction": "4.49 F5 total",
-          "notes": "F5 projection Toronto Blue Jays 2.19, Boston Red Sox 2.3 (total 4.49). BvP PA away/home: 10+3/18+43; venue F5 total 4.93 over 60 games. Projection: Toronto Blue Jays 2.19, Boston Red Sox 2.3; total 4.49.",
+          "model_prediction": "4.51 F5 total",
+          "notes": "F5 projection Toronto Blue Jays 2.19, Boston Red Sox 2.32 (total 4.51). BvP PA away/home: 10+3/18+40; venue F5 total 4.93 over 60 games. Projection: Toronto Blue Jays 2.19, Boston Red Sox 2.32; total 4.51.",
           "odds": null,
           "odds_source": "default_assumed",
-          "pick": "Under 4.5 F5",
+          "pick": "Over 4.5 F5",
           "pregame_snapshot": {
             "actionability": "research_signal",
             "assumed_odds": -110,
@@ -17118,11 +17144,11 @@
             "market": "f5_total",
             "market_priced": false,
             "matchup": "Toronto Blue Jays @ Boston Red Sox",
-            "model_prediction": "4.49 F5 total",
-            "notes": "F5 projection Toronto Blue Jays 2.19, Boston Red Sox 2.3 (total 4.49). BvP PA away/home: 10+3/18+43; venue F5 total 4.93 over 60 games. Projection: Toronto Blue Jays 2.19, Boston Red Sox 2.3; total 4.49.",
+            "model_prediction": "4.51 F5 total",
+            "notes": "F5 projection Toronto Blue Jays 2.19, Boston Red Sox 2.32 (total 4.51). BvP PA away/home: 10+3/18+40; venue F5 total 4.93 over 60 games. Projection: Toronto Blue Jays 2.19, Boston Red Sox 2.32; total 4.51.",
             "odds": null,
             "odds_source": "default_assumed",
-            "pick": "Under 4.5 F5",
+            "pick": "Over 4.5 F5",
             "pricing_type": "assumed",
             "probability": 0.5022,
             "source": "MLB First Five",
@@ -18737,7 +18763,7 @@
           },
           "confidence": "Medium",
           "date": "2026-06-16",
-          "decision": "LEAN",
+          "decision": "PASS",
           "edge": 2.88,
           "game": "Tampa Bay Rays @ Los Angeles Dodgers",
           "game_id": "823939",
@@ -18793,7 +18819,8 @@
           "source": "MLB First Five",
           "sport": "MLB",
           "start_time": "2026-06-17T02:10Z",
-          "team": ""
+          "team": "",
+          "units": 0
         },
         {
           "actionability": "research_signal",
@@ -18888,23 +18915,23 @@
             "8": 0.5625
           },
           "edge_table": {
-            "1": 0.2058,
+            "1": 0.1594,
             "2": 0.027,
             "3": 0.0538,
-            "4": 0.0718,
+            "4": 0.0254,
             "5": 0.0288,
             "6": 0.0022,
-            "7": -0.0295,
+            "7": -0.0796,
             "8": -0.1328
           },
           "full_inning_table": {
-            "1": 0.59,
+            "1": 0.544,
             "2": 0.545,
             "3": 0.544,
-            "4": 0.59,
+            "4": 0.544,
             "5": 0.533,
             "6": 0.521,
-            "7": 0.518,
+            "7": 0.468,
             "8": 0.43
           },
           "game_id": "823451",
@@ -18916,21 +18943,21 @@
           "top_2_picks": [
             {
               "baseline": 0.3844,
-              "confidence": "High",
+              "confidence": "Medium",
               "decision": "BET",
-              "edge_pp": 20.58,
+              "edge_pp": 15.94,
               "inning": 1,
-              "label": "Inning 1 - No Run Scored (59.0%, edge +20.6pp)",
-              "probability_scoreless": 0.59
+              "label": "Inning 1 - No Run Scored (54.4%, edge +15.9pp)",
+              "probability_scoreless": 0.544
             },
             {
-              "baseline": 0.5184,
+              "baseline": 0.49,
               "confidence": "Medium",
               "decision": "LEAN",
-              "edge_pp": 7.18,
-              "inning": 4,
-              "label": "Inning 4 - No Run Scored (59.0%, edge +7.2pp)",
-              "probability_scoreless": 0.59
+              "edge_pp": 5.38,
+              "inning": 3,
+              "label": "Inning 3 - No Run Scored (54.4%, edge +5.4pp)",
+              "probability_scoreless": 0.544
             }
           ],
           "venue_factor": 1.0
@@ -19742,19 +19769,19 @@
           "assumed_odds": -110,
           "away_team": "Miami Marlins",
           "baseline_probability": 0.3844,
-          "calibrated_probability": 0.530573,
+          "calibrated_probability": 0.495127,
           "calibration": {
             "applied": true,
             "key": "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning",
-            "probability_delta": -0.059427,
+            "probability_delta": -0.048873,
             "samples": 168,
             "version": "cal-1147-2026-06-16"
           },
-          "confidence": "High",
+          "confidence": "Medium",
           "date": "2026-06-16",
-          "decision": "BET",
-          "edge": 0.68,
-          "edge_pp": 20.58,
+          "decision": "PASS",
+          "edge": -2.87,
+          "edge_pp": 15.94,
           "game": "Philadelphia Phillies vs Miami Marlins",
           "game_id": "823451",
           "game_order": 0,
@@ -19766,8 +19793,8 @@
           "market": "no_run_inning",
           "market_priced": false,
           "matchup": "Philadelphia Phillies vs Miami Marlins",
-          "model_prediction": "59.0%",
-          "notes": "Top no-run inning candidate (edge +20.6pp vs baseline). Full table: {\"1\": 0.59, \"2\": 0.545, \"3\": 0.544, \"4\": 0.59, \"5\": 0.533, \"6\": 0.521, \"7\": 0.518, \"8\": 0.43}",
+          "model_prediction": "54.4%",
+          "notes": "Top no-run inning candidate (edge +15.9pp vs baseline). Full table: {\"1\": 0.544, \"2\": 0.545, \"3\": 0.544, \"4\": 0.544, \"5\": 0.533, \"6\": 0.521, \"7\": 0.468, \"8\": 0.43}",
           "odds": null,
           "odds_source": "default_assumed",
           "pick": "Inning 1 - No Run Scored",
@@ -19805,89 +19832,91 @@
             "team": ""
           },
           "pricing_type": "assumed",
-          "probability": 0.5306,
-          "raw_edge": 20.58,
-          "raw_probability": 0.59,
+          "probability": 0.4951,
+          "raw_edge": 15.94,
+          "raw_probability": 0.544,
           "source": "MLB Inning",
           "sport": "MLB",
           "start_time": "2026-06-16T22:40Z",
-          "team": ""
+          "team": "",
+          "units": 0
         },
         {
           "actionability": "research_signal",
           "assumed_odds": -110,
           "away_team": "Miami Marlins",
-          "baseline_probability": 0.5184,
-          "calibrated_probability": 0.530573,
+          "baseline_probability": 0.49,
+          "calibrated_probability": 0.495127,
           "calibration": {
             "applied": true,
             "key": "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning",
-            "probability_delta": -0.059427,
+            "probability_delta": -0.048873,
             "samples": 168,
             "version": "cal-1147-2026-06-16"
           },
           "confidence": "Medium",
           "date": "2026-06-16",
-          "decision": "LEAN",
-          "edge": 0.68,
-          "edge_pp": 7.18,
+          "decision": "PASS",
+          "edge": -2.87,
+          "edge_pp": 5.38,
           "game": "Philadelphia Phillies vs Miami Marlins",
           "game_id": "823451",
           "game_order": 0,
-          "game_start_time": "2026-06-16T22:40Z",
+          "game_start_time": "2026-06-16T22:40:00Z",
           "home_team": "Philadelphia Phillies",
-          "inning": 4,
+          "inning": 3,
           "league": "MLB",
           "line_source": "in_house_probability_baseline",
           "market": "no_run_inning",
           "market_priced": false,
           "matchup": "Philadelphia Phillies vs Miami Marlins",
-          "model_prediction": "59.0%",
-          "notes": "Top no-run inning candidate (edge +7.2pp vs baseline). Full table: {\"1\": 0.59, \"2\": 0.545, \"3\": 0.544, \"4\": 0.59, \"5\": 0.533, \"6\": 0.521, \"7\": 0.518, \"8\": 0.43}",
+          "model_prediction": "54.4%",
+          "notes": "Top no-run inning candidate (edge +5.4pp vs baseline). Full table: {\"1\": 0.544, \"2\": 0.545, \"3\": 0.544, \"4\": 0.544, \"5\": 0.533, \"6\": 0.521, \"7\": 0.468, \"8\": 0.43}",
           "odds": null,
           "odds_source": "default_assumed",
-          "pick": "Inning 4 - No Run Scored",
+          "pick": "Inning 3 - No Run Scored",
           "pregame_snapshot": {
             "actionability": "research_signal",
             "assumed_odds": -110,
             "away_team": "Miami Marlins",
-            "baseline_probability": 0.5184,
+            "baseline_probability": 0.49,
             "confidence": "Medium",
             "date": "2026-06-16",
             "decision": "LEAN",
-            "edge": 7.18,
-            "edge_pp": 7.18,
+            "edge": 5.38,
+            "edge_pp": 5.38,
             "game": "Philadelphia Phillies vs Miami Marlins",
             "game_id": "823451",
             "game_order": 0,
             "game_start_time": "2026-06-16T22:40:00Z",
             "home_team": "Philadelphia Phillies",
-            "inning": 4,
+            "inning": 3,
             "league": "MLB",
             "line_source": "in_house_probability_baseline",
             "market": "no_run_inning",
             "market_priced": false,
             "matchup": "Philadelphia Phillies vs Miami Marlins",
-            "model_prediction": "59.0%",
-            "notes": "Top no-run inning candidate (edge +7.2pp vs baseline). Full table: {\"1\": 0.59, \"2\": 0.545, \"3\": 0.544, \"4\": 0.59, \"5\": 0.533, \"6\": 0.521, \"7\": 0.518, \"8\": 0.43}",
+            "model_prediction": "54.4%",
+            "notes": "Top no-run inning candidate (edge +5.4pp vs baseline). Full table: {\"1\": 0.544, \"2\": 0.545, \"3\": 0.544, \"4\": 0.544, \"5\": 0.533, \"6\": 0.521, \"7\": 0.468, \"8\": 0.43}",
             "odds": null,
             "odds_source": "default_assumed",
-            "pick": "Inning 4 - No Run Scored",
+            "pick": "Inning 3 - No Run Scored",
             "pricing_type": "assumed",
-            "probability": 0.59,
+            "probability": 0.544,
             "source": "MLB Inning",
             "sport": "MLB",
             "start_time": "2026-06-16T22:40:00Z",
             "team": ""
           },
           "pricing_type": "assumed",
-          "probability": 0.5306,
-          "raw_edge": 7.18,
-          "raw_probability": 0.59,
+          "probability": 0.4951,
+          "raw_edge": 5.38,
+          "raw_probability": 0.544,
           "source": "MLB Inning",
           "sport": "MLB",
-          "start_time": "2026-06-16T22:40Z",
-          "team": ""
+          "start_time": "2026-06-16T22:40:00Z",
+          "team": "",
+          "units": 0
         },
         {
           "actionability": "research_signal",
@@ -19963,7 +19992,8 @@
           "source": "MLB Inning",
           "sport": "MLB",
           "start_time": "2026-06-16T22:45:00Z",
-          "team": ""
+          "team": "",
+          "units": 0
         },
         {
           "actionability": "research_signal",
@@ -20039,7 +20069,8 @@
           "source": "MLB Inning",
           "sport": "MLB",
           "start_time": "2026-06-16T22:45:00Z",
-          "team": ""
+          "team": "",
+          "units": 0
         },
         {
           "actionability": "research_signal",
@@ -20115,7 +20146,8 @@
           "source": "MLB Inning",
           "sport": "MLB",
           "start_time": "2026-06-16T22:45:00Z",
-          "team": ""
+          "team": "",
+          "units": 0
         },
         {
           "actionability": "research_signal",
@@ -20132,7 +20164,7 @@
           },
           "confidence": "Medium",
           "date": "2026-06-16",
-          "decision": "LEAN",
+          "decision": "PASS",
           "edge": 1.69,
           "edge_pp": 8.47,
           "game": "Boston Red Sox vs Toronto Blue Jays",
@@ -20191,7 +20223,8 @@
           "source": "MLB Inning",
           "sport": "MLB",
           "start_time": "2026-06-16T22:45Z",
-          "team": ""
+          "team": "",
+          "units": 0
         },
         {
           "actionability": "research_signal",
@@ -20267,7 +20300,8 @@
           "source": "MLB Inning",
           "sport": "MLB",
           "start_time": "2026-06-16T23:05:00Z",
-          "team": ""
+          "team": "",
+          "units": 0
         },
         {
           "actionability": "research_signal",
@@ -20343,7 +20377,8 @@
           "source": "MLB Inning",
           "sport": "MLB",
           "start_time": "2026-06-16T23:05:00Z",
-          "team": ""
+          "team": "",
+          "units": 0
         },
         {
           "actionability": "research_signal",
@@ -20419,7 +20454,8 @@
           "source": "MLB Inning",
           "sport": "MLB",
           "start_time": "2026-06-16T23:15:00Z",
-          "team": ""
+          "team": "",
+          "units": 0
         },
         {
           "actionability": "research_signal",
@@ -20495,7 +20531,8 @@
           "source": "MLB Inning",
           "sport": "MLB",
           "start_time": "2026-06-16T23:15:00Z",
-          "team": ""
+          "team": "",
+          "units": 0
         },
         {
           "actionability": "research_signal",
@@ -20571,7 +20608,8 @@
           "source": "MLB Inning",
           "sport": "MLB",
           "start_time": "2026-06-16T23:45:00Z",
-          "team": ""
+          "team": "",
+          "units": 0
         },
         {
           "actionability": "research_signal",
@@ -20588,7 +20626,7 @@
           },
           "confidence": "Medium",
           "date": "2026-06-16",
-          "decision": "LEAN",
+          "decision": "PASS",
           "edge": 0.75,
           "edge_pp": 7.26,
           "game": "St. Louis Cardinals vs San Diego Padres",
@@ -20647,7 +20685,8 @@
           "source": "MLB Inning",
           "sport": "MLB",
           "start_time": "2026-06-16T23:45Z",
-          "team": ""
+          "team": "",
+          "units": 0
         },
         {
           "actionability": "research_signal",
@@ -20723,7 +20762,8 @@
           "source": "MLB Inning",
           "sport": "MLB",
           "start_time": "2026-06-17T00:05:00Z",
-          "team": ""
+          "team": "",
+          "units": 0
         },
         {
           "actionability": "research_signal",
@@ -20799,7 +20839,8 @@
           "source": "MLB Inning",
           "sport": "MLB",
           "start_time": "2026-06-17T00:05:00Z",
-          "team": ""
+          "team": "",
+          "units": 0
         },
         {
           "actionability": "research_signal",
@@ -20875,7 +20916,8 @@
           "source": "MLB Inning",
           "sport": "MLB",
           "start_time": "2026-06-17T00:05:00Z",
-          "team": ""
+          "team": "",
+          "units": 0
         },
         {
           "actionability": "research_signal",
@@ -20951,7 +20993,8 @@
           "source": "MLB Inning",
           "sport": "MLB",
           "start_time": "2026-06-17T00:05:00Z",
-          "team": ""
+          "team": "",
+          "units": 0
         },
         {
           "actionability": "research_signal",
@@ -21027,7 +21070,8 @@
           "source": "MLB Inning",
           "sport": "MLB",
           "start_time": "2026-06-17T00:10:00Z",
-          "team": ""
+          "team": "",
+          "units": 0
         },
         {
           "actionability": "research_signal",
@@ -21044,7 +21088,7 @@
           },
           "confidence": "High",
           "date": "2026-06-16",
-          "decision": "BET",
+          "decision": "LEAN",
           "edge": 4.55,
           "edge_pp": 12.08,
           "game": "Houston Astros vs Detroit Tigers",
@@ -21179,7 +21223,8 @@
           "source": "MLB Inning",
           "sport": "MLB",
           "start_time": "2026-06-17T01:40:00Z",
-          "team": ""
+          "team": "",
+          "units": 0
         },
         {
           "actionability": "research_signal",
@@ -21255,7 +21300,8 @@
           "source": "MLB Inning",
           "sport": "MLB",
           "start_time": "2026-06-17T01:40:00Z",
-          "team": ""
+          "team": "",
+          "units": 0
         },
         {
           "actionability": "research_signal",
@@ -21331,7 +21377,8 @@
           "source": "MLB Inning",
           "sport": "MLB",
           "start_time": "2026-06-17T01:40:00Z",
-          "team": ""
+          "team": "",
+          "units": 0
         },
         {
           "actionability": "research_signal",
@@ -21407,7 +21454,8 @@
           "source": "MLB Inning",
           "sport": "MLB",
           "start_time": "2026-06-17T01:40:00Z",
-          "team": ""
+          "team": "",
+          "units": 0
         },
         {
           "actionability": "research_signal",
@@ -21483,7 +21531,8 @@
           "source": "MLB Inning",
           "sport": "MLB",
           "start_time": "2026-06-17T02:10:00Z",
-          "team": ""
+          "team": "",
+          "units": 0
         },
         {
           "actionability": "research_signal",
@@ -21559,7 +21608,8 @@
           "source": "MLB Inning",
           "sport": "MLB",
           "start_time": "2026-06-17T02:10:00Z",
-          "team": ""
+          "team": "",
+          "units": 0
         }
       ],
       "raw_lines": 2,
@@ -21609,7 +21659,7 @@
             "samples": 937,
             "version": "cal-1147-2026-06-16"
           },
-          "decision": "LEAN",
+          "decision": "PASS",
           "edge": 2.45,
           "game_start_time": "2026-06-16T22:40Z",
           "home_team": "Philadelphia Phillies",
@@ -21642,7 +21692,7 @@
           "sport": "MLB",
           "start_time": "2026-06-16T22:40Z",
           "team": "Phillies",
-          "units": 0.2
+          "units": 0
         },
         {
           "assumed_odds": -110,
@@ -21660,13 +21710,13 @@
           "edge": -2.52,
           "home_team": "Philadelphia Phillies",
           "kelly": 0.88,
-          "line": 8.0,
-          "market_line": 8.0,
+          "line": 8.5,
+          "market_line": 8.5,
           "market_total_source": "model_output",
           "market_type": "totals",
-          "model_prediction": 7.6,
+          "model_prediction": 8.1,
           "odds": -110,
-          "pick": "Under 8.0 (Miami Marlins vs Philadelphia Phillies)",
+          "pick": "Under 8.5 (Miami Marlins vs Philadelphia Phillies)",
           "pregame_snapshot": {
             "assumed_odds": -110,
             "away_team": "Miami Marlins",
@@ -21675,20 +21725,20 @@
             "edge": 1.67,
             "home_team": "Philadelphia Phillies",
             "kelly": 0.88,
-            "line": 8.0,
-            "market_line": 8.0,
+            "line": 8.5,
+            "market_line": 8.5,
             "market_total_source": "model_output",
             "market_type": "totals",
-            "model_prediction": 7.6,
+            "model_prediction": 8.1,
             "odds": -110,
-            "pick": "Under 8.0 (Miami Marlins vs Philadelphia Phillies)",
+            "pick": "Under 8.5 (Miami Marlins vs Philadelphia Phillies)",
             "prob": 0.5405,
             "probability": 0.5405,
             "selection": "PASS",
             "source": "MLB Model",
             "sport": "MLB",
             "units": 0.0,
-            "vegas": 8.0
+            "vegas": 8.5
           },
           "prob": 0.5405,
           "probability": 0.4986,
@@ -21699,7 +21749,7 @@
           "source": "MLB Model",
           "sport": "MLB",
           "units": 0,
-          "vegas": 8.0
+          "vegas": 8.5
         },
         {
           "away_team": "Kansas City Royals",
@@ -21711,7 +21761,7 @@
             "samples": 937,
             "version": "cal-1147-2026-06-16"
           },
-          "decision": "LEAN",
+          "decision": "PASS",
           "edge": 2.45,
           "game_start_time": "2026-06-16T22:45Z",
           "home_team": "Washington Nationals",
@@ -21744,29 +21794,29 @@
           "sport": "MLB",
           "start_time": "2026-06-16T22:45Z",
           "team": "Nationals",
-          "units": 0.2
+          "units": 0
         },
         {
           "assumed_odds": -110,
           "away_team": "Kansas City Royals",
-          "calibrated_probability": 0.516769,
+          "calibrated_probability": 0.501322,
           "calibration": {
             "applied": true,
             "key": "global",
-            "probability_delta": -0.047431,
+            "probability_delta": -0.042778,
             "samples": 937,
             "version": "cal-1147-2026-06-16"
           },
           "decision": "PASS",
           "direction": "Under",
-          "edge": -0.7,
+          "edge": -2.25,
           "home_team": "Washington Nationals",
-          "kelly": 2.12,
+          "kelly": 1.07,
           "line": 8.5,
           "market_line": 8.5,
           "market_total_source": "model_output",
           "market_type": "totals",
-          "model_prediction": 7.8,
+          "model_prediction": 8.0,
           "odds": -110,
           "pick": "Under 8.5 (Kansas City Royals vs Washington Nationals)",
           "pregame_snapshot": {
@@ -21792,11 +21842,11 @@
             "units": 0.01,
             "vegas": 8.5
           },
-          "prob": 0.5642,
-          "probability": 0.5168,
-          "raw_edge": 4.04,
-          "raw_probability": 0.5642,
-          "raw_units": 0.01,
+          "prob": 0.5441,
+          "probability": 0.5013,
+          "raw_edge": 2.03,
+          "raw_probability": 0.5441,
+          "raw_units": 0.0,
           "selection": "Under",
           "source": "MLB Model",
           "sport": "MLB",
@@ -21805,20 +21855,20 @@
         },
         {
           "away_team": "Toronto Blue Jays",
-          "calibrated_probability": 0.50002,
+          "calibrated_probability": 0.524501,
           "calibration": {
             "applied": true,
             "key": "global",
-            "probability_delta": -0.04238,
+            "probability_delta": -0.049699,
             "samples": 937,
             "version": "cal-1147-2026-06-16"
           },
           "decision": "PASS",
-          "edge": 0.0,
+          "edge": 2.45,
           "home_team": "Boston Red Sox",
           "market_pick_prob": null,
           "market_type": "h2h",
-          "model_odds": -119,
+          "model_odds": -135,
           "odds": null,
           "pick": "Red Sox ML (Blue Jays vs Red Sox)",
           "pregame_snapshot": {
@@ -21837,36 +21887,36 @@
             "team": "Red Sox",
             "units": 0.0
           },
-          "probability": 0.5,
-          "raw_edge": 4.24,
-          "raw_probability": 0.5424,
-          "raw_units": 0.0,
+          "probability": 0.5245,
+          "raw_edge": 7.42,
+          "raw_probability": 0.5742,
+          "raw_units": 0.4,
           "source": "MLB Model",
           "sport": "MLB",
           "team": "Red Sox",
-          "units": 0.0
+          "units": 0
         },
         {
           "assumed_odds": -110,
           "away_team": "Toronto Blue Jays",
-          "calibrated_probability": 0.471258,
+          "calibrated_probability": 0.478232,
           "calibration": {
             "applied": true,
             "key": "global",
-            "probability_delta": -0.033342,
+            "probability_delta": -0.035568,
             "samples": 937,
             "version": "cal-1147-2026-06-16"
           },
           "decision": "PASS",
           "direction": "Over",
-          "edge": -5.26,
+          "edge": -4.56,
           "home_team": "Boston Red Sox",
           "kelly": 0.0,
           "line": 7.5,
           "market_line": 7.5,
           "market_total_source": "model_output",
           "market_type": "totals",
-          "model_prediction": 7.5,
+          "model_prediction": 7.7,
           "odds": -110,
           "pick": "Over 7.5 (Toronto Blue Jays vs Boston Red Sox)",
           "pregame_snapshot": {
@@ -21892,10 +21942,10 @@
             "units": 0.0,
             "vegas": 7.5
           },
-          "prob": 0.5046,
-          "probability": 0.4713,
-          "raw_edge": -1.92,
-          "raw_probability": 0.5046,
+          "prob": 0.5138,
+          "probability": 0.4782,
+          "raw_edge": -1.0,
+          "raw_probability": 0.5138,
           "raw_units": 0.0,
           "selection": "PASS",
           "source": "MLB Model",
@@ -22049,53 +22099,53 @@
         {
           "assumed_odds": -110,
           "away_team": "New York Mets",
-          "calibrated_probability": 0.486667,
+          "calibrated_probability": 0.470577,
           "calibration": {
             "applied": true,
             "key": "global",
-            "probability_delta": -0.038233,
+            "probability_delta": -0.033123,
             "samples": 937,
             "version": "cal-1147-2026-06-16"
           },
           "decision": "PASS",
-          "direction": "Under",
-          "edge": -3.71,
+          "direction": "Over",
+          "edge": -5.32,
           "home_team": "Cincinnati Reds",
-          "kelly": 0.06,
+          "kelly": 0.0,
           "line": 10.0,
           "market_line": 10.0,
           "market_total_source": "model_output",
           "market_type": "totals",
-          "model_prediction": 9.7,
+          "model_prediction": 10.0,
           "odds": -110,
-          "pick": "Under 10.0 (New York Mets vs Cincinnati Reds)",
+          "pick": "Over 10.0 (New York Mets vs Cincinnati Reds)",
           "pregame_snapshot": {
             "assumed_odds": -110,
             "away_team": "New York Mets",
             "decision": "PASS",
-            "direction": "Under",
-            "edge": 0.11,
+            "direction": "Over",
+            "edge": -2.01,
             "home_team": "Cincinnati Reds",
-            "kelly": 0.06,
+            "kelly": 0.0,
             "line": 10.0,
             "market_line": 10.0,
             "market_total_source": "model_output",
             "market_type": "totals",
-            "model_prediction": 9.7,
+            "model_prediction": 10.0,
             "odds": -110,
-            "pick": "Under 10.0 (New York Mets vs Cincinnati Reds)",
-            "prob": 0.5249,
-            "probability": 0.5249,
+            "pick": "Over 10.0 (New York Mets vs Cincinnati Reds)",
+            "prob": 0.5037,
+            "probability": 0.5037,
             "selection": "PASS",
             "source": "MLB Model",
             "sport": "MLB",
             "units": 0.0,
             "vegas": 10.0
           },
-          "prob": 0.5249,
-          "probability": 0.4867,
-          "raw_edge": 0.11,
-          "raw_probability": 0.5249,
+          "prob": 0.5037,
+          "probability": 0.4706,
+          "raw_edge": -2.01,
+          "raw_probability": 0.5037,
           "raw_units": 0.0,
           "selection": "PASS",
           "source": "MLB Model",
@@ -22113,7 +22163,7 @@
             "samples": 937,
             "version": "cal-1147-2026-06-16"
           },
-          "decision": "LEAN",
+          "decision": "PASS",
           "edge": 2.45,
           "game_start_time": "2026-06-16T23:15Z",
           "home_team": "Atlanta Braves",
@@ -22146,7 +22196,7 @@
           "sport": "MLB",
           "start_time": "2026-06-16T23:15Z",
           "team": "Braves",
-          "units": 0.2
+          "units": 0
         },
         {
           "assumed_odds": -110,
@@ -22215,7 +22265,7 @@
             "samples": 937,
             "version": "cal-1147-2026-06-16"
           },
-          "decision": "LEAN",
+          "decision": "PASS",
           "edge": 2.45,
           "game_start_time": "2026-06-16T23:40Z",
           "home_team": "Milwaukee Brewers",
@@ -22248,7 +22298,7 @@
           "sport": "MLB",
           "start_time": "2026-06-16T23:40Z",
           "team": "Brewers",
-          "units": 0.2
+          "units": 0
         },
         {
           "assumed_odds": -110,
@@ -22463,7 +22513,7 @@
             "samples": 937,
             "version": "cal-1147-2026-06-16"
           },
-          "decision": "BET",
+          "decision": "PASS",
           "direction": "Under",
           "edge": 2.03,
           "game_start_time": "2026-06-17T00:05Z",
@@ -22508,7 +22558,7 @@
           "source": "MLB Model",
           "sport": "MLB",
           "start_time": "2026-06-17T00:05Z",
-          "units": 0.02,
+          "units": 0,
           "vegas": 9.5
         },
         {
@@ -22521,7 +22571,7 @@
             "samples": 937,
             "version": "cal-1147-2026-06-16"
           },
-          "decision": "LEAN",
+          "decision": "PASS",
           "edge": 2.45,
           "game_start_time": "2026-06-17T00:05Z",
           "home_team": "Texas Rangers",
@@ -22554,7 +22604,7 @@
           "sport": "MLB",
           "start_time": "2026-06-17T00:05Z",
           "team": "Rangers",
-          "units": 0.2
+          "units": 0
         },
         {
           "assumed_odds": -110,
@@ -22567,7 +22617,7 @@
             "samples": 937,
             "version": "cal-1147-2026-06-16"
           },
-          "decision": "BET",
+          "decision": "PASS",
           "direction": "Under",
           "edge": 0.98,
           "game_start_time": "2026-06-17T00:05Z",
@@ -22612,7 +22662,7 @@
           "source": "MLB Model",
           "sport": "MLB",
           "start_time": "2026-06-17T00:05Z",
-          "units": 0.01,
+          "units": 0,
           "vegas": 8.5
         },
         {
@@ -22625,7 +22675,7 @@
             "samples": 937,
             "version": "cal-1147-2026-06-16"
           },
-          "decision": "LEAN",
+          "decision": "PASS",
           "edge": 2.45,
           "game_start_time": "2026-06-17T00:10Z",
           "home_team": "Houston Astros",
@@ -22658,7 +22708,7 @@
           "sport": "MLB",
           "start_time": "2026-06-17T00:10Z",
           "team": "Astros",
-          "units": 0.2
+          "units": 0
         },
         {
           "assumed_odds": -110,
@@ -22827,7 +22877,7 @@
             "samples": 937,
             "version": "cal-1147-2026-06-16"
           },
-          "decision": "LEAN",
+          "decision": "PASS",
           "edge": 2.45,
           "game_start_time": "2026-06-17T01:40Z",
           "home_team": "Athletics",
@@ -22860,7 +22910,7 @@
           "sport": "MLB",
           "start_time": "2026-06-17T01:40Z",
           "team": "Athletics",
-          "units": 0.2
+          "units": 0
         },
         {
           "assumed_odds": -110,
@@ -22929,7 +22979,7 @@
             "samples": 937,
             "version": "cal-1147-2026-06-16"
           },
-          "decision": "LEAN",
+          "decision": "PASS",
           "edge": 2.45,
           "game_start_time": "2026-06-17T01:40Z",
           "home_team": "Seattle Mariners",
@@ -22962,7 +23012,7 @@
           "sport": "MLB",
           "start_time": "2026-06-17T01:40Z",
           "team": "Mariners",
-          "units": 0.2
+          "units": 0
         },
         {
           "assumed_odds": -110,
@@ -22975,7 +23025,7 @@
             "samples": 937,
             "version": "cal-1147-2026-06-16"
           },
-          "decision": "BET",
+          "decision": "PASS",
           "direction": "Under",
           "edge": 0.49,
           "game_start_time": "2026-06-17T01:40Z",
@@ -23020,7 +23070,7 @@
           "source": "MLB Model",
           "sport": "MLB",
           "start_time": "2026-06-17T01:40Z",
-          "units": 0.01,
+          "units": 0,
           "vegas": 7.5
         },
         {
@@ -23033,7 +23083,7 @@
             "samples": 937,
             "version": "cal-1147-2026-06-16"
           },
-          "decision": "LEAN",
+          "decision": "PASS",
           "edge": 2.45,
           "game_start_time": "2026-06-17T02:10Z",
           "home_team": "Los Angeles Dodgers",
@@ -23066,7 +23116,7 @@
           "sport": "MLB",
           "start_time": "2026-06-17T02:10Z",
           "team": "Dodgers",
-          "units": 0.2
+          "units": 0
         },
         {
           "assumed_odds": -110,
@@ -23079,7 +23129,7 @@
             "samples": 937,
             "version": "cal-1147-2026-06-16"
           },
-          "decision": "BET",
+          "decision": "PASS",
           "direction": "Under",
           "edge": 0.91,
           "home_team": "Los Angeles Dodgers",
@@ -23122,7 +23172,7 @@
           "selection": "Under",
           "source": "MLB Model",
           "sport": "MLB",
-          "units": 0.01,
+          "units": 0,
           "vegas": 8.0
         }
       ],
@@ -24839,18 +24889,18 @@
         },
         {
           "away_team": "Toronto Tempo",
-          "calibrated_probability": 0.595818,
+          "calibrated_probability": 0.618718,
           "calibration": {
             "applied": true,
             "key": "global",
-            "probability_delta": -0.068082,
+            "probability_delta": -0.072782,
             "samples": 937,
             "version": "cal-1147-2026-06-16"
           },
-          "confidence": 66.4,
+          "confidence": 69.2,
           "confidence_label": "Medium",
           "decision": "LEAN",
-          "edge": 7.2,
+          "edge": 9.49,
           "game": "Toronto Tempo @ Indiana Fever",
           "guardrail_reasons": [
             "questionable starter uncertainty"
@@ -24859,9 +24909,9 @@
           "has_market_price": true,
           "home_team": "Indiana Fever",
           "league": "WNBA",
-          "line": 179.5,
-          "market_edge": 0.1401,
-          "market_line": 179.5,
+          "line": 180.5,
+          "market_edge": 0.1677,
+          "market_line": 180.5,
           "market_pick_odds": -110,
           "market_pick_prob": 0.5238,
           "market_source": "DraftKings via ESPN",
@@ -24869,13 +24919,13 @@
           "matchup": "Toronto Tempo @ Indiana Fever",
           "model_prediction": 174.0,
           "odds": -110,
-          "pick": "Under 179.5 (Toronto Tempo vs Indiana Fever)",
+          "pick": "Under 180.5 (Toronto Tempo vs Indiana Fever)",
           "pregame_snapshot": {
             "away_team": "Toronto Tempo",
-            "confidence": 66.4,
+            "confidence": 69.2,
             "confidence_label": "Medium",
             "decision": "LEAN",
-            "edge": 14.01,
+            "edge": 16.77,
             "game": "Toronto Tempo @ Indiana Fever",
             "guardrail_reasons": [
               "questionable starter uncertainty"
@@ -24884,9 +24934,9 @@
             "has_market_price": true,
             "home_team": "Indiana Fever",
             "league": "WNBA",
-            "line": 179.5,
-            "market_edge": 0.1401,
-            "market_line": 179.5,
+            "line": 180.5,
+            "market_edge": 0.1677,
+            "market_line": 180.5,
             "market_pick_odds": -110,
             "market_pick_prob": 0.5238,
             "market_source": "DraftKings via ESPN",
@@ -24894,25 +24944,25 @@
             "matchup": "Toronto Tempo @ Indiana Fever",
             "model_prediction": 174.0,
             "odds": -110,
-            "pick": "Under 179.5 (Toronto Tempo vs Indiana Fever)",
-            "probability": 0.6639,
+            "pick": "Under 180.5 (Toronto Tempo vs Indiana Fever)",
+            "probability": 0.6915,
             "projected_total": 174.0,
             "selection": "Under",
             "source": "WNBA Model",
             "sport": "WNBA",
-            "units": 0.02,
-            "vegas": 179.5
+            "units": 0.03,
+            "vegas": 180.5
           },
-          "probability": 0.5958,
+          "probability": 0.6187,
           "projected_total": 174.0,
-          "raw_edge": 14.01,
-          "raw_probability": 0.6639,
-          "raw_units": 0.02,
+          "raw_edge": 16.77,
+          "raw_probability": 0.6915,
+          "raw_units": 0.03,
           "selection": "Under",
           "source": "WNBA Model",
           "sport": "WNBA",
-          "units": 0.01,
-          "vegas": 179.5
+          "units": 0.02,
+          "vegas": 180.5
         }
       ],
       "raw_lines": 6
@@ -26404,7 +26454,7 @@
     ],
     "updatedAt": "2026-06-16T12:39:49.283712Z"
   },
-  "updatedAt": "2026-06-16T17:55:07.978656Z",
+  "updatedAt": "2026-06-16T18:42:44.630345Z",
   "wnba": {
     "ok": true,
     "picks": [
@@ -26580,18 +26630,18 @@
       },
       {
         "away_team": "Toronto Tempo",
-        "calibrated_probability": 0.595818,
+        "calibrated_probability": 0.618718,
         "calibration": {
           "applied": true,
           "key": "global",
-          "probability_delta": -0.068082,
+          "probability_delta": -0.072782,
           "samples": 937,
           "version": "cal-1147-2026-06-16"
         },
-        "confidence": 66.4,
+        "confidence": 69.2,
         "confidence_label": "Medium",
         "decision": "LEAN",
-        "edge": 7.2,
+        "edge": 9.49,
         "game": "Toronto Tempo @ Indiana Fever",
         "guardrail_reasons": [
           "questionable starter uncertainty"
@@ -26600,9 +26650,9 @@
         "has_market_price": true,
         "home_team": "Indiana Fever",
         "league": "WNBA",
-        "line": 179.5,
-        "market_edge": 0.1401,
-        "market_line": 179.5,
+        "line": 180.5,
+        "market_edge": 0.1677,
+        "market_line": 180.5,
         "market_pick_odds": -110,
         "market_pick_prob": 0.5238,
         "market_source": "DraftKings via ESPN",
@@ -26610,13 +26660,13 @@
         "matchup": "Toronto Tempo @ Indiana Fever",
         "model_prediction": 174.0,
         "odds": -110,
-        "pick": "Under 179.5 (Toronto Tempo vs Indiana Fever)",
+        "pick": "Under 180.5 (Toronto Tempo vs Indiana Fever)",
         "pregame_snapshot": {
           "away_team": "Toronto Tempo",
-          "confidence": 66.4,
+          "confidence": 69.2,
           "confidence_label": "Medium",
           "decision": "LEAN",
-          "edge": 14.01,
+          "edge": 16.77,
           "game": "Toronto Tempo @ Indiana Fever",
           "guardrail_reasons": [
             "questionable starter uncertainty"
@@ -26625,9 +26675,9 @@
           "has_market_price": true,
           "home_team": "Indiana Fever",
           "league": "WNBA",
-          "line": 179.5,
-          "market_edge": 0.1401,
-          "market_line": 179.5,
+          "line": 180.5,
+          "market_edge": 0.1677,
+          "market_line": 180.5,
           "market_pick_odds": -110,
           "market_pick_prob": 0.5238,
           "market_source": "DraftKings via ESPN",
@@ -26635,25 +26685,25 @@
           "matchup": "Toronto Tempo @ Indiana Fever",
           "model_prediction": 174.0,
           "odds": -110,
-          "pick": "Under 179.5 (Toronto Tempo vs Indiana Fever)",
-          "probability": 0.6639,
+          "pick": "Under 180.5 (Toronto Tempo vs Indiana Fever)",
+          "probability": 0.6915,
           "projected_total": 174.0,
           "selection": "Under",
           "source": "WNBA Model",
           "sport": "WNBA",
-          "units": 0.02,
-          "vegas": 179.5
+          "units": 0.03,
+          "vegas": 180.5
         },
-        "probability": 0.5958,
+        "probability": 0.6187,
         "projected_total": 174.0,
-        "raw_edge": 14.01,
-        "raw_probability": 0.6639,
-        "raw_units": 0.02,
+        "raw_edge": 16.77,
+        "raw_probability": 0.6915,
+        "raw_units": 0.03,
         "selection": "Under",
         "source": "WNBA Model",
         "sport": "WNBA",
-        "units": 0.01,
-        "vegas": 179.5
+        "units": 0.02,
+        "vegas": 180.5
       }
     ],
     "raw_lines": 6
