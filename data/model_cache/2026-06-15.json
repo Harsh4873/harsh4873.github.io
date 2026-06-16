@@ -12672,7 +12672,7 @@
           "game": "Detroit Tigers @ Houston Astros",
           "game_id": "824181",
           "game_order": 6,
-          "game_start_time": "2026-06-16T00:10:00Z",
+          "game_start_time": "2026-06-16T00:10Z",
           "home_team": "Houston Astros",
           "league": "MLB",
           "line": 4.5,
@@ -12713,7 +12713,7 @@
           "raw_probability": 0.6127,
           "source": "MLB First Five",
           "sport": "MLB",
-          "start_time": "2026-06-16T00:10:00Z",
+          "start_time": "2026-06-16T00:10Z",
           "team": ""
         },
         {
@@ -12920,7 +12920,7 @@
           "game": "Pittsburgh Pirates @ Athletics",
           "game_id": "824993",
           "game_order": 8,
-          "game_start_time": "2026-06-16T01:40:00Z",
+          "game_start_time": "2026-06-16T01:40Z",
           "home_team": "Athletics",
           "league": "MLB",
           "line": 4.5,
@@ -12961,7 +12961,7 @@
           "raw_probability": 0.6474,
           "source": "MLB First Five",
           "sport": "MLB",
-          "start_time": "2026-06-16T01:40:00Z",
+          "start_time": "2026-06-16T01:40Z",
           "team": ""
         },
         {
@@ -14855,6 +14855,7 @@
           "decision": "BET",
           "direction": "Over",
           "edge": 7.85,
+          "game_start_time": "2026-06-15T22:40Z",
           "home_team": "Philadelphia Phillies",
           "kelly": 6.5,
           "line": 8.0,
@@ -14895,6 +14896,7 @@
           "selection": "Over",
           "source": "MLB Model",
           "sport": "MLB",
+          "start_time": "2026-06-15T22:40Z",
           "units": 0.04,
           "vegas": 8.0
         },
@@ -15155,6 +15157,7 @@
           "decision": "BET",
           "direction": "Under",
           "edge": 4.51,
+          "game_start_time": "2026-06-15T23:45Z",
           "home_team": "St. Louis Cardinals",
           "kelly": 4.53,
           "line": 8.0,
@@ -15195,6 +15198,7 @@
           "selection": "Under",
           "source": "MLB Model",
           "sport": "MLB",
+          "start_time": "2026-06-15T23:45Z",
           "units": 0.03,
           "vegas": 8.0
         },
@@ -15463,6 +15467,7 @@
           "decision": "LEAN",
           "direction": "Over",
           "edge": 1.06,
+          "game_start_time": "2026-06-16T00:10Z",
           "home_team": "Houston Astros",
           "kelly": 2.46,
           "line": 7.5,
@@ -15503,6 +15508,7 @@
           "selection": "Over",
           "source": "MLB Model",
           "sport": "MLB",
+          "start_time": "2026-06-16T00:10Z",
           "units": 0.01,
           "vegas": 7.5
         },
@@ -15667,6 +15673,7 @@
           "decision": "BET",
           "direction": "Over",
           "edge": 5.13,
+          "game_start_time": "2026-06-16T01:40Z",
           "home_team": "Athletics",
           "kelly": 4.9,
           "line": 10.0,
@@ -15707,6 +15714,7 @@
           "selection": "Over",
           "source": "MLB Model",
           "sport": "MLB",
+          "start_time": "2026-06-16T01:40Z",
           "units": 0.03,
           "vegas": 10.0
         },
@@ -15914,6 +15922,7 @@
           "odds": -154,
           "pick": "Saudi Arabia +1.5 (Uruguay @ Saudi Arabia)",
           "probability": null,
+          "result": "win",
           "source": "Scores24FIFAWorldCup",
           "source_url": "https://scores24.live/en/soccer/m-16-06-2026-saudi-arabia-uruguay-prediction",
           "sport": "FIFA WC",
