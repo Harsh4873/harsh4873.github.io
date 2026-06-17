@@ -16683,7 +16683,7 @@
           "game": "Kansas City Royals @ Washington Nationals",
           "game_id": "822721",
           "game_order": 1,
-          "game_start_time": "2026-06-17T17:05:00Z",
+          "game_start_time": "2026-06-17T17:05Z",
           "home_team": "Washington Nationals",
           "league": "MLB",
           "line": 5.5,
@@ -16733,7 +16733,7 @@
           "raw_probability": 0.7019,
           "source": "MLB First Five",
           "sport": "MLB",
-          "start_time": "2026-06-17T17:05:00Z",
+          "start_time": "2026-06-17T17:05Z",
           "team": ""
         },
         {
@@ -16900,7 +16900,7 @@
           "game": "Miami Marlins @ Philadelphia Phillies",
           "game_id": "823450",
           "game_order": 2,
-          "game_start_time": "2026-06-17T17:05:00Z",
+          "game_start_time": "2026-06-17T17:05Z",
           "home_team": "Philadelphia Phillies",
           "league": "MLB",
           "line": null,
@@ -16950,7 +16950,7 @@
           "raw_probability": 0.578,
           "source": "MLB First Five",
           "sport": "MLB",
-          "start_time": "2026-06-17T17:05:00Z",
+          "start_time": "2026-06-17T17:05Z",
           "team": "Miami Marlins"
         },
         {
@@ -17260,7 +17260,7 @@
           "game": "Tampa Bay Rays @ Los Angeles Dodgers",
           "game_id": "823940",
           "game_order": 5,
-          "game_start_time": "2026-06-17T19:10:00Z",
+          "game_start_time": "2026-06-17T19:10Z",
           "home_team": "Los Angeles Dodgers",
           "league": "MLB",
           "line": null,
@@ -17310,7 +17310,7 @@
           "raw_probability": 0.5993,
           "source": "MLB First Five",
           "sport": "MLB",
-          "start_time": "2026-06-17T19:10:00Z",
+          "start_time": "2026-06-17T19:10Z",
           "team": "Los Angeles Dodgers"
         },
         {
@@ -17548,7 +17548,7 @@
           "game": "Toronto Blue Jays @ Boston Red Sox",
           "game_id": "824746",
           "game_order": 7,
-          "game_start_time": "2026-06-17T22:45:00Z",
+          "game_start_time": "2026-06-17T22:45Z",
           "home_team": "Boston Red Sox",
           "league": "MLB",
           "line": null,
@@ -17598,7 +17598,7 @@
           "raw_probability": 0.6602,
           "source": "MLB First Five",
           "sport": "MLB",
-          "start_time": "2026-06-17T22:45:00Z",
+          "start_time": "2026-06-17T22:45Z",
           "team": "Boston Red Sox"
         },
         {
@@ -17692,7 +17692,7 @@
           "game": "Chicago White Sox @ New York Yankees",
           "game_id": "823536",
           "game_order": 8,
-          "game_start_time": "2026-06-17T23:05:00Z",
+          "game_start_time": "2026-06-17T23:05Z",
           "home_team": "New York Yankees",
           "league": "MLB",
           "line": 4.5,
@@ -17742,7 +17742,7 @@
           "raw_probability": 0.6353,
           "source": "MLB First Five",
           "sport": "MLB",
-          "start_time": "2026-06-17T23:05:00Z",
+          "start_time": "2026-06-17T23:05Z",
           "team": ""
         },
         {
@@ -18124,7 +18124,7 @@
           "game": "Colorado Rockies @ Chicago Cubs",
           "game_id": "824668",
           "game_order": 11,
-          "game_start_time": "2026-06-18T00:05:00Z",
+          "game_start_time": "2026-06-18T00:05Z",
           "home_team": "Chicago Cubs",
           "league": "MLB",
           "line": null,
@@ -18174,7 +18174,7 @@
           "raw_probability": 0.5981,
           "source": "MLB First Five",
           "sport": "MLB",
-          "start_time": "2026-06-18T00:05:00Z",
+          "start_time": "2026-06-18T00:05Z",
           "team": "Colorado Rockies"
         },
         {
@@ -18268,7 +18268,7 @@
           "game": "Pittsburgh Pirates @ Athletics",
           "game_id": "824992",
           "game_order": 12,
-          "game_start_time": "2026-06-18T01:40:00Z",
+          "game_start_time": "2026-06-18T01:40Z",
           "home_team": "Athletics",
           "league": "MLB",
           "line": 4.5,
@@ -18318,7 +18318,7 @@
           "raw_probability": 0.6574,
           "source": "MLB First Five",
           "sport": "MLB",
-          "start_time": "2026-06-18T01:40:00Z",
+          "start_time": "2026-06-18T01:40Z",
           "team": ""
         },
         {
@@ -22629,6 +22629,7 @@
           },
           "decision": "BET",
           "edge": 40.08,
+          "game_start_time": "2026-06-18T00:05Z",
           "home_team": "Chicago Cubs",
           "market_pick_prob": null,
           "market_type": "h2h",
@@ -22657,6 +22658,7 @@
           "raw_units": 1.5,
           "source": "MLB Model",
           "sport": "MLB",
+          "start_time": "2026-06-18T00:05Z",
           "team": "Cubs",
           "units": 1.32
         },
@@ -23202,6 +23204,7 @@
           "odds": -204,
           "pick": "Austria -1 (Jordan @ Austria)",
           "probability": null,
+          "result": "win",
           "source": "Scores24FIFAWorldCup",
           "source_url": "https://scores24.live/en/soccer/m-17-06-2026-austria-jordan-prediction",
           "sport": "FIFA WC",
@@ -23323,6 +23326,7 @@
           "decision": "BET",
           "edge": null,
           "game": "San Francisco Giants @ Atlanta Braves",
+          "game_start_time": "2026-06-16T23:15Z",
           "home_team": "Atlanta Braves",
           "matchup": "San Francisco Giants @ Atlanta Braves",
           "odds": -154,
@@ -23349,7 +23353,7 @@
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-16-06-2026-atlanta-braves-san-francisco-giants-prediction",
           "sport": "MLB",
-          "start_time": "2026-06-17T23:15Z",
+          "start_time": "2026-06-16T23:15Z",
           "tip": "Atlanta Braves Win",
           "units": 1
         },
@@ -24082,6 +24086,7 @@
           "decision": "BET",
           "edge": 14.69,
           "game": "Washington Mystics @ Connecticut Sun",
+          "game_start_time": "2026-06-17T23:00Z",
           "guardrail_reasons": [],
           "h2h_games": 0,
           "has_market_price": true,
@@ -24134,6 +24139,7 @@
           "raw_units": 0.07,
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-17T23:00Z",
           "starters_out": [],
           "starters_questionable": [],
           "starters_total": 0,
@@ -24156,6 +24162,7 @@
           "decision": "BET",
           "edge": 8.95,
           "game": "Washington Mystics @ Connecticut Sun",
+          "game_start_time": "2026-06-17T23:00Z",
           "guardrail_reasons": [],
           "h2h_games": 0,
           "has_market_price": true,
@@ -24215,6 +24222,7 @@
           "selection": "Washington Mystics",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-17T23:00Z",
           "starters_out": [],
           "starters_questionable": [],
           "team": "Washington Mystics",
@@ -24236,6 +24244,7 @@
           "decision": "LEAN",
           "edge": 10.17,
           "game": "Washington Mystics @ Connecticut Sun",
+          "game_start_time": "2026-06-17T23:00Z",
           "guardrail_reasons": [],
           "h2h_games": 0,
           "has_market_price": true,
@@ -24291,6 +24300,7 @@
           "selection": "Under",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-17T23:00Z",
           "units": 0.02,
           "vegas": 162.5
         },
@@ -24309,6 +24319,7 @@
           "decision": "LEAN",
           "edge": 6.83,
           "game": "New York Liberty @ Chicago Sky",
+          "game_start_time": "2026-06-18T00:00Z",
           "guardrail_reasons": [],
           "h2h_games": 0,
           "has_market_price": true,
@@ -24361,6 +24372,7 @@
           "raw_units": 0.18,
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-18T00:00Z",
           "starters_out": [],
           "starters_questionable": [],
           "starters_total": 2,
@@ -24383,6 +24395,7 @@
           "decision": "BET",
           "edge": 10.32,
           "game": "New York Liberty @ Chicago Sky",
+          "game_start_time": "2026-06-18T00:00Z",
           "guardrail_reasons": [],
           "h2h_games": 0,
           "has_market_price": true,
@@ -24442,6 +24455,7 @@
           "selection": "New York Liberty",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-18T00:00Z",
           "starters_out": [],
           "starters_questionable": [],
           "team": "New York Liberty",
@@ -24698,6 +24712,7 @@
           "decision": "LEAN",
           "edge": 7.66,
           "game": "Dallas Wings @ Golden State Valkyries",
+          "game_start_time": "2026-06-18T02:00Z",
           "guardrail_reasons": [],
           "h2h_games": 0,
           "has_market_price": true,
@@ -24753,6 +24768,7 @@
           "selection": "Over",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-18T02:00Z",
           "units": 0.01,
           "vegas": 165.5
         },
@@ -24771,6 +24787,7 @@
           "decision": "LEAN",
           "edge": 6.82,
           "game": "Minnesota Lynx @ Los Angeles Sparks",
+          "game_start_time": "2026-06-18T02:00Z",
           "guardrail_reasons": [
             "key starter(s) OUT (Napheesa Collier) \u2014 capped at LEAN"
           ],
@@ -24829,6 +24846,7 @@
           "raw_units": 0.04,
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-18T02:00Z",
           "starters_out": [
             "Napheesa Collier"
           ],
@@ -24853,6 +24871,7 @@
           "decision": "LEAN",
           "edge": 8.36,
           "game": "Minnesota Lynx @ Los Angeles Sparks",
+          "game_start_time": "2026-06-18T02:00Z",
           "guardrail_reasons": [
             "picked side has a key starter out; spread capped at LEAN"
           ],
@@ -24918,6 +24937,7 @@
           "selection": "Minnesota Lynx",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-18T02:00Z",
           "starters_out": [
             "Napheesa Collier"
           ],
@@ -25423,6 +25443,7 @@
           "decision": "LEAN",
           "edge": 9.03,
           "game": "Seattle Storm @ Portland Fire",
+          "game_start_time": "2026-06-18T02:00Z",
           "guardrail_reasons": [
             "questionable starter uncertainty"
           ],
@@ -25482,6 +25503,7 @@
           "selection": "Under",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-18T02:00Z",
           "units": 0.01,
           "vegas": 161.5
         }
