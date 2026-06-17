@@ -37,6 +37,13 @@ export interface Pick {
   player_name?: string;
   market?: string;
   scope?: string;
+  ml_rank?: number | string | null;
+  model_rank?: number | string | null;
+  rank?: number | string | null;
+  ml_rank_epoch?: string | null;
+  ranking_epoch?: string | null;
+  ranking_updated_at?: string | null;
+  model_epoch?: string | null;
   [key: string]: unknown;
 }
 
@@ -169,6 +176,7 @@ function stablePickId(raw: Record<string, unknown>, date: string, source: string
     raw.selection || raw.prop || raw.bet,
     raw.player || raw.player_name,
     raw.market || raw.market_type,
+    raw.ml_rank_epoch || raw.ranking_epoch || raw.model_epoch,
     raw.matchup || raw.game,
     raw.away_team,
     raw.home_team,

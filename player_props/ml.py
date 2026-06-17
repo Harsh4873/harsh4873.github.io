@@ -164,7 +164,7 @@ def score_probability(
     baseline_probability: float,
     baseline_projection: float,
     market_family: str,
-) -> tuple[float, str]:
+) -> tuple[float, str, str]:
     bundle = load_ml_bundle(str(pick.get("sport") or ""))
     vector = feature_vector(
         pick,
@@ -176,12 +176,15 @@ def score_probability(
     if model_probability is None:
         model_probability = _clamp(baseline_probability)
         model_version = f"{ML_MODEL_VERSION}-fallback"
+        fingerprint = "fallback"
     else:
         # Keep the learned artifact in charge while anchoring wild early models
         # to the live projection signal until the ledger has more samples.
         model_probability = _clamp((model_probability * 0.62) + (_clamp(baseline_probability) * 0.38))
-        model_version = str((bundle.get("metadata") or {}).get("version") or ML_MODEL_VERSION)
-    return round(model_probability, 4), model_version
+        metadata = bundle.get("metadata") or {}
+        model_version = str(metadata.get("version") or ML_MODEL_VERSION)
+        fingerprint = str(metadata.get("training_fingerprint") or "")
+    return round(model_probability, 4), model_version, fingerprint
 
 
 def apply_ml_to_pick(
@@ -192,7 +195,7 @@ def apply_ml_to_pick(
     market_family: str | None = None,
 ) -> dict[str, Any]:
     family = market_family or market_family_for_stat(str(pick.get("stat_key") or ""))
-    ml_probability, model_version = score_probability(
+    ml_probability, model_version, fingerprint = score_probability(
         pick,
         baseline_probability=baseline_probability,
         baseline_projection=baseline_projection,
@@ -205,6 +208,8 @@ def apply_ml_to_pick(
         odds = None
     decision, edge, full_kelly, quarter_kelly, units = decision_and_stake(ml_probability, odds)
     market_implied = american_implied_probability(odds)
+    epoch_fingerprint = fingerprint[:16] if fingerprint else "unfingerprinted"
+    rank_epoch = f"{str(pick.get('sport') or '').strip().upper()}:{model_version}:{epoch_fingerprint}"
     pick.update(
         {
             "probability_source": ML_SOURCE,
@@ -212,6 +217,10 @@ def apply_ml_to_pick(
             "ml_edge": round(ml_probability - (market_implied or 0.0), 6) if market_implied is not None else None,
             "ml_expected_value": round(expected_value(ml_probability, odds), 6),
             "ml_model_version": model_version,
+            "ml_training_fingerprint": fingerprint,
+            "ml_rank_epoch": rank_epoch,
+            "ranking_epoch": rank_epoch,
+            "model_epoch": rank_epoch,
             "ml_market_family": family,
             "baseline_projection": round(safe_float(baseline_projection), 3),
             "baseline_probability": round(_clamp(baseline_probability), 6),
@@ -243,4 +252,6 @@ def assign_ml_ranks(props: list[dict[str, Any]]) -> list[dict[str, Any]]:
     ranked = sorted(props, key=ev_sort_key)
     for index, prop in enumerate(ranked, start=1):
         prop["ml_rank"] = index
+        prop["model_rank"] = index
+        prop["rank"] = index
     return ranked

@@ -31,7 +31,7 @@ def _write_json(path: Path, payload: dict[str, Any]) -> None:
 def _pick_key(pick: dict[str, Any]) -> tuple[str, ...]:
     return tuple(
         str(pick.get(key) or "").strip().lower()
-        for key in ("id", "source", "sport", "date", "pick", "matchup")
+        for key in ("id", "source", "sport", "date", "pick", "matchup", "ml_rank_epoch", "ranking_epoch", "model_epoch")
     )
 
 

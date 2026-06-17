@@ -395,6 +395,11 @@ def test_basketball_props_use_actual_markets_and_apply_next_man_up():
     assert all(pick["ml_probability"] == pick["probability"] for pick in picks)
     assert all(pick["ml_expected_value"] is not None for pick in picks)
     assert all(pick["ml_rank"] >= 1 for pick in picks)
+    assert [pick["rank"] for pick in picks] == [pick["ml_rank"] for pick in picks]
+    assert all(pick["ml_rank_epoch"].startswith("WNBA:player_props_ml_v1.0.0:") for pick in picks)
+    assert all(pick["ranking_epoch"] == pick["ml_rank_epoch"] for pick in picks)
+    assert all(pick["model_epoch"] == pick["ml_rank_epoch"] for pick in picks)
+    assert all(pick["ranking_updated_at"] == STAMP for pick in picks)
     assert all(pick["actionability"] == "market_priced" for pick in picks)
     assert all(pick["market_implied_probability"] is not None for pick in picks)
     assert any("Next-man-up redistribution" in " ".join(pick["key_factors"]) for pick in picks)
@@ -433,6 +438,13 @@ def test_mlb_props_use_actual_markets_and_reject_reliever_starter_lines():
     assert all(pick["ml_probability"] == pick["probability"] for pick in picks)
     assert all(pick["ml_expected_value"] is not None for pick in picks)
     assert [pick["ml_rank"] for pick in picks] == sorted(pick["ml_rank"] for pick in picks)
+    assert [pick["rank"] for pick in picks] == [pick["ml_rank"] for pick in picks]
+    assert all(pick["ml_rank_epoch"].startswith("MLB:player_props_ml_v1.0.0:") for pick in picks)
+    assert all(pick["ranking_epoch"] == pick["ml_rank_epoch"] for pick in picks)
+    assert all(pick["model_epoch"] == pick["ml_rank_epoch"] for pick in picks)
+    assert all(pick["ranking_updated_at"] == STAMP for pick in picks)
+    assert model["ranking_epoch"] == picks[0]["ml_rank_epoch"]
+    assert model["ranking_updated_at"] == STAMP
     assert all(pick["actionability"] == "market_priced" for pick in picks)
     assert all(pick["market_implied_probability"] is not None for pick in picks)
     assert all(pick["player_name"] != "Away Pitcher" for pick in picks)

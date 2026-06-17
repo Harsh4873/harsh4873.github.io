@@ -121,11 +121,20 @@ def _preserve_pick_metadata(current_bucket: Any, generated_bucket: Any) -> Any:
         for pick in current_picks
         if isinstance(pick, dict)
     }
+    generated_keys = {
+        _pick_key(pick)
+        for pick in generated_picks
+        if isinstance(pick, dict)
+    }
     merged = dict(generated_bucket)
     merged["picks"] = [
         {**pick, **metadata.get(_pick_key(pick), {})} if isinstance(pick, dict) else pick
         for pick in generated_picks
     ]
+    merged["picks"].extend(
+        pick for pick in current_picks
+        if isinstance(pick, dict) and _pick_key(pick) not in generated_keys
+    )
     return merged
 
 

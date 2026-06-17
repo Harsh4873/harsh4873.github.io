@@ -236,6 +236,39 @@ function sourceName(pick: Pick): string {
   return String(pick.source || 'Unknown').trim();
 }
 
+function playerRankingEpoch(pick: Pick): string {
+  return String(pick.ml_rank_epoch || pick.ranking_epoch || pick.model_epoch || '').trim();
+}
+
+function activePlayerRankingEpochs(): Map<string, string> {
+  const latest = new Map<string, { date: string; epoch: string; updatedAt: string }>();
+  getAllPicks().forEach(pick => {
+    const epoch = playerRankingEpoch(pick);
+    if (!epoch) return;
+    const date = pickDateKey(pick);
+    const updatedAt = String(pick.ranking_updated_at || '').trim();
+    const current = latest.get(pick.sport);
+    if (!current || date > current.date || (date === current.date && updatedAt >= current.updatedAt)) {
+      latest.set(pick.sport, { date, epoch, updatedAt });
+    }
+  });
+  return new Map([...latest.entries()].map(([sport, value]) => [sport, value.epoch]));
+}
+
+function rankingComparablePicks(picks: Pick[]): Pick[] {
+  if (activePickMode !== 'player') return picks;
+  const epochs = activePlayerRankingEpochs();
+  return picks.filter(pick => {
+    const activeEpoch = epochs.get(pick.sport);
+    return !activeEpoch || playerRankingEpoch(pick) === activeEpoch;
+  });
+}
+
+function playerModelRank(pick: Pick): number | null {
+  const rank = Number(pick.ml_rank ?? pick.model_rank ?? pick.rank);
+  return Number.isFinite(rank) && rank > 0 ? rank : null;
+}
+
 function gameName(pick: Pick): string {
   const explicit = String(pick.matchup || pick.game || '').trim();
   if (explicit) return explicit;
@@ -514,6 +547,11 @@ function homeDecisionRank(pick: Pick): number {
 }
 
 function compareHomePickRows(left: Pick, right: Pick): number {
+  if (activePickMode === 'player') {
+    const leftRank = playerModelRank(left) ?? 9999;
+    const rightRank = playerModelRank(right) ?? 9999;
+    if (leftRank !== rightRank) return leftRank - rightRank;
+  }
   return homeDecisionRank(left) - homeDecisionRank(right)
     || (pickProbability(right) || 0) - (pickProbability(left) || 0)
     || (pickEdgePercent(right) || 0) - (pickEdgePercent(left) || 0)
@@ -800,7 +838,7 @@ function updateOverallStats(): void {
 
 function renderRankings(): void {
   const bySource = new Map<string, Pick[]>();
-  getAllPicks().forEach(pick => bySource.set(sourceName(pick), [...(bySource.get(sourceName(pick)) || []), pick]));
+  rankingComparablePicks(getAllPicks()).forEach(pick => bySource.set(sourceName(pick), [...(bySource.get(sourceName(pick)) || []), pick]));
   const ranked = [...bySource.entries()].map(([source, picks]) => ({ source, picks, stats: statsFor(picks) }))
     .filter(item => item.stats.wins + item.stats.losses > 0)
     .sort((a, b) => (b.stats.roi ?? -999) - (a.stats.roi ?? -999) || b.stats.net - a.stats.net);
@@ -825,7 +863,7 @@ function renderRankings(): void {
   }
 
   const bySport = new Map<string, Pick[]>();
-  getAllPicks().forEach(pick => bySport.set(pick.sport, [...(bySport.get(pick.sport) || []), pick]));
+  rankingComparablePicks(getAllPicks()).forEach(pick => bySport.set(pick.sport, [...(bySport.get(pick.sport) || []), pick]));
   const sportBoard = document.getElementById('sport-board');
   if (sportBoard) sportBoard.innerHTML = [...bySport.entries()].map(([sport, picks]) => {
     const stats = statsFor(picks);
@@ -864,7 +902,7 @@ function renderDayOfWeekTable(): void {
   const dayLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   const bySource = new Map<string, Pick[][]>();
 
-  getAllPicks().filter(pick => pick.result === 'win' || pick.result === 'loss').forEach(pick => {
+  rankingComparablePicks(getAllPicks()).filter(pick => pick.result === 'win' || pick.result === 'loss').forEach(pick => {
     const day = parseDateKey(pickDateKey(pick))?.getDay();
     if (day == null) return;
     const buckets = bySource.get(sourceName(pick)) || Array.from({ length: 7 }, () => []);
@@ -1038,7 +1076,8 @@ function uniqueDailyPicks(picks: Pick[]): Pick[] {
 }
 
 function dailySourceForms(date: string, todaysPicks: Pick[]): DailySourceForm[] {
-  const historical = getAllPicks().filter(pick => pickDateKey(pick) < date);
+  const comparable = rankingComparablePicks(getAllPicks());
+  const historical = comparable.filter(pick => pickDateKey(pick) < date);
   const recentDates = [...new Set(historical.map(pickDateKey).filter(Boolean))].sort().slice(-3);
   const lastDate = recentDates.at(-1) || '';
   const sources = new Set(todaysPicks.map(sourceName));
@@ -1057,6 +1096,8 @@ function dailySourceForms(date: string, todaysPicks: Pick[]): DailySourceForm[] 
 }
 
 function dailyPickScore(pick: Pick, forms: Map<string, DailySourceForm>): number {
+  const modelRank = activePickMode === 'player' ? playerModelRank(pick) : null;
+  if (modelRank != null) return 10000 - modelRank;
   const probability = pickProbability(pick);
   const edge = pickEdgePercent(pick);
   const sourceRate = forms.get(sourceName(pick))?.recentStats.winRate;

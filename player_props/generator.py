@@ -7,6 +7,7 @@ from typing import Any
 
 from .api import DirectApiClient
 from .basketball import generate_basketball_model
+from .ml import assign_ml_ranks
 from .mlb import generate_mlb_model
 
 
@@ -18,7 +19,7 @@ def generate_payload(
 ) -> dict[str, Any]:
     api = client or DirectApiClient()
     timestamp = generated_at or datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
-    return {
+    payload = {
         "date": date_iso,
         "generatedAt": timestamp,
         "updatedAt": timestamp,
@@ -28,3 +29,21 @@ def generate_payload(
             "mlb_player_props": generate_mlb_model(api, date_iso),
         },
     }
+    for model in payload["models"].values():
+        picks = model.get("picks")
+        if not isinstance(picks, list) or not picks:
+            continue
+        model["picks"] = assign_ml_ranks([pick for pick in picks if isinstance(pick, dict)])
+        for pick in model["picks"]:
+            pick["ranking_updated_at"] = timestamp
+        epochs = sorted({str(pick.get("ml_rank_epoch") or "") for pick in model["picks"] if pick.get("ml_rank_epoch")})
+        versions = sorted({str(pick.get("ml_model_version") or "") for pick in model["picks"] if pick.get("ml_model_version")})
+        fingerprints = sorted({str(pick.get("ml_training_fingerprint") or "") for pick in model["picks"] if pick.get("ml_training_fingerprint")})
+        if epochs:
+            model["ranking_epoch"] = epochs[0] if len(epochs) == 1 else "|".join(epochs)
+        if versions:
+            model["model_version"] = versions[0] if len(versions) == 1 else "|".join(versions)
+        if fingerprints:
+            model["training_fingerprint"] = fingerprints[0] if len(fingerprints) == 1 else "|".join(fingerprints)
+        model["ranking_updated_at"] = timestamp
+    return payload

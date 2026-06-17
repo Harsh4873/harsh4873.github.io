@@ -93,11 +93,32 @@ def _preserve_pick_metadata(current_bucket: Any, generated_bucket: Any) -> Any:
         for pick in current_picks
         if isinstance(pick, dict)
     }
+    generated_keys = {
+        _pick_key(pick)
+        for pick in generated_picks
+        if isinstance(pick, dict)
+    }
     merged = dict(generated_bucket)
     merged["picks"] = [
         {**pick, **metadata.get(_pick_key(pick), {})} if isinstance(pick, dict) else pick
         for pick in generated_picks
     ]
+    merged["picks"].extend(
+        pick for pick in current_picks
+        if isinstance(pick, dict) and _pick_key(pick) not in generated_keys
+    )
+    return merged
+
+
+def _merge_feed_buckets(
+    current_buckets: dict[str, Any],
+    generated_buckets: dict[str, Any],
+    feed_keys: set[str],
+) -> dict[str, Any]:
+    merged = dict(current_buckets)
+    for key in feed_keys:
+        if key in generated_buckets:
+            merged[key] = _preserve_pick_metadata(current_buckets.get(key), generated_buckets[key])
     return merged
 
 
@@ -124,14 +145,11 @@ def merge_payload(generated: dict[str, Any], cache_dir: Path) -> dict[str, Any]:
     current_external = current.get("external_feeds") if isinstance(current.get("external_feeds"), dict) else {}
     generated_external = generated.get("external_feeds") if isinstance(generated.get("external_feeds"), dict) else {}
     if current_external or generated_external:
-        merged["external_feeds"] = {
-            **current_external,
-            **generated_external,
-        }
+        merged["external_feeds"] = _merge_feed_buckets(current_external, generated_external, feed_keys)
 
     for key in feed_keys:
         if key in generated:
-            merged[key] = generated[key]
+            merged[key] = _preserve_pick_metadata(current.get(key), generated[key])
 
     return merged
 

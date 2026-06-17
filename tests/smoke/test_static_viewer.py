@@ -232,6 +232,10 @@ def test_player_mode_keeps_best_bets_available_and_prop_sources_separate():
     assert "activePickMode !== 'player' || option.key !== 'consensus'" in main
     assert "activePickMode === 'player' && view === 'consensus'" in main
     assert "playerResearchPool" in main
+    assert "function playerRankingEpoch(" in main
+    assert "function rankingComparablePicks(" in main
+    assert "function playerModelRank(" in main
+    assert "return 10000 - modelRank" in main
     assert "Next-best player prop candidates" in main
     for source in ("NBAPlayerProps", "MLBPlayerProps", "WNBAPlayerProps"):
         assert source in data
@@ -562,6 +566,151 @@ def test_model_cache_merge_preserves_committed_grades(tmp_path):
     merged = module.merge_payload(generated, cache_dir)
     assert merged["models"]["mlb_new"]["picks"][0]["result"] == "win"
     assert merged["models"]["mlb_new"]["picks"][0]["pregame_snapshot"]["probability"] == 0.61
+
+
+def test_model_cache_merge_keeps_previous_same_date_picks_when_refresh_drops_them(tmp_path):
+    module = _load_module("merge_model_cache_payload_keep_dropped", ROOT / "scripts" / "merge_model_cache_payload.py")
+    cache_dir = tmp_path / "data" / "model_cache"
+    cache_dir.mkdir(parents=True)
+    current = {
+        "date": "2026-06-16",
+        "models": {
+            "fifa_world_cup": {
+                "picks": [
+                    {"source": "FIFA Model", "sport": "FIFA WC", "date": "2026-06-16", "pick": "France ML", "matchup": "Senegal @ France"},
+                    {"source": "FIFA Model", "sport": "FIFA WC", "date": "2026-06-16", "pick": "Norway ML", "matchup": "Norway @ Iraq"},
+                ]
+            }
+        },
+    }
+    generated = {
+        "date": "2026-06-16",
+        "models": {
+            "fifa_world_cup": {
+                "picks": [
+                    {"source": "FIFA Model", "sport": "FIFA WC", "date": "2026-06-16", "pick": "Norway ML", "matchup": "Norway @ Iraq"},
+                ]
+            }
+        },
+    }
+    (cache_dir / "2026-06-16.json").write_text(json.dumps(current), encoding="utf-8")
+
+    merged = module.merge_payload(generated, cache_dir)
+    picks = merged["models"]["fifa_world_cup"]["picks"]
+
+    assert [pick["pick"] for pick in picks] == ["Norway ML", "France ML"]
+
+
+def test_external_feed_merge_keeps_previous_same_date_picks_when_refresh_drops_them(tmp_path):
+    module = _load_module("merge_external_feed_cache_payload_keep_dropped", ROOT / "scripts" / "merge_external_feed_cache_payload.py")
+    cache_dir = tmp_path / "data" / "model_cache"
+    cache_dir.mkdir(parents=True)
+    current = {
+        "date": "2026-06-16",
+        "models": {
+            "sportytrader": {
+                "ok": True,
+                "picks": [
+                    {"source": "SportyTrader", "sport": "FIFA WC", "date": "2026-06-16", "pick": "Both teams to score", "matchup": "France vs Senegal"},
+                    {"source": "SportyTrader", "sport": "FIFA WC", "date": "2026-06-16", "pick": "Norway ML", "matchup": "Norway @ Iraq"},
+                ],
+            }
+        },
+        "external_feeds": {
+            "sportytrader": {
+                "ok": True,
+                "picks": [
+                    {"source": "SportyTrader", "sport": "FIFA WC", "date": "2026-06-16", "pick": "Both teams to score", "matchup": "France vs Senegal"},
+                    {"source": "SportyTrader", "sport": "FIFA WC", "date": "2026-06-16", "pick": "Norway ML", "matchup": "Norway @ Iraq"},
+                ],
+            }
+        },
+        "sportytrader": {
+            "ok": True,
+            "picks": [
+                {"source": "SportyTrader", "sport": "FIFA WC", "date": "2026-06-16", "pick": "Both teams to score", "matchup": "France vs Senegal"},
+                {"source": "SportyTrader", "sport": "FIFA WC", "date": "2026-06-16", "pick": "Norway ML", "matchup": "Norway @ Iraq"},
+            ],
+        },
+    }
+    generated = {
+        "date": "2026-06-16",
+        "models": {
+            "sportytrader": {
+                "ok": True,
+                "picks": [
+                    {"source": "SportyTrader", "sport": "FIFA WC", "date": "2026-06-16", "pick": "Norway ML", "matchup": "Norway @ Iraq"},
+                ],
+            }
+        },
+        "external_feeds": {
+            "sportytrader": {
+                "ok": True,
+                "picks": [
+                    {"source": "SportyTrader", "sport": "FIFA WC", "date": "2026-06-16", "pick": "Norway ML", "matchup": "Norway @ Iraq"},
+                ],
+            }
+        },
+        "sportytrader": {
+            "ok": True,
+            "picks": [
+                {"source": "SportyTrader", "sport": "FIFA WC", "date": "2026-06-16", "pick": "Norway ML", "matchup": "Norway @ Iraq"},
+            ],
+        },
+    }
+    (cache_dir / "2026-06-16.json").write_text(json.dumps(current), encoding="utf-8")
+
+    merged = module.merge_payload(generated, cache_dir)
+    picks = merged["models"]["sportytrader"]["picks"]
+
+    assert [pick["pick"] for pick in picks] == ["Norway ML", "Both teams to score"]
+    assert [pick["pick"] for pick in merged["external_feeds"]["sportytrader"]["picks"]] == ["Norway ML", "Both teams to score"]
+    assert [pick["pick"] for pick in merged["sportytrader"]["picks"]] == ["Norway ML", "Both teams to score"]
+
+
+def test_player_prop_merge_does_not_carry_results_across_rank_epochs(tmp_path):
+    module = _load_module("merge_player_props_cache_payload_epochs", ROOT / "scripts" / "merge_player_props_cache_payload.py")
+    cache_dir = tmp_path / "data" / "player_props_cache"
+    cache_dir.mkdir(parents=True)
+    current = {
+        "date": "2026-06-16",
+        "models": {
+            "mlb_player_props": {
+                "picks": [{
+                    "id": "same-prop",
+                    "source": "PickLedgerPro In-House Player Props",
+                    "sport": "MLB",
+                    "date": "2026-06-16",
+                    "pick": "Player Over 0.5 Hits",
+                    "matchup": "Away @ Home",
+                    "ml_rank_epoch": "MLB:old",
+                    "result": "win",
+                }]
+            }
+        },
+    }
+    generated = {
+        "date": "2026-06-16",
+        "models": {
+            "mlb_player_props": {
+                "picks": [{
+                    "id": "same-prop",
+                    "source": "PickLedgerPro In-House Player Props",
+                    "sport": "MLB",
+                    "date": "2026-06-16",
+                    "pick": "Player Over 0.5 Hits",
+                    "matchup": "Away @ Home",
+                    "ml_rank_epoch": "MLB:new",
+                    "result": "pending",
+                }]
+            }
+        },
+    }
+    (cache_dir / "2026-06-16.json").write_text(json.dumps(current), encoding="utf-8")
+
+    merged = module.merge_payload(generated, cache_dir)
+
+    assert merged["models"]["mlb_player_props"]["picks"][0]["result"] == "pending"
 
 
 def test_external_feed_merge_does_not_promote_partial_cache_to_latest(tmp_path):
