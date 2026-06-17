@@ -1,16 +1,16 @@
 {
   "date": "2026-06-17",
   "errors": [],
-  "externalFeedsUpdatedAt": "2026-06-17T20:06:00.265307Z",
+  "externalFeedsUpdatedAt": "2026-06-17T20:23:49.721237Z",
   "external_feeds": {
     "scores24_fifa_world_cup": {
       "date": "2026-06-17",
-      "generatedAt": "2026-06-17T20:06:00.265307Z",
+      "generatedAt": "2026-06-17T20:23:49.721237Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
-        "attemptedUrls": 8,
+        "attemptedUrls": 6,
         "blockRetryRounds": 1,
-        "blockedUrls": 3,
+        "blockedUrls": 1,
         "date": "2026-06-17",
         "expectedMatchups": 5,
         "feed": "scores24_fifa_world_cup",
@@ -19,7 +19,7 @@
         "listingLinks": 12,
         "matchedPicks": 5,
         "missingMatchups": [],
-        "updatedAt": "2026-06-17T20:06:00.265307Z"
+        "updatedAt": "2026-06-17T20:23:49.721237Z"
       },
       "note": "Scores24FIFAWorldCup matched 5 published editorial choice(s) to 5 official 2026-06-17 matchup(s).",
       "ok": true,
@@ -130,16 +130,16 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-17T20:06:00.265307Z"
+      "updatedAt": "2026-06-17T20:23:49.721237Z"
     },
     "scores24_mlb": {
       "date": "2026-06-17",
-      "generatedAt": "2026-06-17T20:06:00.265307Z",
+      "generatedAt": "2026-06-17T20:23:49.721237Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
-        "attemptedUrls": 33,
+        "attemptedUrls": 29,
         "blockRetryRounds": 2,
-        "blockedUrls": 12,
+        "blockedUrls": 11,
         "date": "2026-06-17",
         "expectedMatchups": 14,
         "feed": "scores24_mlb",
@@ -148,7 +148,7 @@
         "listingLinks": 12,
         "matchedPicks": 14,
         "missingMatchups": [],
-        "updatedAt": "2026-06-17T20:06:00.265307Z"
+        "updatedAt": "2026-06-17T20:23:49.721237Z"
       },
       "note": "Scores24MLB matched 14 published editorial choice(s) to 14 official 2026-06-17 matchup(s).",
       "ok": true,
@@ -305,8 +305,8 @@
           "game": "Detroit Tigers @ Houston Astros",
           "home_team": "Houston Astros",
           "matchup": "Detroit Tigers @ Houston Astros",
-          "odds": -152,
-          "pick": "Houston Astros ML (Detroit Tigers @ Houston Astros)",
+          "odds": 110,
+          "pick": "Detroit Tigers Total Over (4.5) (Detroit Tigers @ Houston Astros)",
           "pregame_snapshot": {
             "away_team": "Detroit Tigers",
             "date": "2026-06-17",
@@ -315,22 +315,22 @@
             "game": "Detroit Tigers @ Houston Astros",
             "home_team": "Houston Astros",
             "matchup": "Detroit Tigers @ Houston Astros",
-            "odds": -152,
-            "pick": "Houston Astros ML (Detroit Tigers @ Houston Astros)",
+            "odds": 110,
+            "pick": "Detroit Tigers Total Over (4.5) (Detroit Tigers @ Houston Astros)",
             "probability": null,
             "source": "Scores24MLB",
-            "source_url": "https://scores24.live/en/baseball/m-16-06-2026-houston-astros-detroit-tigers-prediction",
+            "source_url": "https://scores24.live/en/baseball/m-17-06-2026-houston-astros-detroit-tigers-prediction",
             "sport": "MLB",
             "start_time": "2026-06-17T18:10Z",
-            "tip": "Houston Astros Win",
+            "tip": "Detroit Tigers Total Over (4.5)",
             "units": 1
           },
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-16-06-2026-houston-astros-detroit-tigers-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-17-06-2026-houston-astros-detroit-tigers-prediction",
           "sport": "MLB",
           "start_time": "2026-06-17T18:10Z",
-          "tip": "Houston Astros Win",
+          "tip": "Detroit Tigers Total Over (4.5)",
           "units": 1
         },
         {
@@ -413,8 +413,8 @@
           "game": "Los Angeles Angels @ Arizona Diamondbacks",
           "home_team": "Arizona Diamondbacks",
           "matchup": "Los Angeles Angels @ Arizona Diamondbacks",
-          "odds": -119,
-          "pick": "Over 8.5 (Los Angeles Angels @ Arizona Diamondbacks)",
+          "odds": 100,
+          "pick": "Arizona Diamondbacks Total Under (4.5) (Los Angeles Angels @ Arizona Diamondbacks)",
           "pregame_snapshot": {
             "away_team": "Los Angeles Angels",
             "date": "2026-06-17",
@@ -423,22 +423,22 @@
             "game": "Los Angeles Angels @ Arizona Diamondbacks",
             "home_team": "Arizona Diamondbacks",
             "matchup": "Los Angeles Angels @ Arizona Diamondbacks",
-            "odds": -119,
-            "pick": "Over 8.5 (Los Angeles Angels @ Arizona Diamondbacks)",
+            "odds": 100,
+            "pick": "Arizona Diamondbacks Total Under (4.5) (Los Angeles Angels @ Arizona Diamondbacks)",
             "probability": null,
             "source": "Scores24MLB",
-            "source_url": "https://scores24.live/en/baseball/m-16-06-2026-arizona-diamondbacks-los-angeles-angels-prediction",
+            "source_url": "https://scores24.live/en/baseball/m-17-06-2026-arizona-diamondbacks-los-angeles-angels-prediction",
             "sport": "MLB",
             "start_time": "2026-06-17T19:40Z",
-            "tip": "Total Over (8.5)",
+            "tip": "Arizona Diamondbacks Total Under (4.5)",
             "units": 1
           },
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-16-06-2026-arizona-diamondbacks-los-angeles-angels-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-17-06-2026-arizona-diamondbacks-los-angeles-angels-prediction",
           "sport": "MLB",
           "start_time": "2026-06-17T19:40Z",
-          "tip": "Total Over (8.5)",
+          "tip": "Arizona Diamondbacks Total Under (4.5)",
           "units": 1
         },
         {
@@ -658,6 +658,78 @@
           "units": 1
         },
         {
+          "away_team": "Detroit Tigers",
+          "date": "2026-06-17",
+          "decision": "BET",
+          "edge": null,
+          "game": "Detroit Tigers @ Houston Astros",
+          "home_team": "Houston Astros",
+          "matchup": "Detroit Tigers @ Houston Astros",
+          "odds": -152,
+          "pick": "Houston Astros ML (Detroit Tigers @ Houston Astros)",
+          "pregame_snapshot": {
+            "away_team": "Detroit Tigers",
+            "date": "2026-06-17",
+            "decision": "BET",
+            "edge": null,
+            "game": "Detroit Tigers @ Houston Astros",
+            "home_team": "Houston Astros",
+            "matchup": "Detroit Tigers @ Houston Astros",
+            "odds": -152,
+            "pick": "Houston Astros ML (Detroit Tigers @ Houston Astros)",
+            "probability": null,
+            "source": "Scores24MLB",
+            "source_url": "https://scores24.live/en/baseball/m-16-06-2026-houston-astros-detroit-tigers-prediction",
+            "sport": "MLB",
+            "start_time": "2026-06-17T18:10Z",
+            "tip": "Houston Astros Win",
+            "units": 1
+          },
+          "probability": null,
+          "source": "Scores24MLB",
+          "source_url": "https://scores24.live/en/baseball/m-16-06-2026-houston-astros-detroit-tigers-prediction",
+          "sport": "MLB",
+          "start_time": "2026-06-17T18:10Z",
+          "tip": "Houston Astros Win",
+          "units": 1
+        },
+        {
+          "away_team": "Los Angeles Angels",
+          "date": "2026-06-17",
+          "decision": "BET",
+          "edge": null,
+          "game": "Los Angeles Angels @ Arizona Diamondbacks",
+          "home_team": "Arizona Diamondbacks",
+          "matchup": "Los Angeles Angels @ Arizona Diamondbacks",
+          "odds": -119,
+          "pick": "Over 8.5 (Los Angeles Angels @ Arizona Diamondbacks)",
+          "pregame_snapshot": {
+            "away_team": "Los Angeles Angels",
+            "date": "2026-06-17",
+            "decision": "BET",
+            "edge": null,
+            "game": "Los Angeles Angels @ Arizona Diamondbacks",
+            "home_team": "Arizona Diamondbacks",
+            "matchup": "Los Angeles Angels @ Arizona Diamondbacks",
+            "odds": -119,
+            "pick": "Over 8.5 (Los Angeles Angels @ Arizona Diamondbacks)",
+            "probability": null,
+            "source": "Scores24MLB",
+            "source_url": "https://scores24.live/en/baseball/m-16-06-2026-arizona-diamondbacks-los-angeles-angels-prediction",
+            "sport": "MLB",
+            "start_time": "2026-06-17T19:40Z",
+            "tip": "Total Over (8.5)",
+            "units": 1
+          },
+          "probability": null,
+          "source": "Scores24MLB",
+          "source_url": "https://scores24.live/en/baseball/m-16-06-2026-arizona-diamondbacks-los-angeles-angels-prediction",
+          "sport": "MLB",
+          "start_time": "2026-06-17T19:40Z",
+          "tip": "Total Over (8.5)",
+          "units": 1
+        },
+        {
           "away_team": "San Francisco Giants",
           "date": "2026-06-17",
           "decision": "BET",
@@ -691,42 +763,6 @@
           "sport": "MLB",
           "start_time": "2026-06-17T23:15Z",
           "tip": "Atlanta Braves Win",
-          "units": 1
-        },
-        {
-          "away_team": "Detroit Tigers",
-          "date": "2026-06-17",
-          "decision": "BET",
-          "edge": null,
-          "game": "Detroit Tigers @ Houston Astros",
-          "home_team": "Houston Astros",
-          "matchup": "Detroit Tigers @ Houston Astros",
-          "odds": 110,
-          "pick": "Detroit Tigers Total Over (4.5) (Detroit Tigers @ Houston Astros)",
-          "pregame_snapshot": {
-            "away_team": "Detroit Tigers",
-            "date": "2026-06-17",
-            "decision": "BET",
-            "edge": null,
-            "game": "Detroit Tigers @ Houston Astros",
-            "home_team": "Houston Astros",
-            "matchup": "Detroit Tigers @ Houston Astros",
-            "odds": 110,
-            "pick": "Detroit Tigers Total Over (4.5) (Detroit Tigers @ Houston Astros)",
-            "probability": null,
-            "source": "Scores24MLB",
-            "source_url": "https://scores24.live/en/baseball/m-17-06-2026-houston-astros-detroit-tigers-prediction",
-            "sport": "MLB",
-            "start_time": "2026-06-17T18:10Z",
-            "tip": "Detroit Tigers Total Over (4.5)",
-            "units": 1
-          },
-          "probability": null,
-          "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-17-06-2026-houston-astros-detroit-tigers-prediction",
-          "sport": "MLB",
-          "start_time": "2026-06-17T18:10Z",
-          "tip": "Detroit Tigers Total Over (4.5)",
           "units": 1
         },
         {
@@ -766,11 +802,11 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-17T20:06:00.265307Z"
+      "updatedAt": "2026-06-17T20:23:49.721237Z"
     },
     "scores24_wnba": {
       "date": "2026-06-17",
-      "generatedAt": "2026-06-17T20:06:00.265307Z",
+      "generatedAt": "2026-06-17T20:23:49.721237Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "attemptedUrls": 6,
@@ -784,7 +820,7 @@
         "listingLinks": 12,
         "matchedPicks": 6,
         "missingMatchups": [],
-        "updatedAt": "2026-06-17T20:06:00.265307Z"
+        "updatedAt": "2026-06-17T20:23:49.721237Z"
       },
       "note": "Scores24WNBA matched 6 published editorial choice(s) to 6 official 2026-06-17 matchup(s).",
       "ok": true,
@@ -1006,7 +1042,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-17T20:06:00.265307Z"
+      "updatedAt": "2026-06-17T20:23:49.721237Z"
     },
     "sportsgambler_fifa_world_cup": {
       "date": "2026-06-17",
@@ -23357,12 +23393,12 @@
     },
     "scores24_fifa_world_cup": {
       "date": "2026-06-17",
-      "generatedAt": "2026-06-17T20:06:00.265307Z",
+      "generatedAt": "2026-06-17T20:23:49.721237Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
-        "attemptedUrls": 8,
+        "attemptedUrls": 6,
         "blockRetryRounds": 1,
-        "blockedUrls": 3,
+        "blockedUrls": 1,
         "date": "2026-06-17",
         "expectedMatchups": 5,
         "feed": "scores24_fifa_world_cup",
@@ -23371,7 +23407,7 @@
         "listingLinks": 12,
         "matchedPicks": 5,
         "missingMatchups": [],
-        "updatedAt": "2026-06-17T20:06:00.265307Z"
+        "updatedAt": "2026-06-17T20:23:49.721237Z"
       },
       "note": "Scores24FIFAWorldCup matched 5 published editorial choice(s) to 5 official 2026-06-17 matchup(s).",
       "ok": true,
@@ -23484,16 +23520,16 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-17T20:06:00.265307Z"
+      "updatedAt": "2026-06-17T20:23:49.721237Z"
     },
     "scores24_mlb": {
       "date": "2026-06-17",
-      "generatedAt": "2026-06-17T20:06:00.265307Z",
+      "generatedAt": "2026-06-17T20:23:49.721237Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
-        "attemptedUrls": 33,
+        "attemptedUrls": 29,
         "blockRetryRounds": 2,
-        "blockedUrls": 12,
+        "blockedUrls": 11,
         "date": "2026-06-17",
         "expectedMatchups": 14,
         "feed": "scores24_mlb",
@@ -23502,7 +23538,7 @@
         "listingLinks": 12,
         "matchedPicks": 14,
         "missingMatchups": [],
-        "updatedAt": "2026-06-17T20:06:00.265307Z"
+        "updatedAt": "2026-06-17T20:23:49.721237Z"
       },
       "note": "Scores24MLB matched 14 published editorial choice(s) to 14 official 2026-06-17 matchup(s).",
       "ok": true,
@@ -23660,8 +23696,8 @@
           "game": "Detroit Tigers @ Houston Astros",
           "home_team": "Houston Astros",
           "matchup": "Detroit Tigers @ Houston Astros",
-          "odds": -152,
-          "pick": "Houston Astros ML (Detroit Tigers @ Houston Astros)",
+          "odds": 110,
+          "pick": "Detroit Tigers Total Over (4.5) (Detroit Tigers @ Houston Astros)",
           "pregame_snapshot": {
             "away_team": "Detroit Tigers",
             "date": "2026-06-17",
@@ -23670,22 +23706,22 @@
             "game": "Detroit Tigers @ Houston Astros",
             "home_team": "Houston Astros",
             "matchup": "Detroit Tigers @ Houston Astros",
-            "odds": -152,
-            "pick": "Houston Astros ML (Detroit Tigers @ Houston Astros)",
+            "odds": 110,
+            "pick": "Detroit Tigers Total Over (4.5) (Detroit Tigers @ Houston Astros)",
             "probability": null,
             "source": "Scores24MLB",
-            "source_url": "https://scores24.live/en/baseball/m-16-06-2026-houston-astros-detroit-tigers-prediction",
+            "source_url": "https://scores24.live/en/baseball/m-17-06-2026-houston-astros-detroit-tigers-prediction",
             "sport": "MLB",
             "start_time": "2026-06-17T18:10Z",
-            "tip": "Houston Astros Win",
+            "tip": "Detroit Tigers Total Over (4.5)",
             "units": 1
           },
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-16-06-2026-houston-astros-detroit-tigers-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-17-06-2026-houston-astros-detroit-tigers-prediction",
           "sport": "MLB",
           "start_time": "2026-06-17T18:10Z",
-          "tip": "Houston Astros Win",
+          "tip": "Detroit Tigers Total Over (4.5)",
           "units": 1
         },
         {
@@ -23768,8 +23804,8 @@
           "game": "Los Angeles Angels @ Arizona Diamondbacks",
           "home_team": "Arizona Diamondbacks",
           "matchup": "Los Angeles Angels @ Arizona Diamondbacks",
-          "odds": -119,
-          "pick": "Over 8.5 (Los Angeles Angels @ Arizona Diamondbacks)",
+          "odds": 100,
+          "pick": "Arizona Diamondbacks Total Under (4.5) (Los Angeles Angels @ Arizona Diamondbacks)",
           "pregame_snapshot": {
             "away_team": "Los Angeles Angels",
             "date": "2026-06-17",
@@ -23778,22 +23814,22 @@
             "game": "Los Angeles Angels @ Arizona Diamondbacks",
             "home_team": "Arizona Diamondbacks",
             "matchup": "Los Angeles Angels @ Arizona Diamondbacks",
-            "odds": -119,
-            "pick": "Over 8.5 (Los Angeles Angels @ Arizona Diamondbacks)",
+            "odds": 100,
+            "pick": "Arizona Diamondbacks Total Under (4.5) (Los Angeles Angels @ Arizona Diamondbacks)",
             "probability": null,
             "source": "Scores24MLB",
-            "source_url": "https://scores24.live/en/baseball/m-16-06-2026-arizona-diamondbacks-los-angeles-angels-prediction",
+            "source_url": "https://scores24.live/en/baseball/m-17-06-2026-arizona-diamondbacks-los-angeles-angels-prediction",
             "sport": "MLB",
             "start_time": "2026-06-17T19:40Z",
-            "tip": "Total Over (8.5)",
+            "tip": "Arizona Diamondbacks Total Under (4.5)",
             "units": 1
           },
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-16-06-2026-arizona-diamondbacks-los-angeles-angels-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-17-06-2026-arizona-diamondbacks-los-angeles-angels-prediction",
           "sport": "MLB",
           "start_time": "2026-06-17T19:40Z",
-          "tip": "Total Over (8.5)",
+          "tip": "Arizona Diamondbacks Total Under (4.5)",
           "units": 1
         },
         {
@@ -24013,6 +24049,78 @@
           "units": 1
         },
         {
+          "away_team": "Detroit Tigers",
+          "date": "2026-06-17",
+          "decision": "BET",
+          "edge": null,
+          "game": "Detroit Tigers @ Houston Astros",
+          "home_team": "Houston Astros",
+          "matchup": "Detroit Tigers @ Houston Astros",
+          "odds": -152,
+          "pick": "Houston Astros ML (Detroit Tigers @ Houston Astros)",
+          "pregame_snapshot": {
+            "away_team": "Detroit Tigers",
+            "date": "2026-06-17",
+            "decision": "BET",
+            "edge": null,
+            "game": "Detroit Tigers @ Houston Astros",
+            "home_team": "Houston Astros",
+            "matchup": "Detroit Tigers @ Houston Astros",
+            "odds": -152,
+            "pick": "Houston Astros ML (Detroit Tigers @ Houston Astros)",
+            "probability": null,
+            "source": "Scores24MLB",
+            "source_url": "https://scores24.live/en/baseball/m-16-06-2026-houston-astros-detroit-tigers-prediction",
+            "sport": "MLB",
+            "start_time": "2026-06-17T18:10Z",
+            "tip": "Houston Astros Win",
+            "units": 1
+          },
+          "probability": null,
+          "source": "Scores24MLB",
+          "source_url": "https://scores24.live/en/baseball/m-16-06-2026-houston-astros-detroit-tigers-prediction",
+          "sport": "MLB",
+          "start_time": "2026-06-17T18:10Z",
+          "tip": "Houston Astros Win",
+          "units": 1
+        },
+        {
+          "away_team": "Los Angeles Angels",
+          "date": "2026-06-17",
+          "decision": "BET",
+          "edge": null,
+          "game": "Los Angeles Angels @ Arizona Diamondbacks",
+          "home_team": "Arizona Diamondbacks",
+          "matchup": "Los Angeles Angels @ Arizona Diamondbacks",
+          "odds": -119,
+          "pick": "Over 8.5 (Los Angeles Angels @ Arizona Diamondbacks)",
+          "pregame_snapshot": {
+            "away_team": "Los Angeles Angels",
+            "date": "2026-06-17",
+            "decision": "BET",
+            "edge": null,
+            "game": "Los Angeles Angels @ Arizona Diamondbacks",
+            "home_team": "Arizona Diamondbacks",
+            "matchup": "Los Angeles Angels @ Arizona Diamondbacks",
+            "odds": -119,
+            "pick": "Over 8.5 (Los Angeles Angels @ Arizona Diamondbacks)",
+            "probability": null,
+            "source": "Scores24MLB",
+            "source_url": "https://scores24.live/en/baseball/m-16-06-2026-arizona-diamondbacks-los-angeles-angels-prediction",
+            "sport": "MLB",
+            "start_time": "2026-06-17T19:40Z",
+            "tip": "Total Over (8.5)",
+            "units": 1
+          },
+          "probability": null,
+          "source": "Scores24MLB",
+          "source_url": "https://scores24.live/en/baseball/m-16-06-2026-arizona-diamondbacks-los-angeles-angels-prediction",
+          "sport": "MLB",
+          "start_time": "2026-06-17T19:40Z",
+          "tip": "Total Over (8.5)",
+          "units": 1
+        },
+        {
           "away_team": "San Francisco Giants",
           "date": "2026-06-17",
           "decision": "BET",
@@ -24047,42 +24155,6 @@
           "sport": "MLB",
           "start_time": "2026-06-16T23:15Z",
           "tip": "Atlanta Braves Win",
-          "units": 1
-        },
-        {
-          "away_team": "Detroit Tigers",
-          "date": "2026-06-17",
-          "decision": "BET",
-          "edge": null,
-          "game": "Detroit Tigers @ Houston Astros",
-          "home_team": "Houston Astros",
-          "matchup": "Detroit Tigers @ Houston Astros",
-          "odds": 110,
-          "pick": "Detroit Tigers Total Over (4.5) (Detroit Tigers @ Houston Astros)",
-          "pregame_snapshot": {
-            "away_team": "Detroit Tigers",
-            "date": "2026-06-17",
-            "decision": "BET",
-            "edge": null,
-            "game": "Detroit Tigers @ Houston Astros",
-            "home_team": "Houston Astros",
-            "matchup": "Detroit Tigers @ Houston Astros",
-            "odds": 110,
-            "pick": "Detroit Tigers Total Over (4.5) (Detroit Tigers @ Houston Astros)",
-            "probability": null,
-            "source": "Scores24MLB",
-            "source_url": "https://scores24.live/en/baseball/m-17-06-2026-houston-astros-detroit-tigers-prediction",
-            "sport": "MLB",
-            "start_time": "2026-06-17T18:10Z",
-            "tip": "Detroit Tigers Total Over (4.5)",
-            "units": 1
-          },
-          "probability": null,
-          "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-17-06-2026-houston-astros-detroit-tigers-prediction",
-          "sport": "MLB",
-          "start_time": "2026-06-17T18:10Z",
-          "tip": "Detroit Tigers Total Over (4.5)",
           "units": 1
         },
         {
@@ -24122,11 +24194,11 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-17T20:06:00.265307Z"
+      "updatedAt": "2026-06-17T20:23:49.721237Z"
     },
     "scores24_wnba": {
       "date": "2026-06-17",
-      "generatedAt": "2026-06-17T20:06:00.265307Z",
+      "generatedAt": "2026-06-17T20:23:49.721237Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "attemptedUrls": 6,
@@ -24140,7 +24212,7 @@
         "listingLinks": 12,
         "matchedPicks": 6,
         "missingMatchups": [],
-        "updatedAt": "2026-06-17T20:06:00.265307Z"
+        "updatedAt": "2026-06-17T20:23:49.721237Z"
       },
       "note": "Scores24WNBA matched 6 published editorial choice(s) to 6 official 2026-06-17 matchup(s).",
       "ok": true,
@@ -24362,7 +24434,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-17T20:06:00.265307Z"
+      "updatedAt": "2026-06-17T20:23:49.721237Z"
     },
     "sportsgambler_fifa_world_cup": {
       "date": "2026-06-17",
@@ -27263,12 +27335,12 @@
   },
   "scores24_fifa_world_cup": {
     "date": "2026-06-17",
-    "generatedAt": "2026-06-17T20:06:00.265307Z",
+    "generatedAt": "2026-06-17T20:23:49.721237Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
-      "attemptedUrls": 8,
+      "attemptedUrls": 6,
       "blockRetryRounds": 1,
-      "blockedUrls": 3,
+      "blockedUrls": 1,
       "date": "2026-06-17",
       "expectedMatchups": 5,
       "feed": "scores24_fifa_world_cup",
@@ -27277,7 +27349,7 @@
       "listingLinks": 12,
       "matchedPicks": 5,
       "missingMatchups": [],
-      "updatedAt": "2026-06-17T20:06:00.265307Z"
+      "updatedAt": "2026-06-17T20:23:49.721237Z"
     },
     "note": "Scores24FIFAWorldCup matched 5 published editorial choice(s) to 5 official 2026-06-17 matchup(s).",
     "ok": true,
@@ -27388,16 +27460,16 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-17T20:06:00.265307Z"
+    "updatedAt": "2026-06-17T20:23:49.721237Z"
   },
   "scores24_mlb": {
     "date": "2026-06-17",
-    "generatedAt": "2026-06-17T20:06:00.265307Z",
+    "generatedAt": "2026-06-17T20:23:49.721237Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
-      "attemptedUrls": 33,
+      "attemptedUrls": 29,
       "blockRetryRounds": 2,
-      "blockedUrls": 12,
+      "blockedUrls": 11,
       "date": "2026-06-17",
       "expectedMatchups": 14,
       "feed": "scores24_mlb",
@@ -27406,7 +27478,7 @@
       "listingLinks": 12,
       "matchedPicks": 14,
       "missingMatchups": [],
-      "updatedAt": "2026-06-17T20:06:00.265307Z"
+      "updatedAt": "2026-06-17T20:23:49.721237Z"
     },
     "note": "Scores24MLB matched 14 published editorial choice(s) to 14 official 2026-06-17 matchup(s).",
     "ok": true,
@@ -27563,8 +27635,8 @@
         "game": "Detroit Tigers @ Houston Astros",
         "home_team": "Houston Astros",
         "matchup": "Detroit Tigers @ Houston Astros",
-        "odds": -152,
-        "pick": "Houston Astros ML (Detroit Tigers @ Houston Astros)",
+        "odds": 110,
+        "pick": "Detroit Tigers Total Over (4.5) (Detroit Tigers @ Houston Astros)",
         "pregame_snapshot": {
           "away_team": "Detroit Tigers",
           "date": "2026-06-17",
@@ -27573,22 +27645,22 @@
           "game": "Detroit Tigers @ Houston Astros",
           "home_team": "Houston Astros",
           "matchup": "Detroit Tigers @ Houston Astros",
-          "odds": -152,
-          "pick": "Houston Astros ML (Detroit Tigers @ Houston Astros)",
+          "odds": 110,
+          "pick": "Detroit Tigers Total Over (4.5) (Detroit Tigers @ Houston Astros)",
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-16-06-2026-houston-astros-detroit-tigers-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-17-06-2026-houston-astros-detroit-tigers-prediction",
           "sport": "MLB",
           "start_time": "2026-06-17T18:10Z",
-          "tip": "Houston Astros Win",
+          "tip": "Detroit Tigers Total Over (4.5)",
           "units": 1
         },
         "probability": null,
         "source": "Scores24MLB",
-        "source_url": "https://scores24.live/en/baseball/m-16-06-2026-houston-astros-detroit-tigers-prediction",
+        "source_url": "https://scores24.live/en/baseball/m-17-06-2026-houston-astros-detroit-tigers-prediction",
         "sport": "MLB",
         "start_time": "2026-06-17T18:10Z",
-        "tip": "Houston Astros Win",
+        "tip": "Detroit Tigers Total Over (4.5)",
         "units": 1
       },
       {
@@ -27671,8 +27743,8 @@
         "game": "Los Angeles Angels @ Arizona Diamondbacks",
         "home_team": "Arizona Diamondbacks",
         "matchup": "Los Angeles Angels @ Arizona Diamondbacks",
-        "odds": -119,
-        "pick": "Over 8.5 (Los Angeles Angels @ Arizona Diamondbacks)",
+        "odds": 100,
+        "pick": "Arizona Diamondbacks Total Under (4.5) (Los Angeles Angels @ Arizona Diamondbacks)",
         "pregame_snapshot": {
           "away_team": "Los Angeles Angels",
           "date": "2026-06-17",
@@ -27681,22 +27753,22 @@
           "game": "Los Angeles Angels @ Arizona Diamondbacks",
           "home_team": "Arizona Diamondbacks",
           "matchup": "Los Angeles Angels @ Arizona Diamondbacks",
-          "odds": -119,
-          "pick": "Over 8.5 (Los Angeles Angels @ Arizona Diamondbacks)",
+          "odds": 100,
+          "pick": "Arizona Diamondbacks Total Under (4.5) (Los Angeles Angels @ Arizona Diamondbacks)",
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-16-06-2026-arizona-diamondbacks-los-angeles-angels-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-17-06-2026-arizona-diamondbacks-los-angeles-angels-prediction",
           "sport": "MLB",
           "start_time": "2026-06-17T19:40Z",
-          "tip": "Total Over (8.5)",
+          "tip": "Arizona Diamondbacks Total Under (4.5)",
           "units": 1
         },
         "probability": null,
         "source": "Scores24MLB",
-        "source_url": "https://scores24.live/en/baseball/m-16-06-2026-arizona-diamondbacks-los-angeles-angels-prediction",
+        "source_url": "https://scores24.live/en/baseball/m-17-06-2026-arizona-diamondbacks-los-angeles-angels-prediction",
         "sport": "MLB",
         "start_time": "2026-06-17T19:40Z",
-        "tip": "Total Over (8.5)",
+        "tip": "Arizona Diamondbacks Total Under (4.5)",
         "units": 1
       },
       {
@@ -27916,6 +27988,78 @@
         "units": 1
       },
       {
+        "away_team": "Detroit Tigers",
+        "date": "2026-06-17",
+        "decision": "BET",
+        "edge": null,
+        "game": "Detroit Tigers @ Houston Astros",
+        "home_team": "Houston Astros",
+        "matchup": "Detroit Tigers @ Houston Astros",
+        "odds": -152,
+        "pick": "Houston Astros ML (Detroit Tigers @ Houston Astros)",
+        "pregame_snapshot": {
+          "away_team": "Detroit Tigers",
+          "date": "2026-06-17",
+          "decision": "BET",
+          "edge": null,
+          "game": "Detroit Tigers @ Houston Astros",
+          "home_team": "Houston Astros",
+          "matchup": "Detroit Tigers @ Houston Astros",
+          "odds": -152,
+          "pick": "Houston Astros ML (Detroit Tigers @ Houston Astros)",
+          "probability": null,
+          "source": "Scores24MLB",
+          "source_url": "https://scores24.live/en/baseball/m-16-06-2026-houston-astros-detroit-tigers-prediction",
+          "sport": "MLB",
+          "start_time": "2026-06-17T18:10Z",
+          "tip": "Houston Astros Win",
+          "units": 1
+        },
+        "probability": null,
+        "source": "Scores24MLB",
+        "source_url": "https://scores24.live/en/baseball/m-16-06-2026-houston-astros-detroit-tigers-prediction",
+        "sport": "MLB",
+        "start_time": "2026-06-17T18:10Z",
+        "tip": "Houston Astros Win",
+        "units": 1
+      },
+      {
+        "away_team": "Los Angeles Angels",
+        "date": "2026-06-17",
+        "decision": "BET",
+        "edge": null,
+        "game": "Los Angeles Angels @ Arizona Diamondbacks",
+        "home_team": "Arizona Diamondbacks",
+        "matchup": "Los Angeles Angels @ Arizona Diamondbacks",
+        "odds": -119,
+        "pick": "Over 8.5 (Los Angeles Angels @ Arizona Diamondbacks)",
+        "pregame_snapshot": {
+          "away_team": "Los Angeles Angels",
+          "date": "2026-06-17",
+          "decision": "BET",
+          "edge": null,
+          "game": "Los Angeles Angels @ Arizona Diamondbacks",
+          "home_team": "Arizona Diamondbacks",
+          "matchup": "Los Angeles Angels @ Arizona Diamondbacks",
+          "odds": -119,
+          "pick": "Over 8.5 (Los Angeles Angels @ Arizona Diamondbacks)",
+          "probability": null,
+          "source": "Scores24MLB",
+          "source_url": "https://scores24.live/en/baseball/m-16-06-2026-arizona-diamondbacks-los-angeles-angels-prediction",
+          "sport": "MLB",
+          "start_time": "2026-06-17T19:40Z",
+          "tip": "Total Over (8.5)",
+          "units": 1
+        },
+        "probability": null,
+        "source": "Scores24MLB",
+        "source_url": "https://scores24.live/en/baseball/m-16-06-2026-arizona-diamondbacks-los-angeles-angels-prediction",
+        "sport": "MLB",
+        "start_time": "2026-06-17T19:40Z",
+        "tip": "Total Over (8.5)",
+        "units": 1
+      },
+      {
         "away_team": "San Francisco Giants",
         "date": "2026-06-17",
         "decision": "BET",
@@ -27949,42 +28093,6 @@
         "sport": "MLB",
         "start_time": "2026-06-17T23:15Z",
         "tip": "Atlanta Braves Win",
-        "units": 1
-      },
-      {
-        "away_team": "Detroit Tigers",
-        "date": "2026-06-17",
-        "decision": "BET",
-        "edge": null,
-        "game": "Detroit Tigers @ Houston Astros",
-        "home_team": "Houston Astros",
-        "matchup": "Detroit Tigers @ Houston Astros",
-        "odds": 110,
-        "pick": "Detroit Tigers Total Over (4.5) (Detroit Tigers @ Houston Astros)",
-        "pregame_snapshot": {
-          "away_team": "Detroit Tigers",
-          "date": "2026-06-17",
-          "decision": "BET",
-          "edge": null,
-          "game": "Detroit Tigers @ Houston Astros",
-          "home_team": "Houston Astros",
-          "matchup": "Detroit Tigers @ Houston Astros",
-          "odds": 110,
-          "pick": "Detroit Tigers Total Over (4.5) (Detroit Tigers @ Houston Astros)",
-          "probability": null,
-          "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-17-06-2026-houston-astros-detroit-tigers-prediction",
-          "sport": "MLB",
-          "start_time": "2026-06-17T18:10Z",
-          "tip": "Detroit Tigers Total Over (4.5)",
-          "units": 1
-        },
-        "probability": null,
-        "source": "Scores24MLB",
-        "source_url": "https://scores24.live/en/baseball/m-17-06-2026-houston-astros-detroit-tigers-prediction",
-        "sport": "MLB",
-        "start_time": "2026-06-17T18:10Z",
-        "tip": "Detroit Tigers Total Over (4.5)",
         "units": 1
       },
       {
@@ -28024,11 +28132,11 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-17T20:06:00.265307Z"
+    "updatedAt": "2026-06-17T20:23:49.721237Z"
   },
   "scores24_wnba": {
     "date": "2026-06-17",
-    "generatedAt": "2026-06-17T20:06:00.265307Z",
+    "generatedAt": "2026-06-17T20:23:49.721237Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "attemptedUrls": 6,
@@ -28042,7 +28150,7 @@
       "listingLinks": 12,
       "matchedPicks": 6,
       "missingMatchups": [],
-      "updatedAt": "2026-06-17T20:06:00.265307Z"
+      "updatedAt": "2026-06-17T20:23:49.721237Z"
     },
     "note": "Scores24WNBA matched 6 published editorial choice(s) to 6 official 2026-06-17 matchup(s).",
     "ok": true,
@@ -28264,7 +28372,7 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-17T20:06:00.265307Z"
+    "updatedAt": "2026-06-17T20:23:49.721237Z"
   },
   "sportsgambler_fifa_world_cup": {
     "date": "2026-06-17",
@@ -29300,7 +29408,7 @@
     ],
     "updatedAt": "2026-06-17T17:19:33.317719Z"
   },
-  "updatedAt": "2026-06-17T20:06:00.265307Z",
+  "updatedAt": "2026-06-17T20:23:49.721237Z",
   "wnba": {
     "ok": true,
     "picks": [
