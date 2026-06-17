@@ -12384,6 +12384,7 @@
           "projected_home_goals": 1.778,
           "projected_total": 2.68,
           "reason": "England owns the stronger current-squad projection. Attack 96.6, midfield 96.0, defense 95.5, goalkeeper 94.6. Top player ranks: Marc Gu\u00e9hi 97.0, Declan Rice 97.0, Eberechi Eze 97.0.",
+          "result": "win",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-06-17T20:00Z",
@@ -15041,7 +15042,7 @@
           "game": "Toronto Blue Jays @ Boston Red Sox",
           "game_id": "824746",
           "game_order": 0,
-          "game_start_time": "2026-06-17T22:45:00Z",
+          "game_start_time": "2026-06-17T22:45Z",
           "home_team": "Boston Red Sox",
           "league": "MLB",
           "line": 4.5,
@@ -15091,7 +15092,7 @@
           "raw_probability": 0.6231,
           "source": "MLB First Five",
           "sport": "MLB",
-          "start_time": "2026-06-17T22:45:00Z",
+          "start_time": "2026-06-17T22:45Z",
           "team": ""
         },
         {
@@ -15905,7 +15906,7 @@
           "game": "Baltimore Orioles @ Seattle Mariners",
           "game_id": "823127",
           "game_order": 6,
-          "game_start_time": "2026-06-18T01:40:00Z",
+          "game_start_time": "2026-06-18T01:40Z",
           "home_team": "Seattle Mariners",
           "league": "MLB",
           "line": null,
@@ -15955,7 +15956,7 @@
           "raw_probability": 0.5729,
           "source": "MLB First Five",
           "sport": "MLB",
-          "start_time": "2026-06-18T01:40:00Z",
+          "start_time": "2026-06-18T01:40Z",
           "team": "Seattle Mariners"
         },
         {
@@ -16385,6 +16386,7 @@
           "probability": 0.5746,
           "raw_edge": 7.43,
           "raw_probability": 0.5981,
+          "result": "loss",
           "source": "MLB First Five",
           "sport": "MLB",
           "start_time": "2026-06-17T19:10Z",
@@ -21944,6 +21946,7 @@
           "odds": -143,
           "pick": "Under 2.5 (Croatia @ England)",
           "probability": null,
+          "result": "loss",
           "source": "Scores24FIFAWorldCup",
           "source_url": "https://scores24.live/en/soccer/m-18-06-2026-england-croatia-prediction",
           "sport": "FIFA WC",
@@ -22269,6 +22272,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-16-06-2026-los-angeles-dodgers-tampa-bay-rays-prediction",
           "sport": "MLB",
@@ -22305,6 +22309,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-17-06-2026-arizona-diamondbacks-los-angeles-angels-prediction",
           "sport": "MLB",
@@ -22594,6 +22599,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-16-06-2026-arizona-diamondbacks-los-angeles-angels-prediction",
           "sport": "MLB",
@@ -22982,6 +22988,7 @@
           "odds": -143,
           "pick": "England To Win (England vs Croatia)",
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerFIFAWorldCup",
           "sport": "FIFA WC",
           "start_time": "2026-06-17T20:00Z",
@@ -23372,6 +23379,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-17T19:10Z",
@@ -23400,6 +23408,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-17T19:40Z",
@@ -23681,6 +23690,7 @@
           "odds": -136,
           "pick": "Under 2.5 Goals (England vs Croatia)",
           "probability": null,
+          "result": "loss",
           "source": "SportyTraderFIFAWorldCup",
           "sport": "FIFA WC",
           "start_time": "2026-06-17T20:00Z",
@@ -23898,6 +23908,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-17T19:10Z",
@@ -23926,6 +23937,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-17T19:40Z",
@@ -24675,6 +24687,7 @@
           "decision": "LEAN",
           "edge": 9.95,
           "game": "Dallas Wings @ Golden State Valkyries",
+          "game_start_time": "2026-06-18T02:00Z",
           "guardrail_reasons": [],
           "h2h_games": 0,
           "has_market_price": true,
@@ -24730,6 +24743,7 @@
           "selection": "Over",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-18T02:00Z",
           "units": 0.02,
           "vegas": 164.5
         },
