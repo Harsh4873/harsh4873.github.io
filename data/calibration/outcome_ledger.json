@@ -73516,7 +73516,7 @@
       "matchup": "Pittsburgh Pirates @ Athletics",
       "model_key": "mlb_first_five",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Over 5.5 F5",
       "pregame_snapshot": {
         "actionability": "research_signal",
@@ -73555,7 +73555,7 @@
       "raw_edge": 13.16,
       "raw_probability": 0.6554,
       "raw_units": null,
-      "result": "pending",
+      "result": "loss",
       "source": "MLB First Five",
       "sport": "MLB",
       "units": null
@@ -81511,7 +81511,7 @@
       "matchup": "Pittsburgh Pirates @ Athletics",
       "model_key": "mlb_player_props",
       "odds": 163.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Zack Gelof Over 0.5 RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -81589,12 +81589,12 @@
         "units": 2.0
       },
       "probability": 0.7268,
-      "profit": null,
+      "profit": 3.26,
       "raw_decision": "BET",
       "raw_edge": 34.66,
       "raw_probability": 0.7268,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -82111,7 +82111,7 @@
       "matchup": "Pittsburgh Pirates @ Athletics",
       "model_key": "mlb_player_props",
       "odds": 173.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Spencer Horwitz Over 0.5 RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -82189,12 +82189,12 @@
         "units": 2.0
       },
       "probability": 0.6688,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 30.25,
       "raw_probability": 0.6688,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -82911,7 +82911,7 @@
       "matchup": "Pittsburgh Pirates @ Athletics",
       "model_key": "mlb_player_props",
       "odds": 115.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Nick Kurtz Over 0.5 RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -82989,12 +82989,12 @@
         "units": 2.0
       },
       "probability": 0.8457,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 38.06,
       "raw_probability": 0.8457,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -83908,7 +83908,7 @@
       "matchup": "Pittsburgh Pirates @ Athletics",
       "model_key": "mlb_player_props",
       "odds": 131.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Brandon Lowe Over 0.5 RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -83986,12 +83986,12 @@
         "units": 2.0
       },
       "probability": 0.8385,
-      "profit": null,
+      "profit": 2.62,
       "raw_decision": "BET",
       "raw_edge": 40.56,
       "raw_probability": 0.8385,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -84008,7 +84008,7 @@
       "matchup": "Pittsburgh Pirates @ Athletics",
       "model_key": "mlb_player_props",
       "odds": 190.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Tyler Callihan Over 0.5 RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -84086,12 +84086,12 @@
         "units": 2.0
       },
       "probability": 0.745,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 40.02,
       "raw_probability": 0.745,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -86006,7 +86006,7 @@
       "matchup": "Pittsburgh Pirates @ Athletics",
       "model_key": "mlb_player_props",
       "odds": 154.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Bryan Reynolds Over 0.5 RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -86084,12 +86084,12 @@
         "units": 2.0
       },
       "probability": 0.756,
-      "profit": null,
+      "profit": 3.08,
       "raw_decision": "BET",
       "raw_edge": 36.23,
       "raw_probability": 0.756,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -89572,7 +89572,7 @@
       "matchup": "Pittsburgh Pirates @ Athletics",
       "model_key": "scores24_mlb",
       "odds": -127.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Oakland Athletics ML (Pittsburgh Pirates @ Athletics)",
       "pregame_snapshot": {
         "away_team": "Pittsburgh Pirates",
@@ -89593,12 +89593,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "Scores24MLB",
       "sport": "MLB",
       "units": 1.0
@@ -90359,7 +90359,7 @@
       "matchup": "Athletics vs Pittsburgh Pirates",
       "model_key": "sportsgambler_mlb",
       "odds": 105.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Pittsburgh Pirates to Win (Athletics vs Pittsburgh Pirates)",
       "pregame_snapshot": {
         "date": "2026-06-16",
@@ -90375,12 +90375,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 1.05,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "SportsGambler",
       "sport": "MLB",
       "units": 1.0
@@ -92144,9 +92144,9 @@
   ],
   "schema_version": 1,
   "summary": {
-    "decided_picks": 1291,
-    "pending_picks": 279,
+    "decided_picks": 1300,
+    "pending_picks": 270,
     "total_picks": 1609,
-    "trainable_decided_picks": 1042
+    "trainable_decided_picks": 1049
   }
 }
