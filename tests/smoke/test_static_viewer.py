@@ -94,6 +94,25 @@ def test_research_details_use_generator_schema_fields_across_pick_views():
     assert 'body.mobile-app-mode[data-pick-mode="player"] .home-feed-row' in css
 
 
+def test_home_team_pick_text_expands_on_hover_focus_and_tap():
+    main = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
+    css = (ROOT / "src" / "styles" / "pickledger.css").read_text(encoding="utf-8")
+
+    assert 'data-home-pick-text role="button" tabindex="0" aria-expanded="false"' in main
+    assert "function bindHomePickTextExpansion(" in main
+    assert "row.classList.toggle('pick-text-expanded')" in main
+    assert "bindHomePickTextExpansion(container)" in main
+    assert "@media (hover: hover) and (pointer: fine)" in css
+    assert ".home-feed-row:hover .home-feed-row-pick" in css
+    assert ".home-feed-row:focus-visible .home-feed-row-pick" in css
+    assert ".home-feed-row-pick[data-home-pick-text]:focus-visible" in css
+    assert ".home-feed-row.pick-text-expanded .home-feed-row-pick" in css
+    expanded_css = css[css.index(".home-feed-row:hover .home-feed-row-pick"):]
+    assert "white-space: normal" in expanded_css[:500]
+    assert "overflow: visible" in expanded_css[:500]
+    assert "text-overflow: clip" in expanded_css[:500]
+
+
 def test_header_brand_and_freshness_copy_are_friendly_and_accurate():
     main = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
     data = (ROOT / "src" / "data.ts").read_text(encoding="utf-8")

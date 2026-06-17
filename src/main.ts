@@ -771,12 +771,38 @@ function renderPickRow(pick: Pick): string {
   const researchAttrs = hasResearch
     ? ` data-research-pick-card="${escapeHtml(pick.id)}" role="button" tabindex="0" aria-expanded="${expanded}"`
     : '';
+  const pickTextAttrs = isPlayer
+    ? ''
+    : hasResearch
+      ? ' data-home-pick-text'
+      : ' data-home-pick-text role="button" tabindex="0" aria-expanded="false"';
   return `<div class="home-feed-row result-${pick.result}${isPlayer ? ' player-row' : ''}${hasResearch ? ' is-expandable' : ''}${expanded ? ' expanded' : ''}"${researchAttrs}>
     ${isPlayer ? '' : `<span class="home-feed-row-sport">${escapeHtml(pick.sport)}</span>`}
-    <div class="home-feed-row-body"><div class="home-feed-row-source">${escapeHtml(sourceName(pick))}</div><div class="home-feed-row-pick">${escapeHtml(pick.pick)}</div><div class="home-feed-row-meta">${escapeHtml([formatOdds(pick), decision === 'PASS' ? '' : `${pick.units}u`, formatStart(pick.start_time), activePickMode === 'player' ? '' : pick.decision].filter(Boolean).join(' | '))}</div>${researchDetailsHtml(pick, expanded)}</div>
+    <div class="home-feed-row-body"><div class="home-feed-row-source">${escapeHtml(sourceName(pick))}</div><div class="home-feed-row-pick"${pickTextAttrs}>${escapeHtml(pick.pick)}</div><div class="home-feed-row-meta">${escapeHtml([formatOdds(pick), decision === 'PASS' ? '' : `${pick.units}u`, formatStart(pick.start_time), activePickMode === 'player' ? '' : pick.decision].filter(Boolean).join(' | '))}</div>${researchDetailsHtml(pick, expanded)}</div>
     <div class="home-feed-row-pl ${pick.pl > 0 ? 'positive' : pick.pl < 0 ? 'negative' : 'neutral'}">${pick.result === 'pending' ? decision === 'PASS' ? 'Pass' : `${pick.units}u risk` : signedUnits(pick.pl)}</div>
     <div class="home-feed-row-control">${resultBadge(pick.result)}${yourBetAddButton(pick)}</div>
   </div>`;
+}
+
+function bindHomePickTextExpansion(container: HTMLElement): void {
+  container.querySelectorAll<HTMLElement>('[data-home-pick-text]').forEach(pickText => {
+    const toggle = (): void => {
+      const row = pickText.closest<HTMLElement>('.home-feed-row');
+      if (!row) return;
+      const expanded = row.classList.toggle('pick-text-expanded');
+      pickText.setAttribute('aria-expanded', String(expanded));
+    };
+    pickText.addEventListener('click', event => {
+      event.stopPropagation();
+      toggle();
+    });
+    pickText.addEventListener('keydown', event => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      event.stopPropagation();
+      toggle();
+    });
+  });
 }
 
 function bindResearchDetailCards(container: HTMLElement): void {
@@ -805,6 +831,7 @@ function bindResearchDetailCards(container: HTMLElement): void {
 }
 
 function bindPickCards(container: HTMLElement): void {
+  bindHomePickTextExpansion(container);
   bindResearchDetailCards(container);
   container.querySelectorAll<HTMLButtonElement>('[data-add-your-bet]').forEach(button => {
     button.addEventListener('click', event => {

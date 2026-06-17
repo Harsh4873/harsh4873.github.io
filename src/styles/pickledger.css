@@ -1428,6 +1428,33 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+  .home-feed-row-pick[data-home-pick-text] {
+    cursor: zoom-in;
+    border-radius: 4px;
+    outline: none;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .home-feed-row:hover .home-feed-row-pick {
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+      overflow-wrap: anywhere;
+    }
+  }
+  .home-feed-row:focus-visible .home-feed-row-pick,
+  .home-feed-row-pick[data-home-pick-text]:focus-visible,
+  .home-feed-row.pick-text-expanded .home-feed-row-pick {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    overflow-wrap: anywhere;
+  }
+  .home-feed-row-pick[data-home-pick-text]:focus-visible {
+    box-shadow: 0 0 0 2px rgba(77,166,255,0.42);
+  }
+  .home-feed-row.pick-text-expanded .home-feed-row-pick[data-home-pick-text] {
+    cursor: zoom-out;
+  }
   body[data-pick-mode="player"] .home-feed-row-pick {
     margin-top: 5px;
     max-width: 100%;
