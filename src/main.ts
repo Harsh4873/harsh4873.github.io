@@ -1666,9 +1666,212 @@ function gradePick(pick: Pick, game: Record<string, unknown>): PickResult {
   return 'pending';
 }
 
+type PlayerPropDescriptor = {
+  playerName: string;
+  statKey: string;
+  selection: 'OVER' | 'UNDER';
+  line: number;
+};
+
+function playerPropDescriptor(pick: Pick): PlayerPropDescriptor | null {
+  const playerName = String(pick.player_name || pick.player || '').trim();
+  const aliases: Record<string, string> = {
+    totalrebounds: 'rebounds',
+    threepointersmade: 'three_pointers_made',
+    pointsreboundsassists: 'points_rebounds_assists',
+    pointsrebounds: 'points_rebounds',
+    pointsassists: 'points_assists',
+    stealsblocks: 'steals_blocks',
+    hitsrunsrbis: 'hits_runs_rbis',
+    batterwalks: 'batter_walks',
+    batterstrikeouts: 'batter_strikeouts',
+    totalbases: 'total_bases',
+    homeruns: 'home_runs',
+    stolenbases: 'stolen_bases',
+    pitcherwalksallowed: 'pitcher_walks_allowed',
+    pitcheroutsrecorded: 'pitcher_outs_recorded',
+    pitcherhitsallowed: 'pitcher_hits_allowed',
+    pitcherearnedrunsallowed: 'pitcher_earned_runs_allowed',
+  };
+  const rawStatKey = String(pick.stat_key || pick.market || '').trim().toLowerCase();
+  const compactStatKey = rawStatKey.replace(/[^a-z0-9]/g, '');
+  const statKey = aliases[compactStatKey] || rawStatKey.replace(/\s+/g, '_');
+  const selection = String(pick.selection || pick.direction || '').trim().toUpperCase();
+  const line = Number(pick.line ?? pick.market_line);
+  if (!playerName || !statKey || (selection !== 'OVER' && selection !== 'UNDER') || !Number.isFinite(line)) return null;
+  return { playerName, statKey, selection, line };
+}
+
+function normalizePersonName(value: unknown): string[] {
+  return String(value || '').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/\b(jr|sr|ii|iii|iv)\b/g, '').replace(/[^a-z0-9 ]/g, ' ')
+    .replace(/\s+/g, ' ').trim().split(' ').filter(Boolean);
+}
+
+function personNamesMatch(left: unknown, right: unknown): boolean {
+  const a = normalizePersonName(left);
+  const b = normalizePersonName(right);
+  if (!a.length || !b.length || a.at(-1) !== b.at(-1)) return false;
+  return a.join(' ') === b.join(' ') || a[0] === b[0] || a[0]?.[0] === b[0]?.[0];
+}
+
+function numericStat(value: unknown): number | null {
+  if (value == null || value === '') return null;
+  const text = String(value).split('/', 1)[0].trim();
+  const number = Number(text);
+  return Number.isFinite(number) ? number : null;
+}
+
+function inningsToOuts(value: unknown): number | null {
+  const text = String(value ?? '').trim();
+  if (!text) return null;
+  const [innings, partial = '0'] = text.split('.', 2);
+  const whole = Number(innings);
+  const remainder = Number(partial.slice(0, 1));
+  return Number.isFinite(whole) && Number.isFinite(remainder) ? (whole * 3) + Math.min(2, Math.max(0, remainder)) : null;
+}
+
+function espnPlayerStat(summary: Record<string, unknown>, descriptor: PlayerPropDescriptor): number | null {
+  const boxscore = summary.boxscore && typeof summary.boxscore === 'object' ? summary.boxscore as Record<string, unknown> : {};
+  const players = Array.isArray(boxscore.players) ? boxscore.players as Record<string, unknown>[] : [];
+  const values: Record<string, number> = {};
+  for (const teamBlock of players) {
+    const sections = Array.isArray(teamBlock.statistics) ? teamBlock.statistics as Record<string, unknown>[] : [];
+    for (const section of sections) {
+      const labels = Array.isArray(section.labels) ? section.labels.map(label => String(label).trim().toUpperCase()) : [];
+      const athletes = Array.isArray(section.athletes) ? section.athletes as Record<string, unknown>[] : [];
+      for (const athlete of athletes) {
+        const person = athlete.athlete && typeof athlete.athlete === 'object' ? athlete.athlete as Record<string, unknown> : {};
+        if (!personNamesMatch(descriptor.playerName, person.displayName)) continue;
+        const stats = Array.isArray(athlete.stats) ? athlete.stats : [];
+        labels.forEach((label, index) => {
+          const value = label === 'IP' ? inningsToOuts(stats[index]) : numericStat(stats[index]);
+          if (value != null) values[label] = value;
+        });
+      }
+    }
+  }
+  const components: Record<string, string[]> = {
+    points_rebounds_assists: ['points', 'rebounds', 'assists'],
+    points_rebounds: ['points', 'rebounds'],
+    points_assists: ['points', 'assists'],
+    steals_blocks: ['steals', 'blocks'],
+    hits_runs_rbis: ['hits', 'runs', 'rbis'],
+  };
+  if (components[descriptor.statKey]) {
+    const numbers = components[descriptor.statKey].map(statKey => espnPlayerStat(summary, { ...descriptor, statKey }));
+    return numbers.every(value => value != null) ? numbers.reduce<number>((sum, value) => sum + Number(value), 0) : null;
+  }
+  const labels: Record<string, string[]> = {
+    points: ['PTS'], rebounds: ['REB', 'TREB', 'TOTREB', 'TOTAL REBOUNDS'], assists: ['AST'],
+    three_pointers_made: ['3PM', '3PT', '3FGM', 'FG3M'], steals: ['STL'], blocks: ['BLK'],
+    hits: ['H', 'HITS'], runs: ['R', 'RUNS'], rbis: ['RBI', 'RBIS'], batter_walks: ['BB', 'WALKS'],
+    batter_strikeouts: ['K', 'SO'], doubles: ['2B'], triples: ['3B'], home_runs: ['HR'],
+    stolen_bases: ['SB'], strikeouts: ['K', 'SO'], pitcher_walks_allowed: ['BB', 'WALKS'],
+    pitcher_outs_recorded: ['IP'], pitcher_hits_allowed: ['H', 'HITS'], pitcher_earned_runs_allowed: ['ER'],
+  };
+  for (const label of labels[descriptor.statKey] || []) if (values[label] != null) return values[label];
+  const hits = values.H;
+  const doubles = values['2B'];
+  const triples = values['3B'];
+  const homers = values.HR;
+  if ([hits, doubles, triples, homers].every(value => value != null)) {
+    const singles = Math.max(0, hits - doubles - triples - homers);
+    if (descriptor.statKey === 'singles') return singles;
+    if (descriptor.statKey === 'total_bases') return singles + (2 * doubles) + (3 * triples) + (4 * homers);
+  }
+  return null;
+}
+
+function mlbLivePlayerStat(feed: Record<string, unknown>, descriptor: PlayerPropDescriptor): number | null {
+  const liveData = feed.liveData && typeof feed.liveData === 'object' ? feed.liveData as Record<string, unknown> : {};
+  const boxscore = liveData.boxscore && typeof liveData.boxscore === 'object' ? liveData.boxscore as Record<string, unknown> : {};
+  const teams = boxscore.teams && typeof boxscore.teams === 'object' ? boxscore.teams as Record<string, unknown> : {};
+  let player: Record<string, unknown> | null = null;
+  for (const side of ['away', 'home']) {
+    const team = teams[side] && typeof teams[side] === 'object' ? teams[side] as Record<string, unknown> : {};
+    const roster = team.players && typeof team.players === 'object' ? team.players as Record<string, unknown> : {};
+    for (const candidate of Object.values(roster)) {
+      if (!candidate || typeof candidate !== 'object') continue;
+      const record = candidate as Record<string, unknown>;
+      const person = record.person && typeof record.person === 'object' ? record.person as Record<string, unknown> : {};
+      if (personNamesMatch(descriptor.playerName, person.fullName)) player = record;
+    }
+  }
+  if (!player) return null;
+  const stats = player.stats && typeof player.stats === 'object' ? player.stats as Record<string, unknown> : {};
+  const batting = stats.batting && typeof stats.batting === 'object' ? stats.batting as Record<string, unknown> : {};
+  const pitching = stats.pitching && typeof stats.pitching === 'object' ? stats.pitching as Record<string, unknown> : {};
+  const get = (record: Record<string, unknown>, key: string): number | null => numericStat(record[key]);
+  const batterKeys: Record<string, string> = {
+    hits: 'hits', runs: 'runs', rbis: 'rbi', batter_walks: 'baseOnBalls', batter_strikeouts: 'strikeOuts',
+    doubles: 'doubles', triples: 'triples', home_runs: 'homeRuns', stolen_bases: 'stolenBases',
+  };
+  const pitcherKeys: Record<string, string> = {
+    strikeouts: 'strikeOuts', pitcher_walks_allowed: 'baseOnBalls', pitcher_outs_recorded: 'outs',
+    pitcher_hits_allowed: 'hits', pitcher_earned_runs_allowed: 'earnedRuns',
+  };
+  if (batterKeys[descriptor.statKey]) return get(batting, batterKeys[descriptor.statKey]);
+  if (pitcherKeys[descriptor.statKey]) return get(pitching, pitcherKeys[descriptor.statKey]);
+  if (descriptor.statKey === 'hits_runs_rbis') {
+    const values = ['hits', 'runs', 'rbi'].map(key => get(batting, key));
+    return values.every(value => value != null) ? values.reduce<number>((sum, value) => sum + Number(value), 0) : null;
+  }
+  const totalBases = get(batting, 'totalBases');
+  if (descriptor.statKey === 'total_bases' && totalBases != null) return totalBases;
+  const values = ['hits', 'doubles', 'triples', 'homeRuns'].map(key => get(batting, key));
+  if (values.every(value => value != null)) {
+    const [hits, doubles, triples, homers] = values.map(Number);
+    const singles = Math.max(0, hits - doubles - triples - homers);
+    if (descriptor.statKey === 'singles') return singles;
+    if (descriptor.statKey === 'total_bases') return singles + (2 * doubles) + (3 * triples) + (4 * homers);
+  }
+  return null;
+}
+
+function gradePlayerValue(descriptor: PlayerPropDescriptor, actual: number | null): PickResult {
+  if (actual == null) return 'pending';
+  if (actual === descriptor.line) return 'push';
+  return descriptor.selection === 'OVER'
+    ? actual > descriptor.line ? 'win' : 'loss'
+    : actual < descriptor.line ? 'win' : 'loss';
+}
+
+async function fetchRemoteJson(url: string): Promise<Record<string, unknown> | null> {
+  try {
+    const response = await fetch(url, { cache: 'no-store' });
+    return response.ok ? await response.json() as Record<string, unknown> : null;
+  } catch {
+    return null;
+  }
+}
+
+function findMlbGamePk(schedule: Record<string, unknown>, pick: Pick): string {
+  const teams = teamsForPick(pick);
+  if (!teams) return '';
+  const expected = new Set(teams.map(canonicalTeamToken));
+  const dates = Array.isArray(schedule.dates) ? schedule.dates as Record<string, unknown>[] : [];
+  for (const date of dates) {
+    const games = Array.isArray(date.games) ? date.games as Record<string, unknown>[] : [];
+    for (const game of games) {
+      const gameTeams = game.teams && typeof game.teams === 'object' ? game.teams as Record<string, unknown> : {};
+      const actual = ['away', 'home'].map(side => {
+        const entry = gameTeams[side] && typeof gameTeams[side] === 'object' ? gameTeams[side] as Record<string, unknown> : {};
+        const team = entry.team && typeof entry.team === 'object' ? entry.team as Record<string, unknown> : {};
+        return canonicalTeamToken(team.name);
+      });
+      if (actual.every(team => expected.has(team))) return String(game.gamePk || '');
+    }
+  }
+  return '';
+}
+
 async function gradeDate(date: string, picks: Pick[]): Promise<number> {
   let graded = 0;
   const dateParam = date.replace(/-/g, '');
+  const summaryCache = new Map<string, Record<string, unknown> | null>();
+  const mlbFeedCache = new Map<string, Record<string, unknown> | null>();
+  let mlbSchedule: Record<string, unknown> | null | undefined;
   for (const [sport, endpoint] of Object.entries(ESPN_ENDPOINTS)) {
     const sportPicks = picks.filter(pick => pick.sport === sport && pick.result === 'pending');
     if (!sportPicks.length) continue;
@@ -1677,8 +1880,9 @@ async function gradeDate(date: string, picks: Pick[]): Promise<number> {
       if (!response.ok) continue;
       const payload = await response.json() as { events?: unknown[] };
       for (const pick of sportPicks) {
-        const game = findEspnGame(pick, payload.events || []);
-        if (!game) continue;
+        const matched = findEspnEventForPick(pick, payload.events || []);
+        if (!matched) continue;
+        const { event, game } = matched;
         const startTime = String(game.date || '');
         if (startTime) setLocalGameTime(pick.id, startTime);
         const status = game.status as { type?: { completed?: boolean; name?: string } } | undefined;
@@ -1687,7 +1891,26 @@ async function gradeDate(date: string, picks: Pick[]): Promise<number> {
           setLocalResult(pick.id, 'push');
           graded += 1;
         } else if (status?.type?.completed) {
-          const result = gradePick(pick, game);
+          let result: PickResult = 'pending';
+          const descriptor = playerPropDescriptor(pick);
+          if (!descriptor) {
+            result = gradePick(pick, game);
+          } else if (sport === 'MLB') {
+            if (mlbSchedule === undefined) {
+              mlbSchedule = await fetchRemoteJson(`https://statsapi.mlb.com/api/v1/schedule?sportId=1&date=${encodeURIComponent(date)}&hydrate=team`);
+            }
+            const gamePk = mlbSchedule ? findMlbGamePk(mlbSchedule, pick) : '';
+            if (gamePk && !mlbFeedCache.has(gamePk)) {
+              mlbFeedCache.set(gamePk, await fetchRemoteJson(`https://statsapi.mlb.com/api/v1.1/game/${encodeURIComponent(gamePk)}/feed/live`));
+            }
+            result = gradePlayerValue(descriptor, gamePk ? mlbLivePlayerStat(mlbFeedCache.get(gamePk) || {}, descriptor) : null);
+          } else {
+            const eventId = String(event.id || '');
+            if (eventId && !summaryCache.has(eventId)) {
+              summaryCache.set(eventId, await fetchRemoteJson(`https://site.api.espn.com/apis/site/v2/sports/${endpoint[0]}/${endpoint[1]}/summary?event=${encodeURIComponent(eventId)}`));
+            }
+            result = gradePlayerValue(descriptor, eventId ? espnPlayerStat(summaryCache.get(eventId) || {}, descriptor) : null);
+          }
           if (result !== 'pending') {
             setLocalResult(pick.id, result);
             graded += 1;
@@ -1710,9 +1933,7 @@ async function refreshAutoGrades(): Promise<void> {
   try {
     await loadAllData();
     updateSyncStatus();
-    const pending = activePickMode === 'team'
-      ? getAllPicks().filter(pick => pick.result === 'pending')
-      : [];
+    const pending = getAllPicks().filter(pick => pick.result === 'pending');
     const byDate = new Map<string, Pick[]>();
     pending.forEach(pick => byDate.set(pickDateKey(pick), [...(byDate.get(pickDateKey(pick)) || []), pick]));
     let graded = 0;

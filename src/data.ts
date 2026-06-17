@@ -84,6 +84,9 @@ interface PlayerPropsPayload {
 const RESULT_STORAGE_KEY = 'pickledger_static_results_v2';
 const GAME_TIME_STORAGE_KEY = 'pickledger_static_game_times_v2';
 const ARCHIVED_SPORTS = new Set(['NBA']);
+const PLAYER_PROPS_ML_SOURCE = 'player_props_ml_v1';
+// First snapshot produced by the ML slate-engine launch in commit b6f9dbe.
+const PLAYER_PROPS_ML_FIRST_SNAPSHOT_AT = Date.parse('2026-06-16T19:04:34.909830Z');
 const SOURCE_LABELS: Record<string, string> = {
   mlb_new: 'MLB Model',
   mlb_inning: 'MLB Inning',
@@ -260,6 +263,14 @@ function isPlayerScopedPick(pick: Pick): boolean {
   return String(pick.scope || '').trim().toLowerCase() === 'player';
 }
 
+function isMlEraPlayerProp(pick: Pick): boolean {
+  if (String(pick.probability_source || '').trim() !== PLAYER_PROPS_ML_SOURCE) return false;
+  const timestamp = Date.parse(String(
+    pick.ranking_updated_at || pick.generated_at || pick.created_at || '',
+  ));
+  return Number.isFinite(timestamp) && timestamp >= PLAYER_PROPS_ML_FIRST_SNAPSHOT_AT;
+}
+
 function picksFromCache(payload: ModelCachePayload): Pick[] {
   const date = String(payload.date || '').trim();
   const models = payload.models && typeof payload.models === 'object' ? payload.models : {};
@@ -397,7 +408,9 @@ export async function loadAllData(): Promise<Pick[]> {
   });
   playerPayloads.flatMap(picksFromPlayerProps).forEach(pick => playerById.set(pick.id, pick));
   teamPicks = sortPicks([...teamById.values()].filter(pick => !ARCHIVED_SPORTS.has(pick.sport)));
-  playerPicks = sortPicks([...playerById.values()].filter(pick => !ARCHIVED_SPORTS.has(pick.sport)));
+  playerPicks = sortPicks([...playerById.values()].filter(
+    pick => !ARCHIVED_SPORTS.has(pick.sport) && isMlEraPlayerProp(pick),
+  ));
   return getAllPicks();
 }
 

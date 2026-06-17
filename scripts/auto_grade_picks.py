@@ -19,6 +19,7 @@ sys.path.insert(0, str(REPO_ROOT))
 
 import pickgrader_server  # noqa: E402
 from scripts.pick_calibration import rebuild_outcome_ledger  # noqa: E402
+from player_props.era import is_ml_era_pick  # noqa: E402
 
 
 def _read_json(path: Path) -> dict[str, Any] | None:
@@ -67,8 +68,9 @@ def _grade_id(scope: str, index: int, pick: dict[str, Any]) -> str:
     return f"grade-{hashlib.sha1(raw.encode('utf-8')).hexdigest()[:16]}"
 
 
-def grade_payload(payload: dict[str, Any]) -> int:
+def grade_payload(payload: dict[str, Any], *, ml_player_props_only: bool = False) -> int:
     fallback_date = str(payload.get("date") or payload.get("slate_date") or payload.get("as_of") or "").strip()
+    fallback_timestamp = payload.get("generatedAt") or payload.get("updatedAt")
     pending: list[dict[str, Any]] = []
     refs: dict[str, dict[str, Any]] = {}
     changed = 0
@@ -76,6 +78,8 @@ def grade_payload(payload: dict[str, Any]) -> int:
     for scope, picks in _iter_pick_lists(payload):
         for index, pick in enumerate(picks):
             changed += pickgrader_server.apply_external_pick_metadata(pick)
+            if ml_player_props_only and not is_ml_era_pick(pick, fallback_timestamp):
+                continue
             if str(pick.get("decision") or "").strip().upper() not in {"BET", "LEAN"}:
                 continue
             if pick.get("grade_supported") is False:
@@ -110,12 +114,12 @@ def grade_payload(payload: dict[str, Any]) -> int:
     return changed
 
 
-def grade_file(path: Path) -> int:
+def grade_file(path: Path, *, ml_player_props_only: bool = False) -> int:
     payload = _read_json(path)
     if not payload:
         print(f"[auto-grade] skipped unreadable {path.relative_to(REPO_ROOT)}")
         return 0
-    changed = grade_payload(payload)
+    changed = grade_payload(payload, ml_player_props_only=ml_player_props_only)
     if changed:
         _write_json(path, payload)
     print(f"[auto-grade] {path.relative_to(REPO_ROOT)}: {changed} update(s)")
@@ -126,7 +130,7 @@ def main() -> int:
     total = 0
     for cache_dir in (MODEL_CACHE_DIR, PLAYER_PROPS_CACHE_DIR):
         for path in sorted(cache_dir.glob("20??-??-??.json")):
-            total += grade_file(path)
+            total += grade_file(path, ml_player_props_only=cache_dir == PLAYER_PROPS_CACHE_DIR)
 
         latest = _read_json(cache_dir / "latest.json")
         latest_date = str(latest.get("date") or "") if latest else ""

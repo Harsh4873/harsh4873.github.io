@@ -10,6 +10,8 @@ import math
 from pathlib import Path
 from typing import Any, Iterator
 
+from player_props.era import is_ml_era_pick
+
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 CALIBRATION_DIR = REPO_ROOT / "data" / "calibration"
@@ -378,6 +380,7 @@ def _iter_bucket_records(
     fallback_date: str,
 ) -> Iterator[dict[str, Any]]:
     models = payload.get("models")
+    fallback_timestamp = payload.get("generatedAt") or payload.get("updatedAt")
     if isinstance(models, dict):
         for model_key, bucket in models.items():
             if str(model_key) in CALIBRATION_EXCLUDED_MODEL_KEYS:
@@ -385,7 +388,11 @@ def _iter_bucket_records(
             if not isinstance(bucket, dict) or not isinstance(bucket.get("picks"), list):
                 continue
             for pick in bucket["picks"]:
-                if isinstance(pick, dict) and not pick.get("calibration_excluded"):
+                if (
+                    isinstance(pick, dict)
+                    and not pick.get("calibration_excluded")
+                    and (cache_type != "player_props_cache" or is_ml_era_pick(pick, fallback_timestamp))
+                ):
                     yield ledger_record(
                         pick,
                         cache_type=cache_type,
@@ -394,7 +401,11 @@ def _iter_bucket_records(
                     )
         return
     for pick in payload.get("picks") or []:
-        if isinstance(pick, dict) and not pick.get("calibration_excluded"):
+        if (
+            isinstance(pick, dict)
+            and not pick.get("calibration_excluded")
+            and (cache_type != "player_props_cache" or is_ml_era_pick(pick, fallback_timestamp))
+        ):
             yield ledger_record(
                 pick,
                 cache_type=cache_type,
@@ -442,4 +453,20 @@ def rebuild_outcome_ledger(
 ) -> tuple[dict[str, Any], bool]:
     ledger = build_outcome_ledger(repo_root)
     path = output_path or repo_root / "data" / "calibration" / "outcome_ledger.json"
-    return ledger, write_json_if_changed(path, ledger)
+    changed = write_json_if_changed(path, ledger)
+
+    state_path = repo_root / "data" / "calibration" / "state.json"
+    state = read_json(state_path)
+    if state:
+        decided = int(ledger["summary"]["decided_picks"])
+        trainable = int(ledger["summary"]["trainable_decided_picks"])
+        state_changed = False
+        if int(state.get("last_evaluated_decided_count") or 0) > decided:
+            state["last_evaluated_decided_count"] = decided
+            state_changed = True
+        if int(state.get("last_trainable_decided_count") or 0) > trainable:
+            state["last_trainable_decided_count"] = trainable
+            state_changed = True
+        if state_changed:
+            write_json_if_changed(state_path, state)
+    return ledger, changed

@@ -58,7 +58,11 @@ def test_frontend_player_mode_is_persisted_isolated_and_team_defaulted():
     assert "activeFilter = 'ALL'" in main
     assert "selectedDate = ''" in main
     assert "search.value = ''" in main
-    assert "const pending = activePickMode === 'team'" in main
+    assert "const pending = getAllPicks().filter(pick => pick.result === 'pending')" in main
+    assert "mlbLivePlayerStat(" in main
+    assert "espnPlayerStat(" in main
+    assert "PLAYER_PROPS_ML_FIRST_SNAPSHOT_AT" in data
+    assert "isMlEraPlayerProp(pick)" in data
     assert ".pick-mode-segment" in css
     assert "body.mobile-app-mode .pick-mode-segment" in css
     assert "@media (max-width: 700px)" in css
@@ -455,6 +459,30 @@ def test_auto_grader_only_tracks_bet_and_lean_decisions(monkeypatch):
     monkeypatch.setattr(module.pickgrader_server, "auto_grade", fail_if_called)
     assert module.grade_payload(payload) == 0
     assert all(pick["result"] == "pending" for pick in payload["models"]["mlb_new"]["picks"])
+
+
+def test_auto_grader_ignores_player_props_from_before_ml_retraining(monkeypatch):
+    module = _load_module("auto_grade_ml_cutoff_test", ROOT / "scripts" / "auto_grade_picks.py")
+    payload = {
+        "date": "2026-06-15",
+        "generatedAt": "2026-06-15T22:55:06Z",
+        "models": {
+            "mlb_player_props": {
+                "picks": [{
+                    "id": "legacy-prop",
+                    "sport": "MLB",
+                    "pick": "Player Over 0.5 Hits",
+                    "decision": "BET",
+                    "result": "pending",
+                    "probability_source": "legacy_projection",
+                    "ranking_updated_at": "2026-06-15T22:55:06Z",
+                }]
+            }
+        },
+    }
+
+    monkeypatch.setattr(module.pickgrader_server, "auto_grade", lambda *_args: (_ for _ in ()).throw(AssertionError("legacy props must not be graded")))
+    assert module.grade_payload(payload, ml_player_props_only=True) == 0
 
 
 def test_scheduled_refreshes_are_json_only_and_use_shared_writer_lock():

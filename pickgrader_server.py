@@ -31,7 +31,7 @@ from datetime import datetime, timedelta
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from typing import Any
 from urllib.error import URLError, HTTPError
-from urllib.parse import urlparse
+from urllib.parse import urlencode, urlparse
 from urllib.request import Request, urlopen
 
 def _env_bool(name: str, default: bool) -> bool:
@@ -1589,6 +1589,53 @@ def fetch_event_summary(sport: str, league: str, event_id: str) -> dict[str, Any
         return None
 
 
+def _fetch_json_url(url: str) -> dict[str, Any] | None:
+    req = Request(url, headers={"User-Agent": USER_AGENT})
+    try:
+        with urlopen(req, timeout=15) as resp:
+            payload = json.loads(resp.read().decode("utf-8"))
+    except (HTTPError, URLError, TimeoutError, json.JSONDecodeError):
+        return None
+    return payload if isinstance(payload, dict) else None
+
+
+def fetch_mlb_schedule(date_key: str) -> dict[str, Any] | None:
+    try:
+        date_iso = datetime.strptime(str(date_key), "%Y%m%d").strftime("%Y-%m-%d")
+    except ValueError:
+        date_iso = str(date_key or "").strip()
+    query = urlencode({"sportId": 1, "date": date_iso, "hydrate": "team"})
+    return _fetch_json_url(f"https://statsapi.mlb.com/api/v1/schedule?{query}")
+
+
+def fetch_mlb_live_feed(game_pk: int | str) -> dict[str, Any] | None:
+    value = str(game_pk or "").strip()
+    if not value.isdigit():
+        return None
+    return _fetch_json_url(f"https://statsapi.mlb.com/api/v1.1/game/{value}/feed/live")
+
+
+def find_mlb_game_pk(schedule: dict[str, Any] | None, pick: dict[str, Any]) -> str:
+    matchup = pick_matchup_from_fields(pick)
+    if not matchup or not isinstance(schedule, dict):
+        return ""
+    expected = {normalize(_norm_mlb(team)) for team in matchup}
+    for date_block in schedule.get("dates", []) if isinstance(schedule.get("dates"), list) else []:
+        games = date_block.get("games", []) if isinstance(date_block, dict) else []
+        for game in games if isinstance(games, list) else []:
+            teams = game.get("teams", {}) if isinstance(game, dict) else {}
+            actual = set()
+            for side in ("away", "home"):
+                side_record = teams.get(side, {}) if isinstance(teams, dict) else {}
+                team = side_record.get("team", {}) if isinstance(side_record, dict) else {}
+                name = str(team.get("name") or "") if isinstance(team, dict) else ""
+                if name:
+                    actual.add(normalize(_norm_mlb(name)))
+            if actual == expected:
+                return str(game.get("gamePk") or "")
+    return ""
+
+
 def competitor_fields(comp: dict[str, Any]) -> list[str]:
     team = comp.get("team", {})
     out = [
@@ -2200,12 +2247,106 @@ def _extract_nba_player_stat(summary: dict[str, Any], player_name: str, stat_key
     return None
 
 
-def grade_player_prop_pick(pick: dict[str, Any], game: dict[str, Any], summary: dict[str, Any] | None) -> str:
+def _extract_mlb_live_player_stat(feed: dict[str, Any], player_name: str, stat_key: str) -> float | None:
+    boxscore = (feed.get("liveData") or {}).get("boxscore") if isinstance(feed, dict) else None
+    teams = boxscore.get("teams") if isinstance(boxscore, dict) else None
+    if not isinstance(teams, dict):
+        return None
+
+    player_record: dict[str, Any] | None = None
+    for side in ("away", "home"):
+        team = teams.get(side)
+        players = team.get("players") if isinstance(team, dict) else None
+        for candidate in players.values() if isinstance(players, dict) else []:
+            person = candidate.get("person") if isinstance(candidate, dict) else None
+            display_name = str(person.get("fullName") or "") if isinstance(person, dict) else ""
+            if _person_names_match_loose(player_name, display_name):
+                player_record = candidate
+                break
+        if player_record is not None:
+            break
+    if player_record is None:
+        return None
+
+    stats = player_record.get("stats") if isinstance(player_record, dict) else None
+    batting = stats.get("batting") if isinstance(stats, dict) else None
+    pitching = stats.get("pitching") if isinstance(stats, dict) else None
+    batting = batting if isinstance(batting, dict) else {}
+    pitching = pitching if isinstance(pitching, dict) else {}
+
+    def number(container: dict[str, Any], key: str) -> float | None:
+        value = container.get(key)
+        try:
+            return float(value) if value not in (None, "") else None
+        except (TypeError, ValueError):
+            return None
+
+    batter_map = {
+        "hits": "hits",
+        "runs": "runs",
+        "rbis": "rbi",
+        "batter_walks": "baseOnBalls",
+        "batter_strikeouts": "strikeOuts",
+        "doubles": "doubles",
+        "triples": "triples",
+        "home_runs": "homeRuns",
+        "stolen_bases": "stolenBases",
+    }
+    pitcher_map = {
+        "strikeouts": "strikeOuts",
+        "pitcher_walks_allowed": "baseOnBalls",
+        "pitcher_outs_recorded": "outs",
+        "pitcher_hits_allowed": "hits",
+        "pitcher_earned_runs_allowed": "earnedRuns",
+    }
+    if stat_key in batter_map:
+        return number(batting, batter_map[stat_key])
+    if stat_key in pitcher_map:
+        return number(pitching, pitcher_map[stat_key])
+
+    components = {
+        "hits_runs_rbis": ("hits", "runs", "rbis"),
+    }.get(stat_key)
+    if components:
+        values = [_extract_mlb_live_player_stat(feed, player_name, component) for component in components]
+        return sum(values) if all(value is not None for value in values) else None
+
+    hits = number(batting, "hits")
+    doubles = number(batting, "doubles")
+    triples = number(batting, "triples")
+    home_runs = number(batting, "homeRuns")
+    if stat_key == "total_bases":
+        total_bases = number(batting, "totalBases")
+        if total_bases is not None:
+            return total_bases
+        values = (hits, doubles, triples, home_runs)
+        if all(value is not None for value in values):
+            singles = max(0.0, hits - doubles - triples - home_runs)
+            return singles + (2 * doubles) + (3 * triples) + (4 * home_runs)
+    if stat_key == "singles" and all(value is not None for value in (hits, doubles, triples, home_runs)):
+        return max(0.0, hits - doubles - triples - home_runs)
+    return None
+
+
+def grade_player_prop_pick(
+    pick: dict[str, Any],
+    game: dict[str, Any],
+    summary: dict[str, Any] | None,
+    mlb_live_feed: dict[str, Any] | None = None,
+) -> str:
     prop = parse_player_prop_pick(pick)
-    if not prop or not summary:
+    if not prop:
         return "pending"
 
-    actual = _extract_nba_player_stat(summary, str(prop["player_name"]), str(prop["stat_key"]))
+    actual = None
+    if str(pick.get("sport") or "").strip().upper() == "MLB" and mlb_live_feed:
+        actual = _extract_mlb_live_player_stat(
+            mlb_live_feed,
+            str(prop["player_name"]),
+            str(prop["stat_key"]),
+        )
+    if actual is None and summary:
+        actual = _extract_nba_player_stat(summary, str(prop["player_name"]), str(prop["stat_key"]))
     if actual is None:
         return "pending"
 
@@ -2382,6 +2523,8 @@ def auto_grade(picks: list[dict[str, Any]], existing: dict[str, str], year: int)
     attempted = 0
     board_cache: dict[tuple[str, str], dict[str, Any] | None] = {}
     summary_cache: dict[tuple[str, str], dict[str, Any] | None] = {}
+    mlb_schedule_cache: dict[str, dict[str, Any] | None] = {}
+    mlb_feed_cache: dict[str, dict[str, Any] | None] = {}
 
     for (sport_key, d), batch in all_grouped.items():
         sport, league = SPORT_TO_ESPNSLUG[sport_key]
@@ -2420,11 +2563,22 @@ def auto_grade(picks: list[dict[str, Any]], existing: dict[str, str], year: int)
             }:
                 result = "push"
             elif parse_player_prop_pick(pick):
-                event_id = str(game.get("eventId") or "").strip()
-                summary_key = (sport_key, event_id)
-                if summary_key not in summary_cache:
-                    summary_cache[summary_key] = fetch_event_summary(sport, league, event_id)
-                result = grade_player_prop_pick(pick, game, summary_cache.get(summary_key))
+                summary = None
+                mlb_live_feed = None
+                if sport_key == "MLB":
+                    if d not in mlb_schedule_cache:
+                        mlb_schedule_cache[d] = fetch_mlb_schedule(d)
+                    game_pk = find_mlb_game_pk(mlb_schedule_cache.get(d), pick)
+                    if game_pk and game_pk not in mlb_feed_cache:
+                        mlb_feed_cache[game_pk] = fetch_mlb_live_feed(game_pk)
+                    mlb_live_feed = mlb_feed_cache.get(game_pk) if game_pk else None
+                if mlb_live_feed is None:
+                    event_id = str(game.get("eventId") or "").strip()
+                    summary_key = (sport_key, event_id)
+                    if summary_key not in summary_cache:
+                        summary_cache[summary_key] = fetch_event_summary(sport, league, event_id)
+                    summary = summary_cache.get(summary_key)
+                result = grade_player_prop_pick(pick, game, summary, mlb_live_feed)
             else:
                 result = grade_pick(pick, game)
             if result in {"win", "loss", "push"}:

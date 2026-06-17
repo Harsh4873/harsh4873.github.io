@@ -586,3 +586,68 @@ def test_grade_expanded_mlb_player_props_from_boxscore():
         {},
         summary,
     ) == "win"
+
+
+def test_grade_mlb_props_from_official_live_feed_when_espn_omits_stats():
+    import pickgrader_server
+
+    live_feed = {
+        "liveData": {
+            "boxscore": {
+                "teams": {
+                    "away": {"players": {}},
+                    "home": {
+                        "players": {
+                            "ID123": {
+                                "person": {"fullName": "Zack Gelof"},
+                                "stats": {
+                                    "batting": {
+                                        "hits": 3,
+                                        "runs": 2,
+                                        "rbi": 2,
+                                        "doubles": 0,
+                                        "triples": 0,
+                                        "homeRuns": 1,
+                                        "totalBases": 6,
+                                        "stolenBases": 1,
+                                    }
+                                },
+                            }
+                        }
+                    },
+                }
+            }
+        }
+    }
+
+    assert pickgrader_server.grade_player_prop_pick(
+        {"sport": "MLB", "player_name": "Zack Gelof", "stat_key": "total_bases", "selection": "Over", "line": 1.5, "pick": "Zack Gelof Over 1.5 Total Bases"},
+        {},
+        None,
+        live_feed,
+    ) == "win"
+    assert pickgrader_server.grade_player_prop_pick(
+        {"sport": "MLB", "player_name": "Zack Gelof", "stat_key": "stolen_bases", "selection": "Over", "line": 0.5, "pick": "Zack Gelof Over 0.5 Stolen Bases"},
+        {},
+        None,
+        live_feed,
+    ) == "win"
+
+
+def test_find_mlb_game_pk_matches_structured_matchup():
+    import pickgrader_server
+
+    schedule = {
+        "dates": [{
+            "games": [{
+                "gamePk": 823939,
+                "teams": {
+                    "away": {"team": {"name": "Tampa Bay Rays"}},
+                    "home": {"team": {"name": "Los Angeles Dodgers"}},
+                },
+            }],
+        }],
+    }
+    pick = {"away_team": "Tampa Bay Rays", "home_team": "Los Angeles Dodgers"}
+
+    assert pickgrader_server.find_mlb_game_pk(schedule, pick) == "823939"

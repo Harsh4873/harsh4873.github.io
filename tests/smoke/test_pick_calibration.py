@@ -114,7 +114,8 @@ def test_ml_player_props_skip_old_calibration_but_remain_ledger_trainable(tmp_pa
         ml_calibration_excluded=True,
         result="win",
     )
-    payload = {"date": "2026-06-01", "models": {"mlb_player_props": {"picks": [pick]}}}
+    pick["ranking_updated_at"] = "2026-06-16T19:04:34.909830Z"
+    payload = {"date": "2026-06-16", "models": {"mlb_player_props": {"picks": [pick]}}}
 
     apply_calibration_to_payload(payload, active)
     adjusted = payload["models"]["mlb_player_props"]["picks"][0]
@@ -126,10 +127,46 @@ def test_ml_player_props_skip_old_calibration_but_remain_ledger_trainable(tmp_pa
     model_dir = tmp_path / "data" / "model_cache"
     props_dir.mkdir(parents=True)
     model_dir.mkdir(parents=True)
-    (props_dir / "2026-06-01.json").write_text(json.dumps(payload), encoding="utf-8")
+    (props_dir / "2026-06-16.json").write_text(json.dumps(payload), encoding="utf-8")
     ledger = build_outcome_ledger(tmp_path)
     assert ledger["summary"]["total_picks"] == 1
     assert ledger["records"][0]["raw_probability"] == 0.7
+
+
+def test_player_prop_ledger_forgets_pre_ml_records(tmp_path: Path):
+    props_dir = tmp_path / "data" / "player_props_cache"
+    model_dir = tmp_path / "data" / "model_cache"
+    props_dir.mkdir(parents=True)
+    model_dir.mkdir(parents=True)
+    legacy = _pick(result="win", probability_source="legacy_projection")
+    payload = {"date": "2026-06-15", "models": {"mlb_player_props": {"picks": [legacy]}}}
+    (props_dir / "2026-06-15.json").write_text(json.dumps(payload), encoding="utf-8")
+
+    ledger = build_outcome_ledger(tmp_path)
+
+    assert ledger["summary"]["total_picks"] == 0
+
+
+def test_ledger_rebuild_rebases_calibration_checkpoint_after_reset(tmp_path: Path):
+    from scripts.pick_calibration import rebuild_outcome_ledger
+
+    calibration_dir = tmp_path / "data" / "calibration"
+    props_dir = tmp_path / "data" / "player_props_cache"
+    model_dir = tmp_path / "data" / "model_cache"
+    calibration_dir.mkdir(parents=True)
+    props_dir.mkdir(parents=True)
+    model_dir.mkdir(parents=True)
+    (calibration_dir / "state.json").write_text(json.dumps({
+        "last_evaluated_decided_count": 500,
+        "last_trainable_decided_count": 400,
+    }), encoding="utf-8")
+
+    ledger, _ = rebuild_outcome_ledger(tmp_path)
+    state = json.loads((calibration_dir / "state.json").read_text(encoding="utf-8"))
+
+    assert ledger["summary"]["decided_picks"] == 0
+    assert state["last_evaluated_decided_count"] == 0
+    assert state["last_trainable_decided_count"] == 0
 
 
 def test_pick_level_calibration_exclusion_skips_adjustment_and_training(tmp_path: Path):
