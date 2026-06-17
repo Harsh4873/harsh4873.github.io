@@ -73180,7 +73180,7 @@
       "matchup": "Los Angeles Angels @ Arizona Diamondbacks",
       "model_key": "mlb_first_five",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Los Angeles Angels F5 ML",
       "pregame_snapshot": {
         "actionability": "research_signal",
@@ -73219,7 +73219,7 @@
       "raw_edge": 7.18,
       "raw_probability": 0.5956,
       "raw_units": null,
-      "result": "pending",
+      "result": "win",
       "source": "MLB First Five",
       "sport": "MLB",
       "units": null
@@ -73292,7 +73292,7 @@
       "matchup": "Los Angeles Angels @ Arizona Diamondbacks",
       "model_key": "mlb_first_five",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Over 4.5 F5",
       "pregame_snapshot": {
         "actionability": "research_signal",
@@ -73331,7 +73331,7 @@
       "raw_edge": 17.24,
       "raw_probability": 0.6962,
       "raw_units": null,
-      "result": "pending",
+      "result": "win",
       "source": "MLB First Five",
       "sport": "MLB",
       "units": null
@@ -77612,7 +77612,7 @@
       "matchup": "Los Angeles Angels @ Arizona Diamondbacks",
       "model_key": "mlb_player_props",
       "odds": 158.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Mike Trout Over 0.5 RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -77690,12 +77690,12 @@
         "units": 2.0
       },
       "probability": 0.7273,
-      "profit": null,
+      "profit": 3.16,
       "raw_decision": "BET",
       "raw_edge": 33.97,
       "raw_probability": 0.7273,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -78012,7 +78012,7 @@
       "matchup": "Tampa Bay Rays @ Los Angeles Dodgers",
       "model_key": "mlb_player_props",
       "odds": 155.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Shohei Ohtani Over 0.5 RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -78090,12 +78090,12 @@
         "units": 2.0
       },
       "probability": 0.7282,
-      "profit": null,
+      "profit": 3.1,
       "raw_decision": "BET",
       "raw_edge": 33.6,
       "raw_probability": 0.7282,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -79911,7 +79911,7 @@
       "matchup": "Los Angeles Angels @ Arizona Diamondbacks",
       "model_key": "mlb_player_props",
       "odds": 180.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Zach Neto Over 0.5 Walks",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -79989,12 +79989,12 @@
         "units": 2.0
       },
       "probability": 0.6699,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 31.28,
       "raw_probability": 0.6699,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -80111,7 +80111,7 @@
       "matchup": "Tampa Bay Rays @ Los Angeles Dodgers",
       "model_key": "mlb_player_props",
       "odds": 254.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Ryan Vilade Over 0.5 RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -80189,12 +80189,12 @@
         "units": 2.0
       },
       "probability": 0.6686,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 38.61,
       "raw_probability": 0.6686,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -80211,7 +80211,7 @@
       "matchup": "Los Angeles Angels @ Arizona Diamondbacks",
       "model_key": "mlb_player_props",
       "odds": 166.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Donovan Walton Over 0.5 Runs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -80289,12 +80289,12 @@
         "units": 2.0
       },
       "probability": 0.7127,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 33.68,
       "raw_probability": 0.7127,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -80811,7 +80811,7 @@
       "matchup": "Tampa Bay Rays @ Los Angeles Dodgers",
       "model_key": "mlb_player_props",
       "odds": 233.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Ryan Ward Over 0.5 RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -80889,12 +80889,12 @@
         "units": 2.0
       },
       "probability": 0.7483,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 44.8,
       "raw_probability": 0.7483,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -81711,7 +81711,7 @@
       "matchup": "Los Angeles Angels @ Arizona Diamondbacks",
       "model_key": "mlb_player_props",
       "odds": 238.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Wade Meckler Over 0.5 RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -81789,12 +81789,12 @@
         "units": 2.0
       },
       "probability": 0.7477,
-      "profit": null,
+      "profit": 4.76,
       "raw_decision": "BET",
       "raw_edge": 45.18,
       "raw_probability": 0.7477,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -82311,7 +82311,7 @@
       "matchup": "Baltimore Orioles @ Seattle Mariners",
       "model_key": "mlb_player_props",
       "odds": 168.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Colt Emerson Over 0.5 Runs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -82389,12 +82389,12 @@
         "units": 2.0
       },
       "probability": 0.7247,
-      "profit": null,
+      "profit": 3.36,
       "raw_decision": "BET",
       "raw_edge": 35.16,
       "raw_probability": 0.7247,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -83108,7 +83108,7 @@
       "matchup": "Los Angeles Angels @ Arizona Diamondbacks",
       "model_key": "mlb_player_props",
       "odds": 211.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Ildemaro Vargas Over 0.5 RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -83186,12 +83186,12 @@
         "units": 2.0
       },
       "probability": 0.7254,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 40.39,
       "raw_probability": 0.7254,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -83308,7 +83308,7 @@
       "matchup": "Tampa Bay Rays @ Los Angeles Dodgers",
       "model_key": "mlb_player_props",
       "odds": 219.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Kyle Tucker Over 0.5 RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -83386,12 +83386,12 @@
         "units": 2.0
       },
       "probability": 0.6501,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 33.66,
       "raw_probability": 0.6501,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -83608,7 +83608,7 @@
       "matchup": "Baltimore Orioles @ Seattle Mariners",
       "model_key": "mlb_player_props",
       "odds": 241.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Colt Emerson Over 0.5 RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -83686,12 +83686,12 @@
         "units": 2.0
       },
       "probability": 0.7422,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 44.89,
       "raw_probability": 0.7422,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -83708,7 +83708,7 @@
       "matchup": "Tampa Bay Rays @ Los Angeles Dodgers",
       "model_key": "mlb_player_props",
       "odds": 190.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Andy Pages Over 0.5 RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -83786,12 +83786,12 @@
         "units": 2.0
       },
       "probability": 0.7518,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 40.7,
       "raw_probability": 0.7518,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -84508,7 +84508,7 @@
       "matchup": "Baltimore Orioles @ Seattle Mariners",
       "model_key": "mlb_player_props",
       "odds": 217.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Adley Rutschman Over 0.5 RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -84586,12 +84586,12 @@
         "units": 2.0
       },
       "probability": 0.7596,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 44.41,
       "raw_probability": 0.7596,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -84810,7 +84810,7 @@
       "matchup": "Los Angeles Angels @ Arizona Diamondbacks",
       "model_key": "mlb_player_props",
       "odds": 165.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Ketel Marte Over 0.5 RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -84888,12 +84888,12 @@
         "units": 2.0
       },
       "probability": 0.7261,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 34.87,
       "raw_probability": 0.7261,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -85604,7 +85604,7 @@
       "matchup": "Baltimore Orioles @ Seattle Mariners",
       "model_key": "mlb_player_props",
       "odds": 115.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Adley Rutschman Over 1.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -85682,12 +85682,12 @@
         "units": 2.0
       },
       "probability": 0.8576,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 39.25,
       "raw_probability": 0.8576,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -85804,7 +85804,7 @@
       "matchup": "Baltimore Orioles @ Seattle Mariners",
       "model_key": "mlb_player_props",
       "odds": 151.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Cal Raleigh Under 0.5 Hits",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -85884,12 +85884,12 @@
         "units": 2.0
       },
       "probability": 0.753,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 35.46,
       "raw_probability": 0.753,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -87106,7 +87106,7 @@
       "matchup": "Los Angeles Angels @ Arizona Diamondbacks",
       "model_key": "mlb_player_props",
       "odds": 200.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Zach Neto Over 0.5 RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -87184,12 +87184,12 @@
         "units": 2.0
       },
       "probability": 0.7271,
-      "profit": null,
+      "profit": 4.0,
       "raw_decision": "BET",
       "raw_edge": 39.38,
       "raw_probability": 0.7271,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -87906,7 +87906,7 @@
       "matchup": "Baltimore Orioles @ Seattle Mariners",
       "model_key": "mlb_player_props",
       "odds": 161.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Pete Alonso Over 0.5 RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -87984,12 +87984,12 @@
         "units": 2.0
       },
       "probability": 0.7455,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 36.24,
       "raw_probability": 0.7455,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -89003,7 +89003,7 @@
       "matchup": "Los Angeles Angels @ Arizona Diamondbacks",
       "model_key": "mlb_player_props",
       "odds": 152.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Jo Adell Over 0.5 RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -89081,12 +89081,12 @@
         "units": 2.0
       },
       "probability": 0.7489,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 35.21,
       "raw_probability": 0.7489,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -89203,7 +89203,7 @@
       "matchup": "Tampa Bay Rays @ Los Angeles Dodgers",
       "model_key": "mlb_player_props",
       "odds": 126.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Justin Wrobleski Under 3.5 Strikeouts",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -89278,12 +89278,12 @@
         "units": 2.0
       },
       "probability": 0.8286,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 38.61,
       "raw_probability": 0.8286,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -89300,7 +89300,7 @@
       "matchup": "Tampa Bay Rays @ Los Angeles Dodgers",
       "model_key": "mlb_player_props",
       "odds": 210.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Jonathan Aranda Over 0.5 RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -89378,12 +89378,12 @@
         "units": 2.0
       },
       "probability": 0.7518,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 42.92,
       "raw_probability": 0.7518,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -89744,7 +89744,7 @@
       "matchup": "Tampa Bay Rays @ Los Angeles Dodgers",
       "model_key": "scores24_mlb",
       "odds": -149.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Under 9.5 (Tampa Bay Rays @ Los Angeles Dodgers)",
       "pregame_snapshot": {
         "away_team": "Tampa Bay Rays",
@@ -89765,12 +89765,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.6711409395973155,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "Scores24MLB",
       "sport": "MLB",
       "units": 1.0
@@ -89873,7 +89873,7 @@
       "matchup": "Los Angeles Angels @ Arizona Diamondbacks",
       "model_key": "scores24_mlb",
       "odds": 107.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Los Angeles Angels of Anaheim ML (Los Angeles Angels @ Arizona Diamondbacks)",
       "pregame_snapshot": {
         "away_team": "Los Angeles Angels",
@@ -89894,12 +89894,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 1.07,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "Scores24MLB",
       "sport": "MLB",
       "units": 1.0
@@ -90002,7 +90002,7 @@
       "matchup": "Baltimore Orioles @ Seattle Mariners",
       "model_key": "scores24_mlb",
       "odds": -152.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Seattle Mariners ML (Baltimore Orioles @ Seattle Mariners)",
       "pregame_snapshot": {
         "away_team": "Baltimore Orioles",
@@ -90023,12 +90023,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.6578947368421053,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "Scores24MLB",
       "sport": "MLB",
       "units": 1.0
@@ -90321,7 +90321,7 @@
       "matchup": "Arizona Diamondbacks vs Los Angeles Angels",
       "model_key": "sportsgambler_mlb",
       "odds": -114.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Arizona Diamondbacks to Win (Arizona Diamondbacks vs Los Angeles Angels)",
       "pregame_snapshot": {
         "date": "2026-06-16",
@@ -90337,12 +90337,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "SportsGambler",
       "sport": "MLB",
       "units": 1.0
@@ -90473,7 +90473,7 @@
       "matchup": "Los Angeles Dodgers vs Tampa Bay Rays",
       "model_key": "sportsgambler_mlb",
       "odds": -154.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Los Angeles Dodgers to Win (Los Angeles Dodgers vs Tampa Bay Rays)",
       "pregame_snapshot": {
         "date": "2026-06-16",
@@ -90489,12 +90489,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.6493506493506493,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "SportsGambler",
       "sport": "MLB",
       "units": 1.0
@@ -90549,7 +90549,7 @@
       "matchup": "Seattle Mariners vs Baltimore Orioles",
       "model_key": "sportsgambler_mlb",
       "odds": -159.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Seattle Mariners to Win (Seattle Mariners vs Baltimore Orioles)",
       "pregame_snapshot": {
         "date": "2026-06-16",
@@ -90565,12 +90565,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.6289308176100629,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "SportsGambler",
       "sport": "MLB",
       "units": 1.0
@@ -90815,7 +90815,7 @@
       "matchup": "Arizona Diamondbacks vs Los Angeles Angels",
       "model_key": "sportytrader_mlb",
       "odds": -114.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Arizona Diamondbacks win the match (Diamondbacks vs Angels)",
       "pregame_snapshot": {
         "date": "2026-06-16",
@@ -90831,12 +90831,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "SportyTrader",
       "sport": "MLB",
       "units": 1.0
@@ -90853,7 +90853,7 @@
       "matchup": "Seattle Mariners vs Baltimore Orioles",
       "model_key": "sportytrader_mlb",
       "odds": -118.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Under 8 (Mariners vs Orioles)",
       "pregame_snapshot": {
         "date": "2026-06-16",
@@ -90869,12 +90869,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.847457627118644,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "SportyTrader",
       "sport": "MLB",
       "units": 1.0
@@ -90967,7 +90967,7 @@
       "matchup": "Los Angeles Dodgers vs Tampa Bay Rays",
       "model_key": "sportytrader_mlb",
       "odds": -102.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Under 8.0 (Dodgers vs Rays)",
       "pregame_snapshot": {
         "date": "2026-06-16",
@@ -90983,12 +90983,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.9803921568627451,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "SportyTrader",
       "sport": "MLB",
       "units": 1.0
@@ -92144,9 +92144,9 @@
   ],
   "schema_version": 1,
   "summary": {
-    "decided_picks": 1259,
-    "pending_picks": 311,
+    "decided_picks": 1291,
+    "pending_picks": 279,
     "total_picks": 1609,
-    "trainable_decided_picks": 1019
+    "trainable_decided_picks": 1042
   }
 }
