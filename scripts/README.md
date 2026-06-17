@@ -5,7 +5,7 @@ The active production automation uses GitHub Actions plus local Codex morning an
 | Script | Purpose |
 | --- | --- |
 | `refresh_model_cache.py` | Runs selected model directories and writes dated model-cache JSON. |
-| `refresh_external_feeds.py` | Refreshes SportyTrader, SportsGambler, Scores24WNBA, Scores24MLB, and Scores24FIFAWorldCup cache buckets. |
+| `refresh_external_feeds.py` | Refreshes sport-specific SportyTrader, SportsGambler, Scores24WNBA, Scores24MLB, and Scores24FIFAWorldCup cache buckets. |
 | `merge_model_cache_payload.py` | Merges model output while preserving other buckets and grades. |
 | `merge_external_feed_cache_payload.py` | Merges feed output while preserving model buckets and grades. |
 | `auto_grade_picks.py` | Grades completed games through ESPN and rebuilds the universal outcome ledger. |

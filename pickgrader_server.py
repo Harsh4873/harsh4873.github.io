@@ -2689,7 +2689,15 @@ _MODEL_CACHE_KEY_ALIASES: dict[str, tuple[str, ...]] = {
     "mlb_first_five": ("mlb_first_five",),
     "ipl": ("ipl",),
     "sportytrader": ("sportytrader",),
+    "sportytrader_nba": ("sportytrader_nba",),
+    "sportytrader_mlb": ("sportytrader_mlb",),
+    "sportytrader_wnba": ("sportytrader_wnba",),
+    "sportytrader_fifa_world_cup": ("sportytrader_fifa_world_cup",),
     "sportsgambler": ("sportsgambler",),
+    "sportsgambler_nba": ("sportsgambler_nba",),
+    "sportsgambler_mlb": ("sportsgambler_mlb",),
+    "sportsgambler_wnba": ("sportsgambler_wnba",),
+    "sportsgambler_fifa_world_cup": ("sportsgambler_fifa_world_cup",),
 }
 
 
@@ -4956,6 +4964,102 @@ _EXTERNAL_FEED_SPORT_CONFIG = {
     "fifa_world_cup": {"label": "FIFA WC", "model_keys": ("fifa_world_cup",)},
 }
 
+_EXTERNAL_FEED_SPORT_KEY_BY_LABEL = {
+    "NBA": "nba",
+    "WNBA": "wnba",
+    "MLB": "mlb",
+    "FIFA WC": "fifa_world_cup",
+}
+_EXTERNAL_FEED_SPORT_LABEL_BY_KEY = {
+    key: str(config["label"])
+    for key, config in _EXTERNAL_FEED_SPORT_CONFIG.items()
+}
+_EXTERNAL_FEED_SPORT_SOURCE_SUFFIX = {
+    "NBA": "NBA",
+    "WNBA": "WNBA",
+    "MLB": "MLB",
+    "FIFA WC": "FIFAWorldCup",
+}
+_EXTERNAL_FEED_PROVIDER_LABEL = {
+    "sportytrader": "SportyTrader",
+    "sportsgambler": "SportsGambler",
+}
+
+
+def _canonical_external_feed_sport(value: Any) -> str:
+    raw = str(value or "").strip()
+    if not raw:
+        return ""
+    normalized = re.sub(r"[\s-]+", "_", raw.lower())
+    aliases = {
+        "basketball": "nba",
+        "baseball": "mlb",
+        "football": "fifa_world_cup",
+        "soccer": "fifa_world_cup",
+        "fifa": "fifa_world_cup",
+        "fifa_wc": "fifa_world_cup",
+        "world_cup": "fifa_world_cup",
+    }
+    sport_key = aliases.get(normalized, normalized)
+    if sport_key in _EXTERNAL_FEED_SPORT_LABEL_BY_KEY:
+        return _EXTERNAL_FEED_SPORT_LABEL_BY_KEY[sport_key]
+    upper = raw.upper()
+    if upper == "FIFA WORLD CUP":
+        upper = "FIFA WC"
+    return upper if upper in _EXTERNAL_FEED_SPORT_KEY_BY_LABEL else ""
+
+
+def external_feed_model_key(provider: Any, sport: Any) -> str:
+    provider_key = _normalized_model_cache_key(provider)
+    sport_label = _canonical_external_feed_sport(sport)
+    sport_key = _EXTERNAL_FEED_SPORT_KEY_BY_LABEL.get(sport_label)
+    if provider_key in _EXTERNAL_FEED_PROVIDER_LABEL and sport_key:
+        return f"{provider_key}_{sport_key}"
+    return provider_key
+
+
+def external_feed_source_label(provider: Any, sport: Any) -> str:
+    provider_key = _normalized_model_cache_key(provider)
+    provider_label = _EXTERNAL_FEED_PROVIDER_LABEL.get(provider_key)
+    if not provider_label:
+        return str(provider or "").strip()
+    sport_label = _canonical_external_feed_sport(sport)
+    suffix = _EXTERNAL_FEED_SPORT_SOURCE_SUFFIX.get(sport_label)
+    return f"{provider_label}{suffix}" if suffix else provider_label
+
+
+def _split_external_feed_result_by_sport(provider: str, result: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    buckets: dict[str, dict[str, Any]] = {}
+    for raw_pick in result.get("picks") or []:
+        if not isinstance(raw_pick, dict):
+            continue
+        split_key = external_feed_model_key(provider, raw_pick.get("sport"))
+        if split_key == _normalized_model_cache_key(provider):
+            continue
+        bucket = buckets.setdefault(
+            split_key,
+            {
+                **result,
+                "picks": [],
+                "meta": {
+                    **(result.get("meta") if isinstance(result.get("meta"), dict) else {}),
+                    "feed": split_key,
+                    "provider": provider,
+                },
+            },
+        )
+        pick = dict(raw_pick)
+        pick["source"] = external_feed_source_label(provider, pick.get("sport"))
+        bucket["picks"].append(pick)
+    return buckets
+
+
+def _save_external_feed_admin_docs(provider: str, result: dict[str, Any], date_str: str) -> bool:
+    saved = False
+    for split_key, split_result in _split_external_feed_result_by_sport(provider, result).items():
+        saved = _save_admin_picks_doc(split_key, split_result, date_str) or saved
+    return saved
+
 
 def _known_external_slate_matchups(target_date: str, sport_code: str) -> list[str]:
     config = _EXTERNAL_FEED_SPORT_CONFIG.get(str(sport_code or "").strip().lower())
@@ -5082,7 +5186,7 @@ def _external_pick_market_metadata(sport: str, pick_text: str) -> dict[str, Any]
 
 def apply_external_pick_metadata(pick: dict[str, Any]) -> int:
     source = str(pick.get("source") or "").strip()
-    if source not in {"SportyTrader", "SportsGambler"} and not source.startswith("Scores24"):
+    if not source.startswith(("SportyTrader", "SportsGambler", "Scores24")):
         return 0
 
     changed = 0
@@ -5225,7 +5329,7 @@ def run_sportytrader_scraper(
 
                 pick_text = _clean_sportytrader_pick(tip, matchup, sport=sport)
                 picks.append({
-                    "source": "SportyTrader",
+                    "source": external_feed_source_label("sportytrader", sport),
                     "pick": pick_text,
                     "sport": sport,
                     "odds": odds_val,
@@ -5251,7 +5355,7 @@ def run_sportytrader_scraper(
             return {"ok": False, "error": "; ".join(errors[:4]), "picks": all_picks, "date": target_date}
 
         result = {"ok": True, "picks": all_picks, "errors": errors, "date": target_date}
-        _save_admin_picks_doc("sportytrader", result, target_date)
+        _save_external_feed_admin_docs("sportytrader", result, target_date)
         return result
     except subprocess.TimeoutExpired:
         return {"ok": False, "error": f"sportytrader: timed out after {timeout_s}s"}
@@ -5345,7 +5449,7 @@ def run_sportsgambler_scraper(
 
                 pick_text = f"{tip} ({matchup})"
                 picks.append({
-                    "source": "SportsGambler",
+                    "source": external_feed_source_label("sportsgambler", sport),
                     "pick": pick_text,
                     "sport": sport,
                     "odds": odds_val,
@@ -5371,7 +5475,7 @@ def run_sportsgambler_scraper(
             return {"ok": False, "error": "; ".join(errors[:4]), "picks": all_picks, "date": target_date}
 
         result = {"ok": True, "picks": all_picks, "errors": errors, "date": target_date}
-        _save_admin_picks_doc("sportsgambler", result, target_date)
+        _save_external_feed_admin_docs("sportsgambler", result, target_date)
         return result
     except subprocess.TimeoutExpired:
         return {"ok": False, "error": f"sportsgambler: timed out after {timeout_s}s"}

@@ -3,16 +3,17 @@
   "errors": [],
   "externalFeedsUpdatedAt": "2026-06-11T22:12:26.002489Z",
   "external_feeds": {
-    "sportsgambler": {
+    "sportsgambler_mlb": {
       "date": "2026-06-11",
       "errors": [],
       "generatedAt": "2026-06-11T22:12:26.002489Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-11",
-        "feed": "sportsgambler",
+        "feed": "sportsgambler_mlb",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba",
+        "provider": "sportsgambler",
         "updatedAt": "2026-06-11T22:12:26.002489Z"
       },
       "note": "Scheduled sportsgambler refresh returned 7 pick(s).",
@@ -24,7 +25,7 @@
           "odds": 133,
           "pick": "Pittsburgh Pirates to Win (Pittsburgh Pirates vs Los Angeles Dodgers)",
           "probability": null,
-          "source": "SportsGambler",
+          "source": "SportsGamblerMLB",
           "sport": "MLB",
           "units": 1
         },
@@ -34,7 +35,7 @@
           "odds": -119,
           "pick": "Seattle Mariners to Win (Baltimore Orioles vs Seattle Mariners)",
           "probability": null,
-          "source": "SportsGambler",
+          "source": "SportsGamblerMLB",
           "sport": "MLB",
           "units": 1
         },
@@ -44,17 +45,36 @@
           "odds": -125,
           "pick": "Atlanta Braves to Win (Chicago White Sox vs Atlanta Braves)",
           "probability": null,
-          "source": "SportsGambler",
+          "source": "SportsGamblerMLB",
           "sport": "MLB",
           "units": 1
-        },
+        }
+      ],
+      "updatedAt": "2026-06-11T22:12:26.002489Z"
+    },
+    "sportsgambler_wnba": {
+      "date": "2026-06-11",
+      "errors": [],
+      "generatedAt": "2026-06-11T22:12:26.002489Z",
+      "generatedBy": "github-actions:external-feed-refresh",
+      "meta": {
+        "date": "2026-06-11",
+        "feed": "sportsgambler_wnba",
+        "from": "github-actions",
+        "leagues": "nba,mlb,wnba",
+        "provider": "sportsgambler",
+        "updatedAt": "2026-06-11T22:12:26.002489Z"
+      },
+      "note": "Scheduled sportsgambler refresh returned 7 pick(s).",
+      "ok": true,
+      "picks": [
         {
           "decision": "BET",
           "edge": null,
           "odds": -112,
           "pick": "Fever -9.5 (Indiana Fever vs Chicago Sky)",
           "probability": null,
-          "source": "SportsGambler",
+          "source": "SportsGamblerWNBA",
           "sport": "WNBA",
           "units": 1
         },
@@ -64,7 +84,7 @@
           "odds": -112,
           "pick": "Dream -3.5 (Atlanta Dream vs New York Liberty)",
           "probability": null,
-          "source": "SportsGambler",
+          "source": "SportsGamblerWNBA",
           "sport": "WNBA",
           "units": 1
         },
@@ -74,7 +94,7 @@
           "odds": -110,
           "pick": "Under 170.5 Points (Dallas Wings vs Phoenix Mercury)",
           "probability": null,
-          "source": "SportsGambler",
+          "source": "SportsGamblerWNBA",
           "sport": "WNBA",
           "units": 1
         },
@@ -84,23 +104,24 @@
           "odds": -114,
           "pick": "Under 173.5 Points (Portland Fire vs Las Vegas Aces)",
           "probability": null,
-          "source": "SportsGambler",
+          "source": "SportsGamblerWNBA",
           "sport": "WNBA",
           "units": 1
         }
       ],
       "updatedAt": "2026-06-11T22:12:26.002489Z"
     },
-    "sportytrader": {
+    "sportytrader_mlb": {
       "date": "2026-06-11",
       "errors": [],
       "generatedAt": "2026-06-11T22:12:26.002489Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-11",
-        "feed": "sportytrader",
+        "feed": "sportytrader_mlb",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba",
+        "provider": "sportytrader",
         "updatedAt": "2026-06-11T22:12:26.002489Z"
       },
       "note": "Scheduled sportytrader refresh returned 6 pick(s).",
@@ -112,7 +133,7 @@
           "odds": -110,
           "pick": "Dodgers -1.5 (Pirates vs Dodgers)",
           "probability": null,
-          "source": "SportyTrader",
+          "source": "SportyTraderMLB",
           "sport": "MLB",
           "units": 1
         },
@@ -122,17 +143,36 @@
           "odds": -115,
           "pick": "Over 8.5 (White Sox vs Braves)",
           "probability": null,
-          "source": "SportyTrader",
+          "source": "SportyTraderMLB",
           "sport": "MLB",
           "units": 1
-        },
+        }
+      ],
+      "updatedAt": "2026-06-11T22:12:26.002489Z"
+    },
+    "sportytrader_wnba": {
+      "date": "2026-06-11",
+      "errors": [],
+      "generatedAt": "2026-06-11T22:12:26.002489Z",
+      "generatedBy": "github-actions:external-feed-refresh",
+      "meta": {
+        "date": "2026-06-11",
+        "feed": "sportytrader_wnba",
+        "from": "github-actions",
+        "leagues": "nba,mlb,wnba",
+        "provider": "sportytrader",
+        "updatedAt": "2026-06-11T22:12:26.002489Z"
+      },
+      "note": "Scheduled sportytrader refresh returned 6 pick(s).",
+      "ok": true,
+      "picks": [
         {
           "decision": "BET",
           "edge": null,
           "odds": -110,
           "pick": "Fever -9.5 (Fever vs Sky)",
           "probability": null,
-          "source": "SportyTrader",
+          "source": "SportyTraderWNBA",
           "sport": "WNBA",
           "units": 1
         },
@@ -142,7 +182,7 @@
           "odds": -120,
           "pick": "Atlanta Dream ML (Dream vs Liberty)",
           "probability": null,
-          "source": "SportyTrader",
+          "source": "SportyTraderWNBA",
           "sport": "WNBA",
           "units": 1
         },
@@ -152,7 +192,7 @@
           "odds": -110,
           "pick": "Wings -6.5 (Wings vs Mercury)",
           "probability": null,
-          "source": "SportyTrader",
+          "source": "SportyTraderWNBA",
           "sport": "WNBA",
           "units": 1
         },
@@ -162,7 +202,7 @@
           "odds": -435,
           "pick": "Aces ML (Fire vs Aces)",
           "probability": null,
-          "source": "SportyTrader",
+          "source": "SportyTraderWNBA",
           "sport": "WNBA",
           "units": 1
         }
@@ -2880,16 +2920,17 @@
       "picks": [],
       "raw_lines": 8
     },
-    "sportsgambler": {
+    "sportsgambler_mlb": {
       "date": "2026-06-11",
       "errors": [],
       "generatedAt": "2026-06-11T22:12:26.002489Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-11",
-        "feed": "sportsgambler",
+        "feed": "sportsgambler_mlb",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba",
+        "provider": "sportsgambler",
         "updatedAt": "2026-06-11T22:12:26.002489Z"
       },
       "note": "Scheduled sportsgambler refresh returned 7 pick(s).",
@@ -2903,7 +2944,7 @@
           "pick": "Pittsburgh Pirates to Win (Pittsburgh Pirates vs Los Angeles Dodgers)",
           "probability": null,
           "result": "loss",
-          "source": "SportsGambler",
+          "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-11T22:40Z",
           "units": 1
@@ -2916,7 +2957,7 @@
           "pick": "Seattle Mariners to Win (Baltimore Orioles vs Seattle Mariners)",
           "probability": null,
           "result": "loss",
-          "source": "SportsGambler",
+          "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-11T23:00Z",
           "units": 1
@@ -2929,11 +2970,30 @@
           "pick": "Atlanta Braves to Win (Chicago White Sox vs Atlanta Braves)",
           "probability": null,
           "result": "push",
-          "source": "SportsGambler",
+          "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-11T23:40Z",
           "units": 1
-        },
+        }
+      ],
+      "updatedAt": "2026-06-11T22:12:26.002489Z"
+    },
+    "sportsgambler_wnba": {
+      "date": "2026-06-11",
+      "errors": [],
+      "generatedAt": "2026-06-11T22:12:26.002489Z",
+      "generatedBy": "github-actions:external-feed-refresh",
+      "meta": {
+        "date": "2026-06-11",
+        "feed": "sportsgambler_wnba",
+        "from": "github-actions",
+        "leagues": "nba,mlb,wnba",
+        "provider": "sportsgambler",
+        "updatedAt": "2026-06-11T22:12:26.002489Z"
+      },
+      "note": "Scheduled sportsgambler refresh returned 7 pick(s).",
+      "ok": true,
+      "picks": [
         {
           "decision": "BET",
           "edge": null,
@@ -2942,7 +3002,7 @@
           "pick": "Fever -9.5 (Indiana Fever vs Chicago Sky)",
           "probability": null,
           "result": "loss",
-          "source": "SportsGambler",
+          "source": "SportsGamblerWNBA",
           "sport": "WNBA",
           "start_time": "2026-06-11T23:00Z",
           "units": 1
@@ -2955,7 +3015,7 @@
           "pick": "Dream -3.5 (Atlanta Dream vs New York Liberty)",
           "probability": null,
           "result": "loss",
-          "source": "SportsGambler",
+          "source": "SportsGamblerWNBA",
           "sport": "WNBA",
           "start_time": "2026-06-11T23:30Z",
           "units": 1
@@ -2968,7 +3028,7 @@
           "pick": "Under 170.5 Points (Dallas Wings vs Phoenix Mercury)",
           "probability": null,
           "result": "win",
-          "source": "SportsGambler",
+          "source": "SportsGamblerWNBA",
           "sport": "WNBA",
           "start_time": "2026-06-12T01:00Z",
           "units": 1
@@ -2981,7 +3041,7 @@
           "pick": "Under 173.5 Points (Portland Fire vs Las Vegas Aces)",
           "probability": null,
           "result": "loss",
-          "source": "SportsGambler",
+          "source": "SportsGamblerWNBA",
           "sport": "WNBA",
           "start_time": "2026-06-12T02:00Z",
           "units": 1
@@ -2989,16 +3049,17 @@
       ],
       "updatedAt": "2026-06-11T22:12:26.002489Z"
     },
-    "sportytrader": {
+    "sportytrader_mlb": {
       "date": "2026-06-11",
       "errors": [],
       "generatedAt": "2026-06-11T22:12:26.002489Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-11",
-        "feed": "sportytrader",
+        "feed": "sportytrader_mlb",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba",
+        "provider": "sportytrader",
         "updatedAt": "2026-06-11T22:12:26.002489Z"
       },
       "note": "Scheduled sportytrader refresh returned 6 pick(s).",
@@ -3012,7 +3073,7 @@
           "pick": "Dodgers -1.5 (Pirates vs Dodgers)",
           "probability": null,
           "result": "win",
-          "source": "SportyTrader",
+          "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-11T22:40Z",
           "units": 1
@@ -3025,11 +3086,30 @@
           "pick": "Over 8.5 (White Sox vs Braves)",
           "probability": null,
           "result": "push",
-          "source": "SportyTrader",
+          "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-11T23:40Z",
           "units": 1
-        },
+        }
+      ],
+      "updatedAt": "2026-06-11T22:12:26.002489Z"
+    },
+    "sportytrader_wnba": {
+      "date": "2026-06-11",
+      "errors": [],
+      "generatedAt": "2026-06-11T22:12:26.002489Z",
+      "generatedBy": "github-actions:external-feed-refresh",
+      "meta": {
+        "date": "2026-06-11",
+        "feed": "sportytrader_wnba",
+        "from": "github-actions",
+        "leagues": "nba,mlb,wnba",
+        "provider": "sportytrader",
+        "updatedAt": "2026-06-11T22:12:26.002489Z"
+      },
+      "note": "Scheduled sportytrader refresh returned 6 pick(s).",
+      "ok": true,
+      "picks": [
         {
           "decision": "BET",
           "edge": null,
@@ -3038,7 +3118,7 @@
           "pick": "Fever -9.5 (Fever vs Sky)",
           "probability": null,
           "result": "loss",
-          "source": "SportyTrader",
+          "source": "SportyTraderWNBA",
           "sport": "WNBA",
           "start_time": "2026-06-11T23:00Z",
           "units": 1
@@ -3051,7 +3131,7 @@
           "pick": "Atlanta Dream ML (Dream vs Liberty)",
           "probability": null,
           "result": "loss",
-          "source": "SportyTrader",
+          "source": "SportyTraderWNBA",
           "sport": "WNBA",
           "start_time": "2026-06-11T23:30Z",
           "units": 1
@@ -3064,7 +3144,7 @@
           "pick": "Wings -6.5 (Wings vs Mercury)",
           "probability": null,
           "result": "win",
-          "source": "SportyTrader",
+          "source": "SportyTraderWNBA",
           "sport": "WNBA",
           "start_time": "2026-06-12T01:00Z",
           "units": 1
@@ -3077,7 +3157,7 @@
           "pick": "Aces ML (Fire vs Aces)",
           "probability": null,
           "result": "win",
-          "source": "SportyTrader",
+          "source": "SportyTraderWNBA",
           "sport": "WNBA",
           "start_time": "2026-06-12T02:00Z",
           "units": 1
@@ -3556,16 +3636,17 @@
     "raw_lines": 8
   },
   "nba_props": {},
-  "sportsgambler": {
+  "sportsgambler_mlb": {
     "date": "2026-06-11",
     "errors": [],
     "generatedAt": "2026-06-11T22:12:26.002489Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-11",
-      "feed": "sportsgambler",
+      "feed": "sportsgambler_mlb",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba",
+      "provider": "sportsgambler",
       "updatedAt": "2026-06-11T22:12:26.002489Z"
     },
     "note": "Scheduled sportsgambler refresh returned 7 pick(s).",
@@ -3574,86 +3655,127 @@
       {
         "decision": "BET",
         "edge": null,
+        "game_start_time": "2026-06-11T22:40Z",
         "odds": 133,
         "pick": "Pittsburgh Pirates to Win (Pittsburgh Pirates vs Los Angeles Dodgers)",
         "probability": null,
-        "source": "SportsGambler",
+        "result": "loss",
+        "source": "SportsGamblerMLB",
         "sport": "MLB",
+        "start_time": "2026-06-11T22:40Z",
         "units": 1
       },
       {
         "decision": "BET",
         "edge": null,
+        "game_start_time": "2026-06-11T23:00Z",
         "odds": -119,
         "pick": "Seattle Mariners to Win (Baltimore Orioles vs Seattle Mariners)",
         "probability": null,
-        "source": "SportsGambler",
+        "result": "loss",
+        "source": "SportsGamblerMLB",
         "sport": "MLB",
+        "start_time": "2026-06-11T23:00Z",
         "units": 1
       },
       {
         "decision": "BET",
         "edge": null,
+        "game_start_time": "2026-06-11T23:40Z",
         "odds": -125,
         "pick": "Atlanta Braves to Win (Chicago White Sox vs Atlanta Braves)",
         "probability": null,
-        "source": "SportsGambler",
+        "result": "push",
+        "source": "SportsGamblerMLB",
         "sport": "MLB",
-        "units": 1
-      },
-      {
-        "decision": "BET",
-        "edge": null,
-        "odds": -112,
-        "pick": "Fever -9.5 (Indiana Fever vs Chicago Sky)",
-        "probability": null,
-        "source": "SportsGambler",
-        "sport": "WNBA",
-        "units": 1
-      },
-      {
-        "decision": "BET",
-        "edge": null,
-        "odds": -112,
-        "pick": "Dream -3.5 (Atlanta Dream vs New York Liberty)",
-        "probability": null,
-        "source": "SportsGambler",
-        "sport": "WNBA",
-        "units": 1
-      },
-      {
-        "decision": "BET",
-        "edge": null,
-        "odds": -110,
-        "pick": "Under 170.5 Points (Dallas Wings vs Phoenix Mercury)",
-        "probability": null,
-        "source": "SportsGambler",
-        "sport": "WNBA",
-        "units": 1
-      },
-      {
-        "decision": "BET",
-        "edge": null,
-        "odds": -114,
-        "pick": "Under 173.5 Points (Portland Fire vs Las Vegas Aces)",
-        "probability": null,
-        "source": "SportsGambler",
-        "sport": "WNBA",
+        "start_time": "2026-06-11T23:40Z",
         "units": 1
       }
     ],
     "updatedAt": "2026-06-11T22:12:26.002489Z"
   },
-  "sportytrader": {
+  "sportsgambler_wnba": {
     "date": "2026-06-11",
     "errors": [],
     "generatedAt": "2026-06-11T22:12:26.002489Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-11",
-      "feed": "sportytrader",
+      "feed": "sportsgambler_wnba",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba",
+      "provider": "sportsgambler",
+      "updatedAt": "2026-06-11T22:12:26.002489Z"
+    },
+    "note": "Scheduled sportsgambler refresh returned 7 pick(s).",
+    "ok": true,
+    "picks": [
+      {
+        "decision": "BET",
+        "edge": null,
+        "game_start_time": "2026-06-11T23:00Z",
+        "odds": -112,
+        "pick": "Fever -9.5 (Indiana Fever vs Chicago Sky)",
+        "probability": null,
+        "result": "loss",
+        "source": "SportsGamblerWNBA",
+        "sport": "WNBA",
+        "start_time": "2026-06-11T23:00Z",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "game_start_time": "2026-06-11T23:30Z",
+        "odds": -112,
+        "pick": "Dream -3.5 (Atlanta Dream vs New York Liberty)",
+        "probability": null,
+        "result": "loss",
+        "source": "SportsGamblerWNBA",
+        "sport": "WNBA",
+        "start_time": "2026-06-11T23:30Z",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "game_start_time": "2026-06-12T01:00Z",
+        "odds": -110,
+        "pick": "Under 170.5 Points (Dallas Wings vs Phoenix Mercury)",
+        "probability": null,
+        "result": "win",
+        "source": "SportsGamblerWNBA",
+        "sport": "WNBA",
+        "start_time": "2026-06-12T01:00Z",
+        "units": 1
+      },
+      {
+        "decision": "BET",
+        "edge": null,
+        "game_start_time": "2026-06-12T02:00Z",
+        "odds": -114,
+        "pick": "Under 173.5 Points (Portland Fire vs Las Vegas Aces)",
+        "probability": null,
+        "result": "loss",
+        "source": "SportsGamblerWNBA",
+        "sport": "WNBA",
+        "start_time": "2026-06-12T02:00Z",
+        "units": 1
+      }
+    ],
+    "updatedAt": "2026-06-11T22:12:26.002489Z"
+  },
+  "sportytrader_mlb": {
+    "date": "2026-06-11",
+    "errors": [],
+    "generatedAt": "2026-06-11T22:12:26.002489Z",
+    "generatedBy": "github-actions:external-feed-refresh",
+    "meta": {
+      "date": "2026-06-11",
+      "feed": "sportytrader_mlb",
+      "from": "github-actions",
+      "leagues": "nba,mlb,wnba",
+      "provider": "sportytrader",
       "updatedAt": "2026-06-11T22:12:26.002489Z"
     },
     "note": "Scheduled sportytrader refresh returned 6 pick(s).",
@@ -3662,61 +3784,98 @@
       {
         "decision": "BET",
         "edge": null,
+        "game_start_time": "2026-06-11T22:40Z",
         "odds": -110,
         "pick": "Dodgers -1.5 (Pirates vs Dodgers)",
         "probability": null,
-        "source": "SportyTrader",
+        "result": "win",
+        "source": "SportyTraderMLB",
         "sport": "MLB",
+        "start_time": "2026-06-11T22:40Z",
         "units": 1
       },
       {
         "decision": "BET",
         "edge": null,
+        "game_start_time": "2026-06-11T23:40Z",
         "odds": -115,
         "pick": "Over 8.5 (White Sox vs Braves)",
         "probability": null,
-        "source": "SportyTrader",
+        "result": "push",
+        "source": "SportyTraderMLB",
         "sport": "MLB",
+        "start_time": "2026-06-11T23:40Z",
         "units": 1
-      },
+      }
+    ],
+    "updatedAt": "2026-06-11T22:12:26.002489Z"
+  },
+  "sportytrader_wnba": {
+    "date": "2026-06-11",
+    "errors": [],
+    "generatedAt": "2026-06-11T22:12:26.002489Z",
+    "generatedBy": "github-actions:external-feed-refresh",
+    "meta": {
+      "date": "2026-06-11",
+      "feed": "sportytrader_wnba",
+      "from": "github-actions",
+      "leagues": "nba,mlb,wnba",
+      "provider": "sportytrader",
+      "updatedAt": "2026-06-11T22:12:26.002489Z"
+    },
+    "note": "Scheduled sportytrader refresh returned 6 pick(s).",
+    "ok": true,
+    "picks": [
       {
         "decision": "BET",
         "edge": null,
+        "game_start_time": "2026-06-11T23:00Z",
         "odds": -110,
         "pick": "Fever -9.5 (Fever vs Sky)",
         "probability": null,
-        "source": "SportyTrader",
+        "result": "loss",
+        "source": "SportyTraderWNBA",
         "sport": "WNBA",
+        "start_time": "2026-06-11T23:00Z",
         "units": 1
       },
       {
         "decision": "BET",
         "edge": null,
+        "game_start_time": "2026-06-11T23:30Z",
         "odds": -120,
         "pick": "Atlanta Dream ML (Dream vs Liberty)",
         "probability": null,
-        "source": "SportyTrader",
+        "result": "loss",
+        "source": "SportyTraderWNBA",
         "sport": "WNBA",
+        "start_time": "2026-06-11T23:30Z",
         "units": 1
       },
       {
         "decision": "BET",
         "edge": null,
+        "game_start_time": "2026-06-12T01:00Z",
         "odds": -110,
         "pick": "Wings -6.5 (Wings vs Mercury)",
         "probability": null,
-        "source": "SportyTrader",
+        "result": "win",
+        "source": "SportyTraderWNBA",
         "sport": "WNBA",
+        "start_time": "2026-06-12T01:00Z",
         "units": 1
       },
       {
         "decision": "BET",
         "edge": null,
+        "game_start_time": "2026-06-12T02:00Z",
         "odds": -435,
         "pick": "Aces ML (Fire vs Aces)",
         "probability": null,
-        "source": "SportyTrader",
+        "result": "win",
+        "source": "SportyTraderWNBA",
         "sport": "WNBA",
+        "start_time": "2026-06-12T02:00Z",
         "units": 1
       }
     ],

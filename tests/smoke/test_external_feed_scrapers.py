@@ -306,6 +306,7 @@ def test_server_passes_known_matchups_to_sportsgambler(monkeypatch):
 
     assert result["ok"] is True
     assert captured[-2:] == ["--expected-matchup", "Phoenix Mercury @ Dallas Wings"]
+    assert result["picks"][0]["source"] == "SportsGamblerWNBA"
 
 
 def test_server_preserves_fifa_asian_handicap_without_auto_grading(monkeypatch):
@@ -340,6 +341,7 @@ def test_server_preserves_fifa_asian_handicap_without_auto_grading(monkeypatch):
 
     assert result["ok"] is True
     assert captured[-2:] == ["--expected-matchup", "Switzerland @ Qatar"]
+    assert result["picks"][0]["source"] == "SportsGamblerFIFAWorldCup"
     assert result["picks"][0]["pick"] == "Switzerland Asian Hcp -1.75 (Qatar vs Switzerland)"
     assert result["picks"][0]["market_type"] == "soccer_asian_handicap"
     assert result["picks"][0]["grade_supported"] is False
@@ -375,6 +377,7 @@ def test_server_routes_external_player_prop_out_of_team_markets(monkeypatch):
     result = server.run_sportytrader_scraper("2026-06-13", ["mlb"])
     pick = result["picks"][0]
 
+    assert pick["source"] == "SportyTraderMLB"
     assert pick["scope"] == "player"
     assert pick["market_type"] == "external_player_prop"
     assert pick["grade_supported"] is True
@@ -384,7 +387,7 @@ def test_external_compound_market_is_not_auto_graded():
     import pickgrader_server as server
 
     pick = {
-        "source": "SportyTrader",
+        "source": "SportyTraderMLB",
         "sport": "MLB",
         "pick": "Brewers to win and over 7.5 runs (Brewers vs Phillies)",
         "decision": "BET",
@@ -395,6 +398,45 @@ def test_external_compound_market_is_not_auto_graded():
     assert pick["market_type"] == "compound"
     assert pick["grade_supported"] is False
     assert pick["result"] == "pending"
+
+
+def test_external_feed_refresh_splits_provider_buckets_by_sport():
+    module = _load_module(
+        "refresh_external_feeds_split_test",
+        ROOT / "scripts" / "refresh_external_feeds.py",
+    )
+
+    result = module._normalize_feed_result(
+        "sportytrader",
+        {
+            "ok": True,
+            "date": "2026-06-16",
+            "picks": [
+                {"source": "SportyTrader", "sport": "MLB", "pick": "Dodgers ML"},
+                {"source": "SportyTrader", "sport": "WNBA", "pick": "Fever -4.5"},
+                {"source": "SportyTrader", "sport": "FIFA WC", "pick": "France team total"},
+            ],
+        },
+        "2026-06-16",
+        ["mlb", "wnba", "fifa_world_cup"],
+        "2026-06-16T12:00:00Z",
+    )
+    split = module._split_provider_result(
+        "sportytrader",
+        result,
+        "2026-06-16",
+        ["mlb", "wnba", "fifa_world_cup"],
+        "2026-06-16T12:00:00Z",
+    )
+
+    assert set(split) == {
+        "sportytrader_mlb",
+        "sportytrader_wnba",
+        "sportytrader_fifa_world_cup",
+    }
+    assert split["sportytrader_mlb"]["picks"][0]["source"] == "SportyTraderMLB"
+    assert split["sportytrader_wnba"]["picks"][0]["source"] == "SportyTraderWNBA"
+    assert split["sportytrader_fifa_world_cup"]["picks"][0]["source"] == "SportyTraderFIFAWorldCup"
 
 
 def test_known_fifa_slate_uses_in_house_cache_before_external_scrapers(monkeypatch, tmp_path):
@@ -647,6 +689,15 @@ def test_local_scores24_publisher_registers_separate_models():
     for model_key in ("scores24_wnba", "scores24_mlb", "scores24_fifa_world_cup"):
         assert model_key in refresh
         assert model_key in publisher
+    for model_key in (
+        "sportytrader_mlb",
+        "sportytrader_wnba",
+        "sportytrader_fifa_world_cup",
+        "sportsgambler_mlb",
+        "sportsgambler_wnba",
+        "sportsgambler_fifa_world_cup",
+    ):
+        assert model_key in refresh
     assert 'default="sportytrader,sportsgambler"' in refresh
     assert "scores24_wnba" not in workflow
     assert "scores24_fifa_world_cup" not in workflow

@@ -142,17 +142,17 @@ def test_pick_level_calibration_exclusion_skips_adjustment_and_training(tmp_path
         "groups": {},
     }
     pick = _pick(
-        source="SportsGambler",
+        source="SportsGamblerFIFAWorldCup",
         sport="FIFA WC",
         pick="Switzerland Asian Hcp -1.75",
         calibration_excluded=True,
         result="win",
     )
-    payload = {"date": "2026-06-01", "models": {"sportsgambler": {"picks": [pick]}}}
+    payload = {"date": "2026-06-01", "models": {"sportsgambler_fifa_world_cup": {"picks": [pick]}}}
 
     apply_calibration_to_payload(payload, active)
-    assert payload["models"]["sportsgambler"]["picks"][0]["probability"] == 0.7
-    assert "calibration" not in payload["models"]["sportsgambler"]["picks"][0]
+    assert payload["models"]["sportsgambler_fifa_world_cup"]["picks"][0]["probability"] == 0.7
+    assert "calibration" not in payload["models"]["sportsgambler_fifa_world_cup"]["picks"][0]
 
     model_dir = tmp_path / "data" / "model_cache"
     props_dir = tmp_path / "data" / "player_props_cache"

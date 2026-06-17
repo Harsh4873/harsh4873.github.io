@@ -17,11 +17,20 @@ from cache_manifest import write_cache_manifest  # noqa: E402
 MODEL_CACHE_DIR = Path("data/model_cache")
 EXTERNAL_FEED_MODEL_KEYS = {
     "sportytrader",
+    "sportytrader_nba",
+    "sportytrader_mlb",
+    "sportytrader_wnba",
+    "sportytrader_fifa_world_cup",
     "sportsgambler",
+    "sportsgambler_nba",
+    "sportsgambler_mlb",
+    "sportsgambler_wnba",
+    "sportsgambler_fifa_world_cup",
     "scores24_wnba",
     "scores24_mlb",
     "scores24_fifa_world_cup",
 }
+SPLIT_EXTERNAL_FEED_LEGACY_KEYS = {"sportytrader", "sportsgambler"}
 DEPLOYED_MODEL_KEYS = {
     "mlb_new",
     "mlb_inning",
@@ -85,13 +94,31 @@ def _current_payload(cache_dir: Path, date_iso: str) -> dict[str, Any]:
     return {"date": date_iso, "models": {}}
 
 
+def _legacy_feed_keys_with_split(current: dict[str, Any]) -> set[str]:
+    current_keys: set[str] = set()
+    models = current.get("models")
+    if isinstance(models, dict):
+        current_keys.update(str(key) for key in models)
+    external_feeds = current.get("external_feeds")
+    if isinstance(external_feeds, dict):
+        current_keys.update(str(key) for key in external_feeds)
+    current_keys.update(str(key) for key in current if key in EXTERNAL_FEED_MODEL_KEYS)
+    return {
+        legacy_key
+        for legacy_key in SPLIT_EXTERNAL_FEED_LEGACY_KEYS
+        if any(key.startswith(f"{legacy_key}_") for key in current_keys)
+    }
+
+
 def _merged_models(current: dict[str, Any], generated: dict[str, Any]) -> dict[str, Any]:
     current_models = current.get("models") if isinstance(current.get("models"), dict) else {}
     generated_models = generated.get("models") if isinstance(generated.get("models"), dict) else {}
     external_feeds = current.get("external_feeds") if isinstance(current.get("external_feeds"), dict) else {}
+    replaced_legacy_keys = _legacy_feed_keys_with_split(current)
 
     keep_keys = set(DEPLOYED_MODEL_KEYS)
     keep_keys.update(str(key) for key in external_feeds)
+    keep_keys.difference_update(replaced_legacy_keys)
     merged = {
         key: current_models[key]
         for key in keep_keys
@@ -149,6 +176,16 @@ def merge_payload(generated: dict[str, Any], cache_dir: Path) -> dict[str, Any]:
         if key in generated:
             merged[key] = generated[key]
     merged["models"] = _merged_models(current, generated)
+    replaced_legacy_keys = _legacy_feed_keys_with_split(current)
+    for key in replaced_legacy_keys:
+        merged.pop(key, None)
+    current_external = current.get("external_feeds") if isinstance(current.get("external_feeds"), dict) else {}
+    if current_external:
+        merged["external_feeds"] = {
+            key: value
+            for key, value in current_external.items()
+            if key not in replaced_legacy_keys
+        }
 
     for alias_key, model_key in MODEL_ALIAS_TO_MODEL_KEY.items():
         if model_key in merged["models"]:
@@ -158,6 +195,8 @@ def merge_payload(generated: dict[str, Any], cache_dir: Path) -> dict[str, Any]:
         elif alias_key in generated and generated[alias_key]:
             merged[alias_key] = generated[alias_key]
     for key in EXTERNAL_FEED_MODEL_KEYS:
+        if key in replaced_legacy_keys:
+            continue
         if key in current:
             merged[key] = current[key]
 

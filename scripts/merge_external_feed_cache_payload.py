@@ -17,10 +17,39 @@ from cache_manifest import write_cache_manifest  # noqa: E402
 MODEL_CACHE_DIR = Path("data/model_cache")
 EXTERNAL_FEED_MODEL_KEYS = {
     "sportytrader",
+    "sportytrader_nba",
+    "sportytrader_mlb",
+    "sportytrader_wnba",
+    "sportytrader_fifa_world_cup",
     "sportsgambler",
+    "sportsgambler_nba",
+    "sportsgambler_mlb",
+    "sportsgambler_wnba",
+    "sportsgambler_fifa_world_cup",
     "scores24_wnba",
     "scores24_mlb",
     "scores24_fifa_world_cup",
+}
+SPLIT_EXTERNAL_FEED_LEGACY_KEYS = {"sportytrader", "sportsgambler"}
+EXTERNAL_FEED_SPORT_KEYS = {
+    "NBA": "nba",
+    "WNBA": "wnba",
+    "MLB": "mlb",
+    "FIFA WC": "fifa_world_cup",
+}
+EXTERNAL_FEED_SOURCE_LABELS = {
+    "sportytrader": {
+        "NBA": "SportyTraderNBA",
+        "WNBA": "SportyTraderWNBA",
+        "MLB": "SportyTraderMLB",
+        "FIFA WC": "SportyTraderFIFAWorldCup",
+    },
+    "sportsgambler": {
+        "NBA": "SportsGamblerNBA",
+        "WNBA": "SportsGamblerWNBA",
+        "MLB": "SportsGamblerMLB",
+        "FIFA WC": "SportsGamblerFIFAWorldCup",
+    },
 }
 REQUIRED_TEAM_MODEL_KEYS = {
     "mlb_new",
@@ -72,6 +101,92 @@ def _feed_keys(generated: dict[str, Any]) -> set[str]:
     if isinstance(external_feeds, dict):
         keys.update(str(key) for key in external_feeds)
     return keys
+
+
+def _legacy_feed_keys_replaced_by(generated: dict[str, Any]) -> set[str]:
+    generated_keys: set[str] = set()
+    models = generated.get("models")
+    if isinstance(models, dict):
+        generated_keys.update(str(key) for key in models)
+    external_feeds = generated.get("external_feeds")
+    if isinstance(external_feeds, dict):
+        generated_keys.update(str(key) for key in external_feeds)
+    generated_keys.update(str(key) for key in generated if key in EXTERNAL_FEED_MODEL_KEYS)
+    return {
+        legacy_key
+        for legacy_key in SPLIT_EXTERNAL_FEED_LEGACY_KEYS
+        if any(key.startswith(f"{legacy_key}_") for key in generated_keys)
+    }
+
+
+def _canonical_sport_label(value: Any) -> str:
+    raw = str(value or "").strip()
+    normalized = raw.lower().replace("-", "_").replace(" ", "_")
+    aliases = {
+        "nba": "NBA",
+        "basketball": "NBA",
+        "wnba": "WNBA",
+        "mlb": "MLB",
+        "baseball": "MLB",
+        "fifa": "FIFA WC",
+        "fifa_wc": "FIFA WC",
+        "fifa_world_cup": "FIFA WC",
+        "world_cup": "FIFA WC",
+        "soccer": "FIFA WC",
+        "football": "FIFA WC",
+    }
+    if normalized in aliases:
+        return aliases[normalized]
+    upper = raw.upper()
+    if upper == "FIFA WORLD CUP":
+        return "FIFA WC"
+    return upper if upper in EXTERNAL_FEED_SPORT_KEYS else ""
+
+
+def _split_feed_key(provider_key: str, sport: Any) -> str:
+    sport_label = _canonical_sport_label(sport)
+    sport_key = EXTERNAL_FEED_SPORT_KEYS.get(sport_label)
+    return f"{provider_key}_{sport_key}" if sport_key else provider_key
+
+
+def _split_source_label(provider_key: str, sport: Any) -> str:
+    sport_label = _canonical_sport_label(sport)
+    return EXTERNAL_FEED_SOURCE_LABELS.get(provider_key, {}).get(sport_label, provider_key)
+
+
+def _split_legacy_bucket(provider_key: str, bucket: Any) -> dict[str, Any]:
+    if not isinstance(bucket, dict):
+        return {}
+    split: dict[str, Any] = {}
+    for raw_pick in bucket.get("picks") or []:
+        if not isinstance(raw_pick, dict):
+            continue
+        split_key = _split_feed_key(provider_key, raw_pick.get("sport"))
+        if split_key == provider_key:
+            continue
+        split_bucket = split.setdefault(
+            split_key,
+            {
+                **bucket,
+                "picks": [],
+                "meta": {
+                    **(bucket.get("meta") if isinstance(bucket.get("meta"), dict) else {}),
+                    "feed": split_key,
+                    "provider": provider_key,
+                },
+            },
+        )
+        pick = dict(raw_pick)
+        pick["source"] = _split_source_label(provider_key, pick.get("sport"))
+        split_bucket["picks"].append(pick)
+    return split
+
+
+def _split_legacy_buckets(provider_key: str, buckets: dict[str, Any]) -> dict[str, Any]:
+    split: dict[str, Any] = {}
+    for split_key, split_bucket in _split_legacy_bucket(provider_key, buckets.get(provider_key)).items():
+        split[split_key] = _preserve_pick_metadata(split.get(split_key), split_bucket)
+    return split
 
 
 def _pick_key(pick: dict[str, Any]) -> tuple[str, ...]:
@@ -134,22 +249,54 @@ def merge_payload(generated: dict[str, Any], cache_dir: Path) -> dict[str, Any]:
             merged[key] = generated[key]
 
     feed_keys = _feed_keys(generated)
+    replaced_legacy_keys = _legacy_feed_keys_replaced_by(generated)
+    for key in replaced_legacy_keys:
+        merged.pop(key, None)
+
     current_models = current.get("models") if isinstance(current.get("models"), dict) else {}
     generated_models = generated.get("models") if isinstance(generated.get("models"), dict) else {}
     models = dict(current_models)
+    for key in replaced_legacy_keys:
+        for split_key, split_bucket in _split_legacy_buckets(key, current_models).items():
+            models[split_key] = _preserve_pick_metadata(models.get(split_key), split_bucket)
+        models.pop(key, None)
     for key in feed_keys:
+        if key in replaced_legacy_keys:
+            continue
         if key in generated_models:
-            models[key] = _preserve_pick_metadata(current_models.get(key), generated_models[key])
+            models[key] = _preserve_pick_metadata(models.get(key), generated_models[key])
     merged["models"] = models
 
     current_external = current.get("external_feeds") if isinstance(current.get("external_feeds"), dict) else {}
     generated_external = generated.get("external_feeds") if isinstance(generated.get("external_feeds"), dict) else {}
+    current_external = {
+        key: value
+        for key, value in current_external.items()
+        if key not in replaced_legacy_keys
+    }
+    for key in replaced_legacy_keys:
+        source_buckets = current.get("external_feeds") if isinstance(current.get("external_feeds"), dict) else {}
+        for split_key, split_bucket in _split_legacy_buckets(key, source_buckets).items():
+            current_external[split_key] = _preserve_pick_metadata(current_external.get(split_key), split_bucket)
+    generated_external = {
+        key: value
+        for key, value in generated_external.items()
+        if key not in replaced_legacy_keys
+    }
     if current_external or generated_external:
         merged["external_feeds"] = _merge_feed_buckets(current_external, generated_external, feed_keys)
 
     for key in feed_keys:
+        if key in replaced_legacy_keys:
+            continue
         if key in generated:
             merged[key] = _preserve_pick_metadata(current.get(key), generated[key])
+    for key in replaced_legacy_keys:
+        for split_key, split_bucket in _split_legacy_buckets(key, current).items():
+            if split_key in merged:
+                merged[split_key] = _preserve_pick_metadata(split_bucket, merged[split_key])
+            else:
+                merged[split_key] = split_bucket
 
     return merged
 

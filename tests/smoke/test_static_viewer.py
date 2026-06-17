@@ -515,7 +515,7 @@ def test_model_cache_merge_preserves_other_deployed_buckets(tmp_path):
         "date": "2026-06-08",
         "models": {
             "mlb_new": {"ok": True, "picks": [{"pick": "A", "result": "win"}]},
-            "sportytrader": {"ok": True, "picks": [{"pick": "B"}]},
+            "sportytrader_mlb": {"ok": True, "picks": [{"pick": "B"}]},
         },
         "mlb_new": {"ok": True, "picks": [{"pick": "A", "result": "win"}]},
     }
@@ -530,7 +530,7 @@ def test_model_cache_merge_preserves_other_deployed_buckets(tmp_path):
     (cache_dir / "2026-06-08.json").write_text(json.dumps(current), encoding="utf-8")
     merged = module.merge_payload(generated, cache_dir)
     assert merged["models"]["mlb_new"]["picks"][0]["result"] == "win"
-    assert merged["models"]["sportytrader"]["picks"][0]["pick"] == "B"
+    assert merged["models"]["sportytrader_mlb"]["picks"][0]["pick"] == "B"
     assert merged["models"]["nba"]["picks"][0]["pick"] == "C"
     assert merged["mlb_new"]["picks"][0]["pick"] == "A"
     assert merged["nba"]["picks"][0]["pick"] == "C"
@@ -608,6 +608,73 @@ def test_external_feed_merge_keeps_previous_same_date_picks_when_refresh_drops_t
     current = {
         "date": "2026-06-16",
         "models": {
+            "sportytrader_fifa_world_cup": {
+                "ok": True,
+                "picks": [
+                    {"source": "SportyTraderFIFAWorldCup", "sport": "FIFA WC", "date": "2026-06-16", "pick": "Both teams to score", "matchup": "France vs Senegal"},
+                    {"source": "SportyTraderFIFAWorldCup", "sport": "FIFA WC", "date": "2026-06-16", "pick": "Norway ML", "matchup": "Norway @ Iraq"},
+                ],
+            }
+        },
+        "external_feeds": {
+            "sportytrader_fifa_world_cup": {
+                "ok": True,
+                "picks": [
+                    {"source": "SportyTraderFIFAWorldCup", "sport": "FIFA WC", "date": "2026-06-16", "pick": "Both teams to score", "matchup": "France vs Senegal"},
+                    {"source": "SportyTraderFIFAWorldCup", "sport": "FIFA WC", "date": "2026-06-16", "pick": "Norway ML", "matchup": "Norway @ Iraq"},
+                ],
+            }
+        },
+        "sportytrader_fifa_world_cup": {
+            "ok": True,
+            "picks": [
+                {"source": "SportyTraderFIFAWorldCup", "sport": "FIFA WC", "date": "2026-06-16", "pick": "Both teams to score", "matchup": "France vs Senegal"},
+                {"source": "SportyTraderFIFAWorldCup", "sport": "FIFA WC", "date": "2026-06-16", "pick": "Norway ML", "matchup": "Norway @ Iraq"},
+            ],
+        },
+    }
+    generated = {
+        "date": "2026-06-16",
+        "models": {
+            "sportytrader_fifa_world_cup": {
+                "ok": True,
+                "picks": [
+                    {"source": "SportyTraderFIFAWorldCup", "sport": "FIFA WC", "date": "2026-06-16", "pick": "Norway ML", "matchup": "Norway @ Iraq"},
+                ],
+            }
+        },
+        "external_feeds": {
+            "sportytrader_fifa_world_cup": {
+                "ok": True,
+                "picks": [
+                    {"source": "SportyTraderFIFAWorldCup", "sport": "FIFA WC", "date": "2026-06-16", "pick": "Norway ML", "matchup": "Norway @ Iraq"},
+                ],
+            }
+        },
+        "sportytrader_fifa_world_cup": {
+            "ok": True,
+            "picks": [
+                {"source": "SportyTraderFIFAWorldCup", "sport": "FIFA WC", "date": "2026-06-16", "pick": "Norway ML", "matchup": "Norway @ Iraq"},
+            ],
+        },
+    }
+    (cache_dir / "2026-06-16.json").write_text(json.dumps(current), encoding="utf-8")
+
+    merged = module.merge_payload(generated, cache_dir)
+    picks = merged["models"]["sportytrader_fifa_world_cup"]["picks"]
+
+    assert [pick["pick"] for pick in picks] == ["Norway ML", "Both teams to score"]
+    assert [pick["pick"] for pick in merged["external_feeds"]["sportytrader_fifa_world_cup"]["picks"]] == ["Norway ML", "Both teams to score"]
+    assert [pick["pick"] for pick in merged["sportytrader_fifa_world_cup"]["picks"]] == ["Norway ML", "Both teams to score"]
+
+
+def test_external_feed_merge_migrates_legacy_provider_bucket_to_split_key(tmp_path):
+    module = _load_module("merge_external_feed_cache_payload_legacy_split", ROOT / "scripts" / "merge_external_feed_cache_payload.py")
+    cache_dir = tmp_path / "data" / "model_cache"
+    cache_dir.mkdir(parents=True)
+    current = {
+        "date": "2026-06-16",
+        "models": {
             "sportytrader": {
                 "ok": True,
                 "picks": [
@@ -636,36 +703,32 @@ def test_external_feed_merge_keeps_previous_same_date_picks_when_refresh_drops_t
     generated = {
         "date": "2026-06-16",
         "models": {
-            "sportytrader": {
+            "sportytrader_fifa_world_cup": {
                 "ok": True,
                 "picks": [
-                    {"source": "SportyTrader", "sport": "FIFA WC", "date": "2026-06-16", "pick": "Norway ML", "matchup": "Norway @ Iraq"},
+                    {"source": "SportyTraderFIFAWorldCup", "sport": "FIFA WC", "date": "2026-06-16", "pick": "Norway ML", "matchup": "Norway @ Iraq"},
                 ],
             }
         },
         "external_feeds": {
-            "sportytrader": {
+            "sportytrader_fifa_world_cup": {
                 "ok": True,
                 "picks": [
-                    {"source": "SportyTrader", "sport": "FIFA WC", "date": "2026-06-16", "pick": "Norway ML", "matchup": "Norway @ Iraq"},
+                    {"source": "SportyTraderFIFAWorldCup", "sport": "FIFA WC", "date": "2026-06-16", "pick": "Norway ML", "matchup": "Norway @ Iraq"},
                 ],
             }
-        },
-        "sportytrader": {
-            "ok": True,
-            "picks": [
-                {"source": "SportyTrader", "sport": "FIFA WC", "date": "2026-06-16", "pick": "Norway ML", "matchup": "Norway @ Iraq"},
-            ],
         },
     }
     (cache_dir / "2026-06-16.json").write_text(json.dumps(current), encoding="utf-8")
 
     merged = module.merge_payload(generated, cache_dir)
-    picks = merged["models"]["sportytrader"]["picks"]
+    picks = merged["models"]["sportytrader_fifa_world_cup"]["picks"]
 
+    assert "sportytrader" not in merged["models"]
+    assert "sportytrader" not in merged["external_feeds"]
+    assert "sportytrader" not in merged
     assert [pick["pick"] for pick in picks] == ["Norway ML", "Both teams to score"]
-    assert [pick["pick"] for pick in merged["external_feeds"]["sportytrader"]["picks"]] == ["Norway ML", "Both teams to score"]
-    assert [pick["pick"] for pick in merged["sportytrader"]["picks"]] == ["Norway ML", "Both teams to score"]
+    assert {pick["source"] for pick in picks} == {"SportyTraderFIFAWorldCup"}
 
 
 def test_player_prop_merge_does_not_carry_results_across_rank_epochs(tmp_path):

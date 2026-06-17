@@ -32,6 +32,21 @@ FEED_RUNNERS: dict[str, Callable[[str, list[str]], dict[str, Any]]] = {
     "scores24_mlb": run_scores24_mlb,
     "scores24_fifa_world_cup": run_scores24_fifa_world_cup,
 }
+SPLIT_PROVIDER_FEEDS = {"sportytrader", "sportsgambler"}
+SPLIT_PROVIDER_MODEL_KEYS = {
+    "sportytrader": (
+        "sportytrader_nba",
+        "sportytrader_mlb",
+        "sportytrader_wnba",
+        "sportytrader_fifa_world_cup",
+    ),
+    "sportsgambler": (
+        "sportsgambler_nba",
+        "sportsgambler_mlb",
+        "sportsgambler_wnba",
+        "sportsgambler_fifa_world_cup",
+    ),
+}
 
 
 def _parse_args() -> argparse.Namespace:
@@ -117,6 +132,80 @@ def _normalize_feed_result(
     return normalized
 
 
+def _empty_split_bucket(
+    feed_key: str,
+    split_key: str,
+    result: dict[str, Any],
+    date_iso: str,
+    sports: list[str],
+    now_iso: str,
+) -> dict[str, Any]:
+    meta = result.get("meta") if isinstance(result.get("meta"), dict) else {}
+    return {
+        **result,
+        "picks": [],
+        "date": str(result.get("date") or date_iso),
+        "updatedAt": now_iso,
+        "generatedAt": now_iso,
+        "generatedBy": "github-actions:external-feed-refresh",
+        "meta": {
+            **meta,
+            "updatedAt": now_iso,
+            "date": date_iso,
+            "from": "github-actions",
+            "leagues": ",".join(sports),
+            "feed": split_key,
+            "provider": feed_key,
+        },
+    }
+
+
+def _split_provider_result(
+    feed_key: str,
+    result: dict[str, Any],
+    date_iso: str,
+    sports: list[str],
+    now_iso: str,
+) -> dict[str, dict[str, Any]]:
+    if feed_key not in SPLIT_PROVIDER_FEEDS:
+        return {feed_key: result}
+
+    registered_keys = set(SPLIT_PROVIDER_MODEL_KEYS.get(feed_key, ()))
+    split_keys = {
+        key
+        for sport in sports
+        for key in (server.external_feed_model_key(feed_key, sport),)
+        if key in registered_keys
+    }
+    split_keys.discard(feed_key)
+    buckets = {
+        split_key: _empty_split_bucket(feed_key, split_key, result, date_iso, sports, now_iso)
+        for split_key in sorted(split_keys)
+    }
+
+    for raw_pick in result.get("picks") or []:
+        if not isinstance(raw_pick, dict):
+            continue
+        split_key = server.external_feed_model_key(feed_key, raw_pick.get("sport"))
+        if split_key == feed_key:
+            split_key = f"{feed_key}_unknown"
+        bucket = buckets.setdefault(
+            split_key,
+            _empty_split_bucket(feed_key, split_key, result, date_iso, sports, now_iso),
+        )
+        pick = dict(raw_pick)
+        pick["source"] = server.external_feed_source_label(feed_key, pick.get("sport"))
+        bucket["picks"].append(pick)
+
+    for split_key, bucket in buckets.items():
+        bucket["note"] = f"Scheduled {split_key} refresh returned {len(bucket['picks'])} pick(s)."
+        bucket["meta"] = {
+            **(bucket.get("meta") if isinstance(bucket.get("meta"), dict) else {}),
+            "pick_count": len(bucket["picks"]),
+        }
+    return buckets
+
+
 def _write_json_cache(date_iso: str, payload: dict[str, Any]) -> None:
     MODEL_CACHE_DIR.mkdir(parents=True, exist_ok=True)
     for target in (MODEL_CACHE_DIR / f"{date_iso}.json", MODEL_CACHE_DIR / "latest.json"):
@@ -150,14 +239,19 @@ def main() -> int:
             raw_result = {"ok": False, "error": str(exc)}
 
         result = _normalize_feed_result(feed_key, raw_result, date_iso, sports, now_iso)
-        results[feed_key] = result
+        split_results = _split_provider_result(feed_key, result, date_iso, sports, now_iso)
+        results.update(split_results)
         ok = bool(result.get("ok"))
         pick_count = len(result.get("picks") or [])
         print(f"[external-feeds] {feed_key}: {'ok' if ok else 'error'} ({pick_count} pick(s))")
         if ok:
             success_count += 1
-            payload["models"][feed_key] = result
-            payload[feed_key] = result
+            if feed_key in SPLIT_PROVIDER_FEEDS:
+                payload["models"].pop(feed_key, None)
+                payload.pop(feed_key, None)
+            for split_key, split_result in split_results.items():
+                payload["models"][split_key] = split_result
+                payload[split_key] = split_result
         else:
             errors.append(f"{feed_key}: {result.get('error') or 'unknown error'}")
 
@@ -165,10 +259,12 @@ def main() -> int:
         payload["external_feed_errors"] = errors
     else:
         payload.pop("external_feed_errors", None)
-    payload["external_feeds"] = {
-        **(payload.get("external_feeds") if isinstance(payload.get("external_feeds"), dict) else {}),
-        **results,
-    }
+    external_feeds = payload.get("external_feeds") if isinstance(payload.get("external_feeds"), dict) else {}
+    external_feeds = dict(external_feeds)
+    for feed_key in feeds:
+        if feed_key in SPLIT_PROVIDER_FEEDS:
+            external_feeds.pop(feed_key, None)
+    payload["external_feeds"] = {**external_feeds, **results}
 
     apply_calibration_to_payload(payload)
     _write_json_cache(date_iso, payload)

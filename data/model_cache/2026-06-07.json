@@ -8,7 +8,7 @@
     "sportytrader: nba: no picks parsed (No SportyTrader NBA picks parsed.); mlb: no picks parsed (No SportyTrader MLB picks parsed.)"
   ],
   "external_feeds": {
-    "sportsgambler": {
+    "sportsgambler_mlb": {
       "date": "2026-06-07",
       "errors": [
         "nba: no picks parsed (No picks found.)"
@@ -17,9 +17,10 @@
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-07",
-        "feed": "sportsgambler",
+        "feed": "sportsgambler_mlb",
         "from": "github-actions",
         "leagues": "nba,mlb",
+        "provider": "sportsgambler",
         "updatedAt": "2026-06-07T21:22:17.857909Z"
       },
       "note": "Scheduled sportsgambler refresh returned 1 pick(s).",
@@ -31,28 +32,11 @@
           "odds": -132,
           "pick": "Chicago Cubs to Win (Chicago Cubs vs San Francisco Giants)",
           "probability": null,
-          "source": "SportsGambler",
+          "source": "SportsGamblerMLB",
           "sport": "MLB",
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-07T21:22:17.857909Z"
-    },
-    "sportytrader": {
-      "date": "2026-06-07",
-      "error": "nba: no picks parsed (No SportyTrader NBA picks parsed.); mlb: no picks parsed (No SportyTrader MLB picks parsed.)",
-      "generatedAt": "2026-06-07T21:22:17.857909Z",
-      "generatedBy": "github-actions:external-feed-refresh",
-      "meta": {
-        "date": "2026-06-07",
-        "feed": "sportytrader",
-        "from": "github-actions",
-        "leagues": "nba,mlb",
-        "updatedAt": "2026-06-07T21:22:17.857909Z"
-      },
-      "note": "Scheduled sportytrader refresh returned 0 pick(s).",
-      "ok": false,
-      "picks": [],
       "updatedAt": "2026-06-07T21:22:17.857909Z"
     }
   },
@@ -11112,7 +11096,7 @@
       "schedule_source": "ESPN scoreboard",
       "slate_games": 0
     },
-    "sportsgambler": {
+    "sportsgambler_mlb": {
       "date": "2026-06-07",
       "errors": [
         "nba: no picks parsed (No picks found.)"
@@ -11121,9 +11105,10 @@
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-07",
-        "feed": "sportsgambler",
+        "feed": "sportsgambler_mlb",
         "from": "github-actions",
         "leagues": "nba,mlb",
+        "provider": "sportsgambler",
         "updatedAt": "2026-06-07T21:22:17.857909Z"
       },
       "note": "Scheduled sportsgambler refresh returned 1 pick(s).",
@@ -11137,7 +11122,7 @@
           "pick": "Chicago Cubs to Win (Chicago Cubs vs San Francisco Giants)",
           "probability": null,
           "result": "loss",
-          "source": "SportsGambler",
+          "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-08T00:30Z",
           "units": 1
@@ -11145,7 +11130,7 @@
       ],
       "updatedAt": "2026-06-07T21:22:17.857909Z"
     },
-    "sportytrader": {
+    "sportytrader_mlb": {
       "date": "2026-06-07",
       "errors": [
         "nba: no picks parsed (No SportyTrader NBA picks parsed.)"
@@ -11154,9 +11139,10 @@
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-07",
-        "feed": "sportytrader",
+        "feed": "sportytrader_mlb",
         "from": "github-actions",
         "leagues": "nba,mlb",
+        "provider": "sportytrader",
         "updatedAt": "2026-06-07T15:57:46.202567Z"
       },
       "note": "Scheduled sportytrader refresh returned 10 pick(s).",
@@ -11170,7 +11156,7 @@
           "pick": "Yankees -1.5 (Yankees vs Red Sox)",
           "probability": null,
           "result": "win",
-          "source": "SportyTrader",
+          "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-07T17:35Z",
           "units": 1
@@ -11183,7 +11169,7 @@
           "pick": "Phillies ML (Phillies vs White Sox)",
           "probability": null,
           "result": "win",
-          "source": "SportyTrader",
+          "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-07T17:35Z",
           "units": 1
@@ -11196,7 +11182,7 @@
           "pick": "Over 8 (Blue Jays vs Orioles)",
           "probability": null,
           "result": "win",
-          "source": "SportyTrader",
+          "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-07T17:37Z",
           "units": 1
@@ -11209,7 +11195,7 @@
           "pick": "Miami L (Marlins vs Rays)",
           "probability": null,
           "result": "win",
-          "source": "SportyTrader",
+          "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-07T17:40Z",
           "units": 1
@@ -11222,7 +11208,7 @@
           "pick": "Over 9 (Astros vs Athletics)",
           "probability": null,
           "result": "loss",
-          "source": "SportyTrader",
+          "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-07T18:10Z",
           "units": 1
@@ -11235,7 +11221,7 @@
           "pick": "Kansas City Royals win the match (Twins vs Royals)",
           "probability": null,
           "result": "win",
-          "source": "SportyTrader",
+          "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-07T18:10Z",
           "units": 1
@@ -11248,7 +11234,7 @@
           "pick": "Guardians ML (Rangers vs Guardians)",
           "probability": null,
           "result": "loss",
-          "source": "SportyTrader",
+          "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-07T18:35Z",
           "units": 1
@@ -11261,7 +11247,7 @@
           "pick": "Brewers -1.5 (Rockies vs Brewers)",
           "probability": null,
           "result": "win",
-          "source": "SportyTrader",
+          "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-07T19:10Z",
           "units": 1
@@ -11274,7 +11260,7 @@
           "pick": "Over 7.5 Total Runs (Padres vs Mets)",
           "probability": null,
           "result": "win",
-          "source": "SportyTrader",
+          "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-07T20:10Z",
           "units": 1
@@ -11287,7 +11273,7 @@
           "pick": "Angels +1.5 (Dodgers vs Angels)",
           "probability": null,
           "result": "win",
-          "source": "SportyTrader",
+          "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-07T20:10Z",
           "units": 1
@@ -11407,7 +11393,7 @@
     "schedule_source": "ESPN scoreboard",
     "slate_games": 0
   },
-  "sportsgambler": {
+  "sportsgambler_mlb": {
     "date": "2026-06-07",
     "errors": [
       "nba: no picks parsed (No picks found.)"
@@ -11416,9 +11402,10 @@
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-07",
-      "feed": "sportsgambler",
+      "feed": "sportsgambler_mlb",
       "from": "github-actions",
       "leagues": "nba,mlb",
+      "provider": "sportsgambler",
       "updatedAt": "2026-06-07T21:22:17.857909Z"
     },
     "note": "Scheduled sportsgambler refresh returned 1 pick(s).",
@@ -11427,17 +11414,20 @@
       {
         "decision": "BET",
         "edge": null,
+        "game_start_time": "2026-06-08T00:30Z",
         "odds": -132,
         "pick": "Chicago Cubs to Win (Chicago Cubs vs San Francisco Giants)",
         "probability": null,
-        "source": "SportsGambler",
+        "result": "loss",
+        "source": "SportsGamblerMLB",
         "sport": "MLB",
+        "start_time": "2026-06-08T00:30Z",
         "units": 1
       }
     ],
     "updatedAt": "2026-06-07T21:22:17.857909Z"
   },
-  "sportytrader": {
+  "sportytrader_mlb": {
     "date": "2026-06-07",
     "errors": [
       "nba: no picks parsed (No SportyTrader NBA picks parsed.)"
@@ -11446,9 +11436,10 @@
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-07",
-      "feed": "sportytrader",
+      "feed": "sportytrader_mlb",
       "from": "github-actions",
       "leagues": "nba,mlb",
+      "provider": "sportytrader",
       "updatedAt": "2026-06-07T15:57:46.202567Z"
     },
     "note": "Scheduled sportytrader refresh returned 10 pick(s).",
@@ -11457,101 +11448,131 @@
       {
         "decision": "BET",
         "edge": null,
+        "game_start_time": "2026-06-07T17:35Z",
         "odds": 130,
         "pick": "Yankees -1.5 (Yankees vs Red Sox)",
         "probability": null,
-        "source": "SportyTrader",
+        "result": "win",
+        "source": "SportyTraderMLB",
         "sport": "MLB",
+        "start_time": "2026-06-07T17:35Z",
         "units": 1
       },
       {
         "decision": "BET",
         "edge": null,
+        "game_start_time": "2026-06-07T17:35Z",
         "odds": -170,
         "pick": "Phillies ML (Phillies vs White Sox)",
         "probability": null,
-        "source": "SportyTrader",
+        "result": "win",
+        "source": "SportyTraderMLB",
         "sport": "MLB",
+        "start_time": "2026-06-07T17:35Z",
         "units": 1
       },
       {
         "decision": "BET",
         "edge": null,
+        "game_start_time": "2026-06-07T17:37Z",
         "odds": -115,
         "pick": "Over 8 (Blue Jays vs Orioles)",
         "probability": null,
-        "source": "SportyTrader",
+        "result": "win",
+        "source": "SportyTraderMLB",
         "sport": "MLB",
+        "start_time": "2026-06-07T17:37Z",
         "units": 1
       },
       {
         "decision": "BET",
         "edge": null,
+        "game_start_time": "2026-06-07T17:40Z",
         "odds": -105,
         "pick": "Miami L (Marlins vs Rays)",
         "probability": null,
-        "source": "SportyTrader",
+        "result": "win",
+        "source": "SportyTraderMLB",
         "sport": "MLB",
+        "start_time": "2026-06-07T17:40Z",
         "units": 1
       },
       {
         "decision": "BET",
         "edge": null,
+        "game_start_time": "2026-06-07T18:10Z",
         "odds": -115,
         "pick": "Over 9 (Astros vs Athletics)",
         "probability": null,
-        "source": "SportyTrader",
+        "result": "loss",
+        "source": "SportyTraderMLB",
         "sport": "MLB",
+        "start_time": "2026-06-07T18:10Z",
         "units": 1
       },
       {
         "decision": "BET",
         "edge": null,
+        "game_start_time": "2026-06-07T18:10Z",
         "odds": -110,
         "pick": "Kansas City Royals win the match (Twins vs Royals)",
         "probability": null,
-        "source": "SportyTrader",
+        "result": "win",
+        "source": "SportyTraderMLB",
         "sport": "MLB",
+        "start_time": "2026-06-07T18:10Z",
         "units": 1
       },
       {
         "decision": "BET",
         "edge": null,
+        "game_start_time": "2026-06-07T18:35Z",
         "odds": 118,
         "pick": "Guardians ML (Rangers vs Guardians)",
         "probability": null,
-        "source": "SportyTrader",
+        "result": "loss",
+        "source": "SportyTraderMLB",
         "sport": "MLB",
+        "start_time": "2026-06-07T18:35Z",
         "units": 1
       },
       {
         "decision": "BET",
         "edge": null,
+        "game_start_time": "2026-06-07T19:10Z",
         "odds": -125,
         "pick": "Brewers -1.5 (Rockies vs Brewers)",
         "probability": null,
-        "source": "SportyTrader",
+        "result": "win",
+        "source": "SportyTraderMLB",
         "sport": "MLB",
+        "start_time": "2026-06-07T19:10Z",
         "units": 1
       },
       {
         "decision": "BET",
         "edge": null,
+        "game_start_time": "2026-06-07T20:10Z",
         "odds": -118,
         "pick": "Over 7.5 Total Runs (Padres vs Mets)",
         "probability": null,
-        "source": "SportyTrader",
+        "result": "win",
+        "source": "SportyTraderMLB",
         "sport": "MLB",
+        "start_time": "2026-06-07T20:10Z",
         "units": 1
       },
       {
         "decision": "BET",
         "edge": null,
+        "game_start_time": "2026-06-07T20:10Z",
         "odds": -120,
         "pick": "Angels +1.5 (Dodgers vs Angels)",
         "probability": null,
-        "source": "SportyTrader",
+        "result": "win",
+        "source": "SportyTraderMLB",
         "sport": "MLB",
+        "start_time": "2026-06-07T20:10Z",
         "units": 1
       }
     ],
