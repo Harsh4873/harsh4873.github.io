@@ -11,7 +11,7 @@
     "market_priced"
   ],
   "force_active": true,
-  "ledger_samples": 239,
+  "ledger_samples": 332,
   "market_families": [
     "hits",
     "hrr",
@@ -33,7 +33,7 @@
   ],
   "model_type": "GradientBoostingClassifier",
   "sport": "MLB",
-  "training_fingerprint": "6d9aa632cea09a81a146a856bbbe49c964c07f8145648d6b8e21d1fbb163fe68",
+  "training_fingerprint": "e5211b21be152328234f61245b7e42d207084677872fed70e15eb96b759cedb9",
   "training_sources": [
     "historical_player_game_stat_family_priors",
     "pickledger_outcome_ledger"
