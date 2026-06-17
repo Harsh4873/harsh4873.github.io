@@ -11,7 +11,7 @@
     "market_priced"
   ],
   "force_active": true,
-  "ledger_samples": 96,
+  "ledger_samples": 8,
   "market_families": [
     "points",
     "rebounds",
@@ -26,7 +26,7 @@
   ],
   "model_type": "GradientBoostingClassifier",
   "sport": "WNBA",
-  "training_fingerprint": "263d6365acd9f550df870c81e64246efd345aa9c7201871edd6fbbac93c13528",
+  "training_fingerprint": "814cb44dfdcca123627d04c1d23f1d9a2717edb9e67e8244072bfadbd67f4753",
   "training_sources": [
     "historical_player_game_stat_family_priors",
     "pickledger_outcome_ledger"
