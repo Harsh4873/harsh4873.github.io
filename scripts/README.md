@@ -13,7 +13,8 @@ The active production automation uses GitHub Actions plus local Codex morning an
 | `train_pick_calibration.py` | Evaluates a shrinkage-based probability calibrator against the active champion. |
 | `pick_calibration.py` | Preserves immutable pregame snapshots and applies the promoted calibrator to refresh payloads. |
 | `cache_manifest.py` | Maintains `data/model_cache/index.json` for the static frontend. |
-| `scrapers/scores24_publish_local.sh` | Publishes Scores24WNBA, Scores24MLB, and Scores24FIFAWorldCup from the local Codex morning and afternoon upchecks because Scores24 blocks GitHub-hosted runner IPs. |
+| `scrapers/scores24_publish_local.sh` | Mac wrapper for `scrapers/scores24_publish.sh` (Scores24 blocks GitHub-hosted runner IPs). |
+| `scrapers/scores24_publish.sh` | Portable Scores24 publisher for local Mac or Cursor Cloud automations. |
 
 Production refresh workflows pass `--skip-firestore`; committed JSON is the source of truth.
 

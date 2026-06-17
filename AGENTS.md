@@ -16,3 +16,8 @@ For any coding or production-maintenance task in this repository:
 - **Never** add AI co-author trailers, `Co-authored-by:` lines, or any AI/Cursor/Codex tagline to commit messages or pushes.
 - Keep GitHub Pages configured for GitHub Actions deployment (`build_type: workflow`), never legacy branch deployment.
 - Do not overwrite or revert unrelated user changes.
+
+## Cursor Automations
+
+- Scores24 must run off GitHub Actions IPs. Scheduled cloud automations should call `scripts/scrapers/scores24_publish.sh` — see `docs/cursor-automations.md` for schedules and prompts.
+- Optional daily sanity automation prompt is also in that doc. Never open the deployed site to verify; use `npm run upcheck` and Actions logs.
