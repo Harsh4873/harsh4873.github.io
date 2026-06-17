@@ -19,7 +19,7 @@ The production viewer is intentionally static. It does not load Firebase, authen
 ## Frontend Contract
 
 - `src/data.ts` loads every dated file listed in `data/model_cache/index.json`.
-- `src/data.ts` also loads `data/cannon_mlb_daily.json`.
+- `src/data.ts` loads every dated file listed in `data/player_props_cache/index.json`.
 - Picks receive deterministic browser IDs so client-side ESPN grades can be stored locally.
 - `src/main.ts` renders Home, Search, Rankings, Trends, and Daily from the same pick collection.
 - Rankings are calculated from committed results across all manifest dates.
@@ -27,7 +27,7 @@ The production viewer is intentionally static. It does not load Firebase, authen
 
 ## Writer Contract
 
-The model-cache, external-feed, Cannon, and auto-grade workflows share the `pick-cache-writer` concurrency group. Only one writer can modify `data/` at a time.
+The model-cache, player-prop, external-feed, and auto-grade workflows share the `pick-cache-writer` concurrency group. Only one writer can modify `data/` at a time.
 
 Model and feed refreshes:
 
@@ -41,7 +41,7 @@ Model and feed refreshes:
 
 ## Deployment Contract
 
-`.github/workflows/deploy-pages.yml` runs on every push to `main`, builds the Vite app, copies `data/` into `dist/`, and deploys the artifact to GitHub Pages.
+`.github/workflows/deploy-pages.yml` runs on every push to `main`. It first checks that today's model and player-prop caches are complete. Incomplete daily refreshes defer deployment without failing; ready data is built, copied into `dist/`, and deployed to GitHub Pages.
 
 ## Verification
 

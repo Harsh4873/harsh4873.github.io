@@ -8,7 +8,7 @@ PickLedgerPro is a public, automated sports-pick viewer deployed on GitHub Pages
 | --- | --- |
 | Frontend | Vite + TypeScript, deployed by `.github/workflows/deploy-pages.yml` |
 | Model picks | Dated files in `data/model_cache/` |
-| Cannon picks | `data/cannon_mlb_daily.json` |
+| Player props | Dated files in `data/player_props_cache/` |
 | Rankings | Calculated in the browser from committed, graded JSON |
 | Background grading | `.github/workflows/auto-grade.yml` + `scripts/auto_grade_picks.py` |
 | Live refresh | Client-side ESPN scoreboard grading, stored locally until Actions commits an authoritative grade |
@@ -26,11 +26,11 @@ The frontend bundle is written to `dist/`. GitHub Pages copies the committed `da
 
 ## Automated Data Flow
 
-1. Model, feed, and Cannon workflows generate JSON.
+1. Model, player-prop, and feed workflows generate JSON.
 2. Each writer commits as the triggering GitHub actor.
 3. The shared `pick-cache-writer` concurrency group prevents JSON writers from racing.
-4. The auto-grader checks ESPN every 30 minutes and commits completed results.
-5. Every push to `main` triggers the Pages deployment workflow.
+4. The auto-grader checks ESPN every 15 minutes and commits completed results.
+5. Every push to `main` checks whether today's data is ready; incomplete refreshes defer deployment without failing.
 
 ## Repository Notes
 

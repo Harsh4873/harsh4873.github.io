@@ -418,14 +418,6 @@ def build_outcome_ledger(repo_root: Path = REPO_ROOT) -> dict[str, Any]:
             for record in _iter_bucket_records(payload, cache_type=cache_type, fallback_date=fallback_date):
                 records_by_id[record["id"]] = record
 
-    cannon_path = repo_root / "data" / "cannon_mlb_daily.json"
-    cannon = read_json(cannon_path)
-    if cannon:
-        fallback_date = str(cannon.get("slate_date") or cannon.get("as_of") or "")
-        cannon["model_key"] = "cannon_mlb"
-        for record in _iter_bucket_records(cannon, cache_type="cannon", fallback_date=fallback_date):
-            records_by_id[record["id"]] = record
-
     records = sorted(
         records_by_id.values(),
         key=lambda record: (str(record.get("date") or ""), str(record.get("model_key") or ""), str(record.get("id") or "")),

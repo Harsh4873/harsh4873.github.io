@@ -26,7 +26,7 @@ def test_frontend_is_static_json_only():
     assert "Firestore" not in main
     assert "ADMIN_BACKEND" not in main
     assert "./data/model_cache/index.json" in data
-    assert "./data/cannon_mlb_daily.json" in data
+    assert "cannon_mlb_daily" not in data
     assert '<link rel="stylesheet" href="./src/styles/pickledger.css">' in html
     assert "See how every source has performed across the picks and results collected here." in html
 
@@ -45,7 +45,7 @@ def test_frontend_player_mode_is_persisted_isolated_and_team_defaulted():
     assert "pickledger:modechange" in settings
 
     assert "./data/model_cache/index.json" in data
-    assert "./data/cannon_mlb_daily.json" in data
+    assert "cannon_mlb_daily" not in data
     assert "./data/player_props_cache/index.json" in data
     assert "./data/player_props_cache/latest.json" in data
     assert "let teamPicks: Pick[] = []" in data
@@ -445,7 +445,6 @@ def test_scheduled_refreshes_are_json_only_and_use_shared_writer_lock():
         "model-cache-refresh.yml",
         "player-props-refresh.yml",
         "external-feed-refresh.yml",
-        "cannon-daily-refresh.yml",
     )
     for name in workflow_names:
         workflow = (ROOT / ".github" / "workflows" / name).read_text(encoding="utf-8")
@@ -464,30 +463,33 @@ def test_refresh_timing_and_pages_deploy_are_deterministic():
     workflows = ROOT / ".github" / "workflows"
     model = (workflows / "model-cache-refresh.yml").read_text(encoding="utf-8")
     feeds = (workflows / "external-feed-refresh.yml").read_text(encoding="utf-8")
-    cannon = (workflows / "cannon-daily-refresh.yml").read_text(encoding="utf-8")
     grader = (workflows / "auto-grade.yml").read_text(encoding="utf-8")
     calibration = (workflows / "calibration-refresh.yml").read_text(encoding="utf-8")
     props = (workflows / "player-props-refresh.yml").read_text(encoding="utf-8")
     deploy = (workflows / "deploy-pages.yml").read_text(encoding="utf-8")
 
     assert "cache-gate" not in model
-    assert "cache-gate" not in cannon
     assert "cron: '*/15 * * * *'" in grader
     assert 'cron: "45 12 * * *"' in model
     assert 'cron: "10,40 14 * * *"' in feeds
-    assert 'cron: "55 13 * * *"' in cannon
     assert "gh workflow run calibration-refresh.yml --ref main" in grader
     assert "decided - last >= 100" in grader
     assert "python scripts/train_pick_calibration.py" in calibration
     assert "gh workflow run player-props-refresh.yml --ref main" in calibration
-    for workflow in (model, props, feeds, cannon, grader, calibration):
+    for workflow in (model, props, feeds, grader, calibration):
         assert "gh workflow run deploy-pages.yml --ref main" in workflow
         assert "actions: write" in workflow
+    assert not (workflows / "cannon-daily-refresh.yml").exists()
+    assert "Check daily data readiness" in deploy
+    assert "python scripts/site_upcheck.py --data-only" in deploy
+    assert "if: needs.readiness.outputs.ready == 'true'" in deploy
     assert "Verify styled Pages artifact" in deploy
     assert "find dist/assets -maxdepth 1 -name '*.js'" in deploy
     assert "! grep -q 'src/main.ts' dist/index.html" in deploy
     assert "python scripts/site_upcheck.py" in deploy
     guard = (workflows / "model-cache-freshness-guard.yml").read_text(encoding="utf-8")
+    assert 'CACHE_HEALTHY="$(python - <<\'PY\'' in guard
+    assert 'models[key].get("ok") is True for key in required' in guard
     assert 'PLAYER_CACHE_HEALTHY="$(python - <<\'PY\'' in guard
     assert 'int(mlb.get("games") or 0) > 0 and not (mlb.get("picks") or [])' in guard
 
@@ -499,7 +501,6 @@ def test_refresh_workflows_commit_as_triggering_actor():
         "model-cache-refresh.yml",
         "player-props-refresh.yml",
         "external-feed-refresh.yml",
-        "cannon-daily-refresh.yml",
     ):
         workflow = (ROOT / ".github" / "workflows" / name).read_text(encoding="utf-8")
         assert 'git config user.name  "${GITHUB_ACTOR}"' in workflow

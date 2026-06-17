@@ -32,7 +32,6 @@ def test_locked_runtime_imports_still_resolve(monkeypatch):
     imports = [
         ("pickgrader_server", (REPO_ROOT,)),
         ("runlive", (REPO_ROOT,)),
-        ("MLBPredictionModel.cannon_daily_adapter", (REPO_ROOT,)),
         ("MLBPredictionModel.date_utils", (REPO_ROOT,)),
         ("NBAPredictionModel.run_live", (REPO_ROOT / "NBAPredictionModel", REPO_ROOT)),
         ("WNBAPredictionModel.wnba_picks", (REPO_ROOT,)),

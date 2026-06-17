@@ -40,6 +40,20 @@ jobs:
           print(str(payload.get("date") or ""))
           PY
           )"
+          CACHE_HEALTHY="$(python - <<'PY'
+          import json
+          from pathlib import Path
+
+          required = {"mlb_new", "mlb_inning", "mlb_first_five", "wnba", "nba", "nba_playoffs", "fifa_world_cup"}
+          try:
+              payload = json.loads(Path("data/model_cache/latest.json").read_text(encoding="utf-8"))
+          except Exception:
+              payload = {}
+          models = payload.get("models") if isinstance(payload.get("models"), dict) else {}
+          healthy = all(isinstance(models.get(key), dict) and models[key].get("ok") is True for key in required)
+          print("true" if healthy else "false")
+          PY
+          )"
           PLAYER_CACHE_DATE="$(python - <<'PY'
           import json
           from pathlib import Path
@@ -72,12 +86,12 @@ jobs:
           echo "target_date=${TARGET_DATE}" >> "$GITHUB_OUTPUT"
           echo "cache_date=${CACHE_DATE}" >> "$GITHUB_OUTPUT"
           echo "player_cache_date=${PLAYER_CACHE_DATE}" >> "$GITHUB_OUTPUT"
-          if [ "$CACHE_DATE" = "$TARGET_DATE" ]; then
+          if [ "$CACHE_DATE" = "$TARGET_DATE" ] && [ "$CACHE_HEALTHY" = "true" ]; then
             echo "fresh=true" >> "$GITHUB_OUTPUT"
             echo "Model cache is fresh for ${TARGET_DATE}."
           else
             echo "fresh=false" >> "$GITHUB_OUTPUT"
-            echo "Model cache is stale: cache=${CACHE_DATE:-missing}, target=${TARGET_DATE}."
+            echo "Model cache is stale or unhealthy: cache=${CACHE_DATE:-missing}, target=${TARGET_DATE}, healthy=${CACHE_HEALTHY}."
           fi
           if [ "$PLAYER_CACHE_DATE" = "$TARGET_DATE" ] && [ "$PLAYER_CACHE_HEALTHY" = "true" ]; then
             echo "player_fresh=true" >> "$GITHUB_OUTPUT"

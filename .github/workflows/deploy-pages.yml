@@ -15,7 +15,27 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  readiness:
+    runs-on: ubuntu-latest
+    outputs:
+      ready: ${{ steps.daily-data.outputs.ready }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check daily data readiness
+        id: daily-data
+        run: |
+          if python scripts/site_upcheck.py --data-only; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Daily model data is not ready. Deployment was deferred without failing."
+          fi
+
   deploy:
+    needs: readiness
+    if: needs.readiness.outputs.ready == 'true'
     runs-on: ubuntu-latest
     environment:
       name: github-pages

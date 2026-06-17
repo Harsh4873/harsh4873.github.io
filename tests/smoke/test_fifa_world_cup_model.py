@@ -160,7 +160,5 @@ def test_fifa_bucket_is_excluded_from_calibration_and_training_ledger(tmp_path):
     model_dir.mkdir(parents=True)
     props_dir.mkdir(parents=True)
     (model_dir / "2026-06-13.json").write_text(__import__("json").dumps(payload), encoding="utf-8")
-    (tmp_path / "data" / "cannon_mlb_daily.json").write_text('{"picks":[]}', encoding="utf-8")
-
     ledger = build_outcome_ledger(tmp_path)
     assert ledger["summary"]["total_picks"] == 0

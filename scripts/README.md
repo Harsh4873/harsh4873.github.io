@@ -9,7 +9,7 @@ The active production automation uses GitHub Actions plus local Codex morning an
 | `merge_model_cache_payload.py` | Merges model output while preserving other buckets and grades. |
 | `merge_external_feed_cache_payload.py` | Merges feed output while preserving model buckets and grades. |
 | `auto_grade_picks.py` | Grades completed games through ESPN and rebuilds the universal outcome ledger. |
-| `rebuild_pick_outcome_ledger.py` | Deduplicates all model, player-prop, and Cannon picks into `data/calibration/outcome_ledger.json`. |
+| `rebuild_pick_outcome_ledger.py` | Deduplicates all model and player-prop picks into `data/calibration/outcome_ledger.json`. |
 | `train_pick_calibration.py` | Evaluates a shrinkage-based probability calibrator against the active champion. |
 | `pick_calibration.py` | Preserves immutable pregame snapshots and applies the promoted calibrator to refresh payloads. |
 | `cache_manifest.py` | Maintains `data/model_cache/index.json` for the static frontend. |

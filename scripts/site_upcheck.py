@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 import re
 import sys
@@ -39,9 +40,19 @@ def _read_json(path: Path) -> dict[str, Any] | None:
     return payload if isinstance(payload, dict) else None
 
 
+def _parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--data-only",
+        action="store_true",
+        help="Check whether today's committed model and player-props data is ready to deploy.",
+    )
+    return parser.parse_args()
+
+
 def main() -> int:
+    args = _parse_args()
     failures: list[str] = []
-    warnings: list[str] = []
     today = datetime.now(ZoneInfo("America/Chicago")).strftime("%Y-%m-%d")
 
     latest = _read_json(MODEL_CACHE_DIR / "latest.json")
@@ -93,15 +104,13 @@ def main() -> int:
             if market_picks and any(str(pick.get("probability_source") or "") != "player_props_ml_v1" for pick in market_picks):
                 failures.append(f"player-props bucket {key} has market-priced picks without player_props_ml_v1 probability")
 
-    cannon = _read_json(REPO_ROOT / "data" / "cannon_mlb_daily.json")
-    cannon_date = str((cannon or {}).get("slate_date") or (cannon or {}).get("as_of") or "")
-    central_hour = datetime.now(ZoneInfo("America/Chicago")).hour
-    if cannon_date != today:
-        message = f"Cannon slate is {cannon_date or 'undated'}, expected {today}"
-        if central_hour >= 10:
-            failures.append(message)
-        else:
-            warnings.append(message)
+    if args.data_only:
+        for message in failures:
+            print(f"[readiness] waiting: {message}")
+        if failures:
+            return 1
+        print(f"[readiness] daily data is ready for {today}")
+        return 0
 
     source_html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
     if 'href="./src/styles/pickledger.css"' not in source_html:
@@ -121,8 +130,6 @@ def main() -> int:
         if ".ts" in dist_html:
             failures.append("built HTML still references TypeScript")
 
-    for message in warnings:
-        print(f"[upcheck] warning: {message}")
     for message in failures:
         print(f"[upcheck] failure: {message}")
     if failures:

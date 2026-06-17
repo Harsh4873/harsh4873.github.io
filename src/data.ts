@@ -66,12 +66,6 @@ interface CacheManifest {
   files?: string[];
 }
 
-interface CannonPayload {
-  slate_date?: string;
-  as_of?: string;
-  picks?: unknown[];
-}
-
 interface PlayerPropsPayload {
   date?: string;
   slate_date?: string;
@@ -290,13 +284,6 @@ function picksFromCache(payload: ModelCachePayload): Pick[] {
   return picks;
 }
 
-function picksFromCannon(payload: CannonPayload): Pick[] {
-  const date = String(payload.slate_date || payload.as_of || '').trim();
-  return (Array.isArray(payload.picks) ? payload.picks : [])
-    .map(raw => normalizePick(raw, date, 'Cannon Analytics'))
-    .filter((pick): pick is Pick => Boolean(pick) && isTrackedPick(pick));
-}
-
 function playerPropRecords(payload: PlayerPropsPayload): Array<{ raw: unknown; source: string }> {
   const records: Array<{ raw: unknown; source: string }> = [];
   const addBucket = (bucket: unknown, source: string): void => {
@@ -398,9 +385,8 @@ export function getPickMode(): PickMode {
 export async function loadAllData(): Promise<Pick[]> {
   resultOverrides = readStorage<Record<string, PickResult>>(RESULT_STORAGE_KEY, {});
   gameTimes = readStorage<Record<string, string>>(GAME_TIME_STORAGE_KEY, {});
-  const [cachePayloads, cannon, playerPayloads] = await Promise.all([
+  const [cachePayloads, playerPayloads] = await Promise.all([
     loadCacheFiles(),
-    fetchJson<CannonPayload>('./data/cannon_mlb_daily.json'),
     loadPlayerCacheFiles(),
   ]);
   const teamById = new Map<string, Pick>();
@@ -409,7 +395,6 @@ export async function loadAllData(): Promise<Pick[]> {
     if (isPlayerScopedPick(pick)) playerById.set(pick.id, pick);
     else teamById.set(pick.id, pick);
   });
-  if (cannon) picksFromCannon(cannon).forEach(pick => teamById.set(pick.id, pick));
   playerPayloads.flatMap(picksFromPlayerProps).forEach(pick => playerById.set(pick.id, pick));
   teamPicks = sortPicks([...teamById.values()].filter(pick => !ARCHIVED_SPORTS.has(pick.sport)));
   playerPicks = sortPicks([...playerById.values()].filter(pick => !ARCHIVED_SPORTS.has(pick.sport)));

@@ -127,8 +127,6 @@ def test_ml_player_props_skip_old_calibration_but_remain_ledger_trainable(tmp_pa
     props_dir.mkdir(parents=True)
     model_dir.mkdir(parents=True)
     (props_dir / "2026-06-01.json").write_text(json.dumps(payload), encoding="utf-8")
-    (tmp_path / "data" / "cannon_mlb_daily.json").write_text('{"picks":[]}', encoding="utf-8")
-
     ledger = build_outcome_ledger(tmp_path)
     assert ledger["summary"]["total_picks"] == 1
     assert ledger["records"][0]["raw_probability"] == 0.7
@@ -159,8 +157,6 @@ def test_pick_level_calibration_exclusion_skips_adjustment_and_training(tmp_path
     model_dir.mkdir(parents=True)
     props_dir.mkdir(parents=True)
     (model_dir / "2026-06-01.json").write_text(json.dumps(payload), encoding="utf-8")
-    (tmp_path / "data" / "cannon_mlb_daily.json").write_text('{"picks":[]}', encoding="utf-8")
-
     ledger = build_outcome_ledger(tmp_path)
     assert ledger["summary"]["total_picks"] == 0
 
@@ -174,8 +170,6 @@ def test_universal_ledger_deduplicates_and_keeps_exact_pregame_context(tmp_path:
     payload = {"date": "2026-06-01", "models": {"mlb_player_props": {"picks": [pick]}}}
     (model_dir / "2026-06-01.json").write_text(json.dumps(payload), encoding="utf-8")
     (model_dir / "latest.json").write_text(json.dumps(payload), encoding="utf-8")
-    (tmp_path / "data" / "cannon_mlb_daily.json").write_text('{"picks":[]}', encoding="utf-8")
-
     ledger = build_outcome_ledger(tmp_path)
 
     assert ledger["summary"]["total_picks"] == 1
