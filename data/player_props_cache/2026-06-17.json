@@ -97,6 +97,7 @@
           "edge": 34.54,
           "full_kelly": 0.2,
           "game_id": "825072",
+          "game_start_time": "2026-06-17T19:40Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -156,7 +157,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-17T19:40:00Z",
+          "start_time": "2026-06-17T19:40Z",
           "stat_key": "rbis",
           "team": "Los Angeles Angels",
           "units": 2.0
@@ -2306,6 +2307,7 @@
           "edge": 38.7,
           "full_kelly": 0.2,
           "game_id": "824912",
+          "game_start_time": "2026-06-16T23:15Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -2365,7 +2367,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-17T18:00:00Z",
+          "start_time": "2026-06-16T23:15Z",
           "stat_key": "total_bases",
           "team": "San Francisco Giants",
           "units": 2.0
@@ -3515,6 +3517,7 @@
           "edge": 37.45,
           "full_kelly": 0.2,
           "game_id": "823450",
+          "game_start_time": "2026-06-17T17:05Z",
           "home_team": "Philadelphia Phillies",
           "id": "pp_80e8663c35194138cc76",
           "key_factors": [
@@ -3571,7 +3574,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-17T17:05:00Z",
+          "start_time": "2026-06-17T17:05Z",
           "stat_key": "pitcher_hits_allowed",
           "team": "Philadelphia Phillies",
           "units": 2.0
@@ -3945,7 +3948,7 @@
           "ranking_epoch": "MLB:player_props_ml_v1.0.0:e5211b21be152328",
           "ranking_updated_at": "2026-06-17T18:09:06.112531Z",
           "reason": "Zack Short projects for 0.81 hits versus the posted 0.5 line after pitcher, pitch-type, park, weather, wind, and H2H adjustments.",
-          "result": "pending",
+          "result": "loss",
           "scope": "player",
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
@@ -4498,6 +4501,7 @@
           "edge": 36.11,
           "full_kelly": 0.2,
           "game_id": "824746",
+          "game_start_time": "2026-06-17T22:45Z",
           "home_team": "Boston Red Sox",
           "id": "pp_fc5abcd439c40ef4ae90",
           "key_factors": [
@@ -4554,7 +4558,7 @@
           "selection": "Under",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-17T22:45:00Z",
+          "start_time": "2026-06-17T22:45Z",
           "stat_key": "pitcher_outs_recorded",
           "team": "Toronto Blue Jays",
           "units": 2.0
@@ -5251,6 +5255,7 @@
           "edge": 28.07,
           "full_kelly": 0.2,
           "game_id": "824746",
+          "game_start_time": "2026-06-17T22:45Z",
           "h2h": {
             "at_bats": 6,
             "available": true,
@@ -5310,7 +5315,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-17T22:45:00Z",
+          "start_time": "2026-06-17T22:45Z",
           "stat_key": "rbis",
           "team": "Boston Red Sox",
           "units": 2.0
@@ -5609,7 +5614,7 @@
           "ranking_epoch": "MLB:player_props_ml_v1.0.0:e5211b21be152328",
           "ranking_updated_at": "2026-06-17T18:09:06.112531Z",
           "reason": "Bo Bichette projects for 0.66 rbis versus the posted 0.5 line after pitcher, park, and run-environment adjustments.",
-          "result": "pending",
+          "result": "win",
           "scope": "player",
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
@@ -5685,7 +5690,7 @@
           "ranking_epoch": "MLB:player_props_ml_v1.0.0:e5211b21be152328",
           "ranking_updated_at": "2026-06-17T18:09:06.112531Z",
           "reason": "Sal Stewart projects for 1.83 hits + runs + rbis versus the posted 1.5 line after pitcher, park, and run-environment adjustments.",
-          "result": "pending",
+          "result": "loss",
           "scope": "player",
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
@@ -5782,6 +5787,7 @@
           "edge": 21.47,
           "full_kelly": 0.2,
           "game_id": "825072",
+          "game_start_time": "2026-06-17T19:40Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -5841,7 +5847,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-17T19:40:00Z",
+          "start_time": "2026-06-17T19:40Z",
           "stat_key": "rbis",
           "team": "Los Angeles Angels",
           "units": 2.0
@@ -5933,6 +5939,7 @@
           "edge": 24.37,
           "full_kelly": 0.2,
           "game_id": "824913",
+          "game_start_time": "2026-06-16T23:15Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -5992,7 +5999,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-17T23:15:00Z",
+          "start_time": "2026-06-16T23:15Z",
           "stat_key": "rbis",
           "team": "Atlanta Braves",
           "units": 2.0
@@ -6063,7 +6070,7 @@
           "ranking_epoch": "MLB:player_props_ml_v1.0.0:e5211b21be152328",
           "ranking_updated_at": "2026-06-17T18:09:06.112531Z",
           "reason": "A.J. Ewing projects for 1.91 hits + runs + rbis versus the posted 1.5 line after pitcher, park, and run-environment adjustments.",
-          "result": "pending",
+          "result": "win",
           "scope": "player",
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
@@ -6136,7 +6143,7 @@
           "ranking_epoch": "MLB:player_props_ml_v1.0.0:e5211b21be152328",
           "ranking_updated_at": "2026-06-17T18:09:06.112531Z",
           "reason": "Nick Lodolo projects for 6.76 hits allowed from a 10.76 H/9 baseline. The posted market is over 5.5 hits allowed.",
-          "result": "pending",
+          "result": "win",
           "scope": "player",
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
@@ -6212,7 +6219,7 @@
           "ranking_epoch": "MLB:player_props_ml_v1.0.0:e5211b21be152328",
           "ranking_updated_at": "2026-06-17T18:09:06.112531Z",
           "reason": "A.J. Ewing projects for 0.49 runs versus the posted 0.5 line after pitcher, park, and run-environment adjustments.",
-          "result": "pending",
+          "result": "loss",
           "scope": "player",
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
@@ -6994,6 +7001,7 @@
           "edge": 22.96,
           "full_kelly": 0.2,
           "game_id": "823044",
+          "game_start_time": "2026-06-17T18:15Z",
           "h2h": {
             "at_bats": 1,
             "available": true,
@@ -7053,7 +7061,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-17T18:15:00Z",
+          "start_time": "2026-06-17T18:15Z",
           "stat_key": "rbis",
           "team": "San Diego Padres",
           "units": 2.0
@@ -7124,7 +7132,7 @@
           "ranking_epoch": "MLB:player_props_ml_v1.0.0:e5211b21be152328",
           "ranking_updated_at": "2026-06-17T18:09:06.112531Z",
           "reason": "Mark Vientos projects for 0.61 rbis versus the posted 0.5 line after pitcher, park, and run-environment adjustments.",
-          "result": "pending",
+          "result": "win",
           "scope": "player",
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
@@ -7221,6 +7229,7 @@
           "edge": 25.34,
           "full_kelly": 0.2,
           "game_id": "825072",
+          "game_start_time": "2026-06-17T19:40Z",
           "h2h": {
             "at_bats": 9,
             "available": true,
@@ -7280,7 +7289,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-17T19:40:00Z",
+          "start_time": "2026-06-17T19:40Z",
           "stat_key": "total_bases",
           "team": "Los Angeles Angels",
           "units": 2.0
@@ -7597,6 +7606,7 @@
           "edge": 24.2,
           "full_kelly": 0.2,
           "game_id": "825072",
+          "game_start_time": "2026-06-17T19:40Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -7656,7 +7666,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-17T19:40:00Z",
+          "start_time": "2026-06-17T19:40Z",
           "stat_key": "hits_runs_rbis",
           "team": "Los Angeles Angels",
           "units": 2.0
@@ -7824,6 +7834,7 @@
           "edge": 24.36,
           "full_kelly": 0.2,
           "game_id": "825072",
+          "game_start_time": "2026-06-17T19:40Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -7883,7 +7894,7 @@
           "selection": "Under",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-17T19:40:00Z",
+          "start_time": "2026-06-17T19:40Z",
           "stat_key": "hits_runs_rbis",
           "team": "Arizona Diamondbacks",
           "units": 2.0
@@ -8124,6 +8135,7 @@
           "edge": 28.2,
           "full_kelly": 0.2,
           "game_id": "823774",
+          "game_start_time": "2026-06-17T23:40Z",
           "h2h": {
             "at_bats": 2,
             "available": true,
@@ -8183,7 +8195,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-17T23:40:00Z",
+          "start_time": "2026-06-17T23:40Z",
           "stat_key": "hits_runs_rbis",
           "team": "Milwaukee Brewers",
           "units": 2.0
@@ -8351,6 +8363,7 @@
           "edge": 18.43,
           "full_kelly": 0.2,
           "game_id": "825072",
+          "game_start_time": "2026-06-17T19:40Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -8410,7 +8423,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-17T19:40:00Z",
+          "start_time": "2026-06-17T19:40Z",
           "stat_key": "rbis",
           "team": "Arizona Diamondbacks",
           "units": 2.0
@@ -8426,6 +8439,7 @@
           "edge": 23.3,
           "full_kelly": 0.2,
           "game_id": "824668",
+          "game_start_time": "2026-06-18T00:05Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -8485,7 +8499,7 @@
           "selection": "Under",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-18T00:05:00Z",
+          "start_time": "2026-06-18T00:05Z",
           "stat_key": "hits_runs_rbis",
           "team": "Chicago Cubs",
           "units": 2.0
