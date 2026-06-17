@@ -256,12 +256,10 @@ function activePlayerRankingEpochs(): Map<string, string> {
 }
 
 function rankingComparablePicks(picks: Pick[]): Pick[] {
-  if (activePickMode !== 'player') return picks;
-  const epochs = activePlayerRankingEpochs();
-  return picks.filter(pick => {
-    const activeEpoch = epochs.get(pick.sport);
-    return !activeEpoch || playerRankingEpoch(pick) === activeEpoch;
-  });
+  // Player picks are already limited to the post-ML ledger in data.ts. Rankings,
+  // sport cards, and period records should reflect every ML-era slate, not just
+  // the latest per-sport rank epoch from the current day.
+  return picks;
 }
 
 function playerModelRank(pick: Pick): number | null {
@@ -1866,6 +1864,14 @@ function findMlbGamePk(schedule: Record<string, unknown>, pick: Pick): string {
   return '';
 }
 
+function mlbGameIsFinal(feed: Record<string, unknown>): boolean {
+  const gameData = feed.gameData && typeof feed.gameData === 'object' ? feed.gameData as Record<string, unknown> : {};
+  const status = gameData.status && typeof gameData.status === 'object' ? gameData.status as Record<string, unknown> : {};
+  const abstract = String(status.abstractGameState || '').trim().toLowerCase();
+  const coded = String(status.codedGameState || '').trim().toUpperCase();
+  return abstract === 'final' || coded === 'F';
+}
+
 async function gradeDate(date: string, picks: Pick[]): Promise<number> {
   let graded = 0;
   const dateParam = date.replace(/-/g, '');
@@ -1921,6 +1927,34 @@ async function gradeDate(date: string, picks: Pick[]): Promise<number> {
       // One unavailable scoreboard should not block other sports or dates.
     }
   }
+
+  const mlbPlayerPending = picks.filter(pick => (
+    pick.sport === 'MLB'
+    && pick.result === 'pending'
+    && playerPropDescriptor(pick)
+  ));
+  if (mlbPlayerPending.length) {
+    if (mlbSchedule === undefined) {
+      mlbSchedule = await fetchRemoteJson(`https://statsapi.mlb.com/api/v1/schedule?sportId=1&date=${encodeURIComponent(date)}&hydrate=team`);
+    }
+    for (const pick of mlbPlayerPending) {
+      const descriptor = playerPropDescriptor(pick);
+      if (!descriptor) continue;
+      const gamePk = mlbSchedule ? findMlbGamePk(mlbSchedule, pick) : '';
+      if (!gamePk) continue;
+      if (!mlbFeedCache.has(gamePk)) {
+        mlbFeedCache.set(gamePk, await fetchRemoteJson(`https://statsapi.mlb.com/api/v1.1/game/${encodeURIComponent(gamePk)}/feed/live`));
+      }
+      const feed = mlbFeedCache.get(gamePk) || {};
+      if (!mlbGameIsFinal(feed)) continue;
+      const result = gradePlayerValue(descriptor, mlbLivePlayerStat(feed, descriptor));
+      if (result !== 'pending') {
+        setLocalResult(pick.id, result);
+        graded += 1;
+      }
+    }
+  }
+
   return graded;
 }
 

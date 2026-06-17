@@ -257,6 +257,7 @@ def test_player_mode_keeps_best_bets_available_and_prop_sources_separate():
     assert "playerResearchPool" in main
     assert "function playerRankingEpoch(" in main
     assert "function rankingComparablePicks(" in main
+    assert "reflect every ML-era slate" in main
     assert "function playerModelRank(" in main
     assert "return 10000 - modelRank" in main
     assert "Next-best player prop candidates" in main

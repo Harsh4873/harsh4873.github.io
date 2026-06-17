@@ -2493,6 +2493,18 @@ def grade_pick(pick: dict[str, Any], game: dict[str, Any]) -> str:
     return "pending"
 
 
+def _mlb_game_is_final(live_feed: dict[str, Any] | None) -> bool:
+    if not isinstance(live_feed, dict):
+        return False
+    game_data = live_feed.get("gameData")
+    status = game_data.get("status") if isinstance(game_data, dict) else {}
+    if not isinstance(status, dict):
+        return False
+    abstract = str(status.get("abstractGameState") or "").strip().lower()
+    coded = str(status.get("codedGameState") or "").strip().upper()
+    return abstract == "final" or coded == "F"
+
+
 def auto_grade(picks: list[dict[str, Any]], existing: dict[str, str], year: int) -> dict[str, Any]:
     grouped: dict[tuple[str, str], list[dict[str, Any]]] = {}
     all_grouped: dict[tuple[str, str], list[dict[str, Any]]] = {}
@@ -2554,6 +2566,18 @@ def auto_grade(picks: list[dict[str, Any]], existing: dict[str, str], year: int)
         for pick in batch:
             attempted += 1
             game = find_game_for_pick(games, str(pick.get("pick", "")), pick)
+            if not game and sport_key == "MLB" and parse_player_prop_pick(pick):
+                if d not in mlb_schedule_cache:
+                    mlb_schedule_cache[d] = fetch_mlb_schedule(d)
+                game_pk = find_mlb_game_pk(mlb_schedule_cache.get(d), pick)
+                if game_pk and game_pk not in mlb_feed_cache:
+                    mlb_feed_cache[game_pk] = fetch_mlb_live_feed(game_pk)
+                mlb_live_feed = mlb_feed_cache.get(game_pk) if game_pk else None
+                if _mlb_game_is_final(mlb_live_feed):
+                    result = grade_player_prop_pick(pick, {}, None, mlb_live_feed)
+                    if result in {"win", "loss", "push"}:
+                        graded[str(pick["id"])] = result
+                continue
             if not game:
                 continue
             if str(game.get("statusName") or "") in {

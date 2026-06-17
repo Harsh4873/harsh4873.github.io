@@ -2,9 +2,17 @@
 
 For any coding or production-maintenance task in this repository:
 
-- Never open the deployed site, a browser, or rendered output to verify changes. Use source review, builds, tests, GitHub Actions logs, and GitHub API state instead.
+## Verification (agents only — not the user)
+
+- Never open the deployed site, a browser, rendered Pages output, or live URLs to verify that a change worked. The user confirms production behavior.
+- Agents may review source, run builds/tests, read GitHub Actions logs, and inspect GitHub API/workflow state — but must not visually inspect the running site.
 - Run `npm run upcheck` before declaring the site healthy. If it fails because today's model cache is missing or a model bucket failed, dispatch `model-cache-refresh.yml`, wait for it, and investigate any remaining failure.
 - Inspect the latest relevant GitHub Actions runs for model refreshes, player props, external feeds, auto-grading, and Pages deployment.
+
+## GitHub publish workflow (required after coding changes)
+
+- After any PickLedgerPro coding change: run focused tests and `npm run upcheck`, then **commit, push to `main`, and deploy through `deploy-pages.yml`** — do not leave fixes local-only unless the user explicitly asks not to publish.
+- Commits and pushes must come from the **currently logged-in GitHub user** (`gh auth status` / `git log -1 --format='%an %ae'`).
+- **Never** add AI co-author trailers, `Co-authored-by:` lines, or any AI/Cursor/Codex tagline to commit messages or pushes.
 - Keep GitHub Pages configured for GitHub Actions deployment (`build_type: workflow`), never legacy branch deployment.
-- After coding changes, run the focused tests and `npm run upcheck`, commit without any AI/co-author tagline, push to `main` as the currently logged-in GitHub user, and deploy through `deploy-pages.yml`.
 - Do not overwrite or revert unrelated user changes.

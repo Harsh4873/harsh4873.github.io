@@ -634,6 +634,47 @@ def test_grade_mlb_props_from_official_live_feed_when_espn_omits_stats():
     ) == "win"
 
 
+def test_auto_grade_mlb_player_props_from_official_feed_without_espn_completed(monkeypatch):
+    import pickgrader_server
+
+    pick = {
+        "id": "mlb-prop-1",
+        "sport": "MLB",
+        "date": "2026-06-16",
+        "decision": "BET",
+        "pick": "Zack Gelof Over 0.5 RBIs",
+        "player_name": "Zack Gelof",
+        "matchup": "Pittsburgh Pirates @ Athletics",
+        "result": "pending",
+    }
+    live_feed = {
+        "gameData": {"status": {"abstractGameState": "Final", "codedGameState": "F"}},
+        "liveData": {
+            "boxscore": {
+                "teams": {
+                    "away": {"players": {}},
+                    "home": {
+                        "players": {
+                            "ID123": {
+                                "person": {"fullName": "Zack Gelof"},
+                                "stats": {"batting": {"rbi": 1}},
+                            }
+                        }
+                    },
+                }
+            }
+        },
+    }
+
+    monkeypatch.setattr(pickgrader_server, "fetch_scoreboard", lambda *args, **kwargs: {"events": []})
+    monkeypatch.setattr(pickgrader_server, "fetch_mlb_schedule", lambda *_: {"dates": [{"games": [{"gamePk": 999, "teams": {"away": {"team": {"name": "Pittsburgh Pirates"}}, "home": {"team": {"name": "Athletics"}}}}]}]})
+    monkeypatch.setattr(pickgrader_server, "fetch_mlb_live_feed", lambda *_: live_feed)
+
+    result = pickgrader_server.auto_grade([pick], {}, 2026)
+
+    assert result["graded"]["mlb-prop-1"] == "win"
+
+
 def test_find_mlb_game_pk_matches_structured_matchup():
     import pickgrader_server
 
