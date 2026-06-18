@@ -685,7 +685,7 @@ def test_scores24_fails_closed_when_blocked_retry_stays_blocked(monkeypatch):
 def test_local_scores24_publisher_registers_separate_models():
     workflow = (ROOT / ".github" / "workflows" / "external-feed-refresh.yml").read_text(encoding="utf-8")
     refresh = (ROOT / "scripts" / "refresh_external_feeds.py").read_text(encoding="utf-8")
-    publisher = (ROOT / "scripts" / "scrapers" / "scores24_publish_local.sh").read_text(encoding="utf-8")
+    publisher = (ROOT / "scripts" / "scrapers" / "scores24_publish.sh").read_text(encoding="utf-8")
     for model_key in ("scores24_wnba", "scores24_mlb", "scores24_fifa_world_cup"):
         assert model_key in refresh
         assert model_key in publisher
@@ -701,7 +701,9 @@ def test_local_scores24_publisher_registers_separate_models():
     assert 'default="sportytrader,sportsgambler"' in refresh
     assert "scores24_wnba" not in workflow
     assert "scores24_fifa_world_cup" not in workflow
-    assert "gh" not in publisher.split('GH_BIN="/opt/homebrew/bin/gh"', 1)[0]
+    assert 'GH_BIN="$(command -v gh || true)"' in publisher
+    assert "SCORES24_BROWSER_FALLBACK=true" in publisher
+    assert "SCORES24_CAMOUFOX_FALLBACK=true" in publisher
     assert "workflow run deploy-pages.yml" in publisher
     assert "Skipped Pages deploy until the full" in publisher
     assert "steps.commit-feeds.outputs.deployable == 'true'" in workflow
