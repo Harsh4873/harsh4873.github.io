@@ -68,11 +68,13 @@ CLOUDFLARE_SIGNALS = (
 )
 TEAM_TEXT_ALIASES = {
     "cleveland gardians": "cleveland guardians",
+    "czech republic": "czechia",
     "oakland athletics": "athletics",
     "turkiye": "turkey",
 }
 TEAM_SLUG_ALIASES = {
     "Cleveland Guardians": ("Cleveland Gardians",),
+    "Czechia": ("Czech Republic",),
     "Athletics": ("Oakland Athletics",),
 }
 
@@ -101,7 +103,9 @@ def _normalize_team(value: Any) -> str:
     text = "".join(char for char in text if not unicodedata.combining(char))
     text = re.sub(r"\s*\(w\)\s*", " ", text, flags=re.IGNORECASE)
     text = re.sub(r"[^a-z0-9]+", " ", text.lower()).strip()
-    return TEAM_TEXT_ALIASES.get(text, text)
+    for alias, canonical in TEAM_TEXT_ALIASES.items():
+        text = re.sub(rf"\b{re.escape(alias)}\b", canonical, text)
+    return text
 
 
 def _team_matches(expected: str, candidate: str) -> bool:

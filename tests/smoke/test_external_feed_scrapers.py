@@ -615,6 +615,21 @@ def test_scores24_fifa_world_cup_keeps_specialty_market_ungraded():
     assert payload["calibration_excluded"] is True
 
 
+def test_scores24_fifa_world_cup_supports_czech_republic_alias():
+    module = _load_module(
+        "scores24_czech_alias_test",
+        ROOT / "scripts" / "scrapers" / "scores24_scraper.py",
+    )
+    matchup = {"away": "South Africa", "home": "Czechia", "start_time": ""}
+    urls = module.candidate_prediction_urls("fifa_world_cup", "2026-06-18", matchup)
+
+    assert any("czech-republic-south-africa" in url for url in urls)
+    assert module._matchup_matches_blob(
+        matchup,
+        "Czech Republic vs South Africa Prediction",
+    )
+
+
 def test_scores24_retries_blocked_matchup_without_hammering_candidates(monkeypatch):
     module = _load_module(
         "scores24_retry_test",
@@ -704,6 +719,8 @@ def test_local_scores24_publisher_registers_separate_models():
     assert 'GH_BIN="$(command -v gh || true)"' in publisher
     assert "SCORES24_BROWSER_FALLBACK=true" in publisher
     assert "SCORES24_CAMOUFOX_FALLBACK=true" in publisher
+    assert "Scores24 refresh incomplete; refusing to publish" in publisher
+    assert 'expected != matched' in publisher
     assert "workflow run deploy-pages.yml" in publisher
     assert "Skipped Pages deploy until the full" in publisher
     assert "steps.commit-feeds.outputs.deployable == 'true'" in workflow

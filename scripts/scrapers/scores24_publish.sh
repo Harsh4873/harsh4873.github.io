@@ -46,6 +46,28 @@ SCORES24_CAMOUFOX_FALLBACK=true \
   --sports "mlb,wnba,fifa_world_cup" \
   --skip-firestore
 
+"${PYTHON_BIN}" - "${TEMP_REPO}/data/model_cache/latest.json" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+required = ("scores24_wnba", "scores24_mlb", "scores24_fifa_world_cup")
+payload = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+buckets = payload.get("external_feeds") if isinstance(payload.get("external_feeds"), dict) else {}
+failures = []
+for key in required:
+    bucket = buckets.get(key) if isinstance(buckets.get(key), dict) else {}
+    meta = bucket.get("meta") if isinstance(bucket.get("meta"), dict) else {}
+    missing = meta.get("missingMatchups") if isinstance(meta.get("missingMatchups"), list) else []
+    expected = meta.get("expectedMatchups")
+    matched = meta.get("matchedPicks")
+    if bucket.get("ok") is not True or missing or expected != matched:
+        reason = bucket.get("error") or f"matched {matched!r} of {expected!r}; missing={missing!r}"
+        failures.append(f"{key}: {reason}")
+if failures:
+    raise SystemExit("Scores24 refresh incomplete; refusing to publish:\n- " + "\n- ".join(failures))
+PY
+
 cp "${TEMP_REPO}/data/model_cache/latest.json" "${GENERATED_CACHE}"
 
 for attempt in 1 2 3; do
