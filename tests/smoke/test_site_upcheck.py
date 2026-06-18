@@ -20,6 +20,7 @@ MODEL_KEYS = {
     "fifa_world_cup",
 }
 PLAYER_PROP_KEYS = {"mlb_player_props", "nba_player_props", "wnba_player_props"}
+SCORES24_KEYS = {"scores24_fifa_world_cup", "scores24_mlb", "scores24_wnba"}
 
 
 def _write_json(path: Path, payload: dict) -> None:
@@ -32,7 +33,19 @@ def _upcheck_repo(tmp_path: Path, date: str) -> Path:
     scripts.mkdir()
     shutil.copyfile(ROOT / "scripts" / "site_upcheck.py", scripts / "site_upcheck.py")
 
-    model_payload = {"date": date, "models": {key: {"ok": True, "picks": []} for key in MODEL_KEYS}}
+    model_payload = {
+        "date": date,
+        "models": {key: {"ok": True, "picks": []} for key in MODEL_KEYS},
+        "external_feeds": {
+            key: {
+                "ok": True,
+                "date": date,
+                "picks": [],
+                "meta": {"expectedMatchups": 0, "matchedPicks": 0, "missingMatchups": []},
+            }
+            for key in SCORES24_KEYS
+        },
+    }
     props_payload = {"date": date, "models": {key: {"ok": True, "picks": []} for key in PLAYER_PROP_KEYS}}
     for cache_name, payload in (("model_cache", model_payload), ("player_props_cache", props_payload)):
         cache_dir = tmp_path / "data" / cache_name
@@ -75,3 +88,33 @@ def test_data_only_readiness_defers_stale_daily_data(tmp_path: Path):
     assert result.returncode == 1
     assert "[readiness] waiting:" in result.stdout
     assert "expected" in result.stdout
+
+
+def test_data_only_readiness_rejects_incomplete_scores24_bucket(tmp_path: Path):
+    today = datetime.now(ZoneInfo("America/Chicago")).strftime("%Y-%m-%d")
+    script = _upcheck_repo(tmp_path, today)
+    cache_path = tmp_path / "data" / "model_cache" / "latest.json"
+    payload = json.loads(cache_path.read_text(encoding="utf-8"))
+    payload["external_feeds"]["scores24_fifa_world_cup"] = {
+        "ok": False,
+        "date": today,
+        "picks": [{"matchup": "Qatar @ Canada"}],
+        "error": "blocked before official slate completed",
+        "meta": {
+            "expectedMatchups": 2,
+            "matchedPicks": 1,
+            "missingMatchups": ["South Africa @ Czechia"],
+        },
+    }
+    _write_json(cache_path, payload)
+
+    result = subprocess.run(
+        [sys.executable, str(script), "--data-only"],
+        cwd=tmp_path,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 1
+    assert "scores24_fifa_world_cup failed" in result.stdout

@@ -30,6 +30,11 @@ REQUIRED_PLAYER_PROP_KEYS = {
     "nba_player_props",
     "wnba_player_props",
 }
+REQUIRED_SCORES24_FEED_KEYS = {
+    "scores24_fifa_world_cup",
+    "scores24_mlb",
+    "scores24_wnba",
+}
 
 
 def _read_json(path: Path) -> dict[str, Any] | None:
@@ -75,6 +80,28 @@ def main() -> int:
             failures.append(f"model bucket {key} is missing")
         elif bucket.get("ok") is not True:
             failures.append(f"model bucket {key} failed: {bucket.get('error') or 'unknown error'}")
+
+    external_feeds = latest.get("external_feeds") if isinstance(latest, dict) else {}
+    external_feeds = external_feeds if isinstance(external_feeds, dict) else {}
+    for key in sorted(REQUIRED_SCORES24_FEED_KEYS):
+        bucket = external_feeds.get(key)
+        if not isinstance(bucket, dict):
+            failures.append(f"external-feed bucket {key} is missing")
+            continue
+        if bucket.get("ok") is not True:
+            failures.append(f"external-feed bucket {key} failed: {bucket.get('error') or 'unknown error'}")
+            continue
+        if str(bucket.get("date") or "") != today:
+            failures.append(f"external-feed bucket {key} is {bucket.get('date') or 'undated'}, expected {today}")
+        meta = bucket.get("meta") if isinstance(bucket.get("meta"), dict) else {}
+        missing = meta.get("missingMatchups") if isinstance(meta.get("missingMatchups"), list) else []
+        expected = meta.get("expectedMatchups")
+        matched = meta.get("matchedPicks")
+        if missing or expected != matched or matched != len(bucket.get("picks") or []):
+            failures.append(
+                f"external-feed bucket {key} has incomplete official-slate coverage: "
+                f"matched={matched!r}, expected={expected!r}, missing={missing!r}"
+            )
 
     player_latest = _read_json(PLAYER_PROPS_CACHE_DIR / "latest.json")
     player_dated = _read_json(PLAYER_PROPS_CACHE_DIR / f"{today}.json")
