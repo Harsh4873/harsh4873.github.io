@@ -1,103 +1,91 @@
 {
-  "decided_count": 1291,
-  "evaluated_at": "2026-06-17T04:29:06.567348Z",
+  "decided_count": 1238,
+  "evaluated_at": "2026-06-18T14:25:44.518325Z",
   "global": {
-    "intercept": -0.17087691,
-    "samples": 1042,
+    "intercept": -0.23165421,
+    "samples": 930,
     "shrinkage_prior_samples": 120.0,
-    "slope": 0.62736946
+    "slope": 0.54722825
   },
   "groups": {
     "model:mlb_first_five|source:mlb first five|sport:mlb|bet:f5_side": {
-      "intercept": -0.04459986,
-      "samples": 79,
+      "intercept": -0.105058,
+      "samples": 84,
       "shrinkage_prior_samples": 80.0,
-      "slope": 0.67340116
+      "slope": 0.59117743
     },
     "model:mlb_first_five|source:mlb first five|sport:mlb|bet:f5_total": {
-      "intercept": -0.15715386,
-      "samples": 95,
+      "intercept": -0.20789544,
+      "samples": 99,
       "shrinkage_prior_samples": 80.0,
-      "slope": 0.62849582
+      "slope": 0.54996004
     },
     "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning": {
-      "intercept": -0.17540993,
+      "intercept": -0.20922641,
       "samples": 171,
       "shrinkage_prior_samples": 80.0,
-      "slope": 0.63269699
+      "slope": 0.56088631
     },
     "model:mlb_new|source:mlb new|sport:mlb|bet:h2h": {
-      "intercept": -0.13072233,
+      "intercept": -0.1729256,
       "samples": 101,
       "shrinkage_prior_samples": 80.0,
-      "slope": 0.63129229
+      "slope": 0.55633183
     },
     "model:mlb_new|source:mlb new|sport:mlb|bet:totals": {
-      "intercept": -0.1991648,
+      "intercept": -0.23849207,
       "samples": 103,
       "shrinkage_prior_samples": 80.0,
-      "slope": 0.61713075
-    },
-    "model:mlb_player_props|source:pickledgerpro in-house player props|sport:mlb|bet:hits": {
-      "intercept": -0.20843913,
-      "samples": 96,
-      "shrinkage_prior_samples": 80.0,
-      "slope": 0.5732171
+      "slope": 0.54987882
     },
     "model:mlb_player_props|source:pickledgerpro in-house player props|sport:mlb|bet:hits_runs_rbis": {
-      "intercept": -0.21195959,
-      "samples": 120,
+      "intercept": -0.23689174,
+      "samples": 33,
       "shrinkage_prior_samples": 80.0,
-      "slope": 0.52886328
+      "slope": 0.54305242
     },
     "model:mlb_player_props|source:pickledgerpro in-house player props|sport:mlb|bet:rbis": {
-      "intercept": -0.33454183,
-      "samples": 64,
+      "intercept": -0.38356742,
+      "samples": 109,
       "shrinkage_prior_samples": 80.0,
-      "slope": 0.4620937
+      "slope": 0.39727831
     },
-    "model:mlb_player_props|source:pickledgerpro in-house player props|sport:mlb|bet:strikeouts": {
-      "intercept": -0.17214813,
-      "samples": 35,
+    "model:mlb_player_props|source:pickledgerpro in-house player props|sport:mlb|bet:total_bases": {
+      "intercept": -0.30535608,
+      "samples": 43,
       "shrinkage_prior_samples": 80.0,
-      "slope": 0.55856316
-    },
-    "model:wnba_player_props|source:pickledgerpro in-house player props|sport:wnba|bet:assists": {
-      "intercept": -0.19088766,
-      "samples": 42,
-      "shrinkage_prior_samples": 80.0,
-      "slope": 0.60975346
+      "slope": 0.40963101
     }
   },
   "holdout": {
     "challenger": {
-      "brier_score": 0.33419004,
-      "calibration_error": 0.32738052,
-      "log_loss": 0.87864507,
-      "qualified_bets": 102,
-      "roi": -0.12725533,
-      "samples": 105
+      "brier_score": 0.27904324,
+      "calibration_error": 0.16734771,
+      "log_loss": 0.75654495,
+      "qualified_bets": 183,
+      "roi": 0.08529759,
+      "samples": 188
     },
     "champion": {
-      "brier_score": 0.33419004,
-      "calibration_error": 0.32738052,
-      "log_loss": 0.87864507,
-      "qualified_bets": 102,
-      "roi": -0.12725533,
-      "samples": 105
+      "brier_score": 0.29056965,
+      "calibration_error": 0.20155515,
+      "log_loss": 0.78471874,
+      "qualified_bets": 186,
+      "roi": 0.07848328,
+      "samples": 188
     }
   },
   "minimum_group_samples": 30,
   "promotion": {
-    "approved": false,
+    "approved": true,
     "reasons": [
-      "brier_improved=False",
-      "calibration_improved=False",
+      "brier_improved=True",
+      "calibration_improved=True",
       "log_loss_safe=True",
       "roi_safe=True"
     ]
   },
   "schema_version": 1,
-  "trainable_decided_count": 1042,
-  "version": "cal-1291-2026-06-17"
+  "trainable_decided_count": 930,
+  "version": "cal-1238-2026-06-18"
 }
