@@ -67741,7 +67741,7 @@
       "matchup": "Pittsburgh Pirates @ Athletics",
       "model_key": "mlb_first_five",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Over 4.5 F5",
       "pregame_snapshot": {
         "actionability": "research_signal",
@@ -67780,7 +67780,7 @@
       "raw_edge": 13.36,
       "raw_probability": 0.6574,
       "raw_units": null,
-      "result": "pending",
+      "result": "win",
       "source": "MLB First Five",
       "sport": "MLB",
       "units": null
@@ -67797,7 +67797,7 @@
       "matchup": "Toronto Blue Jays @ Boston Red Sox",
       "model_key": "mlb_first_five",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Over 4.5 F5",
       "pregame_snapshot": {
         "actionability": "research_signal",
@@ -67836,7 +67836,7 @@
       "raw_edge": 9.93,
       "raw_probability": 0.6231,
       "raw_units": null,
-      "result": "pending",
+      "result": "loss",
       "source": "MLB First Five",
       "sport": "MLB",
       "units": null
@@ -68077,7 +68077,7 @@
       "matchup": "Toronto Blue Jays @ Boston Red Sox",
       "model_key": "mlb_first_five",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Boston Red Sox F5 ML",
       "pregame_snapshot": {
         "actionability": "research_signal",
@@ -68116,7 +68116,7 @@
       "raw_edge": 13.64,
       "raw_probability": 0.6602,
       "raw_units": null,
-      "result": "pending",
+      "result": "loss",
       "source": "MLB First Five",
       "sport": "MLB",
       "units": null
@@ -68301,7 +68301,7 @@
       "matchup": "Baltimore Orioles @ Seattle Mariners",
       "model_key": "mlb_first_five",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Seattle Mariners F5 ML",
       "pregame_snapshot": {
         "actionability": "research_signal",
@@ -68340,7 +68340,7 @@
       "raw_edge": 4.66,
       "raw_probability": 0.5704,
       "raw_units": null,
-      "result": "pending",
+      "result": "loss",
       "source": "MLB First Five",
       "sport": "MLB",
       "units": null
@@ -68581,7 +68581,7 @@
       "matchup": "Colorado Rockies @ Chicago Cubs",
       "model_key": "mlb_first_five",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Colorado Rockies F5 ML",
       "pregame_snapshot": {
         "actionability": "research_signal",
@@ -68620,7 +68620,7 @@
       "raw_edge": 7.43,
       "raw_probability": 0.5981,
       "raw_units": null,
-      "result": "pending",
+      "result": "loss",
       "source": "MLB First Five",
       "sport": "MLB",
       "units": null
@@ -71649,7 +71649,7 @@
       "matchup": "",
       "model_key": "mlb_new",
       "odds": null,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Cubs ML (Rockies vs Cubs)",
       "pregame_snapshot": {
         "away_team": "Colorado Rockies",
@@ -71668,12 +71668,12 @@
         "units": 1.5
       },
       "probability": 0.7741,
-      "profit": null,
+      "profit": 1.15,
       "raw_decision": "BET",
       "raw_edge": 45.58,
       "raw_probability": 0.9558,
       "raw_units": 1.5,
-      "result": "pending",
+      "result": "win",
       "source": "MLB Model",
       "sport": "MLB",
       "units": 1.15
@@ -71964,7 +71964,7 @@
       "matchup": "Chicago White Sox @ New York Yankees",
       "model_key": "mlb_player_props",
       "odds": 113.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Jazz Chisholm Jr. Over 1.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -72042,12 +72042,12 @@
         "units": 2.0
       },
       "probability": 0.8308,
-      "profit": null,
+      "profit": 2.26,
       "raw_decision": "BET",
       "raw_edge": 36.13,
       "raw_probability": 0.8308,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -72064,7 +72064,7 @@
       "matchup": "Pittsburgh Pirates @ Athletics",
       "model_key": "mlb_player_props",
       "odds": -116.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Aaron Civale Over 13.5 Outs Recorded",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -72139,12 +72139,12 @@
         "units": 2.0
       },
       "probability": 0.8657,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 32.87,
       "raw_probability": 0.8657,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -72461,7 +72461,7 @@
       "matchup": "Baltimore Orioles @ Seattle Mariners",
       "model_key": "mlb_player_props",
       "odds": 143.0,
-      "outcome": 0,
+      "outcome": 1,
       "pick": "Leody Taveras Over 1.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -72539,12 +72539,12 @@
         "units": 2.0
       },
       "probability": 0.8305,
-      "profit": -2.0,
+      "profit": 2.86,
       "raw_decision": "BET",
       "raw_edge": 41.9,
       "raw_probability": 0.8305,
       "raw_units": 2.0,
-      "result": "loss",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -72761,7 +72761,7 @@
       "matchup": "Colorado Rockies @ Chicago Cubs",
       "model_key": "mlb_player_props",
       "odds": 134.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Dansby Swanson Under 0.5 Hits",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -72841,12 +72841,12 @@
         "units": 2.0
       },
       "probability": 0.6756,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 24.82,
       "raw_probability": 0.6756,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -72863,7 +72863,7 @@
       "matchup": "Toronto Blue Jays @ Boston Red Sox",
       "model_key": "mlb_player_props",
       "odds": 149.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Kazuma Okamoto Over 0.5 RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -72941,12 +72941,12 @@
         "units": 2.0
       },
       "probability": 0.6921,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 29.05,
       "raw_probability": 0.6921,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -73763,7 +73763,7 @@
       "matchup": "Cleveland Guardians @ Milwaukee Brewers",
       "model_key": "mlb_player_props",
       "odds": 115.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Jake Bauers Over 1.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -73841,12 +73841,12 @@
         "units": 2.0
       },
       "probability": 0.8344,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 36.93,
       "raw_probability": 0.8344,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -73863,7 +73863,7 @@
       "matchup": "Pittsburgh Pirates @ Athletics",
       "model_key": "mlb_player_props",
       "odds": 154.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Tyler Soderstrom Over 0.5 RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -73941,12 +73941,12 @@
         "units": 2.0
       },
       "probability": 0.6718,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 27.81,
       "raw_probability": 0.6718,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -73963,7 +73963,7 @@
       "matchup": "Baltimore Orioles @ Seattle Mariners",
       "model_key": "mlb_player_props",
       "odds": 311.0,
-      "outcome": 0,
+      "outcome": 1,
       "pick": "Jackson Holliday Over 0.5 RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -74041,12 +74041,12 @@
         "units": 2.0
       },
       "probability": 0.5048,
-      "profit": -2.0,
+      "profit": 6.22,
       "raw_decision": "BET",
       "raw_edge": 26.15,
       "raw_probability": 0.5048,
       "raw_units": 2.0,
-      "result": "loss",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -74762,7 +74762,7 @@
       "matchup": "Colorado Rockies @ Chicago Cubs",
       "model_key": "mlb_player_props",
       "odds": 104.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Hunter Goodman Over 1.5 Total Bases",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -74840,12 +74840,12 @@
         "units": 2.0
       },
       "probability": 0.6828,
-      "profit": null,
+      "profit": 2.08,
       "raw_decision": "BET",
       "raw_edge": 19.26,
       "raw_probability": 0.6828,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -74962,7 +74962,7 @@
       "matchup": "Cleveland Guardians @ Milwaukee Brewers",
       "model_key": "mlb_player_props",
       "odds": 226.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Brice Turang Over 0.5 RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -75040,12 +75040,12 @@
         "units": 2.0
       },
       "probability": 0.5135,
-      "profit": null,
+      "profit": 4.52,
       "raw_decision": "BET",
       "raw_edge": 20.68,
       "raw_probability": 0.5135,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -75162,7 +75162,7 @@
       "matchup": "Chicago White Sox @ New York Yankees",
       "model_key": "mlb_player_props",
       "odds": 149.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Cody Bellinger Over 0.5 RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -75240,12 +75240,12 @@
         "units": 2.0
       },
       "probability": 0.6928,
-      "profit": null,
+      "profit": 2.98,
       "raw_decision": "BET",
       "raw_edge": 29.12,
       "raw_probability": 0.6928,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -75362,7 +75362,7 @@
       "matchup": "Toronto Blue Jays @ Boston Red Sox",
       "model_key": "mlb_player_props",
       "odds": 103.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Ernie Clement Over 1.5 Total Bases",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -75440,12 +75440,12 @@
         "units": 2.0
       },
       "probability": 0.8513,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 35.87,
       "raw_probability": 0.8513,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -75659,7 +75659,7 @@
       "matchup": "Baltimore Orioles @ Seattle Mariners",
       "model_key": "mlb_player_props",
       "odds": 117.0,
-      "outcome": 0,
+      "outcome": 1,
       "pick": "Samuel Basallo Over 1.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -75737,12 +75737,12 @@
         "units": 2.0
       },
       "probability": 0.8441,
-      "profit": -2.0,
+      "profit": 2.34,
       "raw_decision": "BET",
       "raw_edge": 38.33,
       "raw_probability": 0.8441,
       "raw_units": 2.0,
-      "result": "loss",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -75759,7 +75759,7 @@
       "matchup": "Pittsburgh Pirates @ Athletics",
       "model_key": "mlb_player_props",
       "odds": 124.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Brandon Lowe Over 0.5 RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -75837,12 +75837,12 @@
         "units": 2.0
       },
       "probability": 0.8294,
-      "profit": null,
+      "profit": 2.48,
       "raw_decision": "BET",
       "raw_edge": 38.3,
       "raw_probability": 0.8294,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -76059,7 +76059,7 @@
       "matchup": "Colorado Rockies @ Chicago Cubs",
       "model_key": "mlb_player_props",
       "odds": 124.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Alex Bregman Under 1.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -76137,12 +76137,12 @@
         "units": 2.0
       },
       "probability": 0.6021,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 15.57,
       "raw_probability": 0.6021,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -76361,7 +76361,7 @@
       "matchup": "Cleveland Guardians @ Milwaukee Brewers",
       "model_key": "mlb_player_props",
       "odds": 153.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "William Contreras Under 0.5 Hits",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -76441,12 +76441,12 @@
         "units": 2.0
       },
       "probability": 0.6286,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 23.33,
       "raw_probability": 0.6286,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -76463,7 +76463,7 @@
       "matchup": "Pittsburgh Pirates @ Athletics",
       "model_key": "mlb_player_props",
       "odds": 100.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Bryan Reynolds Over 1.5 Total Bases",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -76541,12 +76541,12 @@
         "units": 2.0
       },
       "probability": 0.8453,
-      "profit": null,
+      "profit": 2.0,
       "raw_decision": "BET",
       "raw_edge": 34.53,
       "raw_probability": 0.8453,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -76663,7 +76663,7 @@
       "matchup": "Pittsburgh Pirates @ Athletics",
       "model_key": "mlb_player_props",
       "odds": 103.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Braxton Ashcraft Over 17.5 Outs Recorded",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -76738,12 +76738,12 @@
         "units": 2.0
       },
       "probability": 0.8242,
-      "profit": null,
+      "profit": 2.06,
       "raw_decision": "BET",
       "raw_edge": 33.16,
       "raw_probability": 0.8242,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -76860,7 +76860,7 @@
       "matchup": "Cleveland Guardians @ Milwaukee Brewers",
       "model_key": "mlb_player_props",
       "odds": -122.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Jackson Chourio Over 1.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -76938,12 +76938,12 @@
         "units": 2.0
       },
       "probability": 0.8601,
-      "profit": null,
+      "profit": 1.639344262295082,
       "raw_decision": "BET",
       "raw_edge": 31.06,
       "raw_probability": 0.8601,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -76960,7 +76960,7 @@
       "matchup": "Toronto Blue Jays @ Boston Red Sox",
       "model_key": "mlb_player_props",
       "odds": -138.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Myles Straw Over 0.5 Hits",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -77040,12 +77040,12 @@
         "units": 2.0
       },
       "probability": 0.8852,
-      "profit": null,
+      "profit": 1.4492753623188406,
       "raw_decision": "BET",
       "raw_edge": 30.54,
       "raw_probability": 0.8852,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -77162,7 +77162,7 @@
       "matchup": "Chicago White Sox @ New York Yankees",
       "model_key": "mlb_player_props",
       "odds": 142.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Anthony Volpe Over 0.5 Runs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -77240,12 +77240,12 @@
         "units": 2.0
       },
       "probability": 0.6768,
-      "profit": null,
+      "profit": 2.84,
       "raw_decision": "BET",
       "raw_edge": 26.36,
       "raw_probability": 0.6768,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -77362,7 +77362,7 @@
       "matchup": "Baltimore Orioles @ Seattle Mariners",
       "model_key": "mlb_player_props",
       "odds": 119.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "George Kirby Over 5.5 Hits Allowed",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -77437,12 +77437,12 @@
         "units": 2.0
       },
       "probability": 0.8493,
-      "profit": null,
+      "profit": 2.38,
       "raw_decision": "BET",
       "raw_edge": 39.27,
       "raw_probability": 0.8493,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -77659,7 +77659,7 @@
       "matchup": "Cleveland Guardians @ Milwaukee Brewers",
       "model_key": "mlb_player_props",
       "odds": 102.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Brice Turang Over 1.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -77737,12 +77737,12 @@
         "units": 2.0
       },
       "probability": 0.8436,
-      "profit": null,
+      "profit": 2.04,
       "raw_decision": "BET",
       "raw_edge": 34.86,
       "raw_probability": 0.8436,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -77759,7 +77759,7 @@
       "matchup": "Chicago White Sox @ New York Yankees",
       "model_key": "mlb_player_props",
       "odds": 103.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Paul Goldschmidt Over 1.5 Total Bases",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -77837,12 +77837,12 @@
         "units": 2.0
       },
       "probability": 0.8431,
-      "profit": null,
+      "profit": 2.06,
       "raw_decision": "BET",
       "raw_edge": 35.05,
       "raw_probability": 0.8431,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -78356,7 +78356,7 @@
       "matchup": "Pittsburgh Pirates @ Athletics",
       "model_key": "mlb_player_props",
       "odds": 139.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Nick Gonzales Over 0.5 RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -78434,12 +78434,12 @@
         "units": 2.0
       },
       "probability": 0.6752,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 25.68,
       "raw_probability": 0.6752,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -78656,7 +78656,7 @@
       "matchup": "Baltimore Orioles @ Seattle Mariners",
       "model_key": "mlb_player_props",
       "odds": 124.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Colt Emerson Over 1.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -78734,12 +78734,12 @@
         "units": 2.0
       },
       "probability": 0.8471,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 40.07,
       "raw_probability": 0.8471,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -78956,7 +78956,7 @@
       "matchup": "Colorado Rockies @ Chicago Cubs",
       "model_key": "mlb_player_props",
       "odds": 154.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Cole Carrigg Under 0.5 Hits",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -79036,12 +79036,12 @@
         "units": 2.0
       },
       "probability": 0.6298,
-      "profit": null,
+      "profit": 3.08,
       "raw_decision": "BET",
       "raw_edge": 23.61,
       "raw_probability": 0.6298,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -79555,7 +79555,7 @@
       "matchup": "Chicago White Sox @ New York Yankees",
       "model_key": "mlb_player_props",
       "odds": 103.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Miguel Vargas Over 1.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -79633,12 +79633,12 @@
         "units": 2.0
       },
       "probability": 0.8021,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 30.95,
       "raw_probability": 0.8021,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -80157,7 +80157,7 @@
       "matchup": "Toronto Blue Jays @ Boston Red Sox",
       "model_key": "mlb_player_props",
       "odds": 115.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Willson Contreras Over 0.5 RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -80235,12 +80235,12 @@
         "units": 2.0
       },
       "probability": 0.6732,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 20.81,
       "raw_probability": 0.6732,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -80257,7 +80257,7 @@
       "matchup": "Cleveland Guardians @ Milwaukee Brewers",
       "model_key": "mlb_player_props",
       "odds": 119.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Jackson Chourio Over 1.5 Total Bases",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -80335,12 +80335,12 @@
         "units": 2.0
       },
       "probability": 0.8367,
-      "profit": null,
+      "profit": 2.38,
       "raw_decision": "BET",
       "raw_edge": 38.01,
       "raw_probability": 0.8367,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -80357,7 +80357,7 @@
       "matchup": "Pittsburgh Pirates @ Athletics",
       "model_key": "mlb_player_props",
       "odds": 120.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Tyler Callihan Over 1.5 Total Bases",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -80435,12 +80435,12 @@
         "units": 2.0
       },
       "probability": 0.8285,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 37.4,
       "raw_probability": 0.8285,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -80654,7 +80654,7 @@
       "matchup": "Cleveland Guardians @ Milwaukee Brewers",
       "model_key": "mlb_player_props",
       "odds": -107.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Christian Yelich Over 1.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -80732,12 +80732,12 @@
         "units": 2.0
       },
       "probability": 0.8231,
-      "profit": null,
+      "profit": 1.8691588785046729,
       "raw_decision": "BET",
       "raw_edge": 30.62,
       "raw_probability": 0.8231,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -80754,7 +80754,7 @@
       "matchup": "Toronto Blue Jays @ Boston Red Sox",
       "model_key": "mlb_player_props",
       "odds": 113.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Ernie Clement Over 0.5 Runs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -80832,12 +80832,12 @@
         "units": 2.0
       },
       "probability": 0.6744,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 20.49,
       "raw_probability": 0.6744,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -80854,7 +80854,7 @@
       "matchup": "Pittsburgh Pirates @ Athletics",
       "model_key": "mlb_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Brandon Lowe Over 1.5 Total Bases",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -80932,12 +80932,12 @@
         "units": 2.0
       },
       "probability": 0.869,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 34.52,
       "raw_probability": 0.869,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -80954,7 +80954,7 @@
       "matchup": "Cleveland Guardians @ Milwaukee Brewers",
       "model_key": "mlb_player_props",
       "odds": -108.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Gavin Williams Over 6.5 Strikeouts",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -81029,12 +81029,12 @@
         "units": 2.0
       },
       "probability": 0.8337,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 31.45,
       "raw_probability": 0.8337,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -81351,7 +81351,7 @@
       "matchup": "Chicago White Sox @ New York Yankees",
       "model_key": "mlb_player_props",
       "odds": 127.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Cody Bellinger Over 1.5 Total Bases",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -81429,12 +81429,12 @@
         "units": 2.0
       },
       "probability": 0.8008,
-      "profit": null,
+      "profit": 2.54,
       "raw_decision": "BET",
       "raw_edge": 36.03,
       "raw_probability": 0.8008,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -81451,7 +81451,7 @@
       "matchup": "Toronto Blue Jays @ Boston Red Sox",
       "model_key": "mlb_player_props",
       "odds": 102.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Jake Bennett Over 5.5 Hits Allowed",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -81526,12 +81526,12 @@
         "units": 2.0
       },
       "probability": 0.8556,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 36.06,
       "raw_probability": 0.8556,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -81848,7 +81848,7 @@
       "matchup": "Chicago White Sox @ New York Yankees",
       "model_key": "mlb_player_props",
       "odds": 109.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Anthony Volpe Over 1.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -81926,12 +81926,12 @@
         "units": 2.0
       },
       "probability": 0.8305,
-      "profit": null,
+      "profit": 2.18,
       "raw_decision": "BET",
       "raw_edge": 35.2,
       "raw_probability": 0.8305,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -81948,7 +81948,7 @@
       "matchup": "Colorado Rockies @ Chicago Cubs",
       "model_key": "mlb_player_props",
       "odds": -148.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Kyle Karros Over 0.5 Hits",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -82028,12 +82028,12 @@
         "units": 2.0
       },
       "probability": 0.806,
-      "profit": null,
+      "profit": 1.3513513513513513,
       "raw_decision": "BET",
       "raw_edge": 20.92,
       "raw_probability": 0.806,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -82050,7 +82050,7 @@
       "matchup": "Toronto Blue Jays @ Boston Red Sox",
       "model_key": "mlb_player_props",
       "odds": 103.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Willson Contreras Over 1.5 Total Bases",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -82128,12 +82128,12 @@
         "units": 2.0
       },
       "probability": 0.6927,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 20.01,
       "raw_probability": 0.6927,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -82150,7 +82150,7 @@
       "matchup": "Colorado Rockies @ Chicago Cubs",
       "model_key": "mlb_player_props",
       "odds": -152.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Edouard Julien Over 0.5 Hits",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -82230,12 +82230,12 @@
         "units": 2.0
       },
       "probability": 0.8178,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 21.46,
       "raw_probability": 0.8178,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -82252,7 +82252,7 @@
       "matchup": "Baltimore Orioles @ Seattle Mariners",
       "model_key": "mlb_player_props",
       "odds": 138.0,
-      "outcome": 0,
+      "outcome": 1,
       "pick": "Gunnar Henderson Over 1.5 Total Bases",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -82330,12 +82330,12 @@
         "units": 2.0
       },
       "probability": 0.838,
-      "profit": -2.0,
+      "profit": 2.76,
       "raw_decision": "BET",
       "raw_edge": 41.78,
       "raw_probability": 0.838,
       "raw_units": 2.0,
-      "result": "loss",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -83054,7 +83054,7 @@
       "matchup": "Baltimore Orioles @ Seattle Mariners",
       "model_key": "mlb_player_props",
       "odds": 303.0,
-      "outcome": 0,
+      "outcome": 1,
       "pick": "Leody Taveras Over 0.5 RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -83132,12 +83132,12 @@
         "units": 2.0
       },
       "probability": 0.5117,
-      "profit": -2.0,
+      "profit": 6.06,
       "raw_decision": "BET",
       "raw_edge": 26.36,
       "raw_probability": 0.5117,
       "raw_units": 2.0,
-      "result": "loss",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -83154,7 +83154,7 @@
       "matchup": "Chicago White Sox @ New York Yankees",
       "model_key": "mlb_player_props",
       "odds": 118.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Ben Rice Over 1.5 Total Bases",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -83232,12 +83232,12 @@
         "units": 2.0
       },
       "probability": 0.8801,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 42.14,
       "raw_probability": 0.8801,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -83254,7 +83254,7 @@
       "matchup": "Colorado Rockies @ Chicago Cubs",
       "model_key": "mlb_player_props",
       "odds": -133.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Hunter Goodman Over 1.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -83332,12 +83332,12 @@
         "units": 2.0
       },
       "probability": 0.8174,
-      "profit": null,
+      "profit": 1.5037593984962405,
       "raw_decision": "BET",
       "raw_edge": 24.66,
       "raw_probability": 0.8174,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -83654,7 +83654,7 @@
       "matchup": "Toronto Blue Jays @ Boston Red Sox",
       "model_key": "mlb_player_props",
       "odds": 110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Kazuma Okamoto Over 1.5 Total Bases",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -83732,12 +83732,12 @@
         "units": 2.0
       },
       "probability": 0.8339,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 35.77,
       "raw_probability": 0.8339,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -83851,7 +83851,7 @@
       "matchup": "Colorado Rockies @ Chicago Cubs",
       "model_key": "mlb_player_props",
       "odds": 143.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Ezequiel Tovar Under 0.5 Hits",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -83931,12 +83931,12 @@
         "units": 2.0
       },
       "probability": 0.6386,
-      "profit": null,
+      "profit": 2.86,
       "raw_decision": "BET",
       "raw_edge": 22.71,
       "raw_probability": 0.6386,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 2.0
@@ -83953,7 +83953,7 @@
       "matchup": "Toronto Blue Jays @ Boston Red Sox",
       "model_key": "scores24_mlb",
       "odds": -161.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Under 10.5 (Toronto Blue Jays @ Boston Red Sox)",
       "pregame_snapshot": {
         "away_team": "Toronto Blue Jays",
@@ -83974,12 +83974,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.6211180124223602,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "Scores24MLB",
       "sport": "MLB",
       "units": 1.0
@@ -84168,7 +84168,7 @@
       "matchup": "Pittsburgh Pirates @ Athletics",
       "model_key": "scores24_mlb",
       "odds": 113.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Pittsburgh Pirates ML (Pittsburgh Pirates @ Athletics)",
       "pregame_snapshot": {
         "away_team": "Pittsburgh Pirates",
@@ -84189,12 +84189,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 1.13,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "Scores24MLB",
       "sport": "MLB",
       "units": 1.0
@@ -84211,7 +84211,7 @@
       "matchup": "Colorado Rockies @ Chicago Cubs",
       "model_key": "scores24_mlb",
       "odds": -213.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Over 8.5 (Colorado Rockies @ Chicago Cubs)",
       "pregame_snapshot": {
         "away_team": "Colorado Rockies",
@@ -84232,12 +84232,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.4694835680751174,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "Scores24MLB",
       "sport": "MLB",
       "units": 1.0
@@ -84340,7 +84340,7 @@
       "matchup": "Chicago White Sox @ New York Yankees",
       "model_key": "scores24_mlb",
       "odds": -149.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Over 7.5 (Chicago White Sox @ New York Yankees)",
       "pregame_snapshot": {
         "away_team": "Chicago White Sox",
@@ -84361,12 +84361,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.6711409395973155,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "Scores24MLB",
       "sport": "MLB",
       "units": 1.0
@@ -84512,7 +84512,7 @@
       "matchup": "Baltimore Orioles @ Seattle Mariners",
       "model_key": "scores24_mlb",
       "odds": -152.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Seattle Mariners ML (Baltimore Orioles @ Seattle Mariners)",
       "pregame_snapshot": {
         "away_team": "Baltimore Orioles",
@@ -84533,12 +84533,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "Scores24MLB",
       "sport": "MLB",
       "units": 1.0
@@ -84555,7 +84555,7 @@
       "matchup": "Pittsburgh Pirates @ Athletics",
       "model_key": "scores24_mlb",
       "odds": -137.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Over 9.5 (Pittsburgh Pirates @ Athletics)",
       "pregame_snapshot": {
         "away_team": "Pittsburgh Pirates",
@@ -84576,12 +84576,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.7299270072992701,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "Scores24MLB",
       "sport": "MLB",
       "units": 1.0
@@ -84641,7 +84641,7 @@
       "matchup": "Cleveland Guardians @ Milwaukee Brewers",
       "model_key": "scores24_mlb",
       "odds": -120.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Milwaukee Brewers ML (Cleveland Guardians @ Milwaukee Brewers)",
       "pregame_snapshot": {
         "away_team": "Cleveland Guardians",
@@ -84662,12 +84662,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.8333333333333334,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "Scores24MLB",
       "sport": "MLB",
       "units": 1.0
@@ -84727,7 +84727,7 @@
       "matchup": "Seattle Storm @ Portland Fire",
       "model_key": "scores24_wnba",
       "odds": -145.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Portland Fire (W) ML (Seattle Storm @ Portland Fire)",
       "pregame_snapshot": {
         "away_team": "Seattle Storm",
@@ -84748,12 +84748,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.6896551724137931,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "Scores24WNBA",
       "sport": "WNBA",
       "units": 1.0
@@ -84770,7 +84770,7 @@
       "matchup": "New York Liberty @ Chicago Sky",
       "model_key": "scores24_wnba",
       "odds": -159.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "New York Liberty (W) -4.5 (New York Liberty @ Chicago Sky)",
       "pregame_snapshot": {
         "away_team": "New York Liberty",
@@ -84791,12 +84791,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.6289308176100629,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "Scores24WNBA",
       "sport": "WNBA",
       "units": 1.0
@@ -84813,7 +84813,7 @@
       "matchup": "Dallas Wings @ Golden State Valkyries",
       "model_key": "scores24_wnba",
       "odds": -130.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Over 166.5 (Dallas Wings @ Golden State Valkyries)",
       "pregame_snapshot": {
         "away_team": "Dallas Wings",
@@ -84834,12 +84834,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.7692307692307693,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "Scores24WNBA",
       "sport": "WNBA",
       "units": 1.0
@@ -84856,7 +84856,7 @@
       "matchup": "Minnesota Lynx @ Los Angeles Sparks",
       "model_key": "scores24_wnba",
       "odds": -108.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Under 176.5 (Minnesota Lynx @ Los Angeles Sparks)",
       "pregame_snapshot": {
         "away_team": "Minnesota Lynx",
@@ -84877,12 +84877,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "Scores24WNBA",
       "sport": "WNBA",
       "units": 1.0
@@ -84899,7 +84899,7 @@
       "matchup": "Las Vegas Aces @ Phoenix Mercury",
       "model_key": "scores24_wnba",
       "odds": -115.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Over 172.5 (Las Vegas Aces @ Phoenix Mercury)",
       "pregame_snapshot": {
         "away_team": "Las Vegas Aces",
@@ -84920,12 +84920,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "Scores24WNBA",
       "sport": "WNBA",
       "units": 1.0
@@ -85099,7 +85099,7 @@
       "matchup": "Athletics vs Pittsburgh Pirates",
       "model_key": "sportsgambler_mlb",
       "odds": -133.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Pittsburgh Pirates to Win (Athletics vs Pittsburgh Pirates)",
       "pregame_snapshot": {
         "date": "2026-06-17",
@@ -85115,12 +85115,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.7518796992481203,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "SportsGamblerMLB",
       "sport": "MLB",
       "units": 1.0
@@ -85137,7 +85137,7 @@
       "matchup": "Boston Red Sox vs Toronto Blue Jays",
       "model_key": "sportsgambler_mlb",
       "odds": -135.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Boston Red Sox to Win (Boston Red Sox vs Toronto Blue Jays)",
       "pregame_snapshot": {
         "date": "2026-06-17",
@@ -85153,12 +85153,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "SportsGamblerMLB",
       "sport": "MLB",
       "units": 1.0
@@ -85251,7 +85251,7 @@
       "matchup": "Seattle Mariners vs Baltimore Orioles",
       "model_key": "sportsgambler_mlb",
       "odds": -149.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Seattle Mariners to Win (Seattle Mariners vs Baltimore Orioles)",
       "pregame_snapshot": {
         "date": "2026-06-17",
@@ -85267,12 +85267,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "SportsGamblerMLB",
       "sport": "MLB",
       "units": 1.0
@@ -85289,7 +85289,7 @@
       "matchup": "New York Yankees vs Chicago White Sox",
       "model_key": "sportsgambler_mlb",
       "odds": -189.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "New York Yankees to Win (New York Yankees vs Chicago White Sox)",
       "pregame_snapshot": {
         "date": "2026-06-17",
@@ -85305,12 +85305,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.5291005291005291,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "SportsGamblerMLB",
       "sport": "MLB",
       "units": 1.0
@@ -85403,7 +85403,7 @@
       "matchup": "Milwaukee Brewers vs Cleveland Guardians",
       "model_key": "sportsgambler_mlb",
       "odds": -102.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Cleveland Guardians to Win (Milwaukee Brewers vs Cleveland Guardians)",
       "pregame_snapshot": {
         "date": "2026-06-17",
@@ -85419,12 +85419,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "SportsGamblerMLB",
       "sport": "MLB",
       "units": 1.0
@@ -85479,7 +85479,7 @@
       "matchup": "Chicago Cubs vs Colorado Rockies",
       "model_key": "sportsgambler_mlb",
       "odds": -204.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Chicago Cubs to Win (Chicago Cubs vs Colorado Rockies)",
       "pregame_snapshot": {
         "date": "2026-06-17",
@@ -85495,12 +85495,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.49019607843137253,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "SportsGamblerMLB",
       "sport": "MLB",
       "units": 1.0
@@ -85517,7 +85517,7 @@
       "matchup": "Portland Fire vs Seattle Storm",
       "model_key": "sportsgambler_wnba",
       "odds": -112.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Fire -3.5 (Portland Fire vs Seattle Storm)",
       "pregame_snapshot": {
         "date": "2026-06-17",
@@ -85533,12 +85533,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.8928571428571429,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "SportsGamblerWNBA",
       "sport": "WNBA",
       "units": 1.0
@@ -85555,7 +85555,7 @@
       "matchup": "Golden State Valkyries vs Dallas Wings",
       "model_key": "sportsgambler_wnba",
       "odds": -105.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Valkyries -3.5 (Golden State Valkyries vs Dallas Wings)",
       "pregame_snapshot": {
         "date": "2026-06-17",
@@ -85571,12 +85571,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.9523809523809523,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "SportsGamblerWNBA",
       "sport": "WNBA",
       "units": 1.0
@@ -85593,7 +85593,7 @@
       "matchup": "Phoenix Mercury vs Las Vegas Aces",
       "model_key": "sportsgambler_wnba",
       "odds": -115.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Aces -6.5 (Phoenix Mercury vs Las Vegas Aces)",
       "pregame_snapshot": {
         "date": "2026-06-17",
@@ -85609,12 +85609,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.8695652173913043,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "SportsGamblerWNBA",
       "sport": "WNBA",
       "units": 1.0
@@ -85669,7 +85669,7 @@
       "matchup": "Los Angeles Sparks vs Minnesota Lynx",
       "model_key": "sportsgambler_wnba",
       "odds": -112.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Lynx -8.5 (Los Angeles Sparks vs Minnesota Lynx)",
       "pregame_snapshot": {
         "date": "2026-06-17",
@@ -85685,12 +85685,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.8928571428571429,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "SportsGamblerWNBA",
       "sport": "WNBA",
       "units": 1.0
@@ -85707,7 +85707,7 @@
       "matchup": "Chicago Sky vs New York Liberty",
       "model_key": "sportsgambler_wnba",
       "odds": -112.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Liberty -9.5 (Chicago Sky vs New York Liberty)",
       "pregame_snapshot": {
         "date": "2026-06-17",
@@ -85723,12 +85723,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "SportsGamblerWNBA",
       "sport": "WNBA",
       "units": 1.0
@@ -85745,7 +85745,7 @@
       "matchup": "Chicago Cubs vs Colorado Rockies",
       "model_key": "sportytrader_mlb",
       "odds": -193.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Chicago Cubs ML (Cubs vs Rockies)",
       "pregame_snapshot": {
         "date": "2026-06-17",
@@ -85761,12 +85761,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.5181347150259067,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "SportyTraderMLB",
       "sport": "MLB",
       "units": 1.0
@@ -85821,7 +85821,7 @@
       "matchup": "Athletics vs Pittsburgh Pirates",
       "model_key": "sportytrader_mlb",
       "odds": 100.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Athletics ML (Athletics vs Pirates)",
       "pregame_snapshot": {
         "date": "2026-06-17",
@@ -85837,12 +85837,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "SportyTraderMLB",
       "sport": "MLB",
       "units": 1.0
@@ -85859,7 +85859,7 @@
       "matchup": "Milwaukee Brewers vs Cleveland Guardians",
       "model_key": "sportytrader_mlb",
       "odds": -112.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Over 7.5 Total Runs (Brewers vs Guardians)",
       "pregame_snapshot": {
         "date": "2026-06-17",
@@ -85875,12 +85875,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.8928571428571429,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "SportyTraderMLB",
       "sport": "MLB",
       "units": 1.0
@@ -85897,7 +85897,7 @@
       "matchup": "Boston Red Sox vs Toronto Blue Jays",
       "model_key": "sportytrader_mlb",
       "odds": -105.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Over 9.5 (Red Sox vs Blue Jays)",
       "pregame_snapshot": {
         "date": "2026-06-17",
@@ -85913,12 +85913,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "SportyTraderMLB",
       "sport": "MLB",
       "units": 1.0
@@ -85935,7 +85935,7 @@
       "matchup": "New York Yankees vs Chicago White Sox",
       "model_key": "sportytrader_mlb",
       "odds": 113.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Yankees -1.5 (Yankees vs White Sox)",
       "pregame_snapshot": {
         "date": "2026-06-17",
@@ -85951,12 +85951,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 1.13,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "SportyTraderMLB",
       "sport": "MLB",
       "units": 1.0
@@ -86087,7 +86087,7 @@
       "matchup": "Chicago Sky vs New York Liberty",
       "model_key": "sportytrader_wnba",
       "odds": -160.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "New York Liberty on the -7.5 line (Sky vs Liberty)",
       "pregame_snapshot": {
         "date": "2026-06-17",
@@ -86103,12 +86103,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "SportyTraderWNBA",
       "sport": "WNBA",
       "units": 1.0
@@ -86125,7 +86125,7 @@
       "matchup": "Seattle Storm @ Portland Fire",
       "model_key": "wnba",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Under 161.5 (Seattle Storm vs Portland Fire)",
       "pregame_snapshot": {
         "away_team": "Seattle Storm",
@@ -86161,12 +86161,12 @@
         "vegas": 161.5
       },
       "probability": 0.6141,
-      "profit": null,
+      "profit": -0.01,
       "raw_decision": "LEAN",
       "raw_edge": 16.22,
       "raw_probability": 0.686,
       "raw_units": 0.02,
-      "result": "pending",
+      "result": "loss",
       "source": "WNBA Model",
       "sport": "WNBA",
       "units": 0.01
@@ -86303,7 +86303,7 @@
       "matchup": "Minnesota Lynx @ Los Angeles Sparks",
       "model_key": "wnba",
       "odds": -425.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Minnesota Lynx ML (Minnesota Lynx @ Los Angeles Sparks)",
       "pregame_snapshot": {
         "away_team": "Minnesota Lynx",
@@ -86341,12 +86341,12 @@
         "units": 0.04
       },
       "probability": 0.845,
-      "profit": null,
+      "profit": 0.009411764705882354,
       "raw_decision": "LEAN",
       "raw_edge": null,
       "raw_probability": 0.917,
       "raw_units": 0.04,
-      "result": "pending",
+      "result": "win",
       "source": "WNBA Model",
       "sport": "WNBA",
       "units": 0.04
@@ -86363,7 +86363,7 @@
       "matchup": "New York Liberty @ Chicago Sky",
       "model_key": "wnba",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "New York Liberty -10.5 (New York Liberty @ Chicago Sky)",
       "pregame_snapshot": {
         "away_team": "New York Liberty",
@@ -86401,12 +86401,12 @@
         "vegas": -10.5
       },
       "probability": 0.6535,
-      "profit": null,
+      "profit": -0.04,
       "raw_decision": "BET",
       "raw_edge": 20.83,
       "raw_probability": 0.7321,
       "raw_units": 0.06,
-      "result": "pending",
+      "result": "loss",
       "source": "WNBA Model",
       "sport": "WNBA",
       "units": 0.04
@@ -86423,7 +86423,7 @@
       "matchup": "New York Liberty @ Chicago Sky",
       "model_key": "wnba",
       "odds": -575.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "New York Liberty ML (New York Liberty @ Chicago Sky)",
       "pregame_snapshot": {
         "away_team": "New York Liberty",
@@ -86457,12 +86457,12 @@
         "units": 0.18
       },
       "probability": 0.8856,
-      "profit": null,
+      "profit": 0.03130434782608695,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": 0.946,
       "raw_units": 0.18,
-      "result": "pending",
+      "result": "win",
       "source": "WNBA Model",
       "sport": "WNBA",
       "units": 0.18
@@ -86535,7 +86535,7 @@
       "matchup": "Dallas Wings @ Golden State Valkyries",
       "model_key": "wnba",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Over 164.5 (Dallas Wings vs Golden State Valkyries)",
       "pregame_snapshot": {
         "away_team": "Dallas Wings",
@@ -86569,12 +86569,12 @@
         "vegas": 164.5
       },
       "probability": 0.6233,
-      "profit": null,
+      "profit": 0.01818181818181818,
       "raw_decision": "LEAN",
       "raw_edge": 17.3,
       "raw_probability": 0.6969,
       "raw_units": 0.03,
-      "result": "pending",
+      "result": "win",
       "source": "WNBA Model",
       "sport": "WNBA",
       "units": 0.02
@@ -86591,7 +86591,7 @@
       "matchup": "Minnesota Lynx @ Los Angeles Sparks",
       "model_key": "wnba",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Minnesota Lynx -9.5 (Minnesota Lynx @ Los Angeles Sparks)",
       "pregame_snapshot": {
         "away_team": "Minnesota Lynx",
@@ -86633,12 +86633,12 @@
         "vegas": -9.5
       },
       "probability": 0.6074,
-      "profit": null,
+      "profit": 0.00909090909090909,
       "raw_decision": "LEAN",
       "raw_edge": 15.41,
       "raw_probability": 0.6779,
       "raw_units": 0.02,
-      "result": "pending",
+      "result": "win",
       "source": "WNBA Model",
       "sport": "WNBA",
       "units": 0.01
@@ -86713,7 +86713,7 @@
       "matchup": "New York Liberty @ Chicago Sky",
       "model_key": "wnba",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "New York Liberty -11.5 (New York Liberty @ Chicago Sky)",
       "pregame_snapshot": {
         "away_team": "New York Liberty",
@@ -86751,12 +86751,12 @@
         "vegas": -11.5
       },
       "probability": 0.627,
-      "profit": null,
+      "profit": -0.03,
       "raw_decision": "BET",
       "raw_edge": 17.75,
       "raw_probability": 0.7013,
       "raw_units": 0.05,
-      "result": "pending",
+      "result": "loss",
       "source": "WNBA Model",
       "sport": "WNBA",
       "units": 0.03
@@ -87251,7 +87251,7 @@
       "matchup": "Seattle Storm @ Portland Fire",
       "model_key": "wnba",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Under 162.5 (Seattle Storm vs Portland Fire)",
       "pregame_snapshot": {
         "away_team": "Seattle Storm",
@@ -87288,12 +87288,12 @@
         "vegas": 162.5
       },
       "probability": 0.6368,
-      "profit": null,
+      "profit": -0.02,
       "raw_decision": "LEAN",
       "raw_edge": 18.9,
       "raw_probability": 0.7128,
       "raw_units": 0.03,
-      "result": "pending",
+      "result": "loss",
       "source": "WNBA Model",
       "sport": "WNBA",
       "units": 0.02
@@ -87484,7 +87484,7 @@
       "matchup": "Dallas Wings @ Golden State Valkyries",
       "model_key": "wnba",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Over 165.5 (Dallas Wings vs Golden State Valkyries)",
       "pregame_snapshot": {
         "away_team": "Dallas Wings",
@@ -87518,12 +87518,12 @@
         "vegas": 165.5
       },
       "probability": 0.6004,
-      "profit": null,
+      "profit": 0.00909090909090909,
       "raw_decision": "LEAN",
       "raw_edge": 14.57,
       "raw_probability": 0.6695,
       "raw_units": 0.02,
-      "result": "pending",
+      "result": "win",
       "source": "WNBA Model",
       "sport": "WNBA",
       "units": 0.01
@@ -87634,7 +87634,7 @@
       "matchup": "Minnesota Lynx @ Los Angeles Sparks",
       "model_key": "wnba_player_props",
       "odds": 103.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Courtney Williams Over 5.5 Rebounds",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -87706,12 +87706,12 @@
         "units": 2.0
       },
       "probability": 0.8342,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 34.16,
       "raw_probability": 0.8342,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -87728,7 +87728,7 @@
       "matchup": "Minnesota Lynx @ Los Angeles Sparks",
       "model_key": "wnba_player_props",
       "odds": -107.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Olivia Miles Over 18.5 Points",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -87800,12 +87800,12 @@
         "units": 2.0
       },
       "probability": 0.8309,
-      "profit": null,
+      "profit": 1.8691588785046729,
       "raw_decision": "BET",
       "raw_edge": 31.4,
       "raw_probability": 0.8309,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -87822,7 +87822,7 @@
       "matchup": "New York Liberty @ Chicago Sky",
       "model_key": "wnba_player_props",
       "odds": 103.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Marine Johannes Over 2.5 Rebounds",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -87894,12 +87894,12 @@
         "units": 2.0
       },
       "probability": 0.8614,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 36.88,
       "raw_probability": 0.8614,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -87916,7 +87916,7 @@
       "matchup": "Seattle Storm @ Portland Fire",
       "model_key": "wnba_player_props",
       "odds": 109.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Natisha Hiedeman Over 2.5 Rebounds",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -87988,12 +87988,12 @@
         "units": 2.0
       },
       "probability": 0.8488,
-      "profit": null,
+      "profit": 2.18,
       "raw_decision": "BET",
       "raw_edge": 37.03,
       "raw_probability": 0.8488,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -88010,7 +88010,7 @@
       "matchup": "New York Liberty @ Chicago Sky",
       "model_key": "wnba_player_props",
       "odds": 133.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Pauline Astier Over 3.5 Assists",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -88082,12 +88082,12 @@
         "units": 2.0
       },
       "probability": 0.8658,
-      "profit": null,
+      "profit": 2.66,
       "raw_decision": "BET",
       "raw_edge": 43.66,
       "raw_probability": 0.8658,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -88104,7 +88104,7 @@
       "matchup": "Minnesota Lynx @ Los Angeles Sparks",
       "model_key": "wnba_player_props",
       "odds": -102.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Natasha Howard Over 17.5 Points",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -88176,12 +88176,12 @@
         "units": 2.0
       },
       "probability": 0.8428,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 33.78,
       "raw_probability": 0.8428,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -88198,7 +88198,7 @@
       "matchup": "Las Vegas Aces @ Phoenix Mercury",
       "model_key": "wnba_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Monique Akoa Makani Over 13.5 Points + Assists",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -88270,12 +88270,12 @@
         "units": 2.0
       },
       "probability": 0.8306,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 30.68,
       "raw_probability": 0.8306,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -88292,7 +88292,7 @@
       "matchup": "New York Liberty @ Chicago Sky",
       "model_key": "wnba_player_props",
       "odds": 134.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Natasha Cloud Over 4.5 Assists",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -88367,12 +88367,12 @@
         "units": 2.0
       },
       "probability": 0.7392,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 31.18,
       "raw_probability": 0.7392,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -88483,7 +88483,7 @@
       "matchup": "Dallas Wings @ Golden State Valkyries",
       "model_key": "wnba_player_props",
       "odds": 100.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Gabby Williams Over 19.5 Points + Assists",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -88555,12 +88555,12 @@
         "units": 2.0
       },
       "probability": 0.8117,
-      "profit": null,
+      "profit": 2.0,
       "raw_decision": "BET",
       "raw_edge": 31.17,
       "raw_probability": 0.8117,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -88577,7 +88577,7 @@
       "matchup": "Las Vegas Aces @ Phoenix Mercury",
       "model_key": "wnba_player_props",
       "odds": 118.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "A'ja Wilson Over 3.5 Assists",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -88652,12 +88652,12 @@
         "units": 2.0
       },
       "probability": 0.7177,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 25.9,
       "raw_probability": 0.7177,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -88674,7 +88674,7 @@
       "matchup": "Dallas Wings @ Golden State Valkyries",
       "model_key": "wnba_player_props",
       "odds": 114.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Paige Bueckers Over 5.5 Assists",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -88746,12 +88746,12 @@
         "units": 2.0
       },
       "probability": 0.8474,
-      "profit": null,
+      "profit": 2.28,
       "raw_decision": "BET",
       "raw_edge": 38.01,
       "raw_probability": 0.8474,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -88768,7 +88768,7 @@
       "matchup": "Seattle Storm @ Portland Fire",
       "model_key": "wnba_player_props",
       "odds": 120.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Carla Leite Over 2.5 Rebounds",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -88840,12 +88840,12 @@
         "units": 2.0
       },
       "probability": 0.72,
-      "profit": null,
+      "profit": 2.4,
       "raw_decision": "BET",
       "raw_edge": 26.55,
       "raw_probability": 0.72,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -88862,7 +88862,7 @@
       "matchup": "New York Liberty @ Chicago Sky",
       "model_key": "wnba_player_props",
       "odds": 107.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Kamilla Cardoso Over 2.5 Assists",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -88937,12 +88937,12 @@
         "units": 2.0
       },
       "probability": 0.8526,
-      "profit": null,
+      "profit": 2.14,
       "raw_decision": "BET",
       "raw_edge": 36.95,
       "raw_probability": 0.8526,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -89053,7 +89053,7 @@
       "matchup": "Seattle Storm @ Portland Fire",
       "model_key": "wnba_player_props",
       "odds": -125.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Awa Fam Over 11.5 Points + Assists",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -89125,12 +89125,12 @@
         "units": 2.0
       },
       "probability": 0.8197,
-      "profit": null,
+      "profit": 1.6,
       "raw_decision": "BET",
       "raw_edge": 26.41,
       "raw_probability": 0.8197,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -89147,7 +89147,7 @@
       "matchup": "Minnesota Lynx @ Los Angeles Sparks",
       "model_key": "wnba_player_props",
       "odds": 138.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Nneka Ogwumike Over 2.5 Assists",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -89219,12 +89219,12 @@
         "units": 2.0
       },
       "probability": 0.726,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 30.58,
       "raw_probability": 0.726,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -89241,7 +89241,7 @@
       "matchup": "Las Vegas Aces @ Phoenix Mercury",
       "model_key": "wnba_player_props",
       "odds": -108.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Natasha Mack Over 9.5 Points",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -89313,12 +89313,12 @@
         "units": 2.0
       },
       "probability": 0.8636,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 34.44,
       "raw_probability": 0.8636,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -89335,7 +89335,7 @@
       "matchup": "Dallas Wings @ Golden State Valkyries",
       "model_key": "wnba_player_props",
       "odds": 127.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Arike Ogunbowale Over 3.5 Assists",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -89407,12 +89407,12 @@
         "units": 2.0
       },
       "probability": 0.8204,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 37.99,
       "raw_probability": 0.8204,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -89429,7 +89429,7 @@
       "matchup": "Las Vegas Aces @ Phoenix Mercury",
       "model_key": "wnba_player_props",
       "odds": -108.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Natasha Mack Over 1.5 Assists",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -89501,12 +89501,12 @@
         "units": 2.0
       },
       "probability": 0.8414,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 32.22,
       "raw_probability": 0.8414,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -89523,7 +89523,7 @@
       "matchup": "Dallas Wings @ Golden State Valkyries",
       "model_key": "wnba_player_props",
       "odds": 100.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Paige Bueckers Over 3.5 Rebounds",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -89595,12 +89595,12 @@
         "units": 2.0
       },
       "probability": 0.8519,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 35.19,
       "raw_probability": 0.8519,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -89617,7 +89617,7 @@
       "matchup": "Seattle Storm @ Portland Fire",
       "model_key": "wnba_player_props",
       "odds": -122.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Awa Fam Over 9.5 Points",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -89689,12 +89689,12 @@
         "units": 2.0
       },
       "probability": 0.8282,
-      "profit": null,
+      "profit": 1.639344262295082,
       "raw_decision": "BET",
       "raw_edge": 27.87,
       "raw_probability": 0.8282,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -89805,7 +89805,7 @@
       "matchup": "Seattle Storm @ Portland Fire",
       "model_key": "wnba_player_props",
       "odds": -129.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Jade Melbourne Over 7.5 Points",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -89877,12 +89877,12 @@
         "units": 2.0
       },
       "probability": 0.802,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 23.87,
       "raw_probability": 0.802,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -89993,7 +89993,7 @@
       "matchup": "Dallas Wings @ Golden State Valkyries",
       "model_key": "wnba_player_props",
       "odds": 183.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Jessica Shepard Over 19.5 Points + Assists",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -90065,12 +90065,12 @@
         "units": 2.0
       },
       "probability": 0.823,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 46.96,
       "raw_probability": 0.823,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -90087,7 +90087,7 @@
       "matchup": "Seattle Storm @ Portland Fire",
       "model_key": "wnba_player_props",
       "odds": 124.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Natisha Hiedeman Over 19.5 Points + Assists",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -90159,12 +90159,12 @@
         "units": 2.0
       },
       "probability": 0.8252,
-      "profit": null,
+      "profit": 2.48,
       "raw_decision": "BET",
       "raw_edge": 37.88,
       "raw_probability": 0.8252,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -90181,7 +90181,7 @@
       "matchup": "Seattle Storm @ Portland Fire",
       "model_key": "wnba_player_props",
       "odds": 133.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Flau'jae Johnson Over 5.5 Rebounds",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -90253,12 +90253,12 @@
         "units": 2.0
       },
       "probability": 0.7305,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 30.13,
       "raw_probability": 0.7305,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -90275,7 +90275,7 @@
       "matchup": "Minnesota Lynx @ Los Angeles Sparks",
       "model_key": "wnba_player_props",
       "odds": 116.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Dearica Hamby Over 8.5 Rebounds",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -90347,12 +90347,12 @@
         "units": 2.0
       },
       "probability": 0.739,
-      "profit": null,
+      "profit": 2.32,
       "raw_decision": "BET",
       "raw_edge": 27.6,
       "raw_probability": 0.739,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -90369,7 +90369,7 @@
       "matchup": "Las Vegas Aces @ Phoenix Mercury",
       "model_key": "wnba_player_props",
       "odds": -108.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Monique Akoa Makani Over 2.5 Rebounds",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -90441,12 +90441,12 @@
         "units": 2.0
       },
       "probability": 0.8089,
-      "profit": null,
+      "profit": 1.8518518518518519,
       "raw_decision": "BET",
       "raw_edge": 28.97,
       "raw_probability": 0.8089,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -90463,7 +90463,7 @@
       "matchup": "Seattle Storm @ Portland Fire",
       "model_key": "wnba_player_props",
       "odds": -133.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Sarah Ashlee Barker Over 9.5 Points",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -90535,12 +90535,12 @@
         "units": 2.0
       },
       "probability": 0.8145,
-      "profit": null,
+      "profit": 1.5037593984962405,
       "raw_decision": "BET",
       "raw_edge": 24.37,
       "raw_probability": 0.8145,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -90557,7 +90557,7 @@
       "matchup": "Minnesota Lynx @ Los Angeles Sparks",
       "model_key": "wnba_player_props",
       "odds": 136.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Nia Coffey Over 2.5 Assists",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -90629,12 +90629,12 @@
         "units": 2.0
       },
       "probability": 0.8259,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 40.22,
       "raw_probability": 0.8259,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -90651,7 +90651,7 @@
       "matchup": "New York Liberty @ Chicago Sky",
       "model_key": "wnba_player_props",
       "odds": 104.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Jacy Sheldon Over 9.5 Points + Assists",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -90725,12 +90725,12 @@
         "units": 2.0
       },
       "probability": 0.8405,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 35.03,
       "raw_probability": 0.8405,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -90747,7 +90747,7 @@
       "matchup": "New York Liberty @ Chicago Sky",
       "model_key": "wnba_player_props",
       "odds": 115.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Jacy Sheldon Over 7.5 Points",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -90821,12 +90821,12 @@
         "units": 2.0
       },
       "probability": 0.8329,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 36.78,
       "raw_probability": 0.8329,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -90843,7 +90843,7 @@
       "matchup": "New York Liberty @ Chicago Sky",
       "model_key": "wnba_player_props",
       "odds": 124.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Skylar Diggins Over 19.5 Points + Rebounds",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -90918,12 +90918,12 @@
         "units": 2.0
       },
       "probability": 0.8286,
-      "profit": null,
+      "profit": 2.48,
       "raw_decision": "BET",
       "raw_edge": 38.22,
       "raw_probability": 0.8286,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -90940,7 +90940,7 @@
       "matchup": "Las Vegas Aces @ Phoenix Mercury",
       "model_key": "wnba_player_props",
       "odds": -103.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Chelsea Gray Over 12.5 Points",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -91015,12 +91015,12 @@
         "units": 2.0
       },
       "probability": 0.8247,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 31.73,
       "raw_probability": 0.8247,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -91225,7 +91225,7 @@
       "matchup": "Dallas Wings @ Golden State Valkyries",
       "model_key": "wnba_player_props",
       "odds": 156.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Arike Ogunbowale Over 19.5 Points + Assists",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -91297,12 +91297,12 @@
         "units": 2.0
       },
       "probability": 0.8157,
-      "profit": null,
+      "profit": 3.12,
       "raw_decision": "BET",
       "raw_edge": 42.51,
       "raw_probability": 0.8157,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -91417,7 +91417,7 @@
       "matchup": "Minnesota Lynx @ Los Angeles Sparks",
       "model_key": "wnba_player_props",
       "odds": -113.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Nneka Ogwumike Over 9.5 Rebounds",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -91489,12 +91489,12 @@
         "units": 2.0
       },
       "probability": 0.8215,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 29.1,
       "raw_probability": 0.8215,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -91511,7 +91511,7 @@
       "matchup": "Las Vegas Aces @ Phoenix Mercury",
       "model_key": "wnba_player_props",
       "odds": -104.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "DeWanna Bonner Over 12.5 Points + Rebounds",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -91583,12 +91583,12 @@
         "units": 2.0
       },
       "probability": 0.8197,
-      "profit": null,
+      "profit": 1.9230769230769231,
       "raw_decision": "BET",
       "raw_edge": 30.99,
       "raw_probability": 0.8197,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -91605,7 +91605,7 @@
       "matchup": "New York Liberty @ Chicago Sky",
       "model_key": "wnba_player_props",
       "odds": -102.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Gabriela Jaquez Over 3.5 Rebounds",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -91679,12 +91679,12 @@
         "units": 2.0
       },
       "probability": 0.8709,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 36.59,
       "raw_probability": 0.8709,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -91701,7 +91701,7 @@
       "matchup": "Minnesota Lynx @ Los Angeles Sparks",
       "model_key": "wnba_player_props",
       "odds": -108.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Kayla McBride Over 18.5 Points + Rebounds",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -91773,12 +91773,12 @@
         "units": 2.0
       },
       "probability": 0.8184,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 29.92,
       "raw_probability": 0.8184,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -91795,7 +91795,7 @@
       "matchup": "Dallas Wings @ Golden State Valkyries",
       "model_key": "wnba_player_props",
       "odds": -106.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Jessica Shepard Over 11.5 Points",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -91867,12 +91867,12 @@
         "units": 2.0
       },
       "probability": 0.8813,
-      "profit": null,
+      "profit": 1.8867924528301887,
       "raw_decision": "BET",
       "raw_edge": 36.67,
       "raw_probability": 0.8813,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -91889,7 +91889,7 @@
       "matchup": "Las Vegas Aces @ Phoenix Mercury",
       "model_key": "wnba_player_props",
       "odds": 126.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Chelsea Gray Over 4.5 Rebounds",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -91964,12 +91964,12 @@
         "units": 2.0
       },
       "probability": 0.7395,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 29.7,
       "raw_probability": 0.7395,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -91986,7 +91986,7 @@
       "matchup": "Dallas Wings @ Golden State Valkyries",
       "model_key": "wnba_player_props",
       "odds": 108.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Veronica Burton Over 14.5 Points",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -92058,12 +92058,12 @@
         "units": 2.0
       },
       "probability": 0.8123,
-      "profit": null,
+      "profit": -2.0,
       "raw_decision": "BET",
       "raw_edge": 33.15,
       "raw_probability": 0.8123,
       "raw_units": 2.0,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 2.0
@@ -92071,9 +92071,9 @@
   ],
   "schema_version": 1,
   "summary": {
-    "decided_picks": 1112,
-    "pending_picks": 449,
+    "decided_picks": 1238,
+    "pending_picks": 323,
     "total_picks": 1600,
-    "trainable_decided_picks": 833
+    "trainable_decided_picks": 930
   }
 }
