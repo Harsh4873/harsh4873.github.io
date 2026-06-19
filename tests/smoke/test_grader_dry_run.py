@@ -184,6 +184,62 @@ def test_soccer_three_way_moneyline_loses_on_draw():
     assert pickgrader_server.grade_pick(pick, game) == "loss"
 
 
+def test_scores24_comma_totals_and_wnba_handicap_grade_correctly():
+    import pickgrader_server
+
+    mlb_game = {
+        "competitors": [
+            {"raw": {"team": {"displayName": "Boston Red Sox"}}, "score": 3},
+            {"raw": {"team": {"displayName": "Toronto Blue Jays"}}, "score": 4},
+        ],
+    }
+    wnba_game = {
+        "competitors": [
+            {"raw": {"team": {"displayName": "Indiana Fever"}}, "score": 101},
+            {"raw": {"team": {"displayName": "Atlanta Dream"}}, "score": 108},
+        ],
+    }
+
+    assert pickgrader_server.grade_pick(
+        {
+            "sport": "MLB",
+            "pick": "Total Under (8,5) (Toronto Blue Jays @ Boston Red Sox)",
+            "tip": "Total Under (8,5)",
+        },
+        mlb_game,
+    ) == "win"
+    assert pickgrader_server.grade_pick(
+        {
+            "sport": "WNBA",
+            "pick": "Indiana Fever (W) Handicap (+7,5) (Atlanta Dream @ Indiana Fever)",
+            "tip": "Indiana Fever (W) Handicap (+7,5)",
+            "away_team": "Atlanta Dream",
+            "home_team": "Indiana Fever",
+        },
+        wnba_game,
+    ) == "win"
+    assert pickgrader_server.grade_pick(
+        {
+            "sport": "MLB",
+            "pick": "Toronto Blue Jays Total Over (3,5) (Toronto Blue Jays @ Boston Red Sox)",
+            "tip": "Toronto Blue Jays Total Over (3,5)",
+            "away_team": "Toronto Blue Jays",
+            "home_team": "Boston Red Sox",
+        },
+        mlb_game,
+    ) == "win"
+    assert pickgrader_server.grade_pick(
+        {
+            "sport": "WNBA",
+            "pick": "Indiana Fever (W) Total points Under (101,5) (Atlanta Dream @ Indiana Fever)",
+            "tip": "Indiana Fever (W) Total points Under (101,5)",
+            "away_team": "Atlanta Dream",
+            "home_team": "Indiana Fever",
+        },
+        wnba_game,
+    ) == "win"
+
+
 def test_fifa_world_cup_moneyline_total_and_handicap_results():
     import pickgrader_server
 

@@ -8812,6 +8812,7 @@
           "projected_home_goals": 1.776,
           "projected_total": 2.98,
           "reason": "Mexico owns the stronger current-squad projection. Attack 88.1, midfield 90.7, defense 81.2, goalkeeper 78.0. Top player ranks: \u00c1lvaro Fidalgo 95.1, Obed Vargas 94.7, Johan V\u00e1squez 91.0.",
+          "result": "win",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-06-19T01:00Z",
@@ -8861,6 +8862,7 @@
           "projected_home_goals": 1.776,
           "projected_total": 2.98,
           "reason": "Projected goals South Korea 1.20, Mexico 1.78 from the two attacking engines against the opposing defensive units.",
+          "result": "loss",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-06-19T01:00Z",
@@ -11232,6 +11234,7 @@
           "probability": 0.5605,
           "raw_edge": 17.05,
           "raw_probability": 0.6943,
+          "result": "win",
           "source": "MLB First Five",
           "sport": "MLB",
           "start_time": "2026-06-18T22:40Z",
@@ -11665,6 +11668,7 @@
           "probability": 0.5706,
           "raw_edge": 13.52,
           "raw_probability": 0.659,
+          "result": "win",
           "source": "MLB First Five",
           "sport": "MLB",
           "start_time": "2026-06-19T01:40Z",
@@ -12098,6 +12102,7 @@
           "probability": 0.5642,
           "raw_edge": 17.62,
           "raw_probability": 0.7,
+          "result": "win",
           "source": "MLB First Five",
           "sport": "MLB",
           "start_time": "2026-06-18T22:40Z",
@@ -16038,6 +16043,7 @@
           "odds": -133,
           "pick": "Czech Republic ML (South Africa @ Czechia)",
           "probability": null,
+          "result": "loss",
           "source": "Scores24FIFAWorldCup",
           "source_url": "https://scores24.live/en/soccer/m-18-06-2026-czech-republic-south-africa-prediction",
           "sport": "FIFA WC",
@@ -16059,6 +16065,7 @@
           "odds": -175,
           "pick": "Switzerland ML (Bosnia-Herzegovina @ Switzerland)",
           "probability": null,
+          "result": "win",
           "source": "Scores24FIFAWorldCup",
           "source_url": "https://scores24.live/en/soccer/m-18-06-2026-switzerland-bosnia-herzegovina-prediction",
           "sport": "FIFA WC",
@@ -16101,6 +16108,7 @@
           "odds": -125,
           "pick": "Over 2 (South Korea @ Mexico)",
           "probability": null,
+          "result": "loss",
           "source": "Scores24FIFAWorldCup",
           "source_url": "https://scores24.live/en/soccer/m-19-06-2026-mexico-south-korea-prediction",
           "sport": "FIFA WC",
@@ -16161,6 +16169,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-18-06-2026-boston-red-sox-toronto-blue-jays-prediction",
           "sport": "MLB",
@@ -16197,6 +16206,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-18-06-2026-milwaukee-brewers-cleveland-guardians-prediction",
           "sport": "MLB",
@@ -16233,6 +16243,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-18-06-2026-texas-rangers-minnesota-twins-prediction",
           "sport": "MLB",
@@ -16269,6 +16280,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-18-06-2026-seattle-mariners-baltimore-orioles-prediction",
           "sport": "MLB",
@@ -16305,6 +16317,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-18-06-2026-philadelphia-phillies-new-york-mets-prediction",
           "sport": "MLB",
@@ -16341,6 +16354,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-18-06-2026-new-york-yankees-chicago-white-sox-prediction",
           "sport": "MLB",
@@ -16377,6 +16391,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "push",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-18-06-2026-atlanta-braves-san-francisco-giants-prediction",
           "sport": "MLB",
@@ -16413,6 +16428,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-18-06-2026-kansas-city-royals-st-louis-cardinals-prediction",
           "sport": "MLB",
@@ -16449,6 +16465,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-18-06-2026-athletics-los-angeles-angels-prediction",
           "sport": "MLB",
@@ -16509,6 +16526,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24WNBA",
           "source_url": "https://scores24.live/en/basketball/m-20-06-2026-atlanta-dream-w-indiana-fever-w--prediction",
           "sport": "WNBA",
@@ -16565,6 +16583,7 @@
           "odds": -182,
           "pick": "Under 2.5 Goals (Mexico vs South Korea)",
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerFIFAWorldCup",
           "sport": "FIFA WC",
           "start_time": "2026-06-19T01:00Z",
@@ -16629,6 +16648,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-18T22:40Z",
@@ -16657,6 +16677,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-18T23:05Z",
@@ -16714,6 +16735,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-18T23:40Z",
@@ -16742,6 +16764,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-19T01:40Z",
@@ -16925,6 +16948,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerWNBA",
           "sport": "WNBA",
           "start_time": "2026-06-18T23:30Z",
@@ -17047,6 +17071,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-18T23:05Z",
@@ -17104,6 +17129,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-19T01:40Z",

@@ -2371,8 +2371,18 @@ def grade_pick(pick: dict[str, Any], game: dict[str, Any]) -> str:
     if str(pick.get("scope") or "").strip().lower() == "player":
         return "pending"
 
-    pick_text = str(pick.get("pick", ""))
-    head = pick_text.split("(", 1)[0].strip()
+    pick_text = re.sub(r"(?<=\d),(?=\d)", ".", str(pick.get("pick", "")))
+    selection_text = re.sub(
+        r"(?<=\d),(?=\d)",
+        ".",
+        str(pick.get("tip") or pick_text),
+    )
+    head = re.sub(
+        r"\s+\([^()]*(?:@|vs\.?)\s+[^()]*\)\s*$",
+        "",
+        selection_text,
+        flags=re.IGNORECASE,
+    ).strip()
     lower = head.lower()
 
     total_points = game["competitors"][0]["score"] + game["competitors"][1]["score"]
@@ -2383,24 +2393,20 @@ def grade_pick(pick: dict[str, Any], game: dict[str, Any]) -> str:
     if str(pick.get("sport", "")).upper() == "MLB" and is_mlb_first_five_pick(pick, pick_text):
         return grade_mlb_first_five_pick(pick, game)
 
-    # Full-game totals (Over/Under X)
-    m_total = re.search(r"\b(over|under)\s+(\d+(?:\.\d+)?)\b", lower)
-    # Skip if "team total" or team-prefixed TG (e.g. "senators over 3 tg"),
-    # but allow game-level TG (e.g. "over 5.5 tg" where over/under is first word)
-    has_team_tg = lower.endswith(" tg") and not re.match(r"^(over|under)\b", lower)
-    if m_total and "team total" not in lower and not has_team_tg:
-        side = m_total.group(1)
-        line = float(m_total.group(2))
-        if total_points == line:
-            return "push"
-        if side == "over":
-            return "win" if total_points > line else "loss"
-        return "win" if total_points < line else "loss"
-
-    # Team total over/under, e.g. "Korea Team Total Over 9.5"
-    m_team_total = re.search(r"^(.*?)\s+team total\s+(over|under)\s+(\d+(?:\.\d+)?)", lower)
+    # Named team totals, including Scores24 formats such as
+    # "Nationals Total Over (4,5)" and "Aces (W) Total points Under (87.5)".
+    m_team_total = re.search(
+        r"^(.+?)\s+(?:team\s+total|total(?:\s+(?:points|goals|runs))?)\s+"
+        r"(over|under)\s+\(?(\d+(?:\.\d+)?)\)?",
+        lower,
+    )
     if m_team_total:
-        team_label = m_team_total.group(1).strip()
+        team_label = re.sub(
+            r"\s*\((?:w|m|women|men)\)\s*$",
+            "",
+            m_team_total.group(1),
+            flags=re.IGNORECASE,
+        ).strip()
         side = m_team_total.group(2)
         line = float(m_team_total.group(3))
         resolved = resolve_team_score(game, team_label, pick)
@@ -2412,6 +2418,20 @@ def grade_pick(pick: dict[str, Any], game: dict[str, Any]) -> str:
         if side == "over":
             return "win" if team_score > line else "loss"
         return "win" if team_score < line else "loss"
+
+    # Full-game totals (Over/Under X)
+    m_total = re.search(r"\b(over|under)\s+\(?(\d+(?:\.\d+)?)\)?", lower)
+    # Skip if "team total" or team-prefixed TG (e.g. "senators over 3 tg"),
+    # but allow game-level TG (e.g. "over 5.5 tg" where over/under is first word)
+    has_team_tg = lower.endswith(" tg") and not re.match(r"^(over|under)\b", lower)
+    if m_total and "team total" not in lower and not has_team_tg:
+        side = m_total.group(1)
+        line = float(m_total.group(2))
+        if total_points == line:
+            return "push"
+        if side == "over":
+            return "win" if total_points > line else "loss"
+        return "win" if total_points < line else "loss"
 
     # Team goals shorthand, e.g. "Senators Over 3 TG"
     m_tg = re.search(r"^(.*?)\s+(over|under)\s+(\d+(?:\.\d+)?)\s*tg\b", lower)
@@ -2450,10 +2470,20 @@ def grade_pick(pick: dict[str, Any], game: dict[str, Any]) -> str:
             return "win" if both_scored else "loss"
         return "win" if not both_scored else "loss"
 
-    # Spread / run line / puck line, e.g. "Knicks -11.5"
-    m_spread = re.search(r"^(.*?)\s*([+-]\d+(?:\.\d+)?)\b", head)
+    # Spread / run line / puck line, including Scores24's
+    # "Indiana Fever (W) Handicap (+7,5)" format.
+    m_spread = re.search(
+        r"^(.*?)\s+(?:handicap|spread)\s*\(\s*([+-]\d+(?:\.\d+)?)\s*\)\s*$",
+        head,
+        flags=re.IGNORECASE,
+    ) or re.search(r"^(.*?)\s*([+-]\d+(?:\.\d+)?)\b", head)
     if m_spread:
-        team_label = m_spread.group(1).strip()
+        team_label = re.sub(
+            r"\s*\((?:w|m|women|men)\)\s*$",
+            "",
+            m_spread.group(1),
+            flags=re.IGNORECASE,
+        ).strip()
         try:
             spread = float(m_spread.group(2))
         except ValueError:
@@ -2466,6 +2496,9 @@ def grade_pick(pick: dict[str, Any], game: dict[str, Any]) -> str:
         if abs(adj - opp_score) < 1e-9:
             return "push"
         return "win" if adj > opp_score else "loss"
+
+    if "handicap" in lower or "spread" in lower:
+        return "pending"
 
     # Moneyline explicit: "Team ML"
     m_ml = re.search(r"^(.*?)\s+(?:ml|moneyline|to win|wins?)\b", lower)
