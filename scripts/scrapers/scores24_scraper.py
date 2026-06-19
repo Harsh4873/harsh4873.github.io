@@ -71,11 +71,13 @@ TEAM_TEXT_ALIASES = {
     "czech republic": "czechia",
     "oakland athletics": "athletics",
     "turkiye": "turkey",
+    "usa": "united states",
 }
 TEAM_SLUG_ALIASES = {
     "Cleveland Guardians": ("Cleveland Gardians",),
     "Czechia": ("Czech Republic",),
     "Athletics": ("Oakland Athletics",),
+    "United States": ("USA", "United States of America"),
 }
 
 
@@ -407,6 +409,7 @@ class Scores24Client:
 
     def get_html(self, url: str, attempts: int = 3) -> tuple[str, int, bool]:
         if self._prefer_camoufox:
+            self._pace()
             camoufox_html, camoufox_status = self._camoufox_html(url)
             if camoufox_status == 200 and not _looks_blocked(camoufox_status, camoufox_html):
                 return camoufox_html, camoufox_status, False

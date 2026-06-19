@@ -40,6 +40,7 @@ git -C "${TEMP_REPO}" config user.email "${GIT_EMAIL}"
 
 SCORES24_BROWSER_FALLBACK=true \
 SCORES24_CAMOUFOX_FALLBACK=true \
+SCORES24_REQUEST_INTERVAL_SECONDS=8 \
 "${PYTHON_BIN}" "${TEMP_REPO}/scripts/refresh_external_feeds.py" \
   --date "${DATE_ISO}" \
   --feeds "scores24_wnba,scores24_mlb,scores24_fifa_world_cup" \

@@ -666,6 +666,18 @@ def test_scores24_fifa_world_cup_supports_czech_republic_alias():
     )
 
 
+def test_scores24_fifa_world_cup_supports_usa_alias():
+    module = _load_module(
+        "scores24_usa_alias_test",
+        ROOT / "scripts" / "scrapers" / "scores24_scraper.py",
+    )
+    matchup = {"away": "Australia", "home": "United States", "start_time": ""}
+    urls = module.candidate_prediction_urls("fifa_world_cup", "2026-06-19", matchup)
+
+    assert any("usa-australia" in url for url in urls)
+    assert module._matchup_matches_blob(matchup, "USA vs Australia Prediction")
+
+
 def test_scores24_retries_blocked_matchup_without_hammering_candidates(monkeypatch):
     module = _load_module(
         "scores24_retry_test",
@@ -805,6 +817,7 @@ def test_local_scores24_publisher_registers_separate_models():
     assert 'GH_BIN="$(command -v gh || true)"' in publisher
     assert "SCORES24_BROWSER_FALLBACK=true" in publisher
     assert "SCORES24_CAMOUFOX_FALLBACK=true" in publisher
+    assert "SCORES24_REQUEST_INTERVAL_SECONDS=8" in publisher
     assert "Scores24 refresh incomplete; refusing to publish" in publisher
     assert 'expected != matched' in publisher
     assert "workflow run deploy-pages.yml" in publisher
