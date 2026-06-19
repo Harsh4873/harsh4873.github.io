@@ -25101,6 +25101,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Kansas City Royals vs St. Louis Cardinals",
+          "game_start_time": "2026-06-20T00:15Z",
           "matchup": "Kansas City Royals vs St. Louis Cardinals",
           "odds": 105,
           "pick": "Royals ML (Royals vs Cardinals)",
@@ -25120,6 +25121,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-20T00:15Z",
           "units": 1
         },
         {
@@ -25127,6 +25129,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Colorado Rockies vs Pittsburgh Pirates",
+          "game_start_time": "2026-06-20T00:40Z",
           "matchup": "Colorado Rockies vs Pittsburgh Pirates",
           "odds": 112,
           "pick": "Pirates -1.5 (Rockies vs Pirates)",
@@ -25146,6 +25149,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-20T00:40Z",
           "units": 1
         }
       ],
@@ -25839,6 +25843,7 @@
           "decision": "LEAN",
           "edge": 5.77,
           "game": "Minnesota Lynx @ Golden State Valkyries",
+          "game_start_time": "2026-06-20T02:00Z",
           "guardrail_reasons": [
             "new totals market capped at LEAN while its live record is established"
           ],
@@ -25898,6 +25903,7 @@
           "selection": "Over",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-20T02:00Z",
           "units": 0.02,
           "vegas": 165.5
         },
