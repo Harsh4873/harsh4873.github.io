@@ -1,14 +1,23 @@
 {
-  "last_updated": "2026-06-18T13:20:03.782272",
+  "last_updated": "2026-06-19T13:12:08.639705",
   "report": {
     "aaliyah nye": {
       "player_name": "Aaliyah Nye",
+      "team_abbr": "ATL",
+      "status": "Day-To-Day",
+      "sources": [
+        "espn"
+      ],
+      "comment": "day-to-day"
+    },
+    "amy okonkwo": {
+      "player_name": "Amy Okonkwo",
       "team_abbr": "ATL",
       "status": "Out",
       "sources": [
         "espn"
       ],
-      "comment": "Nye is out for Thursday's game in Indiana due to a left knee injury."
+      "comment": "Okonkwo (coach's decision) won't play in Thursday's game versus the Fever."
     },
     "brionna jones": {
       "player_name": "Brionna Jones",
@@ -55,15 +64,6 @@
       ],
       "comment": "The Sky announced Tuesday that Jackson will miss the remainder of the season after suffering a torn ACL in her left knee during Sunday's 86-79 win over the Lynx."
     },
-    "ashlon jackson": {
-      "player_name": "Ashlon Jackson",
-      "team_abbr": "CON",
-      "status": "Out",
-      "sources": [
-        "espn"
-      ],
-      "comment": "Jackson (coach's decision) is out for Wednesday's game against the Mystics."
-    },
     "hailey van lith": {
       "player_name": "Hailey Van Lith",
       "team_abbr": "CON",
@@ -71,7 +71,7 @@
       "sources": [
         "espn"
       ],
-      "comment": "Van Lith (ankle) is out for Wednesday's game against the Mystics."
+      "comment": "Van Lith (ankle) is out for Friday's game against the Tempo."
     },
     "odyssey sims": {
       "player_name": "Odyssey Sims",
@@ -82,24 +82,6 @@
       ],
       "comment": "Sims (ankle) has been ruled out for Saturday's game against the Fire."
     },
-    "ashten prechtel": {
-      "player_name": "Ashten Prechtel",
-      "team_abbr": "GSV",
-      "status": "Out",
-      "sources": [
-        "espn"
-      ],
-      "comment": "Prechtel (coach's decision) won't play Wednesday versus Dallas."
-    },
-    "miela sowah": {
-      "player_name": "Miela Sowah",
-      "team_abbr": "GSV",
-      "status": "Out",
-      "sources": [
-        "espn"
-      ],
-      "comment": "Sowah (coach's decision) is listed as out for Wednesday's game versus Dallas."
-    },
     "iliana rupert": {
       "player_name": "Iliana Rupert",
       "team_abbr": "GSV",
@@ -109,14 +91,23 @@
       ],
       "comment": "Rupert is pregnant, and the Valkyries have filed for a replacement contract ahead of the 2026 season, Alexa Philippou of ESPN.com reports Thursday."
     },
-    "caitlin clark": {
-      "player_name": "Caitlin Clark",
+    "bree hall": {
+      "player_name": "Bree Hall",
       "team_abbr": "IND",
-      "status": "Day-To-Day",
+      "status": "Out",
       "sources": [
         "espn"
       ],
-      "comment": "Clark (back) is probable for Thursday's game versus the Dream."
+      "comment": "Hall (coach's decision) is listed as out for Thursday's game versus Atlanta."
+    },
+    "justine pissott": {
+      "player_name": "Justine Pissott",
+      "team_abbr": "IND",
+      "status": "Out",
+      "sources": [
+        "espn"
+      ],
+      "comment": "Pissott (coach's decision) is out for Thursday's game against the Dream."
     },
     "kate martin": {
       "player_name": "Kate Martin",
@@ -181,15 +172,6 @@
       ],
       "comment": "Evans (leg) has been ruled out for Saturday's game against the Lynx."
     },
-    "liatu king": {
-      "player_name": "Liatu King",
-      "team_abbr": "MIN",
-      "status": "Day-To-Day",
-      "sources": [
-        "espn"
-      ],
-      "comment": "day-to-day"
-    },
     "napheesa collier": {
       "player_name": "Napheesa Collier",
       "team_abbr": "MIN",
@@ -217,15 +199,6 @@
       ],
       "comment": "Cechova (knee) was diagnosed with a torn ACL in her right knee and will undergo surgery, Meghan L. Hall of USA Today reports. She will miss the remainder of the season."
     },
-    "marine fauthoux": {
-      "player_name": "Marine Fauthoux",
-      "team_abbr": "NY",
-      "status": "Day-To-Day",
-      "sources": [
-        "espn"
-      ],
-      "comment": "day-to-day"
-    },
     "betnijah laney-hamilton": {
       "player_name": "Betnijah Laney-Hamilton",
       "team_abbr": "NY",
@@ -233,16 +206,7 @@
       "sources": [
         "espn"
       ],
-      "comment": "day-to-day"
-    },
-    "anneli maley": {
-      "player_name": "Anneli Maley",
-      "team_abbr": "NY",
-      "status": "Out",
-      "sources": [
-        "espn"
-      ],
-      "comment": "out"
+      "comment": "Laney-Hamilton (knee) is questionable for Friday's game against the Mystics."
     },
     "kiana williams": {
       "player_name": "Kiana Williams",
@@ -298,23 +262,14 @@
       ],
       "comment": "The Storm announced Monday that Magbegor is expected to miss at least 6-8 weeks due to a right foot injury, Alexa Philippou of ESPN.com reports."
     },
-    "julie allemand": {
-      "player_name": "Julie Allemand",
-      "team_abbr": "TOR",
-      "status": "Day-To-Day",
-      "sources": [
-        "espn"
-      ],
-      "comment": "Allemand (head) will not return to Tuesday's game against Indiana, Zulfi Sheikh of Sportsnet reports. She'll finish with no points (0-2 FG, 0-2 3Pt) and one assist across 11 minutes."
-    },
     "brittney sykes": {
       "player_name": "Brittney Sykes",
       "team_abbr": "TOR",
-      "status": "Day-To-Day",
+      "status": "Out",
       "sources": [
         "espn"
       ],
-      "comment": "Sykes (foot) won't return to Tuesday's game against the Fever, Zulfi Sheikh of Sportsnet reports. She'll finish with 11 points (5-8 FG, 1-1 3Pt, 0-1 FT), three assists and two rebounds across 19 minutes."
+      "comment": "Sykes (foot) is out for Friday's game against the Sun."
     },
     "nyara sabally": {
       "player_name": "Nyara Sabally",
@@ -323,7 +278,7 @@
       "sources": [
         "espn"
       ],
-      "comment": "Sabally (hamstring) is listed as out for Tuesday's game against Indiana."
+      "comment": "Sabally (hamstring) is questionable for Friday's game against the Sun."
     },
     "kiki rice": {
       "player_name": "Kiki Rice",
@@ -334,15 +289,6 @@
       ],
       "comment": "out"
     },
-    "darianna littlepage-buggs": {
-      "player_name": "Darianna Littlepage-Buggs",
-      "team_abbr": "WAS",
-      "status": "Day-To-Day",
-      "sources": [
-        "espn"
-      ],
-      "comment": "day-to-day"
-    },
     "shakira austin": {
       "player_name": "Shakira Austin",
       "team_abbr": "WAS",
@@ -350,16 +296,7 @@
       "sources": [
         "espn"
       ],
-      "comment": "day-to-day"
-    },
-    "kiki iriafen": {
-      "player_name": "Kiki Iriafen",
-      "team_abbr": "WAS",
-      "status": "Out",
-      "sources": [
-        "espn"
-      ],
-      "comment": "Iriafen (ankle) has been ruled out for Wednesday's game in Connecticut."
+      "comment": "Austin (knee) is listed as questionable for Friday against the Liberty."
     }
   }
 }
