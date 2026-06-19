@@ -1,7 +1,7 @@
 {
   "date": "2026-06-19",
   "errors": [],
-  "externalFeedsUpdatedAt": "2026-06-19T17:42:04.327258Z",
+  "externalFeedsUpdatedAt": "2026-06-19T21:19:40.894242Z",
   "external_feeds": {
     "scores24_fifa_world_cup": {
       "date": "2026-06-19",
@@ -746,7 +746,7 @@
     "sportsgambler_fifa_world_cup": {
       "date": "2026-06-19",
       "errors": [],
-      "generatedAt": "2026-06-19T16:40:41.145163Z",
+      "generatedAt": "2026-06-19T21:19:40.894242Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-19",
@@ -755,7 +755,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 3,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-19T16:40:41.145163Z"
+        "updatedAt": "2026-06-19T21:19:40.894242Z"
       },
       "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 3 pick(s).",
       "ok": true,
@@ -809,58 +809,32 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-19T16:40:41.145163Z"
+      "updatedAt": "2026-06-19T21:19:40.894242Z"
     },
     "sportsgambler_mlb": {
       "date": "2026-06-19",
       "errors": [],
-      "generatedAt": "2026-06-19T16:40:41.145163Z",
+      "generatedAt": "2026-06-19T21:19:40.894242Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-19",
         "feed": "sportsgambler_mlb",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 14,
+        "pick_count": 13,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-19T16:40:41.145163Z"
+        "updatedAt": "2026-06-19T21:19:40.894242Z"
       },
-      "note": "Scheduled sportsgambler_mlb refresh returned 14 pick(s).",
+      "note": "Scheduled sportsgambler_mlb refresh returned 13 pick(s).",
       "ok": true,
       "picks": [
         {
           "date": "2026-06-19",
           "decision": "BET",
           "edge": null,
-          "game": "Chicago Cubs vs Toronto Blue Jays",
-          "matchup": "Chicago Cubs vs Toronto Blue Jays",
-          "odds": -128,
-          "pick": "Chicago Cubs to Win (Chicago Cubs vs Toronto Blue Jays)",
-          "pregame_snapshot": {
-            "date": "2026-06-19",
-            "decision": "BET",
-            "edge": null,
-            "game": "Chicago Cubs vs Toronto Blue Jays",
-            "matchup": "Chicago Cubs vs Toronto Blue Jays",
-            "odds": -128,
-            "pick": "Chicago Cubs to Win (Chicago Cubs vs Toronto Blue Jays)",
-            "probability": null,
-            "source": "SportsGamblerMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        {
-          "date": "2026-06-19",
-          "decision": "BET",
-          "edge": null,
           "game": "Detroit Tigers vs Chicago White Sox",
           "matchup": "Detroit Tigers vs Chicago White Sox",
-          "odds": -222,
+          "odds": -227,
           "pick": "Detroit Tigers to Win (Detroit Tigers vs Chicago White Sox)",
           "pregame_snapshot": {
             "date": "2026-06-19",
@@ -938,7 +912,7 @@
           "edge": null,
           "game": "Miami Marlins vs San Francisco Giants",
           "matchup": "Miami Marlins vs San Francisco Giants",
-          "odds": -130,
+          "odds": -119,
           "pick": "Miami Marlins to Win (Miami Marlins vs San Francisco Giants)",
           "pregame_snapshot": {
             "date": "2026-06-19",
@@ -964,7 +938,7 @@
           "edge": null,
           "game": "Atlanta Braves vs Milwaukee Brewers",
           "matchup": "Atlanta Braves vs Milwaukee Brewers",
-          "odds": -204,
+          "odds": -175,
           "pick": "Milwaukee Brewers to Win (Atlanta Braves vs Milwaukee Brewers)",
           "pregame_snapshot": {
             "date": "2026-06-19",
@@ -990,7 +964,7 @@
           "edge": null,
           "game": "Texas Rangers vs San Diego Padres",
           "matchup": "Texas Rangers vs San Diego Padres",
-          "odds": 130,
+          "odds": 135,
           "pick": "San Diego Padres to Win (Texas Rangers vs San Diego Padres)",
           "pregame_snapshot": {
             "date": "2026-06-19",
@@ -1016,7 +990,7 @@
           "edge": null,
           "game": "Houston Astros vs Cleveland Guardians",
           "matchup": "Houston Astros vs Cleveland Guardians",
-          "odds": -123,
+          "odds": -122,
           "pick": "Houston Astros to Win (Houston Astros vs Cleveland Guardians)",
           "pregame_snapshot": {
             "date": "2026-06-19",
@@ -1068,7 +1042,7 @@
           "edge": null,
           "game": "Colorado Rockies vs Pittsburgh Pirates",
           "matchup": "Colorado Rockies vs Pittsburgh Pirates",
-          "odds": -137,
+          "odds": -143,
           "pick": "Pittsburgh Pirates to Win (Colorado Rockies vs Pittsburgh Pirates)",
           "pregame_snapshot": {
             "date": "2026-06-19",
@@ -1094,7 +1068,7 @@
           "edge": null,
           "game": "Athletics vs Los Angeles Angels",
           "matchup": "Athletics vs Los Angeles Angels",
-          "odds": 138,
+          "odds": 130,
           "pick": "Los Angeles Angels to Win (Athletics vs Los Angeles Angels)",
           "pregame_snapshot": {
             "date": "2026-06-19",
@@ -1146,7 +1120,7 @@
           "edge": null,
           "game": "Seattle Mariners vs Boston Red Sox",
           "matchup": "Seattle Mariners vs Boston Red Sox",
-          "odds": 112,
+          "odds": -104,
           "pick": "Boston Red Sox to Win (Seattle Mariners vs Boston Red Sox)",
           "pregame_snapshot": {
             "date": "2026-06-19",
@@ -1172,7 +1146,7 @@
           "edge": null,
           "game": "Los Angeles Dodgers vs Baltimore Orioles",
           "matchup": "Los Angeles Dodgers vs Baltimore Orioles",
-          "odds": -208,
+          "odds": -233,
           "pick": "Los Angeles Dodgers to Win (Los Angeles Dodgers vs Baltimore Orioles)",
           "pregame_snapshot": {
             "date": "2026-06-19",
@@ -1193,12 +1167,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-19T16:40:41.145163Z"
+      "updatedAt": "2026-06-19T21:19:40.894242Z"
     },
     "sportsgambler_nba": {
       "date": "2026-06-19",
       "errors": [],
-      "generatedAt": "2026-06-19T16:40:41.145163Z",
+      "generatedAt": "2026-06-19T21:19:40.894242Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-19",
@@ -1207,17 +1181,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-19T16:40:41.145163Z"
+        "updatedAt": "2026-06-19T21:19:40.894242Z"
       },
       "note": "Scheduled sportsgambler_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-06-19T16:40:41.145163Z"
+      "updatedAt": "2026-06-19T21:19:40.894242Z"
     },
     "sportsgambler_wnba": {
       "date": "2026-06-19",
       "errors": [],
-      "generatedAt": "2026-06-19T16:40:41.145163Z",
+      "generatedAt": "2026-06-19T21:19:40.894242Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-19",
@@ -1226,7 +1200,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 3,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-19T16:40:41.145163Z"
+        "updatedAt": "2026-06-19T21:19:40.894242Z"
       },
       "note": "Scheduled sportsgambler_wnba refresh returned 3 pick(s).",
       "ok": true,
@@ -1310,12 +1284,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-19T16:40:41.145163Z"
+      "updatedAt": "2026-06-19T21:19:40.894242Z"
     },
     "sportytrader_fifa_world_cup": {
       "date": "2026-06-19",
       "errors": [],
-      "generatedAt": "2026-06-19T16:40:41.145163Z",
+      "generatedAt": "2026-06-19T21:19:40.894242Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-19",
@@ -1324,7 +1298,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 3,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-19T16:40:41.145163Z"
+        "updatedAt": "2026-06-19T21:19:40.894242Z"
       },
       "note": "Scheduled sportytrader_fifa_world_cup refresh returned 3 pick(s).",
       "ok": true,
@@ -1378,51 +1352,25 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-19T16:40:41.145163Z"
+      "updatedAt": "2026-06-19T21:19:40.894242Z"
     },
     "sportytrader_mlb": {
       "date": "2026-06-19",
       "errors": [],
-      "generatedAt": "2026-06-19T16:40:41.145163Z",
+      "generatedAt": "2026-06-19T21:19:40.894242Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-19",
         "feed": "sportytrader_mlb",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 7,
+        "pick_count": 8,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-19T16:40:41.145163Z"
+        "updatedAt": "2026-06-19T21:19:40.894242Z"
       },
-      "note": "Scheduled sportytrader_mlb refresh returned 7 pick(s).",
+      "note": "Scheduled sportytrader_mlb refresh returned 8 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "date": "2026-06-19",
-          "decision": "BET",
-          "edge": null,
-          "game": "Chicago Cubs vs Toronto Blue Jays",
-          "matchup": "Chicago Cubs vs Toronto Blue Jays",
-          "odds": -108,
-          "pick": "Under 7.5 Total Runs (Cubs vs Blue Jays)",
-          "pregame_snapshot": {
-            "date": "2026-06-19",
-            "decision": "BET",
-            "edge": null,
-            "game": "Chicago Cubs vs Toronto Blue Jays",
-            "matchup": "Chicago Cubs vs Toronto Blue Jays",
-            "odds": -108,
-            "pick": "Under 7.5 Total Runs (Cubs vs Blue Jays)",
-            "probability": null,
-            "source": "SportyTraderMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportyTraderMLB",
-          "sport": "MLB",
-          "units": 1
-        },
         {
           "date": "2026-06-19",
           "decision": "BET",
@@ -1578,14 +1526,66 @@
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "units": 1
+        },
+        {
+          "date": "2026-06-19",
+          "decision": "BET",
+          "edge": null,
+          "game": "Arizona Diamondbacks vs Minnesota Twins",
+          "matchup": "Arizona Diamondbacks vs Minnesota Twins",
+          "odds": -175,
+          "pick": "Arizona ML (Diamondbacks vs Twins)",
+          "pregame_snapshot": {
+            "date": "2026-06-19",
+            "decision": "BET",
+            "edge": null,
+            "game": "Arizona Diamondbacks vs Minnesota Twins",
+            "matchup": "Arizona Diamondbacks vs Minnesota Twins",
+            "odds": -175,
+            "pick": "Arizona ML (Diamondbacks vs Twins)",
+            "probability": null,
+            "source": "SportyTraderMLB",
+            "sport": "MLB",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "date": "2026-06-19",
+          "decision": "BET",
+          "edge": null,
+          "game": "Seattle Mariners vs Boston Red Sox",
+          "matchup": "Seattle Mariners vs Boston Red Sox",
+          "odds": -112,
+          "pick": "Seattle ML (Mariners vs Red Sox)",
+          "pregame_snapshot": {
+            "date": "2026-06-19",
+            "decision": "BET",
+            "edge": null,
+            "game": "Seattle Mariners vs Boston Red Sox",
+            "matchup": "Seattle Mariners vs Boston Red Sox",
+            "odds": -112,
+            "pick": "Seattle ML (Mariners vs Red Sox)",
+            "probability": null,
+            "source": "SportyTraderMLB",
+            "sport": "MLB",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
         }
       ],
-      "updatedAt": "2026-06-19T16:40:41.145163Z"
+      "updatedAt": "2026-06-19T21:19:40.894242Z"
     },
     "sportytrader_nba": {
       "date": "2026-06-19",
       "errors": [],
-      "generatedAt": "2026-06-19T16:40:41.145163Z",
+      "generatedAt": "2026-06-19T21:19:40.894242Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-19",
@@ -1594,17 +1594,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-19T16:40:41.145163Z"
+        "updatedAt": "2026-06-19T21:19:40.894242Z"
       },
       "note": "Scheduled sportytrader_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-06-19T16:40:41.145163Z"
+      "updatedAt": "2026-06-19T21:19:40.894242Z"
     },
     "sportytrader_wnba": {
       "date": "2026-06-19",
       "errors": [],
-      "generatedAt": "2026-06-19T16:40:41.145163Z",
+      "generatedAt": "2026-06-19T21:19:40.894242Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-19",
@@ -1613,12 +1613,12 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-19T16:40:41.145163Z"
+        "updatedAt": "2026-06-19T21:19:40.894242Z"
       },
       "note": "Scheduled sportytrader_wnba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-06-19T16:40:41.145163Z"
+      "updatedAt": "2026-06-19T21:19:40.894242Z"
     }
   },
   "fifa_world_cup": {
@@ -24265,7 +24265,7 @@
     "sportsgambler_fifa_world_cup": {
       "date": "2026-06-19",
       "errors": [],
-      "generatedAt": "2026-06-19T16:40:41.145163Z",
+      "generatedAt": "2026-06-19T21:19:40.894242Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-19",
@@ -24274,7 +24274,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 3,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-19T16:40:41.145163Z"
+        "updatedAt": "2026-06-19T21:19:40.894242Z"
       },
       "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 3 pick(s).",
       "ok": true,
@@ -24332,53 +24332,25 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-19T16:40:41.145163Z"
+      "updatedAt": "2026-06-19T21:19:40.894242Z"
     },
     "sportsgambler_mlb": {
       "date": "2026-06-19",
       "errors": [],
-      "generatedAt": "2026-06-19T16:40:41.145163Z",
+      "generatedAt": "2026-06-19T21:19:40.894242Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-19",
         "feed": "sportsgambler_mlb",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 14,
+        "pick_count": 13,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-19T16:40:41.145163Z"
+        "updatedAt": "2026-06-19T21:19:40.894242Z"
       },
-      "note": "Scheduled sportsgambler_mlb refresh returned 14 pick(s).",
+      "note": "Scheduled sportsgambler_mlb refresh returned 13 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "date": "2026-06-19",
-          "decision": "BET",
-          "edge": null,
-          "game": "Chicago Cubs vs Toronto Blue Jays",
-          "game_start_time": "2026-06-19T18:20Z",
-          "matchup": "Chicago Cubs vs Toronto Blue Jays",
-          "odds": -128,
-          "pick": "Chicago Cubs to Win (Chicago Cubs vs Toronto Blue Jays)",
-          "pregame_snapshot": {
-            "date": "2026-06-19",
-            "decision": "BET",
-            "edge": null,
-            "game": "Chicago Cubs vs Toronto Blue Jays",
-            "matchup": "Chicago Cubs vs Toronto Blue Jays",
-            "odds": -128,
-            "pick": "Chicago Cubs to Win (Chicago Cubs vs Toronto Blue Jays)",
-            "probability": null,
-            "source": "SportsGamblerMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "start_time": "2026-06-19T18:20Z",
-          "units": 1
-        },
         {
           "date": "2026-06-19",
           "decision": "BET",
@@ -24386,7 +24358,7 @@
           "game": "Detroit Tigers vs Chicago White Sox",
           "game_start_time": "2026-06-19T22:40Z",
           "matchup": "Detroit Tigers vs Chicago White Sox",
-          "odds": -222,
+          "odds": -227,
           "pick": "Detroit Tigers to Win (Detroit Tigers vs Chicago White Sox)",
           "pregame_snapshot": {
             "date": "2026-06-19",
@@ -24470,7 +24442,7 @@
           "game": "Miami Marlins vs San Francisco Giants",
           "game_start_time": "2026-06-19T23:10Z",
           "matchup": "Miami Marlins vs San Francisco Giants",
-          "odds": -130,
+          "odds": -119,
           "pick": "Miami Marlins to Win (Miami Marlins vs San Francisco Giants)",
           "pregame_snapshot": {
             "date": "2026-06-19",
@@ -24498,7 +24470,7 @@
           "game": "Atlanta Braves vs Milwaukee Brewers",
           "game_start_time": "2026-06-19T23:15Z",
           "matchup": "Atlanta Braves vs Milwaukee Brewers",
-          "odds": -204,
+          "odds": -175,
           "pick": "Milwaukee Brewers to Win (Atlanta Braves vs Milwaukee Brewers)",
           "pregame_snapshot": {
             "date": "2026-06-19",
@@ -24526,7 +24498,7 @@
           "game": "Texas Rangers vs San Diego Padres",
           "game_start_time": "2026-06-20T00:05Z",
           "matchup": "Texas Rangers vs San Diego Padres",
-          "odds": 130,
+          "odds": 135,
           "pick": "San Diego Padres to Win (Texas Rangers vs San Diego Padres)",
           "pregame_snapshot": {
             "date": "2026-06-19",
@@ -24554,7 +24526,7 @@
           "game": "Houston Astros vs Cleveland Guardians",
           "game_start_time": "2026-06-20T00:10Z",
           "matchup": "Houston Astros vs Cleveland Guardians",
-          "odds": -123,
+          "odds": -122,
           "pick": "Houston Astros to Win (Houston Astros vs Cleveland Guardians)",
           "pregame_snapshot": {
             "date": "2026-06-19",
@@ -24610,7 +24582,7 @@
           "game": "Colorado Rockies vs Pittsburgh Pirates",
           "game_start_time": "2026-06-20T00:40Z",
           "matchup": "Colorado Rockies vs Pittsburgh Pirates",
-          "odds": -137,
+          "odds": -143,
           "pick": "Pittsburgh Pirates to Win (Colorado Rockies vs Pittsburgh Pirates)",
           "pregame_snapshot": {
             "date": "2026-06-19",
@@ -24638,7 +24610,7 @@
           "game": "Athletics vs Los Angeles Angels",
           "game_start_time": "2026-06-20T01:40Z",
           "matchup": "Athletics vs Los Angeles Angels",
-          "odds": 138,
+          "odds": 130,
           "pick": "Los Angeles Angels to Win (Athletics vs Los Angeles Angels)",
           "pregame_snapshot": {
             "date": "2026-06-19",
@@ -24694,7 +24666,7 @@
           "game": "Seattle Mariners vs Boston Red Sox",
           "game_start_time": "2026-06-20T02:10Z",
           "matchup": "Seattle Mariners vs Boston Red Sox",
-          "odds": 112,
+          "odds": -104,
           "pick": "Boston Red Sox to Win (Seattle Mariners vs Boston Red Sox)",
           "pregame_snapshot": {
             "date": "2026-06-19",
@@ -24722,7 +24694,7 @@
           "game": "Los Angeles Dodgers vs Baltimore Orioles",
           "game_start_time": "2026-06-20T02:10Z",
           "matchup": "Los Angeles Dodgers vs Baltimore Orioles",
-          "odds": -208,
+          "odds": -233,
           "pick": "Los Angeles Dodgers to Win (Los Angeles Dodgers vs Baltimore Orioles)",
           "pregame_snapshot": {
             "date": "2026-06-19",
@@ -24744,12 +24716,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-19T16:40:41.145163Z"
+      "updatedAt": "2026-06-19T21:19:40.894242Z"
     },
     "sportsgambler_nba": {
       "date": "2026-06-19",
       "errors": [],
-      "generatedAt": "2026-06-19T16:40:41.145163Z",
+      "generatedAt": "2026-06-19T21:19:40.894242Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-19",
@@ -24758,17 +24730,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-19T16:40:41.145163Z"
+        "updatedAt": "2026-06-19T21:19:40.894242Z"
       },
       "note": "Scheduled sportsgambler_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-06-19T16:40:41.145163Z"
+      "updatedAt": "2026-06-19T21:19:40.894242Z"
     },
     "sportsgambler_wnba": {
       "date": "2026-06-19",
       "errors": [],
-      "generatedAt": "2026-06-19T16:40:41.145163Z",
+      "generatedAt": "2026-06-19T21:19:40.894242Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-19",
@@ -24777,7 +24749,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 3,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-19T16:40:41.145163Z"
+        "updatedAt": "2026-06-19T21:19:40.894242Z"
       },
       "note": "Scheduled sportsgambler_wnba refresh returned 3 pick(s).",
       "ok": true,
@@ -24867,12 +24839,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-19T16:40:41.145163Z"
+      "updatedAt": "2026-06-19T21:19:40.894242Z"
     },
     "sportytrader_fifa_world_cup": {
       "date": "2026-06-19",
       "errors": [],
-      "generatedAt": "2026-06-19T16:40:41.145163Z",
+      "generatedAt": "2026-06-19T21:19:40.894242Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-19",
@@ -24881,7 +24853,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 3,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-19T16:40:41.145163Z"
+        "updatedAt": "2026-06-19T21:19:40.894242Z"
       },
       "note": "Scheduled sportytrader_fifa_world_cup refresh returned 3 pick(s).",
       "ok": true,
@@ -24937,53 +24909,25 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-19T16:40:41.145163Z"
+      "updatedAt": "2026-06-19T21:19:40.894242Z"
     },
     "sportytrader_mlb": {
       "date": "2026-06-19",
       "errors": [],
-      "generatedAt": "2026-06-19T16:40:41.145163Z",
+      "generatedAt": "2026-06-19T21:19:40.894242Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-19",
         "feed": "sportytrader_mlb",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 7,
+        "pick_count": 8,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-19T16:40:41.145163Z"
+        "updatedAt": "2026-06-19T21:19:40.894242Z"
       },
-      "note": "Scheduled sportytrader_mlb refresh returned 7 pick(s).",
+      "note": "Scheduled sportytrader_mlb refresh returned 8 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "date": "2026-06-19",
-          "decision": "BET",
-          "edge": null,
-          "game": "Chicago Cubs vs Toronto Blue Jays",
-          "game_start_time": "2026-06-19T18:20Z",
-          "matchup": "Chicago Cubs vs Toronto Blue Jays",
-          "odds": -108,
-          "pick": "Under 7.5 Total Runs (Cubs vs Blue Jays)",
-          "pregame_snapshot": {
-            "date": "2026-06-19",
-            "decision": "BET",
-            "edge": null,
-            "game": "Chicago Cubs vs Toronto Blue Jays",
-            "matchup": "Chicago Cubs vs Toronto Blue Jays",
-            "odds": -108,
-            "pick": "Under 7.5 Total Runs (Cubs vs Blue Jays)",
-            "probability": null,
-            "source": "SportyTraderMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportyTraderMLB",
-          "sport": "MLB",
-          "start_time": "2026-06-19T18:20Z",
-          "units": 1
-        },
         {
           "date": "2026-06-19",
           "decision": "BET",
@@ -25151,14 +25095,66 @@
           "sport": "MLB",
           "start_time": "2026-06-20T00:40Z",
           "units": 1
+        },
+        {
+          "date": "2026-06-19",
+          "decision": "BET",
+          "edge": null,
+          "game": "Arizona Diamondbacks vs Minnesota Twins",
+          "matchup": "Arizona Diamondbacks vs Minnesota Twins",
+          "odds": -175,
+          "pick": "Arizona ML (Diamondbacks vs Twins)",
+          "pregame_snapshot": {
+            "date": "2026-06-19",
+            "decision": "BET",
+            "edge": null,
+            "game": "Arizona Diamondbacks vs Minnesota Twins",
+            "matchup": "Arizona Diamondbacks vs Minnesota Twins",
+            "odds": -175,
+            "pick": "Arizona ML (Diamondbacks vs Twins)",
+            "probability": null,
+            "source": "SportyTraderMLB",
+            "sport": "MLB",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "date": "2026-06-19",
+          "decision": "BET",
+          "edge": null,
+          "game": "Seattle Mariners vs Boston Red Sox",
+          "matchup": "Seattle Mariners vs Boston Red Sox",
+          "odds": -112,
+          "pick": "Seattle ML (Mariners vs Red Sox)",
+          "pregame_snapshot": {
+            "date": "2026-06-19",
+            "decision": "BET",
+            "edge": null,
+            "game": "Seattle Mariners vs Boston Red Sox",
+            "matchup": "Seattle Mariners vs Boston Red Sox",
+            "odds": -112,
+            "pick": "Seattle ML (Mariners vs Red Sox)",
+            "probability": null,
+            "source": "SportyTraderMLB",
+            "sport": "MLB",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
         }
       ],
-      "updatedAt": "2026-06-19T16:40:41.145163Z"
+      "updatedAt": "2026-06-19T21:19:40.894242Z"
     },
     "sportytrader_nba": {
       "date": "2026-06-19",
       "errors": [],
-      "generatedAt": "2026-06-19T16:40:41.145163Z",
+      "generatedAt": "2026-06-19T21:19:40.894242Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-19",
@@ -25167,17 +25163,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-19T16:40:41.145163Z"
+        "updatedAt": "2026-06-19T21:19:40.894242Z"
       },
       "note": "Scheduled sportytrader_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-06-19T16:40:41.145163Z"
+      "updatedAt": "2026-06-19T21:19:40.894242Z"
     },
     "sportytrader_wnba": {
       "date": "2026-06-19",
       "errors": [],
-      "generatedAt": "2026-06-19T16:40:41.145163Z",
+      "generatedAt": "2026-06-19T21:19:40.894242Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-19",
@@ -25186,12 +25182,12 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-19T16:40:41.145163Z"
+        "updatedAt": "2026-06-19T21:19:40.894242Z"
       },
       "note": "Scheduled sportytrader_wnba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-06-19T16:40:41.145163Z"
+      "updatedAt": "2026-06-19T21:19:40.894242Z"
     },
     "wnba": {
       "ok": true,
@@ -26906,7 +26902,7 @@
   "sportsgambler_fifa_world_cup": {
     "date": "2026-06-19",
     "errors": [],
-    "generatedAt": "2026-06-19T16:40:41.145163Z",
+    "generatedAt": "2026-06-19T21:19:40.894242Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-19",
@@ -26915,7 +26911,7 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 3,
       "provider": "sportsgambler",
-      "updatedAt": "2026-06-19T16:40:41.145163Z"
+      "updatedAt": "2026-06-19T21:19:40.894242Z"
     },
     "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 3 pick(s).",
     "ok": true,
@@ -26969,58 +26965,32 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-19T16:40:41.145163Z"
+    "updatedAt": "2026-06-19T21:19:40.894242Z"
   },
   "sportsgambler_mlb": {
     "date": "2026-06-19",
     "errors": [],
-    "generatedAt": "2026-06-19T16:40:41.145163Z",
+    "generatedAt": "2026-06-19T21:19:40.894242Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-19",
       "feed": "sportsgambler_mlb",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 14,
+      "pick_count": 13,
       "provider": "sportsgambler",
-      "updatedAt": "2026-06-19T16:40:41.145163Z"
+      "updatedAt": "2026-06-19T21:19:40.894242Z"
     },
-    "note": "Scheduled sportsgambler_mlb refresh returned 14 pick(s).",
+    "note": "Scheduled sportsgambler_mlb refresh returned 13 pick(s).",
     "ok": true,
     "picks": [
       {
         "date": "2026-06-19",
         "decision": "BET",
         "edge": null,
-        "game": "Chicago Cubs vs Toronto Blue Jays",
-        "matchup": "Chicago Cubs vs Toronto Blue Jays",
-        "odds": -128,
-        "pick": "Chicago Cubs to Win (Chicago Cubs vs Toronto Blue Jays)",
-        "pregame_snapshot": {
-          "date": "2026-06-19",
-          "decision": "BET",
-          "edge": null,
-          "game": "Chicago Cubs vs Toronto Blue Jays",
-          "matchup": "Chicago Cubs vs Toronto Blue Jays",
-          "odds": -128,
-          "pick": "Chicago Cubs to Win (Chicago Cubs vs Toronto Blue Jays)",
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        "probability": null,
-        "source": "SportsGamblerMLB",
-        "sport": "MLB",
-        "units": 1
-      },
-      {
-        "date": "2026-06-19",
-        "decision": "BET",
-        "edge": null,
         "game": "Detroit Tigers vs Chicago White Sox",
         "matchup": "Detroit Tigers vs Chicago White Sox",
-        "odds": -222,
+        "odds": -227,
         "pick": "Detroit Tigers to Win (Detroit Tigers vs Chicago White Sox)",
         "pregame_snapshot": {
           "date": "2026-06-19",
@@ -27098,7 +27068,7 @@
         "edge": null,
         "game": "Miami Marlins vs San Francisco Giants",
         "matchup": "Miami Marlins vs San Francisco Giants",
-        "odds": -130,
+        "odds": -119,
         "pick": "Miami Marlins to Win (Miami Marlins vs San Francisco Giants)",
         "pregame_snapshot": {
           "date": "2026-06-19",
@@ -27124,7 +27094,7 @@
         "edge": null,
         "game": "Atlanta Braves vs Milwaukee Brewers",
         "matchup": "Atlanta Braves vs Milwaukee Brewers",
-        "odds": -204,
+        "odds": -175,
         "pick": "Milwaukee Brewers to Win (Atlanta Braves vs Milwaukee Brewers)",
         "pregame_snapshot": {
           "date": "2026-06-19",
@@ -27150,7 +27120,7 @@
         "edge": null,
         "game": "Texas Rangers vs San Diego Padres",
         "matchup": "Texas Rangers vs San Diego Padres",
-        "odds": 130,
+        "odds": 135,
         "pick": "San Diego Padres to Win (Texas Rangers vs San Diego Padres)",
         "pregame_snapshot": {
           "date": "2026-06-19",
@@ -27176,7 +27146,7 @@
         "edge": null,
         "game": "Houston Astros vs Cleveland Guardians",
         "matchup": "Houston Astros vs Cleveland Guardians",
-        "odds": -123,
+        "odds": -122,
         "pick": "Houston Astros to Win (Houston Astros vs Cleveland Guardians)",
         "pregame_snapshot": {
           "date": "2026-06-19",
@@ -27228,7 +27198,7 @@
         "edge": null,
         "game": "Colorado Rockies vs Pittsburgh Pirates",
         "matchup": "Colorado Rockies vs Pittsburgh Pirates",
-        "odds": -137,
+        "odds": -143,
         "pick": "Pittsburgh Pirates to Win (Colorado Rockies vs Pittsburgh Pirates)",
         "pregame_snapshot": {
           "date": "2026-06-19",
@@ -27254,7 +27224,7 @@
         "edge": null,
         "game": "Athletics vs Los Angeles Angels",
         "matchup": "Athletics vs Los Angeles Angels",
-        "odds": 138,
+        "odds": 130,
         "pick": "Los Angeles Angels to Win (Athletics vs Los Angeles Angels)",
         "pregame_snapshot": {
           "date": "2026-06-19",
@@ -27306,7 +27276,7 @@
         "edge": null,
         "game": "Seattle Mariners vs Boston Red Sox",
         "matchup": "Seattle Mariners vs Boston Red Sox",
-        "odds": 112,
+        "odds": -104,
         "pick": "Boston Red Sox to Win (Seattle Mariners vs Boston Red Sox)",
         "pregame_snapshot": {
           "date": "2026-06-19",
@@ -27332,7 +27302,7 @@
         "edge": null,
         "game": "Los Angeles Dodgers vs Baltimore Orioles",
         "matchup": "Los Angeles Dodgers vs Baltimore Orioles",
-        "odds": -208,
+        "odds": -233,
         "pick": "Los Angeles Dodgers to Win (Los Angeles Dodgers vs Baltimore Orioles)",
         "pregame_snapshot": {
           "date": "2026-06-19",
@@ -27353,12 +27323,12 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-19T16:40:41.145163Z"
+    "updatedAt": "2026-06-19T21:19:40.894242Z"
   },
   "sportsgambler_nba": {
     "date": "2026-06-19",
     "errors": [],
-    "generatedAt": "2026-06-19T16:40:41.145163Z",
+    "generatedAt": "2026-06-19T21:19:40.894242Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-19",
@@ -27367,17 +27337,17 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 0,
       "provider": "sportsgambler",
-      "updatedAt": "2026-06-19T16:40:41.145163Z"
+      "updatedAt": "2026-06-19T21:19:40.894242Z"
     },
     "note": "Scheduled sportsgambler_nba refresh returned 0 pick(s).",
     "ok": true,
     "picks": [],
-    "updatedAt": "2026-06-19T16:40:41.145163Z"
+    "updatedAt": "2026-06-19T21:19:40.894242Z"
   },
   "sportsgambler_wnba": {
     "date": "2026-06-19",
     "errors": [],
-    "generatedAt": "2026-06-19T16:40:41.145163Z",
+    "generatedAt": "2026-06-19T21:19:40.894242Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-19",
@@ -27386,7 +27356,7 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 3,
       "provider": "sportsgambler",
-      "updatedAt": "2026-06-19T16:40:41.145163Z"
+      "updatedAt": "2026-06-19T21:19:40.894242Z"
     },
     "note": "Scheduled sportsgambler_wnba refresh returned 3 pick(s).",
     "ok": true,
@@ -27470,12 +27440,12 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-19T16:40:41.145163Z"
+    "updatedAt": "2026-06-19T21:19:40.894242Z"
   },
   "sportytrader_fifa_world_cup": {
     "date": "2026-06-19",
     "errors": [],
-    "generatedAt": "2026-06-19T16:40:41.145163Z",
+    "generatedAt": "2026-06-19T21:19:40.894242Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-19",
@@ -27484,7 +27454,7 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 3,
       "provider": "sportytrader",
-      "updatedAt": "2026-06-19T16:40:41.145163Z"
+      "updatedAt": "2026-06-19T21:19:40.894242Z"
     },
     "note": "Scheduled sportytrader_fifa_world_cup refresh returned 3 pick(s).",
     "ok": true,
@@ -27538,51 +27508,25 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-19T16:40:41.145163Z"
+    "updatedAt": "2026-06-19T21:19:40.894242Z"
   },
   "sportytrader_mlb": {
     "date": "2026-06-19",
     "errors": [],
-    "generatedAt": "2026-06-19T16:40:41.145163Z",
+    "generatedAt": "2026-06-19T21:19:40.894242Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-19",
       "feed": "sportytrader_mlb",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 7,
+      "pick_count": 8,
       "provider": "sportytrader",
-      "updatedAt": "2026-06-19T16:40:41.145163Z"
+      "updatedAt": "2026-06-19T21:19:40.894242Z"
     },
-    "note": "Scheduled sportytrader_mlb refresh returned 7 pick(s).",
+    "note": "Scheduled sportytrader_mlb refresh returned 8 pick(s).",
     "ok": true,
     "picks": [
-      {
-        "date": "2026-06-19",
-        "decision": "BET",
-        "edge": null,
-        "game": "Chicago Cubs vs Toronto Blue Jays",
-        "matchup": "Chicago Cubs vs Toronto Blue Jays",
-        "odds": -108,
-        "pick": "Under 7.5 Total Runs (Cubs vs Blue Jays)",
-        "pregame_snapshot": {
-          "date": "2026-06-19",
-          "decision": "BET",
-          "edge": null,
-          "game": "Chicago Cubs vs Toronto Blue Jays",
-          "matchup": "Chicago Cubs vs Toronto Blue Jays",
-          "odds": -108,
-          "pick": "Under 7.5 Total Runs (Cubs vs Blue Jays)",
-          "probability": null,
-          "source": "SportyTraderMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        "probability": null,
-        "source": "SportyTraderMLB",
-        "sport": "MLB",
-        "units": 1
-      },
       {
         "date": "2026-06-19",
         "decision": "BET",
@@ -27738,14 +27682,66 @@
         "source": "SportyTraderMLB",
         "sport": "MLB",
         "units": 1
+      },
+      {
+        "date": "2026-06-19",
+        "decision": "BET",
+        "edge": null,
+        "game": "Arizona Diamondbacks vs Minnesota Twins",
+        "matchup": "Arizona Diamondbacks vs Minnesota Twins",
+        "odds": -175,
+        "pick": "Arizona ML (Diamondbacks vs Twins)",
+        "pregame_snapshot": {
+          "date": "2026-06-19",
+          "decision": "BET",
+          "edge": null,
+          "game": "Arizona Diamondbacks vs Minnesota Twins",
+          "matchup": "Arizona Diamondbacks vs Minnesota Twins",
+          "odds": -175,
+          "pick": "Arizona ML (Diamondbacks vs Twins)",
+          "probability": null,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
+        },
+        "probability": null,
+        "source": "SportyTraderMLB",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "date": "2026-06-19",
+        "decision": "BET",
+        "edge": null,
+        "game": "Seattle Mariners vs Boston Red Sox",
+        "matchup": "Seattle Mariners vs Boston Red Sox",
+        "odds": -112,
+        "pick": "Seattle ML (Mariners vs Red Sox)",
+        "pregame_snapshot": {
+          "date": "2026-06-19",
+          "decision": "BET",
+          "edge": null,
+          "game": "Seattle Mariners vs Boston Red Sox",
+          "matchup": "Seattle Mariners vs Boston Red Sox",
+          "odds": -112,
+          "pick": "Seattle ML (Mariners vs Red Sox)",
+          "probability": null,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
+        },
+        "probability": null,
+        "source": "SportyTraderMLB",
+        "sport": "MLB",
+        "units": 1
       }
     ],
-    "updatedAt": "2026-06-19T16:40:41.145163Z"
+    "updatedAt": "2026-06-19T21:19:40.894242Z"
   },
   "sportytrader_nba": {
     "date": "2026-06-19",
     "errors": [],
-    "generatedAt": "2026-06-19T16:40:41.145163Z",
+    "generatedAt": "2026-06-19T21:19:40.894242Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-19",
@@ -27754,17 +27750,17 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 0,
       "provider": "sportytrader",
-      "updatedAt": "2026-06-19T16:40:41.145163Z"
+      "updatedAt": "2026-06-19T21:19:40.894242Z"
     },
     "note": "Scheduled sportytrader_nba refresh returned 0 pick(s).",
     "ok": true,
     "picks": [],
-    "updatedAt": "2026-06-19T16:40:41.145163Z"
+    "updatedAt": "2026-06-19T21:19:40.894242Z"
   },
   "sportytrader_wnba": {
     "date": "2026-06-19",
     "errors": [],
-    "generatedAt": "2026-06-19T16:40:41.145163Z",
+    "generatedAt": "2026-06-19T21:19:40.894242Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-19",
@@ -27773,14 +27769,14 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 0,
       "provider": "sportytrader",
-      "updatedAt": "2026-06-19T16:40:41.145163Z"
+      "updatedAt": "2026-06-19T21:19:40.894242Z"
     },
     "note": "Scheduled sportytrader_wnba refresh returned 0 pick(s).",
     "ok": true,
     "picks": [],
-    "updatedAt": "2026-06-19T16:40:41.145163Z"
+    "updatedAt": "2026-06-19T21:19:40.894242Z"
   },
-  "updatedAt": "2026-06-19T17:42:04.327258Z",
+  "updatedAt": "2026-06-19T21:19:40.894242Z",
   "wnba": {
     "ok": true,
     "picks": [
