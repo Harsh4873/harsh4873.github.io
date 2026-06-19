@@ -650,8 +650,8 @@ def test_model_cache_merge_keeps_previous_same_date_picks_when_refresh_drops_the
     assert [pick["pick"] for pick in picks] == ["Norway ML", "France ML"]
 
 
-def test_external_feed_merge_keeps_previous_same_date_picks_when_refresh_drops_them(tmp_path):
-    module = _load_module("merge_external_feed_cache_payload_keep_dropped", ROOT / "scripts" / "merge_external_feed_cache_payload.py")
+def test_external_feed_merge_replaces_previous_same_date_picks_when_refresh_drops_them(tmp_path):
+    module = _load_module("merge_external_feed_cache_payload_replace_dropped", ROOT / "scripts" / "merge_external_feed_cache_payload.py")
     cache_dir = tmp_path / "data" / "model_cache"
     cache_dir.mkdir(parents=True)
     current = {
@@ -712,9 +712,9 @@ def test_external_feed_merge_keeps_previous_same_date_picks_when_refresh_drops_t
     merged = module.merge_payload(generated, cache_dir)
     picks = merged["models"]["sportytrader_fifa_world_cup"]["picks"]
 
-    assert [pick["pick"] for pick in picks] == ["Norway ML", "Both teams to score"]
-    assert [pick["pick"] for pick in merged["external_feeds"]["sportytrader_fifa_world_cup"]["picks"]] == ["Norway ML", "Both teams to score"]
-    assert [pick["pick"] for pick in merged["sportytrader_fifa_world_cup"]["picks"]] == ["Norway ML", "Both teams to score"]
+    assert [pick["pick"] for pick in picks] == ["Norway ML"]
+    assert [pick["pick"] for pick in merged["external_feeds"]["sportytrader_fifa_world_cup"]["picks"]] == ["Norway ML"]
+    assert [pick["pick"] for pick in merged["sportytrader_fifa_world_cup"]["picks"]] == ["Norway ML"]
 
 
 def test_external_feed_merge_migrates_legacy_provider_bucket_to_split_key(tmp_path):
@@ -776,7 +776,7 @@ def test_external_feed_merge_migrates_legacy_provider_bucket_to_split_key(tmp_pa
     assert "sportytrader" not in merged["models"]
     assert "sportytrader" not in merged["external_feeds"]
     assert "sportytrader" not in merged
-    assert [pick["pick"] for pick in picks] == ["Norway ML", "Both teams to score"]
+    assert [pick["pick"] for pick in picks] == ["Norway ML"]
     assert {pick["source"] for pick in picks} == {"SportyTraderFIFAWorldCup"}
 
 
