@@ -131,12 +131,16 @@ def scrape_basketball(
             continue
         prediction = ""
         for cont in detail.select("div.tpbot_container"):
+            tip_link = cont.select_one("a.tpbot_tip")
+            if not tip_link:
+                continue
             title_el = cont.select_one(".tpbot_title")
-            if title_el and "prediction" in title_el.get_text().lower():
-                spans = cont.select("a.tpbot_tip span")
-                if spans:
-                    prediction = _norm(spans[-1].get_text(" ", strip=True))
-                    break
+            if title_el and "prediction" not in title_el.get_text().lower():
+                continue
+            spans = tip_link.select("span")
+            prediction = _norm(spans[-1].get_text(" ", strip=True)) if spans else _norm(tip_link.get_text(" ", strip=True))
+            if prediction:
+                break
         if not prediction:
             missing.append(art["url"])
             continue

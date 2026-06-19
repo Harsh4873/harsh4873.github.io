@@ -274,6 +274,42 @@ def test_sportsgambler_fifa_world_cup_preserves_asian_handicap(monkeypatch):
     assert rows[0]["league"] == "FIFA WC"
 
 
+def test_sportsgambler_fifa_world_cup_reads_tip_without_visible_title(monkeypatch):
+    module = _load_module(
+        "sportsgambler_fifa_titleless_test",
+        ROOT / "scripts" / "scrapers" / "sportsgambler_scraper.py",
+    )
+    detail_url = "https://www.sportsgambler.com/betting-tips/football/scotland-vs-morocco-prediction-lineups-odds-2026-06-19/"
+    listing = {
+        "item": {
+            "@type": "SportsEvent",
+            "name": "Scotland vs Morocco",
+            "startDate": "2026-06-19T19:00:00Z",
+            "url": detail_url,
+        }
+    }
+    listing_html = f'<script type="application/ld+json">{json.dumps(listing)}</script>'
+    detail_html = (
+        '<div class="tpbot_container">'
+        '<!-- <div class="tpbot_title">Our Match Prediction</div> -->'
+        '<a class="tpbot_tip"><span>Morocco To Win @ -149</span></a>'
+        "</div>"
+    )
+
+    class Response:
+        def __init__(self, text: str):
+            self.text = text
+
+    monkeypatch.setattr(
+        module.requests,
+        "get",
+        lambda url, **_kwargs: Response(detail_html if url == detail_url else listing_html),
+    )
+    rows = module.scrape_fifa_world_cup(date(2026, 6, 19), ["Morocco @ Scotland"])
+    assert rows[0]["tip"] == "Morocco To Win"
+    assert rows[0]["odds"] == "-149"
+
+
 def test_server_passes_known_matchups_to_sportsgambler(monkeypatch):
     import pickgrader_server as server
 
