@@ -715,6 +715,12 @@ def scrape_scores24(
                     key = _matchup_key(matchup["away"], matchup["home"])
                     if key:
                         blocked_matchups.add(key)
+                    # Scores24 can challenge a nonexistent date/order variant
+                    # instead of returning 404. Move that candidate behind the
+                    # untried variants so the next cooled-down retry progresses
+                    # through the official matchup's alternate URL dates/orders.
+                    candidates.remove(url)
+                    candidates.append(url)
                     break
                 if status != 200:
                     continue

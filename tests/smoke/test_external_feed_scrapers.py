@@ -718,6 +718,7 @@ def test_scores24_rotates_owned_client_after_blocked_cooldown(monkeypatch):
 
     class FakeOwnedClient:
         instances = []
+        detail_urls = []
 
         def __init__(self):
             self.closed = False
@@ -727,9 +728,12 @@ def test_scores24_rotates_owned_client_after_blocked_cooldown(monkeypatch):
         def get_html(self, url: str, attempts: int = 3):
             if url.endswith("/l-usa-mlb/predictions"):
                 return "", 200, False
+            self.detail_urls.append(url)
             if self.instance_number == 1:
                 return "Cloudflare", 429, True
-            return detail, 200, False
+            if "m-20-06-2026" in url:
+                return detail, 200, False
+            return "", 404, False
 
         def close(self):
             self.closed = True
@@ -745,6 +749,8 @@ def test_scores24_rotates_owned_client_after_blocked_cooldown(monkeypatch):
     assert result["meta"]["matchedPicks"] == 1
     assert len(FakeOwnedClient.instances) == 2
     assert all(client.closed for client in FakeOwnedClient.instances)
+    assert "m-19-06-2026" in FakeOwnedClient.detail_urls[0]
+    assert "m-20-06-2026" in FakeOwnedClient.detail_urls[1]
 
 
 def test_scores24_fails_closed_when_blocked_retry_stays_blocked(monkeypatch):
