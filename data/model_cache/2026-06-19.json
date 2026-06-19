@@ -13413,6 +13413,7 @@
           "projected_home_goals": 1.633,
           "projected_total": 2.34,
           "reason": "United States owns the stronger current-squad projection. Attack 87.2, midfield 93.0, defense 89.2, goalkeeper 81.5. Top player ranks: Alex Freeman 95.2, Malik Tillman 94.3, Antonee Robinson 93.5.",
+          "result": "win",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-06-19T19:00Z",
@@ -13462,6 +13463,7 @@
           "projected_home_goals": 1.633,
           "projected_total": 2.34,
           "reason": "Projected goals Australia 0.70, United States 1.63 from the two attacking engines against the opposing defensive units.",
+          "result": "win",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-06-19T19:00Z",
@@ -24345,6 +24347,7 @@
           "odds": -172,
           "pick": "USA ML (Australia @ United States)",
           "probability": null,
+          "result": "win",
           "source": "Scores24FIFAWorldCup",
           "source_url": "https://scores24.live/en/soccer/m-19-06-2026-usa-australia-prediction",
           "sport": "FIFA WC",
@@ -24472,6 +24475,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-19-06-2026-chicago-cubs-toronto-blue-jays-prediction",
           "sport": "MLB",
@@ -25887,6 +25891,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Arizona Diamondbacks vs Minnesota Twins",
+          "game_start_time": "2026-06-20T01:45Z",
           "matchup": "Arizona Diamondbacks vs Minnesota Twins",
           "odds": -175,
           "pick": "Arizona ML (Diamondbacks vs Twins)",
@@ -25906,6 +25911,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-20T01:45Z",
           "units": 1
         },
         {
@@ -25913,6 +25919,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Seattle Mariners vs Boston Red Sox",
+          "game_start_time": "2026-06-20T02:10Z",
           "matchup": "Seattle Mariners vs Boston Red Sox",
           "odds": -112,
           "pick": "Seattle ML (Mariners vs Red Sox)",
@@ -25932,6 +25939,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-20T02:10Z",
           "units": 1
         }
       ],
