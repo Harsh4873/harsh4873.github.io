@@ -1,5 +1,14 @@
 {
-  "bootstrap_samples": 5712,
+  "activation_requirements": {
+    "maximum_calibration_gap": 0.08,
+    "minimum_training_samples": 200,
+    "minimum_validation_dates": 2,
+    "minimum_validation_samples": 100,
+    "must_beat_baseline_brier": true,
+    "must_beat_market_brier": true
+  },
+  "active": false,
+  "bootstrap_samples": 0,
   "feature_names": [
     "line",
     "odds_implied",
@@ -7,11 +16,36 @@
     "baseline_projection",
     "projection_over_line",
     "selection_over",
-    "market_family_hash",
-    "market_priced"
+    "market_priced",
+    "family::3pm",
+    "family::assists",
+    "family::batter_strikeouts",
+    "family::batter_walks",
+    "family::blocks",
+    "family::doubles",
+    "family::hits",
+    "family::home_runs",
+    "family::hrr",
+    "family::pa",
+    "family::pitcher_earned_runs_allowed",
+    "family::pitcher_hits_allowed",
+    "family::pitcher_outs_recorded",
+    "family::pitcher_walks_allowed",
+    "family::points",
+    "family::pr",
+    "family::pra",
+    "family::rbis",
+    "family::rebounds",
+    "family::runs",
+    "family::singles",
+    "family::steals",
+    "family::stocks",
+    "family::stolen_bases",
+    "family::strikeouts",
+    "family::total_bases",
+    "family::triples"
   ],
-  "force_active": true,
-  "ledger_samples": 268,
+  "ledger_samples": 274,
   "market_families": [
     "hits",
     "hrr",
@@ -31,12 +65,33 @@
     "pitcher_hits_allowed",
     "pitcher_earned_runs_allowed"
   ],
-  "model_type": "GradientBoostingClassifier",
+  "model_type": "StandardScaler+LogisticRegression",
+  "positive_rate": 0.4306569343065693,
+  "probability_mode": "market_anchor_validation_gate",
   "sport": "MLB",
-  "training_fingerprint": "d21d3a8522bcc4e63ca1694380a616d4c1b649fae5bdc266217829417ecae6b1",
-  "training_sources": [
-    "historical_player_game_stat_family_priors",
-    "pickledger_outcome_ledger"
+  "training_dates": [
+    "2026-06-16",
+    "2026-06-17",
+    "2026-06-18"
   ],
-  "version": "player_props_ml_v1.0.0"
+  "training_fingerprint": "58f116ed049870caacf53956406462f59875e950de7e0996e25a9ac720016113",
+  "training_season": 2026,
+  "training_sources": [
+    "current_season_projection_features",
+    "current_season_pickledger_outcome_ledger"
+  ],
+  "validation": {
+    "actual_rate": 0.5096774193548387,
+    "baseline_brier": 0.2588671087178258,
+    "calibration_gap": 0.08859894764064458,
+    "dates": [
+      "2026-06-17",
+      "2026-06-18"
+    ],
+    "market_brier": 0.2556122769032258,
+    "model_brier": 0.29043026818313344,
+    "predicted_rate": 0.4210784717141941,
+    "samples": 155
+  },
+  "version": "player_props_ml_v1.1.0"
 }

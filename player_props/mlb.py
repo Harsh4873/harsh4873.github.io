@@ -14,7 +14,7 @@ from .schema import (
     safe_float,
     safe_int,
 )
-from .ml import apply_ml_to_pick, assign_ml_ranks, ev_sort_key, market_family_for_stat
+from .ml import apply_ml_to_pick, ev_sort_key, market_family_for_stat, select_top_props
 
 
 PARK_FACTORS = {
@@ -1232,21 +1232,11 @@ def _game_props(
             )
             candidates.extend(hitter_props)
 
-    selected: list[dict[str, Any]] = []
-    per_player: dict[str, int] = {}
-    for prop in assign_ml_ranks(candidates):
-        player_id = str(prop.get("player_id") or "")
-        if per_player.get(player_id, 0) >= 2:
-            continue
-        selected.append(prop)
-        per_player[player_id] = per_player.get(player_id, 0) + 1
-        if len(selected) >= 8:
-            break
-    return selected
+    return select_top_props(candidates)
 
 
 def generate_mlb_model(client: Any, date_iso: str) -> dict[str, Any]:
-    """Generate up to eight gradeable, market-priced MLB props per game."""
+    """Generate up to four validated, market-priced MLB props per game."""
     try:
         schedule = client.mlb_schedule(date_iso)
     except Exception as exc:

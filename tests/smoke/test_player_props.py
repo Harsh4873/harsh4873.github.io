@@ -1,9 +1,14 @@
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
 from player_props.generator import generate_payload
+from player_props.ml import select_top_props
 from player_props.schema import decision_and_stake
 
 
+ROOT = Path(__file__).resolve().parents[2]
 DATE = "2026-06-12"
 STAMP = "2026-06-12T12:00:00Z"
 
@@ -379,7 +384,7 @@ def test_basketball_props_use_actual_markets_and_apply_next_man_up():
     second = generate_payload(DATE, client=MockClient(), generated_at="2026-06-12T13:00:00Z")
     picks = first["models"]["wnba_player_props"]["picks"]
 
-    assert 5 <= len(picks) <= 8
+    assert 3 <= len(picks) <= 4
     assert [pick["id"] for pick in picks] == [
         pick["id"] for pick in second["models"]["wnba_player_props"]["picks"]
     ]
@@ -396,12 +401,19 @@ def test_basketball_props_use_actual_markets_and_apply_next_man_up():
     assert all(pick["ml_expected_value"] is not None for pick in picks)
     assert all(pick["ml_rank"] >= 1 for pick in picks)
     assert [pick["rank"] for pick in picks] == [pick["ml_rank"] for pick in picks]
-    assert all(pick["ml_rank_epoch"].startswith("WNBA:player_props_ml_v1.0.0:") for pick in picks)
+    assert all(pick["ml_rank_epoch"].startswith("WNBA:player_props_ml_v1.1.0:") for pick in picks)
     assert all(pick["ranking_epoch"] == pick["ml_rank_epoch"] for pick in picks)
     assert all(pick["model_epoch"] == pick["ml_rank_epoch"] for pick in picks)
     assert all(pick["ranking_updated_at"] == STAMP for pick in picks)
     assert all(pick["actionability"] == "market_priced" for pick in picks)
     assert all(pick["market_implied_probability"] is not None for pick in picks)
+    assert all(
+        pick["ml_probability_mode"]
+        in {"market_anchor_validation_gate", "validated_model_market_anchor"}
+        for pick in picks
+    )
+    assert all(pick["units"] <= (1.0 if pick["ml_model_active"] else 0.5) for pick in picks)
+    assert len({pick["player_id"] for pick in picks}) == len(picks)
     assert any("Next-man-up redistribution" in " ".join(pick["key_factors"]) for pick in picks)
 
 
@@ -426,7 +438,7 @@ def test_mlb_props_use_actual_markets_and_reject_reliever_starter_lines():
     picks = model["picks"]
 
     assert model["ok"] is True
-    assert 5 <= len(picks) <= 8
+    assert 3 <= len(picks) <= 4
     assert {"hits_runs_rbis", "batter_walks"} & {pick["stat_key"] for pick in picks}
     assert all(pick["odds"] != -110 and pick["decision"] in {"BET", "LEAN", "PASS"} for pick in picks)
     assert all(pick["market_source"] == "DraftKings via ESPN" for pick in picks)
@@ -439,7 +451,7 @@ def test_mlb_props_use_actual_markets_and_reject_reliever_starter_lines():
     assert all(pick["ml_expected_value"] is not None for pick in picks)
     assert [pick["ml_rank"] for pick in picks] == sorted(pick["ml_rank"] for pick in picks)
     assert [pick["rank"] for pick in picks] == [pick["ml_rank"] for pick in picks]
-    assert all(pick["ml_rank_epoch"].startswith("MLB:player_props_ml_v1.0.0:") for pick in picks)
+    assert all(pick["ml_rank_epoch"].startswith("MLB:player_props_ml_v1.1.0:") for pick in picks)
     assert all(pick["ranking_epoch"] == pick["ml_rank_epoch"] for pick in picks)
     assert all(pick["model_epoch"] == pick["ml_rank_epoch"] for pick in picks)
     assert all(pick["ranking_updated_at"] == STAMP for pick in picks)
@@ -447,6 +459,13 @@ def test_mlb_props_use_actual_markets_and_reject_reliever_starter_lines():
     assert model["ranking_updated_at"] == STAMP
     assert all(pick["actionability"] == "market_priced" for pick in picks)
     assert all(pick["market_implied_probability"] is not None for pick in picks)
+    assert all(
+        pick["ml_probability_mode"]
+        in {"market_anchor_validation_gate", "validated_model_market_anchor"}
+        for pick in picks
+    )
+    assert all(pick["units"] <= (1.0 if pick["ml_model_active"] else 0.5) for pick in picks)
+    assert len({pick["player_id"] for pick in picks}) == len(picks)
     assert all(pick["player_name"] != "Away Pitcher" for pick in picks)
     assert any(pick.get("prop_role") == "batter_hrr" and pick["line"] == 1.5 for pick in picks)
     assert all("Venue Test Park" in " ".join(pick["key_factors"]) for pick in picks)
@@ -480,3 +499,58 @@ def test_units_follow_quarter_kelly_and_passes_are_zero():
     assert passed[4] == 0.0
     assert overpriced[0] == "PASS"
     assert missing == ("PASS", None, 0.0, 0.0, 0.0)
+
+
+def test_ml_training_uses_real_current_season_outcomes_and_validation_gate():
+    for sport in ("mlb", "wnba"):
+        metadata = json.loads(
+            (ROOT / "player_props" / "artifacts" / f"{sport}_player_props_ml_metadata.json").read_text()
+        )
+        assert metadata["version"] == "player_props_ml_v1.1.0"
+        assert metadata["training_season"] == 2026
+        assert metadata["bootstrap_samples"] == 0
+        assert metadata["ledger_samples"] > 0
+        assert metadata["training_sources"] == [
+            "current_season_projection_features",
+            "current_season_pickledger_outcome_ledger",
+        ]
+        assert isinstance(metadata["active"], bool)
+        assert metadata["probability_mode"] in {
+            "market_anchor_validation_gate",
+            "validated_model_market_anchor",
+        }
+        assert "force_active" not in metadata
+        assert "model_brier" in metadata["validation"]
+
+
+def test_ml_selection_caps_board_and_rejects_weak_or_extreme_props():
+    def candidate(index: int, player: str, **overrides):
+        pick = {
+            "id": f"pick-{index}",
+            "player_id": player,
+            "market_priced": True,
+            "decision": "BET",
+            "odds": 110,
+            "ml_probability": 0.58,
+            "ml_edge": 0.08,
+            "ml_expected_value": 0.20 - (index * 0.01),
+        }
+        pick.update(overrides)
+        return pick
+
+    selected = select_top_props(
+        [
+            candidate(0, "a"),
+            candidate(1, "a"),
+            candidate(2, "b"),
+            candidate(3, "c"),
+            candidate(4, "d"),
+            candidate(5, "e"),
+            candidate(6, "f", odds=300),
+            candidate(7, "g", ml_probability=0.51),
+        ]
+    )
+
+    assert len(selected) == 4
+    assert len({pick["player_id"] for pick in selected}) == 4
+    assert all(pick["odds"] <= 250 and pick["ml_probability"] >= 0.52 for pick in selected)

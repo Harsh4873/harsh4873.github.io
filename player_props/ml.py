@@ -12,19 +12,55 @@ from .schema import american_implied_probability, decision_and_stake, safe_float
 
 
 ML_SOURCE = "player_props_ml_v1"
-ML_MODEL_VERSION = "player_props_ml_v1.0.0"
+ML_MODEL_VERSION = "player_props_ml_v1.1.0"
 ARTIFACT_DIR = Path(__file__).resolve().parent / "artifacts"
 
-FEATURE_NAMES = [
+BASE_FEATURE_NAMES = [
     "line",
     "odds_implied",
     "baseline_probability",
     "baseline_projection",
     "projection_over_line",
     "selection_over",
-    "market_family_hash",
     "market_priced",
 ]
+MARKET_FAMILY_NAMES = sorted({
+    "3pm",
+    "assists",
+    "batter_strikeouts",
+    "batter_walks",
+    "blocks",
+    "doubles",
+    "hits",
+    "home_runs",
+    "hrr",
+    "pa",
+    "pitcher_earned_runs_allowed",
+    "pitcher_hits_allowed",
+    "pitcher_outs_recorded",
+    "pitcher_walks_allowed",
+    "points",
+    "pr",
+    "pra",
+    "rbis",
+    "rebounds",
+    "runs",
+    "singles",
+    "steals",
+    "stocks",
+    "stolen_bases",
+    "strikeouts",
+    "total_bases",
+    "triples",
+})
+FEATURE_NAMES = BASE_FEATURE_NAMES + [f"family::{family}" for family in MARKET_FAMILY_NAMES]
+
+MAX_PUBLISHED_PROPS_PER_GAME = 4
+MAX_PUBLISHED_PROPS_PER_PLAYER = 1
+MIN_PUBLISHED_PROBABILITY = 0.52
+MIN_PUBLISHED_EDGE = 0.04
+MIN_PUBLISHED_EXPECTED_VALUE = 0.05
+MAX_PUBLISHED_POSITIVE_ODDS = 250
 
 SPORT_ARTIFACTS = {
     "MLB": {
@@ -124,6 +160,7 @@ def feature_vector(
     baseline_probability: float,
     baseline_projection: float,
     market_family: str,
+    feature_names: list[str] | None = None,
 ) -> list[float]:
     line = safe_float(pick.get("line"))
     odds = pick.get("odds")
@@ -133,16 +170,20 @@ def feature_vector(
         odds_int = None
     implied = american_implied_probability(odds_int) or 0.5
     selection_over = 1.0 if str(pick.get("selection") or "").strip().lower() == "over" else 0.0
-    return [
-        line,
-        implied,
-        _clamp(baseline_probability),
-        safe_float(baseline_projection),
-        safe_float(baseline_projection) - line,
-        selection_over,
-        _family_hash(market_family),
-        1.0 if pick.get("market_priced") is True else 0.0,
-    ]
+    normalized_family = market_family_for_stat(market_family)
+    values = {
+        "line": line,
+        "odds_implied": implied,
+        "baseline_probability": _clamp(baseline_probability),
+        "baseline_projection": safe_float(baseline_projection),
+        "projection_over_line": safe_float(baseline_projection) - line,
+        "selection_over": selection_over,
+        "market_family_hash": _family_hash(normalized_family),
+        "market_priced": 1.0 if pick.get("market_priced") is True else 0.0,
+    }
+    for family in MARKET_FAMILY_NAMES:
+        values[f"family::{family}"] = 1.0 if normalized_family == family else 0.0
+    return [safe_float(values.get(name)) for name in (feature_names or FEATURE_NAMES)]
 
 
 def _predict_bundle_probability(bundle: dict[str, Any] | None, vector: list[float]) -> float | None:
@@ -158,6 +199,56 @@ def _predict_bundle_probability(bundle: dict[str, Any] | None, vector: list[floa
         return None
 
 
+def _score_probability_details(
+    pick: dict[str, Any],
+    *,
+    baseline_probability: float,
+    baseline_projection: float,
+    market_family: str,
+) -> tuple[float, str, str, bool, str, float | None]:
+    bundle = load_ml_bundle(str(pick.get("sport") or ""))
+    feature_names = list(bundle.get("features") or FEATURE_NAMES) if bundle else FEATURE_NAMES
+    vector = feature_vector(
+        pick,
+        baseline_probability=baseline_probability,
+        baseline_projection=baseline_projection,
+        market_family=market_family,
+        feature_names=feature_names,
+    )
+    raw_model_probability = _predict_bundle_probability(bundle, vector)
+    metadata = (bundle.get("metadata") or {}) if bundle else {}
+    model_active = bool(metadata.get("active") is True and raw_model_probability is not None)
+    try:
+        odds = int(pick["odds"]) if pick.get("odds") not in (None, "") else None
+    except (TypeError, ValueError):
+        odds = None
+    implied = american_implied_probability(odds)
+    baseline = _clamp(baseline_probability)
+    if implied is None:
+        model_probability = baseline
+        mode = "baseline_fallback"
+    elif model_active:
+        blended = (raw_model_probability * 0.55) + (baseline * 0.25) + (implied * 0.20)
+        model_probability = implied + max(-0.12, min(0.12, blended - implied))
+        mode = "validated_model_market_anchor"
+    else:
+        # Until forward validation beats both the market and the projection baseline,
+        # only allow a small fraction of the live projection edge away from the price.
+        anchored_edge = max(-0.06, min(0.08, (baseline - implied) * 0.35))
+        model_probability = implied + anchored_edge
+        mode = "market_anchor_validation_gate"
+    model_version = str(metadata.get("version") or f"{ML_MODEL_VERSION}-fallback")
+    fingerprint = str(metadata.get("training_fingerprint") or "fallback")
+    return (
+        round(_clamp(model_probability), 4),
+        model_version,
+        fingerprint,
+        model_active,
+        mode,
+        round(raw_model_probability, 4) if raw_model_probability is not None else None,
+    )
+
+
 def score_probability(
     pick: dict[str, Any],
     *,
@@ -165,26 +256,13 @@ def score_probability(
     baseline_projection: float,
     market_family: str,
 ) -> tuple[float, str, str]:
-    bundle = load_ml_bundle(str(pick.get("sport") or ""))
-    vector = feature_vector(
+    probability, version, fingerprint, _, _, _ = _score_probability_details(
         pick,
         baseline_probability=baseline_probability,
         baseline_projection=baseline_projection,
         market_family=market_family,
     )
-    model_probability = _predict_bundle_probability(bundle, vector)
-    if model_probability is None:
-        model_probability = _clamp(baseline_probability)
-        model_version = f"{ML_MODEL_VERSION}-fallback"
-        fingerprint = "fallback"
-    else:
-        # Keep the learned artifact in charge while anchoring wild early models
-        # to the live projection signal until the ledger has more samples.
-        model_probability = _clamp((model_probability * 0.62) + (_clamp(baseline_probability) * 0.38))
-        metadata = bundle.get("metadata") or {}
-        model_version = str(metadata.get("version") or ML_MODEL_VERSION)
-        fingerprint = str(metadata.get("training_fingerprint") or "")
-    return round(model_probability, 4), model_version, fingerprint
+    return probability, version, fingerprint
 
 
 def apply_ml_to_pick(
@@ -195,7 +273,14 @@ def apply_ml_to_pick(
     market_family: str | None = None,
 ) -> dict[str, Any]:
     family = market_family or market_family_for_stat(str(pick.get("stat_key") or ""))
-    ml_probability, model_version, fingerprint = score_probability(
+    (
+        ml_probability,
+        model_version,
+        fingerprint,
+        model_active,
+        probability_mode,
+        raw_model_probability,
+    ) = _score_probability_details(
         pick,
         baseline_probability=baseline_probability,
         baseline_projection=baseline_projection,
@@ -208,6 +293,18 @@ def apply_ml_to_pick(
         odds = None
     decision, edge, full_kelly, quarter_kelly, units = decision_and_stake(ml_probability, odds)
     market_implied = american_implied_probability(odds)
+    stake_cap = 1.0 if model_active else 0.5
+    quarter_kelly = min(quarter_kelly, stake_cap / 100.0)
+    full_kelly = min(full_kelly, quarter_kelly * 4.0)
+    units = 0.0 if decision == "PASS" else round(quarter_kelly * 100.0, 2)
+    edge_fraction = (edge or 0.0) / 100.0
+    confidence = (
+        "High"
+        if ml_probability >= 0.58 and edge_fraction >= 0.07
+        else "Medium"
+        if ml_probability >= MIN_PUBLISHED_PROBABILITY and edge_fraction >= MIN_PUBLISHED_EDGE
+        else "Low"
+    )
     epoch_fingerprint = fingerprint[:16] if fingerprint else "unfingerprinted"
     rank_epoch = f"{str(pick.get('sport') or '').strip().upper()}:{model_version}:{epoch_fingerprint}"
     pick.update(
@@ -217,6 +314,9 @@ def apply_ml_to_pick(
             "ml_edge": round(ml_probability - (market_implied or 0.0), 6) if market_implied is not None else None,
             "ml_expected_value": round(expected_value(ml_probability, odds), 6),
             "ml_model_version": model_version,
+            "ml_model_active": model_active,
+            "ml_probability_mode": probability_mode,
+            "ml_raw_probability": raw_model_probability,
             "ml_training_fingerprint": fingerprint,
             "ml_rank_epoch": rank_epoch,
             "ranking_epoch": rank_epoch,
@@ -226,12 +326,13 @@ def apply_ml_to_pick(
             "baseline_probability": round(_clamp(baseline_probability), 6),
             "ml_calibration_excluded": True,
             "probability": ml_probability,
-            "confidence": "High" if ml_probability >= 0.62 else "Medium" if ml_probability >= 0.56 else "Low",
+            "confidence": confidence,
             "edge": edge,
             "decision": decision,
             "full_kelly": full_kelly,
             "quarter_kelly": quarter_kelly,
             "units": units,
+            "ml_stake_cap": stake_cap,
         }
     )
     return pick
@@ -255,3 +356,40 @@ def assign_ml_ranks(props: list[dict[str, Any]]) -> list[dict[str, Any]]:
         prop["model_rank"] = index
         prop["rank"] = index
     return ranked
+
+
+def is_publishable_ml_pick(prop: dict[str, Any]) -> bool:
+    if prop.get("market_priced") is not True:
+        return False
+    if str(prop.get("decision") or "") not in {"BET", "LEAN"}:
+        return False
+    odds = int(safe_float(prop.get("odds")))
+    if odds > MAX_PUBLISHED_POSITIVE_ODDS:
+        return False
+    return (
+        safe_float(prop.get("ml_probability") or prop.get("probability")) >= MIN_PUBLISHED_PROBABILITY
+        and safe_float(prop.get("ml_edge")) >= MIN_PUBLISHED_EDGE
+        and safe_float(prop.get("ml_expected_value")) >= MIN_PUBLISHED_EXPECTED_VALUE
+    )
+
+
+def select_top_props(
+    props: list[dict[str, Any]],
+    *,
+    max_picks: int = MAX_PUBLISHED_PROPS_PER_GAME,
+    max_per_player: int = MAX_PUBLISHED_PROPS_PER_PLAYER,
+) -> list[dict[str, Any]]:
+    ranked = assign_ml_ranks(props)
+    has_market = any(prop.get("market_priced") is True for prop in ranked)
+    selection_pool = [prop for prop in ranked if is_publishable_ml_pick(prop)] if has_market else ranked
+    selected: list[dict[str, Any]] = []
+    per_player: dict[str, int] = {}
+    for prop in selection_pool:
+        player_id = str(prop.get("player_id") or prop.get("player_name") or "")
+        if per_player.get(player_id, 0) >= max_per_player:
+            continue
+        selected.append(prop)
+        per_player[player_id] = per_player.get(player_id, 0) + 1
+        if len(selected) >= max_picks:
+            break
+    return selected

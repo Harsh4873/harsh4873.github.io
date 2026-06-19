@@ -16,7 +16,7 @@ from .schema import (
     normalize_name,
     safe_float,
 )
-from .ml import apply_ml_to_pick, assign_ml_ranks, ev_sort_key, market_family_for_stat
+from .ml import apply_ml_to_pick, market_family_for_stat, select_top_props
 
 
 BASKETBALL_STAT_DEFINITIONS = {
@@ -587,18 +587,7 @@ def _game_props(
 
     market_candidates = [row for row in candidates if row.get("market_priced") is True]
     selection_pool = market_candidates or candidates
-    selection_pool = assign_ml_ranks(selection_pool)
-    selected: list[dict[str, Any]] = []
-    per_player: dict[str, int] = {}
-    for pick in sorted(selection_pool, key=ev_sort_key):
-        player_key = str(pick.get("player_id"))
-        if per_player.get(player_key, 0) >= 2:
-            continue
-        selected.append(pick)
-        per_player[player_key] = per_player.get(player_key, 0) + 1
-        if len(selected) >= 8:
-            break
-    return selected
+    return select_top_props(selection_pool)
 
 
 def generate_basketball_model(
