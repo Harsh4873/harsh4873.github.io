@@ -785,7 +785,7 @@ def scrape_scores24(
         if owns_client:
             scores_client.close()
 
-    missing_matchups = [f"{matchup['away']} @ {matchup['home']}" for matchup, _ in unresolved]
+    unresolved_matchups = [f"{matchup['away']} @ {matchup['home']}" for matchup, _ in unresolved]
     blocked_missing = [
         f"{matchup['away']} @ {matchup['home']}"
         for matchup, _ in unresolved
@@ -801,9 +801,11 @@ def scrape_scores24(
                 f"{', '.join(blocked_missing[:3])}"
             ),
             "meta": {
+                "officialMatchups": len(expected),
                 "expectedMatchups": len(expected),
                 "matchedPicks": len(picks),
-                "missingMatchups": missing_matchups,
+                "missingMatchups": unresolved_matchups,
+                "unpublishedMatchups": [],
                 "attemptedUrls": attempted_urls,
                 "blockedUrls": len(set(blocked_urls)),
                 "blockRetryRounds": block_retry_rounds,
@@ -815,12 +817,14 @@ def scrape_scores24(
         "picks": picks,
         "note": (
             f"{config['source']} matched {len(picks)} published editorial choice(s) "
-            f"to {len(expected)} official {date_iso} matchup(s)."
+            f"against {len(expected)} official {date_iso} matchup(s)."
         ),
         "meta": {
-            "expectedMatchups": len(expected),
+            "officialMatchups": len(expected),
+            "expectedMatchups": len(picks),
             "matchedPicks": len(picks),
-            "missingMatchups": missing_matchups,
+            "missingMatchups": [],
+            "unpublishedMatchups": unresolved_matchups,
             "attemptedUrls": attempted_urls,
             "blockedUrls": len(set(blocked_urls)),
             "blockRetryRounds": block_retry_rounds,

@@ -630,6 +630,33 @@ def test_scores24_matches_official_slate_and_keeps_separate_sources():
     assert module.SPORT_CONFIG["mlb"]["source"] == "Scores24MLB"
 
 
+def test_scores24_distinguishes_unpublished_official_matchup_from_failure():
+    module = _load_module(
+        "scores24_unpublished_matchup_test",
+        ROOT / "scripts" / "scrapers" / "scores24_scraper.py",
+    )
+
+    class FakeClient:
+        def get_html(self, url: str, attempts: int = 3):
+            if url.endswith("/l-usa-mlb/predictions"):
+                return '<a href="/en/baseball/m-19-06-2026-other-game-prediction">Other game</a>', 200, False
+            return "", 404, False
+
+    result = module.scrape_scores24(
+        "mlb",
+        "2026-06-19",
+        client=FakeClient(),
+        matchups=[{"away": "San Francisco Giants", "home": "Miami Marlins", "start_time": ""}],
+    )
+
+    assert result["ok"] is True
+    assert result["meta"]["officialMatchups"] == 1
+    assert result["meta"]["expectedMatchups"] == 0
+    assert result["meta"]["matchedPicks"] == 0
+    assert result["meta"]["missingMatchups"] == []
+    assert result["meta"]["unpublishedMatchups"] == ["San Francisco Giants @ Miami Marlins"]
+
+
 def test_scores24_fifa_world_cup_keeps_specialty_market_ungraded():
     module = _load_module(
         "scores24_fifa_test",
