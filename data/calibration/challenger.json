@@ -1,91 +1,91 @@
 {
-  "decided_count": 1238,
-  "evaluated_at": "2026-06-18T14:25:44.518325Z",
+  "decided_count": 1341,
+  "evaluated_at": "2026-06-19T21:51:23.870204Z",
   "global": {
-    "intercept": -0.23165421,
-    "samples": 930,
+    "intercept": -0.24040903,
+    "samples": 1009,
     "shrinkage_prior_samples": 120.0,
-    "slope": 0.54722825
+    "slope": 0.51670503
   },
   "groups": {
     "model:mlb_first_five|source:mlb first five|sport:mlb|bet:f5_side": {
-      "intercept": -0.105058,
-      "samples": 84,
+      "intercept": -0.10595428,
+      "samples": 85,
       "shrinkage_prior_samples": 80.0,
-      "slope": 0.59117743
+      "slope": 0.56538791
     },
     "model:mlb_first_five|source:mlb first five|sport:mlb|bet:f5_total": {
-      "intercept": -0.20789544,
-      "samples": 99,
-      "shrinkage_prior_samples": 80.0,
-      "slope": 0.54996004
-    },
-    "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning": {
-      "intercept": -0.20922641,
-      "samples": 171,
-      "shrinkage_prior_samples": 80.0,
-      "slope": 0.56088631
-    },
-    "model:mlb_new|source:mlb new|sport:mlb|bet:h2h": {
-      "intercept": -0.1729256,
+      "intercept": -0.20414234,
       "samples": 101,
       "shrinkage_prior_samples": 80.0,
-      "slope": 0.55633183
+      "slope": 0.52963264
+    },
+    "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning": {
+      "intercept": -0.21261285,
+      "samples": 171,
+      "shrinkage_prior_samples": 80.0,
+      "slope": 0.53241752
+    },
+    "model:mlb_new|source:mlb new|sport:mlb|bet:h2h": {
+      "intercept": -0.17800495,
+      "samples": 101,
+      "shrinkage_prior_samples": 80.0,
+      "slope": 0.52702921
     },
     "model:mlb_new|source:mlb new|sport:mlb|bet:totals": {
-      "intercept": -0.23849207,
+      "intercept": -0.24237417,
       "samples": 103,
       "shrinkage_prior_samples": 80.0,
-      "slope": 0.54987882
+      "slope": 0.52302503
     },
     "model:mlb_player_props|source:pickledgerpro in-house player props|sport:mlb|bet:hits_runs_rbis": {
-      "intercept": -0.23689174,
-      "samples": 33,
+      "intercept": -0.24485376,
+      "samples": 49,
       "shrinkage_prior_samples": 80.0,
-      "slope": 0.54305242
+      "slope": 0.49280481
     },
     "model:mlb_player_props|source:pickledgerpro in-house player props|sport:mlb|bet:rbis": {
-      "intercept": -0.38356742,
-      "samples": 109,
+      "intercept": -0.39506208,
+      "samples": 130,
       "shrinkage_prior_samples": 80.0,
-      "slope": 0.39727831
+      "slope": 0.37567033
     },
     "model:mlb_player_props|source:pickledgerpro in-house player props|sport:mlb|bet:total_bases": {
-      "intercept": -0.30535608,
-      "samples": 43,
+      "intercept": -0.33939809,
+      "samples": 57,
       "shrinkage_prior_samples": 80.0,
-      "slope": 0.40963101
+      "slope": 0.35569176
     }
   },
   "holdout": {
     "challenger": {
-      "brier_score": 0.27904324,
-      "calibration_error": 0.16734771,
-      "log_loss": 0.75654495,
-      "qualified_bets": 183,
-      "roi": 0.08529759,
-      "samples": 188
+      "brier_score": 0.25614041,
+      "calibration_error": 0.10677642,
+      "log_loss": 0.70667798,
+      "qualified_bets": 69,
+      "roi": 0.13582324,
+      "samples": 79
     },
     "champion": {
-      "brier_score": 0.29056965,
-      "calibration_error": 0.20155515,
-      "log_loss": 0.78471874,
-      "qualified_bets": 186,
-      "roi": 0.07848328,
-      "samples": 188
+      "brier_score": 0.25614041,
+      "calibration_error": 0.10677642,
+      "log_loss": 0.70667798,
+      "qualified_bets": 69,
+      "roi": 0.13582324,
+      "samples": 79
     }
   },
   "minimum_group_samples": 30,
   "promotion": {
-    "approved": true,
+    "approved": false,
     "reasons": [
-      "brier_improved=True",
-      "calibration_improved=True",
+      "brier_improved=False",
+      "calibration_improved=False",
       "log_loss_safe=True",
       "roi_safe=True"
     ]
   },
   "schema_version": 1,
-  "trainable_decided_count": 930,
-  "version": "cal-1238-2026-06-18"
+  "trainable_decided_count": 1009,
+  "version": "cal-1341-2026-06-19"
 }
