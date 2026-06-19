@@ -755,6 +755,15 @@ def scrape_scores24(
                 break
             block_retry_rounds += 1
             time.sleep(retry_delay)
+            if owns_client:
+                # A blocked Camoufox/Playwright transport is intentionally marked
+                # failed for the rest of its client lifetime. Reusing that client
+                # makes every retry fall back to the same already-blocked HTTP
+                # path, so late-slate matchups can never recover. Start a fresh
+                # paced transport after the cooldown and retry only unresolved
+                # matchups.
+                scores_client.close()
+                scores_client = Scores24Client()
             still_unresolved: list[tuple[dict[str, str], list[str]]] = []
             for matchup, candidates in unresolved:
                 pick = resolve_candidates(matchup, candidates, min(max_candidates, 6))

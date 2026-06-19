@@ -703,6 +703,50 @@ def test_scores24_retries_blocked_matchup_without_hammering_candidates(monkeypat
     assert client.detail_calls == 2
 
 
+def test_scores24_rotates_owned_client_after_blocked_cooldown(monkeypatch):
+    module = _load_module(
+        "scores24_owned_client_retry_test",
+        ROOT / "scripts" / "scrapers" / "scores24_scraper.py",
+    )
+    monkeypatch.setenv("SCORES24_BLOCK_RETRY_DELAY_SECONDS", "0")
+    monkeypatch.setenv("SCORES24_BLOCK_RETRY_ROUNDS", "1")
+    detail = """
+    <html><head><title>San Francisco Giants vs Miami Marlins Prediction</title></head>
+    <body><div><div>Our choice</div><div>Miami Marlins Win at odds of +105*</div></div></body>
+    </html>
+    """
+
+    class FakeOwnedClient:
+        instances = []
+
+        def __init__(self):
+            self.closed = False
+            self.instance_number = len(self.instances) + 1
+            self.instances.append(self)
+
+        def get_html(self, url: str, attempts: int = 3):
+            if url.endswith("/l-usa-mlb/predictions"):
+                return "", 200, False
+            if self.instance_number == 1:
+                return "Cloudflare", 429, True
+            return detail, 200, False
+
+        def close(self):
+            self.closed = True
+
+    monkeypatch.setattr(module, "Scores24Client", FakeOwnedClient)
+    result = module.scrape_scores24(
+        "mlb",
+        "2026-06-19",
+        matchups=[{"away": "San Francisco Giants", "home": "Miami Marlins", "start_time": ""}],
+    )
+
+    assert result["ok"] is True
+    assert result["meta"]["matchedPicks"] == 1
+    assert len(FakeOwnedClient.instances) == 2
+    assert all(client.closed for client in FakeOwnedClient.instances)
+
+
 def test_scores24_fails_closed_when_blocked_retry_stays_blocked(monkeypatch):
     module = _load_module(
         "scores24_blocked_test",
