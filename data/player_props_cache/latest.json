@@ -21,6 +21,7 @@
           "edge": 8.0,
           "full_kelly": 0.02,
           "game_id": "824663",
+          "game_start_time": "2026-06-19T18:20Z",
           "home_team": "Chicago Cubs",
           "id": "pp_c7186d941923e707ffaa",
           "key_factors": [
@@ -81,7 +82,7 @@
           "selection": "Under",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-19T18:20:00Z",
+          "start_time": "2026-06-19T18:20Z",
           "stat_key": "pitcher_hits_allowed",
           "team": "Chicago Cubs",
           "units": 0.5
@@ -97,6 +98,7 @@
           "edge": 8.0,
           "full_kelly": 0.02,
           "game_id": "824910",
+          "game_start_time": "2026-06-19T23:15Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -160,7 +162,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-19T23:15:00Z",
+          "start_time": "2026-06-19T23:15Z",
           "stat_key": "hits_runs_rbis",
           "team": "Atlanta Braves",
           "units": 0.5
@@ -176,6 +178,7 @@
           "edge": 8.0,
           "full_kelly": 0.02,
           "game_id": "822966",
+          "game_start_time": "2026-06-19T23:10Z",
           "home_team": "Tampa Bay Rays",
           "id": "pp_128265231a43c1384cc9",
           "key_factors": [
@@ -236,7 +239,7 @@
           "selection": "Under",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-19T23:10:00Z",
+          "start_time": "2026-06-19T23:10Z",
           "stat_key": "strikeouts",
           "team": "Tampa Bay Rays",
           "units": 0.5
@@ -252,6 +255,7 @@
           "edge": 8.0,
           "full_kelly": 0.02,
           "game_id": "824097",
+          "game_start_time": "2026-06-20T00:15Z",
           "h2h": {
             "at_bats": 1,
             "available": true,
@@ -315,7 +319,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-20T00:15:00Z",
+          "start_time": "2026-06-20T00:15Z",
           "stat_key": "total_bases",
           "team": "St. Louis Cardinals",
           "units": 0.5
@@ -331,6 +335,7 @@
           "edge": 7.87,
           "full_kelly": 0.02,
           "game_id": "824179",
+          "game_start_time": "2026-06-20T00:10Z",
           "h2h": {
             "at_bats": 2,
             "available": true,
@@ -396,7 +401,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-20T00:10:00Z",
+          "start_time": "2026-06-20T00:10Z",
           "stat_key": "hits",
           "team": "Houston Astros",
           "units": 0.5
@@ -412,6 +417,7 @@
           "edge": 8.0,
           "full_kelly": 0.02,
           "game_id": "823936",
+          "game_start_time": "2026-06-20T02:10Z",
           "home_team": "Los Angeles Dodgers",
           "id": "pp_03578a8a91a2d1a9da16",
           "key_factors": [
@@ -472,7 +478,7 @@
           "selection": "Under",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-20T02:10:00Z",
+          "start_time": "2026-06-20T02:10Z",
           "stat_key": "pitcher_outs_recorded",
           "team": "Baltimore Orioles",
           "units": 0.5
@@ -488,6 +494,7 @@
           "edge": 7.57,
           "full_kelly": 0.02,
           "game_id": "825069",
+          "game_start_time": "2026-06-20T01:45Z",
           "h2h": {
             "at_bats": 1,
             "available": true,
@@ -551,7 +558,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-20T01:45:00Z",
+          "start_time": "2026-06-20T01:45Z",
           "stat_key": "total_bases",
           "team": "Minnesota Twins",
           "units": 0.5
@@ -567,6 +574,7 @@
           "edge": 7.2,
           "full_kelly": 0.02,
           "game_id": "822886",
+          "game_start_time": "2026-06-20T00:05Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -630,7 +638,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-20T00:05:00Z",
+          "start_time": "2026-06-20T00:05Z",
           "stat_key": "hits_runs_rbis",
           "team": "Texas Rangers",
           "units": 0.5
@@ -646,6 +654,7 @@
           "edge": 7.58,
           "full_kelly": 0.02,
           "game_id": "822966",
+          "game_start_time": "2026-06-19T23:10Z",
           "h2h": {
             "at_bats": 3,
             "available": true,
@@ -709,7 +718,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-19T23:10:00Z",
+          "start_time": "2026-06-19T23:10Z",
           "stat_key": "hits_runs_rbis",
           "team": "Washington Nationals",
           "units": 0.5
@@ -725,6 +734,7 @@
           "edge": 8.0,
           "full_kelly": 0.02,
           "game_id": "824990",
+          "game_start_time": "2026-06-20T01:40Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -790,7 +800,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-20T01:40:00Z",
+          "start_time": "2026-06-20T01:40Z",
           "stat_key": "hits",
           "team": "Los Angeles Angels",
           "units": 0.5
@@ -806,6 +816,7 @@
           "edge": 7.76,
           "full_kelly": 0.02,
           "game_id": "824345",
+          "game_start_time": "2026-06-20T00:40Z",
           "home_team": "Colorado Rockies",
           "id": "pp_88dbc3bcf867c6e6ce42",
           "key_factors": [
@@ -866,7 +877,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-20T00:40:00Z",
+          "start_time": "2026-06-20T00:40Z",
           "stat_key": "pitcher_hits_allowed",
           "team": "Colorado Rockies",
           "units": 0.5
@@ -882,6 +893,7 @@
           "edge": 7.65,
           "full_kelly": 0.02,
           "game_id": "822886",
+          "game_start_time": "2026-06-20T00:05Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -947,7 +959,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-20T00:05:00Z",
+          "start_time": "2026-06-20T00:05Z",
           "stat_key": "hits",
           "team": "San Diego Padres",
           "units": 0.5
@@ -963,6 +975,7 @@
           "edge": 8.0,
           "full_kelly": 0.02,
           "game_id": "823124",
+          "game_start_time": "2026-06-20T02:10Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -1026,7 +1039,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-20T02:10:00Z",
+          "start_time": "2026-06-20T02:10Z",
           "stat_key": "hits_runs_rbis",
           "team": "Seattle Mariners",
           "units": 0.5
@@ -1042,6 +1055,7 @@
           "edge": 7.13,
           "full_kelly": 0.02,
           "game_id": "822966",
+          "game_start_time": "2026-06-19T23:10Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -1105,7 +1119,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-19T23:10:00Z",
+          "start_time": "2026-06-19T23:10Z",
           "stat_key": "hits_runs_rbis",
           "team": "Washington Nationals",
           "units": 0.5
@@ -1121,6 +1135,7 @@
           "edge": 7.29,
           "full_kelly": 0.02,
           "game_id": "823936",
+          "game_start_time": "2026-06-20T02:10Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -1186,7 +1201,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-20T02:10:00Z",
+          "start_time": "2026-06-20T02:10Z",
           "stat_key": "hits",
           "team": "Baltimore Orioles",
           "units": 0.5
@@ -1202,6 +1217,7 @@
           "edge": 8.0,
           "full_kelly": 0.02,
           "game_id": "824910",
+          "game_start_time": "2026-06-19T23:15Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -1265,7 +1281,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-19T23:15:00Z",
+          "start_time": "2026-06-19T23:15Z",
           "stat_key": "hits_runs_rbis",
           "team": "Atlanta Braves",
           "units": 0.5
@@ -1281,6 +1297,7 @@
           "edge": 7.12,
           "full_kelly": 0.02,
           "game_id": "824663",
+          "game_start_time": "2026-06-19T18:20Z",
           "h2h": {
             "at_bats": 6,
             "available": true,
@@ -1344,7 +1361,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-19T18:20:00Z",
+          "start_time": "2026-06-19T18:20Z",
           "stat_key": "hits_runs_rbis",
           "team": "Chicago Cubs",
           "units": 0.5
@@ -1360,6 +1377,7 @@
           "edge": 7.56,
           "full_kelly": 0.02,
           "game_id": "824910",
+          "game_start_time": "2026-06-19T23:15Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -1423,7 +1441,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-19T23:15:00Z",
+          "start_time": "2026-06-19T23:15Z",
           "stat_key": "hits_runs_rbis",
           "team": "Atlanta Braves",
           "units": 0.5
@@ -1439,6 +1457,7 @@
           "edge": 6.96,
           "full_kelly": 0.02,
           "game_id": "822886",
+          "game_start_time": "2026-06-20T00:05Z",
           "h2h": {
             "at_bats": 5,
             "available": true,
@@ -1502,7 +1521,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-20T00:05:00Z",
+          "start_time": "2026-06-20T00:05Z",
           "stat_key": "hits_runs_rbis",
           "team": "Texas Rangers",
           "units": 0.5
@@ -1518,6 +1537,7 @@
           "edge": 6.89,
           "full_kelly": 0.02,
           "game_id": "823853",
+          "game_start_time": "2026-06-19T23:10Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -1581,7 +1601,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-19T23:10:00Z",
+          "start_time": "2026-06-19T23:10Z",
           "stat_key": "hits_runs_rbis",
           "team": "San Francisco Giants",
           "units": 0.5
@@ -1597,6 +1617,7 @@
           "edge": 6.61,
           "full_kelly": 0.02,
           "game_id": "822966",
+          "game_start_time": "2026-06-19T23:10Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -1662,7 +1683,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-19T23:10:00Z",
+          "start_time": "2026-06-19T23:10Z",
           "stat_key": "hits",
           "team": "Tampa Bay Rays",
           "units": 0.5
@@ -1678,6 +1699,7 @@
           "edge": 6.57,
           "full_kelly": 0.02,
           "game_id": "823853",
+          "game_start_time": "2026-06-19T23:10Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -1741,7 +1763,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-19T23:10:00Z",
+          "start_time": "2026-06-19T23:10Z",
           "stat_key": "hits_runs_rbis",
           "team": "San Francisco Giants",
           "units": 0.5
@@ -1757,6 +1779,7 @@
           "edge": 6.12,
           "full_kelly": 0.02,
           "game_id": "824264",
+          "game_start_time": "2026-06-19T22:40Z",
           "h2h": {
             "at_bats": 2,
             "available": true,
@@ -1820,7 +1843,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-19T22:40:00Z",
+          "start_time": "2026-06-19T22:40Z",
           "stat_key": "total_bases",
           "team": "Detroit Tigers",
           "units": 0.5
@@ -1836,6 +1859,7 @@
           "edge": 5.9,
           "full_kelly": 0.02,
           "game_id": "823936",
+          "game_start_time": "2026-06-20T02:10Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -1899,7 +1923,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-20T02:10:00Z",
+          "start_time": "2026-06-20T02:10Z",
           "stat_key": "hits_runs_rbis",
           "team": "Los Angeles Dodgers",
           "units": 0.5
@@ -1915,6 +1939,7 @@
           "edge": 5.81,
           "full_kelly": 0.02,
           "game_id": "823936",
+          "game_start_time": "2026-06-20T02:10Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -1978,7 +2003,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-20T02:10:00Z",
+          "start_time": "2026-06-20T02:10Z",
           "stat_key": "total_bases",
           "team": "Los Angeles Dodgers",
           "units": 0.5
@@ -1994,6 +2019,7 @@
           "edge": 5.78,
           "full_kelly": 0.02,
           "game_id": "825069",
+          "game_start_time": "2026-06-20T01:45Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -2057,7 +2083,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-20T01:45:00Z",
+          "start_time": "2026-06-20T01:45Z",
           "stat_key": "total_bases",
           "team": "Arizona Diamondbacks",
           "units": 0.5
@@ -2073,6 +2099,7 @@
           "edge": 5.95,
           "full_kelly": 0.02,
           "game_id": "824910",
+          "game_start_time": "2026-06-19T23:15Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -2136,7 +2163,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-19T23:15:00Z",
+          "start_time": "2026-06-19T23:15Z",
           "stat_key": "hits_runs_rbis",
           "team": "Atlanta Braves",
           "units": 0.5
@@ -2152,6 +2179,7 @@
           "edge": 6.36,
           "full_kelly": 0.02,
           "game_id": "824264",
+          "game_start_time": "2026-06-19T22:40Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -2217,7 +2245,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-19T22:40:00Z",
+          "start_time": "2026-06-19T22:40Z",
           "stat_key": "hits",
           "team": "Chicago White Sox",
           "units": 0.5
@@ -2233,6 +2261,7 @@
           "edge": 6.7,
           "full_kelly": 0.02,
           "game_id": "825069",
+          "game_start_time": "2026-06-20T01:45Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -2296,7 +2325,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-20T01:45:00Z",
+          "start_time": "2026-06-20T01:45Z",
           "stat_key": "hits_runs_rbis",
           "team": "Minnesota Twins",
           "units": 0.5
@@ -2312,6 +2341,7 @@
           "edge": 6.82,
           "full_kelly": 0.02,
           "game_id": "823853",
+          "game_start_time": "2026-06-19T23:10Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -2375,7 +2405,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-19T23:10:00Z",
+          "start_time": "2026-06-19T23:10Z",
           "stat_key": "hits_runs_rbis",
           "team": "Miami Marlins",
           "units": 0.5
@@ -2391,6 +2421,7 @@
           "edge": 5.09,
           "full_kelly": 0.02,
           "game_id": "824663",
+          "game_start_time": "2026-06-19T18:20Z",
           "h2h": {
             "at_bats": 5,
             "available": true,
@@ -2454,7 +2485,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-19T18:20:00Z",
+          "start_time": "2026-06-19T18:20Z",
           "stat_key": "hits_runs_rbis",
           "team": "Chicago Cubs",
           "units": 0.5
@@ -2470,6 +2501,7 @@
           "edge": 5.93,
           "full_kelly": 0.02,
           "game_id": "824345",
+          "game_start_time": "2026-06-20T00:40Z",
           "h2h": {
             "at_bats": 4,
             "available": true,
@@ -2533,7 +2565,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-20T00:40:00Z",
+          "start_time": "2026-06-20T00:40Z",
           "stat_key": "total_bases",
           "team": "Pittsburgh Pirates",
           "units": 0.5
@@ -2549,6 +2581,7 @@
           "edge": 5.63,
           "full_kelly": 0.02,
           "game_id": "824179",
+          "game_start_time": "2026-06-20T00:10Z",
           "h2h": {
             "at_bats": 6,
             "available": true,
@@ -2612,7 +2645,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-20T00:10:00Z",
+          "start_time": "2026-06-20T00:10Z",
           "stat_key": "total_bases",
           "team": "Houston Astros",
           "units": 0.5
@@ -2628,6 +2661,7 @@
           "edge": 5.61,
           "full_kelly": 0.02,
           "game_id": "823853",
+          "game_start_time": "2026-06-19T23:10Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -2691,7 +2725,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-19T23:10:00Z",
+          "start_time": "2026-06-19T23:10Z",
           "stat_key": "hits_runs_rbis",
           "team": "San Francisco Giants",
           "units": 0.5
@@ -2707,6 +2741,7 @@
           "edge": 5.38,
           "full_kelly": 0.02,
           "game_id": "825069",
+          "game_start_time": "2026-06-20T01:45Z",
           "home_team": "Arizona Diamondbacks",
           "id": "pp_d660a474967bd053a4ff",
           "key_factors": [
@@ -2767,7 +2802,7 @@
           "selection": "Under",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-20T01:45:00Z",
+          "start_time": "2026-06-20T01:45Z",
           "stat_key": "pitcher_hits_allowed",
           "team": "Minnesota Twins",
           "units": 0.5
@@ -2783,6 +2818,7 @@
           "edge": 5.0,
           "full_kelly": 0.02,
           "game_id": "823534",
+          "game_start_time": "2026-06-19T23:05Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -2846,7 +2882,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-19T23:05:00Z",
+          "start_time": "2026-06-19T23:05Z",
           "stat_key": "hits_runs_rbis",
           "team": "Cincinnati Reds",
           "units": 0.5
@@ -2862,6 +2898,7 @@
           "edge": 5.49,
           "full_kelly": 0.02,
           "game_id": "822886",
+          "game_start_time": "2026-06-20T00:05Z",
           "h2h": {
             "at_bats": 3,
             "available": true,
@@ -2927,7 +2964,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-20T00:05:00Z",
+          "start_time": "2026-06-20T00:05Z",
           "stat_key": "hits",
           "team": "Texas Rangers",
           "units": 0.5
@@ -2943,6 +2980,7 @@
           "edge": 4.95,
           "full_kelly": 0.02,
           "game_id": "824990",
+          "game_start_time": "2026-06-20T01:40Z",
           "h2h": {
             "at_bats": 4,
             "available": true,
@@ -3006,7 +3044,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-20T01:40:00Z",
+          "start_time": "2026-06-20T01:40Z",
           "stat_key": "total_bases",
           "team": "Los Angeles Angels",
           "units": 0.5
@@ -3022,6 +3060,7 @@
           "edge": 6.16,
           "full_kelly": 0.02,
           "game_id": "824663",
+          "game_start_time": "2026-06-19T18:20Z",
           "h2h": {
             "at_bats": 13,
             "available": true,
@@ -3085,7 +3124,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-19T18:20:00Z",
+          "start_time": "2026-06-19T18:20Z",
           "stat_key": "hits_runs_rbis",
           "team": "Chicago Cubs",
           "units": 0.5
@@ -3101,6 +3140,7 @@
           "edge": 4.82,
           "full_kelly": 0.02,
           "game_id": "824264",
+          "game_start_time": "2026-06-19T22:40Z",
           "h2h": {
             "at_bats": 4,
             "available": true,
@@ -3164,7 +3204,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-19T22:40:00Z",
+          "start_time": "2026-06-19T22:40Z",
           "stat_key": "hits_runs_rbis",
           "team": "Chicago White Sox",
           "units": 0.5
@@ -3180,6 +3220,7 @@
           "edge": 5.15,
           "full_kelly": 0.02,
           "game_id": "824097",
+          "game_start_time": "2026-06-20T00:15Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -3243,7 +3284,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-20T00:15:00Z",
+          "start_time": "2026-06-20T00:15Z",
           "stat_key": "hits_runs_rbis",
           "team": "St. Louis Cardinals",
           "units": 0.5
@@ -3259,6 +3300,7 @@
           "edge": 4.92,
           "full_kelly": 0.02,
           "game_id": "824097",
+          "game_start_time": "2026-06-20T00:15Z",
           "h2h": {
             "at_bats": 3,
             "available": true,
@@ -3322,7 +3364,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-20T00:15:00Z",
+          "start_time": "2026-06-20T00:15Z",
           "stat_key": "total_bases",
           "team": "St. Louis Cardinals",
           "units": 0.5
@@ -3338,6 +3380,7 @@
           "edge": 4.44,
           "full_kelly": 0.02,
           "game_id": "824179",
+          "game_start_time": "2026-06-20T00:10Z",
           "h2h": {
             "at_bats": 8,
             "available": true,
@@ -3401,7 +3444,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-20T00:10:00Z",
+          "start_time": "2026-06-20T00:10Z",
           "stat_key": "hits_runs_rbis",
           "team": "Houston Astros",
           "units": 0.5
@@ -3417,6 +3460,7 @@
           "edge": 5.28,
           "full_kelly": 0.02,
           "game_id": "824097",
+          "game_start_time": "2026-06-20T00:15Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -3482,7 +3526,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-20T00:15:00Z",
+          "start_time": "2026-06-20T00:15Z",
           "stat_key": "hits",
           "team": "St. Louis Cardinals",
           "units": 0.5
@@ -3498,6 +3542,7 @@
           "edge": 4.87,
           "full_kelly": 0.02,
           "game_id": "823124",
+          "game_start_time": "2026-06-20T02:10Z",
           "h2h": {
             "at_bats": 8,
             "available": true,
@@ -3563,7 +3608,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-20T02:10:00Z",
+          "start_time": "2026-06-20T02:10Z",
           "stat_key": "hits",
           "team": "Seattle Mariners",
           "units": 0.5
@@ -3579,6 +3624,7 @@
           "edge": 4.57,
           "full_kelly": 0.02,
           "game_id": "824990",
+          "game_start_time": "2026-06-20T01:40Z",
           "h2h": {
             "at_bats": 18,
             "available": true,
@@ -3642,7 +3688,7 @@
           "selection": "Under",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-20T01:40:00Z",
+          "start_time": "2026-06-20T01:40Z",
           "stat_key": "hits_runs_rbis",
           "team": "Athletics",
           "units": 0.5
@@ -3658,6 +3704,7 @@
           "edge": 5.21,
           "full_kelly": 0.02,
           "game_id": "823534",
+          "game_start_time": "2026-06-19T23:05Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -3721,7 +3768,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-19T23:05:00Z",
+          "start_time": "2026-06-19T23:05Z",
           "stat_key": "hits_runs_rbis",
           "team": "Cincinnati Reds",
           "units": 0.5
@@ -3737,6 +3784,7 @@
           "edge": 4.47,
           "full_kelly": 0.02,
           "game_id": "824264",
+          "game_start_time": "2026-06-19T22:40Z",
           "h2h": {
             "at_bats": 9,
             "available": true,
@@ -3800,7 +3848,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-19T22:40:00Z",
+          "start_time": "2026-06-19T22:40Z",
           "stat_key": "hits_runs_rbis",
           "team": "Detroit Tigers",
           "units": 0.5
@@ -3816,6 +3864,7 @@
           "edge": 4.33,
           "full_kelly": 0.02,
           "game_id": "823534",
+          "game_start_time": "2026-06-19T23:05Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -3879,7 +3928,7 @@
           "selection": "Over",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-19T23:05:00Z",
+          "start_time": "2026-06-19T23:05Z",
           "stat_key": "total_bases",
           "team": "New York Yankees",
           "units": 0.5
@@ -3895,6 +3944,7 @@
           "edge": 4.51,
           "full_kelly": 0.02,
           "game_id": "824345",
+          "game_start_time": "2026-06-20T00:40Z",
           "h2h": {
             "at_bats": 15,
             "available": true,
@@ -3958,7 +4008,7 @@
           "selection": "Under",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-20T00:40:00Z",
+          "start_time": "2026-06-20T00:40Z",
           "stat_key": "hits_runs_rbis",
           "team": "Pittsburgh Pirates",
           "units": 0.5
@@ -3974,6 +4024,7 @@
           "edge": 4.56,
           "full_kelly": 0.02,
           "game_id": "824345",
+          "game_start_time": "2026-06-20T00:40Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -4037,7 +4088,7 @@
           "selection": "Under",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-20T00:40:00Z",
+          "start_time": "2026-06-20T00:40Z",
           "stat_key": "hits_runs_rbis",
           "team": "Pittsburgh Pirates",
           "units": 0.5
@@ -4053,6 +4104,7 @@
           "edge": 4.29,
           "full_kelly": 0.02,
           "game_id": "824179",
+          "game_start_time": "2026-06-20T00:10Z",
           "home_team": "Houston Astros",
           "id": "pp_97d82e7658c2dd13a799",
           "key_factors": [
@@ -4113,7 +4165,7 @@
           "selection": "Under",
           "source": "PickLedgerPro In-House Player Props",
           "sport": "MLB",
-          "start_time": "2026-06-20T00:10:00Z",
+          "start_time": "2026-06-20T00:10Z",
           "stat_key": "strikeouts",
           "team": "Cleveland Guardians",
           "units": 0.5
