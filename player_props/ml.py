@@ -338,11 +338,11 @@ def apply_ml_to_pick(
     return pick
 
 
-def ev_sort_key(prop: dict[str, Any]) -> tuple[int, float, float, float, str]:
+def ev_sort_key(prop: dict[str, Any]) -> tuple[float, int, float, float, str]:
     decision_rank = {"BET": 0, "LEAN": 1, "PASS": 2}
     return (
-        decision_rank.get(str(prop.get("decision") or ""), 3),
         -safe_float(prop.get("ml_expected_value"), -100.0),
+        decision_rank.get(str(prop.get("decision") or ""), 3),
         -safe_float(prop.get("ml_edge"), -100.0),
         -safe_float(prop.get("ml_probability") or prop.get("probability")),
         str(prop.get("id") or ""),

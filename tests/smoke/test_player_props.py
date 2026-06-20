@@ -548,7 +548,7 @@ def test_ml_selection_caps_board_and_rejects_weak_or_extreme_props():
             candidate(5, "e"),
             candidate(6, "f"),
             candidate(7, "g"),
-            candidate(8, "h"),
+            candidate(8, "h", decision="LEAN", ml_expected_value=0.25),
             candidate(9, "i"),
             candidate(10, "j", odds=300),
             candidate(11, "k", ml_probability=0.51),
@@ -557,4 +557,9 @@ def test_ml_selection_caps_board_and_rejects_weak_or_extreme_props():
 
     assert len(selected) == 8
     assert len({pick["player_id"] for pick in selected}) == 8
+    assert selected[0]["id"] == "pick-8"
+    assert [pick["ml_expected_value"] for pick in selected] == sorted(
+        (pick["ml_expected_value"] for pick in selected),
+        reverse=True,
+    )
     assert all(pick["odds"] <= 250 and pick["ml_probability"] >= 0.52 for pick in selected)
