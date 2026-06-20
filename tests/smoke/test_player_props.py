@@ -384,7 +384,7 @@ def test_basketball_props_use_actual_markets_and_apply_next_man_up():
     second = generate_payload(DATE, client=MockClient(), generated_at="2026-06-12T13:00:00Z")
     picks = first["models"]["wnba_player_props"]["picks"]
 
-    assert 3 <= len(picks) <= 4
+    assert 5 <= len(picks) <= 8
     assert [pick["id"] for pick in picks] == [
         pick["id"] for pick in second["models"]["wnba_player_props"]["picks"]
     ]
@@ -438,7 +438,7 @@ def test_mlb_props_use_actual_markets_and_reject_reliever_starter_lines():
     picks = model["picks"]
 
     assert model["ok"] is True
-    assert 3 <= len(picks) <= 4
+    assert 5 <= len(picks) <= 8
     assert {"hits_runs_rbis", "batter_walks"} & {pick["stat_key"] for pick in picks}
     assert all(pick["odds"] != -110 and pick["decision"] in {"BET", "LEAN", "PASS"} for pick in picks)
     assert all(pick["market_source"] == "DraftKings via ESPN" for pick in picks)
@@ -546,11 +546,15 @@ def test_ml_selection_caps_board_and_rejects_weak_or_extreme_props():
             candidate(3, "c"),
             candidate(4, "d"),
             candidate(5, "e"),
-            candidate(6, "f", odds=300),
-            candidate(7, "g", ml_probability=0.51),
+            candidate(6, "f"),
+            candidate(7, "g"),
+            candidate(8, "h"),
+            candidate(9, "i"),
+            candidate(10, "j", odds=300),
+            candidate(11, "k", ml_probability=0.51),
         ]
     )
 
-    assert len(selected) == 4
-    assert len({pick["player_id"] for pick in selected}) == 4
+    assert len(selected) == 8
+    assert len({pick["player_id"] for pick in selected}) == 8
     assert all(pick["odds"] <= 250 and pick["ml_probability"] >= 0.52 for pick in selected)
