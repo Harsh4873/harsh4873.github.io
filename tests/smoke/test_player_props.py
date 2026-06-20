@@ -19,11 +19,14 @@ STAMP = "2026-06-12T12:00:00Z"
 def _disable_live_precision_artifact(monkeypatch):
     """Legacy generator fixtures exercise projections, not the production artifact."""
     import player_props.precision as precision
+    import player_props.consensus as consensus
 
     monkeypatch.setenv("PICKLEDGER_DISABLE_PRECISION_MODEL", "true")
     precision._BUNDLE = False
+    consensus._BUNDLE = False
     yield
     precision._BUNDLE = False
+    consensus._BUNDLE = False
 
 
 def _gamelog(name: str, values: list[list[str]]) -> dict:
@@ -536,32 +539,45 @@ def test_ml_training_uses_real_current_season_outcomes_and_validation_gate():
         assert "model_brier" in metadata["validation"]
 
 
-def test_precision_model_clears_70_percent_on_validation_and_later_holdout(monkeypatch):
+def test_four_model_consensus_clears_70_percent_on_validation_and_later_holdout(monkeypatch):
     import player_props.precision as precision
+    import player_props.consensus as consensus
 
     metadata = json.loads(
-        (ROOT / "player_props" / "artifacts" / "mlb_player_props_precision_metadata.json").read_text()
+        (ROOT / "player_props" / "artifacts" / "player_props_consensus_metadata.json").read_text()
     )
     assert metadata["active"] is True
     assert metadata["target_accuracy"] == 0.70
-    assert metadata["validation"]["accuracy"] >= 0.70
-    assert metadata["holdout"]["accuracy"] >= 0.70
-    assert metadata["validation"]["samples"] >= 100
-    assert metadata["holdout"]["samples"] >= 30
-    assert metadata["combined_out_of_sample"]["roi"] >= 0
-    assert metadata["policy"]["maximum_picks_per_game"] == 1
+    assert metadata["history_years"] == {"MLB": 5, "WNBA": 3}
+    for sport in ("MLB", "WNBA"):
+        sport_metadata = metadata["sports"][sport]
+        assert sport_metadata["active"] is True
+        assert sport_metadata["combined_out_of_sample"]["accuracy"] >= 0.70
+        for policy in sport_metadata["policies"].values():
+            assert policy["validation"]["accuracy"] >= 0.70
+            assert policy["holdout"]["accuracy"] >= 0.70
+    assert metadata["sports"]["WNBA"]["failed_policies"]["totalRebounds"]["active"] is False
+    for name in (
+        "mlb_player_props_season.joblib",
+        "mlb_player_props_history.joblib",
+        "wnba_player_props_season.joblib",
+        "wnba_player_props_history.joblib",
+    ):
+        assert (ROOT / "player_props" / "artifacts" / name).exists()
 
     monkeypatch.delenv("PICKLEDGER_DISABLE_PRECISION_MODEL", raising=False)
     precision._BUNDLE = False
+    consensus._BUNDLE = False
     assert precision.precision_model_active("MLB") is True
-    assert precision.precision_model_active("WNBA") is False
+    assert precision.precision_model_active("WNBA") is True
 
 
 def test_inactive_precision_artifact_abstains_instead_of_using_legacy_ranker(monkeypatch):
     import player_props.precision as precision
+    import player_props.consensus as consensus
 
     monkeypatch.delenv("PICKLEDGER_DISABLE_PRECISION_MODEL", raising=False)
-    precision._BUNDLE = {"model": object(), "metadata": {"active": False}}
+    consensus._BUNDLE = {"metadata": {"active": False}, "artifacts": {}}
     selected = select_top_props([
         {
             "id": "legacy-pick",

@@ -1,0 +1,249 @@
+{
+  "activation_requirements": {
+    "chronological_validation_and_later_holdout": true,
+    "minimum_accuracy": 0.7,
+    "sport_specific_three_or_five_year_window_selected_by_holdout": true,
+    "unqualified_markets_must_abstain": true
+  },
+  "active": true,
+  "history_years": {
+    "MLB": 5,
+    "WNBA": 3
+  },
+  "history_years_by_market": {
+    "MLB": {
+      "hits": 3,
+      "hits_runs_rbis": 5,
+      "pitcher_walks_allowed": 3,
+      "strikeouts": 3
+    },
+    "WNBA": {
+      "assists": 3,
+      "points": 3,
+      "totalRebounds": 3
+    }
+  },
+  "market_rows": 92650,
+  "models": {
+    "mlb_history": "HRR 2022-26 outcome model plus 2024-26 prior-seeded posted-market classifiers for hits, strikeouts, and pitcher walks",
+    "mlb_season": "2026 market classifier",
+    "wnba_history": "2024-26 workload-aware market/count models",
+    "wnba_season": "2026 market/count models"
+  },
+  "outcome_rows": 387536,
+  "roster_aware": true,
+  "roster_policy": "Current player IDs only; season features reset annually; recent 3/5/10-game workload dominates older priors.",
+  "seasons": {
+    "MLB": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "WNBA": [
+      2024,
+      2025,
+      2026
+    ]
+  },
+  "sports": {
+    "MLB": {
+      "active": true,
+      "combined_out_of_sample": {
+        "accuracy": 0.7096774193548387,
+        "losses": 144,
+        "samples": 496,
+        "wins": 352
+      },
+      "failed_policies": {},
+      "models": [
+        "season_2026",
+        "history_2022_2026"
+      ],
+      "policies": {
+        "hits": {
+          "active": true,
+          "holdout": {
+            "accuracy": 0.7111111111111111,
+            "losses": 26,
+            "samples": 90,
+            "wins": 64
+          },
+          "minimum_history_probability": 0.55,
+          "minimum_history_rate": 0.0,
+          "minimum_holdout_samples": 8,
+          "minimum_implied": 0.6,
+          "minimum_season_probability": 0.55,
+          "minimum_season_rate": 0.75,
+          "minimum_validation_samples": 15,
+          "require_classifier_agreement": true,
+          "validation": {
+            "accuracy": 0.7,
+            "losses": 69,
+            "samples": 230,
+            "wins": 161
+          }
+        },
+        "hits_runs_rbis": {
+          "active": true,
+          "holdout": {
+            "accuracy": 0.7777777777777778,
+            "losses": 2,
+            "samples": 9,
+            "wins": 7
+          },
+          "line": 1.5,
+          "minimum_history_probability": 0.7,
+          "minimum_history_rate": 0.0,
+          "minimum_holdout_samples": 5,
+          "minimum_implied": 0.55,
+          "minimum_season_probability": 0.625,
+          "minimum_season_rate": 0.5,
+          "minimum_validation_samples": 8,
+          "require_classifier_agreement": true,
+          "validation": {
+            "accuracy": 0.7027027027027027,
+            "losses": 11,
+            "samples": 37,
+            "wins": 26
+          }
+        },
+        "pitcher_walks_allowed": {
+          "active": true,
+          "holdout": {
+            "accuracy": 0.7352941176470589,
+            "losses": 9,
+            "samples": 34,
+            "wins": 25
+          },
+          "minimum_history_probability": 0.6,
+          "minimum_history_rate": 0.55,
+          "minimum_holdout_samples": 4,
+          "minimum_implied": 0.6,
+          "minimum_season_probability": 0.5,
+          "minimum_season_rate": 0.55,
+          "minimum_validation_samples": 6,
+          "require_classifier_agreement": true,
+          "validation": {
+            "accuracy": 0.7058823529411765,
+            "losses": 20,
+            "samples": 68,
+            "wins": 48
+          }
+        },
+        "strikeouts": {
+          "active": true,
+          "holdout": {
+            "accuracy": 0.8181818181818182,
+            "losses": 2,
+            "samples": 11,
+            "wins": 9
+          },
+          "minimum_history_probability": 0.55,
+          "minimum_history_rate": 0.65,
+          "minimum_holdout_samples": 4,
+          "minimum_implied": 0.6,
+          "minimum_season_probability": 0.5,
+          "minimum_season_rate": 0.0,
+          "minimum_validation_samples": 6,
+          "require_classifier_agreement": true,
+          "validation": {
+            "accuracy": 0.7058823529411765,
+            "losses": 5,
+            "samples": 17,
+            "wins": 12
+          }
+        }
+      }
+    },
+    "WNBA": {
+      "active": true,
+      "combined_out_of_sample": {
+        "accuracy": 0.8648648648648649,
+        "losses": 5,
+        "samples": 37,
+        "wins": 32
+      },
+      "failed_policies": {
+        "totalRebounds": {
+          "active": false,
+          "history_only_publication": true,
+          "holdout": {
+            "accuracy": 0.5,
+            "losses": 1,
+            "samples": 2,
+            "wins": 1
+          },
+          "maximum_history_margin": -1.0,
+          "minimum_history_margin": -2.0,
+          "minimum_holdout_samples": 3,
+          "minimum_implied": 0.0,
+          "minimum_season_mean_margin": -2.0,
+          "minimum_usage_trend": 2.0,
+          "minimum_validation_samples": 5,
+          "selection": "Over",
+          "validation": {
+            "accuracy": 0.6666666666666666,
+            "losses": 2,
+            "samples": 6,
+            "wins": 4
+          }
+        }
+      },
+      "models": [
+        "season_2026",
+        "history_2024_2026"
+      ],
+      "policies": {
+        "assists": {
+          "active": true,
+          "holdout": {
+            "accuracy": 0.75,
+            "losses": 1,
+            "samples": 4,
+            "wins": 3
+          },
+          "meta_gate_threshold": 0.6,
+          "minimum_holdout_samples": 3,
+          "minimum_implied": 0.0,
+          "minimum_validation_samples": 5,
+          "selection": "Over",
+          "validation": {
+            "accuracy": 0.9545454545454546,
+            "losses": 1,
+            "samples": 22,
+            "wins": 21
+          }
+        },
+        "points": {
+          "active": true,
+          "holdout": {
+            "accuracy": 0.7142857142857143,
+            "losses": 2,
+            "samples": 7,
+            "wins": 5
+          },
+          "minimum_history_probability": 0.5,
+          "minimum_history_rate": 0.0,
+          "minimum_holdout_samples": 2,
+          "minimum_implied": 0.55,
+          "minimum_season_probability": 0.55,
+          "minimum_season_rate": 0.55,
+          "minimum_validation_samples": 4,
+          "require_classifier_agreement": true,
+          "selection": "Over",
+          "validation": {
+            "accuracy": 0.75,
+            "losses": 1,
+            "samples": 4,
+            "wins": 3
+          }
+        }
+      }
+    }
+  },
+  "target_accuracy": 0.7,
+  "training_fingerprint": "e78461351a53b999e06f3648da5fedee5795d0541745fefbb2121946f34fb9d9",
+  "version": "player_props_consensus_v2.0.0"
+}

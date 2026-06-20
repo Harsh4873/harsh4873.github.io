@@ -148,12 +148,25 @@ def history_features(
 
 def build_training_features(
     market_rows: list[dict[str, Any]],
+    prior_rows: list[dict[str, Any]] | None = None,
 ) -> tuple[list[dict[str, Any]], dict[str, list[float]]]:
     """Build chronological features without allowing same-game outcomes to leak."""
     events: dict[tuple[str, str], list[dict[str, Any]]] = defaultdict(list)
     for row in market_rows:
         events[(str(row.get("sport") or ""), str(row.get("event_id") or ""))].append(row)
     history: dict[str, list[float]] = defaultdict(list)
+    for row in sorted(
+        prior_rows or [],
+        key=lambda item: (
+            str(item.get("date") or ""),
+            str(item.get("event_id") or ""),
+            str(item.get("athlete_id") or ""),
+            str(item.get("stat_key") or ""),
+        ),
+    ):
+        actual = safe_float(row.get("actual"), float("nan"))
+        if math.isfinite(actual):
+            history[_profile_key(row.get("athlete_id"), row.get("stat_key"))].append(actual)
     features: list[dict[str, Any]] = []
     ordered_events = sorted(
         events.items(),
@@ -389,6 +402,124 @@ def apply_precision_to_pick(pick: dict[str, Any]) -> dict[str, Any]:
             f"Prior-game under rate {result['history_under_rate']:.1%} over {result['history_count']} games",
             f"Last-five under rate {result['last5_under_rate']:.1%}",
             f"Ten-game mean {result['mean10']:.2f} versus {line:.1f} line",
+        ]
+    )
+    fingerprint = str(result["training_fingerprint"] or "unfingerprinted")[:16]
+    rank_epoch = f"{str(pick.get('sport') or '').upper()}:{result['model_version']}:{fingerprint}"
+    pick["ml_rank_epoch"] = rank_epoch
+    pick["ranking_epoch"] = rank_epoch
+    pick["model_epoch"] = rank_epoch
+    return pick
+
+
+# The v2 four-model consensus supersedes the original single-market precision
+# artifact. These late-bound wrappers preserve the public API used by the
+# generators while allowing the old feature builder to remain reusable.
+def load_precision_bundle() -> dict[str, Any] | None:  # type: ignore[no-redef]
+    from .consensus import load_consensus_bundle
+
+    return load_consensus_bundle()
+
+
+def precision_model_active(sport: str | None = None) -> bool:  # type: ignore[no-redef]
+    from .consensus import consensus_active
+
+    return consensus_active(sport)
+
+
+def precision_model_required() -> bool:  # type: ignore[no-redef]
+    return load_precision_bundle() is not None
+
+
+def evaluate_precision_pick(pick: dict[str, Any]) -> dict[str, Any]:  # type: ignore[no-redef]
+    from .consensus import evaluate_consensus_pick
+
+    return evaluate_consensus_pick(pick)
+
+
+def apply_precision_to_pick(pick: dict[str, Any]) -> dict[str, Any]:  # type: ignore[no-redef]
+    result = evaluate_precision_pick(pick)
+    if not result.get("required"):
+        return pick
+    pick["precision_required"] = True
+    pick["precision_evaluated"] = True
+    pick["precision_qualified"] = bool(result.get("qualified"))
+    pick["precision_reason"] = result.get("reason")
+    if not result.get("qualified"):
+        pick["decision"] = "PASS"
+        pick["units"] = 0.0
+        pick["full_kelly"] = 0.0
+        pick["quarter_kelly"] = 0.0
+        pick["actionability"] = "research_signal"
+        return pick
+
+    probability = safe_float(result.get("probability"))
+    implied = safe_float(result.get("implied_probability"))
+    odds = int(result["odds"])
+    edge = probability - implied
+    full_kelly, quarter_kelly = kelly(probability, odds)
+    profit_multiple = 100.0 / abs(odds) if odds < 0 else odds / 100.0
+    expected_value = probability * profit_multiple - (1.0 - probability)
+    stat_label = str(pick.get("stat_label") or pick.get("market_type") or pick.get("stat_key") or "")
+    selection = str(result["selection"])
+    line = safe_float(pick.get("line"))
+    validation_accuracy = safe_float(result.get("validation_accuracy"))
+    holdout_accuracy = safe_float(result.get("holdout_accuracy"))
+    pick.update(
+        {
+            "id": stable_id(
+                str(pick.get("sport") or ""),
+                str(pick.get("date") or ""),
+                str(pick.get("game_id") or ""),
+                str(pick.get("player_id") or ""),
+                str(pick.get("stat_key") or ""),
+                selection,
+                line,
+            ),
+            "selection": selection,
+            "pick": f"{pick.get('player_name')} {selection} {line:.1f} {stat_label}",
+            "odds": odds,
+            "market_implied_probability": round(implied, 4),
+            "probability": round(probability, 4),
+            "ml_probability": round(probability, 4),
+            "ml_raw_probability": round(probability, 4),
+            "ml_edge": round(edge, 6),
+            "ml_expected_value": round(expected_value, 6),
+            "ml_model_active": True,
+            "ml_model_version": result["model_version"],
+            "ml_probability_mode": "four_model_consensus_gate",
+            "ml_training_fingerprint": result["training_fingerprint"],
+            "decision": "LEAN",
+            "confidence": "High",
+            "edge": round(edge * 100.0, 2),
+            "full_kelly": full_kelly,
+            "quarter_kelly": quarter_kelly,
+            "units": 0.25,
+            "actionability": "precision_qualified",
+            "precision_probability": round(probability, 4),
+            "precision_validation_accuracy": validation_accuracy,
+            "precision_holdout_accuracy": holdout_accuracy,
+            "consensus_season_probability": result.get("season_probability"),
+            "consensus_history_probability": result.get("history_probability"),
+            "consensus_season_projection": result.get("season_projection"),
+            "consensus_history_projection": result.get("history_projection"),
+            "consensus_model_agreement": result.get("agreement"),
+            "consensus_score": safe_float(result.get("consensus_score")),
+            "reason": (
+                f"The 2026 season model and roster-aware history model qualify this market; "
+                f"chronological validation/holdout accuracy is "
+                f"{validation_accuracy:.1%}/{holdout_accuracy:.1%}."
+            ),
+        }
+    )
+    sport = str(pick.get("sport") or "").upper()
+    stat_key = str(pick.get("stat_key") or "")
+    history_window = "2022-26" if sport == "MLB" and stat_key == "hits_runs_rbis" else "2024-26"
+    pick.setdefault("key_factors", []).extend(
+        [
+            "2026 season model evaluated",
+            f"Roster-aware {history_window} history model evaluated",
+            f"Conservative qualified-bucket accuracy {probability:.1%}",
         ]
     )
     fingerprint = str(result["training_fingerprint"] or "unfingerprinted")[:16]

@@ -9,7 +9,8 @@ The active production automation uses GitHub Actions plus local Codex morning an
 | `merge_model_cache_payload.py` | Merges model output while preserving other buckets and grades. |
 | `merge_external_feed_cache_payload.py` | Merges feed output while preserving model buckets and grades. |
 | `build_player_prop_market_history.py` | Backfills immutable posted player-prop markets and final outcomes for season training. |
-| `train_player_prop_precision_ml.py` | Trains the abstaining player-prop model and requires at least 70% on chronological validation and holdout. |
+| `build_player_prop_outcome_history.py` | Builds compact roster-aware MLB/WNBA game outcomes and workload features. |
+| `train_player_prop_consensus_ml.py` | Trains the four season/history models and requires at least 70% on chronological validation and holdout before publication. |
 | `archive_player_prop_snapshot.py` | Freezes every published prop slate so later refreshes cannot rewrite its measured record. |
 | `auto_grade_picks.py` | Grades completed games through ESPN and rebuilds the universal outcome ledger. |
 | `rebuild_pick_outcome_ledger.py` | Deduplicates all model and player-prop picks into `data/calibration/outcome_ledger.json`. |

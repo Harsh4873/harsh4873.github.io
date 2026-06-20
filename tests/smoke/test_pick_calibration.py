@@ -114,8 +114,8 @@ def test_ml_player_props_skip_old_calibration_but_remain_ledger_trainable(tmp_pa
         ml_calibration_excluded=True,
         result="win",
     )
-    pick["ranking_updated_at"] = "2026-06-16T19:04:34.909830Z"
-    payload = {"date": "2026-06-16", "models": {"mlb_player_props": {"picks": [pick]}}}
+    pick["ranking_updated_at"] = "2026-06-20T20:05:15.160257Z"
+    payload = {"date": "2026-06-20", "models": {"mlb_player_props": {"picks": [pick]}}}
 
     apply_calibration_to_payload(payload, active)
     adjusted = payload["models"]["mlb_player_props"]["picks"][0]
@@ -127,7 +127,7 @@ def test_ml_player_props_skip_old_calibration_but_remain_ledger_trainable(tmp_pa
     model_dir = tmp_path / "data" / "model_cache"
     props_dir.mkdir(parents=True)
     model_dir.mkdir(parents=True)
-    (props_dir / "2026-06-16.json").write_text(json.dumps(payload), encoding="utf-8")
+    (props_dir / "2026-06-20.json").write_text(json.dumps(payload), encoding="utf-8")
     ledger = build_outcome_ledger(tmp_path)
     assert ledger["summary"]["total_picks"] == 1
     assert ledger["records"][0]["raw_probability"] == 0.7

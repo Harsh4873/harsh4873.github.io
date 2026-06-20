@@ -398,12 +398,14 @@ def select_top_props(
         selection_pool = [prop for prop in selection_pool if prop.get("precision_qualified") is True]
         selection_pool.sort(
             key=lambda prop: (
+                -safe_float(prop.get("consensus_score")),
                 -safe_float(prop.get("ml_edge")),
                 -safe_float(prop.get("ml_probability") or prop.get("probability")),
                 str(prop.get("id") or ""),
             )
         )
-        max_picks = min(max_picks, 1)
+        sport = str((selection_pool[0] if selection_pool else ranked[0] if ranked else {}).get("sport") or "").upper()
+        max_picks = min(max_picks, 3 if sport == "WNBA" else 1)
     selected: list[dict[str, Any]] = []
     per_player: dict[str, int] = {}
     for prop in selection_pool:

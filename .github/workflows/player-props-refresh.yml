@@ -57,8 +57,15 @@ jobs:
             --end "$(date -u -d 'yesterday' +%F)" \
             --sports MLB,WNBA
 
-      - name: Train and validate 70% precision model
-        run: python scripts/train_player_prop_precision_ml.py
+      - name: Refresh roster-aware player outcome history
+        run: |
+          python scripts/build_player_prop_outcome_history.py \
+            --seasons 2024,2025,2026 \
+            --refresh \
+            --max-workers 20
+
+      - name: Train and validate four-model consensus
+        run: python scripts/train_player_prop_consensus_ml.py
 
       - name: Refresh in-house player props
         run: python scripts/refresh_player_props.py --date "${{ github.event.inputs.date || '' }}"
@@ -81,11 +88,13 @@ jobs:
           GENERATED_CACHE="${RUNNER_TEMP}/player-props-latest.json"
           GENERATED_LEDGER="${RUNNER_TEMP}/player-props-outcome-ledger.json"
           GENERATED_HISTORY="${RUNNER_TEMP}/player-props-market-history.jsonl"
+          GENERATED_OUTCOMES="${RUNNER_TEMP}/player-props-outcome-history.jsonl.gz"
           GENERATED_SNAPSHOTS="${RUNNER_TEMP}/player-props-snapshots"
           GENERATED_ARTIFACTS="${RUNNER_TEMP}/player-props-artifacts"
           cp data/player_props_cache/latest.json "$GENERATED_CACHE"
           cp data/calibration/outcome_ledger.json "$GENERATED_LEDGER"
           cp data/player_props_training/market_history_2026.jsonl "$GENERATED_HISTORY"
+          cp data/player_props_training/outcome_history_2022_2026.jsonl.gz "$GENERATED_OUTCOMES"
           mkdir -p "$GENERATED_SNAPSHOTS"
           if [ -d data/player_props_snapshots ]; then
             cp -R data/player_props_snapshots/. "$GENERATED_SNAPSHOTS"/
@@ -99,6 +108,7 @@ jobs:
             mkdir -p player_props/artifacts data/calibration data/player_props_training data/player_props_snapshots
             cp "$GENERATED_LEDGER" data/calibration/outcome_ledger.json
             cp "$GENERATED_HISTORY" data/player_props_training/market_history_2026.jsonl
+            cp "$GENERATED_OUTCOMES" data/player_props_training/outcome_history_2022_2026.jsonl.gz
             cp -R "$GENERATED_SNAPSHOTS"/. data/player_props_snapshots/
             cp -R "$GENERATED_ARTIFACTS"/. player_props/artifacts/
             git add data/player_props_cache data/player_props_snapshots data/player_props_training data/calibration/outcome_ledger.json player_props/artifacts
