@@ -50,11 +50,21 @@ jobs:
       - name: Rebuild player-prop outcome ledger
         run: python scripts/rebuild_pick_outcome_ledger.py
 
-      - name: Train player-prop ML artifacts
-        run: python scripts/train_player_prop_ml.py --force
+      - name: Extend immutable posted-market history
+        run: |
+          python scripts/build_player_prop_market_history.py \
+            --start "$(date -u -d '14 days ago' +%F)" \
+            --end "$(date -u -d 'yesterday' +%F)" \
+            --sports MLB,WNBA
+
+      - name: Train and validate 70% precision model
+        run: python scripts/train_player_prop_precision_ml.py
 
       - name: Refresh in-house player props
         run: python scripts/refresh_player_props.py --date "${{ github.event.inputs.date || '' }}"
+
+      - name: Archive immutable published snapshot
+        run: python scripts/archive_player_prop_snapshot.py
 
       - name: Commit player-props cache if changed
         id: commit-props
@@ -63,26 +73,35 @@ jobs:
           git config user.name  "${GITHUB_ACTOR}"
           git config user.email "${ACTOR_EMAIL}"
           BRANCH="${GITHUB_REF_NAME:-main}"
-          if [ -z "$(git status --porcelain -- data/player_props_cache data/calibration/outcome_ledger.json player_props/artifacts)" ]; then
+          if [ -z "$(git status --porcelain -- data/player_props_cache data/player_props_snapshots data/player_props_training data/calibration/outcome_ledger.json player_props/artifacts)" ]; then
             echo "No player-props cache or ML artifact change; skipping commit."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           GENERATED_CACHE="${RUNNER_TEMP}/player-props-latest.json"
           GENERATED_LEDGER="${RUNNER_TEMP}/player-props-outcome-ledger.json"
+          GENERATED_HISTORY="${RUNNER_TEMP}/player-props-market-history.jsonl"
+          GENERATED_SNAPSHOTS="${RUNNER_TEMP}/player-props-snapshots"
           GENERATED_ARTIFACTS="${RUNNER_TEMP}/player-props-artifacts"
           cp data/player_props_cache/latest.json "$GENERATED_CACHE"
           cp data/calibration/outcome_ledger.json "$GENERATED_LEDGER"
+          cp data/player_props_training/market_history_2026.jsonl "$GENERATED_HISTORY"
+          mkdir -p "$GENERATED_SNAPSHOTS"
+          if [ -d data/player_props_snapshots ]; then
+            cp -R data/player_props_snapshots/. "$GENERATED_SNAPSHOTS"/
+          fi
           mkdir -p "$GENERATED_ARTIFACTS"
           cp -R player_props/artifacts/. "$GENERATED_ARTIFACTS"/
           for attempt in 1 2 3; do
             git fetch origin "$BRANCH"
             git reset --hard "origin/${BRANCH}"
             python scripts/merge_player_props_cache_payload.py "$GENERATED_CACHE"
-            mkdir -p player_props/artifacts data/calibration
+            mkdir -p player_props/artifacts data/calibration data/player_props_training data/player_props_snapshots
             cp "$GENERATED_LEDGER" data/calibration/outcome_ledger.json
+            cp "$GENERATED_HISTORY" data/player_props_training/market_history_2026.jsonl
+            cp -R "$GENERATED_SNAPSHOTS"/. data/player_props_snapshots/
             cp -R "$GENERATED_ARTIFACTS"/. player_props/artifacts/
-            git add data/player_props_cache data/calibration/outcome_ledger.json player_props/artifacts
+            git add data/player_props_cache data/player_props_snapshots data/player_props_training data/calibration/outcome_ledger.json player_props/artifacts
             if git diff --cached --quiet; then
               echo "No staged player-props change after merge; skipping commit."
               echo "changed=false" >> "$GITHUB_OUTPUT"

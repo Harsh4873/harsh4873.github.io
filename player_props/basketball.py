@@ -214,6 +214,7 @@ def _basketball_market_index(
                 {
                     "stat_key": stat_key,
                     "stat_label": stat_label,
+                    "market_athlete_id": athlete_id,
                     "line": max(0.0, threshold - 0.5),
                     "threshold": threshold,
                     "display": display or f"{threshold:g}+",
@@ -242,6 +243,7 @@ def _basketball_market_index(
             {
                 "stat_key": stat_key,
                 "stat_label": stat_label,
+                "market_athlete_id": athlete_id,
                 "line": line,
                 "display": f"{line:g}",
                 "over_odds": over_odds,
@@ -525,6 +527,9 @@ def _game_props(
                         "market_priced": True,
                         "actionability": "market_priced",
                         "market_source": market.get("market_source"),
+                        "market_athlete_id": market.get("market_athlete_id"),
+                        "market_over_odds": market.get("over_odds"),
+                        "market_under_odds": market.get("under_odds"),
                         "market_type": market.get("market_type"),
                         "market_format": market.get("market_format"),
                         "market_updated_at": market.get("market_updated_at"),

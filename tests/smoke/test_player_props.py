@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from player_props.generator import generate_payload
 from player_props.ml import select_top_props
 from player_props.schema import decision_and_stake
@@ -11,6 +13,17 @@ from player_props.schema import decision_and_stake
 ROOT = Path(__file__).resolve().parents[2]
 DATE = "2026-06-12"
 STAMP = "2026-06-12T12:00:00Z"
+
+
+@pytest.fixture(autouse=True)
+def _disable_live_precision_artifact(monkeypatch):
+    """Legacy generator fixtures exercise projections, not the production artifact."""
+    import player_props.precision as precision
+
+    monkeypatch.setenv("PICKLEDGER_DISABLE_PRECISION_MODEL", "true")
+    precision._BUNDLE = False
+    yield
+    precision._BUNDLE = False
 
 
 def _gamelog(name: str, values: list[list[str]]) -> dict:
@@ -521,6 +534,47 @@ def test_ml_training_uses_real_current_season_outcomes_and_validation_gate():
         }
         assert "force_active" not in metadata
         assert "model_brier" in metadata["validation"]
+
+
+def test_precision_model_clears_70_percent_on_validation_and_later_holdout(monkeypatch):
+    import player_props.precision as precision
+
+    metadata = json.loads(
+        (ROOT / "player_props" / "artifacts" / "mlb_player_props_precision_metadata.json").read_text()
+    )
+    assert metadata["active"] is True
+    assert metadata["target_accuracy"] == 0.70
+    assert metadata["validation"]["accuracy"] >= 0.70
+    assert metadata["holdout"]["accuracy"] >= 0.70
+    assert metadata["validation"]["samples"] >= 100
+    assert metadata["holdout"]["samples"] >= 30
+    assert metadata["combined_out_of_sample"]["roi"] >= 0
+    assert metadata["policy"]["maximum_picks_per_game"] == 1
+
+    monkeypatch.delenv("PICKLEDGER_DISABLE_PRECISION_MODEL", raising=False)
+    precision._BUNDLE = False
+    assert precision.precision_model_active("MLB") is True
+    assert precision.precision_model_active("WNBA") is False
+
+
+def test_inactive_precision_artifact_abstains_instead_of_using_legacy_ranker(monkeypatch):
+    import player_props.precision as precision
+
+    monkeypatch.delenv("PICKLEDGER_DISABLE_PRECISION_MODEL", raising=False)
+    precision._BUNDLE = {"model": object(), "metadata": {"active": False}}
+    selected = select_top_props([
+        {
+            "id": "legacy-pick",
+            "player_id": "player",
+            "market_priced": True,
+            "decision": "BET",
+            "odds": 100,
+            "ml_probability": 0.80,
+            "ml_edge": 0.20,
+            "ml_expected_value": 0.60,
+        }
+    ])
+    assert selected == []
 
 
 def test_ml_selection_caps_board_and_rejects_weak_or_extreme_props():

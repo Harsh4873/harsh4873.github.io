@@ -335,7 +335,9 @@ def apply_ml_to_pick(
             "ml_stake_cap": stake_cap,
         }
     )
-    return pick
+    from .precision import apply_precision_to_pick
+
+    return apply_precision_to_pick(pick)
 
 
 def ev_sort_key(prop: dict[str, Any]) -> tuple[float, int, float, float, str]:
@@ -359,6 +361,13 @@ def assign_ml_ranks(props: list[dict[str, Any]]) -> list[dict[str, Any]]:
 
 
 def is_publishable_ml_pick(prop: dict[str, Any]) -> bool:
+    if prop.get("precision_required") is True:
+        return bool(
+            prop.get("precision_qualified") is True
+            and prop.get("market_priced") is True
+            and str(prop.get("decision") or "") in {"BET", "LEAN"}
+            and safe_float(prop.get("probability")) >= 0.70
+        )
     if prop.get("market_priced") is not True:
         return False
     if str(prop.get("decision") or "") not in {"BET", "LEAN"}:
@@ -379,9 +388,22 @@ def select_top_props(
     max_picks: int = MAX_PUBLISHED_PROPS_PER_GAME,
     max_per_player: int = MAX_PUBLISHED_PROPS_PER_PLAYER,
 ) -> list[dict[str, Any]]:
+    from .precision import precision_model_required
+
     ranked = assign_ml_ranks(props)
     has_market = any(prop.get("market_priced") is True for prop in ranked)
+    precision_required = precision_model_required()
     selection_pool = [prop for prop in ranked if is_publishable_ml_pick(prop)] if has_market else ranked
+    if precision_required:
+        selection_pool = [prop for prop in selection_pool if prop.get("precision_qualified") is True]
+        selection_pool.sort(
+            key=lambda prop: (
+                -safe_float(prop.get("ml_edge")),
+                -safe_float(prop.get("ml_probability") or prop.get("probability")),
+                str(prop.get("id") or ""),
+            )
+        )
+        max_picks = min(max_picks, 1)
     selected: list[dict[str, Any]] = []
     per_player: dict[str, int] = {}
     for prop in selection_pool:

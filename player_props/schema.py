@@ -142,6 +142,7 @@ def build_pick(
         "team": team,
         "opponent": opponent,
         "stat_key": stat_key,
+        "stat_label": stat_label,
         "selection": selection,
         "line": round(line, 1),
         "pick": f"{player_name} {selection} {line:.1f} {stat_label}",

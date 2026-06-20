@@ -123,7 +123,12 @@ def main() -> int:
             failures.append(f"player-props bucket {key} is missing")
         elif bucket.get("ok") is not True:
             failures.append(f"player-props bucket {key} failed: {bucket.get('error') or 'unknown error'}")
-        elif key == "mlb_player_props" and int(bucket.get("games") or 0) > 0 and not (bucket.get("picks") or []):
+        elif (
+            key == "mlb_player_props"
+            and int(bucket.get("games") or 0) > 0
+            and not (bucket.get("picks") or [])
+            and bucket.get("abstained") is not True
+        ):
             failures.append("player-props bucket mlb_player_props has scheduled games but zero picks")
         else:
             picks = bucket.get("picks") or []

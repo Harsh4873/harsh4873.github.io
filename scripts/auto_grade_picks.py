@@ -15,6 +15,7 @@ from typing import Any, Iterator
 REPO_ROOT = Path(__file__).resolve().parents[1]
 MODEL_CACHE_DIR = REPO_ROOT / "data" / "model_cache"
 PLAYER_PROPS_CACHE_DIR = REPO_ROOT / "data" / "player_props_cache"
+PLAYER_PROPS_SNAPSHOT_DIR = REPO_ROOT / "data" / "player_props_snapshots"
 sys.path.insert(0, str(REPO_ROOT))
 
 import pickgrader_server  # noqa: E402
@@ -137,6 +138,9 @@ def main() -> int:
         latest_source = cache_dir / f"{latest_date}.json"
         if latest_date and latest_source.exists():
             shutil.copyfile(latest_source, cache_dir / "latest.json")
+
+    for path in sorted(PLAYER_PROPS_SNAPSHOT_DIR.glob("20??-??-??/*.json")):
+        total += grade_file(path, ml_player_props_only=True)
 
     ledger, ledger_changed = rebuild_outcome_ledger()
     print(

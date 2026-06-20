@@ -8,6 +8,9 @@ The active production automation uses GitHub Actions plus local Codex morning an
 | `refresh_external_feeds.py` | Refreshes sport-specific SportyTrader, SportsGambler, Scores24WNBA, Scores24MLB, and Scores24FIFAWorldCup cache buckets. |
 | `merge_model_cache_payload.py` | Merges model output while preserving other buckets and grades. |
 | `merge_external_feed_cache_payload.py` | Merges feed output while preserving model buckets and grades. |
+| `build_player_prop_market_history.py` | Backfills immutable posted player-prop markets and final outcomes for season training. |
+| `train_player_prop_precision_ml.py` | Trains the abstaining player-prop model and requires at least 70% on chronological validation and holdout. |
+| `archive_player_prop_snapshot.py` | Freezes every published prop slate so later refreshes cannot rewrite its measured record. |
 | `auto_grade_picks.py` | Grades completed games through ESPN and rebuilds the universal outcome ledger. |
 | `rebuild_pick_outcome_ledger.py` | Deduplicates all model and player-prop picks into `data/calibration/outcome_ledger.json`. |
 | `train_pick_calibration.py` | Evaluates a shrinkage-based probability calibrator against the active champion. |

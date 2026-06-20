@@ -78,7 +78,7 @@ jobs:
           models = payload.get("models") if isinstance(payload.get("models"), dict) else {}
           healthy = all(isinstance(models.get(key), dict) and models[key].get("ok") is True for key in required)
           mlb = models.get("mlb_player_props") if isinstance(models.get("mlb_player_props"), dict) else {}
-          if int(mlb.get("games") or 0) > 0 and not (mlb.get("picks") or []):
+          if int(mlb.get("games") or 0) > 0 and not (mlb.get("picks") or []) and mlb.get("abstained") is not True:
               healthy = False
           print("true" if healthy else "false")
           PY

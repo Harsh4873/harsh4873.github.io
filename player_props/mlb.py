@@ -524,6 +524,7 @@ def _market_index(
             markets[normalize_name(name)].append(
                 {
                     **parsed,
+                    "market_athlete_id": athlete_id,
                     "market_type": type_name,
                     "market_source": source,
                     "market_updated_at": str(sides[0].get("lastUpdated") or ""),
@@ -545,6 +546,7 @@ def _market_index(
             {
                 "stat_key": stat_key,
                 "stat_label": stat_label,
+                "market_athlete_id": athlete_id,
                 "line": line,
                 "over_odds": over_odds,
                 "under_odds": under_odds,
@@ -848,6 +850,9 @@ def _pitcher_props(
                 "pitch_type_factor": round(pitch_type_factor * arsenal_factor, 4),
                 "pitch_mix": _top_pitch_mix(pitcher_profile),
                 "market_source": market.get("market_source"),
+                "market_athlete_id": market.get("market_athlete_id"),
+                "market_over_odds": market.get("over_odds"),
+                "market_under_odds": market.get("under_odds"),
                 "market_type": market.get("market_type"),
                 "market_format": market.get("market_format"),
                 "market_updated_at": market.get("market_updated_at"),
@@ -1072,6 +1077,9 @@ def _hitter_props(
                 "pitch_type_factor": round(pitch_type_factor, 4),
                 "pitch_mix": _top_pitch_mix(pitcher_profile),
                 "market_source": market.get("market_source"),
+                "market_athlete_id": market.get("market_athlete_id"),
+                "market_over_odds": market.get("over_odds"),
+                "market_under_odds": market.get("under_odds"),
                 "market_type": market.get("market_type"),
                 "market_format": market.get("market_format"),
                 "market_updated_at": market.get("market_updated_at"),
@@ -1098,6 +1106,7 @@ def _game_props(
     raw_game: dict[str, Any],
     season: int,
     market_scoreboard: dict[str, Any],
+    diagnostics: dict[str, int] | None = None,
 ) -> list[dict[str, Any]]:
     game = _game_parts(raw_game)
     market_index = _game_market_index(client, market_scoreboard, game)
@@ -1232,6 +1241,10 @@ def _game_props(
             )
             candidates.extend(hitter_props)
 
+    if diagnostics is not None:
+        diagnostics["market_candidates"] = diagnostics.get("market_candidates", 0) + sum(
+            candidate.get("market_priced") is True for candidate in candidates
+        )
     return select_top_props(candidates)
 
 
@@ -1259,6 +1272,7 @@ def generate_mlb_model(client: Any, date_iso: str) -> dict[str, Any]:
 
     picks: list[dict[str, Any]] = []
     errors: list[str] = []
+    diagnostics: dict[str, int] = {"market_candidates": 0}
     season = int(date_iso[:4])
     try:
         market_scoreboard = client.mlb_espn_scoreboard(date_iso)
@@ -1267,10 +1281,24 @@ def generate_mlb_model(client: Any, date_iso: str) -> dict[str, Any]:
         errors.append(f"ESPN MLB market scoreboard failed: {exc}")
     for game in games:
         try:
-            picks.extend(_game_props(client, date_iso, game, season, market_scoreboard))
+            picks.extend(_game_props(client, date_iso, game, season, market_scoreboard, diagnostics))
         except Exception as exc:
             errors.append(f"{game.get('gamePk')}: {exc}")
     if not picks:
+        from .precision import precision_model_required
+
+        if precision_model_required() and diagnostics["market_candidates"] > 0:
+            return {
+                "ok": True,
+                "sport": "MLB",
+                "date": date_iso,
+                "games": len(games),
+                "picks": [],
+                "errors": errors,
+                "abstained": True,
+                "note": "No posted MLB prop cleared the active 70% season precision gate.",
+                "method": "Season-trained precision model with chronological validation and abstention",
+            }
         error = (
             f"No MLB player props generated for {len(games)} scheduled game(s); "
             "posted sportsbook markets were unavailable or could not be parsed."
@@ -1292,5 +1320,5 @@ def generate_mlb_model(client: Any, date_iso: str) -> dict[str, Any]:
         "games": len(games),
         "picks": picks,
         "errors": errors,
-        "method": "MLB StatsAPI and Statcast projections compared with posted DraftKings player-prop lines and prices via ESPN",
+        "method": "Season-trained precision model over MLB StatsAPI, Statcast, and posted DraftKings markets via ESPN",
     }
