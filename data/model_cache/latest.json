@@ -1,11 +1,11 @@
 {
   "date": "2026-06-19",
   "errors": [],
-  "externalFeedsUpdatedAt": "2026-06-19T21:19:40.894242Z",
+  "externalFeedsUpdatedAt": "2026-06-20T02:09:27.850118Z",
   "external_feeds": {
     "scores24_fifa_world_cup": {
       "date": "2026-06-19",
-      "generatedAt": "2026-06-19T17:42:04.327258Z",
+      "generatedAt": "2026-06-20T02:09:27.850118Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "attemptedUrls": 4,
@@ -21,7 +21,7 @@
         "missingMatchups": [],
         "officialMatchups": 4,
         "unpublishedMatchups": [],
-        "updatedAt": "2026-06-19T17:42:04.327258Z"
+        "updatedAt": "2026-06-20T02:09:27.850118Z"
       },
       "note": "Scores24FIFAWorldCup matched 4 published editorial choice(s) against 4 official 2026-06-19 matchup(s).",
       "ok": true,
@@ -111,31 +111,29 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-19T17:42:04.327258Z"
+      "updatedAt": "2026-06-20T02:09:27.850118Z"
     },
     "scores24_mlb": {
       "date": "2026-06-19",
-      "generatedAt": "2026-06-19T17:42:04.327258Z",
+      "generatedAt": "2026-06-20T02:09:27.850118Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
-        "attemptedUrls": 20,
+        "attemptedUrls": 15,
         "blockRetryRounds": 0,
         "blockedUrls": 0,
         "date": "2026-06-19",
-        "expectedMatchups": 13,
+        "expectedMatchups": 14,
         "feed": "scores24_mlb",
         "from": "github-actions",
         "leagues": "mlb,wnba,fifa_world_cup",
-        "listingLinks": 12,
-        "matchedPicks": 13,
+        "listingLinks": 6,
+        "matchedPicks": 14,
         "missingMatchups": [],
         "officialMatchups": 14,
-        "unpublishedMatchups": [
-          "San Francisco Giants @ Miami Marlins"
-        ],
-        "updatedAt": "2026-06-19T17:42:04.327258Z"
+        "unpublishedMatchups": [],
+        "updatedAt": "2026-06-20T02:09:27.850118Z"
       },
-      "note": "Scores24MLB matched 13 published editorial choice(s) against 14 official 2026-06-19 matchup(s).",
+      "note": "Scores24MLB matched 14 published editorial choice(s) against 14 official 2026-06-19 matchup(s).",
       "ok": true,
       "picks": [
         {
@@ -244,6 +242,42 @@
           "sport": "MLB",
           "start_time": "2026-06-19T23:05Z",
           "tip": "New York Yankees Win",
+          "units": 1
+        },
+        {
+          "away_team": "San Francisco Giants",
+          "date": "2026-06-19",
+          "decision": "BET",
+          "edge": null,
+          "game": "San Francisco Giants @ Miami Marlins",
+          "home_team": "Miami Marlins",
+          "matchup": "San Francisco Giants @ Miami Marlins",
+          "odds": -137,
+          "pick": "Total Over (7,5) (San Francisco Giants @ Miami Marlins)",
+          "pregame_snapshot": {
+            "away_team": "San Francisco Giants",
+            "date": "2026-06-19",
+            "decision": "BET",
+            "edge": null,
+            "game": "San Francisco Giants @ Miami Marlins",
+            "home_team": "Miami Marlins",
+            "matchup": "San Francisco Giants @ Miami Marlins",
+            "odds": -137,
+            "pick": "Total Over (7,5) (San Francisco Giants @ Miami Marlins)",
+            "probability": null,
+            "source": "Scores24MLB",
+            "source_url": "https://scores24.live/en/baseball/m-19-06-2026-miami-marlins-san-francisco-giants-prediction",
+            "sport": "MLB",
+            "start_time": "2026-06-19T23:10Z",
+            "tip": "Total Over (7,5)",
+            "units": 1
+          },
+          "probability": null,
+          "source": "Scores24MLB",
+          "source_url": "https://scores24.live/en/baseball/m-19-06-2026-miami-marlins-san-francisco-giants-prediction",
+          "sport": "MLB",
+          "start_time": "2026-06-19T23:10Z",
+          "tip": "Total Over (7,5)",
           "units": 1
         },
         {
@@ -398,7 +432,7 @@
           "game": "St. Louis Cardinals @ Kansas City Royals",
           "home_team": "Kansas City Royals",
           "matchup": "St. Louis Cardinals @ Kansas City Royals",
-          "odds": -133,
+          "odds": -141,
           "pick": "Total Over (8,5) (St. Louis Cardinals @ Kansas City Royals)",
           "pregame_snapshot": {
             "away_team": "St. Louis Cardinals",
@@ -420,7 +454,7 @@
           },
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-18-06-2026-kansas-city-royals-st-louis-cardinals-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-19-06-2026-kansas-city-royals-st-louis-cardinals-prediction",
           "sport": "MLB",
           "start_time": "2026-06-20T00:15Z",
           "tip": "Total Over (8,5)",
@@ -470,8 +504,8 @@
           "game": "Los Angeles Angels @ Athletics",
           "home_team": "Athletics",
           "matchup": "Los Angeles Angels @ Athletics",
-          "odds": 105,
-          "pick": "Total Under (9,5) (Los Angeles Angels @ Athletics)",
+          "odds": -137,
+          "pick": "Total Under (10,5) (Los Angeles Angels @ Athletics)",
           "pregame_snapshot": {
             "away_team": "Los Angeles Angels",
             "date": "2026-06-19",
@@ -480,22 +514,22 @@
             "game": "Los Angeles Angels @ Athletics",
             "home_team": "Athletics",
             "matchup": "Los Angeles Angels @ Athletics",
-            "odds": 105,
-            "pick": "Total Under (9,5) (Los Angeles Angels @ Athletics)",
+            "odds": -137,
+            "pick": "Total Under (10,5) (Los Angeles Angels @ Athletics)",
             "probability": null,
             "source": "Scores24MLB",
-            "source_url": "https://scores24.live/en/baseball/m-18-06-2026-athletics-los-angeles-angels-prediction",
+            "source_url": "https://scores24.live/en/baseball/m-19-06-2026-athletics-los-angeles-angels-prediction",
             "sport": "MLB",
             "start_time": "2026-06-20T01:40Z",
-            "tip": "Total Under (9,5)",
+            "tip": "Total Under (10,5)",
             "units": 1
           },
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-18-06-2026-athletics-los-angeles-angels-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-19-06-2026-athletics-los-angeles-angels-prediction",
           "sport": "MLB",
           "start_time": "2026-06-20T01:40Z",
-          "tip": "Total Under (9,5)",
+          "tip": "Total Under (10,5)",
           "units": 1
         },
         {
@@ -607,14 +641,14 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-19T17:42:04.327258Z"
+      "updatedAt": "2026-06-20T02:09:27.850118Z"
     },
     "scores24_wnba": {
       "date": "2026-06-19",
-      "generatedAt": "2026-06-19T17:42:04.327258Z",
+      "generatedAt": "2026-06-20T02:09:27.850118Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
-        "attemptedUrls": 3,
+        "attemptedUrls": 34,
         "blockRetryRounds": 0,
         "blockedUrls": 0,
         "date": "2026-06-19",
@@ -622,12 +656,12 @@
         "feed": "scores24_wnba",
         "from": "github-actions",
         "leagues": "mlb,wnba,fifa_world_cup",
-        "listingLinks": 12,
+        "listingLinks": 10,
         "matchedPicks": 3,
         "missingMatchups": [],
         "officialMatchups": 3,
         "unpublishedMatchups": [],
-        "updatedAt": "2026-06-19T17:42:04.327258Z"
+        "updatedAt": "2026-06-20T02:09:27.850118Z"
       },
       "note": "Scores24WNBA matched 3 published editorial choice(s) against 3 official 2026-06-19 matchup(s).",
       "ok": true,
@@ -741,7 +775,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-19T17:42:04.327258Z"
+      "updatedAt": "2026-06-20T02:09:27.850118Z"
     },
     "sportsgambler_fifa_world_cup": {
       "date": "2026-06-19",
@@ -24312,7 +24346,7 @@
     },
     "scores24_fifa_world_cup": {
       "date": "2026-06-19",
-      "generatedAt": "2026-06-19T17:42:04.327258Z",
+      "generatedAt": "2026-06-20T02:09:27.850118Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "attemptedUrls": 4,
@@ -24328,7 +24362,7 @@
         "missingMatchups": [],
         "officialMatchups": 4,
         "unpublishedMatchups": [],
-        "updatedAt": "2026-06-19T17:42:04.327258Z"
+        "updatedAt": "2026-06-20T02:09:27.850118Z"
       },
       "note": "Scores24FIFAWorldCup matched 4 published editorial choice(s) against 4 official 2026-06-19 matchup(s).",
       "ok": true,
@@ -24419,31 +24453,29 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-19T17:42:04.327258Z"
+      "updatedAt": "2026-06-20T02:09:27.850118Z"
     },
     "scores24_mlb": {
       "date": "2026-06-19",
-      "generatedAt": "2026-06-19T17:42:04.327258Z",
+      "generatedAt": "2026-06-20T02:09:27.850118Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
-        "attemptedUrls": 20,
+        "attemptedUrls": 15,
         "blockRetryRounds": 0,
         "blockedUrls": 0,
         "date": "2026-06-19",
-        "expectedMatchups": 13,
+        "expectedMatchups": 14,
         "feed": "scores24_mlb",
         "from": "github-actions",
         "leagues": "mlb,wnba,fifa_world_cup",
-        "listingLinks": 12,
-        "matchedPicks": 13,
+        "listingLinks": 6,
+        "matchedPicks": 14,
         "missingMatchups": [],
         "officialMatchups": 14,
-        "unpublishedMatchups": [
-          "San Francisco Giants @ Miami Marlins"
-        ],
-        "updatedAt": "2026-06-19T17:42:04.327258Z"
+        "unpublishedMatchups": [],
+        "updatedAt": "2026-06-20T02:09:27.850118Z"
       },
-      "note": "Scores24MLB matched 13 published editorial choice(s) against 14 official 2026-06-19 matchup(s).",
+      "note": "Scores24MLB matched 14 published editorial choice(s) against 14 official 2026-06-19 matchup(s).",
       "ok": true,
       "picks": [
         {
@@ -24553,6 +24585,42 @@
           "sport": "MLB",
           "start_time": "2026-06-19T23:05Z",
           "tip": "New York Yankees Win",
+          "units": 1
+        },
+        {
+          "away_team": "San Francisco Giants",
+          "date": "2026-06-19",
+          "decision": "BET",
+          "edge": null,
+          "game": "San Francisco Giants @ Miami Marlins",
+          "home_team": "Miami Marlins",
+          "matchup": "San Francisco Giants @ Miami Marlins",
+          "odds": -137,
+          "pick": "Total Over (7,5) (San Francisco Giants @ Miami Marlins)",
+          "pregame_snapshot": {
+            "away_team": "San Francisco Giants",
+            "date": "2026-06-19",
+            "decision": "BET",
+            "edge": null,
+            "game": "San Francisco Giants @ Miami Marlins",
+            "home_team": "Miami Marlins",
+            "matchup": "San Francisco Giants @ Miami Marlins",
+            "odds": -137,
+            "pick": "Total Over (7,5) (San Francisco Giants @ Miami Marlins)",
+            "probability": null,
+            "source": "Scores24MLB",
+            "source_url": "https://scores24.live/en/baseball/m-19-06-2026-miami-marlins-san-francisco-giants-prediction",
+            "sport": "MLB",
+            "start_time": "2026-06-19T23:10Z",
+            "tip": "Total Over (7,5)",
+            "units": 1
+          },
+          "probability": null,
+          "source": "Scores24MLB",
+          "source_url": "https://scores24.live/en/baseball/m-19-06-2026-miami-marlins-san-francisco-giants-prediction",
+          "sport": "MLB",
+          "start_time": "2026-06-19T23:10Z",
+          "tip": "Total Over (7,5)",
           "units": 1
         },
         {
@@ -24707,7 +24775,7 @@
           "game": "St. Louis Cardinals @ Kansas City Royals",
           "home_team": "Kansas City Royals",
           "matchup": "St. Louis Cardinals @ Kansas City Royals",
-          "odds": -133,
+          "odds": -141,
           "pick": "Total Over (8,5) (St. Louis Cardinals @ Kansas City Royals)",
           "pregame_snapshot": {
             "away_team": "St. Louis Cardinals",
@@ -24729,7 +24797,7 @@
           },
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-18-06-2026-kansas-city-royals-st-louis-cardinals-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-19-06-2026-kansas-city-royals-st-louis-cardinals-prediction",
           "sport": "MLB",
           "start_time": "2026-06-20T00:15Z",
           "tip": "Total Over (8,5)",
@@ -24779,8 +24847,8 @@
           "game": "Los Angeles Angels @ Athletics",
           "home_team": "Athletics",
           "matchup": "Los Angeles Angels @ Athletics",
-          "odds": 105,
-          "pick": "Total Under (9,5) (Los Angeles Angels @ Athletics)",
+          "odds": -137,
+          "pick": "Total Under (10,5) (Los Angeles Angels @ Athletics)",
           "pregame_snapshot": {
             "away_team": "Los Angeles Angels",
             "date": "2026-06-19",
@@ -24789,22 +24857,22 @@
             "game": "Los Angeles Angels @ Athletics",
             "home_team": "Athletics",
             "matchup": "Los Angeles Angels @ Athletics",
-            "odds": 105,
-            "pick": "Total Under (9,5) (Los Angeles Angels @ Athletics)",
+            "odds": -137,
+            "pick": "Total Under (10,5) (Los Angeles Angels @ Athletics)",
             "probability": null,
             "source": "Scores24MLB",
-            "source_url": "https://scores24.live/en/baseball/m-18-06-2026-athletics-los-angeles-angels-prediction",
+            "source_url": "https://scores24.live/en/baseball/m-19-06-2026-athletics-los-angeles-angels-prediction",
             "sport": "MLB",
             "start_time": "2026-06-20T01:40Z",
-            "tip": "Total Under (9,5)",
+            "tip": "Total Under (10,5)",
             "units": 1
           },
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-18-06-2026-athletics-los-angeles-angels-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-19-06-2026-athletics-los-angeles-angels-prediction",
           "sport": "MLB",
           "start_time": "2026-06-20T01:40Z",
-          "tip": "Total Under (9,5)",
+          "tip": "Total Under (10,5)",
           "units": 1
         },
         {
@@ -24916,14 +24984,14 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-19T17:42:04.327258Z"
+      "updatedAt": "2026-06-20T02:09:27.850118Z"
     },
     "scores24_wnba": {
       "date": "2026-06-19",
-      "generatedAt": "2026-06-19T17:42:04.327258Z",
+      "generatedAt": "2026-06-20T02:09:27.850118Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
-        "attemptedUrls": 3,
+        "attemptedUrls": 34,
         "blockRetryRounds": 0,
         "blockedUrls": 0,
         "date": "2026-06-19",
@@ -24931,12 +24999,12 @@
         "feed": "scores24_wnba",
         "from": "github-actions",
         "leagues": "mlb,wnba,fifa_world_cup",
-        "listingLinks": 12,
+        "listingLinks": 10,
         "matchedPicks": 3,
         "missingMatchups": [],
         "officialMatchups": 3,
         "unpublishedMatchups": [],
-        "updatedAt": "2026-06-19T17:42:04.327258Z"
+        "updatedAt": "2026-06-20T02:09:27.850118Z"
       },
       "note": "Scores24WNBA matched 3 published editorial choice(s) against 3 official 2026-06-19 matchup(s).",
       "ok": true,
@@ -25050,7 +25118,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-19T17:42:04.327258Z"
+      "updatedAt": "2026-06-20T02:09:27.850118Z"
     },
     "sportsgambler_fifa_world_cup": {
       "date": "2026-06-19",
@@ -27032,7 +27100,7 @@
   "nba_props": {},
   "scores24_fifa_world_cup": {
     "date": "2026-06-19",
-    "generatedAt": "2026-06-19T17:42:04.327258Z",
+    "generatedAt": "2026-06-20T02:09:27.850118Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "attemptedUrls": 4,
@@ -27048,7 +27116,7 @@
       "missingMatchups": [],
       "officialMatchups": 4,
       "unpublishedMatchups": [],
-      "updatedAt": "2026-06-19T17:42:04.327258Z"
+      "updatedAt": "2026-06-20T02:09:27.850118Z"
     },
     "note": "Scores24FIFAWorldCup matched 4 published editorial choice(s) against 4 official 2026-06-19 matchup(s).",
     "ok": true,
@@ -27138,31 +27206,29 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-19T17:42:04.327258Z"
+    "updatedAt": "2026-06-20T02:09:27.850118Z"
   },
   "scores24_mlb": {
     "date": "2026-06-19",
-    "generatedAt": "2026-06-19T17:42:04.327258Z",
+    "generatedAt": "2026-06-20T02:09:27.850118Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
-      "attemptedUrls": 20,
+      "attemptedUrls": 15,
       "blockRetryRounds": 0,
       "blockedUrls": 0,
       "date": "2026-06-19",
-      "expectedMatchups": 13,
+      "expectedMatchups": 14,
       "feed": "scores24_mlb",
       "from": "github-actions",
       "leagues": "mlb,wnba,fifa_world_cup",
-      "listingLinks": 12,
-      "matchedPicks": 13,
+      "listingLinks": 6,
+      "matchedPicks": 14,
       "missingMatchups": [],
       "officialMatchups": 14,
-      "unpublishedMatchups": [
-        "San Francisco Giants @ Miami Marlins"
-      ],
-      "updatedAt": "2026-06-19T17:42:04.327258Z"
+      "unpublishedMatchups": [],
+      "updatedAt": "2026-06-20T02:09:27.850118Z"
     },
-    "note": "Scores24MLB matched 13 published editorial choice(s) against 14 official 2026-06-19 matchup(s).",
+    "note": "Scores24MLB matched 14 published editorial choice(s) against 14 official 2026-06-19 matchup(s).",
     "ok": true,
     "picks": [
       {
@@ -27271,6 +27337,42 @@
         "sport": "MLB",
         "start_time": "2026-06-19T23:05Z",
         "tip": "New York Yankees Win",
+        "units": 1
+      },
+      {
+        "away_team": "San Francisco Giants",
+        "date": "2026-06-19",
+        "decision": "BET",
+        "edge": null,
+        "game": "San Francisco Giants @ Miami Marlins",
+        "home_team": "Miami Marlins",
+        "matchup": "San Francisco Giants @ Miami Marlins",
+        "odds": -137,
+        "pick": "Total Over (7,5) (San Francisco Giants @ Miami Marlins)",
+        "pregame_snapshot": {
+          "away_team": "San Francisco Giants",
+          "date": "2026-06-19",
+          "decision": "BET",
+          "edge": null,
+          "game": "San Francisco Giants @ Miami Marlins",
+          "home_team": "Miami Marlins",
+          "matchup": "San Francisco Giants @ Miami Marlins",
+          "odds": -137,
+          "pick": "Total Over (7,5) (San Francisco Giants @ Miami Marlins)",
+          "probability": null,
+          "source": "Scores24MLB",
+          "source_url": "https://scores24.live/en/baseball/m-19-06-2026-miami-marlins-san-francisco-giants-prediction",
+          "sport": "MLB",
+          "start_time": "2026-06-19T23:10Z",
+          "tip": "Total Over (7,5)",
+          "units": 1
+        },
+        "probability": null,
+        "source": "Scores24MLB",
+        "source_url": "https://scores24.live/en/baseball/m-19-06-2026-miami-marlins-san-francisco-giants-prediction",
+        "sport": "MLB",
+        "start_time": "2026-06-19T23:10Z",
+        "tip": "Total Over (7,5)",
         "units": 1
       },
       {
@@ -27425,7 +27527,7 @@
         "game": "St. Louis Cardinals @ Kansas City Royals",
         "home_team": "Kansas City Royals",
         "matchup": "St. Louis Cardinals @ Kansas City Royals",
-        "odds": -133,
+        "odds": -141,
         "pick": "Total Over (8,5) (St. Louis Cardinals @ Kansas City Royals)",
         "pregame_snapshot": {
           "away_team": "St. Louis Cardinals",
@@ -27447,7 +27549,7 @@
         },
         "probability": null,
         "source": "Scores24MLB",
-        "source_url": "https://scores24.live/en/baseball/m-18-06-2026-kansas-city-royals-st-louis-cardinals-prediction",
+        "source_url": "https://scores24.live/en/baseball/m-19-06-2026-kansas-city-royals-st-louis-cardinals-prediction",
         "sport": "MLB",
         "start_time": "2026-06-20T00:15Z",
         "tip": "Total Over (8,5)",
@@ -27497,8 +27599,8 @@
         "game": "Los Angeles Angels @ Athletics",
         "home_team": "Athletics",
         "matchup": "Los Angeles Angels @ Athletics",
-        "odds": 105,
-        "pick": "Total Under (9,5) (Los Angeles Angels @ Athletics)",
+        "odds": -137,
+        "pick": "Total Under (10,5) (Los Angeles Angels @ Athletics)",
         "pregame_snapshot": {
           "away_team": "Los Angeles Angels",
           "date": "2026-06-19",
@@ -27507,22 +27609,22 @@
           "game": "Los Angeles Angels @ Athletics",
           "home_team": "Athletics",
           "matchup": "Los Angeles Angels @ Athletics",
-          "odds": 105,
-          "pick": "Total Under (9,5) (Los Angeles Angels @ Athletics)",
+          "odds": -137,
+          "pick": "Total Under (10,5) (Los Angeles Angels @ Athletics)",
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-18-06-2026-athletics-los-angeles-angels-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-19-06-2026-athletics-los-angeles-angels-prediction",
           "sport": "MLB",
           "start_time": "2026-06-20T01:40Z",
-          "tip": "Total Under (9,5)",
+          "tip": "Total Under (10,5)",
           "units": 1
         },
         "probability": null,
         "source": "Scores24MLB",
-        "source_url": "https://scores24.live/en/baseball/m-18-06-2026-athletics-los-angeles-angels-prediction",
+        "source_url": "https://scores24.live/en/baseball/m-19-06-2026-athletics-los-angeles-angels-prediction",
         "sport": "MLB",
         "start_time": "2026-06-20T01:40Z",
-        "tip": "Total Under (9,5)",
+        "tip": "Total Under (10,5)",
         "units": 1
       },
       {
@@ -27634,14 +27736,14 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-19T17:42:04.327258Z"
+    "updatedAt": "2026-06-20T02:09:27.850118Z"
   },
   "scores24_wnba": {
     "date": "2026-06-19",
-    "generatedAt": "2026-06-19T17:42:04.327258Z",
+    "generatedAt": "2026-06-20T02:09:27.850118Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
-      "attemptedUrls": 3,
+      "attemptedUrls": 34,
       "blockRetryRounds": 0,
       "blockedUrls": 0,
       "date": "2026-06-19",
@@ -27649,12 +27751,12 @@
       "feed": "scores24_wnba",
       "from": "github-actions",
       "leagues": "mlb,wnba,fifa_world_cup",
-      "listingLinks": 12,
+      "listingLinks": 10,
       "matchedPicks": 3,
       "missingMatchups": [],
       "officialMatchups": 3,
       "unpublishedMatchups": [],
-      "updatedAt": "2026-06-19T17:42:04.327258Z"
+      "updatedAt": "2026-06-20T02:09:27.850118Z"
     },
     "note": "Scores24WNBA matched 3 published editorial choice(s) against 3 official 2026-06-19 matchup(s).",
     "ok": true,
@@ -27768,7 +27870,7 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-19T17:42:04.327258Z"
+    "updatedAt": "2026-06-20T02:09:27.850118Z"
   },
   "sportsgambler_fifa_world_cup": {
     "date": "2026-06-19",
@@ -28647,7 +28749,7 @@
     "picks": [],
     "updatedAt": "2026-06-19T21:19:40.894242Z"
   },
-  "updatedAt": "2026-06-19T21:49:33.423171Z",
+  "updatedAt": "2026-06-20T02:09:27.850118Z",
   "wnba": {
     "ok": true,
     "picks": [
