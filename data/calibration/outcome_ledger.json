@@ -77651,7 +77651,7 @@
       "matchup": "Texas Rangers vs San Diego Padres",
       "model_key": "mlb_inning",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Inning 6 - No Run Scored",
       "pregame_snapshot": {
         "actionability": "research_signal",
@@ -77692,7 +77692,7 @@
       "raw_edge": 15.56,
       "raw_probability": 0.674,
       "raw_units": null,
-      "result": "pending",
+      "result": "loss",
       "source": "MLB Inning",
       "sport": "MLB",
       "units": null
@@ -80767,7 +80767,7 @@
       "matchup": "Milwaukee Brewers @ Atlanta Braves",
       "model_key": "scores24_mlb",
       "odds": -149.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Total Under (8,5) (Milwaukee Brewers @ Atlanta Braves)",
       "pregame_snapshot": {
         "away_team": "Milwaukee Brewers",
@@ -80788,12 +80788,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.6711409395973155,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "Scores24MLB",
       "sport": "MLB",
       "units": 1.0
@@ -80853,7 +80853,7 @@
       "matchup": "San Francisco Giants @ Miami Marlins",
       "model_key": "scores24_mlb",
       "odds": -139.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Miami Marlins ML (San Francisco Giants @ Miami Marlins)",
       "pregame_snapshot": {
         "away_team": "San Francisco Giants",
@@ -80874,12 +80874,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.7194244604316546,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "Scores24MLB",
       "sport": "MLB",
       "units": 1.0
@@ -81111,7 +81111,7 @@
       "matchup": "San Diego Padres @ Texas Rangers",
       "model_key": "scores24_mlb",
       "odds": -115.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Total Over (7,5) (San Diego Padres @ Texas Rangers)",
       "pregame_snapshot": {
         "away_team": "San Diego Padres",
@@ -81132,12 +81132,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.8695652173913043,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "Scores24MLB",
       "sport": "MLB",
       "units": 1.0
@@ -81154,7 +81154,7 @@
       "matchup": "Washington Nationals @ Tampa Bay Rays",
       "model_key": "scores24_mlb",
       "odds": -118.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Tampa Bay Rays ML (Washington Nationals @ Tampa Bay Rays)",
       "pregame_snapshot": {
         "away_team": "Washington Nationals",
@@ -81175,12 +81175,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "Scores24MLB",
       "sport": "MLB",
       "units": 1.0
@@ -82975,9 +82975,9 @@
   ],
   "schema_version": 1,
   "summary": {
-    "decided_picks": 1027,
-    "pending_picks": 638,
+    "decided_picks": 1032,
+    "pending_picks": 633,
     "total_picks": 1707,
-    "trainable_decided_picks": 650
+    "trainable_decided_picks": 651
   }
 }
