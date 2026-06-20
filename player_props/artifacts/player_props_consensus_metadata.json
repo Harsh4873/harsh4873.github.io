@@ -12,10 +12,10 @@
   },
   "history_years_by_market": {
     "MLB": {
-      "hits": 3,
+      "hits": 5,
       "hits_runs_rbis": 5,
-      "pitcher_walks_allowed": 3,
-      "strikeouts": 3
+      "pitcher_walks_allowed": 5,
+      "strikeouts": 5
     },
     "WNBA": {
       "assists": 3,
@@ -25,7 +25,7 @@
   },
   "market_rows": 92650,
   "models": {
-    "mlb_history": "HRR 2022-26 outcome model plus 2024-26 prior-seeded posted-market classifiers for hits, strikeouts, and pitcher walks",
+    "mlb_history": "2022-26 five-year roster-aware outcome-history classifiers",
     "mlb_season": "2026 market classifier",
     "wnba_history": "2024-26 workload-aware market/count models",
     "wnba_season": "2026 market/count models"
@@ -51,10 +51,10 @@
     "MLB": {
       "active": true,
       "combined_out_of_sample": {
-        "accuracy": 0.7096774193548387,
-        "losses": 144,
-        "samples": 496,
-        "wins": 352
+        "accuracy": 0.7080867850098619,
+        "losses": 148,
+        "samples": 507,
+        "wins": 359
       },
       "failed_policies": {},
       "models": [
@@ -65,24 +65,24 @@
         "hits": {
           "active": true,
           "holdout": {
-            "accuracy": 0.7111111111111111,
-            "losses": 26,
-            "samples": 90,
-            "wins": 64
+            "accuracy": 0.7053571428571429,
+            "losses": 33,
+            "samples": 112,
+            "wins": 79
           },
-          "minimum_history_probability": 0.55,
+          "minimum_history_probability": 0.5,
           "minimum_history_rate": 0.0,
           "minimum_holdout_samples": 8,
-          "minimum_implied": 0.6,
-          "minimum_season_probability": 0.55,
-          "minimum_season_rate": 0.75,
+          "minimum_implied": 0.62,
+          "minimum_season_probability": 0.5,
+          "minimum_season_rate": 0.5,
           "minimum_validation_samples": 15,
           "require_classifier_agreement": true,
           "validation": {
-            "accuracy": 0.7,
-            "losses": 69,
-            "samples": 230,
-            "wins": 161
+            "accuracy": 0.7043795620437956,
+            "losses": 81,
+            "samples": 274,
+            "wins": 193
           }
         },
         "hits_runs_rbis": {
@@ -112,47 +112,47 @@
         "pitcher_walks_allowed": {
           "active": true,
           "holdout": {
-            "accuracy": 0.7352941176470589,
-            "losses": 9,
-            "samples": 34,
-            "wins": 25
+            "accuracy": 0.75,
+            "losses": 2,
+            "samples": 8,
+            "wins": 6
           },
-          "minimum_history_probability": 0.6,
-          "minimum_history_rate": 0.55,
-          "minimum_holdout_samples": 4,
+          "minimum_history_probability": 0.65,
+          "minimum_history_rate": 0.0,
+          "minimum_holdout_samples": 5,
           "minimum_implied": 0.6,
-          "minimum_season_probability": 0.5,
+          "minimum_season_probability": 0.6,
           "minimum_season_rate": 0.55,
-          "minimum_validation_samples": 6,
+          "minimum_validation_samples": 10,
           "require_classifier_agreement": true,
           "validation": {
-            "accuracy": 0.7058823529411765,
-            "losses": 20,
-            "samples": 68,
-            "wins": 48
+            "accuracy": 0.7272727272727273,
+            "losses": 6,
+            "samples": 22,
+            "wins": 16
           }
         },
         "strikeouts": {
           "active": true,
           "holdout": {
-            "accuracy": 0.8181818181818182,
-            "losses": 2,
-            "samples": 11,
-            "wins": 9
+            "accuracy": 0.7333333333333333,
+            "losses": 4,
+            "samples": 15,
+            "wins": 11
           },
-          "minimum_history_probability": 0.55,
-          "minimum_history_rate": 0.65,
-          "minimum_holdout_samples": 4,
-          "minimum_implied": 0.6,
-          "minimum_season_probability": 0.5,
-          "minimum_season_rate": 0.0,
-          "minimum_validation_samples": 6,
+          "minimum_history_probability": 0.625,
+          "minimum_history_rate": 0.0,
+          "minimum_holdout_samples": 10,
+          "minimum_implied": 0.58,
+          "minimum_season_probability": 0.575,
+          "minimum_season_rate": 0.6,
+          "minimum_validation_samples": 20,
           "require_classifier_agreement": true,
           "validation": {
-            "accuracy": 0.7058823529411765,
-            "losses": 5,
-            "samples": 17,
-            "wins": 12
+            "accuracy": 0.7,
+            "losses": 9,
+            "samples": 30,
+            "wins": 21
           }
         }
       }

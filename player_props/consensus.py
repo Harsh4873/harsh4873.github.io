@@ -44,6 +44,7 @@ OUTCOME_FEATURES = [
     "last_usage",
     "rest_days",
 ]
+OUTCOME_MARKET_FEATURES = OUTCOME_FEATURES + ["line", "over_implied", "under_implied"]
 
 TARGET_STATS = {
     "MLB": {"hits_runs_rbis", "hits", "strikeouts", "pitcher_walks_allowed"},
@@ -230,10 +231,53 @@ def _outcome_prediction(artifact: dict[str, Any], pick: dict[str, Any]) -> dict[
         return None
 
 
+def _outcome_market_prediction(artifact: dict[str, Any], pick: dict[str, Any]) -> dict[str, Any] | None:
+    sport = str(pick.get("sport") or "").upper()
+    stat_key = str(pick.get("stat_key") or "")
+    model = (artifact.get("models") or {}).get(stat_key)
+    profile = (artifact.get("outcome_profiles") or {}).get(
+        outcome_profile_key(sport, pick.get("market_athlete_id"), stat_key)
+    )
+    if model is None or not isinstance(profile, list):
+        return None
+    try:
+        over_odds = int(pick.get("market_over_odds"))
+    except (TypeError, ValueError):
+        return None
+    try:
+        under_odds = int(pick.get("market_under_odds"))
+    except (TypeError, ValueError):
+        under_odds = None
+    over_implied = american_implied_probability(over_odds)
+    under_implied = american_implied_probability(under_odds)
+    if over_implied is None:
+        return None
+    features = outcome_features(profile, target_date=str(pick.get("date") or ""))
+    if not features:
+        return None
+    features.update(
+        {
+            "line": safe_float(pick.get("line")),
+            "over_implied": over_implied,
+            "under_implied": under_implied,
+        }
+    )
+    model_features = list((artifact.get("model_features") or {}).get(stat_key) or OUTCOME_MARKET_FEATURES)
+    try:
+        import pandas as pd  # type: ignore
+
+        frame = pd.DataFrame([features])[model_features].apply(pd.to_numeric, errors="coerce")
+        return {"over_probability": float(model.predict_proba(frame)[0][1]), "features": features}
+    except Exception:
+        return None
+
+
 def _prediction(artifact: dict[str, Any], pick: dict[str, Any], stat_key: str) -> dict[str, Any] | None:
     kind = str((artifact.get("kinds") or {}).get(stat_key) or "market_classifier")
     if kind == "market_classifier":
         return _market_prediction(artifact, pick)
+    if kind == "outcome_market_classifier":
+        return _outcome_market_prediction(artifact, pick)
     return _outcome_prediction(artifact, pick)
 
 

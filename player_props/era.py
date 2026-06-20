@@ -8,7 +8,7 @@ from typing import Any
 
 ML_PROBABILITY_SOURCE = "player_props_ml_v1"
 # The first snapshot of the four-model season/history consensus ranking era.
-ML_ERA_FIRST_SNAPSHOT_AT = "2026-06-20T20:05:15.160257Z"
+ML_ERA_FIRST_SNAPSHOT_AT = "2026-06-20T20:42:53.275777Z"
 
 
 def _utc_timestamp(value: Any) -> datetime | None:

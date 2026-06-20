@@ -513,8 +513,7 @@ def apply_precision_to_pick(pick: dict[str, Any]) -> dict[str, Any]:  # type: ig
         }
     )
     sport = str(pick.get("sport") or "").upper()
-    stat_key = str(pick.get("stat_key") or "")
-    history_window = "2022-26" if sport == "MLB" and stat_key == "hits_runs_rbis" else "2024-26"
+    history_window = "2022-26" if sport == "MLB" else "2024-26"
     pick.setdefault("key_factors", []).extend(
         [
             "2026 season model evaluated",

@@ -114,7 +114,7 @@ def test_ml_player_props_skip_old_calibration_but_remain_ledger_trainable(tmp_pa
         ml_calibration_excluded=True,
         result="win",
     )
-    pick["ranking_updated_at"] = "2026-06-20T20:05:15.160257Z"
+    pick["ranking_updated_at"] = "2026-06-20T20:42:53.275777Z"
     payload = {"date": "2026-06-20", "models": {"mlb_player_props": {"picks": [pick]}}}
 
     apply_calibration_to_payload(payload, active)

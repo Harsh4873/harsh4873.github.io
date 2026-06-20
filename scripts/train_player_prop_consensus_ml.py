@@ -21,6 +21,7 @@ from player_props.consensus import (  # noqa: E402
     CONSENSUS_VERSION,
     MODEL_PATHS,
     OUTCOME_FEATURES,
+    OUTCOME_MARKET_FEATURES,
     TARGET_STATS,
     build_outcome_training_features,
     outcome_features,
@@ -61,34 +62,34 @@ POLICIES: dict[str, dict[str, dict[str, Any]]] = {
             "minimum_holdout_samples": 5,
         },
         "hits": {
-            "minimum_season_probability": 0.55,
-            "minimum_history_probability": 0.55,
-            "minimum_season_rate": 0.75,
+            "minimum_season_probability": 0.50,
+            "minimum_history_probability": 0.50,
+            "minimum_season_rate": 0.50,
             "minimum_history_rate": 0.0,
-            "minimum_implied": 0.60,
+            "minimum_implied": 0.62,
             "require_classifier_agreement": True,
             "minimum_validation_samples": 15,
             "minimum_holdout_samples": 8,
         },
         "strikeouts": {
-            "minimum_season_probability": 0.50,
-            "minimum_history_probability": 0.55,
-            "minimum_season_rate": 0.0,
-            "minimum_history_rate": 0.65,
-            "minimum_implied": 0.60,
+            "minimum_season_probability": 0.575,
+            "minimum_history_probability": 0.625,
+            "minimum_season_rate": 0.60,
+            "minimum_history_rate": 0.0,
+            "minimum_implied": 0.58,
             "require_classifier_agreement": True,
-            "minimum_validation_samples": 6,
-            "minimum_holdout_samples": 4,
+            "minimum_validation_samples": 20,
+            "minimum_holdout_samples": 10,
         },
         "pitcher_walks_allowed": {
-            "minimum_season_probability": 0.50,
-            "minimum_history_probability": 0.60,
+            "minimum_season_probability": 0.60,
+            "minimum_history_probability": 0.65,
             "minimum_season_rate": 0.55,
-            "minimum_history_rate": 0.55,
+            "minimum_history_rate": 0.0,
             "minimum_implied": 0.60,
             "require_classifier_agreement": True,
-            "minimum_validation_samples": 6,
-            "minimum_holdout_samples": 4,
+            "minimum_validation_samples": 10,
+            "minimum_holdout_samples": 5,
         },
     },
     "WNBA": {
@@ -157,6 +158,24 @@ def _classifier(*, min_child_weight: int = 15) -> Any:
     )
 
 
+def _history_classifier(*, min_child_weight: int = 10) -> Any:
+    from xgboost import XGBClassifier  # type: ignore
+
+    return XGBClassifier(
+        n_estimators=260,
+        max_depth=2,
+        learning_rate=0.028,
+        min_child_weight=min_child_weight,
+        subsample=0.85,
+        colsample_bytree=0.90,
+        reg_lambda=10,
+        reg_alpha=0.5,
+        n_jobs=-1,
+        random_state=42,
+        eval_metric="logloss",
+    )
+
+
 def _regressor() -> Any:
     from xgboost import XGBRegressor  # type: ignore
 
@@ -205,6 +224,16 @@ def _fit_hrr_history(outcomes: Any, cutoff: str | None = None) -> Any:
         rows = rows[rows["date"].le(cutoff)]
     model = _classifier(min_child_weight=20)
     model.fit(rows[OUTCOME_FEATURES], (rows["actual"] > 1.5).astype(int))
+    return model
+
+
+def _fit_mlb_outcome_market_history(frame: Any, stat_key: str, cutoff: str | None = None) -> Any:
+    rows = frame[frame["sport"].eq("MLB") & frame["stat_key"].eq(stat_key)]
+    if cutoff:
+        rows = rows[rows["date"].le(cutoff)]
+    min_child_weight = 20 if stat_key == "hits" else 8 if stat_key in {"strikeouts", "pitcher_walks_allowed"} else 10
+    model = _history_classifier(min_child_weight=min_child_weight)
+    model.fit(rows[OUTCOME_MARKET_FEATURES], rows["over_outcome"].astype(int))
     return model
 
 
@@ -262,6 +291,7 @@ def _evaluate_classifier_policy(
     history_model: Any,
     policy: dict[str, Any],
     hrr_history: bool = False,
+    outcome_market_history: bool = False,
 ) -> dict[str, Any]:
     import numpy as np  # type: ignore
 
@@ -270,6 +300,10 @@ def _evaluate_classifier_policy(
     if hrr_history:
         frame["history_over"] = history_model.predict_proba(frame[OUTCOME_FEATURES])[:, 1]
         frame["history_rate_value"] = 0.5
+    elif outcome_market_history:
+        history_input = frame[OUTCOME_MARKET_FEATURES].copy()
+        frame["history_over"] = history_model.predict_proba(history_input)[:, 1]
+        frame["history_rate_value"] = frame["over_rate"]
     else:
         history_input = frame[
             [name if name in {"line", "over_implied", "under_implied"} else f"history_{name}" for name in NUMERIC_FEATURES]
@@ -306,7 +340,9 @@ def _evaluate_classifier_policy(
     if policy.get("require_classifier_agreement"):
         qualified &= classifier_agreement
     selected = frame[qualified].copy()
-    selected["consensus_score"] = (selected["season_probability"] + selected["history_probability"]) / 2
+    selected["consensus_score"] = (
+        selected["season_probability"] + selected["history_probability"] + selected["selected_implied"]
+    ) / 3
     return _metrics(_one_per_event(selected, score="consensus_score"))
 
 
@@ -483,7 +519,7 @@ def main() -> int:
             for cutoff, start, end in (validation_window, holdout_window):
                 if sport == "MLB":
                     season_model = _fit_market(
-                        paired[paired["sport"].eq(sport)],
+                        outcome_market[outcome_market["sport"].eq(sport)],
                         stat_key,
                         cutoff,
                         min_child_weight=20 if stat_key == "hits_runs_rbis" else 15,
@@ -515,19 +551,18 @@ def main() -> int:
                             hrr_history=True,
                         )
                     else:
-                        history_model = _fit_paired_history(
-                            paired[paired["sport"].eq(sport)], stat_key, cutoff
-                        )
-                        rows = paired[
-                            paired["sport"].eq(sport)
-                            & paired["stat_key"].eq(stat_key)
-                            & paired["date"].between(start, end)
+                        history_model = _fit_mlb_outcome_market_history(outcome_market, stat_key, cutoff)
+                        rows = outcome_market[
+                            outcome_market["sport"].eq(sport)
+                            & outcome_market["stat_key"].eq(stat_key)
+                            & outcome_market["date"].between(start, end)
                         ]
                         metrics = _evaluate_classifier_policy(
                             rows,
                             season_model=season_model,
                             history_model=history_model,
                             policy=policy,
+                            outcome_market_history=True,
                         )
                 elif stat_key == "points":
                     season_model = _fit_market(paired[paired["sport"].eq(sport)], stat_key, cutoff)
@@ -598,6 +633,8 @@ def main() -> int:
                             & paired_outcome["line"].eq(1.5)
                         ]
                         if stat_key == "hits_runs_rbis"
+                        else outcome_market[outcome_market["sport"].eq(sport)]
+                        if sport == "MLB"
                         else paired[paired["sport"].eq(sport)]
                     ),
                     stat_key,
@@ -609,6 +646,10 @@ def main() -> int:
                     history_models[stat_key] = _fit_hrr_history(outcome_frame)
                     history_kinds[stat_key] = "classifier"
                     history_model_features[stat_key] = OUTCOME_FEATURES
+                elif sport == "MLB":
+                    history_models[stat_key] = _fit_mlb_outcome_market_history(outcome_market, stat_key)
+                    history_kinds[stat_key] = "outcome_market_classifier"
+                    history_model_features[stat_key] = OUTCOME_MARKET_FEATURES
                 else:
                     history_models[stat_key] = _fit_paired_history(
                         paired[paired["sport"].eq(sport)], stat_key
@@ -686,9 +727,9 @@ def main() -> int:
         "history_years_by_market": {
             "MLB": {
                 "hits_runs_rbis": 5,
-                "hits": 3,
-                "strikeouts": 3,
-                "pitcher_walks_allowed": 3,
+                "hits": 5,
+                "strikeouts": 5,
+                "pitcher_walks_allowed": 5,
             },
             "WNBA": {"points": 3, "totalRebounds": 3, "assists": 3},
         },
@@ -696,7 +737,7 @@ def main() -> int:
         "roster_policy": "Current player IDs only; season features reset annually; recent 3/5/10-game workload dominates older priors.",
         "models": {
             "mlb_season": "2026 market classifier",
-            "mlb_history": "HRR 2022-26 outcome model plus 2024-26 prior-seeded posted-market classifiers for hits, strikeouts, and pitcher walks",
+            "mlb_history": "2022-26 five-year roster-aware outcome-history classifiers",
             "wnba_season": "2026 market/count models",
             "wnba_history": "2024-26 workload-aware market/count models",
         },
