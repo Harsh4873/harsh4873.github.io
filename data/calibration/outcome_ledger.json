@@ -104745,7 +104745,7 @@
       "matchup": "Baltimore Orioles @ Los Angeles Dodgers",
       "model_key": "mlb_first_five",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Over 4.5 F5",
       "pregame_snapshot": {
         "actionability": "research_signal",
@@ -104784,7 +104784,7 @@
       "raw_edge": 16.48,
       "raw_probability": 0.6886,
       "raw_units": null,
-      "result": "pending",
+      "result": "loss",
       "source": "MLB First Five",
       "sport": "MLB",
       "units": null
@@ -104913,7 +104913,7 @@
       "matchup": "Minnesota Twins @ Arizona Diamondbacks",
       "model_key": "mlb_first_five",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Over 4.5 F5",
       "pregame_snapshot": {
         "actionability": "research_signal",
@@ -104952,7 +104952,7 @@
       "raw_edge": 17.81,
       "raw_probability": 0.7019,
       "raw_units": null,
-      "result": "pending",
+      "result": "win",
       "source": "MLB First Five",
       "sport": "MLB",
       "units": null
@@ -109873,7 +109873,7 @@
       "matchup": "Los Angeles Angels @ Athletics",
       "model_key": "mlb_player_props",
       "odds": -130.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Lawrence Butler Under 1.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -109955,12 +109955,12 @@
         "units": 0.5
       },
       "probability": 0.6054,
-      "profit": null,
+      "profit": -0.5,
       "raw_decision": "LEAN",
       "raw_edge": 4.02,
       "raw_probability": 0.6054,
       "raw_units": 0.5,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 0.5
@@ -110387,7 +110387,7 @@
       "matchup": "Boston Red Sox @ Seattle Mariners",
       "model_key": "mlb_player_props",
       "odds": -103.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Ranger Suarez Under 17.5 Outs Recorded",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -110466,12 +110466,12 @@
         "units": 0.5
       },
       "probability": 0.5651,
-      "profit": null,
+      "profit": -0.5,
       "raw_decision": "LEAN",
       "raw_edge": 5.77,
       "raw_probability": 0.5651,
       "raw_units": 0.5,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 0.5
@@ -110488,7 +110488,7 @@
       "matchup": "Los Angeles Angels @ Athletics",
       "model_key": "mlb_player_props",
       "odds": -334.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Jo Adell Under 0.5 Walks",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -110570,12 +110570,12 @@
         "units": 0.5
       },
       "probability": 0.8165,
-      "profit": null,
+      "profit": -0.5,
       "raw_decision": "LEAN",
       "raw_edge": 4.69,
       "raw_probability": 0.8165,
       "raw_units": 0.5,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 0.5
@@ -110800,7 +110800,7 @@
       "matchup": "Baltimore Orioles @ Los Angeles Dodgers",
       "model_key": "mlb_player_props",
       "odds": 122.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Taylor Ward Over 0.5 Walks",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -110882,12 +110882,12 @@
         "units": 0.5
       },
       "probability": 0.5305,
-      "profit": null,
+      "profit": -0.5,
       "raw_decision": "BET",
       "raw_edge": 8.0,
       "raw_probability": 0.5305,
       "raw_units": 0.5,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 0.5
@@ -111317,7 +111317,7 @@
       "matchup": "Minnesota Twins @ Arizona Diamondbacks",
       "model_key": "mlb_player_props",
       "odds": 100.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Corbin Carroll Over 1.5 Total Bases",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -111399,12 +111399,12 @@
         "units": 0.5
       },
       "probability": 0.5544,
-      "profit": null,
+      "profit": 0.5,
       "raw_decision": "LEAN",
       "raw_edge": 5.44,
       "raw_probability": 0.5544,
       "raw_units": 0.5,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 0.5
@@ -112354,7 +112354,7 @@
       "matchup": "Baltimore Orioles @ Los Angeles Dodgers",
       "model_key": "mlb_player_props",
       "odds": 115.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Ryan Ward Over 1.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -112436,12 +112436,12 @@
         "units": 0.5
       },
       "probability": 0.528,
-      "profit": null,
+      "profit": -0.5,
       "raw_decision": "LEAN",
       "raw_edge": 6.29,
       "raw_probability": 0.528,
       "raw_units": 0.5,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 0.5
@@ -112663,7 +112663,7 @@
       "matchup": "Minnesota Twins @ Arizona Diamondbacks",
       "model_key": "mlb_player_props",
       "odds": -102.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Connor Prielipp Under 5.5 Hits Allowed",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -112742,12 +112742,12 @@
         "units": 0.5
       },
       "probability": 0.5588,
-      "profit": null,
+      "profit": -0.5,
       "raw_decision": "LEAN",
       "raw_edge": 5.38,
       "raw_probability": 0.5588,
       "raw_units": 0.5,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 0.5
@@ -113390,7 +113390,7 @@
       "matchup": "Minnesota Twins @ Arizona Diamondbacks",
       "model_key": "mlb_player_props",
       "odds": 102.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Byron Buxton Over 1.5 Total Bases",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -113472,12 +113472,12 @@
         "units": 0.5
       },
       "probability": 0.5665,
-      "profit": null,
+      "profit": 0.51,
       "raw_decision": "BET",
       "raw_edge": 7.15,
       "raw_probability": 0.5665,
       "raw_units": 0.5,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 0.5
@@ -113494,7 +113494,7 @@
       "matchup": "Los Angeles Angels @ Athletics",
       "model_key": "mlb_player_props",
       "odds": -125.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Jose Siri Over 0.5 Hits",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -113578,12 +113578,12 @@
         "units": 0.5
       },
       "probability": 0.6356,
-      "profit": null,
+      "profit": 0.4,
       "raw_decision": "BET",
       "raw_edge": 8.0,
       "raw_probability": 0.6356,
       "raw_units": 0.5,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 0.5
@@ -113600,7 +113600,7 @@
       "matchup": "Minnesota Twins @ Arizona Diamondbacks",
       "model_key": "mlb_player_props",
       "odds": -139.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Tristan Gray Over 0.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -113682,12 +113682,12 @@
         "units": 0.5
       },
       "probability": 0.6486,
-      "profit": null,
+      "profit": 0.3597122302158273,
       "raw_decision": "LEAN",
       "raw_edge": 6.7,
       "raw_probability": 0.6486,
       "raw_units": 0.5,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 0.5
@@ -114016,7 +114016,7 @@
       "matchup": "Baltimore Orioles @ Los Angeles Dodgers",
       "model_key": "mlb_player_props",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Trey Gibson Under 14.5 Outs Recorded",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -114095,12 +114095,12 @@
         "units": 0.5
       },
       "probability": 0.5984,
-      "profit": null,
+      "profit": -0.5,
       "raw_decision": "BET",
       "raw_edge": 7.46,
       "raw_probability": 0.5984,
       "raw_units": 0.5,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 0.5
@@ -114431,7 +114431,7 @@
       "matchup": "Los Angeles Angels @ Athletics",
       "model_key": "mlb_player_props",
       "odds": 105.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Zach Neto Over 1.5 Total Bases",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -114513,12 +114513,12 @@
         "units": 0.5
       },
       "probability": 0.5429,
-      "profit": null,
+      "profit": 0.525,
       "raw_decision": "LEAN",
       "raw_edge": 5.51,
       "raw_probability": 0.5429,
       "raw_units": 0.5,
-      "result": "pending",
+      "result": "win",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "MLB",
       "units": 0.5
@@ -114725,7 +114725,7 @@
       "matchup": "Boston Red Sox @ Seattle Mariners",
       "model_key": "scores24_mlb",
       "odds": -154.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Total Under (7,5) (Boston Red Sox @ Seattle Mariners)",
       "pregame_snapshot": {
         "away_team": "Boston Red Sox",
@@ -114746,12 +114746,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "Scores24MLB",
       "sport": "MLB",
       "units": 1.0
@@ -114983,7 +114983,7 @@
       "matchup": "Baltimore Orioles @ Los Angeles Dodgers",
       "model_key": "scores24_mlb",
       "odds": -154.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Total Under (10,5) (Baltimore Orioles @ Los Angeles Dodgers)",
       "pregame_snapshot": {
         "away_team": "Baltimore Orioles",
@@ -115004,12 +115004,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "Scores24MLB",
       "sport": "MLB",
       "units": 1.0
@@ -115069,7 +115069,7 @@
       "matchup": "Minnesota Twins @ Arizona Diamondbacks",
       "model_key": "scores24_mlb",
       "odds": -161.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Total Over (7,5) (Minnesota Twins @ Arizona Diamondbacks)",
       "pregame_snapshot": {
         "away_team": "Minnesota Twins",
@@ -115090,12 +115090,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.6211180124223602,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "Scores24MLB",
       "sport": "MLB",
       "units": 1.0
@@ -115112,7 +115112,7 @@
       "matchup": "Los Angeles Angels @ Athletics",
       "model_key": "scores24_mlb",
       "odds": -137.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Total Under (10,5) (Los Angeles Angels @ Athletics)",
       "pregame_snapshot": {
         "away_team": "Los Angeles Angels",
@@ -115133,12 +115133,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "Scores24MLB",
       "sport": "MLB",
       "units": 1.0
@@ -115241,7 +115241,7 @@
       "matchup": "Minnesota Lynx @ Golden State Valkyries",
       "model_key": "scores24_wnba",
       "odds": -108.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Total points Under (167,5) (Minnesota Lynx @ Golden State Valkyries)",
       "pregame_snapshot": {
         "away_team": "Minnesota Lynx",
@@ -115262,12 +115262,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.9259259259259259,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "Scores24WNBA",
       "sport": "WNBA",
       "units": 1.0
@@ -115370,7 +115370,7 @@
       "matchup": "Los Angeles Dodgers vs Baltimore Orioles",
       "model_key": "sportsgambler_mlb",
       "odds": -208.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Los Angeles Dodgers to Win (Los Angeles Dodgers vs Baltimore Orioles)",
       "pregame_snapshot": {
         "date": "2026-06-19",
@@ -115386,12 +115386,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.4807692307692308,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "SportsGamblerMLB",
       "sport": "MLB",
       "units": 1.0
@@ -115484,7 +115484,7 @@
       "matchup": "Arizona Diamondbacks vs Minnesota Twins",
       "model_key": "sportsgambler_mlb",
       "odds": -172.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Arizona Diamondbacks to Win (Arizona Diamondbacks vs Minnesota Twins)",
       "pregame_snapshot": {
         "date": "2026-06-19",
@@ -115500,12 +115500,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.5813953488372093,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "SportsGamblerMLB",
       "sport": "MLB",
       "units": 1.0
@@ -115522,7 +115522,7 @@
       "matchup": "Seattle Mariners vs Boston Red Sox",
       "model_key": "sportsgambler_mlb",
       "odds": 112.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Boston Red Sox to Win (Seattle Mariners vs Boston Red Sox)",
       "pregame_snapshot": {
         "date": "2026-06-19",
@@ -115538,12 +115538,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 1.12,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "SportsGamblerMLB",
       "sport": "MLB",
       "units": 1.0
@@ -115674,7 +115674,7 @@
       "matchup": "Athletics vs Los Angeles Angels",
       "model_key": "sportsgambler_mlb",
       "odds": 138.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Los Angeles Angels to Win (Athletics vs Los Angeles Angels)",
       "pregame_snapshot": {
         "date": "2026-06-19",
@@ -115690,12 +115690,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "SportsGamblerMLB",
       "sport": "MLB",
       "units": 1.0
@@ -115864,7 +115864,7 @@
       "matchup": "Golden State Valkyries vs Minnesota Lynx",
       "model_key": "sportsgambler_wnba",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Over 161.5 Points (Golden State Valkyries vs Minnesota Lynx)",
       "pregame_snapshot": {
         "date": "2026-06-19",
@@ -115880,12 +115880,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "SportsGamblerWNBA",
       "sport": "WNBA",
       "units": 1.0
@@ -116092,7 +116092,7 @@
       "matchup": "Seattle Mariners vs Boston Red Sox",
       "model_key": "sportytrader_mlb",
       "odds": -112.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Seattle ML (Mariners vs Red Sox)",
       "pregame_snapshot": {
         "date": "2026-06-19",
@@ -116108,12 +116108,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "SportyTraderMLB",
       "sport": "MLB",
       "units": 1.0
@@ -116244,7 +116244,7 @@
       "matchup": "Arizona Diamondbacks vs Minnesota Twins",
       "model_key": "sportytrader_mlb",
       "odds": -175.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Arizona ML (Diamondbacks vs Twins)",
       "pregame_snapshot": {
         "date": "2026-06-19",
@@ -116260,12 +116260,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 0.5714285714285714,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "SportyTraderMLB",
       "sport": "MLB",
       "units": 1.0
@@ -116282,7 +116282,7 @@
       "matchup": "Minnesota Lynx @ Golden State Valkyries",
       "model_key": "wnba",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Over 163.5 (Minnesota Lynx vs Golden State Valkyries)",
       "pregame_snapshot": {
         "away_team": "Minnesota Lynx",
@@ -116318,12 +116318,12 @@
         "vegas": 163.5
       },
       "probability": 0.6161,
-      "profit": null,
+      "profit": -0.02,
       "raw_decision": "LEAN",
       "raw_edge": 25.99,
       "raw_probability": 0.7837,
       "raw_units": 0.04,
-      "result": "pending",
+      "result": "loss",
       "source": "WNBA Model",
       "sport": "WNBA",
       "units": 0.02
@@ -116690,7 +116690,7 @@
       "matchup": "Minnesota Lynx @ Golden State Valkyries",
       "model_key": "wnba",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Over 164.5 (Minnesota Lynx vs Golden State Valkyries)",
       "pregame_snapshot": {
         "away_team": "Minnesota Lynx",
@@ -116726,12 +116726,12 @@
         "vegas": 164.5
       },
       "probability": 0.5988,
-      "profit": null,
+      "profit": -0.02,
       "raw_decision": "LEAN",
       "raw_edge": 23.66,
       "raw_probability": 0.7604,
       "raw_units": 0.04,
-      "result": "pending",
+      "result": "loss",
       "source": "WNBA Model",
       "sport": "WNBA",
       "units": 0.02
@@ -116924,7 +116924,7 @@
       "matchup": "Minnesota Lynx @ Golden State Valkyries",
       "model_key": "wnba",
       "odds": -110.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Over 165.5 (Minnesota Lynx vs Golden State Valkyries)",
       "pregame_snapshot": {
         "away_team": "Minnesota Lynx",
@@ -116960,12 +116960,12 @@
         "vegas": 165.5
       },
       "probability": 0.5815,
-      "profit": null,
+      "profit": -0.02,
       "raw_decision": "LEAN",
       "raw_edge": 21.21,
       "raw_probability": 0.7359,
       "raw_units": 0.04,
-      "result": "pending",
+      "result": "loss",
       "source": "WNBA Model",
       "sport": "WNBA",
       "units": 0.02
@@ -117138,7 +117138,7 @@
       "matchup": "Minnesota Lynx @ Golden State Valkyries",
       "model_key": "wnba_player_props",
       "odds": -117.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Natasha Howard Over 14.5 Points",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -117214,12 +117214,12 @@
         "units": 0.5
       },
       "probability": 0.6192,
-      "profit": null,
+      "profit": -0.5,
       "raw_decision": "BET",
       "raw_edge": 8.0,
       "raw_probability": 0.6192,
       "raw_units": 0.5,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 0.5
@@ -117334,7 +117334,7 @@
       "matchup": "Minnesota Lynx @ Golden State Valkyries",
       "model_key": "wnba_player_props",
       "odds": -113.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Olivia Miles Over 17.5 Points",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -117410,12 +117410,12 @@
         "units": 0.5
       },
       "probability": 0.5947,
-      "profit": null,
+      "profit": -0.5,
       "raw_decision": "LEAN",
       "raw_edge": 6.42,
       "raw_probability": 0.5947,
       "raw_units": 0.5,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 0.5
@@ -117432,7 +117432,7 @@
       "matchup": "Minnesota Lynx @ Golden State Valkyries",
       "model_key": "wnba_player_props",
       "odds": -111.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Gabby Williams Over 18.5 Points + Assists",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -117508,12 +117508,12 @@
         "units": 0.5
       },
       "probability": 0.5893,
-      "profit": null,
+      "profit": -0.5,
       "raw_decision": "LEAN",
       "raw_edge": 6.32,
       "raw_probability": 0.5893,
       "raw_units": 0.5,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 0.5
@@ -117628,7 +117628,7 @@
       "matchup": "Minnesota Lynx @ Golden State Valkyries",
       "model_key": "wnba_player_props",
       "odds": 119.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Veronica Burton Over 3.5 Rebounds",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -117704,12 +117704,12 @@
         "units": 0.5
       },
       "probability": 0.5282,
-      "profit": null,
+      "profit": -0.5,
       "raw_decision": "BET",
       "raw_edge": 7.16,
       "raw_probability": 0.5282,
       "raw_units": 0.5,
-      "result": "pending",
+      "result": "loss",
       "source": "PickLedgerPro In-House Player Props",
       "sport": "WNBA",
       "units": 0.5
@@ -117717,9 +117717,9 @@
   ],
   "schema_version": 1,
   "summary": {
-    "decided_picks": 1411,
-    "pending_picks": 530,
+    "decided_picks": 1444,
+    "pending_picks": 497,
     "total_picks": 1983,
-    "trainable_decided_picks": 1051
+    "trainable_decided_picks": 1072
   }
 }
