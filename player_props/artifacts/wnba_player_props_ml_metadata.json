@@ -45,7 +45,7 @@
     "family::total_bases",
     "family::triples"
   ],
-  "ledger_samples": 64,
+  "ledger_samples": 71,
   "market_families": [
     "points",
     "rebounds",
@@ -59,31 +59,33 @@
     "stocks"
   ],
   "model_type": "StandardScaler+LogisticRegression",
-  "positive_rate": 0.4375,
+  "positive_rate": 0.4084507042253521,
   "probability_mode": "market_anchor_validation_gate",
   "sport": "WNBA",
   "training_dates": [
     "2026-06-16",
     "2026-06-17",
-    "2026-06-18"
+    "2026-06-18",
+    "2026-06-19"
   ],
-  "training_fingerprint": "389bc92a466b5cbfa7aa373e8e322da35671c5af1f55dbbb8e36a4cabc21b06e",
+  "training_fingerprint": "ce391681eb181912fbdb57a29dd3c8622a8224b773805496e6ad8218548fd68c",
   "training_season": 2026,
   "training_sources": [
     "current_season_projection_features",
     "current_season_pickledger_outcome_ledger"
   ],
   "validation": {
-    "actual_rate": 0.5,
-    "baseline_brier": 0.2611526330195,
-    "calibration_gap": 0.030483030745153017,
+    "actual_rate": 0.3333333333333333,
+    "baseline_brier": 0.3487497195116666,
+    "calibration_gap": 0.2696358272789792,
     "dates": [
-      "2026-06-18"
+      "2026-06-18",
+      "2026-06-19"
     ],
-    "market_brier": 0.2493659,
-    "model_brier": 0.24404189174306748,
-    "predicted_rate": 0.469516969254847,
-    "samples": 8
+    "market_brier": 0.25609290333333334,
+    "model_brier": 0.37371676283725713,
+    "predicted_rate": 0.6029691606123125,
+    "samples": 15
   },
   "version": "player_props_ml_v1.1.0"
 }
