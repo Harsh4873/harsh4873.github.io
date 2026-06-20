@@ -11972,6 +11972,7 @@
           "projected_home_goals": 1.636,
           "projected_total": 2.67,
           "reason": "Projected goals Ivory Coast 1.04, Germany 1.64 from the two attacking engines against the opposing defensive units.",
+          "result": "win",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-06-20T20:00Z",
@@ -22030,6 +22031,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-20-06-2026-chicago-cubs-toronto-blue-jays-prediction",
           "sport": "MLB",
@@ -22526,6 +22528,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24WNBA",
           "source_url": "https://scores24.live/en/basketball/m-20-06-2026-phoenix-mercury-w-seattle-storm-w--prediction",
           "sport": "WNBA",
@@ -22965,6 +22968,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Philadelphia Phillies vs New York Mets",
+          "game_start_time": "2026-06-20T23:15Z",
           "matchup": "Philadelphia Phillies vs New York Mets",
           "odds": -110,
           "pick": "Under 7.5 (Phillies vs Mets)",
@@ -22984,6 +22988,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-20T23:15Z",
           "units": 1
         },
         {
@@ -22991,6 +22996,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Houston Astros vs Cleveland Guardians",
+          "game_start_time": "2026-06-20T23:15Z",
           "matchup": "Houston Astros vs Cleveland Guardians",
           "odds": -155,
           "pick": "Astros ML (Astros vs Guardians)",
@@ -23010,6 +23016,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-20T23:15Z",
           "units": 1
         },
         {
@@ -23154,6 +23161,7 @@
           "confidence_label": "Medium",
           "decision": "LEAN",
           "game": "Indiana Fever @ Atlanta Dream",
+          "game_start_time": "2026-06-20T17:00Z",
           "guardrail_reasons": [
             "no SportsLine market price found"
           ],
@@ -23206,8 +23214,10 @@
           "projected_total": 176.3,
           "raw_probability": 0.702,
           "raw_units": 0.28,
+          "result": "win",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-20T17:00Z",
           "starters_out": [],
           "starters_questionable": [],
           "starters_total": 0,
@@ -23377,6 +23387,7 @@
           "decision": "LEAN",
           "edge": 4.56,
           "game": "Chicago Sky @ Dallas Wings",
+          "game_start_time": "2026-06-21T00:00Z",
           "guardrail_reasons": [],
           "h2h_games": 0,
           "has_market_price": true,
@@ -23436,6 +23447,7 @@
           "selection": "Dallas Wings",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-21T00:00Z",
           "starters_out": [],
           "starters_questionable": [],
           "team": "Dallas Wings",
@@ -23830,6 +23842,7 @@
           "raw_edge": 19.16,
           "raw_probability": 0.7154,
           "raw_units": 0.03,
+          "result": "loss",
           "selection": "Under",
           "source": "WNBA Model",
           "sport": "WNBA",
