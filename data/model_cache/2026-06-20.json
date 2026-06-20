@@ -1,7 +1,7 @@
 {
   "date": "2026-06-20",
   "errors": [],
-  "externalFeedsUpdatedAt": "2026-06-20T16:42:02.849542Z",
+  "externalFeedsUpdatedAt": "2026-06-20T21:39:05.084031Z",
   "external_feeds": {
     "scores24_fifa_world_cup": {
       "date": "2026-06-20",
@@ -759,36 +759,20 @@
     "sportsgambler_fifa_world_cup": {
       "date": "2026-06-20",
       "errors": [],
-      "generatedAt": "2026-06-20T15:53:58.177812Z",
+      "generatedAt": "2026-06-20T21:39:05.084031Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-20",
         "feed": "sportsgambler_fifa_world_cup",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 3,
+        "pick_count": 2,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-20T15:53:58.177812Z"
+        "updatedAt": "2026-06-20T21:39:05.084031Z"
       },
-      "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 3 pick(s).",
+      "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 2 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "calibration_excluded": true,
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "Netherlands vs Sweden",
-          "grade_supported": true,
-          "market_type": "soccer_total",
-          "matchup": "Netherlands vs Sweden",
-          "odds": -127,
-          "pick": "Over 2.5 Goals (Netherlands vs Sweden)",
-          "probability": null,
-          "source": "SportsGamblerFIFAWorldCup",
-          "sport": "FIFA WC",
-          "units": 1
-        },
         {
           "calibration_excluded": true,
           "date": "2026-06-20",
@@ -822,214 +806,32 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-20T15:53:58.177812Z"
+      "updatedAt": "2026-06-20T21:39:05.084031Z"
     },
     "sportsgambler_mlb": {
       "date": "2026-06-20",
       "errors": [],
-      "generatedAt": "2026-06-20T15:53:58.177812Z",
+      "generatedAt": "2026-06-20T21:39:05.084031Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-20",
         "feed": "sportsgambler_mlb",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 14,
+        "pick_count": 7,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-20T15:53:58.177812Z"
+        "updatedAt": "2026-06-20T21:39:05.084031Z"
       },
-      "note": "Scheduled sportsgambler_mlb refresh returned 14 pick(s).",
+      "note": "Scheduled sportsgambler_mlb refresh returned 7 pick(s).",
       "ok": true,
       "picks": [
         {
           "date": "2026-06-20",
           "decision": "BET",
           "edge": null,
-          "game": "Detroit Tigers vs Chicago White Sox",
-          "matchup": "Detroit Tigers vs Chicago White Sox",
-          "odds": 123,
-          "pick": "Chicago White Sox to Win (Detroit Tigers vs Chicago White Sox)",
-          "pregame_snapshot": {
-            "date": "2026-06-20",
-            "decision": "BET",
-            "edge": null,
-            "game": "Detroit Tigers vs Chicago White Sox",
-            "matchup": "Detroit Tigers vs Chicago White Sox",
-            "odds": 123,
-            "pick": "Chicago White Sox to Win (Detroit Tigers vs Chicago White Sox)",
-            "probability": null,
-            "source": "SportsGamblerMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        {
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "New York Yankees vs Cincinnati Reds",
-          "matchup": "New York Yankees vs Cincinnati Reds",
-          "odds": -204,
-          "pick": "New York Yankees to Win (New York Yankees vs Cincinnati Reds)",
-          "pregame_snapshot": {
-            "date": "2026-06-20",
-            "decision": "BET",
-            "edge": null,
-            "game": "New York Yankees vs Cincinnati Reds",
-            "matchup": "New York Yankees vs Cincinnati Reds",
-            "odds": -204,
-            "pick": "New York Yankees to Win (New York Yankees vs Cincinnati Reds)",
-            "probability": null,
-            "source": "SportsGamblerMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        {
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "Chicago Cubs vs Toronto Blue Jays",
-          "matchup": "Chicago Cubs vs Toronto Blue Jays",
-          "odds": -100,
-          "pick": "Toronto Blue Jays to Win (Chicago Cubs vs Toronto Blue Jays)",
-          "pregame_snapshot": {
-            "date": "2026-06-20",
-            "decision": "BET",
-            "edge": null,
-            "game": "Chicago Cubs vs Toronto Blue Jays",
-            "matchup": "Chicago Cubs vs Toronto Blue Jays",
-            "odds": -100,
-            "pick": "Toronto Blue Jays to Win (Chicago Cubs vs Toronto Blue Jays)",
-            "probability": null,
-            "source": "SportsGamblerMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        {
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "Texas Rangers vs San Diego Padres",
-          "matchup": "Texas Rangers vs San Diego Padres",
-          "odds": 112,
-          "pick": "San Diego Padres to Win (Texas Rangers vs San Diego Padres)",
-          "pregame_snapshot": {
-            "date": "2026-06-20",
-            "decision": "BET",
-            "edge": null,
-            "game": "Texas Rangers vs San Diego Padres",
-            "matchup": "Texas Rangers vs San Diego Padres",
-            "odds": 112,
-            "pick": "San Diego Padres to Win (Texas Rangers vs San Diego Padres)",
-            "probability": null,
-            "source": "SportsGamblerMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        {
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "Miami Marlins vs San Francisco Giants",
-          "matchup": "Miami Marlins vs San Francisco Giants",
-          "odds": 115,
-          "pick": "San Francisco Giants to Win (Miami Marlins vs San Francisco Giants)",
-          "pregame_snapshot": {
-            "date": "2026-06-20",
-            "decision": "BET",
-            "edge": null,
-            "game": "Miami Marlins vs San Francisco Giants",
-            "matchup": "Miami Marlins vs San Francisco Giants",
-            "odds": 115,
-            "pick": "San Francisco Giants to Win (Miami Marlins vs San Francisco Giants)",
-            "probability": null,
-            "source": "SportsGamblerMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        {
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "Atlanta Braves vs Milwaukee Brewers",
-          "matchup": "Atlanta Braves vs Milwaukee Brewers",
-          "odds": -137,
-          "pick": "Atlanta Braves to Win (Atlanta Braves vs Milwaukee Brewers)",
-          "pregame_snapshot": {
-            "date": "2026-06-20",
-            "decision": "BET",
-            "edge": null,
-            "game": "Atlanta Braves vs Milwaukee Brewers",
-            "matchup": "Atlanta Braves vs Milwaukee Brewers",
-            "odds": -137,
-            "pick": "Atlanta Braves to Win (Atlanta Braves vs Milwaukee Brewers)",
-            "probability": null,
-            "source": "SportsGamblerMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        {
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "Tampa Bay Rays vs Washington Nationals",
-          "matchup": "Tampa Bay Rays vs Washington Nationals",
-          "odds": -127,
-          "pick": "Tampa Bay Rays to Win (Tampa Bay Rays vs Washington Nationals)",
-          "pregame_snapshot": {
-            "date": "2026-06-20",
-            "decision": "BET",
-            "edge": null,
-            "game": "Tampa Bay Rays vs Washington Nationals",
-            "matchup": "Tampa Bay Rays vs Washington Nationals",
-            "odds": -127,
-            "pick": "Tampa Bay Rays to Win (Tampa Bay Rays vs Washington Nationals)",
-            "probability": null,
-            "source": "SportsGamblerMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        {
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
           "game": "Philadelphia Phillies vs New York Mets",
           "matchup": "Philadelphia Phillies vs New York Mets",
-          "odds": -179,
+          "odds": -189,
           "pick": "Philadelphia Phillies to Win (Philadelphia Phillies vs New York Mets)",
           "pregame_snapshot": {
             "date": "2026-06-20",
@@ -1055,7 +857,7 @@
           "edge": null,
           "game": "Houston Astros vs Cleveland Guardians",
           "matchup": "Houston Astros vs Cleveland Guardians",
-          "odds": -143,
+          "odds": -147,
           "pick": "Houston Astros to Win (Houston Astros vs Cleveland Guardians)",
           "pregame_snapshot": {
             "date": "2026-06-20",
@@ -1107,7 +909,7 @@
           "edge": null,
           "game": "Athletics vs Los Angeles Angels",
           "matchup": "Athletics vs Los Angeles Angels",
-          "odds": -156,
+          "odds": -172,
           "pick": "Athletics to Win (Athletics vs Los Angeles Angels)",
           "pregame_snapshot": {
             "date": "2026-06-20",
@@ -1133,7 +935,7 @@
           "edge": null,
           "game": "Seattle Mariners vs Boston Red Sox",
           "matchup": "Seattle Mariners vs Boston Red Sox",
-          "odds": -128,
+          "odds": -125,
           "pick": "Seattle Mariners to Win (Seattle Mariners vs Boston Red Sox)",
           "pregame_snapshot": {
             "date": "2026-06-20",
@@ -1159,7 +961,7 @@
           "edge": null,
           "game": "Los Angeles Dodgers vs Baltimore Orioles",
           "matchup": "Los Angeles Dodgers vs Baltimore Orioles",
-          "odds": 220,
+          "odds": 215,
           "pick": "Baltimore Orioles to Win (Los Angeles Dodgers vs Baltimore Orioles)",
           "pregame_snapshot": {
             "date": "2026-06-20",
@@ -1185,7 +987,7 @@
           "edge": null,
           "game": "Arizona Diamondbacks vs Minnesota Twins",
           "matchup": "Arizona Diamondbacks vs Minnesota Twins",
-          "odds": 102,
+          "odds": -100,
           "pick": "Minnesota Twins to Win (Arizona Diamondbacks vs Minnesota Twins)",
           "pregame_snapshot": {
             "date": "2026-06-20",
@@ -1206,12 +1008,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-20T15:53:58.177812Z"
+      "updatedAt": "2026-06-20T21:39:05.084031Z"
     },
     "sportsgambler_nba": {
       "date": "2026-06-20",
       "errors": [],
-      "generatedAt": "2026-06-20T15:53:58.177812Z",
+      "generatedAt": "2026-06-20T21:39:05.084031Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-20",
@@ -1220,82 +1022,30 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-20T15:53:58.177812Z"
+        "updatedAt": "2026-06-20T21:39:05.084031Z"
       },
       "note": "Scheduled sportsgambler_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-06-20T15:53:58.177812Z"
+      "updatedAt": "2026-06-20T21:39:05.084031Z"
     },
     "sportsgambler_wnba": {
       "date": "2026-06-20",
       "errors": [],
-      "generatedAt": "2026-06-20T15:53:58.177812Z",
+      "generatedAt": "2026-06-20T21:39:05.084031Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-20",
         "feed": "sportsgambler_wnba",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 3,
+        "pick_count": 1,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-20T15:53:58.177812Z"
+        "updatedAt": "2026-06-20T21:39:05.084031Z"
       },
-      "note": "Scheduled sportsgambler_wnba refresh returned 3 pick(s).",
+      "note": "Scheduled sportsgambler_wnba refresh returned 1 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "Atlanta Dream vs Indiana Fever",
-          "matchup": "Atlanta Dream vs Indiana Fever",
-          "odds": -118,
-          "pick": "Dream -4.5 (Atlanta Dream vs Indiana Fever)",
-          "pregame_snapshot": {
-            "date": "2026-06-20",
-            "decision": "BET",
-            "edge": null,
-            "game": "Atlanta Dream vs Indiana Fever",
-            "matchup": "Atlanta Dream vs Indiana Fever",
-            "odds": -118,
-            "pick": "Dream -4.5 (Atlanta Dream vs Indiana Fever)",
-            "probability": null,
-            "source": "SportsGamblerWNBA",
-            "sport": "WNBA",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportsGamblerWNBA",
-          "sport": "WNBA",
-          "units": 1
-        },
-        {
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "Phoenix Mercury vs Seattle Storm",
-          "matchup": "Phoenix Mercury vs Seattle Storm",
-          "odds": -108,
-          "pick": "Over 160.5 Points (Phoenix Mercury vs Seattle Storm)",
-          "pregame_snapshot": {
-            "date": "2026-06-20",
-            "decision": "BET",
-            "edge": null,
-            "game": "Phoenix Mercury vs Seattle Storm",
-            "matchup": "Phoenix Mercury vs Seattle Storm",
-            "odds": -108,
-            "pick": "Over 160.5 Points (Phoenix Mercury vs Seattle Storm)",
-            "probability": null,
-            "source": "SportsGamblerWNBA",
-            "sport": "WNBA",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportsGamblerWNBA",
-          "sport": "WNBA",
-          "units": 1
-        },
         {
           "date": "2026-06-20",
           "decision": "BET",
@@ -1323,41 +1073,25 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-20T15:53:58.177812Z"
+      "updatedAt": "2026-06-20T21:39:05.084031Z"
     },
     "sportytrader_fifa_world_cup": {
       "date": "2026-06-20",
       "errors": [],
-      "generatedAt": "2026-06-20T15:53:58.177812Z",
+      "generatedAt": "2026-06-20T21:39:05.084031Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-20",
         "feed": "sportytrader_fifa_world_cup",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 2,
+        "pick_count": 1,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-20T15:53:58.177812Z"
+        "updatedAt": "2026-06-20T21:39:05.084031Z"
       },
-      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 2 pick(s).",
+      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 1 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "calibration_excluded": true,
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "Netherlands vs Sweden",
-          "grade_supported": false,
-          "market_type": "soccer_specialty",
-          "matchup": "Netherlands vs Sweden",
-          "odds": -111,
-          "pick": "Both Teams to Score (Netherlands vs Sweden)",
-          "probability": null,
-          "source": "SportyTraderFIFAWorldCup",
-          "sport": "FIFA WC",
-          "units": 1
-        },
         {
           "calibration_excluded": true,
           "date": "2026-06-20",
@@ -1375,41 +1109,41 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-20T15:53:58.177812Z"
+      "updatedAt": "2026-06-20T21:39:05.084031Z"
     },
     "sportytrader_mlb": {
       "date": "2026-06-20",
       "errors": [],
-      "generatedAt": "2026-06-20T15:53:58.177812Z",
+      "generatedAt": "2026-06-20T21:39:05.084031Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-20",
         "feed": "sportytrader_mlb",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 7,
+        "pick_count": 5,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-20T15:53:58.177812Z"
+        "updatedAt": "2026-06-20T21:39:05.084031Z"
       },
-      "note": "Scheduled sportytrader_mlb refresh returned 7 pick(s).",
+      "note": "Scheduled sportytrader_mlb refresh returned 5 pick(s).",
       "ok": true,
       "picks": [
         {
           "date": "2026-06-20",
           "decision": "BET",
           "edge": null,
-          "game": "New York Yankees vs Cincinnati Reds",
-          "matchup": "New York Yankees vs Cincinnati Reds",
-          "odds": 104,
-          "pick": "Yankees -1.5 (Yankees vs Reds)",
+          "game": "Philadelphia Phillies vs New York Mets",
+          "matchup": "Philadelphia Phillies vs New York Mets",
+          "odds": -110,
+          "pick": "Under 7.5 (Phillies vs Mets)",
           "pregame_snapshot": {
             "date": "2026-06-20",
             "decision": "BET",
             "edge": null,
-            "game": "New York Yankees vs Cincinnati Reds",
-            "matchup": "New York Yankees vs Cincinnati Reds",
-            "odds": 104,
-            "pick": "Yankees -1.5 (Yankees vs Reds)",
+            "game": "Philadelphia Phillies vs New York Mets",
+            "matchup": "Philadelphia Phillies vs New York Mets",
+            "odds": -110,
+            "pick": "Under 7.5 (Phillies vs Mets)",
             "probability": null,
             "source": "SportyTraderMLB",
             "sport": "MLB",
@@ -1424,70 +1158,18 @@
           "date": "2026-06-20",
           "decision": "BET",
           "edge": null,
-          "game": "Chicago Cubs vs Toronto Blue Jays",
-          "matchup": "Chicago Cubs vs Toronto Blue Jays",
-          "odds": -126,
-          "pick": "Chicago Cubs win the match (Cubs vs Blue Jays)",
+          "game": "Houston Astros vs Cleveland Guardians",
+          "matchup": "Houston Astros vs Cleveland Guardians",
+          "odds": -155,
+          "pick": "Astros ML (Astros vs Guardians)",
           "pregame_snapshot": {
             "date": "2026-06-20",
             "decision": "BET",
             "edge": null,
-            "game": "Chicago Cubs vs Toronto Blue Jays",
-            "matchup": "Chicago Cubs vs Toronto Blue Jays",
-            "odds": -126,
-            "pick": "Chicago Cubs win the match (Cubs vs Blue Jays)",
-            "probability": null,
-            "source": "SportyTraderMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportyTraderMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        {
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "Tampa Bay Rays vs Washington Nationals",
-          "matchup": "Tampa Bay Rays vs Washington Nationals",
-          "odds": -120,
-          "pick": "Rays ML (Rays vs Nationals)",
-          "pregame_snapshot": {
-            "date": "2026-06-20",
-            "decision": "BET",
-            "edge": null,
-            "game": "Tampa Bay Rays vs Washington Nationals",
-            "matchup": "Tampa Bay Rays vs Washington Nationals",
-            "odds": -120,
-            "pick": "Rays ML (Rays vs Nationals)",
-            "probability": null,
-            "source": "SportyTraderMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportyTraderMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        {
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "Atlanta Braves vs Milwaukee Brewers",
-          "matchup": "Atlanta Braves vs Milwaukee Brewers",
-          "odds": -105,
-          "pick": "Under 7 (Braves vs Brewers)",
-          "pregame_snapshot": {
-            "date": "2026-06-20",
-            "decision": "BET",
-            "edge": null,
-            "game": "Atlanta Braves vs Milwaukee Brewers",
-            "matchup": "Atlanta Braves vs Milwaukee Brewers",
-            "odds": -105,
-            "pick": "Under 7 (Braves vs Brewers)",
+            "game": "Houston Astros vs Cleveland Guardians",
+            "matchup": "Houston Astros vs Cleveland Guardians",
+            "odds": -155,
+            "pick": "Astros ML (Astros vs Guardians)",
             "probability": null,
             "source": "SportyTraderMLB",
             "sport": "MLB",
@@ -1577,12 +1259,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-20T15:53:58.177812Z"
+      "updatedAt": "2026-06-20T21:39:05.084031Z"
     },
     "sportytrader_nba": {
       "date": "2026-06-20",
       "errors": [],
-      "generatedAt": "2026-06-20T15:53:58.177812Z",
+      "generatedAt": "2026-06-20T21:39:05.084031Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-20",
@@ -1591,17 +1273,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-20T15:53:58.177812Z"
+        "updatedAt": "2026-06-20T21:39:05.084031Z"
       },
       "note": "Scheduled sportytrader_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-06-20T15:53:58.177812Z"
+      "updatedAt": "2026-06-20T21:39:05.084031Z"
     },
     "sportytrader_wnba": {
       "date": "2026-06-20",
       "errors": [],
-      "generatedAt": "2026-06-20T15:53:58.177812Z",
+      "generatedAt": "2026-06-20T21:39:05.084031Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-20",
@@ -1610,12 +1292,12 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-20T15:53:58.177812Z"
+        "updatedAt": "2026-06-20T21:39:05.084031Z"
       },
       "note": "Scheduled sportytrader_wnba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-06-20T15:53:58.177812Z"
+      "updatedAt": "2026-06-20T21:39:05.084031Z"
     }
   },
   "fifa_world_cup": {
@@ -25305,39 +24987,20 @@
     "sportsgambler_fifa_world_cup": {
       "date": "2026-06-20",
       "errors": [],
-      "generatedAt": "2026-06-20T15:53:58.177812Z",
+      "generatedAt": "2026-06-20T21:39:05.084031Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-20",
         "feed": "sportsgambler_fifa_world_cup",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 3,
+        "pick_count": 2,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-20T15:53:58.177812Z"
+        "updatedAt": "2026-06-20T21:39:05.084031Z"
       },
-      "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 3 pick(s).",
+      "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 2 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "calibration_excluded": true,
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "Netherlands vs Sweden",
-          "game_start_time": "2026-06-20T17:00Z",
-          "grade_supported": true,
-          "market_type": "soccer_total",
-          "matchup": "Netherlands vs Sweden",
-          "odds": -127,
-          "pick": "Over 2.5 Goals (Netherlands vs Sweden)",
-          "probability": null,
-          "result": "win",
-          "source": "SportsGamblerFIFAWorldCup",
-          "sport": "FIFA WC",
-          "start_time": "2026-06-20T17:00Z",
-          "units": 1
-        },
         {
           "calibration_excluded": true,
           "date": "2026-06-20",
@@ -25371,223 +25034,25 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-20T15:53:58.177812Z"
+      "updatedAt": "2026-06-20T21:39:05.084031Z"
     },
     "sportsgambler_mlb": {
       "date": "2026-06-20",
       "errors": [],
-      "generatedAt": "2026-06-20T15:53:58.177812Z",
+      "generatedAt": "2026-06-20T21:39:05.084031Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-20",
         "feed": "sportsgambler_mlb",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 14,
+        "pick_count": 7,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-20T15:53:58.177812Z"
+        "updatedAt": "2026-06-20T21:39:05.084031Z"
       },
-      "note": "Scheduled sportsgambler_mlb refresh returned 14 pick(s).",
+      "note": "Scheduled sportsgambler_mlb refresh returned 7 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "Detroit Tigers vs Chicago White Sox",
-          "game_start_time": "2026-06-20T17:10Z",
-          "matchup": "Detroit Tigers vs Chicago White Sox",
-          "odds": 123,
-          "pick": "Chicago White Sox to Win (Detroit Tigers vs Chicago White Sox)",
-          "pregame_snapshot": {
-            "date": "2026-06-20",
-            "decision": "BET",
-            "edge": null,
-            "game": "Detroit Tigers vs Chicago White Sox",
-            "matchup": "Detroit Tigers vs Chicago White Sox",
-            "odds": 123,
-            "pick": "Chicago White Sox to Win (Detroit Tigers vs Chicago White Sox)",
-            "probability": null,
-            "source": "SportsGamblerMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "result": "loss",
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "start_time": "2026-06-20T17:10Z",
-          "units": 1
-        },
-        {
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "New York Yankees vs Cincinnati Reds",
-          "game_start_time": "2026-06-20T17:35Z",
-          "matchup": "New York Yankees vs Cincinnati Reds",
-          "odds": -204,
-          "pick": "New York Yankees to Win (New York Yankees vs Cincinnati Reds)",
-          "pregame_snapshot": {
-            "date": "2026-06-20",
-            "decision": "BET",
-            "edge": null,
-            "game": "New York Yankees vs Cincinnati Reds",
-            "matchup": "New York Yankees vs Cincinnati Reds",
-            "odds": -204,
-            "pick": "New York Yankees to Win (New York Yankees vs Cincinnati Reds)",
-            "probability": null,
-            "source": "SportsGamblerMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "result": "loss",
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "start_time": "2026-06-20T17:35Z",
-          "units": 1
-        },
-        {
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "Chicago Cubs vs Toronto Blue Jays",
-          "game_start_time": "2026-06-20T18:20Z",
-          "matchup": "Chicago Cubs vs Toronto Blue Jays",
-          "odds": -100,
-          "pick": "Toronto Blue Jays to Win (Chicago Cubs vs Toronto Blue Jays)",
-          "pregame_snapshot": {
-            "date": "2026-06-20",
-            "decision": "BET",
-            "edge": null,
-            "game": "Chicago Cubs vs Toronto Blue Jays",
-            "matchup": "Chicago Cubs vs Toronto Blue Jays",
-            "odds": -100,
-            "pick": "Toronto Blue Jays to Win (Chicago Cubs vs Toronto Blue Jays)",
-            "probability": null,
-            "source": "SportsGamblerMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "start_time": "2026-06-20T18:20Z",
-          "units": 1
-        },
-        {
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "Texas Rangers vs San Diego Padres",
-          "game_start_time": "2026-06-20T20:05Z",
-          "matchup": "Texas Rangers vs San Diego Padres",
-          "odds": 112,
-          "pick": "San Diego Padres to Win (Texas Rangers vs San Diego Padres)",
-          "pregame_snapshot": {
-            "date": "2026-06-20",
-            "decision": "BET",
-            "edge": null,
-            "game": "Texas Rangers vs San Diego Padres",
-            "matchup": "Texas Rangers vs San Diego Padres",
-            "odds": 112,
-            "pick": "San Diego Padres to Win (Texas Rangers vs San Diego Padres)",
-            "probability": null,
-            "source": "SportsGamblerMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "start_time": "2026-06-20T20:05Z",
-          "units": 1
-        },
-        {
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "Miami Marlins vs San Francisco Giants",
-          "game_start_time": "2026-06-20T20:10Z",
-          "matchup": "Miami Marlins vs San Francisco Giants",
-          "odds": 115,
-          "pick": "San Francisco Giants to Win (Miami Marlins vs San Francisco Giants)",
-          "pregame_snapshot": {
-            "date": "2026-06-20",
-            "decision": "BET",
-            "edge": null,
-            "game": "Miami Marlins vs San Francisco Giants",
-            "matchup": "Miami Marlins vs San Francisco Giants",
-            "odds": 115,
-            "pick": "San Francisco Giants to Win (Miami Marlins vs San Francisco Giants)",
-            "probability": null,
-            "source": "SportsGamblerMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "start_time": "2026-06-20T20:10Z",
-          "units": 1
-        },
-        {
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "Atlanta Braves vs Milwaukee Brewers",
-          "game_start_time": "2026-06-20T20:10Z",
-          "matchup": "Atlanta Braves vs Milwaukee Brewers",
-          "odds": -137,
-          "pick": "Atlanta Braves to Win (Atlanta Braves vs Milwaukee Brewers)",
-          "pregame_snapshot": {
-            "date": "2026-06-20",
-            "decision": "BET",
-            "edge": null,
-            "game": "Atlanta Braves vs Milwaukee Brewers",
-            "matchup": "Atlanta Braves vs Milwaukee Brewers",
-            "odds": -137,
-            "pick": "Atlanta Braves to Win (Atlanta Braves vs Milwaukee Brewers)",
-            "probability": null,
-            "source": "SportsGamblerMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "start_time": "2026-06-20T20:10Z",
-          "units": 1
-        },
-        {
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "Tampa Bay Rays vs Washington Nationals",
-          "game_start_time": "2026-06-20T20:10Z",
-          "matchup": "Tampa Bay Rays vs Washington Nationals",
-          "odds": -127,
-          "pick": "Tampa Bay Rays to Win (Tampa Bay Rays vs Washington Nationals)",
-          "pregame_snapshot": {
-            "date": "2026-06-20",
-            "decision": "BET",
-            "edge": null,
-            "game": "Tampa Bay Rays vs Washington Nationals",
-            "matchup": "Tampa Bay Rays vs Washington Nationals",
-            "odds": -127,
-            "pick": "Tampa Bay Rays to Win (Tampa Bay Rays vs Washington Nationals)",
-            "probability": null,
-            "source": "SportsGamblerMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "start_time": "2026-06-20T20:10Z",
-          "units": 1
-        },
         {
           "date": "2026-06-20",
           "decision": "BET",
@@ -25595,7 +25060,7 @@
           "game": "Philadelphia Phillies vs New York Mets",
           "game_start_time": "2026-06-20T23:15Z",
           "matchup": "Philadelphia Phillies vs New York Mets",
-          "odds": -179,
+          "odds": -189,
           "pick": "Philadelphia Phillies to Win (Philadelphia Phillies vs New York Mets)",
           "pregame_snapshot": {
             "date": "2026-06-20",
@@ -25623,7 +25088,7 @@
           "game": "Houston Astros vs Cleveland Guardians",
           "game_start_time": "2026-06-20T23:15Z",
           "matchup": "Houston Astros vs Cleveland Guardians",
-          "odds": -143,
+          "odds": -147,
           "pick": "Houston Astros to Win (Houston Astros vs Cleveland Guardians)",
           "pregame_snapshot": {
             "date": "2026-06-20",
@@ -25679,7 +25144,7 @@
           "game": "Athletics vs Los Angeles Angels",
           "game_start_time": "2026-06-21T02:05Z",
           "matchup": "Athletics vs Los Angeles Angels",
-          "odds": -156,
+          "odds": -172,
           "pick": "Athletics to Win (Athletics vs Los Angeles Angels)",
           "pregame_snapshot": {
             "date": "2026-06-20",
@@ -25707,7 +25172,7 @@
           "game": "Seattle Mariners vs Boston Red Sox",
           "game_start_time": "2026-06-21T02:10Z",
           "matchup": "Seattle Mariners vs Boston Red Sox",
-          "odds": -128,
+          "odds": -125,
           "pick": "Seattle Mariners to Win (Seattle Mariners vs Boston Red Sox)",
           "pregame_snapshot": {
             "date": "2026-06-20",
@@ -25735,7 +25200,7 @@
           "game": "Los Angeles Dodgers vs Baltimore Orioles",
           "game_start_time": "2026-06-21T02:10Z",
           "matchup": "Los Angeles Dodgers vs Baltimore Orioles",
-          "odds": 220,
+          "odds": 215,
           "pick": "Baltimore Orioles to Win (Los Angeles Dodgers vs Baltimore Orioles)",
           "pregame_snapshot": {
             "date": "2026-06-20",
@@ -25763,7 +25228,7 @@
           "game": "Arizona Diamondbacks vs Minnesota Twins",
           "game_start_time": "2026-06-21T02:10Z",
           "matchup": "Arizona Diamondbacks vs Minnesota Twins",
-          "odds": 102,
+          "odds": -100,
           "pick": "Minnesota Twins to Win (Arizona Diamondbacks vs Minnesota Twins)",
           "pregame_snapshot": {
             "date": "2026-06-20",
@@ -25785,12 +25250,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-20T15:53:58.177812Z"
+      "updatedAt": "2026-06-20T21:39:05.084031Z"
     },
     "sportsgambler_nba": {
       "date": "2026-06-20",
       "errors": [],
-      "generatedAt": "2026-06-20T15:53:58.177812Z",
+      "generatedAt": "2026-06-20T21:39:05.084031Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-20",
@@ -25799,87 +25264,30 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-20T15:53:58.177812Z"
+        "updatedAt": "2026-06-20T21:39:05.084031Z"
       },
       "note": "Scheduled sportsgambler_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-06-20T15:53:58.177812Z"
+      "updatedAt": "2026-06-20T21:39:05.084031Z"
     },
     "sportsgambler_wnba": {
       "date": "2026-06-20",
       "errors": [],
-      "generatedAt": "2026-06-20T15:53:58.177812Z",
+      "generatedAt": "2026-06-20T21:39:05.084031Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-20",
         "feed": "sportsgambler_wnba",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 3,
+        "pick_count": 1,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-20T15:53:58.177812Z"
+        "updatedAt": "2026-06-20T21:39:05.084031Z"
       },
-      "note": "Scheduled sportsgambler_wnba refresh returned 3 pick(s).",
+      "note": "Scheduled sportsgambler_wnba refresh returned 1 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "Atlanta Dream vs Indiana Fever",
-          "game_start_time": "2026-06-20T17:00Z",
-          "matchup": "Atlanta Dream vs Indiana Fever",
-          "odds": -118,
-          "pick": "Dream -4.5 (Atlanta Dream vs Indiana Fever)",
-          "pregame_snapshot": {
-            "date": "2026-06-20",
-            "decision": "BET",
-            "edge": null,
-            "game": "Atlanta Dream vs Indiana Fever",
-            "matchup": "Atlanta Dream vs Indiana Fever",
-            "odds": -118,
-            "pick": "Dream -4.5 (Atlanta Dream vs Indiana Fever)",
-            "probability": null,
-            "source": "SportsGamblerWNBA",
-            "sport": "WNBA",
-            "units": 1
-          },
-          "probability": null,
-          "result": "win",
-          "source": "SportsGamblerWNBA",
-          "sport": "WNBA",
-          "start_time": "2026-06-20T17:00Z",
-          "units": 1
-        },
-        {
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "Phoenix Mercury vs Seattle Storm",
-          "game_start_time": "2026-06-20T19:07Z",
-          "matchup": "Phoenix Mercury vs Seattle Storm",
-          "odds": -108,
-          "pick": "Over 160.5 Points (Phoenix Mercury vs Seattle Storm)",
-          "pregame_snapshot": {
-            "date": "2026-06-20",
-            "decision": "BET",
-            "edge": null,
-            "game": "Phoenix Mercury vs Seattle Storm",
-            "matchup": "Phoenix Mercury vs Seattle Storm",
-            "odds": -108,
-            "pick": "Over 160.5 Points (Phoenix Mercury vs Seattle Storm)",
-            "probability": null,
-            "source": "SportsGamblerWNBA",
-            "sport": "WNBA",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportsGamblerWNBA",
-          "sport": "WNBA",
-          "start_time": "2026-06-20T19:07Z",
-          "units": 1
-        },
         {
           "date": "2026-06-20",
           "decision": "BET",
@@ -25909,41 +25317,25 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-20T15:53:58.177812Z"
+      "updatedAt": "2026-06-20T21:39:05.084031Z"
     },
     "sportytrader_fifa_world_cup": {
       "date": "2026-06-20",
       "errors": [],
-      "generatedAt": "2026-06-20T15:53:58.177812Z",
+      "generatedAt": "2026-06-20T21:39:05.084031Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-20",
         "feed": "sportytrader_fifa_world_cup",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 2,
+        "pick_count": 1,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-20T15:53:58.177812Z"
+        "updatedAt": "2026-06-20T21:39:05.084031Z"
       },
-      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 2 pick(s).",
+      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 1 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "calibration_excluded": true,
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "Netherlands vs Sweden",
-          "grade_supported": false,
-          "market_type": "soccer_specialty",
-          "matchup": "Netherlands vs Sweden",
-          "odds": -111,
-          "pick": "Both Teams to Score (Netherlands vs Sweden)",
-          "probability": null,
-          "source": "SportyTraderFIFAWorldCup",
-          "sport": "FIFA WC",
-          "units": 1
-        },
         {
           "calibration_excluded": true,
           "date": "2026-06-20",
@@ -25961,71 +25353,67 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-20T15:53:58.177812Z"
+      "updatedAt": "2026-06-20T21:39:05.084031Z"
     },
     "sportytrader_mlb": {
       "date": "2026-06-20",
       "errors": [],
-      "generatedAt": "2026-06-20T15:53:58.177812Z",
+      "generatedAt": "2026-06-20T21:39:05.084031Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-20",
         "feed": "sportytrader_mlb",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 7,
+        "pick_count": 5,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-20T15:53:58.177812Z"
+        "updatedAt": "2026-06-20T21:39:05.084031Z"
       },
-      "note": "Scheduled sportytrader_mlb refresh returned 7 pick(s).",
+      "note": "Scheduled sportytrader_mlb refresh returned 5 pick(s).",
       "ok": true,
       "picks": [
         {
           "date": "2026-06-20",
           "decision": "BET",
           "edge": null,
-          "game": "New York Yankees vs Cincinnati Reds",
-          "game_start_time": "2026-06-20T17:35Z",
-          "matchup": "New York Yankees vs Cincinnati Reds",
-          "odds": 104,
-          "pick": "Yankees -1.5 (Yankees vs Reds)",
+          "game": "Philadelphia Phillies vs New York Mets",
+          "matchup": "Philadelphia Phillies vs New York Mets",
+          "odds": -110,
+          "pick": "Under 7.5 (Phillies vs Mets)",
           "pregame_snapshot": {
             "date": "2026-06-20",
             "decision": "BET",
             "edge": null,
-            "game": "New York Yankees vs Cincinnati Reds",
-            "matchup": "New York Yankees vs Cincinnati Reds",
-            "odds": 104,
-            "pick": "Yankees -1.5 (Yankees vs Reds)",
+            "game": "Philadelphia Phillies vs New York Mets",
+            "matchup": "Philadelphia Phillies vs New York Mets",
+            "odds": -110,
+            "pick": "Under 7.5 (Phillies vs Mets)",
             "probability": null,
             "source": "SportyTraderMLB",
             "sport": "MLB",
             "units": 1
           },
           "probability": null,
-          "result": "loss",
           "source": "SportyTraderMLB",
           "sport": "MLB",
-          "start_time": "2026-06-20T17:35Z",
           "units": 1
         },
         {
           "date": "2026-06-20",
           "decision": "BET",
           "edge": null,
-          "game": "Chicago Cubs vs Toronto Blue Jays",
-          "game_start_time": "2026-06-20T18:20Z",
-          "matchup": "Chicago Cubs vs Toronto Blue Jays",
-          "odds": -126,
-          "pick": "Chicago Cubs win the match (Cubs vs Blue Jays)",
+          "game": "Houston Astros vs Cleveland Guardians",
+          "matchup": "Houston Astros vs Cleveland Guardians",
+          "odds": -155,
+          "pick": "Astros ML (Astros vs Guardians)",
           "pregame_snapshot": {
             "date": "2026-06-20",
             "decision": "BET",
             "edge": null,
-            "game": "Chicago Cubs vs Toronto Blue Jays",
-            "matchup": "Chicago Cubs vs Toronto Blue Jays",
-            "odds": -126,
-            "pick": "Chicago Cubs win the match (Cubs vs Blue Jays)",
+            "game": "Houston Astros vs Cleveland Guardians",
+            "matchup": "Houston Astros vs Cleveland Guardians",
+            "odds": -155,
+            "pick": "Astros ML (Astros vs Guardians)",
             "probability": null,
             "source": "SportyTraderMLB",
             "sport": "MLB",
@@ -26034,63 +25422,6 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
-          "start_time": "2026-06-20T18:20Z",
-          "units": 1
-        },
-        {
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "Tampa Bay Rays vs Washington Nationals",
-          "game_start_time": "2026-06-20T20:10Z",
-          "matchup": "Tampa Bay Rays vs Washington Nationals",
-          "odds": -120,
-          "pick": "Rays ML (Rays vs Nationals)",
-          "pregame_snapshot": {
-            "date": "2026-06-20",
-            "decision": "BET",
-            "edge": null,
-            "game": "Tampa Bay Rays vs Washington Nationals",
-            "matchup": "Tampa Bay Rays vs Washington Nationals",
-            "odds": -120,
-            "pick": "Rays ML (Rays vs Nationals)",
-            "probability": null,
-            "source": "SportyTraderMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportyTraderMLB",
-          "sport": "MLB",
-          "start_time": "2026-06-20T20:10Z",
-          "units": 1
-        },
-        {
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "Atlanta Braves vs Milwaukee Brewers",
-          "game_start_time": "2026-06-20T20:10Z",
-          "matchup": "Atlanta Braves vs Milwaukee Brewers",
-          "odds": -105,
-          "pick": "Under 7 (Braves vs Brewers)",
-          "pregame_snapshot": {
-            "date": "2026-06-20",
-            "decision": "BET",
-            "edge": null,
-            "game": "Atlanta Braves vs Milwaukee Brewers",
-            "matchup": "Atlanta Braves vs Milwaukee Brewers",
-            "odds": -105,
-            "pick": "Under 7 (Braves vs Brewers)",
-            "probability": null,
-            "source": "SportyTraderMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportyTraderMLB",
-          "sport": "MLB",
-          "start_time": "2026-06-20T20:10Z",
           "units": 1
         },
         {
@@ -26178,12 +25509,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-20T15:53:58.177812Z"
+      "updatedAt": "2026-06-20T21:39:05.084031Z"
     },
     "sportytrader_nba": {
       "date": "2026-06-20",
       "errors": [],
-      "generatedAt": "2026-06-20T15:53:58.177812Z",
+      "generatedAt": "2026-06-20T21:39:05.084031Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-20",
@@ -26192,17 +25523,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-20T15:53:58.177812Z"
+        "updatedAt": "2026-06-20T21:39:05.084031Z"
       },
       "note": "Scheduled sportytrader_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-06-20T15:53:58.177812Z"
+      "updatedAt": "2026-06-20T21:39:05.084031Z"
     },
     "sportytrader_wnba": {
       "date": "2026-06-20",
       "errors": [],
-      "generatedAt": "2026-06-20T15:53:58.177812Z",
+      "generatedAt": "2026-06-20T21:39:05.084031Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-20",
@@ -26211,12 +25542,12 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-20T15:53:58.177812Z"
+        "updatedAt": "2026-06-20T21:39:05.084031Z"
       },
       "note": "Scheduled sportytrader_wnba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-06-20T15:53:58.177812Z"
+      "updatedAt": "2026-06-20T21:39:05.084031Z"
     },
     "wnba": {
       "ok": true,
@@ -28015,36 +27346,20 @@
   "sportsgambler_fifa_world_cup": {
     "date": "2026-06-20",
     "errors": [],
-    "generatedAt": "2026-06-20T15:53:58.177812Z",
+    "generatedAt": "2026-06-20T21:39:05.084031Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-20",
       "feed": "sportsgambler_fifa_world_cup",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 3,
+      "pick_count": 2,
       "provider": "sportsgambler",
-      "updatedAt": "2026-06-20T15:53:58.177812Z"
+      "updatedAt": "2026-06-20T21:39:05.084031Z"
     },
-    "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 3 pick(s).",
+    "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 2 pick(s).",
     "ok": true,
     "picks": [
-      {
-        "calibration_excluded": true,
-        "date": "2026-06-20",
-        "decision": "BET",
-        "edge": null,
-        "game": "Netherlands vs Sweden",
-        "grade_supported": true,
-        "market_type": "soccer_total",
-        "matchup": "Netherlands vs Sweden",
-        "odds": -127,
-        "pick": "Over 2.5 Goals (Netherlands vs Sweden)",
-        "probability": null,
-        "source": "SportsGamblerFIFAWorldCup",
-        "sport": "FIFA WC",
-        "units": 1
-      },
       {
         "calibration_excluded": true,
         "date": "2026-06-20",
@@ -28078,214 +27393,32 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-20T15:53:58.177812Z"
+    "updatedAt": "2026-06-20T21:39:05.084031Z"
   },
   "sportsgambler_mlb": {
     "date": "2026-06-20",
     "errors": [],
-    "generatedAt": "2026-06-20T15:53:58.177812Z",
+    "generatedAt": "2026-06-20T21:39:05.084031Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-20",
       "feed": "sportsgambler_mlb",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 14,
+      "pick_count": 7,
       "provider": "sportsgambler",
-      "updatedAt": "2026-06-20T15:53:58.177812Z"
+      "updatedAt": "2026-06-20T21:39:05.084031Z"
     },
-    "note": "Scheduled sportsgambler_mlb refresh returned 14 pick(s).",
+    "note": "Scheduled sportsgambler_mlb refresh returned 7 pick(s).",
     "ok": true,
     "picks": [
       {
         "date": "2026-06-20",
         "decision": "BET",
         "edge": null,
-        "game": "Detroit Tigers vs Chicago White Sox",
-        "matchup": "Detroit Tigers vs Chicago White Sox",
-        "odds": 123,
-        "pick": "Chicago White Sox to Win (Detroit Tigers vs Chicago White Sox)",
-        "pregame_snapshot": {
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "Detroit Tigers vs Chicago White Sox",
-          "matchup": "Detroit Tigers vs Chicago White Sox",
-          "odds": 123,
-          "pick": "Chicago White Sox to Win (Detroit Tigers vs Chicago White Sox)",
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        "probability": null,
-        "source": "SportsGamblerMLB",
-        "sport": "MLB",
-        "units": 1
-      },
-      {
-        "date": "2026-06-20",
-        "decision": "BET",
-        "edge": null,
-        "game": "New York Yankees vs Cincinnati Reds",
-        "matchup": "New York Yankees vs Cincinnati Reds",
-        "odds": -204,
-        "pick": "New York Yankees to Win (New York Yankees vs Cincinnati Reds)",
-        "pregame_snapshot": {
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "New York Yankees vs Cincinnati Reds",
-          "matchup": "New York Yankees vs Cincinnati Reds",
-          "odds": -204,
-          "pick": "New York Yankees to Win (New York Yankees vs Cincinnati Reds)",
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        "probability": null,
-        "source": "SportsGamblerMLB",
-        "sport": "MLB",
-        "units": 1
-      },
-      {
-        "date": "2026-06-20",
-        "decision": "BET",
-        "edge": null,
-        "game": "Chicago Cubs vs Toronto Blue Jays",
-        "matchup": "Chicago Cubs vs Toronto Blue Jays",
-        "odds": -100,
-        "pick": "Toronto Blue Jays to Win (Chicago Cubs vs Toronto Blue Jays)",
-        "pregame_snapshot": {
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "Chicago Cubs vs Toronto Blue Jays",
-          "matchup": "Chicago Cubs vs Toronto Blue Jays",
-          "odds": -100,
-          "pick": "Toronto Blue Jays to Win (Chicago Cubs vs Toronto Blue Jays)",
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        "probability": null,
-        "source": "SportsGamblerMLB",
-        "sport": "MLB",
-        "units": 1
-      },
-      {
-        "date": "2026-06-20",
-        "decision": "BET",
-        "edge": null,
-        "game": "Texas Rangers vs San Diego Padres",
-        "matchup": "Texas Rangers vs San Diego Padres",
-        "odds": 112,
-        "pick": "San Diego Padres to Win (Texas Rangers vs San Diego Padres)",
-        "pregame_snapshot": {
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "Texas Rangers vs San Diego Padres",
-          "matchup": "Texas Rangers vs San Diego Padres",
-          "odds": 112,
-          "pick": "San Diego Padres to Win (Texas Rangers vs San Diego Padres)",
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        "probability": null,
-        "source": "SportsGamblerMLB",
-        "sport": "MLB",
-        "units": 1
-      },
-      {
-        "date": "2026-06-20",
-        "decision": "BET",
-        "edge": null,
-        "game": "Miami Marlins vs San Francisco Giants",
-        "matchup": "Miami Marlins vs San Francisco Giants",
-        "odds": 115,
-        "pick": "San Francisco Giants to Win (Miami Marlins vs San Francisco Giants)",
-        "pregame_snapshot": {
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "Miami Marlins vs San Francisco Giants",
-          "matchup": "Miami Marlins vs San Francisco Giants",
-          "odds": 115,
-          "pick": "San Francisco Giants to Win (Miami Marlins vs San Francisco Giants)",
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        "probability": null,
-        "source": "SportsGamblerMLB",
-        "sport": "MLB",
-        "units": 1
-      },
-      {
-        "date": "2026-06-20",
-        "decision": "BET",
-        "edge": null,
-        "game": "Atlanta Braves vs Milwaukee Brewers",
-        "matchup": "Atlanta Braves vs Milwaukee Brewers",
-        "odds": -137,
-        "pick": "Atlanta Braves to Win (Atlanta Braves vs Milwaukee Brewers)",
-        "pregame_snapshot": {
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "Atlanta Braves vs Milwaukee Brewers",
-          "matchup": "Atlanta Braves vs Milwaukee Brewers",
-          "odds": -137,
-          "pick": "Atlanta Braves to Win (Atlanta Braves vs Milwaukee Brewers)",
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        "probability": null,
-        "source": "SportsGamblerMLB",
-        "sport": "MLB",
-        "units": 1
-      },
-      {
-        "date": "2026-06-20",
-        "decision": "BET",
-        "edge": null,
-        "game": "Tampa Bay Rays vs Washington Nationals",
-        "matchup": "Tampa Bay Rays vs Washington Nationals",
-        "odds": -127,
-        "pick": "Tampa Bay Rays to Win (Tampa Bay Rays vs Washington Nationals)",
-        "pregame_snapshot": {
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "Tampa Bay Rays vs Washington Nationals",
-          "matchup": "Tampa Bay Rays vs Washington Nationals",
-          "odds": -127,
-          "pick": "Tampa Bay Rays to Win (Tampa Bay Rays vs Washington Nationals)",
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        "probability": null,
-        "source": "SportsGamblerMLB",
-        "sport": "MLB",
-        "units": 1
-      },
-      {
-        "date": "2026-06-20",
-        "decision": "BET",
-        "edge": null,
         "game": "Philadelphia Phillies vs New York Mets",
         "matchup": "Philadelphia Phillies vs New York Mets",
-        "odds": -179,
+        "odds": -189,
         "pick": "Philadelphia Phillies to Win (Philadelphia Phillies vs New York Mets)",
         "pregame_snapshot": {
           "date": "2026-06-20",
@@ -28311,7 +27444,7 @@
         "edge": null,
         "game": "Houston Astros vs Cleveland Guardians",
         "matchup": "Houston Astros vs Cleveland Guardians",
-        "odds": -143,
+        "odds": -147,
         "pick": "Houston Astros to Win (Houston Astros vs Cleveland Guardians)",
         "pregame_snapshot": {
           "date": "2026-06-20",
@@ -28363,7 +27496,7 @@
         "edge": null,
         "game": "Athletics vs Los Angeles Angels",
         "matchup": "Athletics vs Los Angeles Angels",
-        "odds": -156,
+        "odds": -172,
         "pick": "Athletics to Win (Athletics vs Los Angeles Angels)",
         "pregame_snapshot": {
           "date": "2026-06-20",
@@ -28389,7 +27522,7 @@
         "edge": null,
         "game": "Seattle Mariners vs Boston Red Sox",
         "matchup": "Seattle Mariners vs Boston Red Sox",
-        "odds": -128,
+        "odds": -125,
         "pick": "Seattle Mariners to Win (Seattle Mariners vs Boston Red Sox)",
         "pregame_snapshot": {
           "date": "2026-06-20",
@@ -28415,7 +27548,7 @@
         "edge": null,
         "game": "Los Angeles Dodgers vs Baltimore Orioles",
         "matchup": "Los Angeles Dodgers vs Baltimore Orioles",
-        "odds": 220,
+        "odds": 215,
         "pick": "Baltimore Orioles to Win (Los Angeles Dodgers vs Baltimore Orioles)",
         "pregame_snapshot": {
           "date": "2026-06-20",
@@ -28441,7 +27574,7 @@
         "edge": null,
         "game": "Arizona Diamondbacks vs Minnesota Twins",
         "matchup": "Arizona Diamondbacks vs Minnesota Twins",
-        "odds": 102,
+        "odds": -100,
         "pick": "Minnesota Twins to Win (Arizona Diamondbacks vs Minnesota Twins)",
         "pregame_snapshot": {
           "date": "2026-06-20",
@@ -28462,12 +27595,12 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-20T15:53:58.177812Z"
+    "updatedAt": "2026-06-20T21:39:05.084031Z"
   },
   "sportsgambler_nba": {
     "date": "2026-06-20",
     "errors": [],
-    "generatedAt": "2026-06-20T15:53:58.177812Z",
+    "generatedAt": "2026-06-20T21:39:05.084031Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-20",
@@ -28476,82 +27609,30 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 0,
       "provider": "sportsgambler",
-      "updatedAt": "2026-06-20T15:53:58.177812Z"
+      "updatedAt": "2026-06-20T21:39:05.084031Z"
     },
     "note": "Scheduled sportsgambler_nba refresh returned 0 pick(s).",
     "ok": true,
     "picks": [],
-    "updatedAt": "2026-06-20T15:53:58.177812Z"
+    "updatedAt": "2026-06-20T21:39:05.084031Z"
   },
   "sportsgambler_wnba": {
     "date": "2026-06-20",
     "errors": [],
-    "generatedAt": "2026-06-20T15:53:58.177812Z",
+    "generatedAt": "2026-06-20T21:39:05.084031Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-20",
       "feed": "sportsgambler_wnba",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 3,
+      "pick_count": 1,
       "provider": "sportsgambler",
-      "updatedAt": "2026-06-20T15:53:58.177812Z"
+      "updatedAt": "2026-06-20T21:39:05.084031Z"
     },
-    "note": "Scheduled sportsgambler_wnba refresh returned 3 pick(s).",
+    "note": "Scheduled sportsgambler_wnba refresh returned 1 pick(s).",
     "ok": true,
     "picks": [
-      {
-        "date": "2026-06-20",
-        "decision": "BET",
-        "edge": null,
-        "game": "Atlanta Dream vs Indiana Fever",
-        "matchup": "Atlanta Dream vs Indiana Fever",
-        "odds": -118,
-        "pick": "Dream -4.5 (Atlanta Dream vs Indiana Fever)",
-        "pregame_snapshot": {
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "Atlanta Dream vs Indiana Fever",
-          "matchup": "Atlanta Dream vs Indiana Fever",
-          "odds": -118,
-          "pick": "Dream -4.5 (Atlanta Dream vs Indiana Fever)",
-          "probability": null,
-          "source": "SportsGamblerWNBA",
-          "sport": "WNBA",
-          "units": 1
-        },
-        "probability": null,
-        "source": "SportsGamblerWNBA",
-        "sport": "WNBA",
-        "units": 1
-      },
-      {
-        "date": "2026-06-20",
-        "decision": "BET",
-        "edge": null,
-        "game": "Phoenix Mercury vs Seattle Storm",
-        "matchup": "Phoenix Mercury vs Seattle Storm",
-        "odds": -108,
-        "pick": "Over 160.5 Points (Phoenix Mercury vs Seattle Storm)",
-        "pregame_snapshot": {
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "Phoenix Mercury vs Seattle Storm",
-          "matchup": "Phoenix Mercury vs Seattle Storm",
-          "odds": -108,
-          "pick": "Over 160.5 Points (Phoenix Mercury vs Seattle Storm)",
-          "probability": null,
-          "source": "SportsGamblerWNBA",
-          "sport": "WNBA",
-          "units": 1
-        },
-        "probability": null,
-        "source": "SportsGamblerWNBA",
-        "sport": "WNBA",
-        "units": 1
-      },
       {
         "date": "2026-06-20",
         "decision": "BET",
@@ -28579,41 +27660,25 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-20T15:53:58.177812Z"
+    "updatedAt": "2026-06-20T21:39:05.084031Z"
   },
   "sportytrader_fifa_world_cup": {
     "date": "2026-06-20",
     "errors": [],
-    "generatedAt": "2026-06-20T15:53:58.177812Z",
+    "generatedAt": "2026-06-20T21:39:05.084031Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-20",
       "feed": "sportytrader_fifa_world_cup",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 2,
+      "pick_count": 1,
       "provider": "sportytrader",
-      "updatedAt": "2026-06-20T15:53:58.177812Z"
+      "updatedAt": "2026-06-20T21:39:05.084031Z"
     },
-    "note": "Scheduled sportytrader_fifa_world_cup refresh returned 2 pick(s).",
+    "note": "Scheduled sportytrader_fifa_world_cup refresh returned 1 pick(s).",
     "ok": true,
     "picks": [
-      {
-        "calibration_excluded": true,
-        "date": "2026-06-20",
-        "decision": "BET",
-        "edge": null,
-        "game": "Netherlands vs Sweden",
-        "grade_supported": false,
-        "market_type": "soccer_specialty",
-        "matchup": "Netherlands vs Sweden",
-        "odds": -111,
-        "pick": "Both Teams to Score (Netherlands vs Sweden)",
-        "probability": null,
-        "source": "SportyTraderFIFAWorldCup",
-        "sport": "FIFA WC",
-        "units": 1
-      },
       {
         "calibration_excluded": true,
         "date": "2026-06-20",
@@ -28631,41 +27696,41 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-20T15:53:58.177812Z"
+    "updatedAt": "2026-06-20T21:39:05.084031Z"
   },
   "sportytrader_mlb": {
     "date": "2026-06-20",
     "errors": [],
-    "generatedAt": "2026-06-20T15:53:58.177812Z",
+    "generatedAt": "2026-06-20T21:39:05.084031Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-20",
       "feed": "sportytrader_mlb",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 7,
+      "pick_count": 5,
       "provider": "sportytrader",
-      "updatedAt": "2026-06-20T15:53:58.177812Z"
+      "updatedAt": "2026-06-20T21:39:05.084031Z"
     },
-    "note": "Scheduled sportytrader_mlb refresh returned 7 pick(s).",
+    "note": "Scheduled sportytrader_mlb refresh returned 5 pick(s).",
     "ok": true,
     "picks": [
       {
         "date": "2026-06-20",
         "decision": "BET",
         "edge": null,
-        "game": "New York Yankees vs Cincinnati Reds",
-        "matchup": "New York Yankees vs Cincinnati Reds",
-        "odds": 104,
-        "pick": "Yankees -1.5 (Yankees vs Reds)",
+        "game": "Philadelphia Phillies vs New York Mets",
+        "matchup": "Philadelphia Phillies vs New York Mets",
+        "odds": -110,
+        "pick": "Under 7.5 (Phillies vs Mets)",
         "pregame_snapshot": {
           "date": "2026-06-20",
           "decision": "BET",
           "edge": null,
-          "game": "New York Yankees vs Cincinnati Reds",
-          "matchup": "New York Yankees vs Cincinnati Reds",
-          "odds": 104,
-          "pick": "Yankees -1.5 (Yankees vs Reds)",
+          "game": "Philadelphia Phillies vs New York Mets",
+          "matchup": "Philadelphia Phillies vs New York Mets",
+          "odds": -110,
+          "pick": "Under 7.5 (Phillies vs Mets)",
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
@@ -28680,70 +27745,18 @@
         "date": "2026-06-20",
         "decision": "BET",
         "edge": null,
-        "game": "Chicago Cubs vs Toronto Blue Jays",
-        "matchup": "Chicago Cubs vs Toronto Blue Jays",
-        "odds": -126,
-        "pick": "Chicago Cubs win the match (Cubs vs Blue Jays)",
+        "game": "Houston Astros vs Cleveland Guardians",
+        "matchup": "Houston Astros vs Cleveland Guardians",
+        "odds": -155,
+        "pick": "Astros ML (Astros vs Guardians)",
         "pregame_snapshot": {
           "date": "2026-06-20",
           "decision": "BET",
           "edge": null,
-          "game": "Chicago Cubs vs Toronto Blue Jays",
-          "matchup": "Chicago Cubs vs Toronto Blue Jays",
-          "odds": -126,
-          "pick": "Chicago Cubs win the match (Cubs vs Blue Jays)",
-          "probability": null,
-          "source": "SportyTraderMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        "probability": null,
-        "source": "SportyTraderMLB",
-        "sport": "MLB",
-        "units": 1
-      },
-      {
-        "date": "2026-06-20",
-        "decision": "BET",
-        "edge": null,
-        "game": "Tampa Bay Rays vs Washington Nationals",
-        "matchup": "Tampa Bay Rays vs Washington Nationals",
-        "odds": -120,
-        "pick": "Rays ML (Rays vs Nationals)",
-        "pregame_snapshot": {
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "Tampa Bay Rays vs Washington Nationals",
-          "matchup": "Tampa Bay Rays vs Washington Nationals",
-          "odds": -120,
-          "pick": "Rays ML (Rays vs Nationals)",
-          "probability": null,
-          "source": "SportyTraderMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        "probability": null,
-        "source": "SportyTraderMLB",
-        "sport": "MLB",
-        "units": 1
-      },
-      {
-        "date": "2026-06-20",
-        "decision": "BET",
-        "edge": null,
-        "game": "Atlanta Braves vs Milwaukee Brewers",
-        "matchup": "Atlanta Braves vs Milwaukee Brewers",
-        "odds": -105,
-        "pick": "Under 7 (Braves vs Brewers)",
-        "pregame_snapshot": {
-          "date": "2026-06-20",
-          "decision": "BET",
-          "edge": null,
-          "game": "Atlanta Braves vs Milwaukee Brewers",
-          "matchup": "Atlanta Braves vs Milwaukee Brewers",
-          "odds": -105,
-          "pick": "Under 7 (Braves vs Brewers)",
+          "game": "Houston Astros vs Cleveland Guardians",
+          "matchup": "Houston Astros vs Cleveland Guardians",
+          "odds": -155,
+          "pick": "Astros ML (Astros vs Guardians)",
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
@@ -28833,12 +27846,12 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-20T15:53:58.177812Z"
+    "updatedAt": "2026-06-20T21:39:05.084031Z"
   },
   "sportytrader_nba": {
     "date": "2026-06-20",
     "errors": [],
-    "generatedAt": "2026-06-20T15:53:58.177812Z",
+    "generatedAt": "2026-06-20T21:39:05.084031Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-20",
@@ -28847,17 +27860,17 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 0,
       "provider": "sportytrader",
-      "updatedAt": "2026-06-20T15:53:58.177812Z"
+      "updatedAt": "2026-06-20T21:39:05.084031Z"
     },
     "note": "Scheduled sportytrader_nba refresh returned 0 pick(s).",
     "ok": true,
     "picks": [],
-    "updatedAt": "2026-06-20T15:53:58.177812Z"
+    "updatedAt": "2026-06-20T21:39:05.084031Z"
   },
   "sportytrader_wnba": {
     "date": "2026-06-20",
     "errors": [],
-    "generatedAt": "2026-06-20T15:53:58.177812Z",
+    "generatedAt": "2026-06-20T21:39:05.084031Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-20",
@@ -28866,14 +27879,14 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 0,
       "provider": "sportytrader",
-      "updatedAt": "2026-06-20T15:53:58.177812Z"
+      "updatedAt": "2026-06-20T21:39:05.084031Z"
     },
     "note": "Scheduled sportytrader_wnba refresh returned 0 pick(s).",
     "ok": true,
     "picks": [],
-    "updatedAt": "2026-06-20T15:53:58.177812Z"
+    "updatedAt": "2026-06-20T21:39:05.084031Z"
   },
-  "updatedAt": "2026-06-20T17:04:35.934132Z",
+  "updatedAt": "2026-06-20T21:39:05.084031Z",
   "wnba": {
     "ok": true,
     "picks": [
