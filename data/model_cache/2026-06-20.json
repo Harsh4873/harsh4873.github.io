@@ -25705,6 +25705,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Tampa Bay Rays vs Washington Nationals",
+          "game_start_time": "2026-06-20T20:10Z",
           "matchup": "Tampa Bay Rays vs Washington Nationals",
           "odds": -120,
           "pick": "Rays ML (Rays vs Nationals)",
@@ -25724,6 +25725,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-20T20:10Z",
           "units": 1
         },
         {
@@ -25731,6 +25733,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Atlanta Braves vs Milwaukee Brewers",
+          "game_start_time": "2026-06-20T20:10Z",
           "matchup": "Atlanta Braves vs Milwaukee Brewers",
           "odds": -105,
           "pick": "Under 7 (Braves vs Brewers)",
@@ -25750,6 +25753,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-20T20:10Z",
           "units": 1
         },
         {
@@ -25757,6 +25761,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Athletics vs Los Angeles Angels",
+          "game_start_time": "2026-06-21T02:05Z",
           "matchup": "Athletics vs Los Angeles Angels",
           "odds": 115,
           "pick": "Athletics -1.5 (Athletics vs Angels)",
@@ -25776,6 +25781,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-21T02:05Z",
           "units": 1
         },
         {
@@ -25783,6 +25789,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Arizona Diamondbacks vs Minnesota Twins",
+          "game_start_time": "2026-06-21T02:10Z",
           "matchup": "Arizona Diamondbacks vs Minnesota Twins",
           "odds": -115,
           "pick": "Over 9.0 (Diamondbacks vs Twins)",
@@ -25802,6 +25809,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-21T02:10Z",
           "units": 1
         },
         {
@@ -25809,6 +25817,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Seattle Mariners vs Boston Red Sox",
+          "game_start_time": "2026-06-21T02:10Z",
           "matchup": "Seattle Mariners vs Boston Red Sox",
           "odds": 103,
           "pick": "Over 7.5 (Mariners vs Red Sox)",
@@ -25828,6 +25837,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-21T02:10Z",
           "units": 1
         }
       ],
@@ -26282,6 +26292,7 @@
           "decision": "LEAN",
           "edge": 4.4,
           "game": "Seattle Storm @ Phoenix Mercury",
+          "game_start_time": "2026-06-20T19:00Z",
           "guardrail_reasons": [
             "new totals market capped at LEAN while its live record is established"
           ],
@@ -26341,6 +26352,7 @@
           "selection": "Under",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-20T19:00Z",
           "units": 0.01,
           "vegas": 162.5
         },
