@@ -106,6 +106,7 @@ let latestPicksUpdatedAt = '';
 const HOME_SCORE_TTL_MS = 45_000;
 const DISPLAY_TIME_ZONE = 'America/Chicago';
 const AUTO_REFRESH_MS = 5 * 60_000;
+const RANKING_WINDOW_DATES = 2;
 const YOUR_BETS_STORAGE_KEY = 'pickledger_your_bets_v1';
 const PRIMARY_FILTERS = ['ALL', 'MLB', 'WNBA', 'FIFA WC'];
 let lastCentralDate = '';
@@ -256,15 +257,17 @@ function activePlayerRankingEpochs(): Map<string, string> {
 }
 
 function rankingComparablePicks(picks: Pick[]): Pick[] {
-  // Player picks are already limited to the post-ML ledger in data.ts. Rankings,
-  // sport cards, and period records should reflect every ML-era slate, not just
-  // the latest per-sport rank epoch from the current day.
-  return picks;
+  const dates = latestSlateDateKeys(picks);
+  return dates.size ? picks.filter(pick => dates.has(pickDateKey(pick))) : picks;
 }
 
 function playerModelRank(pick: Pick): number | null {
   const rank = Number(pick.ml_rank ?? pick.model_rank ?? pick.rank);
   return Number.isFinite(rank) && rank > 0 ? rank : null;
+}
+
+function latestSlateDateKeys(picks: Pick[], limit = RANKING_WINDOW_DATES): Set<string> {
+  return new Set([...new Set(picks.map(pickDateKey).filter(Boolean))].sort().slice(-limit));
 }
 
 function gameName(pick: Pick): string {

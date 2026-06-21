@@ -16,6 +16,7 @@ from zoneinfo import ZoneInfo
 REPO_ROOT = Path(__file__).resolve().parents[1]
 MODEL_CACHE_DIR = REPO_ROOT / "data" / "model_cache"
 PLAYER_PROPS_CACHE_DIR = REPO_ROOT / "data" / "player_props_cache"
+PLAYER_PROPS_SNAPSHOT_DIR = REPO_ROOT / "data" / "player_props_snapshots"
 REQUIRED_MODEL_KEYS = {
     "mlb_new",
     "mlb_inning",
@@ -53,6 +54,48 @@ def _parse_args() -> argparse.Namespace:
         help="Check whether today's committed model and player-props data is ready to deploy.",
     )
     return parser.parse_args()
+
+
+def _player_prop_market_key(pick: dict[str, Any]) -> tuple[str, ...]:
+    primary = tuple(
+        str(pick.get(key) or "").strip().lower()
+        for key in ("sport", "date", "game_id", "player_id", "stat_key", "selection", "line")
+    )
+    if all(primary[:6]) and primary[6]:
+        return primary
+    return tuple(
+        str(pick.get(key) or "").strip().lower()
+        for key in ("source", "sport", "date", "pick", "matchup")
+    )
+
+
+def _published_player_prop_keys(payload: dict[str, Any], date_iso: str) -> set[tuple[str, ...]]:
+    models = payload.get("models") if isinstance(payload.get("models"), dict) else {}
+    keys: set[tuple[str, ...]] = set()
+    for bucket in models.values():
+        if not isinstance(bucket, dict):
+            continue
+        for pick in bucket.get("picks") or []:
+            if not isinstance(pick, dict):
+                continue
+            if str(pick.get("date") or "").strip() != date_iso:
+                continue
+            if str(pick.get("scope") or "").strip().lower() != "player":
+                continue
+            if pick.get("market_priced") is True and str(pick.get("probability_source") or "").strip() == "player_props_ml_v1":
+                keys.add(_player_prop_market_key(pick))
+    return keys
+
+
+def _snapshot_player_prop_keys(date_iso: str) -> set[tuple[str, ...]]:
+    best_keys: set[tuple[str, ...]] = set()
+    for path in sorted((PLAYER_PROPS_SNAPSHOT_DIR / date_iso).glob("*.json")):
+        payload = _read_json(path)
+        if payload and str(payload.get("date") or "").strip() == date_iso:
+            keys = _published_player_prop_keys(payload, date_iso)
+            if len(keys) >= len(best_keys):
+                best_keys = keys
+    return best_keys
 
 
 def main() -> int:
@@ -117,6 +160,14 @@ def main() -> int:
 
     player_models = player_latest.get("models") if isinstance(player_latest, dict) else {}
     player_models = player_models if isinstance(player_models, dict) else {}
+    if player_latest:
+        latest_prop_keys = _published_player_prop_keys(player_latest, today)
+        archived_prop_keys = _snapshot_player_prop_keys(today)
+        missing_archived = archived_prop_keys - latest_prop_keys
+        if missing_archived:
+            failures.append(
+                f"latest player-props cache is missing {len(missing_archived)} same-day published prop(s) from snapshots"
+            )
     for key in sorted(REQUIRED_PLAYER_PROP_KEYS):
         bucket = player_models.get(key)
         if not isinstance(bucket, dict):

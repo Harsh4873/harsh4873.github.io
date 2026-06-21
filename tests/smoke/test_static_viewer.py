@@ -257,7 +257,8 @@ def test_player_mode_keeps_best_bets_available_and_prop_sources_separate():
     assert "playerResearchPool" in main
     assert "function playerRankingEpoch(" in main
     assert "function rankingComparablePicks(" in main
-    assert "reflect every ML-era slate" in main
+    assert "const RANKING_WINDOW_DATES = 2" in main
+    assert "latestSlateDateKeys(picks)" in main
     assert "function playerModelRank(" in main
     assert "return 10000 - modelRank" in main
     assert "Next-best player prop candidates" in main
@@ -823,6 +824,75 @@ def test_player_prop_merge_does_not_carry_results_across_rank_epochs(tmp_path):
     merged = module.merge_payload(generated, cache_dir)
 
     assert merged["models"]["mlb_player_props"]["picks"][0]["result"] == "pending"
+
+
+def test_player_prop_merge_carries_same_day_published_props_from_snapshots(tmp_path):
+    module = _load_module("merge_player_props_cache_payload_carry_forward", ROOT / "scripts" / "merge_player_props_cache_payload.py")
+    cache_dir = tmp_path / "data" / "player_props_cache"
+    snapshot_dir = tmp_path / "data" / "player_props_snapshots"
+    cache_dir.mkdir(parents=True)
+    (snapshot_dir / "2026-06-20").mkdir(parents=True)
+    previous = {
+        "date": "2026-06-20",
+        "models": {
+            "mlb_player_props": {
+                "ok": True,
+                "picks": [
+                    {
+                        "id": "old",
+                        "scope": "player",
+                        "source": "MLBPlayerProps",
+                        "sport": "MLB",
+                        "date": "2026-06-20",
+                        "game_id": "1",
+                        "player_id": "10",
+                        "stat_key": "hits",
+                        "selection": "Over",
+                        "line": 0.5,
+                        "pick": "Old Over 0.5 Hits",
+                        "matchup": "A @ B",
+                        "market_priced": True,
+                        "probability_source": "player_props_ml_v1",
+                        "result": "pending",
+                    }
+                ],
+            }
+        },
+    }
+    generated = {
+        "date": "2026-06-20",
+        "models": {
+            "mlb_player_props": {
+                "ok": True,
+                "picks": [
+                    {
+                        "id": "new",
+                        "scope": "player",
+                        "source": "MLBPlayerProps",
+                        "sport": "MLB",
+                        "date": "2026-06-20",
+                        "game_id": "2",
+                        "player_id": "20",
+                        "stat_key": "hits_runs_rbis",
+                        "selection": "Under",
+                        "line": 1.5,
+                        "pick": "New Under 1.5 HRR",
+                        "matchup": "C @ D",
+                        "market_priced": True,
+                        "probability_source": "player_props_ml_v1",
+                    }
+                ],
+            }
+        },
+    }
+    (cache_dir / "2026-06-20.json").write_text(json.dumps({"date": "2026-06-20", "models": {}}), encoding="utf-8")
+    (snapshot_dir / "2026-06-20" / "snapshot.json").write_text(json.dumps(previous), encoding="utf-8")
+
+    merged = module.merge_payload(generated, cache_dir, snapshot_dir)
+    picks = merged["models"]["mlb_player_props"]["picks"]
+
+    assert [pick["id"] for pick in picks] == ["new", "old"]
+    assert picks[1]["carried_forward"] is True
 
 
 def test_external_feed_merge_does_not_promote_partial_cache_to_latest(tmp_path):

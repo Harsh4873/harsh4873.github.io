@@ -572,6 +572,9 @@ def test_four_model_consensus_clears_70_percent_on_validation_and_later_holdout(
     consensus._BUNDLE = False
     assert precision.precision_model_active("MLB") is True
     assert precision.precision_model_active("WNBA") is True
+    source = (ROOT / "player_props" / "precision.py").read_text(encoding="utf-8")
+    assert '"consensus_model_count": len(consensus_models)' in source
+    assert "Four-model consensus suite active" in source
 
 
 def test_inactive_precision_artifact_abstains_instead_of_using_legacy_ranker(monkeypatch):

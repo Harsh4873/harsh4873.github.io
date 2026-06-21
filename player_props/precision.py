@@ -465,6 +465,12 @@ def apply_precision_to_pick(pick: dict[str, Any]) -> dict[str, Any]:  # type: ig
     line = safe_float(pick.get("line"))
     validation_accuracy = safe_float(result.get("validation_accuracy"))
     holdout_accuracy = safe_float(result.get("holdout_accuracy"))
+    sport = str(pick.get("sport") or "").upper()
+    bundle = load_precision_bundle() or {}
+    metadata = bundle.get("metadata") if isinstance(bundle.get("metadata"), dict) else {}
+    model_map = metadata.get("models") if isinstance(metadata.get("models"), dict) else {}
+    consensus_models = [f"{name}: {description}" for name, description in sorted(model_map.items())]
+    consensus_model_names = ", ".join(sorted(model_map)) or "season/history consensus"
     pick.update(
         {
             "id": stable_id(
@@ -505,17 +511,20 @@ def apply_precision_to_pick(pick: dict[str, Any]) -> dict[str, Any]:  # type: ig
             "consensus_history_projection": result.get("history_projection"),
             "consensus_model_agreement": result.get("agreement"),
             "consensus_score": safe_float(result.get("consensus_score")),
+            "consensus_model_count": len(consensus_models),
+            "consensus_models": consensus_models,
             "reason": (
-                f"The 2026 season model and roster-aware history model qualify this market; "
+                f"The active four-model consensus suite qualifies this market through the "
+                f"{sport} season and roster-aware history voters; "
                 f"chronological validation/holdout accuracy is "
                 f"{validation_accuracy:.1%}/{holdout_accuracy:.1%}."
             ),
         }
     )
-    sport = str(pick.get("sport") or "").upper()
     history_window = "2022-26" if sport == "MLB" else "2024-26"
     pick.setdefault("key_factors", []).extend(
         [
+            f"Four-model consensus suite active: {consensus_model_names}",
             "2026 season model evaluated",
             f"Roster-aware {history_window} history model evaluated",
             f"Conservative qualified-bucket accuracy {probability:.1%}",
