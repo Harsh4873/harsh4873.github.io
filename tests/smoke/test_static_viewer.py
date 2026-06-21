@@ -187,6 +187,10 @@ def test_source_rankings_expand_period_records_and_static_cards_do_not_fake_clic
     assert "function sourceRecordLines(" in main
     for label in ("TODAY", "YESTERDAY", "LAST 7 DAYS", "ALL TIME"):
         assert f"label: '{label}'" in main
+    assert "function isSettledPick(" in main
+    assert "latestSlateDateKeys(picks, RANKING_WINDOW_DATES, true)" in main
+    assert "function picksForRankingBucket(" in main
+    assert "sourceRecordLines(picksForRankingBucket(allPicks, item.source), centralDateKey())" in main
     assert 'data-source-card="${escapeHtml(item.source)}"' in main
     assert 'role="button" tabindex="0" aria-expanded="${expanded}"' in main
     assert "function bindSourceCards(" in main
@@ -261,7 +265,7 @@ def test_player_mode_keeps_best_bets_available_and_prop_sources_separate():
     assert "function playerRankingEpoch(" in main
     assert "function rankingComparablePicks(" in main
     assert "const RANKING_WINDOW_DATES = 1" in main
-    assert "latestSlateDateKeys(picks)" in main
+    assert "latestSlateDateKeys(picks, RANKING_WINDOW_DATES, true)" in main
     assert "function latestAvailableDateKey(" in main
     assert "activePickMode === 'player' ? latestAvailableDateKey()" in main
     assert "function playerModelRank(" in main

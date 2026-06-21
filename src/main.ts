@@ -223,6 +223,10 @@ function rankingBucketNames(pick: Pick): string[] {
   return activePickMode === 'player' ? playerRankingNames(pick) : [sourceName(pick)];
 }
 
+function picksForRankingBucket(picks: Pick[], bucketName: string): Pick[] {
+  return picks.filter(pick => rankingBucketNames(pick).includes(bucketName));
+}
+
 function addPickToRankingBuckets(buckets: Map<string, Pick[]>, pick: Pick): void {
   rankingBucketNames(pick).forEach(name => {
     buckets.set(name, [...(buckets.get(name) || []), pick]);
@@ -312,7 +316,13 @@ function activePlayerRankingEpochs(): Map<string, string> {
   return new Map([...latest.entries()].map(([sport, value]) => [sport, value.epoch]));
 }
 
+function isSettledPick(pick: Pick): boolean {
+  return pick.result !== 'pending';
+}
+
 function rankingComparablePicks(picks: Pick[]): Pick[] {
+  const settledDates = latestSlateDateKeys(picks, RANKING_WINDOW_DATES, true);
+  if (settledDates.size) return picks.filter(pick => settledDates.has(pickDateKey(pick)));
   const dates = latestSlateDateKeys(picks);
   return dates.size ? picks.filter(pick => dates.has(pickDateKey(pick))) : picks;
 }
@@ -326,8 +336,9 @@ function playerModelRank(pick: Pick): number | null {
   return Number.isFinite(rank) && rank > 0 ? rank : null;
 }
 
-function latestSlateDateKeys(picks: Pick[], limit = RANKING_WINDOW_DATES): Set<string> {
-  return new Set([...new Set(picks.map(pickDateKey).filter(Boolean))].sort().slice(-limit));
+function latestSlateDateKeys(picks: Pick[], limit = RANKING_WINDOW_DATES, settledOnly = false): Set<string> {
+  const comparable = settledOnly ? picks.filter(isSettledPick) : picks;
+  return new Set([...new Set(comparable.map(pickDateKey).filter(Boolean))].sort().slice(-limit));
 }
 
 function gameName(pick: Pick): string {
@@ -927,8 +938,10 @@ function updateOverallStats(): void {
 }
 
 function renderRankings(): void {
-  const rankingPicks = rankingComparablePicks(getAllPicks()).filter(pick => pick.result !== 'pending');
-  const rankingDate = latestAvailableDateKey(rankingComparablePicks(getAllPicks()));
+  const allPicks = getAllPicks();
+  const comparablePicks = rankingComparablePicks(allPicks);
+  const rankingPicks = comparablePicks.filter(isSettledPick);
+  const rankingDate = latestAvailableDateKey(rankingPicks.length ? rankingPicks : comparablePicks);
   const rankingTitle = document.getElementById('source-rankings-title');
   const rankingSubtitle = document.getElementById('source-rankings-subtitle');
   const dowSubtitle = document.getElementById('dow-subtitle');
@@ -952,7 +965,7 @@ function renderRankings(): void {
   if (leaderboard) {
     leaderboard.innerHTML = ranked.length ? ranked.map((item, index) => {
       const expanded = expandedSourceKeys.has(item.source);
-      const records = sourceRecordLines(item.picks, activePickMode === 'player' ? rankingDate : centralDateKey());
+      const records = sourceRecordLines(picksForRankingBucket(allPicks, item.source), centralDateKey());
       return `<article class="source-card ${index < 3 ? `rank-${index + 1}` : ''} ${expanded ? 'expanded' : ''}" data-source-card="${escapeHtml(item.source)}" role="button" tabindex="0" aria-expanded="${expanded}">
         <div class="card-rank">${index + 1}</div><div class="card-name">${escapeHtml(item.source)}</div>
         <div class="score-bar-wrap"><div class="score-label"><span>ACCURACY</span><span class="score-val">${item.stats.winRate == null ? '—' : `${(item.stats.winRate * 100).toFixed(1)}%`} (${item.stats.wins}-${item.stats.losses})</span></div><div class="bar-bg"><div class="bar-fill bar-acc" style="width:${(item.stats.winRate || 0) * 100}%"></div></div></div>
