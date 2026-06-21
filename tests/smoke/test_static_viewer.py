@@ -191,6 +191,9 @@ def test_source_rankings_expand_period_records_and_static_cards_do_not_fake_clic
     assert 'role="button" tabindex="0" aria-expanded="${expanded}"' in main
     assert "function bindSourceCards(" in main
     assert "View period records" in main
+    assert 'id="source-rankings-title"' in html
+    assert 'id="source-rankings-subtitle"' in html
+    assert 'id="dow-subtitle"' in html
     assert "Select a source for today, yesterday, last 7 days, and all-time records." in html
     assert ".source-expand-control" in css
     assert ".source-card.expanded .source-deep-dive" in css
@@ -264,6 +267,13 @@ def test_player_mode_keeps_best_bets_available_and_prop_sources_separate():
     assert "function playerModelRank(" in main
     assert "return 10000 - modelRank" in main
     assert "function consensusModelPanelHtml(" in main
+    assert "function playerRankingNames(" in main
+    assert "function rankingBucketNames(" in main
+    assert "function addPickToRankingBuckets(" in main
+    assert "rankingPicks.forEach(pick => addPickToRankingBuckets(bySource, pick))" in main
+    assert "rankingBucketNames(pick).forEach(source =>" in main
+    assert "? 'Model Rankings' : 'Source Rankings'" in main
+    assert "? 'Model' : 'Source'" in main
     assert "home-player-model-stack" in main
     assert "Models</strong>" in main
     assert "Next-best player prop candidates" in main

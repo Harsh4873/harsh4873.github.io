@@ -199,6 +199,21 @@ function consensusModelName(label: string): string {
   return label.split(':', 1)[0].replace(/_/g, ' ').trim().toUpperCase();
 }
 
+function playerRankingNames(pick: Pick): string[] {
+  const names = consensusModelLabels(pick).map(consensusModelName).filter(Boolean);
+  return names.length ? [...new Set(names)] : [sourceName(pick)];
+}
+
+function rankingBucketNames(pick: Pick): string[] {
+  return activePickMode === 'player' ? playerRankingNames(pick) : [sourceName(pick)];
+}
+
+function addPickToRankingBuckets(buckets: Map<string, Pick[]>, pick: Pick): void {
+  rankingBucketNames(pick).forEach(name => {
+    buckets.set(name, [...(buckets.get(name) || []), pick]);
+  });
+}
+
 function consensusModelPanelHtml(pick: Pick): string {
   const models = consensusModelLabels(pick);
   if (!models.length) return '';
@@ -494,8 +509,8 @@ function sourceRecordText(picks: Pick[]): string {
   ].filter(Boolean).join(' | ');
 }
 
-function sourceRecordLines(picks: Pick[]): Array<{ label: string; text: string }> {
-  const today = centralDateKey();
+function sourceRecordLines(picks: Pick[], anchorDate = centralDateKey()): Array<{ label: string; text: string }> {
+  const today = anchorDate || centralDateKey();
   const yesterday = shiftedDateKey(today, -1);
   const lastSevenStart = shiftedDateKey(today, -6);
   const forDate = (key: string): Pick[] => picks.filter(pick => pickDateKey(pick) === key);
@@ -898,8 +913,23 @@ function updateOverallStats(): void {
 
 function renderRankings(): void {
   const rankingPicks = rankingComparablePicks(getAllPicks()).filter(pick => pick.result !== 'pending');
+  const rankingDate = latestAvailableDateKey(rankingComparablePicks(getAllPicks()));
+  const rankingTitle = document.getElementById('source-rankings-title');
+  const rankingSubtitle = document.getElementById('source-rankings-subtitle');
+  const dowSubtitle = document.getElementById('dow-subtitle');
+  if (rankingTitle) rankingTitle.textContent = activePickMode === 'player' ? 'Model Rankings' : 'Source Rankings';
+  if (rankingSubtitle) {
+    rankingSubtitle.textContent = activePickMode === 'player'
+      ? 'See how each active consensus model performed on the latest decided player-prop slate.'
+      : 'See how every source has performed across the picks and results collected here. Select a source for today, yesterday, last 7 days, and all-time records.';
+  }
+  if (dowSubtitle) {
+    dowSubtitle.textContent = activePickMode === 'player'
+      ? 'Consensus model win rates by weekday. Green cells have at least three decided picks and a 55%+ win rate.'
+      : 'Source win rates by weekday. Green cells have at least three decided picks and a 55%+ win rate.';
+  }
   const bySource = new Map<string, Pick[]>();
-  rankingPicks.forEach(pick => bySource.set(sourceName(pick), [...(bySource.get(sourceName(pick)) || []), pick]));
+  rankingPicks.forEach(pick => addPickToRankingBuckets(bySource, pick));
   const ranked = [...bySource.entries()].map(([source, picks]) => ({ source, picks, stats: statsFor(picks) }))
     .filter(item => item.stats.wins + item.stats.losses > 0)
     .sort((a, b) => (b.stats.roi ?? -999) - (a.stats.roi ?? -999) || b.stats.net - a.stats.net);
@@ -907,12 +937,12 @@ function renderRankings(): void {
   if (leaderboard) {
     leaderboard.innerHTML = ranked.length ? ranked.map((item, index) => {
       const expanded = expandedSourceKeys.has(item.source);
-      const records = sourceRecordLines(item.picks);
+      const records = sourceRecordLines(item.picks, activePickMode === 'player' ? rankingDate : centralDateKey());
       return `<article class="source-card ${index < 3 ? `rank-${index + 1}` : ''} ${expanded ? 'expanded' : ''}" data-source-card="${escapeHtml(item.source)}" role="button" tabindex="0" aria-expanded="${expanded}">
         <div class="card-rank">${index + 1}</div><div class="card-name">${escapeHtml(item.source)}</div>
         <div class="score-bar-wrap"><div class="score-label"><span>ACCURACY</span><span class="score-val">${item.stats.winRate == null ? '—' : `${(item.stats.winRate * 100).toFixed(1)}%`} (${item.stats.wins}-${item.stats.losses})</span></div><div class="bar-bg"><div class="bar-fill bar-acc" style="width:${(item.stats.winRate || 0) * 100}%"></div></div></div>
         <div class="score-bar-wrap"><div class="score-label"><span>ROI</span><span class="score-val">${item.stats.roi == null ? '—' : `${(item.stats.roi * 100).toFixed(1)}%`} (${signedUnits(item.stats.net)})</span></div><div class="bar-bg"><div class="bar-fill bar-roi" style="width:${Math.max(0, Math.min(100, 50 + (item.stats.roi || 0) * 100))}%"></div></div></div>
-        <div class="algo-score"><div class="algo-score-val">${item.stats.total}</div><div class="algo-score-info">DECIDED PICKS<br>${dateLabel(latestAvailableDateKey(rankingComparablePicks(getAllPicks()))).toUpperCase()}</div></div>
+        <div class="algo-score"><div class="algo-score-val">${item.stats.total}</div><div class="algo-score-info">DECIDED PICKS<br>${dateLabel(rankingDate).toUpperCase()}</div></div>
         <div class="source-expand-control"><span data-source-expand-label>${expanded ? 'Hide period records' : 'View period records'}</span><span class="source-expand-icon" aria-hidden="true">&#9662;</span></div>
         <div class="source-deep-dive">
           <div class="trend-deep-title">PERIOD RECORDS</div>
@@ -966,9 +996,11 @@ function renderDayOfWeekTable(): void {
   rankingComparablePicks(getAllPicks()).filter(pick => pick.result === 'win' || pick.result === 'loss').forEach(pick => {
     const day = parseDateKey(pickDateKey(pick))?.getDay();
     if (day == null) return;
-    const buckets = bySource.get(sourceName(pick)) || Array.from({ length: 7 }, () => []);
-    buckets[day].push(pick);
-    bySource.set(sourceName(pick), buckets);
+    rankingBucketNames(pick).forEach(source => {
+      const buckets = bySource.get(source) || Array.from({ length: 7 }, () => []);
+      buckets[day].push(pick);
+      bySource.set(source, buckets);
+    });
   });
 
   const sources = [...bySource.keys()].sort((a, b) => a.localeCompare(b));
@@ -978,7 +1010,7 @@ function renderDayOfWeekTable(): void {
   }
 
   container.innerHTML = `<table class="dow-table">
-    <thead><tr><th>Source</th>${dayLabels.map(day => `<th>${day}</th>`).join('')}</tr></thead>
+    <thead><tr><th>${activePickMode === 'player' ? 'Model' : 'Source'}</th>${dayLabels.map(day => `<th>${day}</th>`).join('')}</tr></thead>
     <tbody>${sources.map(source => `<tr><td class="dow-model-name">${escapeHtml(source)}</td>${dayOrder.map(day => {
       const stats = statsFor(bySource.get(source)?.[day] || []);
       const decided = stats.wins + stats.losses;
