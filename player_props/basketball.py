@@ -370,6 +370,72 @@ def _opponent_context(stats: dict[str, float]) -> tuple[float, list[str]]:
     return factor, factors
 
 
+def _team_record_pct(competitor: dict[str, Any]) -> float | None:
+    for record in competitor.get("records") or []:
+        summary = str(record.get("summary") or "").strip()
+        if "-" not in summary:
+            continue
+        try:
+            wins_text, losses_text = summary.split("-", 1)
+            wins = int(wins_text)
+            losses = int(losses_text.split("-", 1)[0])
+        except (TypeError, ValueError):
+            continue
+        total = wins + losses
+        if total:
+            return wins / total
+    return None
+
+
+def _position_group(position: str) -> str:
+    value = str(position or "").strip().upper()
+    if value in {"PG", "SG", "G"}:
+        return "Guard"
+    if value in {"SF", "PF", "F"}:
+        return "Forward"
+    if value in {"C", "FC"}:
+        return "Center"
+    return value.title() or "Unknown"
+
+
+def _position_matchup_context(
+    *,
+    stat_key: str,
+    position: str,
+    opponent_stats: dict[str, float],
+    team_record_pct: float | None,
+    opponent_record_pct: float | None,
+) -> tuple[float, list[str]]:
+    group = _position_group(position)
+    blocks = safe_float(opponent_stats.get("avgBlocks"))
+    steals = safe_float(opponent_stats.get("avgSteals"))
+    points = safe_float(opponent_stats.get("avgPoints"))
+    factor = 1.0
+    notes: list[str] = [f"Position matchup group {group}"]
+    if group == "Guard":
+        guard_pressure = steals / 7.2 if steals else 1.0
+        if stat_key in {"points", "assists", "points_assists", "points_rebounds_assists"}:
+            factor *= max(0.94, min(1.06, 2.0 - guard_pressure))
+        notes.append(f"Opponent guard-pressure proxy {steals:.1f} steals/game" if steals else "Opponent guard-pressure proxy unavailable")
+    elif group in {"Forward", "Center"}:
+        rim_pressure = blocks / 4.8 if blocks else 1.0
+        if stat_key in {"points", "totalRebounds", "points_rebounds", "points_rebounds_assists"}:
+            factor *= max(0.94, min(1.06, 2.0 - rim_pressure))
+        notes.append(f"Opponent frontcourt-pressure proxy {blocks:.1f} blocks/game" if blocks else "Opponent frontcourt-pressure proxy unavailable")
+    else:
+        pace = points / 82.0 if points else 1.0
+        factor *= max(0.96, min(1.04, pace))
+        notes.append(f"Opponent pace proxy {points:.1f} PPG" if points else "Opponent pace proxy unavailable")
+
+    if team_record_pct is not None and opponent_record_pct is not None:
+        record_delta = team_record_pct - opponent_record_pct
+        factor *= max(0.96, min(1.04, 1.0 + (record_delta * 0.08)))
+        notes.append(f"Team record matchup delta {record_delta:+.1%}")
+    else:
+        notes.append("Team record matchup unavailable")
+    return factor, notes
+
+
 def _player_profiles(
     client: Any,
     league: str,
@@ -416,8 +482,15 @@ def _game_props(
     event: dict[str, Any],
     injuries: dict[str, dict[str, str]],
     max_workers: int,
+    select: bool = True,
+    apply_precision: bool = True,
 ) -> list[dict[str, Any]]:
-    away, home = _event_teams(event)
+    competition = (event.get("competitions") or [{}])[0]
+    competitors = competition.get("competitors") or []
+    away_competitor = next((item for item in competitors if item.get("homeAway") == "away"), {})
+    home_competitor = next((item for item in competitors if item.get("homeAway") == "home"), {})
+    away = away_competitor.get("team") or {}
+    home = home_competitor.get("team") or {}
     if not away.get("id") or not home.get("id"):
         return []
     market_index = _basketball_market_index(client, league, event)
@@ -441,6 +514,10 @@ def _game_props(
     for side, opponent_side in (("away", "home"), ("home", "away")):
         team_data = team_payloads[side]
         opponent_data = team_payloads[opponent_side]
+        team_competitor = away_competitor if side == "away" else home_competitor
+        opponent_competitor = home_competitor if side == "away" else away_competitor
+        team_record_pct = _team_record_pct(team_competitor)
+        opponent_record_pct = _team_record_pct(opponent_competitor)
         players = team_data["players"]
         healthy: list[dict[str, Any]] = []
         injured_stars: list[str] = []
@@ -474,12 +551,20 @@ def _game_props(
                     f"Last-five {stat_label.lower()} average {recent_avg:.1f}",
                     *opponent_factors,
                 ]
+                matchup_factor, matchup_factors = _position_matchup_context(
+                    stat_key=stat_key,
+                    position=str(player.get("position") or ""),
+                    opponent_stats=opponent_data["stats"],
+                    team_record_pct=team_record_pct,
+                    opponent_record_pct=opponent_record_pct,
+                )
                 if side == "home":
                     projection *= 1.018
                     factors.append("Home-court role adjustment +1.8%")
                 else:
                     factors.append("Road context applied")
                 projection *= opponent_factor
+                projection *= matchup_factor
 
                 injury = player.get("injury") or {}
                 if injury:
@@ -576,6 +661,18 @@ def _game_props(
                     extra={
                         "game_id": str(event.get("id") or ""),
                         "player_id": player["id"],
+                        "team_id": str(team_data["team"].get("id") or ""),
+                        "opponent_id": str(opponent_data["team"].get("id") or ""),
+                        "player_position": str(player.get("position") or ""),
+                        "position_group": _position_group(str(player.get("position") or "")),
+                        "matchup_factor": round(matchup_factor, 4),
+                        "record_factor": round(
+                            max(0.96, min(1.04, 1.0 + (((team_record_pct or 0.5) - (opponent_record_pct or 0.5)) * 0.08))),
+                            4,
+                        ),
+                        "team_record_pct": round(team_record_pct, 4) if team_record_pct is not None else None,
+                        "opponent_record_pct": round(opponent_record_pct, 4) if opponent_record_pct is not None else None,
+                        "matchup_notes": matchup_factors,
                         "sample_games": player["games"],
                         "injury_status": str(injury.get("status") or "Healthy"),
                         "redistribution_from": injured_stars,
@@ -587,11 +684,14 @@ def _game_props(
                     baseline_probability=baseline_probability,
                     baseline_projection=projection,
                     market_family=market_family_for_stat(stat_key),
+                    apply_precision=apply_precision,
                 )
                 candidates.append(pick)
 
     market_candidates = [row for row in candidates if row.get("market_priced") is True]
     selection_pool = market_candidates or candidates
+    if not select:
+        return selection_pool
     return select_top_props(selection_pool)
 
 
@@ -651,4 +751,65 @@ def generate_basketball_model(
         "picks": picks,
         "errors": errors,
         "method": "ESPN schedule, rosters, gamelogs, team context, and injuries",
+    }
+
+
+def generate_basketball_candidate_model(
+    client: Any,
+    league: str,
+    sport: str,
+    date_iso: str,
+    max_workers: int = 6,
+) -> dict[str, Any]:
+    """Generate the full market-priced candidate pool for model variants."""
+    try:
+        scoreboard = client.basketball_scoreboard(league, date_iso)
+    except Exception as exc:
+        return {"ok": False, "sport": sport, "date": date_iso, "games": 0, "picks": [], "errors": [str(exc)]}
+
+    events = scoreboard.get("events") or []
+    if not events:
+        return {
+            "ok": True,
+            "sport": sport,
+            "date": date_iso,
+            "games": 0,
+            "picks": [],
+            "errors": [],
+            "note": f"No {sport} games scheduled; empty slate is healthy.",
+        }
+
+    try:
+        injuries = _injury_map(client.basketball_injuries(league))
+    except Exception:
+        injuries = {}
+    season = int(((scoreboard.get("season") or {}).get("year")) or date_iso[:4])
+    picks: list[dict[str, Any]] = []
+    errors: list[str] = []
+    for event in events:
+        try:
+            picks.extend(
+                _game_props(
+                    client=client,
+                    league=league,
+                    sport=sport,
+                    season=season,
+                    date_iso=date_iso,
+                    event=event,
+                    injuries=injuries,
+                    max_workers=max_workers,
+                    select=False,
+                    apply_precision=False,
+                )
+            )
+        except Exception as exc:
+            errors.append(f"{event.get('id')}: {exc}")
+    return {
+        "ok": True,
+        "sport": sport,
+        "date": date_iso,
+        "games": len(events),
+        "picks": picks,
+        "errors": errors,
+        "method": "ESPN candidate pool with season, position, opponent, market, and injury context",
     }

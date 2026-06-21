@@ -736,12 +736,15 @@ def _pitcher_props(
     team: str,
     opponent: str,
     opponent_hitters: list[dict[str, Any]],
+    team_id: int,
+    opponent_id: int,
     pitcher_profile: dict[str, Any],
     opponent_pitch_profile: dict[str, Any],
     markets: list[dict[str, Any]],
     park_factor: float,
     weather_factor: float,
     environment_factors: list[str],
+    apply_precision: bool = True,
 ) -> list[dict[str, Any]]:
     pitcher_id = safe_int(pitcher.get("id"))
     name = str(pitcher.get("fullName") or "")
@@ -846,9 +849,14 @@ def _pitcher_props(
             extra={
                 "game_id": str(game["game_pk"]),
                 "player_id": str(pitcher_id),
+                "team_id": str(team_id),
+                "opponent_id": str(opponent_id),
                 "prop_role": "pitcher",
                 "pitch_type_factor": round(pitch_type_factor * arsenal_factor, 4),
                 "pitch_mix": _top_pitch_mix(pitcher_profile),
+                "opponent_lineup_strikeout_rate": round(opponent_k_rate, 6),
+                "opponent_adjustment": round(opponent_adjustment, 4),
+                "arsenal_factor": round(arsenal_factor, 4),
                 "market_source": market.get("market_source"),
                 "market_athlete_id": market.get("market_athlete_id"),
                 "market_over_odds": market.get("over_odds"),
@@ -868,6 +876,7 @@ def _pitcher_props(
             baseline_probability=probability,
             baseline_projection=projection,
             market_family=market_family_for_stat(stat_key),
+            apply_precision=apply_precision,
         )
         props.append(pick)
     return props
@@ -887,10 +896,13 @@ def _hitter_props(
     markets: list[dict[str, Any]],
     team: str,
     opponent: str,
+    team_id: int,
+    opponent_id: int,
     is_home: bool,
     park_factor: float,
     weather_factor: float,
     environment_factors: list[str],
+    apply_precision: bool = True,
 ) -> list[dict[str, Any]]:
     stats = hitter["stats"]
     at_bats = safe_int(stats.get("atBats"))
@@ -1072,8 +1084,14 @@ def _hitter_props(
             extra={
                 "game_id": str(game["game_pk"]),
                 "player_id": str(hitter["id"]),
+                "team_id": str(team_id),
+                "opponent_id": str(opponent_id),
                 "prop_role": prop_role,
                 "h2h": h2h,
+                "h2h_adjustment": round(h2h_adjustment, 4),
+                "pitcher_adjustment": round(pitcher_adjustment, 4),
+                "park_factor": round(park_factor, 4),
+                "weather_factor": round(weather_factor, 4),
                 "pitch_type_factor": round(pitch_type_factor, 4),
                 "pitch_mix": _top_pitch_mix(pitcher_profile),
                 "market_source": market.get("market_source"),
@@ -1095,6 +1113,7 @@ def _hitter_props(
             baseline_probability=probability,
             baseline_projection=projection,
             market_family=market_family_for_stat(stat_key),
+            apply_precision=apply_precision,
         )
         props.append(pick)
     return props
@@ -1107,6 +1126,8 @@ def _game_props(
     season: int,
     market_scoreboard: dict[str, Any],
     diagnostics: dict[str, int] | None = None,
+    select: bool = True,
+    apply_precision: bool = True,
 ) -> list[dict[str, Any]]:
     game = _game_parts(raw_game)
     market_index = _game_market_index(client, market_scoreboard, game)
@@ -1171,12 +1192,15 @@ def _game_props(
             team=game["away_team"],
             opponent=game["home_team"],
             opponent_hitters=hitters["home"],
+            team_id=game["away_id"],
+            opponent_id=game["home_id"],
             pitcher_profile=pitcher_profiles["away"],
             opponent_pitch_profile=team_pitch_profiles["home"],
             markets=away_pitcher_markets,
             park_factor=park_factor,
             weather_factor=weather_factor,
             environment_factors=environment_factors,
+            apply_precision=apply_precision,
         )
     )
     candidates.extend(
@@ -1189,12 +1213,15 @@ def _game_props(
             team=game["home_team"],
             opponent=game["away_team"],
             opponent_hitters=hitters["away"],
+            team_id=game["home_id"],
+            opponent_id=game["away_id"],
             pitcher_profile=pitcher_profiles["home"],
             opponent_pitch_profile=team_pitch_profiles["away"],
             markets=home_pitcher_markets,
             park_factor=park_factor,
             weather_factor=weather_factor,
             environment_factors=environment_factors,
+            apply_precision=apply_precision,
         )
     )
 
@@ -1234,10 +1261,13 @@ def _game_props(
                 markets=market_index.get(normalize_name(str(hitter.get("name") or "")), []),
                 team=game[f"{side}_team"],
                 opponent=game[f"{opposing_side}_team"],
+                team_id=game[f"{side}_id"],
+                opponent_id=game[f"{opposing_side}_id"],
                 is_home=side == "home",
                 park_factor=park_factor,
                 weather_factor=weather_factor,
                 environment_factors=environment_factors,
+                apply_precision=apply_precision,
             )
             candidates.extend(hitter_props)
 
@@ -1245,6 +1275,8 @@ def _game_props(
         diagnostics["market_candidates"] = diagnostics.get("market_candidates", 0) + sum(
             candidate.get("market_priced") is True for candidate in candidates
         )
+    if not select:
+        return candidates
     return select_top_props(candidates)
 
 
@@ -1321,4 +1353,67 @@ def generate_mlb_model(client: Any, date_iso: str) -> dict[str, Any]:
         "picks": picks,
         "errors": errors,
         "method": "Season-trained precision model over MLB StatsAPI, Statcast, and posted DraftKings markets via ESPN",
+    }
+
+
+def generate_mlb_candidate_model(client: Any, date_iso: str) -> dict[str, Any]:
+    """Generate the full market-priced MLB candidate pool for model variants."""
+    try:
+        schedule = client.mlb_schedule(date_iso)
+    except Exception as exc:
+        return {"ok": False, "sport": "MLB", "date": date_iso, "games": 0, "picks": [], "errors": [str(exc)]}
+    games = [
+        game
+        for date_group in schedule.get("dates") or []
+        for game in date_group.get("games") or []
+    ]
+    if not games:
+        return {
+            "ok": True,
+            "sport": "MLB",
+            "date": date_iso,
+            "games": 0,
+            "picks": [],
+            "errors": [],
+            "note": "No MLB games scheduled; empty slate is healthy.",
+        }
+
+    picks: list[dict[str, Any]] = []
+    errors: list[str] = []
+    diagnostics: dict[str, int] = {"market_candidates": 0}
+    season = int(date_iso[:4])
+    try:
+        market_scoreboard = client.mlb_espn_scoreboard(date_iso)
+    except Exception as exc:
+        market_scoreboard = {}
+        errors.append(f"ESPN MLB market scoreboard failed: {exc}")
+    for game in games:
+        try:
+            picks.extend(
+                _game_props(
+                    client,
+                    date_iso,
+                    game,
+                    season,
+                    market_scoreboard,
+                    diagnostics,
+                    select=False,
+                    apply_precision=False,
+                )
+            )
+        except Exception as exc:
+            errors.append(f"{game.get('gamePk')}: {exc}")
+    if not picks and diagnostics["market_candidates"] == 0 and games:
+        errors.append(
+            f"No MLB player-prop candidates generated for {len(games)} scheduled game(s); "
+            "posted sportsbook markets were unavailable or could not be parsed."
+        )
+    return {
+        "ok": True,
+        "sport": "MLB",
+        "date": date_iso,
+        "games": len(games),
+        "picks": picks,
+        "errors": errors,
+        "method": "MLB candidate pool with season, all-time, hot L10, and H2H matchup inputs",
     }

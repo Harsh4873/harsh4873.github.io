@@ -19,7 +19,17 @@ MODEL_KEYS = {
     "nba_playoffs",
     "fifa_world_cup",
 }
-PLAYER_PROP_KEYS = {"mlb_player_props", "nba_player_props", "wnba_player_props"}
+PLAYER_PROP_KEYS = {
+    "nba_player_props",
+    "mlb_player_props_season",
+    "mlb_player_props_all_time",
+    "mlb_player_props_hot_l10",
+    "mlb_player_props_matchup_h2h",
+    "wnba_player_props_season",
+    "wnba_player_props_all_time",
+    "wnba_player_props_hot_l10",
+    "wnba_player_props_matchup_h2h",
+}
 SCORES24_KEYS = {"scores24_fifa_world_cup", "scores24_mlb", "scores24_wnba"}
 
 

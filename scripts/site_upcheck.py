@@ -27,9 +27,15 @@ REQUIRED_MODEL_KEYS = {
     "fifa_world_cup",
 }
 REQUIRED_PLAYER_PROP_KEYS = {
-    "mlb_player_props",
     "nba_player_props",
-    "wnba_player_props",
+    "mlb_player_props_season",
+    "mlb_player_props_all_time",
+    "mlb_player_props_hot_l10",
+    "mlb_player_props_matchup_h2h",
+    "wnba_player_props_season",
+    "wnba_player_props_all_time",
+    "wnba_player_props_hot_l10",
+    "wnba_player_props_matchup_h2h",
 }
 REQUIRED_SCORES24_FEED_KEYS = {
     "scores24_fifa_world_cup",
@@ -175,12 +181,12 @@ def main() -> int:
         elif bucket.get("ok") is not True:
             failures.append(f"player-props bucket {key} failed: {bucket.get('error') or 'unknown error'}")
         elif (
-            key == "mlb_player_props"
+            key.startswith(("mlb_player_props_", "wnba_player_props_"))
             and int(bucket.get("games") or 0) > 0
             and not (bucket.get("picks") or [])
             and bucket.get("abstained") is not True
         ):
-            failures.append("player-props bucket mlb_player_props has scheduled games but zero picks")
+            failures.append(f"player-props bucket {key} has scheduled games but zero picks")
         else:
             picks = bucket.get("picks") or []
             market_picks = [pick for pick in picks if isinstance(pick, dict) and pick.get("market_priced") is True]

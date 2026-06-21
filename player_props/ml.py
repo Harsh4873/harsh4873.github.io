@@ -271,6 +271,7 @@ def apply_ml_to_pick(
     baseline_probability: float,
     baseline_projection: float,
     market_family: str | None = None,
+    apply_precision: bool = True,
 ) -> dict[str, Any]:
     family = market_family or market_family_for_stat(str(pick.get("stat_key") or ""))
     (
@@ -335,6 +336,9 @@ def apply_ml_to_pick(
             "ml_stake_cap": stake_cap,
         }
     )
+    if not apply_precision:
+        return pick
+
     from .precision import apply_precision_to_pick
 
     return apply_precision_to_pick(pick)

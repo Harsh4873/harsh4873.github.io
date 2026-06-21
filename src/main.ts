@@ -935,12 +935,12 @@ function renderRankings(): void {
   if (rankingTitle) rankingTitle.textContent = activePickMode === 'player' ? 'Model Rankings' : 'Source Rankings';
   if (rankingSubtitle) {
     rankingSubtitle.textContent = activePickMode === 'player'
-      ? 'See how each active consensus model performed on the latest decided player-prop slate.'
+      ? 'See how each active player-prop model performed on the latest decided slate.'
       : 'See how every source has performed across the picks and results collected here. Select a source for today, yesterday, last 7 days, and all-time records.';
   }
   if (dowSubtitle) {
     dowSubtitle.textContent = activePickMode === 'player'
-      ? 'Consensus model win rates by weekday. Green cells have at least three decided picks and a 55%+ win rate.'
+      ? 'Player-prop model win rates by weekday. Green cells have at least three decided picks and a 55%+ win rate.'
       : 'Source win rates by weekday. Green cells have at least three decided picks and a 55%+ win rate.';
   }
   const bySource = new Map<string, Pick[]>();

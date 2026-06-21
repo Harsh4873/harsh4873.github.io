@@ -1,0 +1,492 @@
+"""Published player-prop model variants for separate records."""
+
+from __future__ import annotations
+
+import copy
+import hashlib
+import math
+import statistics
+from typing import Any
+
+from .consensus import load_consensus_bundle, outcome_profile_key
+from .ml import MAX_PUBLISHED_POSITIVE_ODDS, ML_SOURCE, expected_value, market_family_for_stat
+from .schema import american_implied_probability, decision_and_stake, normal_probability, safe_float
+
+
+VARIANT_VERSION = "player_props_variant_v1.0.0"
+MAX_VARIANT_PICKS = 8
+MAX_PER_PLAYER = 1
+MIN_VARIANT_EDGE = 0.025
+MIN_VARIANT_EV = 0.015
+
+VARIANT_LABELS = {
+    "season": "Season",
+    "all_time": "All Time",
+    "hot_l10": "Hot (L10)",
+    "matchup_h2h": "Matchup (H2H)",
+}
+
+VARIANT_ORDER = ("season", "all_time", "hot_l10", "matchup_h2h")
+HISTORY_WINDOWS = {"MLB": "2022-26", "WNBA": "2024-26"}
+
+
+def player_prop_variant_keys(sport: str) -> dict[str, str]:
+    prefix = str(sport or "").strip().lower()
+    return {variant: f"{prefix}_player_props_{variant}" for variant in VARIANT_ORDER}
+
+
+def player_prop_variant_source(sport: str, variant: str) -> str:
+    return f"{str(sport or '').strip().upper()} {VARIANT_LABELS[variant]} Props"
+
+
+def _clamp(value: float, low: float = 0.01, high: float = 0.99) -> float:
+    return max(low, min(high, value))
+
+
+def _variant_fingerprint() -> str:
+    bundle = load_consensus_bundle() or {}
+    metadata = bundle.get("metadata") if isinstance(bundle.get("metadata"), dict) else {}
+    fingerprint = str(metadata.get("training_fingerprint") or "")
+    if not fingerprint:
+        fingerprint = hashlib.sha256(VARIANT_VERSION.encode("utf-8")).hexdigest()
+    return fingerprint[:16]
+
+
+def _history_artifact(sport: str) -> dict[str, Any]:
+    bundle = load_consensus_bundle() or {}
+    artifacts = bundle.get("artifacts") if isinstance(bundle.get("artifacts"), dict) else {}
+    artifact = artifacts.get(f"{str(sport).upper()}:history")
+    return artifact if isinstance(artifact, dict) else {}
+
+
+def _season_artifact(sport: str) -> dict[str, Any]:
+    bundle = load_consensus_bundle() or {}
+    artifacts = bundle.get("artifacts") if isinstance(bundle.get("artifacts"), dict) else {}
+    artifact = artifacts.get(f"{str(sport).upper()}:season")
+    return artifact if isinstance(artifact, dict) else {}
+
+
+def _prediction(artifact: dict[str, Any], pick: dict[str, Any]) -> dict[str, Any] | None:
+    from .consensus import _prediction as consensus_prediction  # noqa: PLC0415
+
+    stat_key = str(pick.get("stat_key") or "")
+    if not stat_key or not artifact:
+        return None
+    return consensus_prediction(artifact, pick, stat_key)
+
+
+def _profile_rows(pick: dict[str, Any]) -> list[dict[str, Any]]:
+    artifact = _history_artifact(str(pick.get("sport") or ""))
+    profiles = artifact.get("outcome_profiles") if isinstance(artifact.get("outcome_profiles"), dict) else {}
+    sport = str(pick.get("sport") or "").upper()
+    athlete_id = pick.get("market_athlete_id") or pick.get("player_id")
+    stat_key = pick.get("stat_key")
+    rows = profiles.get(outcome_profile_key(sport, athlete_id, stat_key))
+    return rows if isinstance(rows, list) else []
+
+
+def _prior_rows(pick: dict[str, Any], rows: list[dict[str, Any]] | None = None) -> list[dict[str, Any]]:
+    target_date = str(pick.get("date") or "")
+    source_rows = rows if rows is not None else _profile_rows(pick)
+    return sorted(
+        [row for row in source_rows if str(row.get("date") or "") < target_date],
+        key=lambda row: (str(row.get("date") or ""), str(row.get("event_id") or "")),
+    )
+
+
+def _hit(value: float, line: float, selection: str) -> bool:
+    return value > line if selection == "Over" else value < line
+
+
+def _hit_rate(
+    pick: dict[str, Any],
+    selection: str,
+    *,
+    limit: int | None = None,
+    opponent_only: bool = False,
+) -> tuple[float | None, int, int]:
+    rows = _prior_rows(pick)
+    if opponent_only:
+        opponent_id = str(pick.get("opponent_id") or "").strip()
+        rows = [row for row in rows if opponent_id and str(row.get("opponent_id") or "").strip() == opponent_id]
+    if limit:
+        rows = rows[-limit:]
+    line = safe_float(pick.get("line"))
+    actuals = [safe_float(row.get("actual"), float("nan")) for row in rows]
+    clean = [value for value in actuals if math.isfinite(value)]
+    if not clean:
+        return None, 0, 0
+    wins = sum(1 for value in clean if _hit(value, line, selection))
+    return wins / len(clean), wins, len(clean)
+
+
+def _market_odds(pick: dict[str, Any], selection: str) -> int | None:
+    field = "market_over_odds" if selection == "Over" else "market_under_odds"
+    raw = pick.get(field)
+    if raw in (None, "") and str(pick.get("selection") or "") == selection:
+        raw = pick.get("odds")
+    try:
+        odds = int(raw)
+    except (TypeError, ValueError):
+        return None
+    return odds if odds else None
+
+
+def _selection_choices(pick: dict[str, Any], over_probability: float) -> list[tuple[str, float, int, float]]:
+    choices: list[tuple[str, float, int, float]] = []
+    for selection, probability in (("Over", over_probability), ("Under", 1.0 - over_probability)):
+        odds = _market_odds(pick, selection)
+        implied = american_implied_probability(odds)
+        if odds is None or implied is None:
+            continue
+        choices.append((selection, _clamp(probability), odds, implied))
+    return choices
+
+
+def _best_market_choice(pick: dict[str, Any], over_probability: float) -> tuple[str, float, int, float] | None:
+    choices = _selection_choices(pick, over_probability)
+    if not choices:
+        return None
+    return max(choices, key=lambda row: (row[1] - row[3], expected_value(row[1], row[2]), row[1]))
+
+
+def _projection_over_probability(projection: float, line: float) -> float:
+    sigma = max(0.9, math.sqrt(max(0.5, abs(projection))) * 0.85)
+    return normal_probability(projection, line, sigma, "Over")
+
+
+def _all_time_choice(pick: dict[str, Any]) -> tuple[str, float, int, float, list[str]] | None:
+    prediction = _prediction(_history_artifact(str(pick.get("sport") or "")), pick)
+    notes: list[str] = []
+    if prediction and prediction.get("over_probability") is not None:
+        over_probability = safe_float(prediction.get("over_probability"), 0.5)
+        notes.append(f"History model over probability {over_probability:.1%}")
+    elif prediction and prediction.get("projection") is not None:
+        projection = safe_float(prediction.get("projection"))
+        over_probability = _projection_over_probability(projection, safe_float(pick.get("line")))
+        notes.append(f"History model projection {projection:.2f}")
+    else:
+        over_rate, wins, total = _hit_rate(pick, "Over")
+        if over_rate is None:
+            return None
+        over_probability = over_rate
+        notes.append(f"All-time over hit rate {wins}-{total} ({over_rate:.1%})")
+    choice = _best_market_choice(pick, over_probability)
+    if not choice:
+        return None
+    selection, probability, odds, implied = choice
+    rate, wins, total = _hit_rate(pick, selection)
+    if rate is not None:
+        notes.append(f"{selection} history hit rate {wins}-{total} ({rate:.1%})")
+    return selection, probability, odds, implied, notes
+
+
+def _season_choice(pick: dict[str, Any]) -> tuple[str, float, int, float, list[str]] | None:
+    selection = str(pick.get("selection") or "Over")
+    odds = _market_odds(pick, selection)
+    implied = american_implied_probability(odds)
+    if odds is None or implied is None:
+        return None
+    probability = safe_float(pick.get("ml_probability") or pick.get("probability"), 0.5)
+    season_prediction = _prediction(_season_artifact(str(pick.get("sport") or "")), pick)
+    notes = [f"Current-season ML probability {probability:.1%}"]
+    if season_prediction and season_prediction.get("over_probability") is not None:
+        over_probability = safe_float(season_prediction.get("over_probability"), 0.5)
+        side_probability = over_probability if selection == "Over" else 1.0 - over_probability
+        probability = (probability * 0.55) + (side_probability * 0.45)
+        notes.append(f"Season artifact {selection.lower()} probability {side_probability:.1%}")
+    return selection, _clamp(probability), odds, implied, notes
+
+
+def _hot_choice(pick: dict[str, Any]) -> tuple[str, float, int, float, list[str]] | None:
+    choices: list[tuple[str, float, int, float, int, int]] = []
+    for selection in ("Over", "Under"):
+        odds = _market_odds(pick, selection)
+        implied = american_implied_probability(odds)
+        if odds is None or implied is None:
+            continue
+        rate, wins, total = _hit_rate(pick, selection, limit=10)
+        if rate is None or total < 3 or rate < 0.50:
+            continue
+        probability = (wins + 1.0) / (total + 2.0)
+        choices.append((selection, _clamp(probability), odds, implied, wins, total))
+    if not choices:
+        return None
+    selection, probability, odds, implied, wins, total = max(
+        choices,
+        key=lambda row: (row[4] / row[5], row[1] - row[3], expected_value(row[1], row[2])),
+    )
+    rate = wins / total
+    notes = [
+        f"Last-10 hit rate {wins}-{total} ({rate:.1%}) for {selection.lower()} {safe_float(pick.get('line')):.1f}",
+        f"Hot model requires at least 50% over the recent sample",
+    ]
+    return selection, probability, odds, implied, notes
+
+
+def _h2h_hits_over_probability(pick: dict[str, Any]) -> tuple[float | None, str | None]:
+    if str(pick.get("stat_key") or "") != "hits":
+        return None, None
+    h2h = pick.get("h2h") if isinstance(pick.get("h2h"), dict) else {}
+    at_bats = int(safe_float(h2h.get("at_bats"))) if h2h else 0
+    hits = int(safe_float(h2h.get("hits"))) if h2h else 0
+    if at_bats < 3:
+        return None, None
+    average = hits / at_bats
+    expected_at_bats = 4.1
+    line = safe_float(pick.get("line"))
+    threshold = max(1, int(math.floor(line)) + 1)
+    probability = 0.0
+    trials = max(1, int(round(expected_at_bats)))
+    p = _clamp(average, 0.03, 0.62)
+    for successes in range(threshold, trials + 1):
+        probability += math.comb(trials, successes) * (p ** successes) * ((1.0 - p) ** (trials - successes))
+    return _clamp(probability), f"Batter-vs-pitcher H2H {hits}-for-{at_bats} ({average:.3f})"
+
+
+def _matchup_choice(pick: dict[str, Any]) -> tuple[str, float, int, float, list[str]] | None:
+    notes: list[str] = []
+    opponent_rate, opponent_wins, opponent_total = _hit_rate(pick, "Over", opponent_only=True)
+    if opponent_rate is not None and opponent_total >= 2:
+        over_probability = (opponent_wins + 1.0) / (opponent_total + 2.0)
+        notes.append(f"Opponent H2H over hit rate {opponent_wins}-{opponent_total} ({opponent_rate:.1%})")
+    else:
+        h2h_probability, h2h_note = _h2h_hits_over_probability(pick)
+        if h2h_probability is not None:
+            over_probability = h2h_probability
+            notes.append(str(h2h_note))
+        else:
+            selection = str(pick.get("selection") or "Over")
+            base_probability = safe_float(pick.get("ml_probability") or pick.get("probability"), 0.5)
+            matchup_factor = safe_float(pick.get("matchup_factor"), 1.0)
+            if matchup_factor == 0:
+                matchup_factor = safe_float(pick.get("pitch_type_factor"), 1.0)
+            if matchup_factor == 0:
+                matchup_factor = safe_float(pick.get("h2h_adjustment"), 1.0)
+            over_probability = base_probability if selection == "Over" else 1.0 - base_probability
+            over_probability = _clamp(over_probability + ((matchup_factor - 1.0) * 0.85))
+            notes.append(f"Current matchup factor {matchup_factor:.3f}")
+    for field in ("matchup_notes",):
+        values = pick.get(field)
+        if isinstance(values, list):
+            notes.extend(str(value) for value in values[:3])
+    if pick.get("opponent_lineup_strikeout_rate") is not None:
+        notes.append(f"Opponent lineup K rate {safe_float(pick.get('opponent_lineup_strikeout_rate')):.1%}")
+    choice = _best_market_choice(pick, over_probability)
+    if not choice:
+        return None
+    selection, probability, odds, implied = choice
+    rate, wins, total = _hit_rate(pick, selection, opponent_only=True)
+    if rate is not None and total:
+        notes.append(f"{selection} H2H record vs opponent {wins}-{total} ({rate:.1%})")
+    return selection, probability, odds, implied, notes
+
+
+def _choice_for_variant(pick: dict[str, Any], variant: str) -> tuple[str, float, int, float, list[str]] | None:
+    if variant == "season":
+        return _season_choice(pick)
+    if variant == "all_time":
+        return _all_time_choice(pick)
+    if variant == "hot_l10":
+        return _hot_choice(pick)
+    if variant == "matchup_h2h":
+        return _matchup_choice(pick)
+    return None
+
+
+def _clean_variant_fields(pick: dict[str, Any]) -> None:
+    for key in list(pick):
+        if key.startswith("consensus_") or key.startswith("precision_"):
+            pick.pop(key, None)
+
+
+def _variant_pick(
+    base: dict[str, Any],
+    *,
+    model_key: str,
+    variant: str,
+    selection: str,
+    probability: float,
+    odds: int,
+    implied: float,
+    notes: list[str],
+) -> dict[str, Any]:
+    sport = str(base.get("sport") or "").upper()
+    pick = copy.deepcopy(base)
+    _clean_variant_fields(pick)
+    line = safe_float(pick.get("line"))
+    stat_label = str(pick.get("stat_label") or pick.get("market_type") or pick.get("stat_key") or "").strip()
+    player_name = str(pick.get("player_name") or pick.get("player") or "").strip()
+    decision, edge_pp, full_kelly, quarter_kelly, units = decision_and_stake(probability, odds)
+    edge_fraction = (probability - implied) if implied is not None else 0.0
+    source = player_prop_variant_source(sport, variant)
+    fingerprint = _variant_fingerprint()
+    rank_epoch = f"{sport}:{VARIANT_VERSION}:{variant}:{fingerprint}"
+    variant_label = VARIANT_LABELS[variant]
+    pick.update(
+        {
+            "id": f"{str(base.get('id') or '').strip() or 'pp'}_{variant}",
+            "source": source,
+            "model_key": model_key,
+            "model_variant": variant,
+            "model_variant_label": variant_label,
+            "scope": "player",
+            "selection": selection,
+            "pick": f"{player_name} {selection} {line:.1f} {stat_label}",
+            "odds": odds,
+            "market_implied_probability": round(implied, 4),
+            "probability_source": ML_SOURCE,
+            "probability": round(_clamp(probability), 4),
+            "ml_probability": round(_clamp(probability), 4),
+            "ml_raw_probability": round(_clamp(probability), 4),
+            "ml_edge": round(edge_fraction, 6),
+            "ml_expected_value": round(expected_value(probability, odds), 6),
+            "ml_model_active": True,
+            "ml_model_version": VARIANT_VERSION,
+            "ml_probability_mode": f"{variant}_variant",
+            "ml_training_fingerprint": fingerprint,
+            "ml_rank_epoch": rank_epoch,
+            "ranking_epoch": rank_epoch,
+            "model_epoch": rank_epoch,
+            "ml_market_family": market_family_for_stat(str(pick.get("stat_key") or "")),
+            "decision": decision,
+            "confidence": "High" if probability >= 0.60 and edge_fraction >= 0.06 else "Medium" if probability >= 0.54 else "Low",
+            "edge": edge_pp,
+            "full_kelly": full_kelly,
+            "quarter_kelly": quarter_kelly,
+            "units": 0.0 if decision == "PASS" else min(units, 1.0),
+            "actionability": "market_priced" if pick.get("market_priced") is True else pick.get("actionability"),
+            "ml_calibration_excluded": True,
+            "research_details": "; ".join(notes),
+            "reason": (
+                f"{source} rates this {selection.lower()} at {probability:.1%} against a "
+                f"{implied:.1%} market price using the {variant_label.lower()} signal."
+            ),
+            "key_factors": [
+                f"{variant_label} model signal",
+                *notes,
+                *[str(value) for value in (base.get("key_factors") or [])],
+            ],
+            "result": str(base.get("result") or "pending"),
+        }
+    )
+    if variant == "hot_l10":
+        rate, wins, total = _hit_rate(base, selection, limit=10)
+        if rate is not None:
+            pick["hot_l10_hit_rate"] = round(rate, 4)
+            pick["hot_l10_record"] = f"{wins}-{total}"
+    if variant == "matchup_h2h":
+        rate, wins, total = _hit_rate(base, selection, opponent_only=True)
+        if rate is not None and total:
+            pick["h2h_hit_rate"] = round(rate, 4)
+            pick["h2h_record"] = f"{wins}-{total}"
+    return pick
+
+
+def _score_sort_key(pick: dict[str, Any]) -> tuple[float, int, float, float, str]:
+    decision_rank = {"BET": 0, "LEAN": 1, "PASS": 2}
+    return (
+        -safe_float(pick.get("ml_expected_value"), -100),
+        decision_rank.get(str(pick.get("decision") or ""), 3),
+        -safe_float(pick.get("ml_edge"), -100),
+        -safe_float(pick.get("ml_probability") or pick.get("probability")),
+        str(pick.get("id") or ""),
+    )
+
+
+def _select_variant(scored: list[dict[str, Any]], variant: str) -> list[dict[str, Any]]:
+    filtered = [
+        pick for pick in scored
+        if pick.get("market_priced") is True
+        and str(pick.get("decision") or "") in {"BET", "LEAN"}
+        and safe_float(pick.get("ml_probability") or pick.get("probability")) >= 0.52
+        and safe_float(pick.get("ml_edge")) >= MIN_VARIANT_EDGE
+        and safe_float(pick.get("ml_expected_value")) >= MIN_VARIANT_EV
+        and int(safe_float(pick.get("odds"))) <= MAX_PUBLISHED_POSITIVE_ODDS
+    ]
+    if variant == "hot_l10":
+        filtered = [pick for pick in filtered if safe_float(pick.get("hot_l10_hit_rate")) >= 0.50]
+    selected: list[dict[str, Any]] = []
+    per_player: dict[str, int] = {}
+    for pick in sorted(filtered, key=_score_sort_key):
+        player_id = str(pick.get("player_id") or pick.get("player_name") or "")
+        if per_player.get(player_id, 0) >= MAX_PER_PLAYER:
+            continue
+        selected.append(pick)
+        per_player[player_id] = per_player.get(player_id, 0) + 1
+        if len(selected) >= MAX_VARIANT_PICKS:
+            break
+    for index, pick in enumerate(selected, start=1):
+        pick["ml_rank"] = index
+        pick["model_rank"] = index
+        pick["rank"] = index
+    return selected
+
+
+def build_variant_buckets(
+    *,
+    sport: str,
+    date_iso: str,
+    base_model: dict[str, Any],
+) -> dict[str, dict[str, Any]]:
+    sport = str(sport or "").upper()
+    keys = player_prop_variant_keys(sport)
+    raw_candidates = [
+        pick for pick in (base_model.get("picks") or [])
+        if isinstance(pick, dict) and str(pick.get("sport") or "").upper() == sport
+    ]
+    market_candidates = [pick for pick in raw_candidates if pick.get("market_priced") is True]
+    candidates = market_candidates or raw_candidates
+    buckets: dict[str, dict[str, Any]] = {}
+    for variant in VARIANT_ORDER:
+        model_key = keys[variant]
+        scored: list[dict[str, Any]] = []
+        for candidate in candidates:
+            choice = _choice_for_variant(candidate, variant)
+            if not choice:
+                continue
+            selection, probability, odds, implied, notes = choice
+            scored.append(
+                _variant_pick(
+                    candidate,
+                    model_key=model_key,
+                    variant=variant,
+                    selection=selection,
+                    probability=probability,
+                    odds=odds,
+                    implied=implied,
+                    notes=notes,
+                )
+            )
+        picks = _select_variant(scored, variant)
+        method_window = HISTORY_WINDOWS.get(sport, "prior seasons")
+        buckets[model_key] = {
+            "ok": bool(base_model.get("ok", True)),
+            "sport": sport,
+            "date": date_iso,
+            "games": int(base_model.get("games") or 0),
+            "picks": picks,
+            "errors": list(base_model.get("errors") or []),
+            "model": player_prop_variant_source(sport, variant),
+            "model_key": model_key,
+            "variant": variant,
+            "ranking_epoch": f"{sport}:{VARIANT_VERSION}:{variant}:{_variant_fingerprint()}",
+            "method": (
+                "Current-season player-prop ML and market edge"
+                if variant == "season"
+                else f"{method_window} roster-aware player outcome model"
+                if variant == "all_time"
+                else "Last-10 prop hit-rate selector with 50%+ hit-rate gate"
+                if variant == "hot_l10"
+                else "Opponent, position, pitcher, and direct H2H matchup selector"
+            ),
+            "candidate_count": len(candidates),
+            "scored_count": len(scored),
+            "abstained": bool(candidates and not picks),
+            "note": (
+                ""
+                if picks
+                else f"No {sport} {VARIANT_LABELS[variant]} prop cleared the publication edge gate."
+            ),
+        }
+    return buckets

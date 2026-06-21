@@ -558,7 +558,8 @@ def test_refresh_timing_and_pages_deploy_are_deterministic():
     assert 'CACHE_HEALTHY="$(python - <<\'PY\'' in guard
     assert 'models[key].get("ok") is True for key in required' in guard
     assert 'PLAYER_CACHE_HEALTHY="$(python - <<\'PY\'' in guard
-    assert 'int(mlb.get("games") or 0) > 0 and not (mlb.get("picks") or [])' in guard
+    assert 'key.startswith(("mlb_player_props_", "wnba_player_props_"))' in guard
+    assert 'int(bucket.get("games") or 0) > 0 and not (bucket.get("picks") or [])' in guard
 
 
 def test_refresh_workflows_commit_as_triggering_actor():

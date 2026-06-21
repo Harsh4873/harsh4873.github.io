@@ -70,16 +70,28 @@ jobs:
           import json
           from pathlib import Path
 
-          required = {"mlb_player_props", "nba_player_props", "wnba_player_props"}
+          required = {
+              "nba_player_props",
+              "mlb_player_props_season",
+              "mlb_player_props_all_time",
+              "mlb_player_props_hot_l10",
+              "mlb_player_props_matchup_h2h",
+              "wnba_player_props_season",
+              "wnba_player_props_all_time",
+              "wnba_player_props_hot_l10",
+              "wnba_player_props_matchup_h2h",
+          }
           try:
               payload = json.loads(Path("data/player_props_cache/latest.json").read_text(encoding="utf-8"))
           except Exception:
               payload = {}
           models = payload.get("models") if isinstance(payload.get("models"), dict) else {}
           healthy = all(isinstance(models.get(key), dict) and models[key].get("ok") is True for key in required)
-          mlb = models.get("mlb_player_props") if isinstance(models.get("mlb_player_props"), dict) else {}
-          if int(mlb.get("games") or 0) > 0 and not (mlb.get("picks") or []) and mlb.get("abstained") is not True:
-              healthy = False
+          for key in required:
+              bucket = models.get(key) if isinstance(models.get(key), dict) else {}
+              if key.startswith(("mlb_player_props_", "wnba_player_props_")):
+                  if int(bucket.get("games") or 0) > 0 and not (bucket.get("picks") or []) and bucket.get("abstained") is not True:
+                      healthy = False
           print("true" if healthy else "false")
           PY
           )"

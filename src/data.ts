@@ -122,6 +122,14 @@ const PLAYER_PROP_SOURCE_LABELS: Record<string, string> = {
   nba_player_props: 'NBAPlayerProps',
   mlb_player_props: 'MLBPlayerProps',
   wnba_player_props: 'WNBAPlayerProps',
+  mlb_player_props_season: 'MLB Season Props',
+  mlb_player_props_all_time: 'MLB All Time Props',
+  mlb_player_props_hot_l10: 'MLB Hot L10 Props',
+  mlb_player_props_matchup_h2h: 'MLB Matchup H2H Props',
+  wnba_player_props_season: 'WNBA Season Props',
+  wnba_player_props_all_time: 'WNBA All Time Props',
+  wnba_player_props_hot_l10: 'WNBA Hot L10 Props',
+  wnba_player_props_matchup_h2h: 'WNBA Matchup H2H Props',
 };
 
 let activePickMode: PickMode = 'team';

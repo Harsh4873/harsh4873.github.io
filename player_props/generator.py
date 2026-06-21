@@ -6,9 +6,10 @@ from datetime import datetime, timezone
 from typing import Any
 
 from .api import DirectApiClient
-from .basketball import generate_basketball_model
+from .basketball import generate_basketball_candidate_model, generate_basketball_model
 from .ml import assign_ml_ranks
-from .mlb import generate_mlb_model
+from .mlb import generate_mlb_candidate_model
+from .variants import build_variant_buckets
 
 
 def generate_payload(
@@ -19,15 +20,18 @@ def generate_payload(
 ) -> dict[str, Any]:
     api = client or DirectApiClient()
     timestamp = generated_at or datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+    wnba_candidates = generate_basketball_candidate_model(api, "wnba", "WNBA", date_iso)
+    mlb_candidates = generate_mlb_candidate_model(api, date_iso)
+    models = {
+        "nba_player_props": generate_basketball_model(api, "nba", "NBA", date_iso),
+        **build_variant_buckets(sport="WNBA", date_iso=date_iso, base_model=wnba_candidates),
+        **build_variant_buckets(sport="MLB", date_iso=date_iso, base_model=mlb_candidates),
+    }
     payload = {
         "date": date_iso,
         "generatedAt": timestamp,
         "updatedAt": timestamp,
-        "models": {
-            "nba_player_props": generate_basketball_model(api, "nba", "NBA", date_iso),
-            "wnba_player_props": generate_basketball_model(api, "wnba", "WNBA", date_iso),
-            "mlb_player_props": generate_mlb_model(api, date_iso),
-        },
+        "models": models,
     }
     for model in payload["models"].values():
         picks = model.get("picks")

@@ -4,7 +4,7 @@ Use **two scheduled cloud automations** on repo `Harsh4873/PickLedgerPro` / bran
 
 Delete or replace draft automations named `Harsh's Automation` if they have zero runs.
 
-For Codex upkeep in both tracks: never open the deployed website or a browser, run source/tests/upcheck checks only, and verify Player Props rankings stay split by the four consensus model buckets (`MLB HISTORY`, `MLB SEASON`, `WNBA HISTORY`, `WNBA SEASON`) with records scoped to each model's applicable sport.
+For Codex upkeep in both tracks: never open the deployed website or a browser, run source/tests/upcheck checks only, and verify Player Props rankings stay split by the eight published model buckets: Season, All Time, Hot (L10), and Matchup (H2H) for both MLB and WNBA.
 
 ## 1. Scores24 publish (required — GitHub Actions cannot scrape Scores24)
 
