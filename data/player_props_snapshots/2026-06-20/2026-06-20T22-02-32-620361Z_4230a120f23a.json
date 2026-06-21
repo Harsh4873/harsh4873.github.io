@@ -99,7 +99,7 @@
           "ranking_epoch": "MLB:player_props_consensus_v2.0.0:7bccb85a578fa233",
           "ranking_updated_at": "2026-06-20T22:02:32.620361Z",
           "reason": "The 2026 season model and roster-aware history model qualify this market; chronological validation/holdout accuracy is 71.1%/75.0%.",
-          "result": "pending",
+          "result": "loss",
           "scope": "player",
           "selection": "Under",
           "source": "PickLedgerPro In-House Player Props",
