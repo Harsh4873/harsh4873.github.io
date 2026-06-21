@@ -96168,7 +96168,7 @@
       "matchup": "San Francisco Giants @ Miami Marlins",
       "model_key": "mlb_player_props_all_time",
       "odds": 132.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Drew Gilbert Under 0.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -96267,12 +96267,12 @@
         "weather_factor": 1.0
       },
       "probability": 0.6507,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": 21.97,
       "raw_probability": 0.6507,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "MLB All Time Props",
       "sport": "MLB",
       "units": 1.0
@@ -99849,7 +99849,7 @@
       "matchup": "San Francisco Giants @ Miami Marlins",
       "model_key": "mlb_player_props_matchup_h2h",
       "odds": 183.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Xavier Edwards Under 0.5 Hits",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -99949,12 +99949,12 @@
         "weather_factor": 1.0
       },
       "probability": 0.8853,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": 53.19,
       "raw_probability": 0.8853,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "MLB Matchup (H2H) Props",
       "sport": "MLB",
       "units": 1.0
@@ -100093,7 +100093,7 @@
       "matchup": "San Francisco Giants @ Miami Marlins",
       "model_key": "mlb_player_props_matchup_h2h",
       "odds": 134.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Luis Arraez Over 1.5 Hits",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -100193,12 +100193,12 @@
         "weather_factor": 1.0
       },
       "probability": 0.8431,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": 41.57,
       "raw_probability": 0.8431,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "MLB Matchup (H2H) Props",
       "sport": "MLB",
       "units": 1.0
@@ -100828,7 +100828,7 @@
       "matchup": "San Francisco Giants @ Miami Marlins",
       "model_key": "mlb_player_props_matchup_h2h",
       "odds": 103.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Owen Caissie Under 0.5 Hits",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -100929,12 +100929,12 @@
         "weather_factor": 1.0
       },
       "probability": 0.8853,
-      "profit": null,
+      "profit": 1.03,
       "raw_decision": "BET",
       "raw_edge": 39.27,
       "raw_probability": 0.8853,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "MLB Matchup (H2H) Props",
       "sport": "MLB",
       "units": 1.0
@@ -101797,7 +101797,7 @@
       "matchup": "San Francisco Giants @ Miami Marlins",
       "model_key": "mlb_player_props_season",
       "odds": 126.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Ryan Gusto Under 3.5 Strikeouts",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -101891,12 +101891,12 @@
         "units": 1.0
       },
       "probability": 0.5225,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": 8.0,
       "raw_probability": 0.5225,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "MLB Season Props",
       "sport": "MLB",
       "units": 1.0
@@ -103828,7 +103828,7 @@
       "matchup": "San Francisco Giants @ Miami Marlins",
       "model_key": "scores24_mlb",
       "odds": -141.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "San Francisco Giants ML (San Francisco Giants @ Miami Marlins)",
       "pregame_snapshot": {
         "away_team": "San Francisco Giants",
@@ -103849,12 +103849,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "Scores24MLB",
       "sport": "MLB",
       "units": 1.0
@@ -104266,7 +104266,7 @@
       "matchup": "Miami Marlins vs San Francisco Giants",
       "model_key": "sportsgambler_mlb",
       "odds": 120.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Miami Marlins to Win (Miami Marlins vs San Francisco Giants)",
       "pregame_snapshot": {
         "date": "2026-06-21",
@@ -104282,12 +104282,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": 1.2,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "SportsGamblerMLB",
       "sport": "MLB",
       "units": 1.0
@@ -104684,7 +104684,7 @@
       "matchup": "Miami Marlins vs San Francisco Giants",
       "model_key": "sportytrader_mlb",
       "odds": -144.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Giants ML (Marlins vs Giants)",
       "pregame_snapshot": {
         "date": "2026-06-21",
@@ -104700,12 +104700,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "SportyTraderMLB",
       "sport": "MLB",
       "units": 1.0
@@ -110990,9 +110990,9 @@
   ],
   "schema_version": 1,
   "summary": {
-    "decided_picks": 1119,
-    "pending_picks": 870,
+    "decided_picks": 1127,
+    "pending_picks": 862,
     "total_picks": 2033,
-    "trainable_decided_picks": 717
+    "trainable_decided_picks": 722
   }
 }
