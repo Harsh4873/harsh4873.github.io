@@ -257,14 +257,20 @@ def test_player_mode_keeps_best_bets_available_and_prop_sources_separate():
     assert "playerResearchPool" in main
     assert "function playerRankingEpoch(" in main
     assert "function rankingComparablePicks(" in main
-    assert "const RANKING_WINDOW_DATES = 2" in main
+    assert "const RANKING_WINDOW_DATES = 1" in main
     assert "latestSlateDateKeys(picks)" in main
+    assert "function latestAvailableDateKey(" in main
+    assert "activePickMode === 'player' ? latestAvailableDateKey()" in main
     assert "function playerModelRank(" in main
     assert "return 10000 - modelRank" in main
+    assert "function consensusModelPanelHtml(" in main
+    assert "home-player-model-stack" in main
+    assert "Models</strong>" in main
     assert "Next-best player prop candidates" in main
     for source in ("NBAPlayerProps", "MLBPlayerProps", "WNBAPlayerProps"):
         assert source in data
     assert "playerProp && fallbackSource" in data
+    assert ".home-player-model-stack" in (ROOT / "src" / "styles" / "pickledger.css").read_text(encoding="utf-8")
 
 
 def test_home_filters_prioritize_primary_sports_and_use_more_menu():

@@ -106,7 +106,7 @@ let latestPicksUpdatedAt = '';
 const HOME_SCORE_TTL_MS = 45_000;
 const DISPLAY_TIME_ZONE = 'America/Chicago';
 const AUTO_REFRESH_MS = 5 * 60_000;
-const RANKING_WINDOW_DATES = 2;
+const RANKING_WINDOW_DATES = 1;
 const YOUR_BETS_STORAGE_KEY = 'pickledger_your_bets_v1';
 const PRIMARY_FILTERS = ['ALL', 'MLB', 'WNBA', 'FIFA WC'];
 let lastCentralDate = '';
@@ -186,6 +186,28 @@ function detailValues(value: unknown): string[] {
   return [String(value).trim()].filter(Boolean);
 }
 
+function consensusModelLabels(pick: Pick): string[] {
+  const raw = pick.consensus_models;
+  if (Array.isArray(raw)) {
+    return raw.map(value => String(value || '').trim()).filter(Boolean);
+  }
+  const count = Number(pick.consensus_model_count);
+  return Number.isFinite(count) && count > 0 ? [`${count} model consensus`] : [];
+}
+
+function consensusModelName(label: string): string {
+  return label.split(':', 1)[0].replace(/_/g, ' ').trim().toUpperCase();
+}
+
+function consensusModelPanelHtml(pick: Pick): string {
+  const models = consensusModelLabels(pick);
+  if (!models.length) return '';
+  return `<div class="home-player-model-stack">
+    <div class="home-player-model-stack-title">${models.length} ACTIVE MODELS</div>
+    <div class="home-player-model-list">${models.map(model => `<span title="${escapeHtml(model)}">${escapeHtml(consensusModelName(model))}</span>`).join('')}</div>
+  </div>`;
+}
+
 function formatPlayerMeasure(value: unknown, percent = false): string {
   if (value == null || value === '') return '';
   const number = Number(value);
@@ -215,11 +237,14 @@ function researchDetailsHtml(pick: Pick, expanded: boolean): string {
     : formatPlayerMeasure(kelly, true);
   const confidence = formatPlayerMeasure(pick.confidence, true);
   const { reason, factors } = pickExpandableDetails(pick);
-  const hasExtra = Boolean(reason || factors.length);
+  const modelPanel = activePickMode === 'player' ? consensusModelPanelHtml(pick) : '';
+  const modelCount = consensusModelLabels(pick).length;
+  const hasExtra = Boolean(reason || factors.length || modelPanel);
   if (!hasExtra && activePickMode !== 'player') return '';
   return `<div class="home-player-details">
     ${activePickMode === 'player' ? `<div class="home-player-metrics">
       <span class="home-player-decision decision-${escapeHtml(decision.toLowerCase())}">${escapeHtml(decision)}</span>
+      ${modelCount ? `<span><strong>Models</strong>${modelCount}</span>` : ''}
       ${quarterKelly ? `<span><strong>Quarter Kelly</strong>${escapeHtml(quarterKelly)}</span>` : ''}
       ${fullKelly ? `<span><strong>Full Kelly</strong>${escapeHtml(fullKelly)}</span>` : ''}
       ${!quarterKelly && !fullKelly && kellyText ? `<span><strong>Kelly</strong>${escapeHtml(kellyText)}</span>` : ''}
@@ -227,6 +252,7 @@ function researchDetailsHtml(pick: Pick, expanded: boolean): string {
     </div>` : ''}
     ${hasExtra ? `<div class="home-player-expand-control"><span data-player-expand-label>${expanded ? 'Hide research details' : 'Show research details'}</span><span class="home-player-expand-icon" aria-hidden="true">&#9662;</span></div>` : ''}
     ${hasExtra ? `<div class="home-player-extra">
+      ${modelPanel}
       ${reason ? `<div class="home-player-reason"><strong>Reason</strong><span>${escapeHtml(reason)}</span></div>` : ''}
       ${factors.length ? `<div class="home-player-factors"><strong>Key factors</strong><div>${factors.map(factor => `<span>${escapeHtml(factor)}</span>`).join('')}</div></div>` : ''}
     </div>` : ''}
@@ -259,6 +285,10 @@ function activePlayerRankingEpochs(): Map<string, string> {
 function rankingComparablePicks(picks: Pick[]): Pick[] {
   const dates = latestSlateDateKeys(picks);
   return dates.size ? picks.filter(pick => dates.has(pickDateKey(pick))) : picks;
+}
+
+function latestAvailableDateKey(picks = getAllPicks()): string {
+  return [...new Set(picks.map(pickDateKey).filter(Boolean))].sort().at(-1) || centralDateKey();
 }
 
 function playerModelRank(pick: Pick): number | null {
@@ -563,7 +593,9 @@ function compareHomePickRows(left: Pick, right: Pick): number {
 function ensureSelection(): void {
   const dates = [...new Set(getAllPicks().map(pickDateKey).filter(Boolean))].sort();
   const today = centralDateKey();
-  if (followCentralToday) selectedDate = today;
+  const latest = dates.at(-1) || today;
+  if (activePickMode === 'player') selectedDate = latest;
+  else if (followCentralToday) selectedDate = dates.includes(today) ? today : latest;
   else if (!dates.includes(selectedDate)) selectedDate = dates.at(-1) || today;
   if (!calendarMonth) calendarMonth = selectedDate.slice(0, 7);
 }
@@ -847,7 +879,7 @@ function bindPickCards(container: HTMLElement): void {
 }
 
 function updateOverallStats(): void {
-  const stats = statsFor(getAllPicks());
+  const stats = statsFor(activePickMode === 'player' ? rankingComparablePicks(getAllPicks()) : getAllPicks());
   const values: Record<string, string | number> = {
     'stat-picks': stats.total,
     'stat-wins': stats.wins,
@@ -865,8 +897,9 @@ function updateOverallStats(): void {
 }
 
 function renderRankings(): void {
+  const rankingPicks = rankingComparablePicks(getAllPicks()).filter(pick => pick.result !== 'pending');
   const bySource = new Map<string, Pick[]>();
-  rankingComparablePicks(getAllPicks()).forEach(pick => bySource.set(sourceName(pick), [...(bySource.get(sourceName(pick)) || []), pick]));
+  rankingPicks.forEach(pick => bySource.set(sourceName(pick), [...(bySource.get(sourceName(pick)) || []), pick]));
   const ranked = [...bySource.entries()].map(([source, picks]) => ({ source, picks, stats: statsFor(picks) }))
     .filter(item => item.stats.wins + item.stats.losses > 0)
     .sort((a, b) => (b.stats.roi ?? -999) - (a.stats.roi ?? -999) || b.stats.net - a.stats.net);
@@ -879,7 +912,7 @@ function renderRankings(): void {
         <div class="card-rank">${index + 1}</div><div class="card-name">${escapeHtml(item.source)}</div>
         <div class="score-bar-wrap"><div class="score-label"><span>ACCURACY</span><span class="score-val">${item.stats.winRate == null ? '—' : `${(item.stats.winRate * 100).toFixed(1)}%`} (${item.stats.wins}-${item.stats.losses})</span></div><div class="bar-bg"><div class="bar-fill bar-acc" style="width:${(item.stats.winRate || 0) * 100}%"></div></div></div>
         <div class="score-bar-wrap"><div class="score-label"><span>ROI</span><span class="score-val">${item.stats.roi == null ? '—' : `${(item.stats.roi * 100).toFixed(1)}%`} (${signedUnits(item.stats.net)})</span></div><div class="bar-bg"><div class="bar-fill bar-roi" style="width:${Math.max(0, Math.min(100, 50 + (item.stats.roi || 0) * 100))}%"></div></div></div>
-        <div class="algo-score"><div class="algo-score-val">${item.stats.total}</div><div class="algo-score-info">PICKS TRACKED<br>${item.stats.pending} OPEN</div></div>
+        <div class="algo-score"><div class="algo-score-val">${item.stats.total}</div><div class="algo-score-info">DECIDED PICKS<br>${dateLabel(latestAvailableDateKey(rankingComparablePicks(getAllPicks()))).toUpperCase()}</div></div>
         <div class="source-expand-control"><span data-source-expand-label>${expanded ? 'Hide period records' : 'View period records'}</span><span class="source-expand-icon" aria-hidden="true">&#9662;</span></div>
         <div class="source-deep-dive">
           <div class="trend-deep-title">PERIOD RECORDS</div>
@@ -891,11 +924,11 @@ function renderRankings(): void {
   }
 
   const bySport = new Map<string, Pick[]>();
-  rankingComparablePicks(getAllPicks()).forEach(pick => bySport.set(pick.sport, [...(bySport.get(pick.sport) || []), pick]));
+  rankingPicks.forEach(pick => bySport.set(pick.sport, [...(bySport.get(pick.sport) || []), pick]));
   const sportBoard = document.getElementById('sport-board');
   if (sportBoard) sportBoard.innerHTML = [...bySport.entries()].map(([sport, picks]) => {
     const stats = statsFor(picks);
-    return `<div class="sport-card"><div class="sport-name">${escapeHtml(sport)}</div><div class="sport-meta">${stats.wins}-${stats.losses}${stats.pushes ? `-${stats.pushes}` : ''} record<br>${stats.total} tracked picks</div><div class="sport-units ${stats.net >= 0 ? 'positive' : 'negative'}">${signedUnits(stats.net)}</div><div class="sport-meta">ROI ${stats.roi == null ? '—' : `${(stats.roi * 100).toFixed(1)}%`}</div></div>`;
+    return `<div class="sport-card"><div class="sport-name">${escapeHtml(sport)}</div><div class="sport-meta">${stats.wins}-${stats.losses}${stats.pushes ? `-${stats.pushes}` : ''} record<br>${stats.total} decided picks</div><div class="sport-units ${stats.net >= 0 ? 'positive' : 'negative'}">${signedUnits(stats.net)}</div><div class="sport-meta">ROI ${stats.roi == null ? '—' : `${(stats.roi * 100).toFixed(1)}%`}</div></div>`;
   }).join('');
 
   renderDayOfWeekTable();
@@ -1247,7 +1280,7 @@ function renderDaily(): void {
   if (!container) return;
   const dates = [...new Set(getAllPicks().map(pickDateKey).filter(Boolean))].sort();
   const today = centralDateKey();
-  const key = dates.includes(today) ? today : dates.at(-1) || today;
+  const key = activePickMode === 'player' ? latestAvailableDateKey() : dates.includes(today) ? today : dates.at(-1) || today;
   const picks = getAllPicks().filter(pick => pickDateKey(pick) === key);
   const stats = statsFor(picks);
   const pending = picks.filter(pick => pick.result === 'pending');
