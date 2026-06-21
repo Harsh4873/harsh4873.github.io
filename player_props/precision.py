@@ -470,6 +470,12 @@ def apply_precision_to_pick(pick: dict[str, Any]) -> dict[str, Any]:  # type: ig
     metadata = bundle.get("metadata") if isinstance(bundle.get("metadata"), dict) else {}
     model_map = metadata.get("models") if isinstance(metadata.get("models"), dict) else {}
     consensus_models = [f"{name}: {description}" for name, description in sorted(model_map.items())]
+    sport_model_prefix = f"{sport.lower()}_"
+    consensus_applicable_models = [
+        f"{name}: {description}"
+        for name, description in sorted(model_map.items())
+        if name.startswith(sport_model_prefix)
+    ]
     consensus_model_names = ", ".join(sorted(model_map)) or "season/history consensus"
     pick.update(
         {
@@ -513,6 +519,8 @@ def apply_precision_to_pick(pick: dict[str, Any]) -> dict[str, Any]:  # type: ig
             "consensus_score": safe_float(result.get("consensus_score")),
             "consensus_model_count": len(consensus_models),
             "consensus_models": consensus_models,
+            "consensus_applicable_models": consensus_applicable_models or consensus_models,
+            "consensus_record_models": consensus_applicable_models or consensus_models,
             "reason": (
                 f"The active four-model consensus suite qualifies this market through the "
                 f"{sport} season and roster-aware history voters; "

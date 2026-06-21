@@ -195,12 +195,27 @@ function consensusModelLabels(pick: Pick): string[] {
   return Number.isFinite(count) && count > 0 ? [`${count} model consensus`] : [];
 }
 
+function consensusApplicableModelLabels(pick: Pick): string[] {
+  for (const field of ['consensus_applicable_models', 'consensus_record_models']) {
+    const raw = pick[field];
+    if (Array.isArray(raw)) {
+      const labels = raw.map(value => String(value || '').trim()).filter(Boolean);
+      if (labels.length) return labels;
+    }
+  }
+  const sportPrefix = String(pick.sport || '').trim().toLowerCase();
+  const labels = consensusModelLabels(pick);
+  if (!sportPrefix) return labels;
+  const applicable = labels.filter(label => label.toLowerCase().startsWith(`${sportPrefix}_`));
+  return applicable.length ? applicable : labels;
+}
+
 function consensusModelName(label: string): string {
   return label.split(':', 1)[0].replace(/_/g, ' ').trim().toUpperCase();
 }
 
 function playerRankingNames(pick: Pick): string[] {
-  const names = consensusModelLabels(pick).map(consensusModelName).filter(Boolean);
+  const names = consensusApplicableModelLabels(pick).map(consensusModelName).filter(Boolean);
   return names.length ? [...new Set(names)] : [sourceName(pick)];
 }
 

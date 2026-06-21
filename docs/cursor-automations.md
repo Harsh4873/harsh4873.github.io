@@ -4,6 +4,8 @@ Use **two scheduled cloud automations** on repo `Harsh4873/PickLedgerPro` / bran
 
 Delete or replace draft automations named `Harsh's Automation` if they have zero runs.
 
+For Codex upkeep in both tracks: never open the deployed website or a browser, run source/tests/upcheck checks only, and verify Player Props rankings stay split by the four consensus model buckets (`MLB HISTORY`, `MLB SEASON`, `WNBA HISTORY`, `WNBA SEASON`) with records scoped to each model's applicable sport.
+
 ## 1. Scores24 publish (required — GitHub Actions cannot scrape Scores24)
 
 **Schedule (UTC cron):** `30 14 * * *` and `30 20 * * *` (~9:30 AM and 3:30 PM America/Chicago during CDT).
@@ -14,6 +16,8 @@ Delete or replace draft automations named `Harsh's Automation` if they have zero
 Run scripts/scrapers/scores24_publish.sh from the repo root on PickLedgerPro.
 
 Never open the deployed website or a browser to verify output.
+
+Run the Codex upkeep guard above before the final summary.
 
 After the script finishes, report:
 - exit code
@@ -34,6 +38,8 @@ If Scores24 blocks the cloud IP, say so clearly in the run summary. Do not add A
 Production upcheck for PickLedgerPro. Never open the deployed site or a browser.
 
 Sync main, run npm run upcheck, and python3 -m pytest tests/smoke/test_player_props.py tests/smoke/test_grader_dry_run.py tests/smoke/test_static_viewer.py -q.
+
+Run the Codex upkeep guard above and confirm Player Props rankings are model-bucketed with applicable-sport records, not duplicated whole-slate consensus records.
 
 Inspect latest GitHub Actions runs for model-cache-refresh, player-props-refresh, external-feed-refresh, auto-grade, and deploy-pages.
 

@@ -574,6 +574,8 @@ def test_four_model_consensus_clears_70_percent_on_validation_and_later_holdout(
     assert precision.precision_model_active("WNBA") is True
     source = (ROOT / "player_props" / "precision.py").read_text(encoding="utf-8")
     assert '"consensus_model_count": len(consensus_models)' in source
+    assert '"consensus_applicable_models": consensus_applicable_models or consensus_models' in source
+    assert '"consensus_record_models": consensus_applicable_models or consensus_models' in source
     assert "Four-model consensus suite active" in source
 
 

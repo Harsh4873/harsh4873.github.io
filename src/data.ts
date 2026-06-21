@@ -44,6 +44,8 @@ export interface Pick {
   ranking_epoch?: string | null;
   ranking_updated_at?: string | null;
   model_epoch?: string | null;
+  consensus_applicable_models?: unknown;
+  consensus_record_models?: unknown;
   [key: string]: unknown;
 }
 

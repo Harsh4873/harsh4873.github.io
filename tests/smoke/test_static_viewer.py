@@ -267,6 +267,8 @@ def test_player_mode_keeps_best_bets_available_and_prop_sources_separate():
     assert "function playerModelRank(" in main
     assert "return 10000 - modelRank" in main
     assert "function consensusModelPanelHtml(" in main
+    assert "function consensusApplicableModelLabels(" in main
+    assert "startsWith(`${sportPrefix}_`)" in main
     assert "function playerRankingNames(" in main
     assert "function rankingBucketNames(" in main
     assert "function addPickToRankingBuckets(" in main

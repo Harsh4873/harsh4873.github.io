@@ -45,13 +45,23 @@ def _consensus_models() -> list[str]:
     return _CONSENSUS_MODELS
 
 
+def _consensus_models_for_sport(sport: str) -> list[str]:
+    sport_prefix = f"{sport.strip().lower()}_"
+    return [label for label in _consensus_models() if label.lower().startswith(sport_prefix)]
+
+
 def _ensure_consensus_fields(pick: dict[str, Any]) -> dict[str, Any]:
     if str(pick.get("ml_model_version") or "").strip() != "player_props_consensus_v2.0.0":
         return pick
     models = _consensus_models()
+    sport = str(pick.get("sport") or "").strip().upper()
+    applicable_models = _consensus_models_for_sport(sport)
     if models:
         pick.setdefault("consensus_model_count", len(models))
         pick.setdefault("consensus_models", models)
+    if applicable_models:
+        pick.setdefault("consensus_applicable_models", applicable_models)
+        pick.setdefault("consensus_record_models", applicable_models)
     model_names = ", ".join(label.split(":", 1)[0] for label in models)
     if model_names:
         factors = pick.get("key_factors")
@@ -60,7 +70,6 @@ def _ensure_consensus_fields(pick: dict[str, Any]) -> dict[str, Any]:
         if not any("Four-model consensus suite active" in str(factor) for factor in factors):
             pick["key_factors"] = [f"Four-model consensus suite active: {model_names}", *factors]
     reason = str(pick.get("reason") or "")
-    sport = str(pick.get("sport") or "").strip().upper()
     if reason.startswith("The 2026 season model and roster-aware history model qualify this market"):
         pick["reason"] = reason.replace(
             "The 2026 season model and roster-aware history model qualify this market",
