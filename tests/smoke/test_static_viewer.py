@@ -188,7 +188,10 @@ def test_source_rankings_expand_period_records_and_static_cards_do_not_fake_clic
     for label in ("TODAY", "YESTERDAY", "LAST 7 DAYS", "ALL TIME"):
         assert f"label: '{label}'" in main
     assert "function isSettledPick(" in main
-    assert "latestSlateDateKeys(picks, RANKING_WINDOW_DATES, true)" in main
+    assert "const PLAYER_PROP_RANKING_START_DATE = '2026-06-20'" in main
+    assert "if (activePickMode !== 'player') return picks" in main
+    assert "date >= PLAYER_PROP_RANKING_START_DATE" in main
+    assert "function rankingWindowLabel(" in main
     assert "function picksForRankingBucket(" in main
     assert "sourceRecordLines(picksForRankingBucket(allPicks, item.source), centralDateKey())" in main
     assert 'data-source-card="${escapeHtml(item.source)}"' in main
@@ -264,8 +267,8 @@ def test_player_mode_keeps_best_bets_available_and_prop_sources_separate():
     assert "playerResearchPool" in main
     assert "function playerRankingEpoch(" in main
     assert "function rankingComparablePicks(" in main
-    assert "const RANKING_WINDOW_DATES = 1" in main
-    assert "latestSlateDateKeys(picks, RANKING_WINDOW_DATES, true)" in main
+    assert "const PLAYER_PROP_RANKING_START_DATE = '2026-06-20'" in main
+    assert "if (activePickMode !== 'player') return picks" in main
     assert "function latestAvailableDateKey(" in main
     assert "activePickMode === 'player' ? latestAvailableDateKey()" in main
     assert "function playerModelRank(" in main

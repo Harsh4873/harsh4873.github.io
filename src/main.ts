@@ -106,7 +106,7 @@ let latestPicksUpdatedAt = '';
 const HOME_SCORE_TTL_MS = 45_000;
 const DISPLAY_TIME_ZONE = 'America/Chicago';
 const AUTO_REFRESH_MS = 5 * 60_000;
-const RANKING_WINDOW_DATES = 1;
+const PLAYER_PROP_RANKING_START_DATE = '2026-06-20';
 const YOUR_BETS_STORAGE_KEY = 'pickledger_your_bets_v1';
 const PRIMARY_FILTERS = ['ALL', 'MLB', 'WNBA', 'FIFA WC'];
 let lastCentralDate = '';
@@ -321,10 +321,11 @@ function isSettledPick(pick: Pick): boolean {
 }
 
 function rankingComparablePicks(picks: Pick[]): Pick[] {
-  const settledDates = latestSlateDateKeys(picks, RANKING_WINDOW_DATES, true);
-  if (settledDates.size) return picks.filter(pick => settledDates.has(pickDateKey(pick)));
-  const dates = latestSlateDateKeys(picks);
-  return dates.size ? picks.filter(pick => dates.has(pickDateKey(pick))) : picks;
+  if (activePickMode !== 'player') return picks;
+  return picks.filter(pick => {
+    const date = pickDateKey(pick);
+    return date >= PLAYER_PROP_RANKING_START_DATE;
+  });
 }
 
 function latestAvailableDateKey(picks = getAllPicks()): string {
@@ -336,9 +337,10 @@ function playerModelRank(pick: Pick): number | null {
   return Number.isFinite(rank) && rank > 0 ? rank : null;
 }
 
-function latestSlateDateKeys(picks: Pick[], limit = RANKING_WINDOW_DATES, settledOnly = false): Set<string> {
-  const comparable = settledOnly ? picks.filter(isSettledPick) : picks;
-  return new Set([...new Set(comparable.map(pickDateKey).filter(Boolean))].sort().slice(-limit));
+function rankingWindowLabel(): string {
+  return activePickMode === 'player'
+    ? `SINCE ${dateLabel(PLAYER_PROP_RANKING_START_DATE).toUpperCase()}`
+    : 'ALL TIME';
 }
 
 function gameName(pick: Pick): string {
@@ -941,7 +943,7 @@ function renderRankings(): void {
   const allPicks = getAllPicks();
   const comparablePicks = rankingComparablePicks(allPicks);
   const rankingPicks = comparablePicks.filter(isSettledPick);
-  const rankingDate = latestAvailableDateKey(rankingPicks.length ? rankingPicks : comparablePicks);
+  const rankingScope = rankingWindowLabel();
   const rankingTitle = document.getElementById('source-rankings-title');
   const rankingSubtitle = document.getElementById('source-rankings-subtitle');
   const dowSubtitle = document.getElementById('dow-subtitle');
@@ -970,7 +972,7 @@ function renderRankings(): void {
         <div class="card-rank">${index + 1}</div><div class="card-name">${escapeHtml(item.source)}</div>
         <div class="score-bar-wrap"><div class="score-label"><span>ACCURACY</span><span class="score-val">${item.stats.winRate == null ? '—' : `${(item.stats.winRate * 100).toFixed(1)}%`} (${item.stats.wins}-${item.stats.losses})</span></div><div class="bar-bg"><div class="bar-fill bar-acc" style="width:${(item.stats.winRate || 0) * 100}%"></div></div></div>
         <div class="score-bar-wrap"><div class="score-label"><span>ROI</span><span class="score-val">${item.stats.roi == null ? '—' : `${(item.stats.roi * 100).toFixed(1)}%`} (${signedUnits(item.stats.net)})</span></div><div class="bar-bg"><div class="bar-fill bar-roi" style="width:${Math.max(0, Math.min(100, 50 + (item.stats.roi || 0) * 100))}%"></div></div></div>
-        <div class="algo-score"><div class="algo-score-val">${item.stats.total}</div><div class="algo-score-info">DECIDED PICKS<br>${dateLabel(rankingDate).toUpperCase()}</div></div>
+        <div class="algo-score"><div class="algo-score-val">${item.stats.total}</div><div class="algo-score-info">DECIDED PICKS<br>${escapeHtml(rankingScope)}</div></div>
         <div class="source-expand-control"><span data-source-expand-label>${expanded ? 'Hide period records' : 'View period records'}</span><span class="source-expand-icon" aria-hidden="true">&#9662;</span></div>
         <div class="source-deep-dive">
           <div class="trend-deep-title">PERIOD RECORDS</div>
