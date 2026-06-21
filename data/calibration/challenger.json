@@ -1,84 +1,60 @@
 {
-  "decided_count": 1444,
-  "evaluated_at": "2026-06-20T08:00:05.481820Z",
+  "decided_count": 1119,
+  "evaluated_at": "2026-06-21T09:00:18.439796Z",
   "global": {
-    "intercept": -0.2418122,
-    "samples": 1072,
+    "intercept": -0.1286487,
+    "samples": 717,
     "shrinkage_prior_samples": 120.0,
-    "slope": 0.51400702
+    "slope": 0.83757912
   },
   "groups": {
     "model:mlb_first_five|source:mlb first five|sport:mlb|bet:f5_side": {
-      "intercept": -0.09872755,
-      "samples": 87,
+      "intercept": -0.03685708,
+      "samples": 88,
       "shrinkage_prior_samples": 80.0,
-      "slope": 0.56885786
+      "slope": 0.8685964
     },
     "model:mlb_first_five|source:mlb first five|sport:mlb|bet:f5_total": {
-      "intercept": -0.20598342,
+      "intercept": -0.15086696,
       "samples": 103,
       "shrinkage_prior_samples": 80.0,
-      "slope": 0.52663303
+      "slope": 0.81895395
     },
     "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning": {
-      "intercept": -0.21332711,
-      "samples": 171,
+      "intercept": -0.16845162,
+      "samples": 172,
       "shrinkage_prior_samples": 80.0,
-      "slope": 0.5299504
+      "slope": 0.82563551
     },
     "model:mlb_new|source:mlb new|sport:mlb|bet:h2h": {
-      "intercept": -0.17893444,
+      "intercept": -0.10942201,
       "samples": 101,
       "shrinkage_prior_samples": 80.0,
-      "slope": 0.52447227
+      "slope": 0.83413137
     },
     "model:mlb_new|source:mlb new|sport:mlb|bet:totals": {
-      "intercept": -0.2432004,
+      "intercept": -0.18557379,
       "samples": 103,
       "shrinkage_prior_samples": 80.0,
-      "slope": 0.52071233
-    },
-    "model:mlb_player_props|source:pickledgerpro in-house player props|sport:mlb|bet:hits": {
-      "intercept": -0.24105173,
-      "samples": 30,
-      "shrinkage_prior_samples": 80.0,
-      "slope": 0.4837582
-    },
-    "model:mlb_player_props|source:pickledgerpro in-house player props|sport:mlb|bet:hits_runs_rbis": {
-      "intercept": -0.24044892,
-      "samples": 68,
-      "shrinkage_prior_samples": 80.0,
-      "slope": 0.49251386
-    },
-    "model:mlb_player_props|source:pickledgerpro in-house player props|sport:mlb|bet:rbis": {
-      "intercept": -0.39016709,
-      "samples": 131,
-      "shrinkage_prior_samples": 80.0,
-      "slope": 0.37295657
-    },
-    "model:mlb_player_props|source:pickledgerpro in-house player props|sport:mlb|bet:total_bases": {
-      "intercept": -0.31931606,
-      "samples": 66,
-      "shrinkage_prior_samples": 80.0,
-      "slope": 0.35611717
+      "slope": 0.80592136
     }
   },
   "holdout": {
     "challenger": {
-      "brier_score": 0.25084615,
-      "calibration_error": 0.05657079,
-      "log_loss": 0.69493298,
-      "qualified_bets": 7,
-      "roi": null,
-      "samples": 63
+      "brier_score": 0.27709463,
+      "calibration_error": 0.19061169,
+      "log_loss": 0.74996892,
+      "qualified_bets": 65,
+      "roi": 0.13621817,
+      "samples": 70
     },
     "champion": {
-      "brier_score": 0.25031307,
-      "calibration_error": 0.02832284,
-      "log_loss": 0.69387948,
-      "qualified_bets": 9,
-      "roi": null,
-      "samples": 63
+      "brier_score": 0.25591357,
+      "calibration_error": 0.20051146,
+      "log_loss": 0.70403719,
+      "qualified_bets": 35,
+      "roi": 0.08033229,
+      "samples": 70
     }
   },
   "minimum_group_samples": 30,
@@ -86,12 +62,12 @@
     "approved": false,
     "reasons": [
       "brier_improved=False",
-      "calibration_improved=False",
-      "log_loss_safe=True",
+      "calibration_improved=True",
+      "log_loss_safe=False",
       "roi_safe=True"
     ]
   },
   "schema_version": 1,
-  "trainable_decided_count": 1072,
-  "version": "cal-1444-2026-06-20"
+  "trainable_decided_count": 717,
+  "version": "cal-1119-2026-06-21"
 }
