@@ -42,6 +42,8 @@ REQUIRED_SCORES24_FEED_KEYS = {
     "scores24_mlb",
     "scores24_wnba",
 }
+TEAM_VISIBLE_DECISIONS = {"BET", "LEAN"}
+PLAYER_VISIBLE_DECISIONS = {"BET", "LEAN", "PASS"}
 
 
 def _read_json(path: Path) -> dict[str, Any] | None:
@@ -104,9 +106,102 @@ def _snapshot_player_prop_keys(date_iso: str) -> set[tuple[str, ...]]:
     return best_keys
 
 
+def _decision(pick: dict[str, Any]) -> str:
+    return str(pick.get("decision") or "").strip().upper()
+
+
+def _pick_text(pick: dict[str, Any]) -> str:
+    return str(pick.get("pick") or pick.get("selection") or pick.get("prop") or pick.get("bet") or "").strip()
+
+
+def _team_pick_key(pick: dict[str, Any], fallback_source: str) -> tuple[str, ...]:
+    return tuple(
+        str(value or "").strip().lower()
+        for value in (
+            pick.get("source") or fallback_source,
+            pick.get("sport"),
+            pick.get("date") or pick.get("game_date") or pick.get("slate_date") or pick.get("Date"),
+            _pick_text(pick),
+            pick.get("matchup"),
+            pick.get("game"),
+        )
+    )
+
+
+def _bucket_picks(bucket: Any) -> list[dict[str, Any]]:
+    if not isinstance(bucket, dict):
+        return []
+    return [pick for pick in bucket.get("picks") or [] if isinstance(pick, dict)]
+
+
+def _visible_team_picks(bucket: Any) -> list[dict[str, Any]]:
+    return [pick for pick in _bucket_picks(bucket) if _pick_text(pick) and _decision(pick) in TEAM_VISIBLE_DECISIONS]
+
+
+def _visible_player_picks(bucket: Any) -> list[dict[str, Any]]:
+    return [
+        pick
+        for pick in _bucket_picks(bucket)
+        if _pick_text(pick)
+        and _decision(pick) in PLAYER_VISIBLE_DECISIONS
+        and str(pick.get("scope") or "").strip().lower() == "player"
+    ]
+
+
+def _cache_contract_messages(cache_dir: Path, *, player_props: bool, today: str) -> tuple[list[str], list[str]]:
+    failures: list[str] = []
+    warnings: list[str] = []
+    manifest = _read_json(cache_dir / "index.json") or {}
+    files = [
+        file
+        for file in manifest.get("files") or []
+        if isinstance(file, str) and re.fullmatch(r"20\d\d-\d\d-\d\d\.json", file)
+    ]
+    for file in files:
+        payload = _read_json(cache_dir / file)
+        if not payload:
+            warnings.append(f"{cache_dir.name}/{file} is listed in manifest but is missing or invalid")
+            continue
+        date_iso = str(payload.get("date") or payload.get("slate_date") or file[:10]).strip()
+        models = payload.get("models") if isinstance(payload.get("models"), dict) else {}
+        id_counts: dict[tuple[str, str], int] = {}
+        duplicate_keys = 0
+        missing_dates = 0
+        for model_key, bucket in models.items():
+            picks = _bucket_picks(bucket)
+            market_counts: dict[tuple[str, ...], int] = {}
+            for pick in picks:
+                pick_id = str(pick.get("id") or "").strip()
+                if pick_id:
+                    id_key = (date_iso, pick_id)
+                    id_counts[id_key] = id_counts.get(id_key, 0) + 1
+                if not str(pick.get("date") or pick.get("game_date") or pick.get("slate_date") or pick.get("Date") or "").strip():
+                    missing_dates += 1
+                key = _player_prop_market_key(pick) if player_props else _team_pick_key(pick, str(model_key))
+                if any(key):
+                    market_counts[key] = market_counts.get(key, 0) + 1
+            duplicate_keys += sum(1 for count in market_counts.values() if count > 1)
+        duplicate_ids = sum(1 for count in id_counts.values() if count > 1)
+        if duplicate_ids:
+            message = f"{cache_dir.name}/{file} has {duplicate_ids} duplicate date/id pair(s)"
+            if date_iso == today:
+                failures.append(message)
+            else:
+                warnings.append(message)
+        if duplicate_keys:
+            warnings.append(f"{cache_dir.name}/{file} has {duplicate_keys} duplicate market key(s)")
+        if missing_dates:
+            warnings.append(
+                f"{cache_dir.name}/{file} has {missing_dates} pick row(s) without embedded dates; "
+                "the viewer falls back to the payload date"
+            )
+    return failures, warnings
+
+
 def main() -> int:
     args = _parse_args()
     failures: list[str] = []
+    warnings: list[str] = []
     today = datetime.now(ZoneInfo("America/Chicago")).strftime("%Y-%m-%d")
 
     latest = _read_json(MODEL_CACHE_DIR / "latest.json")
@@ -193,7 +288,16 @@ def main() -> int:
             if market_picks and any(str(pick.get("probability_source") or "") != "player_props_ml_v1" for pick in market_picks):
                 failures.append(f"player-props bucket {key} has market-priced picks without player_props_ml_v1 probability")
 
+    contract_failures, contract_warnings = _cache_contract_messages(MODEL_CACHE_DIR, player_props=False, today=today)
+    failures.extend(contract_failures)
+    warnings.extend(contract_warnings)
+    contract_failures, contract_warnings = _cache_contract_messages(PLAYER_PROPS_CACHE_DIR, player_props=True, today=today)
+    failures.extend(contract_failures)
+    warnings.extend(contract_warnings)
+
     if args.data_only:
+        for message in warnings:
+            print(f"[readiness] warning: {message}")
         for message in failures:
             print(f"[readiness] waiting: {message}")
         if failures:
@@ -219,13 +323,20 @@ def main() -> int:
         if ".ts" in dist_html:
             failures.append("built HTML still references TypeScript")
 
+    for message in warnings:
+        print(f"[upcheck] warning: {message}")
     for message in failures:
         print(f"[upcheck] failure: {message}")
     if failures:
         return 1
 
-    counts = {
+    team_counts = {
         key: len(bucket.get("picks") or [])
+        for key, bucket in models.items()
+        if key in REQUIRED_MODEL_KEYS and isinstance(bucket, dict)
+    }
+    team_visible_counts = {
+        key: len(_visible_team_picks(bucket))
         for key, bucket in models.items()
         if key in REQUIRED_MODEL_KEYS and isinstance(bucket, dict)
     }
@@ -234,7 +345,16 @@ def main() -> int:
         for key, bucket in player_models.items()
         if key in REQUIRED_PLAYER_PROP_KEYS and isinstance(bucket, dict)
     }
-    print(f"[upcheck] healthy for {today}: teams={counts}, player_props={player_counts}")
+    player_visible_counts = {
+        key: len(_visible_player_picks(bucket))
+        for key, bucket in player_models.items()
+        if key in REQUIRED_PLAYER_PROP_KEYS and isinstance(bucket, dict)
+    }
+    print(
+        f"[upcheck] healthy for {today}: "
+        f"teams_raw={team_counts}, teams_visible={team_visible_counts}, "
+        f"player_props_raw={player_counts}, player_props_visible={player_visible_counts}"
+    )
     return 0
 
 

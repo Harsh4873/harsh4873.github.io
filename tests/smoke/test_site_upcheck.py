@@ -128,3 +128,55 @@ def test_data_only_readiness_rejects_incomplete_scores24_bucket(tmp_path: Path):
 
     assert result.returncode == 1
     assert "scores24_fifa_world_cup failed" in result.stdout
+
+
+def test_upcheck_reports_raw_and_visible_pick_counts(tmp_path: Path):
+    today = datetime.now(ZoneInfo("America/Chicago")).strftime("%Y-%m-%d")
+    script = _upcheck_repo(tmp_path, today)
+    (tmp_path / "index.html").write_text(
+        '<link rel="stylesheet" href="./src/styles/pickledger.css">'
+        '<script type="module" src="./src/main.ts"></script>',
+        encoding="utf-8",
+    )
+    (tmp_path / "dist").mkdir()
+    (tmp_path / "dist" / "index.html").write_text(
+        '<link rel="stylesheet" href="/assets/index.css">'
+        '<script type="module" src="/assets/index.js"></script>',
+        encoding="utf-8",
+    )
+
+    model_payload_path = tmp_path / "data" / "model_cache" / "latest.json"
+    model_payload = json.loads(model_payload_path.read_text(encoding="utf-8"))
+    model_payload["models"]["mlb_new"]["picks"] = [
+        {"date": today, "sport": "MLB", "pick": "Raw pass", "decision": "PASS"},
+        {"date": today, "sport": "MLB", "pick": "Visible lean", "decision": "LEAN"},
+    ]
+    _write_json(model_payload_path, model_payload)
+    _write_json(tmp_path / "data" / "model_cache" / f"{today}.json", model_payload)
+
+    props_payload_path = tmp_path / "data" / "player_props_cache" / "latest.json"
+    props_payload = json.loads(props_payload_path.read_text(encoding="utf-8"))
+    props_payload["models"]["mlb_player_props_season"]["picks"] = [
+        {"date": today, "scope": "player", "sport": "MLB", "pick": "Visible pass", "decision": "PASS"},
+        {"date": today, "scope": "team", "sport": "MLB", "pick": "Hidden wrong scope", "decision": "BET"},
+    ]
+    _write_json(props_payload_path, props_payload)
+    _write_json(tmp_path / "data" / "player_props_cache" / f"{today}.json", props_payload)
+
+    result = subprocess.run(
+        [sys.executable, str(script)],
+        cwd=tmp_path,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0
+    assert "teams_raw=" in result.stdout
+    assert "teams_visible=" in result.stdout
+    assert "player_props_raw=" in result.stdout
+    assert "player_props_visible=" in result.stdout
+    assert "'mlb_new': 2" in result.stdout
+    assert "'mlb_new': 1" in result.stdout
+    assert "'mlb_player_props_season': 2" in result.stdout
+    assert "'mlb_player_props_season': 1" in result.stdout

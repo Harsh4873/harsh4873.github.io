@@ -29,6 +29,7 @@ from player_props.schema import safe_float  # noqa: E402
 
 DEFAULT_MARKETS = REPO_ROOT / "data" / "player_props_training" / "market_history_2026.jsonl"
 DEFAULT_OUTPUT = REPO_ROOT / "data" / "player_props_training" / "outcome_history_2022_2026.jsonl.gz"
+DEFAULT_MAX_FAILURE_RATE = 0.02
 SPORT_CONFIG = {
     "MLB": ("baseball", "mlb"),
     "WNBA": ("basketball", "wnba"),
@@ -42,6 +43,7 @@ def _arguments() -> argparse.Namespace:
     parser.add_argument("--seasons", default="2024,2025")
     parser.add_argument("--sports", default="MLB,WNBA")
     parser.add_argument("--max-workers", type=int, default=16)
+    parser.add_argument("--max-failure-rate", type=float, default=DEFAULT_MAX_FAILURE_RATE)
     parser.add_argument("--refresh", action="store_true", help="Refetch profiles already present in the output.")
     return parser.parse_args()
 
@@ -228,6 +230,31 @@ def _write(path: Path, rows: list[dict[str, Any]]) -> None:
             handle.write(json.dumps(row, sort_keys=True) + "\n")
 
 
+def _fetch_task_batch(
+    tasks: list[tuple[str, str, int]],
+    *,
+    max_workers: int,
+    rows: list[dict[str, Any]],
+    label: str,
+) -> list[dict[str, Any]]:
+    failures: list[dict[str, Any]] = []
+    if not tasks:
+        return failures
+    with ThreadPoolExecutor(max_workers=max(1, int(max_workers))) as executor:
+        futures = {executor.submit(_fetch, *task): task for task in tasks}
+        for index, future in enumerate(as_completed(futures), start=1):
+            sport, season, athlete_id, fetched, error = future.result()
+            rows.extend(fetched)
+            if error:
+                failures.append({"sport": sport, "season": season, "athlete_id": athlete_id, "error": error})
+            if index % 100 == 0 or index == len(tasks):
+                print(
+                    f"[outcome-history] {label} completed {index}/{len(tasks)} profiles; "
+                    f"rows={len(rows)}; failures={len(failures)}"
+                )
+    return failures
+
+
 def main() -> int:
     args = _arguments()
     seasons = sorted({int(value.strip()) for value in str(args.seasons).split(",") if value.strip()})
@@ -245,26 +272,54 @@ def main() -> int:
         if args.refresh or (sport, season, athlete_id) not in completed
     ]
     rows = list(existing)
-    failures: list[dict[str, Any]] = []
-    with ThreadPoolExecutor(max_workers=max(1, int(args.max_workers))) as executor:
-        futures = {executor.submit(_fetch, *task): task for task in tasks}
-        for index, future in enumerate(as_completed(futures), start=1):
-            sport, season, athlete_id, fetched, error = future.result()
-            rows.extend(fetched)
-            if error:
-                failures.append({"sport": sport, "season": season, "athlete_id": athlete_id, "error": error})
-            if index % 100 == 0 or index == len(tasks):
-                print(f"[outcome-history] completed {index}/{len(tasks)} profiles; rows={len(rows)}; failures={len(failures)}")
+    failures = _fetch_task_batch(
+        tasks,
+        max_workers=max(1, int(args.max_workers)),
+        rows=rows,
+        label="primary",
+    )
+    if failures:
+        retry_tasks = [
+            (str(failure["sport"]), str(failure["athlete_id"]), int(failure["season"]))
+            for failure in failures
+        ]
+        retry_workers = max(1, min(len(retry_tasks), max(1, int(args.max_workers) // 4)))
+        print(f"[outcome-history] retrying {len(retry_tasks)} failed profile(s) with {retry_workers} worker(s)")
+        failures = _fetch_task_batch(
+            retry_tasks,
+            max_workers=retry_workers,
+            rows=rows,
+            label="retry",
+        )
     _write(args.output.resolve(), rows)
+    failure_rate = len(failures) / len(tasks) if tasks else 0.0
+    ok = bool(rows) and failure_rate <= max(0.0, float(args.max_failure_rate))
+    if failures and ok:
+        print(
+            "[outcome-history] warning: accepted partial history refresh "
+            f"with {len(failures)}/{len(tasks)} profile failure(s) "
+            f"({failure_rate:.2%}; threshold={float(args.max_failure_rate):.2%})"
+        )
+    elif failures:
+        print(
+            "[outcome-history] failure: too many profile failures after retry "
+            f"({len(failures)}/{len(tasks)}; {failure_rate:.2%}; "
+            f"threshold={float(args.max_failure_rate):.2%})"
+        )
+    if not rows:
+        print("[outcome-history] failure: output would be empty")
     print(json.dumps({
-        "ok": not failures,
+        "ok": ok,
         "output": str(args.output.resolve()),
         "rows": len(rows),
         "athletes": {sport: len(values) for sport, values in athletes.items()},
         "seasons": seasons,
+        "profiles": len(tasks),
+        "failureRate": failure_rate,
+        "maxFailureRate": float(args.max_failure_rate),
         "failures": failures,
     }, indent=2))
-    return 1 if failures else 0
+    return 0 if ok else 1
 
 
 if __name__ == "__main__":
