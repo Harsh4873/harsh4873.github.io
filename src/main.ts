@@ -48,6 +48,7 @@ type DailySourceForm = {
 };
 
 type DailyView = 'picks' | 'consensus' | 'sources' | 'research';
+type DailySort = 'time' | 'percentage';
 type DailyViewOption = {
   key: DailyView;
   label: string;
@@ -90,6 +91,7 @@ let activeFilter = 'ALL';
 let activePickMode: PickMode = 'team';
 let homeMode: 'pending' | 'all' | 'settled' = 'pending';
 let dailyView: DailyView = 'picks';
+let dailySort: DailySort = 'time';
 let selectedDate = '';
 let followCentralToday = true;
 let calendarMonth = '';
@@ -1230,6 +1232,47 @@ function dailyPickScore(pick: Pick, forms: Map<string, DailySourceForm>): number
     + (dailyDecision(pick) === 'BET' ? 8 : dailyDecision(pick) === 'LEAN' ? 2 : 0);
 }
 
+function dailyGroupPercentage(group: DailyPickGroup): number {
+  const probability = pickProbability(group.primary);
+  if (probability != null) return probability;
+  return group.score / 100;
+}
+
+function compareDailyGroupPercentage(left: DailyPickGroup, right: DailyPickGroup): number {
+  return dailyGroupPercentage(right) - dailyGroupPercentage(left)
+    || comparePickActionableStart(left.primary, right.primary)
+    || right.picks.length - left.picks.length;
+}
+
+function compareDailyGroupTime(left: DailyPickGroup, right: DailyPickGroup): number {
+  return comparePickActionableStart(left.primary, right.primary)
+    || compareDailyGroupPercentage(left, right)
+    || right.picks.length - left.picks.length;
+}
+
+function sortDailyGroups(groups: DailyPickGroup[]): DailyPickGroup[] {
+  return [...groups].sort(dailySort === 'percentage' ? compareDailyGroupPercentage : compareDailyGroupTime);
+}
+
+function compareDailySourceForms(left: DailySourceForm, right: DailySourceForm): number {
+  if (dailySort === 'time') {
+    return comparePickActionableStart(left.todayBets[0], right.todayBets[0]) || right.score - left.score;
+  }
+  return right.score - left.score || comparePickActionableStart(left.todayBets[0], right.todayBets[0]);
+}
+
+function compareDailyConsensusSignal(
+  left: { signal: TrendSignalGroup; game: Pick },
+  right: { signal: TrendSignalGroup; game: Pick },
+): number {
+  if (dailySort === 'time') {
+    return comparePickActionableStart(left.game, right.game) || right.signal.picks.length - left.signal.picks.length;
+  }
+  return (pickProbability(right.game) || 0) - (pickProbability(left.game) || 0)
+    || right.signal.picks.length - left.signal.picks.length
+    || comparePickActionableStart(left.game, right.game);
+}
+
 function dailyPickGroups(
   picks: Pick[],
   tagById: Map<string, Set<string>>,
@@ -1319,7 +1362,7 @@ function dailyConsensusCards(picks: Pick[]): string {
   const matching = [...games.values()].flatMap(gamePicks => trendSignalGroups(gamePicks)
     .filter(signal => signal.matching)
     .map(signal => ({ signal, game: gamePicks[0] })))
-    .sort((a, b) => comparePickActionableStart(a.game, b.game) || b.signal.picks.length - a.signal.picks.length);
+    .sort(compareDailyConsensusSignal);
   if (!matching.length) return '<div class="daily-empty"><div class="daily-empty-title">No true consensus yet</div><div class="daily-empty-sub">Two independent sources must make the same market selection.</div></div>';
   return `<div class="daily-consensus-grid">${matching.map(({ signal, game }) => {
     const details = pickExpandableDetails(game);
@@ -1333,6 +1376,13 @@ function setDailyView(view: string): void {
   if (activePickMode === 'player' && view === 'consensus') view = 'picks';
   if (view === 'picks' || view === 'consensus' || view === 'sources' || view === 'research') {
     dailyView = view;
+    renderDaily();
+  }
+}
+
+function setDailySort(sort: string): void {
+  if (sort === 'time' || sort === 'percentage') {
+    dailySort = sort;
     renderDaily();
   }
 }
@@ -1374,7 +1424,7 @@ function renderDaily(): void {
     [...modelBets, ...valueZone, ...probabilityLeaders.filter(pick => dailyDecision(pick) === 'BET')]
       .map(pick => [pick.id, pick]),
   ).values()];
-  const topGroups = dailyPickGroups(topCandidates, tagsById, formsBySource, pending);
+  const topGroups = sortDailyGroups(dailyPickGroups(topCandidates, tagsById, formsBySource, pending));
   const topKeys = new Set(topGroups.map(group => group.key));
   const playerResearchPool = activePickMode === 'player'
     ? uniqueDailyPicks(ranked(pending.filter(pick => !topKeys.has(dailyPickKey(pick)) && (
@@ -1390,9 +1440,9 @@ function renderDaily(): void {
       .filter(pick => !topKeys.has(dailyPickKey(pick)))
       .map(pick => [pick.id, pick]),
   ).values()];
-  const researchGroups = dailyPickGroups(researchCandidates, tagsById, formsBySource, pending);
+  const researchGroups = sortDailyGroups(dailyPickGroups(researchCandidates, tagsById, formsBySource, pending));
   const hotForms = forms.filter(form => form.todayBets.length)
-    .sort((a, b) => comparePickActionableStart(a.todayBets[0], b.todayBets[0]) || b.score - a.score)
+    .sort(compareDailySourceForms)
     .slice(0, 8);
   const games = new Map<string, Pick[]>();
   pending.forEach(pick => games.set(gameKey(pick), [...(games.get(gameKey(pick)) || []), pick]));
@@ -1405,6 +1455,11 @@ function renderDaily(): void {
   ];
   const viewOptions = viewOptionsBase.filter(option => activePickMode !== 'player' || option.key !== 'consensus');
   const activeView = viewOptions.find(option => option.key === dailyView) || viewOptions[0];
+  const sortOptions: Array<{ key: DailySort; label: string; description: string }> = [
+    { key: 'time', label: 'By Time', description: 'Upcoming first' },
+    { key: 'percentage', label: 'By Percentage', description: 'Highest model % first' },
+  ];
+  const activeSort = sortOptions.find(option => option.key === dailySort) || sortOptions[0];
   const dailyFocus = activePickMode === 'player' ? 'top picks, sources, or research' : 'picks, consensus, sources, or research';
   const researchSubtitle = activePickMode === 'player'
     ? 'Next-best player prop candidates and lean/pass research, excluding anything already in Top Picks.'
@@ -1419,9 +1474,12 @@ function renderDaily(): void {
 
   container.innerHTML = `<div class="daily-hero"><div class="daily-hero-row"><div><div class="daily-eyebrow">TODAY'S QUICK READ</div><div class="daily-title">The Shortlist</div><div class="daily-sub">${escapeHtml(dateLabel(key, true))} | Each unique market appears once. Choose a view to focus on ${dailyFocus}.</div></div><div class="daily-clock-wrap"><div class="daily-clock-label">PICKS FOR</div><div class="daily-clock">${escapeHtml(key)}</div></div></div></div>
     <div class="daily-view-shell">
-      <div class="daily-view-copy"><div class="daily-view-eyebrow">CHOOSE A VIEW</div><div class="daily-view-title">${escapeHtml(activeView.label)}</div><div class="daily-view-description">${escapeHtml(activeView.description)}. ${stats.pending} picks remain open; ${priceyCount} are pricey favorites.</div></div>
+      <div class="daily-view-copy"><div class="daily-view-eyebrow">CHOOSE A VIEW</div><div class="daily-view-title">${escapeHtml(activeView.label)}</div><div class="daily-view-description">${escapeHtml(activeView.description)}. Sorted ${escapeHtml(activeSort.label.toLowerCase())}; ${stats.pending} picks remain open and ${priceyCount} are pricey favorites.</div></div>
       <div class="daily-view-nav" role="tablist" aria-label="Daily shortlist categories">${viewOptions.map(option => `<button class="daily-view-tab ${dailyView === option.key ? 'active' : ''}" type="button" role="tab" aria-selected="${dailyView === option.key}" onclick="setDailyView('${option.key}')"><span class="daily-view-tab-count">${option.count}</span><span class="daily-view-tab-label">${option.label}</span><span class="daily-view-tab-desc">${option.description}</span></button>`).join('')}</div>
-      <label class="daily-view-select-wrap"><span>Daily category</span><select class="daily-view-select" onchange="setDailyView(this.value)">${viewOptions.map(option => `<option value="${option.key}" ${dailyView === option.key ? 'selected' : ''}>${option.label} (${option.count})</option>`).join('')}</select></label>
+      <div class="daily-controls-row">
+        <label class="daily-view-select-wrap"><span>Daily category</span><select class="daily-view-select" onchange="setDailyView(this.value)">${viewOptions.map(option => `<option value="${option.key}" ${dailyView === option.key ? 'selected' : ''}>${option.label} (${option.count})</option>`).join('')}</select></label>
+        <div class="daily-sort-control" role="group" aria-label="Sort best bets">${sortOptions.map(option => `<button type="button" class="${dailySort === option.key ? 'active' : ''}" onclick="setDailySort('${option.key}')"><span>${escapeHtml(option.label)}</span><small>${escapeHtml(option.description)}</small></button>`).join('')}</div>
+      </div>
     </div>
     <div class="daily-active-content">${activeBody}</div>
     <div class="daily-disclaimer"><strong>Quick read, not a blind card.</strong> Model probability estimates the chance of winning. Edge compares that chance with the market price. Recent records and consensus add context, but none guarantees the next result. Duplicate market cards are merged, with every contributing source shown inside the card.</div>`;
@@ -2149,6 +2207,7 @@ Object.assign(window, {
   goHome,
   setHomeResultMode,
   setDailyView,
+  setDailySort,
   toggleHomeDatePicker,
   refreshAutoGrades,
   renderSearch,

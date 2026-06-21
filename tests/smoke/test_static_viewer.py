@@ -222,6 +222,15 @@ def test_daily_tab_uses_focused_views_and_merges_duplicate_markets():
     assert "function dailyPickScore(" in main
     assert "function dailyPickKey(" in main
     assert "function dailyPickGroups(" in main
+    assert "type DailySort = 'time' | 'percentage'" in main
+    assert "let dailySort: DailySort = 'time'" in main
+    assert "function setDailySort(" in main
+    assert "function sortDailyGroups(" in main
+    assert "function compareDailyGroupTime(" in main
+    assert "function compareDailyGroupPercentage(" in main
+    assert "role=\"group\" aria-label=\"Sort best bets\"" in main
+    assert "By Time" in main
+    assert "By Percentage" in main
     assert "allPicks: Pick[] = picks" in main
     assert "uniqueDailyPicks(ranked(pending.filter" in main
     assert "function dailyConsensusCards(" in main
@@ -241,6 +250,7 @@ def test_daily_tab_uses_focused_views_and_merges_duplicate_markets():
     assert ".daily-consensus-card" in css
     assert ".daily-view-nav" in css
     assert ".daily-view-select-wrap" in css
+    assert ".daily-sort-control" in css
     assert ".daily-pick-source-list" in css
     assert "daily-slate-grid" not in main
 
@@ -361,6 +371,7 @@ def test_tab_ordering_prioritizes_home_start_time_and_actionable_picks_elsewhere
         "function startBucket(",
         "function compareActionableStart(",
         "function comparePickActionableStart(",
+        "function compareDailyConsensusSignal(",
         "function compareHomePickRows(",
     ):
         assert helper in main
@@ -373,7 +384,7 @@ def test_tab_ordering_prioritizes_home_start_time_and_actionable_picks_elsewhere
     assert "(pickProbability(right) || 0) - (pickProbability(left) || 0)" in main
     assert ".sort(comparePickActionableStart);" in main
     assert "comparePickActionableStart(a.primary, b.primary)" in main
-    assert "comparePickActionableStart(a.game, b.game)" in main
+    assert "comparePickActionableStart(left.game, right.game)" in main
     assert ".sort(comparePickActionableStart));" in main
 
 

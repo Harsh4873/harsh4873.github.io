@@ -2127,7 +2127,56 @@
   .daily-view-tab-count { display: block; font-family: 'Bebas Neue', sans-serif; font-size: 34px; line-height: 1; color: var(--accent); }
   .daily-view-tab-label { display: block; margin-top: 6px; font-size: 13px; font-weight: 700; color: var(--text); }
   .daily-view-tab-desc { display: block; margin-top: 4px; font-family: 'DM Mono', monospace; font-size: 9px; line-height: 1.35; color: var(--muted); }
+  .daily-controls-row {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+  }
   .daily-view-select-wrap { display: none; }
+  .daily-sort-control {
+    display: inline-flex;
+    align-items: stretch;
+    gap: 6px;
+    padding: 4px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: rgba(0,0,0,0.12);
+  }
+  .daily-sort-control button {
+    min-width: 126px;
+    padding: 8px 11px;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    background: transparent;
+    color: var(--muted);
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.18s, border-color 0.18s, color 0.18s;
+  }
+  .daily-sort-control button span {
+    display: block;
+    font-size: 12px;
+    font-weight: 800;
+    color: inherit;
+  }
+  .daily-sort-control button small {
+    display: block;
+    margin-top: 2px;
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.6px;
+    color: inherit;
+    opacity: 0.78;
+  }
+  .daily-sort-control button.active {
+    border-color: rgba(0,229,160,0.28);
+    background: rgba(0,229,160,0.12);
+    color: var(--accent);
+  }
+  .daily-sort-control button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .daily-active-content { margin-top: 20px; }
   .daily-section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; margin: 0 0 16px; flex-wrap: wrap; }
   .daily-section-title { font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 1.8px; color: var(--text); }
@@ -2678,6 +2727,7 @@
   body[data-theme="light"] .daily-view-shell { background: linear-gradient(150deg, rgba(52,121,216,0.05), rgba(11,157,116,0.03)), #ffffff; }
   body[data-theme="light"] .daily-view-tab { background: #f7f9fc; }
   body[data-theme="light"] .daily-view-tab.active { background: linear-gradient(145deg, rgba(11,157,116,0.1), rgba(52,121,216,0.07)); }
+  body[data-theme="light"] .daily-sort-control { background: #f7f9fc; }
   body[data-theme="light"] .daily-pick-source-row { background: #f7f9fc; }
 
   @media (max-width: 720px) {
@@ -2703,8 +2753,11 @@
     .daily-hero { padding: 20px; }
     .daily-view-shell { padding: 16px; }
     .daily-view-nav { display: none; }
+    .daily-controls-row { align-items: stretch; }
     .daily-view-select-wrap { display: flex; flex-direction: column; gap: 7px; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; }
     .daily-view-select { width: 100%; min-height: 46px; padding: 0 13px; border: 1px solid var(--border); border-radius: 12px; background: var(--card); color: var(--text); font: 600 12px 'DM Sans', sans-serif; }
+    .daily-sort-control { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; }
+    .daily-sort-control button { min-width: 0; text-align: center; }
     .daily-bet-grid, .daily-model-grid, .daily-consensus-grid { grid-template-columns: 1fr; }
     .daily-bet-top { grid-template-columns: 1fr; }
     .daily-bet-score { text-align: left; }
