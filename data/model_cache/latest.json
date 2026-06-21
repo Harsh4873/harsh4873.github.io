@@ -19953,7 +19953,7 @@
           "game": "Pittsburgh Pirates @ Colorado Rockies",
           "game_id": "824343",
           "game_order": 9,
-          "game_start_time": "2026-06-21T19:10:00Z",
+          "game_start_time": "2026-06-21T19:10Z",
           "home_team": "Colorado Rockies",
           "league": "MLB",
           "line": 5.5,
@@ -20003,7 +20003,7 @@
           "raw_probability": 0.6848,
           "source": "MLB First Five",
           "sport": "MLB",
-          "start_time": "2026-06-21T19:10:00Z",
+          "start_time": "2026-06-21T19:10Z",
           "team": ""
         },
         {
@@ -26621,6 +26621,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "push",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-21-06-2026-chicago-cubs-toronto-blue-jays-prediction",
           "sport": "MLB",
@@ -27337,6 +27338,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "push",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-21T18:20Z",
@@ -27347,6 +27349,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Texas Rangers vs San Diego Padres",
+          "game_start_time": "2026-06-21T18:35Z",
           "matchup": "Texas Rangers vs San Diego Padres",
           "odds": -154,
           "pick": "Texas Rangers to Win (Texas Rangers vs San Diego Padres)",
@@ -27366,6 +27369,7 @@
           "probability": null,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-06-21T18:35Z",
           "units": 1
         },
         {
@@ -27401,6 +27405,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Athletics vs Los Angeles Angels",
+          "game_start_time": "2026-06-21T20:05Z",
           "matchup": "Athletics vs Los Angeles Angels",
           "odds": 107,
           "pick": "Los Angeles Angels to Win (Athletics vs Los Angeles Angels)",
@@ -27420,6 +27425,7 @@
           "probability": null,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-06-21T20:05Z",
           "units": 1
         },
         {
@@ -27750,6 +27756,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Miami Marlins vs San Francisco Giants",
+          "game_start_time": "2026-06-21T17:40Z",
           "matchup": "Miami Marlins vs San Francisco Giants",
           "odds": -144,
           "pick": "Giants ML (Marlins vs Giants)",
@@ -27769,6 +27776,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-21T17:40Z",
           "units": 1
         },
         {
@@ -27776,6 +27784,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Detroit Tigers vs Chicago White Sox",
+          "game_start_time": "2026-06-21T17:40Z",
           "matchup": "Detroit Tigers vs Chicago White Sox",
           "odds": -116,
           "pick": "Tigers ML (Tigers vs White Sox)",
@@ -27795,6 +27804,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-21T17:40Z",
           "units": 1
         },
         {
@@ -27858,6 +27868,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Texas Rangers vs San Diego Padres",
+          "game_start_time": "2026-06-21T18:35Z",
           "matchup": "Texas Rangers vs San Diego Padres",
           "odds": 125,
           "pick": "The Padres ML (Rangers vs Padres)",
@@ -27877,6 +27888,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-21T18:35Z",
           "units": 1
         },
         {
@@ -27884,6 +27896,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Colorado Rockies vs Pittsburgh Pirates",
+          "game_start_time": "2026-06-21T19:10Z",
           "matchup": "Colorado Rockies vs Pittsburgh Pirates",
           "odds": 122,
           "pick": "Rockies ML (Rockies vs Pirates)",
@@ -27903,6 +27916,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-21T19:10Z",
           "units": 1
         },
         {
@@ -28574,6 +28588,7 @@
           "decision": "LEAN",
           "edge": 4.25,
           "game": "New York Liberty @ Los Angeles Sparks",
+          "game_start_time": "2026-06-22T00:00Z",
           "guardrail_reasons": [],
           "h2h_games": 0,
           "has_market_price": true,
@@ -28633,6 +28648,7 @@
           "selection": "New York Liberty",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-22T00:00Z",
           "starters_out": [],
           "starters_questionable": [],
           "team": "New York Liberty",
