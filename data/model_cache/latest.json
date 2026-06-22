@@ -12265,6 +12265,7 @@
           "projected_home_goals": 1.649,
           "projected_total": 2.4,
           "reason": "Projected goals Austria 0.75, Argentina 1.65 from the two attacking engines against the opposing defensive units.",
+          "result": "win",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-06-22T17:00Z",
@@ -16952,7 +16953,7 @@
           "game": "Houston Astros @ Toronto Blue Jays",
           "game_id": "822800",
           "game_order": 4,
-          "game_start_time": "2026-06-22T23:07:00Z",
+          "game_start_time": "2026-06-22T23:07Z",
           "home_team": "Toronto Blue Jays",
           "league": "MLB",
           "line": 4.5,
@@ -17002,7 +17003,7 @@
           "raw_probability": 0.6867,
           "source": "MLB First Five",
           "sport": "MLB",
-          "start_time": "2026-06-22T23:07:00Z",
+          "start_time": "2026-06-22T23:07Z",
           "team": ""
         },
         {
@@ -20893,6 +20894,7 @@
           },
           "decision": "BET",
           "edge": 17.89,
+          "game_start_time": "2026-06-22T22:40Z",
           "home_team": "Tampa Bay Rays",
           "market_pick_prob": null,
           "market_type": "h2h",
@@ -20921,6 +20923,7 @@
           "raw_units": 1.5,
           "source": "MLB Model",
           "sport": "MLB",
+          "start_time": "2026-06-22T22:40Z",
           "team": "Rays",
           "units": 0.75
         },
@@ -23064,6 +23067,7 @@
           "odds": -172,
           "pick": "Argentina To Win (Argentina vs Austria)",
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerFIFAWorldCup",
           "sport": "FIFA WC",
           "start_time": "2026-06-22T17:00Z",
@@ -23803,6 +23807,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Washington Nationals vs Philadelphia Phillies",
+          "game_start_time": "2026-06-22T22:45Z",
           "matchup": "Washington Nationals vs Philadelphia Phillies",
           "odds": 100,
           "pick": "Phillies ML (Nationals vs Phillies)",
@@ -23822,6 +23827,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-22T22:45Z",
           "units": 1
         },
         {
@@ -24008,6 +24014,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Connecticut Sun vs Chicago Sky",
+          "game_start_time": "2026-06-22T23:00Z",
           "matchup": "Connecticut Sun vs Chicago Sky",
           "odds": -182,
           "pick": "Over 165.5 (Sun vs Sky)",
@@ -24027,6 +24034,7 @@
           "probability": null,
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
+          "start_time": "2026-06-22T23:00Z",
           "units": 1
         },
         {
@@ -24034,6 +24042,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Atlanta Dream vs Toronto Tempo",
+          "game_start_time": "2026-06-22T23:30Z",
           "matchup": "Atlanta Dream vs Toronto Tempo",
           "odds": -182,
           "pick": "Atlanta Dream on the -10.5 line (Dream vs Tempo)",
@@ -24053,6 +24062,7 @@
           "probability": null,
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
+          "start_time": "2026-06-22T23:30Z",
           "units": 1
         },
         {
@@ -24060,6 +24070,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Indiana Fever vs Phoenix Mercury",
+          "game_start_time": "2026-06-23T00:00Z",
           "matchup": "Indiana Fever vs Phoenix Mercury",
           "odds": -149,
           "pick": "Indiana Fever on the -5.5 line (Fever vs Mercury)",
@@ -24079,6 +24090,7 @@
           "probability": null,
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
+          "start_time": "2026-06-23T00:00Z",
           "units": 1
         },
         {
@@ -24086,6 +24098,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Seattle Storm vs Dallas Wings",
+          "game_start_time": "2026-06-23T02:00Z",
           "matchup": "Seattle Storm vs Dallas Wings",
           "odds": -180,
           "pick": "Under 174.5 (Storm vs Wings)",
@@ -24105,6 +24118,7 @@
           "probability": null,
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
+          "start_time": "2026-06-23T02:00Z",
           "units": 1
         }
       ],
@@ -24282,6 +24296,7 @@
           "decision": "LEAN",
           "edge": 10.09,
           "game": "Chicago Sky @ Connecticut Sun",
+          "game_start_time": "2026-06-22T23:00Z",
           "guardrail_reasons": [
             "new totals market capped at LEAN while its live record is established"
           ],
@@ -24341,6 +24356,7 @@
           "selection": "Under",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-22T23:00Z",
           "units": 0.02,
           "vegas": 169.5
         },
@@ -24997,6 +25013,7 @@
           "decision": "LEAN",
           "edge": 7.67,
           "game": "Dallas Wings @ Seattle Storm",
+          "game_start_time": "2026-06-23T02:00Z",
           "guardrail_reasons": [
             "new totals market capped at LEAN while its live record is established"
           ],
@@ -25056,6 +25073,7 @@
           "selection": "Under",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-23T02:00Z",
           "units": 0.02,
           "vegas": 170.5
         },
@@ -25315,6 +25333,7 @@
           "decision": "LEAN",
           "edge": 5.95,
           "game": "Dallas Wings @ Seattle Storm",
+          "game_start_time": "2026-06-23T02:00Z",
           "guardrail_reasons": [
             "new totals market capped at LEAN while its live record is established"
           ],
@@ -25374,6 +25393,7 @@
           "selection": "Under",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-23T02:00Z",
           "units": 0.02,
           "vegas": 169.5
         },
