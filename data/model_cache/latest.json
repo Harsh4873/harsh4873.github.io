@@ -1,7 +1,7 @@
 {
   "date": "2026-06-22",
   "errors": [],
-  "externalFeedsUpdatedAt": "2026-06-22T18:21:35.292092Z",
+  "externalFeedsUpdatedAt": "2026-06-22T22:15:36.493058Z",
   "external_feeds": {
     "scores24_fifa_world_cup": {
       "date": "2026-06-22",
@@ -780,36 +780,20 @@
     "sportsgambler_fifa_world_cup": {
       "date": "2026-06-22",
       "errors": [],
-      "generatedAt": "2026-06-22T18:21:35.292092Z",
+      "generatedAt": "2026-06-22T22:15:36.493058Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-22",
         "feed": "sportsgambler_fifa_world_cup",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 4,
+        "pick_count": 3,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-22T18:21:35.292092Z"
+        "updatedAt": "2026-06-22T22:15:36.493058Z"
       },
-      "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 4 pick(s).",
+      "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 3 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "calibration_excluded": true,
-          "date": "2026-06-22",
-          "decision": "BET",
-          "edge": null,
-          "game": "Argentina vs Austria",
-          "grade_supported": true,
-          "market_type": "soccer_moneyline",
-          "matchup": "Argentina vs Austria",
-          "odds": -172,
-          "pick": "Argentina To Win (Argentina vs Austria)",
-          "probability": null,
-          "source": "SportsGamblerFIFAWorldCup",
-          "sport": "FIFA WC",
-          "units": 1
-        },
         {
           "calibration_excluded": true,
           "date": "2026-06-22",
@@ -859,12 +843,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-22T18:21:35.292092Z"
+      "updatedAt": "2026-06-22T22:15:36.493058Z"
     },
     "sportsgambler_mlb": {
       "date": "2026-06-22",
       "errors": [],
-      "generatedAt": "2026-06-22T18:21:35.292092Z",
+      "generatedAt": "2026-06-22T22:15:36.493058Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-22",
@@ -873,7 +857,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 13,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-22T18:21:35.292092Z"
+        "updatedAt": "2026-06-22T22:15:36.493058Z"
       },
       "note": "Scheduled sportsgambler_mlb refresh returned 13 pick(s).",
       "ok": true,
@@ -1217,12 +1201,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-22T18:21:35.292092Z"
+      "updatedAt": "2026-06-22T22:15:36.493058Z"
     },
     "sportsgambler_nba": {
       "date": "2026-06-22",
       "errors": [],
-      "generatedAt": "2026-06-22T18:21:35.292092Z",
+      "generatedAt": "2026-06-22T22:15:36.493058Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-22",
@@ -1231,17 +1215,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-22T18:21:35.292092Z"
+        "updatedAt": "2026-06-22T22:15:36.493058Z"
       },
       "note": "Scheduled sportsgambler_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-06-22T18:21:35.292092Z"
+      "updatedAt": "2026-06-22T22:15:36.493058Z"
     },
     "sportsgambler_wnba": {
       "date": "2026-06-22",
       "errors": [],
-      "generatedAt": "2026-06-22T18:21:35.292092Z",
+      "generatedAt": "2026-06-22T22:15:36.493058Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-22",
@@ -1250,7 +1234,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 4,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-22T18:21:35.292092Z"
+        "updatedAt": "2026-06-22T22:15:36.493058Z"
       },
       "note": "Scheduled sportsgambler_wnba refresh returned 4 pick(s).",
       "ok": true,
@@ -1360,41 +1344,25 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-22T18:21:35.292092Z"
+      "updatedAt": "2026-06-22T22:15:36.493058Z"
     },
     "sportytrader_fifa_world_cup": {
       "date": "2026-06-22",
       "errors": [],
-      "generatedAt": "2026-06-22T18:21:35.292092Z",
+      "generatedAt": "2026-06-22T22:15:36.493058Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-22",
         "feed": "sportytrader_fifa_world_cup",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 3,
+        "pick_count": 2,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-22T18:21:35.292092Z"
+        "updatedAt": "2026-06-22T22:15:36.493058Z"
       },
-      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 3 pick(s).",
+      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 2 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "calibration_excluded": true,
-          "date": "2026-06-22",
-          "decision": "BET",
-          "edge": null,
-          "game": "France vs Iraq",
-          "grade_supported": false,
-          "market_type": "soccer_specialty",
-          "matchup": "France vs Iraq",
-          "odds": -156,
-          "pick": "France Victory & Mbappe Goalscorer (France vs Iraq)",
-          "probability": null,
-          "source": "SportyTraderFIFAWorldCup",
-          "sport": "FIFA WC",
-          "units": 1
-        },
         {
           "calibration_excluded": true,
           "date": "2026-06-22",
@@ -1428,12 +1396,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-22T18:21:35.292092Z"
+      "updatedAt": "2026-06-22T22:15:36.493058Z"
     },
     "sportytrader_mlb": {
       "date": "2026-06-22",
       "errors": [],
-      "generatedAt": "2026-06-22T18:21:35.292092Z",
+      "generatedAt": "2026-06-22T22:15:36.493058Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-22",
@@ -1442,37 +1410,11 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 8,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-22T18:21:35.292092Z"
+        "updatedAt": "2026-06-22T22:15:36.493058Z"
       },
       "note": "Scheduled sportytrader_mlb refresh returned 8 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "date": "2026-06-22",
-          "decision": "BET",
-          "edge": null,
-          "game": "Detroit Tigers vs New York Yankees",
-          "matchup": "Detroit Tigers vs New York Yankees",
-          "odds": 130,
-          "pick": "Yankees -1.5 (Tigers vs Yankees)",
-          "pregame_snapshot": {
-            "date": "2026-06-22",
-            "decision": "BET",
-            "edge": null,
-            "game": "Detroit Tigers vs New York Yankees",
-            "matchup": "Detroit Tigers vs New York Yankees",
-            "odds": 130,
-            "pick": "Yankees -1.5 (Tigers vs Yankees)",
-            "probability": null,
-            "source": "SportyTraderMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportyTraderMLB",
-          "sport": "MLB",
-          "units": 1
-        },
         {
           "date": "2026-06-22",
           "decision": "BET",
@@ -1654,14 +1596,40 @@
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "units": 1
+        },
+        {
+          "date": "2026-06-22",
+          "decision": "BET",
+          "edge": null,
+          "game": "San Diego Padres vs Atlanta Braves",
+          "matchup": "San Diego Padres vs Atlanta Braves",
+          "odds": -112,
+          "pick": "Padres ML (Padres vs Braves)",
+          "pregame_snapshot": {
+            "date": "2026-06-22",
+            "decision": "BET",
+            "edge": null,
+            "game": "San Diego Padres vs Atlanta Braves",
+            "matchup": "San Diego Padres vs Atlanta Braves",
+            "odds": -112,
+            "pick": "Padres ML (Padres vs Braves)",
+            "probability": null,
+            "source": "SportyTraderMLB",
+            "sport": "MLB",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
         }
       ],
-      "updatedAt": "2026-06-22T18:21:35.292092Z"
+      "updatedAt": "2026-06-22T22:15:36.493058Z"
     },
     "sportytrader_nba": {
       "date": "2026-06-22",
       "errors": [],
-      "generatedAt": "2026-06-22T18:21:35.292092Z",
+      "generatedAt": "2026-06-22T22:15:36.493058Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-22",
@@ -1670,17 +1638,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-22T18:21:35.292092Z"
+        "updatedAt": "2026-06-22T22:15:36.493058Z"
       },
       "note": "Scheduled sportytrader_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-06-22T18:21:35.292092Z"
+      "updatedAt": "2026-06-22T22:15:36.493058Z"
     },
     "sportytrader_wnba": {
       "date": "2026-06-22",
       "errors": [],
-      "generatedAt": "2026-06-22T18:21:35.292092Z",
+      "generatedAt": "2026-06-22T22:15:36.493058Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-22",
@@ -1689,7 +1657,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 4,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-22T18:21:35.292092Z"
+        "updatedAt": "2026-06-22T22:15:36.493058Z"
       },
       "note": "Scheduled sportytrader_wnba refresh returned 4 pick(s).",
       "ok": true,
@@ -1799,7 +1767,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-22T18:21:35.292092Z"
+      "updatedAt": "2026-06-22T22:15:36.493058Z"
     }
   },
   "fifa_world_cup": {
@@ -24263,39 +24231,20 @@
     "sportsgambler_fifa_world_cup": {
       "date": "2026-06-22",
       "errors": [],
-      "generatedAt": "2026-06-22T18:21:35.292092Z",
+      "generatedAt": "2026-06-22T22:15:36.493058Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-22",
         "feed": "sportsgambler_fifa_world_cup",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 4,
+        "pick_count": 3,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-22T18:21:35.292092Z"
+        "updatedAt": "2026-06-22T22:15:36.493058Z"
       },
-      "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 4 pick(s).",
+      "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 3 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "calibration_excluded": true,
-          "date": "2026-06-22",
-          "decision": "BET",
-          "edge": null,
-          "game": "Argentina vs Austria",
-          "game_start_time": "2026-06-22T17:00Z",
-          "grade_supported": true,
-          "market_type": "soccer_moneyline",
-          "matchup": "Argentina vs Austria",
-          "odds": -172,
-          "pick": "Argentina To Win (Argentina vs Austria)",
-          "probability": null,
-          "result": "win",
-          "source": "SportsGamblerFIFAWorldCup",
-          "sport": "FIFA WC",
-          "start_time": "2026-06-22T17:00Z",
-          "units": 1
-        },
         {
           "calibration_excluded": true,
           "date": "2026-06-22",
@@ -24347,12 +24296,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-22T18:21:35.292092Z"
+      "updatedAt": "2026-06-22T22:15:36.493058Z"
     },
     "sportsgambler_mlb": {
       "date": "2026-06-22",
       "errors": [],
-      "generatedAt": "2026-06-22T18:21:35.292092Z",
+      "generatedAt": "2026-06-22T22:15:36.493058Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-22",
@@ -24361,7 +24310,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 13,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-22T18:21:35.292092Z"
+        "updatedAt": "2026-06-22T22:15:36.493058Z"
       },
       "note": "Scheduled sportsgambler_mlb refresh returned 13 pick(s).",
       "ok": true,
@@ -24731,12 +24680,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-22T18:21:35.292092Z"
+      "updatedAt": "2026-06-22T22:15:36.493058Z"
     },
     "sportsgambler_nba": {
       "date": "2026-06-22",
       "errors": [],
-      "generatedAt": "2026-06-22T18:21:35.292092Z",
+      "generatedAt": "2026-06-22T22:15:36.493058Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-22",
@@ -24745,17 +24694,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-22T18:21:35.292092Z"
+        "updatedAt": "2026-06-22T22:15:36.493058Z"
       },
       "note": "Scheduled sportsgambler_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-06-22T18:21:35.292092Z"
+      "updatedAt": "2026-06-22T22:15:36.493058Z"
     },
     "sportsgambler_wnba": {
       "date": "2026-06-22",
       "errors": [],
-      "generatedAt": "2026-06-22T18:21:35.292092Z",
+      "generatedAt": "2026-06-22T22:15:36.493058Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-22",
@@ -24764,7 +24713,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 4,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-22T18:21:35.292092Z"
+        "updatedAt": "2026-06-22T22:15:36.493058Z"
       },
       "note": "Scheduled sportsgambler_wnba refresh returned 4 pick(s).",
       "ok": true,
@@ -24882,41 +24831,25 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-22T18:21:35.292092Z"
+      "updatedAt": "2026-06-22T22:15:36.493058Z"
     },
     "sportytrader_fifa_world_cup": {
       "date": "2026-06-22",
       "errors": [],
-      "generatedAt": "2026-06-22T18:21:35.292092Z",
+      "generatedAt": "2026-06-22T22:15:36.493058Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-22",
         "feed": "sportytrader_fifa_world_cup",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 3,
+        "pick_count": 2,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-22T18:21:35.292092Z"
+        "updatedAt": "2026-06-22T22:15:36.493058Z"
       },
-      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 3 pick(s).",
+      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 2 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "calibration_excluded": true,
-          "date": "2026-06-22",
-          "decision": "BET",
-          "edge": null,
-          "game": "France vs Iraq",
-          "grade_supported": false,
-          "market_type": "soccer_specialty",
-          "matchup": "France vs Iraq",
-          "odds": -156,
-          "pick": "France Victory & Mbappe Goalscorer (France vs Iraq)",
-          "probability": null,
-          "source": "SportyTraderFIFAWorldCup",
-          "sport": "FIFA WC",
-          "units": 1
-        },
         {
           "calibration_excluded": true,
           "date": "2026-06-22",
@@ -24950,12 +24883,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-22T18:21:35.292092Z"
+      "updatedAt": "2026-06-22T22:15:36.493058Z"
     },
     "sportytrader_mlb": {
       "date": "2026-06-22",
       "errors": [],
-      "generatedAt": "2026-06-22T18:21:35.292092Z",
+      "generatedAt": "2026-06-22T22:15:36.493058Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-22",
@@ -24964,39 +24897,11 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 8,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-22T18:21:35.292092Z"
+        "updatedAt": "2026-06-22T22:15:36.493058Z"
       },
       "note": "Scheduled sportytrader_mlb refresh returned 8 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "date": "2026-06-22",
-          "decision": "BET",
-          "edge": null,
-          "game": "Detroit Tigers vs New York Yankees",
-          "game_start_time": "2026-06-22T22:10Z",
-          "matchup": "Detroit Tigers vs New York Yankees",
-          "odds": 130,
-          "pick": "Yankees -1.5 (Tigers vs Yankees)",
-          "pregame_snapshot": {
-            "date": "2026-06-22",
-            "decision": "BET",
-            "edge": null,
-            "game": "Detroit Tigers vs New York Yankees",
-            "matchup": "Detroit Tigers vs New York Yankees",
-            "odds": 130,
-            "pick": "Yankees -1.5 (Tigers vs Yankees)",
-            "probability": null,
-            "source": "SportyTraderMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportyTraderMLB",
-          "sport": "MLB",
-          "start_time": "2026-06-22T22:10Z",
-          "units": 1
-        },
         {
           "date": "2026-06-22",
           "decision": "BET",
@@ -25192,14 +25097,40 @@
           "sport": "MLB",
           "start_time": "2026-06-23T01:38Z",
           "units": 1
+        },
+        {
+          "date": "2026-06-22",
+          "decision": "BET",
+          "edge": null,
+          "game": "San Diego Padres vs Atlanta Braves",
+          "matchup": "San Diego Padres vs Atlanta Braves",
+          "odds": -112,
+          "pick": "Padres ML (Padres vs Braves)",
+          "pregame_snapshot": {
+            "date": "2026-06-22",
+            "decision": "BET",
+            "edge": null,
+            "game": "San Diego Padres vs Atlanta Braves",
+            "matchup": "San Diego Padres vs Atlanta Braves",
+            "odds": -112,
+            "pick": "Padres ML (Padres vs Braves)",
+            "probability": null,
+            "source": "SportyTraderMLB",
+            "sport": "MLB",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
         }
       ],
-      "updatedAt": "2026-06-22T18:21:35.292092Z"
+      "updatedAt": "2026-06-22T22:15:36.493058Z"
     },
     "sportytrader_nba": {
       "date": "2026-06-22",
       "errors": [],
-      "generatedAt": "2026-06-22T18:21:35.292092Z",
+      "generatedAt": "2026-06-22T22:15:36.493058Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-22",
@@ -25208,17 +25139,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-22T18:21:35.292092Z"
+        "updatedAt": "2026-06-22T22:15:36.493058Z"
       },
       "note": "Scheduled sportytrader_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-06-22T18:21:35.292092Z"
+      "updatedAt": "2026-06-22T22:15:36.493058Z"
     },
     "sportytrader_wnba": {
       "date": "2026-06-22",
       "errors": [],
-      "generatedAt": "2026-06-22T18:21:35.292092Z",
+      "generatedAt": "2026-06-22T22:15:36.493058Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-22",
@@ -25227,7 +25158,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 4,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-22T18:21:35.292092Z"
+        "updatedAt": "2026-06-22T22:15:36.493058Z"
       },
       "note": "Scheduled sportytrader_wnba refresh returned 4 pick(s).",
       "ok": true,
@@ -25345,7 +25276,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-22T18:21:35.292092Z"
+      "updatedAt": "2026-06-22T22:15:36.493058Z"
     },
     "wnba": {
       "ok": true,
@@ -27661,36 +27592,20 @@
   "sportsgambler_fifa_world_cup": {
     "date": "2026-06-22",
     "errors": [],
-    "generatedAt": "2026-06-22T18:21:35.292092Z",
+    "generatedAt": "2026-06-22T22:15:36.493058Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-22",
       "feed": "sportsgambler_fifa_world_cup",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 4,
+      "pick_count": 3,
       "provider": "sportsgambler",
-      "updatedAt": "2026-06-22T18:21:35.292092Z"
+      "updatedAt": "2026-06-22T22:15:36.493058Z"
     },
-    "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 4 pick(s).",
+    "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 3 pick(s).",
     "ok": true,
     "picks": [
-      {
-        "calibration_excluded": true,
-        "date": "2026-06-22",
-        "decision": "BET",
-        "edge": null,
-        "game": "Argentina vs Austria",
-        "grade_supported": true,
-        "market_type": "soccer_moneyline",
-        "matchup": "Argentina vs Austria",
-        "odds": -172,
-        "pick": "Argentina To Win (Argentina vs Austria)",
-        "probability": null,
-        "source": "SportsGamblerFIFAWorldCup",
-        "sport": "FIFA WC",
-        "units": 1
-      },
       {
         "calibration_excluded": true,
         "date": "2026-06-22",
@@ -27740,12 +27655,12 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-22T18:21:35.292092Z"
+    "updatedAt": "2026-06-22T22:15:36.493058Z"
   },
   "sportsgambler_mlb": {
     "date": "2026-06-22",
     "errors": [],
-    "generatedAt": "2026-06-22T18:21:35.292092Z",
+    "generatedAt": "2026-06-22T22:15:36.493058Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-22",
@@ -27754,7 +27669,7 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 13,
       "provider": "sportsgambler",
-      "updatedAt": "2026-06-22T18:21:35.292092Z"
+      "updatedAt": "2026-06-22T22:15:36.493058Z"
     },
     "note": "Scheduled sportsgambler_mlb refresh returned 13 pick(s).",
     "ok": true,
@@ -28098,12 +28013,12 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-22T18:21:35.292092Z"
+    "updatedAt": "2026-06-22T22:15:36.493058Z"
   },
   "sportsgambler_nba": {
     "date": "2026-06-22",
     "errors": [],
-    "generatedAt": "2026-06-22T18:21:35.292092Z",
+    "generatedAt": "2026-06-22T22:15:36.493058Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-22",
@@ -28112,17 +28027,17 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 0,
       "provider": "sportsgambler",
-      "updatedAt": "2026-06-22T18:21:35.292092Z"
+      "updatedAt": "2026-06-22T22:15:36.493058Z"
     },
     "note": "Scheduled sportsgambler_nba refresh returned 0 pick(s).",
     "ok": true,
     "picks": [],
-    "updatedAt": "2026-06-22T18:21:35.292092Z"
+    "updatedAt": "2026-06-22T22:15:36.493058Z"
   },
   "sportsgambler_wnba": {
     "date": "2026-06-22",
     "errors": [],
-    "generatedAt": "2026-06-22T18:21:35.292092Z",
+    "generatedAt": "2026-06-22T22:15:36.493058Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-22",
@@ -28131,7 +28046,7 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 4,
       "provider": "sportsgambler",
-      "updatedAt": "2026-06-22T18:21:35.292092Z"
+      "updatedAt": "2026-06-22T22:15:36.493058Z"
     },
     "note": "Scheduled sportsgambler_wnba refresh returned 4 pick(s).",
     "ok": true,
@@ -28241,41 +28156,25 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-22T18:21:35.292092Z"
+    "updatedAt": "2026-06-22T22:15:36.493058Z"
   },
   "sportytrader_fifa_world_cup": {
     "date": "2026-06-22",
     "errors": [],
-    "generatedAt": "2026-06-22T18:21:35.292092Z",
+    "generatedAt": "2026-06-22T22:15:36.493058Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-22",
       "feed": "sportytrader_fifa_world_cup",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 3,
+      "pick_count": 2,
       "provider": "sportytrader",
-      "updatedAt": "2026-06-22T18:21:35.292092Z"
+      "updatedAt": "2026-06-22T22:15:36.493058Z"
     },
-    "note": "Scheduled sportytrader_fifa_world_cup refresh returned 3 pick(s).",
+    "note": "Scheduled sportytrader_fifa_world_cup refresh returned 2 pick(s).",
     "ok": true,
     "picks": [
-      {
-        "calibration_excluded": true,
-        "date": "2026-06-22",
-        "decision": "BET",
-        "edge": null,
-        "game": "France vs Iraq",
-        "grade_supported": false,
-        "market_type": "soccer_specialty",
-        "matchup": "France vs Iraq",
-        "odds": -156,
-        "pick": "France Victory & Mbappe Goalscorer (France vs Iraq)",
-        "probability": null,
-        "source": "SportyTraderFIFAWorldCup",
-        "sport": "FIFA WC",
-        "units": 1
-      },
       {
         "calibration_excluded": true,
         "date": "2026-06-22",
@@ -28309,12 +28208,12 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-22T18:21:35.292092Z"
+    "updatedAt": "2026-06-22T22:15:36.493058Z"
   },
   "sportytrader_mlb": {
     "date": "2026-06-22",
     "errors": [],
-    "generatedAt": "2026-06-22T18:21:35.292092Z",
+    "generatedAt": "2026-06-22T22:15:36.493058Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-22",
@@ -28323,37 +28222,11 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 8,
       "provider": "sportytrader",
-      "updatedAt": "2026-06-22T18:21:35.292092Z"
+      "updatedAt": "2026-06-22T22:15:36.493058Z"
     },
     "note": "Scheduled sportytrader_mlb refresh returned 8 pick(s).",
     "ok": true,
     "picks": [
-      {
-        "date": "2026-06-22",
-        "decision": "BET",
-        "edge": null,
-        "game": "Detroit Tigers vs New York Yankees",
-        "matchup": "Detroit Tigers vs New York Yankees",
-        "odds": 130,
-        "pick": "Yankees -1.5 (Tigers vs Yankees)",
-        "pregame_snapshot": {
-          "date": "2026-06-22",
-          "decision": "BET",
-          "edge": null,
-          "game": "Detroit Tigers vs New York Yankees",
-          "matchup": "Detroit Tigers vs New York Yankees",
-          "odds": 130,
-          "pick": "Yankees -1.5 (Tigers vs Yankees)",
-          "probability": null,
-          "source": "SportyTraderMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        "probability": null,
-        "source": "SportyTraderMLB",
-        "sport": "MLB",
-        "units": 1
-      },
       {
         "date": "2026-06-22",
         "decision": "BET",
@@ -28535,14 +28408,40 @@
         "source": "SportyTraderMLB",
         "sport": "MLB",
         "units": 1
+      },
+      {
+        "date": "2026-06-22",
+        "decision": "BET",
+        "edge": null,
+        "game": "San Diego Padres vs Atlanta Braves",
+        "matchup": "San Diego Padres vs Atlanta Braves",
+        "odds": -112,
+        "pick": "Padres ML (Padres vs Braves)",
+        "pregame_snapshot": {
+          "date": "2026-06-22",
+          "decision": "BET",
+          "edge": null,
+          "game": "San Diego Padres vs Atlanta Braves",
+          "matchup": "San Diego Padres vs Atlanta Braves",
+          "odds": -112,
+          "pick": "Padres ML (Padres vs Braves)",
+          "probability": null,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
+        },
+        "probability": null,
+        "source": "SportyTraderMLB",
+        "sport": "MLB",
+        "units": 1
       }
     ],
-    "updatedAt": "2026-06-22T18:21:35.292092Z"
+    "updatedAt": "2026-06-22T22:15:36.493058Z"
   },
   "sportytrader_nba": {
     "date": "2026-06-22",
     "errors": [],
-    "generatedAt": "2026-06-22T18:21:35.292092Z",
+    "generatedAt": "2026-06-22T22:15:36.493058Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-22",
@@ -28551,17 +28450,17 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 0,
       "provider": "sportytrader",
-      "updatedAt": "2026-06-22T18:21:35.292092Z"
+      "updatedAt": "2026-06-22T22:15:36.493058Z"
     },
     "note": "Scheduled sportytrader_nba refresh returned 0 pick(s).",
     "ok": true,
     "picks": [],
-    "updatedAt": "2026-06-22T18:21:35.292092Z"
+    "updatedAt": "2026-06-22T22:15:36.493058Z"
   },
   "sportytrader_wnba": {
     "date": "2026-06-22",
     "errors": [],
-    "generatedAt": "2026-06-22T18:21:35.292092Z",
+    "generatedAt": "2026-06-22T22:15:36.493058Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-22",
@@ -28570,7 +28469,7 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 4,
       "provider": "sportytrader",
-      "updatedAt": "2026-06-22T18:21:35.292092Z"
+      "updatedAt": "2026-06-22T22:15:36.493058Z"
     },
     "note": "Scheduled sportytrader_wnba refresh returned 4 pick(s).",
     "ok": true,
@@ -28680,9 +28579,9 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-22T18:21:35.292092Z"
+    "updatedAt": "2026-06-22T22:15:36.493058Z"
   },
-  "updatedAt": "2026-06-22T21:06:29.925266Z",
+  "updatedAt": "2026-06-22T22:15:36.493058Z",
   "wnba": {
     "ok": true,
     "picks": [
