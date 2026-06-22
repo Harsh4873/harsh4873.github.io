@@ -96970,7 +96970,7 @@
       "matchup": "Baltimore Orioles @ Los Angeles Dodgers",
       "model_key": "mlb_player_props_all_time",
       "odds": 126.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Alex Freeland Under 0.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -97070,12 +97070,12 @@
         "weather_factor": 1.03
       },
       "probability": 0.66,
-      "profit": null,
+      "profit": 1.26,
       "raw_decision": "BET",
       "raw_edge": 21.75,
       "raw_probability": 0.66,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "MLB All Time Props",
       "sport": "MLB",
       "units": 1.0
@@ -97092,7 +97092,7 @@
       "matchup": "Baltimore Orioles @ Los Angeles Dodgers",
       "model_key": "mlb_player_props_all_time",
       "odds": 103.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Emmet Sheehan Over 6.5 Strikeouts",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -97188,12 +97188,12 @@
         "units": 1.0
       },
       "probability": 0.5914,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": 9.88,
       "raw_probability": 0.5914,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "MLB All Time Props",
       "sport": "MLB",
       "units": 1.0
@@ -97332,7 +97332,7 @@
       "matchup": "New York Mets @ Philadelphia Phillies",
       "model_key": "mlb_player_props_all_time",
       "odds": 131.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "Brett Baty Under 0.5 Hits + Runs + RBIs",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -97431,12 +97431,12 @@
         "weather_factor": 1.0433
       },
       "probability": 0.6346,
-      "profit": null,
+      "profit": 1.31,
       "raw_decision": "BET",
       "raw_edge": 20.17,
       "raw_probability": 0.6346,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "MLB All Time Props",
       "sport": "MLB",
       "units": 1.0
@@ -103210,7 +103210,7 @@
       "matchup": "New York Mets @ Philadelphia Phillies",
       "model_key": "mlb_player_props_season",
       "odds": 112.0,
-      "outcome": null,
+      "outcome": 1,
       "pick": "David Peterson Under 14.5 Outs Recorded",
       "pregame_snapshot": {
         "actionability": "market_priced",
@@ -103305,12 +103305,12 @@
         "units": 1.0
       },
       "probability": 0.5517,
-      "profit": null,
+      "profit": 1.12,
       "raw_decision": "BET",
       "raw_edge": 8.0,
       "raw_probability": 0.5517,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "win",
       "source": "MLB Season Props",
       "sport": "MLB",
       "units": 1.0
@@ -104898,7 +104898,7 @@
       "matchup": "Baltimore Orioles @ Los Angeles Dodgers",
       "model_key": "scores24_mlb",
       "odds": -244.0,
-      "outcome": null,
+      "outcome": 0,
       "pick": "Los Angeles Dodgers ML (Baltimore Orioles @ Los Angeles Dodgers)",
       "pregame_snapshot": {
         "away_team": "Baltimore Orioles",
@@ -104919,12 +104919,12 @@
         "units": 1
       },
       "probability": null,
-      "profit": null,
+      "profit": -1.0,
       "raw_decision": "BET",
       "raw_edge": null,
       "raw_probability": null,
       "raw_units": 1.0,
-      "result": "pending",
+      "result": "loss",
       "source": "Scores24MLB",
       "sport": "MLB",
       "units": 1.0
@@ -112694,9 +112694,9 @@
   ],
   "schema_version": 1,
   "summary": {
-    "decided_picks": 1208,
-    "pending_picks": 783,
+    "decided_picks": 1213,
+    "pending_picks": 778,
     "total_picks": 2034,
-    "trainable_decided_picks": 792
+    "trainable_decided_picks": 796
   }
 }
