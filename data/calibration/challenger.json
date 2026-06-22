@@ -1,60 +1,60 @@
 {
-  "decided_count": 1119,
-  "evaluated_at": "2026-06-21T09:00:18.439796Z",
+  "decided_count": 1268,
+  "evaluated_at": "2026-06-22T05:44:11.845491Z",
   "global": {
-    "intercept": -0.1286487,
-    "samples": 717,
+    "intercept": -0.15584347,
+    "samples": 845,
     "shrinkage_prior_samples": 120.0,
-    "slope": 0.83757912
+    "slope": 0.73685317
   },
   "groups": {
     "model:mlb_first_five|source:mlb first five|sport:mlb|bet:f5_side": {
-      "intercept": -0.03685708,
-      "samples": 88,
+      "intercept": -0.04863887,
+      "samples": 89,
       "shrinkage_prior_samples": 80.0,
-      "slope": 0.8685964
+      "slope": 0.77721907
     },
     "model:mlb_first_five|source:mlb first five|sport:mlb|bet:f5_total": {
-      "intercept": -0.15086696,
-      "samples": 103,
+      "intercept": -0.17740927,
+      "samples": 106,
       "shrinkage_prior_samples": 80.0,
-      "slope": 0.81895395
+      "slope": 0.71255447
     },
     "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning": {
-      "intercept": -0.16845162,
+      "intercept": -0.17844282,
       "samples": 172,
       "shrinkage_prior_samples": 80.0,
-      "slope": 0.82563551
+      "slope": 0.73161465
     },
     "model:mlb_new|source:mlb new|sport:mlb|bet:h2h": {
-      "intercept": -0.10942201,
+      "intercept": -0.12496443,
       "samples": 101,
       "shrinkage_prior_samples": 80.0,
-      "slope": 0.83413137
+      "slope": 0.73728814
     },
     "model:mlb_new|source:mlb new|sport:mlb|bet:totals": {
-      "intercept": -0.18557379,
+      "intercept": -0.19754574,
       "samples": 103,
       "shrinkage_prior_samples": 80.0,
-      "slope": 0.80592136
+      "slope": 0.71581303
     }
   },
   "holdout": {
     "challenger": {
-      "brier_score": 0.27709463,
-      "calibration_error": 0.19061169,
-      "log_loss": 0.74996892,
-      "qualified_bets": 65,
-      "roi": 0.13621817,
-      "samples": 70
+      "brier_score": 0.27828969,
+      "calibration_error": 0.14096156,
+      "log_loss": 0.76733885,
+      "qualified_bets": 110,
+      "roi": 0.07795007,
+      "samples": 128
     },
     "champion": {
-      "brier_score": 0.25591357,
-      "calibration_error": 0.20051146,
-      "log_loss": 0.70403719,
-      "qualified_bets": 35,
-      "roi": 0.08033229,
-      "samples": 70
+      "brier_score": 0.25922668,
+      "calibration_error": 0.07708181,
+      "log_loss": 0.7149379,
+      "qualified_bets": 65,
+      "roi": 0.21722701,
+      "samples": 128
     }
   },
   "minimum_group_samples": 30,
@@ -62,12 +62,12 @@
     "approved": false,
     "reasons": [
       "brier_improved=False",
-      "calibration_improved=True",
+      "calibration_improved=False",
       "log_loss_safe=False",
-      "roi_safe=True"
+      "roi_safe=False"
     ]
   },
   "schema_version": 1,
-  "trainable_decided_count": 717,
-  "version": "cal-1119-2026-06-21"
+  "trainable_decided_count": 845,
+  "version": "cal-1268-2026-06-22"
 }
