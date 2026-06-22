@@ -17799,7 +17799,7 @@
           "game": "Los Angeles Dodgers @ Minnesota Twins",
           "game_id": "823692",
           "game_order": 5,
-          "game_start_time": "2026-06-22T23:40:00Z",
+          "game_start_time": "2026-06-22T23:40Z",
           "home_team": "Minnesota Twins",
           "league": "MLB",
           "line": 5.5,
@@ -17849,7 +17849,7 @@
           "raw_probability": 0.6981,
           "source": "MLB First Five",
           "sport": "MLB",
-          "start_time": "2026-06-22T23:40:00Z",
+          "start_time": "2026-06-22T23:40Z",
           "team": ""
         },
         {
@@ -23458,6 +23458,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "push",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-22-06-2026-new-york-mets-chicago-cubs-prediction",
           "sport": "MLB",
@@ -24168,6 +24169,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "push",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-22T23:10Z",
@@ -24643,6 +24645,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "push",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-22T23:10Z",
@@ -24765,6 +24768,7 @@
           "decision": "BET",
           "edge": null,
           "game": "San Diego Padres vs Atlanta Braves",
+          "game_start_time": "2026-06-23T02:00Z",
           "matchup": "San Diego Padres vs Atlanta Braves",
           "odds": -112,
           "pick": "Padres ML (Padres vs Braves)",
@@ -24784,6 +24788,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-23T02:00Z",
           "units": 1
         }
       ],
