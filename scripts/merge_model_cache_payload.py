@@ -136,6 +136,25 @@ def _pick_key(pick: dict[str, Any]) -> tuple[str, ...]:
     )
 
 
+def _replacement_key(pick: dict[str, Any]) -> tuple[str, ...]:
+    matchup = str(pick.get("matchup") or pick.get("game") or "").strip().lower()
+    market = str(pick.get("market") or pick.get("market_type") or "").strip().lower()
+    return tuple(
+        str(value or "").strip().lower()
+        for value in (
+            pick.get("source"),
+            pick.get("sport"),
+            pick.get("date") or pick.get("game_date") or pick.get("slate_date"),
+            matchup,
+            market,
+        )
+    )
+
+
+def _settled_result(pick: dict[str, Any]) -> bool:
+    return str(pick.get("result") or "").strip().lower() in {"win", "loss", "push"}
+
+
 def _preserve_pick_metadata(current_bucket: Any, generated_bucket: Any) -> Any:
     if not isinstance(current_bucket, dict) or not isinstance(generated_bucket, dict):
         return generated_bucket
@@ -153,6 +172,11 @@ def _preserve_pick_metadata(current_bucket: Any, generated_bucket: Any) -> Any:
         for pick in generated_picks
         if isinstance(pick, dict)
     }
+    generated_replacement_keys = {
+        _replacement_key(pick)
+        for pick in generated_picks
+        if isinstance(pick, dict) and all(_replacement_key(pick))
+    }
     merged = dict(generated_bucket)
     merged["picks"] = [
         {**pick, **metadata.get(_pick_key(pick), {})} if isinstance(pick, dict) else pick
@@ -160,7 +184,9 @@ def _preserve_pick_metadata(current_bucket: Any, generated_bucket: Any) -> Any:
     ]
     merged["picks"].extend(
         pick for pick in current_picks
-        if isinstance(pick, dict) and _pick_key(pick) not in generated_keys
+        if isinstance(pick, dict)
+        and _pick_key(pick) not in generated_keys
+        and (_settled_result(pick) or _replacement_key(pick) not in generated_replacement_keys)
     )
     return merged
 

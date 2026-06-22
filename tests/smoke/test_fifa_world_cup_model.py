@@ -4,6 +4,7 @@ from FIFAWorldCupPredictionModel.fifa_world_cup_model import (
     club_power,
     generate_fifa_world_cup_picks,
     poisson_probabilities,
+    spread_cover_probability,
 )
 from scripts.pick_calibration import apply_calibration_to_payload, build_outcome_ledger
 
@@ -112,10 +113,98 @@ def test_fifa_club_and_poisson_layers_behave_directionally():
     strong = club_power("eng.1", _record(25, 7, 6, 80, 30, 1))
     weak = club_power("aus.1", _record(7, 8, 15, 29, 54, 12))
     probabilities = poisson_probabilities(home_xg=2.2, away_xg=0.7)
+    home_cover = spread_cover_probability(home_xg=2.2, away_xg=0.7, side="home", line=-0.5)
+    away_cover = spread_cover_probability(home_xg=2.2, away_xg=0.7, side="away", line=0.5)
 
     assert strong > weak
     assert probabilities["home_win"] > probabilities["draw"] > probabilities["away_win"]
+    assert home_cover > away_cover
     assert abs(sum(probabilities.values()) - 1.0) < 1e-9
+
+
+def test_fifa_model_layers_tournament_form_venue_and_spread_market():
+    class ContextClient(FakeFifaClient):
+        def scoreboard(self, date_iso):
+            if date_iso == "2026-06-12":
+                return {
+                    "events": [
+                        {
+                            "id": "history-hot",
+                            "date": "2026-06-12T20:00Z",
+                            "status": {"type": {"state": "post", "completed": True}},
+                            "competitions": [{
+                                "venue": {"id": "hot", "fullName": "Goal Dome", "address": {"city": "Test City"}},
+                                "competitors": [
+                                    {"homeAway": "home", "score": "5", "team": {"id": "1", "displayName": "Strongland", "abbreviation": "STR"}},
+                                    {"homeAway": "away", "score": "1", "team": {"id": "2", "displayName": "Weakland", "abbreviation": "WEA"}},
+                                ],
+                            }],
+                        },
+                        {
+                            "id": "history-low",
+                            "date": "2026-06-12T23:00Z",
+                            "status": {"type": {"state": "post", "completed": True}},
+                            "competitions": [{
+                                "venue": {"id": "low", "fullName": "Quiet Park", "address": {"city": "Test City"}},
+                                "competitors": [
+                                    {"homeAway": "home", "score": "1", "team": {"id": "10", "displayName": "Other A", "abbreviation": "OTA"}},
+                                    {"homeAway": "away", "score": "0", "team": {"id": "11", "displayName": "Other B", "abbreviation": "OTB"}},
+                                ],
+                            }],
+                        },
+                    ]
+                }
+            if date_iso != "2026-06-13":
+                return {"events": []}
+            return {
+                "events": [{
+                    "id": "wc-context",
+                    "date": "2026-06-13T20:00Z",
+                    "status": {"type": {"state": "pre"}},
+                    "competitions": [{
+                        "venue": {"id": "hot", "fullName": "Goal Dome", "address": {"city": "Test City"}},
+                        "competitors": [
+                            {
+                                "homeAway": "home",
+                                "team": {"id": "1", "displayName": "Strongland", "abbreviation": "STR"},
+                                "records": [{"summary": "1-0-0"}],
+                            },
+                            {
+                                "homeAway": "away",
+                                "team": {"id": "2", "displayName": "Weakland", "abbreviation": "WEA"},
+                                "records": [{"summary": "0-0-1"}],
+                            },
+                        ],
+                        "odds": [{
+                            "overUnder": 2.5,
+                            "moneyline": {
+                                "home": {"close": {"odds": "-140"}},
+                                "away": {"close": {"odds": "+390"}},
+                                "draw": {"close": {"odds": "+300"}},
+                            },
+                            "total": {
+                                "over": {"close": {"odds": "-110"}},
+                                "under": {"close": {"odds": "-110"}},
+                            },
+                            "pointSpread": {
+                                "home": {"close": {"line": "-1.5", "odds": "+130"}},
+                                "away": {"close": {"line": "+1.5", "odds": "-160"}},
+                            },
+                        }],
+                    }],
+                }]
+            }
+
+    result = generate_fifa_world_cup_picks("2026-06-13", client=ContextClient(), max_workers=4)
+
+    assert result["ok"] is True
+    assert len(result["picks"]) == 3
+    markets = {pick["market"]: pick for pick in result["picks"]}
+    assert markets["spread"]["market_type"] == "soccer_handicap"
+    assert markets["spread"]["line"] in {-1.5, 1.5}
+    assert result["games"][0]["venue_profile"]["goal_multiplier"] > 1.0
+    assert result["team_ratings"][0]["tournament_form"]["record"] == "1-0-0"
+    assert result["tournament_context"]["completed_games"] == 2
 
 
 def test_fifa_model_passes_when_player_profile_coverage_is_incomplete():

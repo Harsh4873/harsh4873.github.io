@@ -694,6 +694,64 @@ def test_model_cache_merge_keeps_previous_same_date_picks_when_refresh_drops_the
     assert [pick["pick"] for pick in picks] == ["Norway ML", "France ML"]
 
 
+def test_model_cache_merge_replaces_stale_same_game_market_pick(tmp_path):
+    module = _load_module("merge_model_cache_payload_replace_market", ROOT / "scripts" / "merge_model_cache_payload.py")
+    cache_dir = tmp_path / "data" / "model_cache"
+    cache_dir.mkdir(parents=True)
+    current = {
+        "date": "2026-06-22",
+        "models": {
+            "fifa_world_cup": {
+                "picks": [
+                    {
+                        "source": "FIFA Model",
+                        "sport": "FIFA WC",
+                        "date": "2026-06-22",
+                        "market": "total",
+                        "pick": "Over 2.5 (Algeria @ Jordan)",
+                        "matchup": "Algeria @ Jordan",
+                    },
+                    {
+                        "source": "FIFA Model",
+                        "sport": "FIFA WC",
+                        "date": "2026-06-22",
+                        "market": "total",
+                        "pick": "Under 2.5 (Completed @ Match)",
+                        "matchup": "Completed @ Match",
+                        "result": "win",
+                    },
+                ]
+            }
+        },
+    }
+    generated = {
+        "date": "2026-06-22",
+        "models": {
+            "fifa_world_cup": {
+                "picks": [
+                    {
+                        "source": "FIFA Model",
+                        "sport": "FIFA WC",
+                        "date": "2026-06-22",
+                        "market": "total",
+                        "pick": "Under 2.5 (Algeria @ Jordan)",
+                        "matchup": "Algeria @ Jordan",
+                    },
+                ]
+            }
+        },
+    }
+    (cache_dir / "2026-06-22.json").write_text(json.dumps(current), encoding="utf-8")
+
+    merged = module.merge_payload(generated, cache_dir)
+    picks = merged["models"]["fifa_world_cup"]["picks"]
+
+    assert [pick["pick"] for pick in picks] == [
+        "Under 2.5 (Algeria @ Jordan)",
+        "Under 2.5 (Completed @ Match)",
+    ]
+
+
 def test_external_feed_merge_replaces_previous_same_date_picks_when_refresh_drops_them(tmp_path):
     module = _load_module("merge_external_feed_cache_payload_replace_dropped", ROOT / "scripts" / "merge_external_feed_cache_payload.py")
     cache_dir = tmp_path / "data" / "model_cache"
