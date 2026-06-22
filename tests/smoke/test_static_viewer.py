@@ -55,7 +55,8 @@ def test_frontend_player_mode_is_persisted_isolated_and_team_defaulted():
     assert "return activePickMode === 'player' ? playerPicks : teamPicks" in data
     assert "decision === 'BET' || decision === 'LEAN' || decision === 'PASS'" in data
 
-    assert "activeFilter = 'ALL'" in main
+    assert "const activeFilters = new Set<string>()" in main
+    assert "activeFilters.clear()" in main
     assert "selectedDate = ''" in main
     assert "search.value = ''" in main
     assert "const pending = getAllPicks().filter(pick => pick.result === 'pending')" in main
@@ -313,6 +314,11 @@ def test_home_filters_prioritize_primary_sports_and_use_more_menu():
     assert "'MLB NEW': 'MLB Model'" in data
     assert "'FIFA WC In-House': 'FIFA Model'" in data
     assert "filter === 'FIFA WC' ? 'FIFA' : filter" in main
+    assert "function toggleHomeFilter(" in main
+    assert "activeFilters.has(pick.sport)" in main
+    assert "activeFilters.has(sourceName(pick))" in main
+    assert "aria-pressed=\"${filterActive(filter)}\"" in main
+    assert "activeFilterSummary()" in main
     assert 'id="filter-more-btn"' in main
     assert "extraFilters.map(filterButton)" in main
     assert ".filter-more-wrap" in css

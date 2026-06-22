@@ -87,7 +87,7 @@ const ESPN_ENDPOINTS: Record<string, [string, string]> = {
   NHL: ['hockey', 'nhl'],
 };
 
-let activeFilter = 'ALL';
+const activeFilters = new Set<string>();
 let activePickMode: PickMode = 'team';
 let homeMode: 'pending' | 'all' | 'settled' = 'pending';
 let dailyView: DailyView = 'picks';
@@ -635,6 +635,30 @@ function compareHomePickRows(left: Pick, right: Pick): number {
     || left.pick.localeCompare(right.pick);
 }
 
+function filterLabel(filter: string): string {
+  return filter === 'FIFA WC' ? 'FIFA' : filter;
+}
+
+function filterActive(filter: string): boolean {
+  return filter === 'ALL' ? activeFilters.size === 0 : activeFilters.has(filter);
+}
+
+function toggleHomeFilter(filter: string): void {
+  if (filter === 'ALL') {
+    activeFilters.clear();
+    return;
+  }
+  if (activeFilters.has(filter)) activeFilters.delete(filter);
+  else activeFilters.add(filter);
+}
+
+function activeFilterSummary(): string {
+  const labels = [...activeFilters].map(filter => filterLabel(filter).toUpperCase());
+  if (!labels.length) return 'ALL SOURCES';
+  if (labels.length <= 2) return labels.join(' + ');
+  return `${labels[0]} + ${labels.length - 1} MORE`;
+}
+
 function ensureSelection(): void {
   const dates = [...new Set(getAllPicks().map(pickDateKey).filter(Boolean))].sort();
   const today = centralDateKey();
@@ -647,9 +671,9 @@ function ensureSelection(): void {
 
 function filteredPicks(): Pick[] {
   return getAllPicks().filter(pick => (
-    activeFilter === 'ALL' ||
-    pick.sport === activeFilter ||
-    sourceName(pick) === activeFilter
+    activeFilters.size === 0 ||
+    activeFilters.has(pick.sport) ||
+    activeFilters.has(sourceName(pick))
   ));
 }
 
@@ -680,11 +704,10 @@ function renderFilters(): void {
     ...picks.map(sourceName),
   ])];
   const extraFilters = available.filter(filter => !PRIMARY_FILTERS.includes(filter)).sort((a, b) => a.localeCompare(b));
-  const label = (filter: string): string => filter === 'FIFA WC' ? 'FIFA' : filter;
   const filterButton = (filter: string): string => (
-    `<button class="filter-btn ${activeFilter === filter ? 'active' : ''}" data-filter="${escapeHtml(filter)}">${escapeHtml(label(filter))}</button>`
+    `<button type="button" class="filter-btn ${filterActive(filter) ? 'active' : ''}" data-filter="${escapeHtml(filter)}" aria-pressed="${filterActive(filter)}">${escapeHtml(filterLabel(filter))}</button>`
   );
-  const extraSelected = extraFilters.includes(activeFilter);
+  const extraSelected = extraFilters.some(filterActive);
   container.innerHTML = `${PRIMARY_FILTERS.map(filterButton).join('')}
     <div class="filter-more-wrap" id="filter-more-wrap">
       <button type="button" class="filter-more-btn ${extraSelected ? 'has-selection' : ''}" id="filter-more-btn" aria-label="Show more sports and sources" aria-expanded="${filterMoreOpen}">+</button>
@@ -693,9 +716,9 @@ function renderFilters(): void {
       </div>
     </div>`;
   container.querySelectorAll<HTMLButtonElement>('[data-filter]').forEach(button => {
-    button.addEventListener('click', () => {
-      activeFilter = button.dataset.filter || 'ALL';
-      filterMoreOpen = false;
+    button.addEventListener('click', event => {
+      event.stopPropagation();
+      toggleHomeFilter(button.dataset.filter || 'ALL');
       render();
     });
   });
@@ -777,7 +800,7 @@ function renderHome(): void {
     : `${dateLabel(selectedDate, true)} Picks`;
   if (sub) sub.textContent = `${selectedAll.length} ${activePickMode === 'player' ? 'player props' : 'picks'} from ${new Set(selectedAll.map(sourceName)).size} sources, organized by matchup.`;
   if (dateChip) dateChip.textContent = dateLabel(selectedDate).toUpperCase();
-  if (filterChip) filterChip.textContent = activeFilter === 'ALL' ? 'ALL SOURCES' : activeFilter.toUpperCase();
+  if (filterChip) filterChip.textContent = activeFilterSummary();
   if (modeChip) modeChip.textContent = homeMode === 'pending' ? `OPEN ${itemLabel.toUpperCase()}` : homeMode === 'settled' ? 'RESULTS' : `ALL ${itemLabel.toUpperCase()}`;
   if (triggerValue) triggerValue.textContent = dateLabel(selectedDate, true);
   if (triggerMeta) triggerMeta.textContent = selectedDate === centralDateKey() ? 'Today | CT' : `${selectedAll.length} picks`;
@@ -2174,7 +2197,7 @@ function updateSyncStatus(): void {
 function switchPickMode(mode: PickMode): void {
   activePickMode = mode;
   setDataPickMode(mode);
-  activeFilter = 'ALL';
+  activeFilters.clear();
   homeMode = 'pending';
   dailyView = 'picks';
   selectedDate = '';
