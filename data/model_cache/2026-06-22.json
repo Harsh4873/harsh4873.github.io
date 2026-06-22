@@ -1,7 +1,7 @@
 {
   "date": "2026-06-22",
   "errors": [],
-  "externalFeedsUpdatedAt": "2026-06-22T13:14:17.558694Z",
+  "externalFeedsUpdatedAt": "2026-06-22T18:21:35.292092Z",
   "external_feeds": {
     "scores24_fifa_world_cup": {
       "date": "2026-06-22",
@@ -780,7 +780,7 @@
     "sportsgambler_fifa_world_cup": {
       "date": "2026-06-22",
       "errors": [],
-      "generatedAt": "2026-06-22T13:14:17.558694Z",
+      "generatedAt": "2026-06-22T18:21:35.292092Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-22",
@@ -789,7 +789,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 4,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-22T13:14:17.558694Z"
+        "updatedAt": "2026-06-22T18:21:35.292092Z"
       },
       "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 4 pick(s).",
       "ok": true,
@@ -859,12 +859,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-22T13:14:17.558694Z"
+      "updatedAt": "2026-06-22T18:21:35.292092Z"
     },
     "sportsgambler_mlb": {
       "date": "2026-06-22",
       "errors": [],
-      "generatedAt": "2026-06-22T13:14:17.558694Z",
+      "generatedAt": "2026-06-22T18:21:35.292092Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-22",
@@ -873,7 +873,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 13,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-22T13:14:17.558694Z"
+        "updatedAt": "2026-06-22T18:21:35.292092Z"
       },
       "note": "Scheduled sportsgambler_mlb refresh returned 13 pick(s).",
       "ok": true,
@@ -884,7 +884,7 @@
           "edge": null,
           "game": "Detroit Tigers vs New York Yankees",
           "matchup": "Detroit Tigers vs New York Yankees",
-          "odds": -135,
+          "odds": -128,
           "pick": "New York Yankees to Win (Detroit Tigers vs New York Yankees)",
           "pregame_snapshot": {
             "date": "2026-06-22",
@@ -910,7 +910,7 @@
           "edge": null,
           "game": "Miami Marlins vs Texas Rangers",
           "matchup": "Miami Marlins vs Texas Rangers",
-          "odds": 106,
+          "odds": 102,
           "pick": "Texas Rangers to Win (Miami Marlins vs Texas Rangers)",
           "pregame_snapshot": {
             "date": "2026-06-22",
@@ -962,7 +962,7 @@
           "edge": null,
           "game": "Washington Nationals vs Philadelphia Phillies",
           "matchup": "Washington Nationals vs Philadelphia Phillies",
-          "odds": -109,
+          "odds": -102,
           "pick": "Philadelphia Phillies to Win (Washington Nationals vs Philadelphia Phillies)",
           "pregame_snapshot": {
             "date": "2026-06-22",
@@ -988,7 +988,7 @@
           "edge": null,
           "game": "Toronto Blue Jays vs Houston Astros",
           "matchup": "Toronto Blue Jays vs Houston Astros",
-          "odds": -135,
+          "odds": -137,
           "pick": "Toronto Blue Jays to Win (Toronto Blue Jays vs Houston Astros)",
           "pregame_snapshot": {
             "date": "2026-06-22",
@@ -1014,7 +1014,7 @@
           "edge": null,
           "game": "Cincinnati Reds vs Milwaukee Brewers",
           "matchup": "Cincinnati Reds vs Milwaukee Brewers",
-          "odds": 135,
+          "odds": 125,
           "pick": "Cincinnati Reds to Win (Cincinnati Reds vs Milwaukee Brewers)",
           "pregame_snapshot": {
             "date": "2026-06-22",
@@ -1040,7 +1040,7 @@
           "edge": null,
           "game": "New York Mets vs Chicago Cubs",
           "matchup": "New York Mets vs Chicago Cubs",
-          "odds": -116,
+          "odds": -115,
           "pick": "Chicago Cubs to Win (New York Mets vs Chicago Cubs)",
           "pregame_snapshot": {
             "date": "2026-06-22",
@@ -1092,7 +1092,7 @@
           "edge": null,
           "game": "Minnesota Twins vs Los Angeles Dodgers",
           "matchup": "Minnesota Twins vs Los Angeles Dodgers",
-          "odds": 132,
+          "odds": 133,
           "pick": "Minnesota Twins to Win (Minnesota Twins vs Los Angeles Dodgers)",
           "pregame_snapshot": {
             "date": "2026-06-22",
@@ -1144,7 +1144,7 @@
           "edge": null,
           "game": "Colorado Rockies vs Boston Red Sox",
           "matchup": "Colorado Rockies vs Boston Red Sox",
-          "odds": -132,
+          "odds": -137,
           "pick": "Boston Red Sox to Win (Colorado Rockies vs Boston Red Sox)",
           "pregame_snapshot": {
             "date": "2026-06-22",
@@ -1196,7 +1196,7 @@
           "edge": null,
           "game": "San Diego Padres vs Atlanta Braves",
           "matchup": "San Diego Padres vs Atlanta Braves",
-          "odds": -111,
+          "odds": -108,
           "pick": "San Diego Padres to Win (San Diego Padres vs Atlanta Braves)",
           "pregame_snapshot": {
             "date": "2026-06-22",
@@ -1217,12 +1217,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-22T13:14:17.558694Z"
+      "updatedAt": "2026-06-22T18:21:35.292092Z"
     },
     "sportsgambler_nba": {
       "date": "2026-06-22",
       "errors": [],
-      "generatedAt": "2026-06-22T13:14:17.558694Z",
+      "generatedAt": "2026-06-22T18:21:35.292092Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-22",
@@ -1231,17 +1231,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-22T13:14:17.558694Z"
+        "updatedAt": "2026-06-22T18:21:35.292092Z"
       },
       "note": "Scheduled sportsgambler_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-06-22T13:14:17.558694Z"
+      "updatedAt": "2026-06-22T18:21:35.292092Z"
     },
     "sportsgambler_wnba": {
       "date": "2026-06-22",
       "errors": [],
-      "generatedAt": "2026-06-22T13:14:17.558694Z",
+      "generatedAt": "2026-06-22T18:21:35.292092Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-22",
@@ -1250,7 +1250,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 4,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-22T13:14:17.558694Z"
+        "updatedAt": "2026-06-22T18:21:35.292092Z"
       },
       "note": "Scheduled sportsgambler_wnba refresh returned 4 pick(s).",
       "ok": true,
@@ -1360,41 +1360,25 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-22T13:14:17.558694Z"
+      "updatedAt": "2026-06-22T18:21:35.292092Z"
     },
     "sportytrader_fifa_world_cup": {
       "date": "2026-06-22",
       "errors": [],
-      "generatedAt": "2026-06-22T13:14:17.558694Z",
+      "generatedAt": "2026-06-22T18:21:35.292092Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-22",
         "feed": "sportytrader_fifa_world_cup",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 4,
+        "pick_count": 3,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-22T13:14:17.558694Z"
+        "updatedAt": "2026-06-22T18:21:35.292092Z"
       },
-      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 4 pick(s).",
+      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 3 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "calibration_excluded": true,
-          "date": "2026-06-22",
-          "decision": "BET",
-          "edge": null,
-          "game": "Argentina vs Austria",
-          "grade_supported": false,
-          "market_type": "soccer_specialty",
-          "matchup": "Argentina vs Austria",
-          "odds": 100,
-          "pick": "Both Teams to Score (Argentina vs Austria)",
-          "probability": null,
-          "source": "SportyTraderFIFAWorldCup",
-          "sport": "FIFA WC",
-          "units": 1
-        },
         {
           "calibration_excluded": true,
           "date": "2026-06-22",
@@ -1444,23 +1428,23 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-22T13:14:17.558694Z"
+      "updatedAt": "2026-06-22T18:21:35.292092Z"
     },
     "sportytrader_mlb": {
       "date": "2026-06-22",
       "errors": [],
-      "generatedAt": "2026-06-22T13:14:17.558694Z",
+      "generatedAt": "2026-06-22T18:21:35.292092Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-22",
         "feed": "sportytrader_mlb",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 7,
+        "pick_count": 8,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-22T13:14:17.558694Z"
+        "updatedAt": "2026-06-22T18:21:35.292092Z"
       },
-      "note": "Scheduled sportytrader_mlb refresh returned 7 pick(s).",
+      "note": "Scheduled sportytrader_mlb refresh returned 8 pick(s).",
       "ok": true,
       "picks": [
         {
@@ -1505,6 +1489,32 @@
             "matchup": "Miami Marlins vs Texas Rangers",
             "odds": -124,
             "pick": "Miami ML (Marlins vs Rangers)",
+            "probability": null,
+            "source": "SportyTraderMLB",
+            "sport": "MLB",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "date": "2026-06-22",
+          "decision": "BET",
+          "edge": null,
+          "game": "Washington Nationals vs Philadelphia Phillies",
+          "matchup": "Washington Nationals vs Philadelphia Phillies",
+          "odds": 100,
+          "pick": "Phillies ML (Nationals vs Phillies)",
+          "pregame_snapshot": {
+            "date": "2026-06-22",
+            "decision": "BET",
+            "edge": null,
+            "game": "Washington Nationals vs Philadelphia Phillies",
+            "matchup": "Washington Nationals vs Philadelphia Phillies",
+            "odds": 100,
+            "pick": "Phillies ML (Nationals vs Phillies)",
             "probability": null,
             "source": "SportyTraderMLB",
             "sport": "MLB",
@@ -1646,12 +1656,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-22T13:14:17.558694Z"
+      "updatedAt": "2026-06-22T18:21:35.292092Z"
     },
     "sportytrader_nba": {
       "date": "2026-06-22",
       "errors": [],
-      "generatedAt": "2026-06-22T13:14:17.558694Z",
+      "generatedAt": "2026-06-22T18:21:35.292092Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-22",
@@ -1660,31 +1670,136 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-22T13:14:17.558694Z"
+        "updatedAt": "2026-06-22T18:21:35.292092Z"
       },
       "note": "Scheduled sportytrader_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-06-22T13:14:17.558694Z"
+      "updatedAt": "2026-06-22T18:21:35.292092Z"
     },
     "sportytrader_wnba": {
       "date": "2026-06-22",
       "errors": [],
-      "generatedAt": "2026-06-22T13:14:17.558694Z",
+      "generatedAt": "2026-06-22T18:21:35.292092Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-22",
         "feed": "sportytrader_wnba",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 0,
+        "pick_count": 4,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-22T13:14:17.558694Z"
+        "updatedAt": "2026-06-22T18:21:35.292092Z"
       },
-      "note": "Scheduled sportytrader_wnba refresh returned 0 pick(s).",
+      "note": "Scheduled sportytrader_wnba refresh returned 4 pick(s).",
       "ok": true,
-      "picks": [],
-      "updatedAt": "2026-06-22T13:14:17.558694Z"
+      "picks": [
+        {
+          "date": "2026-06-22",
+          "decision": "BET",
+          "edge": null,
+          "game": "Connecticut Sun vs Chicago Sky",
+          "matchup": "Connecticut Sun vs Chicago Sky",
+          "odds": -182,
+          "pick": "Over 165.5 (Sun vs Sky)",
+          "pregame_snapshot": {
+            "date": "2026-06-22",
+            "decision": "BET",
+            "edge": null,
+            "game": "Connecticut Sun vs Chicago Sky",
+            "matchup": "Connecticut Sun vs Chicago Sky",
+            "odds": -182,
+            "pick": "Over 165.5 (Sun vs Sky)",
+            "probability": null,
+            "source": "SportyTraderWNBA",
+            "sport": "WNBA",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderWNBA",
+          "sport": "WNBA",
+          "units": 1
+        },
+        {
+          "date": "2026-06-22",
+          "decision": "BET",
+          "edge": null,
+          "game": "Atlanta Dream vs Toronto Tempo",
+          "matchup": "Atlanta Dream vs Toronto Tempo",
+          "odds": -182,
+          "pick": "Atlanta Dream on the -10.5 line (Dream vs Tempo)",
+          "pregame_snapshot": {
+            "date": "2026-06-22",
+            "decision": "BET",
+            "edge": null,
+            "game": "Atlanta Dream vs Toronto Tempo",
+            "matchup": "Atlanta Dream vs Toronto Tempo",
+            "odds": -182,
+            "pick": "Atlanta Dream on the -10.5 line (Dream vs Tempo)",
+            "probability": null,
+            "source": "SportyTraderWNBA",
+            "sport": "WNBA",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderWNBA",
+          "sport": "WNBA",
+          "units": 1
+        },
+        {
+          "date": "2026-06-22",
+          "decision": "BET",
+          "edge": null,
+          "game": "Indiana Fever vs Phoenix Mercury",
+          "matchup": "Indiana Fever vs Phoenix Mercury",
+          "odds": -149,
+          "pick": "Indiana Fever on the -5.5 line (Fever vs Mercury)",
+          "pregame_snapshot": {
+            "date": "2026-06-22",
+            "decision": "BET",
+            "edge": null,
+            "game": "Indiana Fever vs Phoenix Mercury",
+            "matchup": "Indiana Fever vs Phoenix Mercury",
+            "odds": -149,
+            "pick": "Indiana Fever on the -5.5 line (Fever vs Mercury)",
+            "probability": null,
+            "source": "SportyTraderWNBA",
+            "sport": "WNBA",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderWNBA",
+          "sport": "WNBA",
+          "units": 1
+        },
+        {
+          "date": "2026-06-22",
+          "decision": "BET",
+          "edge": null,
+          "game": "Seattle Storm vs Dallas Wings",
+          "matchup": "Seattle Storm vs Dallas Wings",
+          "odds": -180,
+          "pick": "Under 174.5 (Storm vs Wings)",
+          "pregame_snapshot": {
+            "date": "2026-06-22",
+            "decision": "BET",
+            "edge": null,
+            "game": "Seattle Storm vs Dallas Wings",
+            "matchup": "Seattle Storm vs Dallas Wings",
+            "odds": -180,
+            "pick": "Under 174.5 (Storm vs Wings)",
+            "probability": null,
+            "source": "SportyTraderWNBA",
+            "sport": "WNBA",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderWNBA",
+          "sport": "WNBA",
+          "units": 1
+        }
+      ],
+      "updatedAt": "2026-06-22T18:21:35.292092Z"
     }
   },
   "fifa_world_cup": {
@@ -22922,7 +23037,7 @@
     "sportsgambler_fifa_world_cup": {
       "date": "2026-06-22",
       "errors": [],
-      "generatedAt": "2026-06-22T13:14:17.558694Z",
+      "generatedAt": "2026-06-22T18:21:35.292092Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-22",
@@ -22931,7 +23046,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 4,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-22T13:14:17.558694Z"
+        "updatedAt": "2026-06-22T18:21:35.292092Z"
       },
       "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 4 pick(s).",
       "ok": true,
@@ -23005,12 +23120,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-22T13:14:17.558694Z"
+      "updatedAt": "2026-06-22T18:21:35.292092Z"
     },
     "sportsgambler_mlb": {
       "date": "2026-06-22",
       "errors": [],
-      "generatedAt": "2026-06-22T13:14:17.558694Z",
+      "generatedAt": "2026-06-22T18:21:35.292092Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-22",
@@ -23019,7 +23134,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 13,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-22T13:14:17.558694Z"
+        "updatedAt": "2026-06-22T18:21:35.292092Z"
       },
       "note": "Scheduled sportsgambler_mlb refresh returned 13 pick(s).",
       "ok": true,
@@ -23031,7 +23146,7 @@
           "game": "Detroit Tigers vs New York Yankees",
           "game_start_time": "2026-06-22T22:10Z",
           "matchup": "Detroit Tigers vs New York Yankees",
-          "odds": -135,
+          "odds": -128,
           "pick": "New York Yankees to Win (Detroit Tigers vs New York Yankees)",
           "pregame_snapshot": {
             "date": "2026-06-22",
@@ -23059,7 +23174,7 @@
           "game": "Miami Marlins vs Texas Rangers",
           "game_start_time": "2026-06-22T22:40Z",
           "matchup": "Miami Marlins vs Texas Rangers",
-          "odds": 106,
+          "odds": 102,
           "pick": "Texas Rangers to Win (Miami Marlins vs Texas Rangers)",
           "pregame_snapshot": {
             "date": "2026-06-22",
@@ -23115,7 +23230,7 @@
           "game": "Washington Nationals vs Philadelphia Phillies",
           "game_start_time": "2026-06-22T22:45Z",
           "matchup": "Washington Nationals vs Philadelphia Phillies",
-          "odds": -109,
+          "odds": -102,
           "pick": "Philadelphia Phillies to Win (Washington Nationals vs Philadelphia Phillies)",
           "pregame_snapshot": {
             "date": "2026-06-22",
@@ -23143,7 +23258,7 @@
           "game": "Toronto Blue Jays vs Houston Astros",
           "game_start_time": "2026-06-22T23:07Z",
           "matchup": "Toronto Blue Jays vs Houston Astros",
-          "odds": -135,
+          "odds": -137,
           "pick": "Toronto Blue Jays to Win (Toronto Blue Jays vs Houston Astros)",
           "pregame_snapshot": {
             "date": "2026-06-22",
@@ -23171,7 +23286,7 @@
           "game": "Cincinnati Reds vs Milwaukee Brewers",
           "game_start_time": "2026-06-22T23:10Z",
           "matchup": "Cincinnati Reds vs Milwaukee Brewers",
-          "odds": 135,
+          "odds": 125,
           "pick": "Cincinnati Reds to Win (Cincinnati Reds vs Milwaukee Brewers)",
           "pregame_snapshot": {
             "date": "2026-06-22",
@@ -23199,7 +23314,7 @@
           "game": "New York Mets vs Chicago Cubs",
           "game_start_time": "2026-06-22T23:10Z",
           "matchup": "New York Mets vs Chicago Cubs",
-          "odds": -116,
+          "odds": -115,
           "pick": "Chicago Cubs to Win (New York Mets vs Chicago Cubs)",
           "pregame_snapshot": {
             "date": "2026-06-22",
@@ -23255,7 +23370,7 @@
           "game": "Minnesota Twins vs Los Angeles Dodgers",
           "game_start_time": "2026-06-22T23:40Z",
           "matchup": "Minnesota Twins vs Los Angeles Dodgers",
-          "odds": 132,
+          "odds": 133,
           "pick": "Minnesota Twins to Win (Minnesota Twins vs Los Angeles Dodgers)",
           "pregame_snapshot": {
             "date": "2026-06-22",
@@ -23311,7 +23426,7 @@
           "game": "Colorado Rockies vs Boston Red Sox",
           "game_start_time": "2026-06-23T00:40Z",
           "matchup": "Colorado Rockies vs Boston Red Sox",
-          "odds": -132,
+          "odds": -137,
           "pick": "Boston Red Sox to Win (Colorado Rockies vs Boston Red Sox)",
           "pregame_snapshot": {
             "date": "2026-06-22",
@@ -23367,7 +23482,7 @@
           "game": "San Diego Padres vs Atlanta Braves",
           "game_start_time": "2026-06-23T02:00Z",
           "matchup": "San Diego Padres vs Atlanta Braves",
-          "odds": -111,
+          "odds": -108,
           "pick": "San Diego Padres to Win (San Diego Padres vs Atlanta Braves)",
           "pregame_snapshot": {
             "date": "2026-06-22",
@@ -23389,12 +23504,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-22T13:14:17.558694Z"
+      "updatedAt": "2026-06-22T18:21:35.292092Z"
     },
     "sportsgambler_nba": {
       "date": "2026-06-22",
       "errors": [],
-      "generatedAt": "2026-06-22T13:14:17.558694Z",
+      "generatedAt": "2026-06-22T18:21:35.292092Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-22",
@@ -23403,17 +23518,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-22T13:14:17.558694Z"
+        "updatedAt": "2026-06-22T18:21:35.292092Z"
       },
       "note": "Scheduled sportsgambler_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-06-22T13:14:17.558694Z"
+      "updatedAt": "2026-06-22T18:21:35.292092Z"
     },
     "sportsgambler_wnba": {
       "date": "2026-06-22",
       "errors": [],
-      "generatedAt": "2026-06-22T13:14:17.558694Z",
+      "generatedAt": "2026-06-22T18:21:35.292092Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-22",
@@ -23422,7 +23537,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 4,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-22T13:14:17.558694Z"
+        "updatedAt": "2026-06-22T18:21:35.292092Z"
       },
       "note": "Scheduled sportsgambler_wnba refresh returned 4 pick(s).",
       "ok": true,
@@ -23540,41 +23655,25 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-22T13:14:17.558694Z"
+      "updatedAt": "2026-06-22T18:21:35.292092Z"
     },
     "sportytrader_fifa_world_cup": {
       "date": "2026-06-22",
       "errors": [],
-      "generatedAt": "2026-06-22T13:14:17.558694Z",
+      "generatedAt": "2026-06-22T18:21:35.292092Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-22",
         "feed": "sportytrader_fifa_world_cup",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 4,
+        "pick_count": 3,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-22T13:14:17.558694Z"
+        "updatedAt": "2026-06-22T18:21:35.292092Z"
       },
-      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 4 pick(s).",
+      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 3 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "calibration_excluded": true,
-          "date": "2026-06-22",
-          "decision": "BET",
-          "edge": null,
-          "game": "Argentina vs Austria",
-          "grade_supported": false,
-          "market_type": "soccer_specialty",
-          "matchup": "Argentina vs Austria",
-          "odds": 100,
-          "pick": "Both Teams to Score (Argentina vs Austria)",
-          "probability": null,
-          "source": "SportyTraderFIFAWorldCup",
-          "sport": "FIFA WC",
-          "units": 1
-        },
         {
           "calibration_excluded": true,
           "date": "2026-06-22",
@@ -23624,23 +23723,23 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-22T13:14:17.558694Z"
+      "updatedAt": "2026-06-22T18:21:35.292092Z"
     },
     "sportytrader_mlb": {
       "date": "2026-06-22",
       "errors": [],
-      "generatedAt": "2026-06-22T13:14:17.558694Z",
+      "generatedAt": "2026-06-22T18:21:35.292092Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-22",
         "feed": "sportytrader_mlb",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 7,
+        "pick_count": 8,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-22T13:14:17.558694Z"
+        "updatedAt": "2026-06-22T18:21:35.292092Z"
       },
-      "note": "Scheduled sportytrader_mlb refresh returned 7 pick(s).",
+      "note": "Scheduled sportytrader_mlb refresh returned 8 pick(s).",
       "ok": true,
       "picks": [
         {
@@ -23697,6 +23796,32 @@
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-22T22:40Z",
+          "units": 1
+        },
+        {
+          "date": "2026-06-22",
+          "decision": "BET",
+          "edge": null,
+          "game": "Washington Nationals vs Philadelphia Phillies",
+          "matchup": "Washington Nationals vs Philadelphia Phillies",
+          "odds": 100,
+          "pick": "Phillies ML (Nationals vs Phillies)",
+          "pregame_snapshot": {
+            "date": "2026-06-22",
+            "decision": "BET",
+            "edge": null,
+            "game": "Washington Nationals vs Philadelphia Phillies",
+            "matchup": "Washington Nationals vs Philadelphia Phillies",
+            "odds": 100,
+            "pick": "Phillies ML (Nationals vs Phillies)",
+            "probability": null,
+            "source": "SportyTraderMLB",
+            "sport": "MLB",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
           "units": 1
         },
         {
@@ -23840,12 +23965,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-22T13:14:17.558694Z"
+      "updatedAt": "2026-06-22T18:21:35.292092Z"
     },
     "sportytrader_nba": {
       "date": "2026-06-22",
       "errors": [],
-      "generatedAt": "2026-06-22T13:14:17.558694Z",
+      "generatedAt": "2026-06-22T18:21:35.292092Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-22",
@@ -23854,31 +23979,136 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-22T13:14:17.558694Z"
+        "updatedAt": "2026-06-22T18:21:35.292092Z"
       },
       "note": "Scheduled sportytrader_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-06-22T13:14:17.558694Z"
+      "updatedAt": "2026-06-22T18:21:35.292092Z"
     },
     "sportytrader_wnba": {
       "date": "2026-06-22",
       "errors": [],
-      "generatedAt": "2026-06-22T13:14:17.558694Z",
+      "generatedAt": "2026-06-22T18:21:35.292092Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-22",
         "feed": "sportytrader_wnba",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 0,
+        "pick_count": 4,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-22T13:14:17.558694Z"
+        "updatedAt": "2026-06-22T18:21:35.292092Z"
       },
-      "note": "Scheduled sportytrader_wnba refresh returned 0 pick(s).",
+      "note": "Scheduled sportytrader_wnba refresh returned 4 pick(s).",
       "ok": true,
-      "picks": [],
-      "updatedAt": "2026-06-22T13:14:17.558694Z"
+      "picks": [
+        {
+          "date": "2026-06-22",
+          "decision": "BET",
+          "edge": null,
+          "game": "Connecticut Sun vs Chicago Sky",
+          "matchup": "Connecticut Sun vs Chicago Sky",
+          "odds": -182,
+          "pick": "Over 165.5 (Sun vs Sky)",
+          "pregame_snapshot": {
+            "date": "2026-06-22",
+            "decision": "BET",
+            "edge": null,
+            "game": "Connecticut Sun vs Chicago Sky",
+            "matchup": "Connecticut Sun vs Chicago Sky",
+            "odds": -182,
+            "pick": "Over 165.5 (Sun vs Sky)",
+            "probability": null,
+            "source": "SportyTraderWNBA",
+            "sport": "WNBA",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderWNBA",
+          "sport": "WNBA",
+          "units": 1
+        },
+        {
+          "date": "2026-06-22",
+          "decision": "BET",
+          "edge": null,
+          "game": "Atlanta Dream vs Toronto Tempo",
+          "matchup": "Atlanta Dream vs Toronto Tempo",
+          "odds": -182,
+          "pick": "Atlanta Dream on the -10.5 line (Dream vs Tempo)",
+          "pregame_snapshot": {
+            "date": "2026-06-22",
+            "decision": "BET",
+            "edge": null,
+            "game": "Atlanta Dream vs Toronto Tempo",
+            "matchup": "Atlanta Dream vs Toronto Tempo",
+            "odds": -182,
+            "pick": "Atlanta Dream on the -10.5 line (Dream vs Tempo)",
+            "probability": null,
+            "source": "SportyTraderWNBA",
+            "sport": "WNBA",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderWNBA",
+          "sport": "WNBA",
+          "units": 1
+        },
+        {
+          "date": "2026-06-22",
+          "decision": "BET",
+          "edge": null,
+          "game": "Indiana Fever vs Phoenix Mercury",
+          "matchup": "Indiana Fever vs Phoenix Mercury",
+          "odds": -149,
+          "pick": "Indiana Fever on the -5.5 line (Fever vs Mercury)",
+          "pregame_snapshot": {
+            "date": "2026-06-22",
+            "decision": "BET",
+            "edge": null,
+            "game": "Indiana Fever vs Phoenix Mercury",
+            "matchup": "Indiana Fever vs Phoenix Mercury",
+            "odds": -149,
+            "pick": "Indiana Fever on the -5.5 line (Fever vs Mercury)",
+            "probability": null,
+            "source": "SportyTraderWNBA",
+            "sport": "WNBA",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderWNBA",
+          "sport": "WNBA",
+          "units": 1
+        },
+        {
+          "date": "2026-06-22",
+          "decision": "BET",
+          "edge": null,
+          "game": "Seattle Storm vs Dallas Wings",
+          "matchup": "Seattle Storm vs Dallas Wings",
+          "odds": -180,
+          "pick": "Under 174.5 (Storm vs Wings)",
+          "pregame_snapshot": {
+            "date": "2026-06-22",
+            "decision": "BET",
+            "edge": null,
+            "game": "Seattle Storm vs Dallas Wings",
+            "matchup": "Seattle Storm vs Dallas Wings",
+            "odds": -180,
+            "pick": "Under 174.5 (Storm vs Wings)",
+            "probability": null,
+            "source": "SportyTraderWNBA",
+            "sport": "WNBA",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderWNBA",
+          "sport": "WNBA",
+          "units": 1
+        }
+      ],
+      "updatedAt": "2026-06-22T18:21:35.292092Z"
     },
     "wnba": {
       "ok": true,
@@ -26111,7 +26341,7 @@
   "sportsgambler_fifa_world_cup": {
     "date": "2026-06-22",
     "errors": [],
-    "generatedAt": "2026-06-22T13:14:17.558694Z",
+    "generatedAt": "2026-06-22T18:21:35.292092Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-22",
@@ -26120,7 +26350,7 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 4,
       "provider": "sportsgambler",
-      "updatedAt": "2026-06-22T13:14:17.558694Z"
+      "updatedAt": "2026-06-22T18:21:35.292092Z"
     },
     "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 4 pick(s).",
     "ok": true,
@@ -26190,12 +26420,12 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-22T13:14:17.558694Z"
+    "updatedAt": "2026-06-22T18:21:35.292092Z"
   },
   "sportsgambler_mlb": {
     "date": "2026-06-22",
     "errors": [],
-    "generatedAt": "2026-06-22T13:14:17.558694Z",
+    "generatedAt": "2026-06-22T18:21:35.292092Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-22",
@@ -26204,7 +26434,7 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 13,
       "provider": "sportsgambler",
-      "updatedAt": "2026-06-22T13:14:17.558694Z"
+      "updatedAt": "2026-06-22T18:21:35.292092Z"
     },
     "note": "Scheduled sportsgambler_mlb refresh returned 13 pick(s).",
     "ok": true,
@@ -26215,7 +26445,7 @@
         "edge": null,
         "game": "Detroit Tigers vs New York Yankees",
         "matchup": "Detroit Tigers vs New York Yankees",
-        "odds": -135,
+        "odds": -128,
         "pick": "New York Yankees to Win (Detroit Tigers vs New York Yankees)",
         "pregame_snapshot": {
           "date": "2026-06-22",
@@ -26241,7 +26471,7 @@
         "edge": null,
         "game": "Miami Marlins vs Texas Rangers",
         "matchup": "Miami Marlins vs Texas Rangers",
-        "odds": 106,
+        "odds": 102,
         "pick": "Texas Rangers to Win (Miami Marlins vs Texas Rangers)",
         "pregame_snapshot": {
           "date": "2026-06-22",
@@ -26293,7 +26523,7 @@
         "edge": null,
         "game": "Washington Nationals vs Philadelphia Phillies",
         "matchup": "Washington Nationals vs Philadelphia Phillies",
-        "odds": -109,
+        "odds": -102,
         "pick": "Philadelphia Phillies to Win (Washington Nationals vs Philadelphia Phillies)",
         "pregame_snapshot": {
           "date": "2026-06-22",
@@ -26319,7 +26549,7 @@
         "edge": null,
         "game": "Toronto Blue Jays vs Houston Astros",
         "matchup": "Toronto Blue Jays vs Houston Astros",
-        "odds": -135,
+        "odds": -137,
         "pick": "Toronto Blue Jays to Win (Toronto Blue Jays vs Houston Astros)",
         "pregame_snapshot": {
           "date": "2026-06-22",
@@ -26345,7 +26575,7 @@
         "edge": null,
         "game": "Cincinnati Reds vs Milwaukee Brewers",
         "matchup": "Cincinnati Reds vs Milwaukee Brewers",
-        "odds": 135,
+        "odds": 125,
         "pick": "Cincinnati Reds to Win (Cincinnati Reds vs Milwaukee Brewers)",
         "pregame_snapshot": {
           "date": "2026-06-22",
@@ -26371,7 +26601,7 @@
         "edge": null,
         "game": "New York Mets vs Chicago Cubs",
         "matchup": "New York Mets vs Chicago Cubs",
-        "odds": -116,
+        "odds": -115,
         "pick": "Chicago Cubs to Win (New York Mets vs Chicago Cubs)",
         "pregame_snapshot": {
           "date": "2026-06-22",
@@ -26423,7 +26653,7 @@
         "edge": null,
         "game": "Minnesota Twins vs Los Angeles Dodgers",
         "matchup": "Minnesota Twins vs Los Angeles Dodgers",
-        "odds": 132,
+        "odds": 133,
         "pick": "Minnesota Twins to Win (Minnesota Twins vs Los Angeles Dodgers)",
         "pregame_snapshot": {
           "date": "2026-06-22",
@@ -26475,7 +26705,7 @@
         "edge": null,
         "game": "Colorado Rockies vs Boston Red Sox",
         "matchup": "Colorado Rockies vs Boston Red Sox",
-        "odds": -132,
+        "odds": -137,
         "pick": "Boston Red Sox to Win (Colorado Rockies vs Boston Red Sox)",
         "pregame_snapshot": {
           "date": "2026-06-22",
@@ -26527,7 +26757,7 @@
         "edge": null,
         "game": "San Diego Padres vs Atlanta Braves",
         "matchup": "San Diego Padres vs Atlanta Braves",
-        "odds": -111,
+        "odds": -108,
         "pick": "San Diego Padres to Win (San Diego Padres vs Atlanta Braves)",
         "pregame_snapshot": {
           "date": "2026-06-22",
@@ -26548,12 +26778,12 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-22T13:14:17.558694Z"
+    "updatedAt": "2026-06-22T18:21:35.292092Z"
   },
   "sportsgambler_nba": {
     "date": "2026-06-22",
     "errors": [],
-    "generatedAt": "2026-06-22T13:14:17.558694Z",
+    "generatedAt": "2026-06-22T18:21:35.292092Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-22",
@@ -26562,17 +26792,17 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 0,
       "provider": "sportsgambler",
-      "updatedAt": "2026-06-22T13:14:17.558694Z"
+      "updatedAt": "2026-06-22T18:21:35.292092Z"
     },
     "note": "Scheduled sportsgambler_nba refresh returned 0 pick(s).",
     "ok": true,
     "picks": [],
-    "updatedAt": "2026-06-22T13:14:17.558694Z"
+    "updatedAt": "2026-06-22T18:21:35.292092Z"
   },
   "sportsgambler_wnba": {
     "date": "2026-06-22",
     "errors": [],
-    "generatedAt": "2026-06-22T13:14:17.558694Z",
+    "generatedAt": "2026-06-22T18:21:35.292092Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-22",
@@ -26581,7 +26811,7 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 4,
       "provider": "sportsgambler",
-      "updatedAt": "2026-06-22T13:14:17.558694Z"
+      "updatedAt": "2026-06-22T18:21:35.292092Z"
     },
     "note": "Scheduled sportsgambler_wnba refresh returned 4 pick(s).",
     "ok": true,
@@ -26691,41 +26921,25 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-22T13:14:17.558694Z"
+    "updatedAt": "2026-06-22T18:21:35.292092Z"
   },
   "sportytrader_fifa_world_cup": {
     "date": "2026-06-22",
     "errors": [],
-    "generatedAt": "2026-06-22T13:14:17.558694Z",
+    "generatedAt": "2026-06-22T18:21:35.292092Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-22",
       "feed": "sportytrader_fifa_world_cup",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 4,
+      "pick_count": 3,
       "provider": "sportytrader",
-      "updatedAt": "2026-06-22T13:14:17.558694Z"
+      "updatedAt": "2026-06-22T18:21:35.292092Z"
     },
-    "note": "Scheduled sportytrader_fifa_world_cup refresh returned 4 pick(s).",
+    "note": "Scheduled sportytrader_fifa_world_cup refresh returned 3 pick(s).",
     "ok": true,
     "picks": [
-      {
-        "calibration_excluded": true,
-        "date": "2026-06-22",
-        "decision": "BET",
-        "edge": null,
-        "game": "Argentina vs Austria",
-        "grade_supported": false,
-        "market_type": "soccer_specialty",
-        "matchup": "Argentina vs Austria",
-        "odds": 100,
-        "pick": "Both Teams to Score (Argentina vs Austria)",
-        "probability": null,
-        "source": "SportyTraderFIFAWorldCup",
-        "sport": "FIFA WC",
-        "units": 1
-      },
       {
         "calibration_excluded": true,
         "date": "2026-06-22",
@@ -26775,23 +26989,23 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-22T13:14:17.558694Z"
+    "updatedAt": "2026-06-22T18:21:35.292092Z"
   },
   "sportytrader_mlb": {
     "date": "2026-06-22",
     "errors": [],
-    "generatedAt": "2026-06-22T13:14:17.558694Z",
+    "generatedAt": "2026-06-22T18:21:35.292092Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-22",
       "feed": "sportytrader_mlb",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 7,
+      "pick_count": 8,
       "provider": "sportytrader",
-      "updatedAt": "2026-06-22T13:14:17.558694Z"
+      "updatedAt": "2026-06-22T18:21:35.292092Z"
     },
-    "note": "Scheduled sportytrader_mlb refresh returned 7 pick(s).",
+    "note": "Scheduled sportytrader_mlb refresh returned 8 pick(s).",
     "ok": true,
     "picks": [
       {
@@ -26836,6 +27050,32 @@
           "matchup": "Miami Marlins vs Texas Rangers",
           "odds": -124,
           "pick": "Miami ML (Marlins vs Rangers)",
+          "probability": null,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
+        },
+        "probability": null,
+        "source": "SportyTraderMLB",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "date": "2026-06-22",
+        "decision": "BET",
+        "edge": null,
+        "game": "Washington Nationals vs Philadelphia Phillies",
+        "matchup": "Washington Nationals vs Philadelphia Phillies",
+        "odds": 100,
+        "pick": "Phillies ML (Nationals vs Phillies)",
+        "pregame_snapshot": {
+          "date": "2026-06-22",
+          "decision": "BET",
+          "edge": null,
+          "game": "Washington Nationals vs Philadelphia Phillies",
+          "matchup": "Washington Nationals vs Philadelphia Phillies",
+          "odds": 100,
+          "pick": "Phillies ML (Nationals vs Phillies)",
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
@@ -26977,12 +27217,12 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-22T13:14:17.558694Z"
+    "updatedAt": "2026-06-22T18:21:35.292092Z"
   },
   "sportytrader_nba": {
     "date": "2026-06-22",
     "errors": [],
-    "generatedAt": "2026-06-22T13:14:17.558694Z",
+    "generatedAt": "2026-06-22T18:21:35.292092Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-22",
@@ -26991,33 +27231,138 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 0,
       "provider": "sportytrader",
-      "updatedAt": "2026-06-22T13:14:17.558694Z"
+      "updatedAt": "2026-06-22T18:21:35.292092Z"
     },
     "note": "Scheduled sportytrader_nba refresh returned 0 pick(s).",
     "ok": true,
     "picks": [],
-    "updatedAt": "2026-06-22T13:14:17.558694Z"
+    "updatedAt": "2026-06-22T18:21:35.292092Z"
   },
   "sportytrader_wnba": {
     "date": "2026-06-22",
     "errors": [],
-    "generatedAt": "2026-06-22T13:14:17.558694Z",
+    "generatedAt": "2026-06-22T18:21:35.292092Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-22",
       "feed": "sportytrader_wnba",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 0,
+      "pick_count": 4,
       "provider": "sportytrader",
-      "updatedAt": "2026-06-22T13:14:17.558694Z"
+      "updatedAt": "2026-06-22T18:21:35.292092Z"
     },
-    "note": "Scheduled sportytrader_wnba refresh returned 0 pick(s).",
+    "note": "Scheduled sportytrader_wnba refresh returned 4 pick(s).",
     "ok": true,
-    "picks": [],
-    "updatedAt": "2026-06-22T13:14:17.558694Z"
+    "picks": [
+      {
+        "date": "2026-06-22",
+        "decision": "BET",
+        "edge": null,
+        "game": "Connecticut Sun vs Chicago Sky",
+        "matchup": "Connecticut Sun vs Chicago Sky",
+        "odds": -182,
+        "pick": "Over 165.5 (Sun vs Sky)",
+        "pregame_snapshot": {
+          "date": "2026-06-22",
+          "decision": "BET",
+          "edge": null,
+          "game": "Connecticut Sun vs Chicago Sky",
+          "matchup": "Connecticut Sun vs Chicago Sky",
+          "odds": -182,
+          "pick": "Over 165.5 (Sun vs Sky)",
+          "probability": null,
+          "source": "SportyTraderWNBA",
+          "sport": "WNBA",
+          "units": 1
+        },
+        "probability": null,
+        "source": "SportyTraderWNBA",
+        "sport": "WNBA",
+        "units": 1
+      },
+      {
+        "date": "2026-06-22",
+        "decision": "BET",
+        "edge": null,
+        "game": "Atlanta Dream vs Toronto Tempo",
+        "matchup": "Atlanta Dream vs Toronto Tempo",
+        "odds": -182,
+        "pick": "Atlanta Dream on the -10.5 line (Dream vs Tempo)",
+        "pregame_snapshot": {
+          "date": "2026-06-22",
+          "decision": "BET",
+          "edge": null,
+          "game": "Atlanta Dream vs Toronto Tempo",
+          "matchup": "Atlanta Dream vs Toronto Tempo",
+          "odds": -182,
+          "pick": "Atlanta Dream on the -10.5 line (Dream vs Tempo)",
+          "probability": null,
+          "source": "SportyTraderWNBA",
+          "sport": "WNBA",
+          "units": 1
+        },
+        "probability": null,
+        "source": "SportyTraderWNBA",
+        "sport": "WNBA",
+        "units": 1
+      },
+      {
+        "date": "2026-06-22",
+        "decision": "BET",
+        "edge": null,
+        "game": "Indiana Fever vs Phoenix Mercury",
+        "matchup": "Indiana Fever vs Phoenix Mercury",
+        "odds": -149,
+        "pick": "Indiana Fever on the -5.5 line (Fever vs Mercury)",
+        "pregame_snapshot": {
+          "date": "2026-06-22",
+          "decision": "BET",
+          "edge": null,
+          "game": "Indiana Fever vs Phoenix Mercury",
+          "matchup": "Indiana Fever vs Phoenix Mercury",
+          "odds": -149,
+          "pick": "Indiana Fever on the -5.5 line (Fever vs Mercury)",
+          "probability": null,
+          "source": "SportyTraderWNBA",
+          "sport": "WNBA",
+          "units": 1
+        },
+        "probability": null,
+        "source": "SportyTraderWNBA",
+        "sport": "WNBA",
+        "units": 1
+      },
+      {
+        "date": "2026-06-22",
+        "decision": "BET",
+        "edge": null,
+        "game": "Seattle Storm vs Dallas Wings",
+        "matchup": "Seattle Storm vs Dallas Wings",
+        "odds": -180,
+        "pick": "Under 174.5 (Storm vs Wings)",
+        "pregame_snapshot": {
+          "date": "2026-06-22",
+          "decision": "BET",
+          "edge": null,
+          "game": "Seattle Storm vs Dallas Wings",
+          "matchup": "Seattle Storm vs Dallas Wings",
+          "odds": -180,
+          "pick": "Under 174.5 (Storm vs Wings)",
+          "probability": null,
+          "source": "SportyTraderWNBA",
+          "sport": "WNBA",
+          "units": 1
+        },
+        "probability": null,
+        "source": "SportyTraderWNBA",
+        "sport": "WNBA",
+        "units": 1
+      }
+    ],
+    "updatedAt": "2026-06-22T18:21:35.292092Z"
   },
-  "updatedAt": "2026-06-22T18:20:34.644347Z",
+  "updatedAt": "2026-06-22T18:21:35.292092Z",
   "wnba": {
     "ok": true,
     "picks": [
