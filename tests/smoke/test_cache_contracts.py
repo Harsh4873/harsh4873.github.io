@@ -8,16 +8,7 @@ from scripts import site_upcheck
 
 
 ROOT = Path(__file__).resolve().parents[2]
-PLAYER_PROP_VARIANT_KEYS = {
-    "mlb_player_props_season",
-    "mlb_player_props_all_time",
-    "mlb_player_props_hot_l10",
-    "mlb_player_props_matchup_h2h",
-    "wnba_player_props_season",
-    "wnba_player_props_all_time",
-    "wnba_player_props_hot_l10",
-    "wnba_player_props_matchup_h2h",
-}
+PLAYER_PROP_MODEL_KEYS = {"mlb_player_props", "wnba_player_props"}
 
 
 def _read_json(path: Path) -> dict:
@@ -65,12 +56,12 @@ def test_latest_player_props_cache_contains_latest_snapshot_markets():
     assert not (snapshot_keys - latest_keys)
 
 
-def test_latest_player_prop_records_remain_split_by_model_bucket():
+def test_latest_player_prop_records_use_one_bucket_per_sport():
     latest = _read_json(ROOT / "data" / "player_props_cache" / "latest.json")
     models = latest.get("models") if isinstance(latest.get("models"), dict) else {}
 
-    assert PLAYER_PROP_VARIANT_KEYS <= set(models)
-    for model_key in PLAYER_PROP_VARIANT_KEYS:
+    assert PLAYER_PROP_MODEL_KEYS == set(models)
+    for model_key in PLAYER_PROP_MODEL_KEYS:
         bucket = models[model_key]
         assert bucket["ok"] is True
         sources = {
@@ -83,21 +74,22 @@ def test_latest_player_prop_records_remain_split_by_model_bucket():
             assert pick["scope"] == "player"
             assert pick["model_key"] == model_key
             rank_epoch = str(pick.get("ml_rank_epoch") or "")
-            assert rank_epoch.startswith(
-                (
-                    f"{pick['sport']}:player_props_variant_v1.0.0:",
-                    f"{pick['sport']}:player_props_consensus_v2.0.0:",
-                )
-            )
+            assert rank_epoch.startswith(f"{pick['sport']}:player_props_consensus_v2.0.0:published:")
 
 
-def test_latest_player_prop_variant_boards_stay_capped_and_ranked():
+def test_latest_player_prop_boards_stay_capped_ranked_and_deduped():
     latest = _read_json(ROOT / "data" / "player_props_cache" / "latest.json")
     models = latest.get("models") if isinstance(latest.get("models"), dict) else {}
 
-    for model_key in PLAYER_PROP_VARIANT_KEYS:
+    for model_key in PLAYER_PROP_MODEL_KEYS:
         picks = models[model_key].get("picks") or []
         ranks = [int(pick["ml_rank"]) for pick in picks]
         assert len(picks) <= 8
         assert ranks == list(range(1, len(picks) + 1))
         assert not any(pick.get("carried_forward") for pick in picks)
+        market_keys = [
+            site_upcheck._player_prop_market_key(pick)
+            for pick in picks
+            if isinstance(pick, dict)
+        ]
+        assert len(market_keys) == len(set(market_keys))

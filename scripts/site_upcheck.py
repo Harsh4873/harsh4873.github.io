@@ -27,15 +27,8 @@ REQUIRED_MODEL_KEYS = {
     "fifa_world_cup",
 }
 REQUIRED_PLAYER_PROP_KEYS = {
-    "nba_player_props",
-    "mlb_player_props_season",
-    "mlb_player_props_all_time",
-    "mlb_player_props_hot_l10",
-    "mlb_player_props_matchup_h2h",
-    "wnba_player_props_season",
-    "wnba_player_props_all_time",
-    "wnba_player_props_hot_l10",
-    "wnba_player_props_matchup_h2h",
+    "mlb_player_props",
+    "wnba_player_props",
 }
 REQUIRED_SCORES24_FEED_KEYS = {
     "scores24_fifa_world_cup",
@@ -290,7 +283,7 @@ def main() -> int:
         elif bucket.get("ok") is not True:
             failures.append(f"player-props bucket {key} failed: {bucket.get('error') or 'unknown error'}")
         elif (
-            key.startswith(("mlb_player_props_", "wnba_player_props_"))
+            key in {"mlb_player_props", "wnba_player_props"}
             and int(bucket.get("games") or 0) > 0
             and not (bucket.get("picks") or [])
             and bucket.get("abstained") is not True
@@ -298,7 +291,7 @@ def main() -> int:
             failures.append(f"player-props bucket {key} has scheduled games but zero picks")
         else:
             picks = bucket.get("picks") or []
-            if key.startswith(("mlb_player_props_", "wnba_player_props_")):
+            if key in {"mlb_player_props", "wnba_player_props"}:
                 if len(picks) > MAX_PLAYER_PROP_BOARD_SIZE:
                     failures.append(
                         f"player-props bucket {key} has {len(picks)} visible picks, expected at most {MAX_PLAYER_PROP_BOARD_SIZE}"

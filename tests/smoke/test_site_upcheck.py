@@ -20,15 +20,8 @@ MODEL_KEYS = {
     "fifa_world_cup",
 }
 PLAYER_PROP_KEYS = {
-    "nba_player_props",
-    "mlb_player_props_season",
-    "mlb_player_props_all_time",
-    "mlb_player_props_hot_l10",
-    "mlb_player_props_matchup_h2h",
-    "wnba_player_props_season",
-    "wnba_player_props_all_time",
-    "wnba_player_props_hot_l10",
-    "wnba_player_props_matchup_h2h",
+    "mlb_player_props",
+    "wnba_player_props",
 }
 SCORES24_KEYS = {"scores24_fifa_world_cup", "scores24_mlb", "scores24_wnba"}
 
@@ -156,7 +149,7 @@ def test_upcheck_reports_raw_and_visible_pick_counts(tmp_path: Path):
 
     props_payload_path = tmp_path / "data" / "player_props_cache" / "latest.json"
     props_payload = json.loads(props_payload_path.read_text(encoding="utf-8"))
-    props_payload["models"]["mlb_player_props_season"]["picks"] = [
+    props_payload["models"]["mlb_player_props"]["picks"] = [
         {"date": today, "scope": "player", "sport": "MLB", "pick": "Visible pass", "decision": "PASS"},
         {"date": today, "scope": "team", "sport": "MLB", "pick": "Hidden wrong scope", "decision": "BET"},
     ]
@@ -178,5 +171,5 @@ def test_upcheck_reports_raw_and_visible_pick_counts(tmp_path: Path):
     assert "player_props_visible=" in result.stdout
     assert "'mlb_new': 2" in result.stdout
     assert "'mlb_new': 1" in result.stdout
-    assert "'mlb_player_props_season': 2" in result.stdout
-    assert "'mlb_player_props_season': 1" in result.stdout
+    assert "'mlb_player_props': 2" in result.stdout
+    assert "'mlb_player_props': 1" in result.stdout

@@ -40,6 +40,14 @@ def player_prop_variant_source(sport: str, variant: str) -> str:
     return f"{str(sport or '').strip().upper()} {VARIANT_LABELS[variant]} Props"
 
 
+def player_prop_sport_key(sport: str) -> str:
+    return f"{str(sport or '').strip().lower()}_player_props"
+
+
+def player_prop_sport_source(sport: str) -> str:
+    return f"{str(sport or '').strip().upper()}PlayerProps"
+
+
 def _clamp(value: float, low: float = 0.01, high: float = 0.99) -> float:
     return max(low, min(high, value))
 
@@ -531,6 +539,18 @@ def _score_sort_key(pick: dict[str, Any]) -> tuple[float, int, float, float, str
     )
 
 
+def _market_identity(pick: dict[str, Any]) -> tuple[str, str, str, str, str, str, float]:
+    return (
+        str(pick.get("sport") or "").upper(),
+        str(pick.get("date") or ""),
+        str(pick.get("game_id") or pick.get("event_id") or pick.get("matchup") or ""),
+        str(pick.get("player_id") or pick.get("market_athlete_id") or pick.get("player_name") or ""),
+        str(pick.get("stat_key") or pick.get("market_type") or pick.get("stat_label") or ""),
+        str(pick.get("selection") or ""),
+        safe_float(pick.get("line")),
+    )
+
+
 def _select_variant(scored: list[dict[str, Any]], variant: str) -> list[dict[str, Any]]:
     filtered = [
         pick for pick in scored
@@ -560,6 +580,91 @@ def _select_variant(scored: list[dict[str, Any]], variant: str) -> list[dict[str
         pick["model_rank"] = index
         pick["rank"] = index
     return selected
+
+
+def _dedupe_variant_publications(selected_by_variant: dict[str, list[dict[str, Any]]]) -> None:
+    winners: dict[tuple[str, str, str, str, str, str, float], tuple[str, tuple[float, int, float, float, str]]] = {}
+    for variant in VARIANT_ORDER:
+        for pick in selected_by_variant.get(variant, []):
+            key = _market_identity(pick)
+            score = _score_sort_key(pick)
+            current = winners.get(key)
+            if current is None or score < current[1]:
+                winners[key] = (variant, score)
+
+    for variant in VARIANT_ORDER:
+        unique = [
+            pick
+            for pick in selected_by_variant.get(variant, [])
+            if winners.get(_market_identity(pick), ("",))[0] == variant
+        ]
+        for index, pick in enumerate(unique, start=1):
+            pick["ml_rank"] = index
+            pick["model_rank"] = index
+            pick["rank"] = index
+        selected_by_variant[variant] = unique
+
+
+def _sport_pick_id(pick: dict[str, Any]) -> str:
+    existing = str(pick.get("id") or "").strip()
+    for variant in VARIANT_ORDER:
+        suffix = f"_{variant}"
+        if existing.endswith(suffix):
+            return f"{existing[:-len(suffix)]}_consensus"
+    return f"{existing or 'pp'}_consensus"
+
+
+def _rank_sport_picks(selected_by_variant: dict[str, list[dict[str, Any]]], sport: str) -> list[dict[str, Any]]:
+    winners: dict[tuple[str, str, str, str, str, str, float], dict[str, Any]] = {}
+    for variant in VARIANT_ORDER:
+        for pick in selected_by_variant.get(variant, []):
+            key = _market_identity(pick)
+            current = winners.get(key)
+            if current is None or _score_sort_key(pick) < _score_sort_key(current):
+                winners[key] = pick
+
+    selected: list[dict[str, Any]] = []
+    per_player: dict[str, int] = {}
+    model_key = player_prop_sport_key(sport)
+    source = player_prop_sport_source(sport)
+    fingerprint = _variant_fingerprint()
+    rank_epoch = f"{sport}:player_props_consensus_v2.0.0:published:{fingerprint}"
+    for pick in sorted(winners.values(), key=_score_sort_key):
+        player_id = str(pick.get("player_id") or pick.get("player_name") or "")
+        if per_player.get(player_id, 0) >= MAX_PER_PLAYER:
+            continue
+        finalized = copy.deepcopy(pick)
+        finalized.update(
+            {
+                "id": _sport_pick_id(finalized),
+                "source": source,
+                "model_key": model_key,
+                "ml_rank_epoch": rank_epoch,
+                "ranking_epoch": rank_epoch,
+                "model_epoch": rank_epoch,
+                "ranking_model": source,
+                "published_model": source,
+                "supporting_variant": finalized.get("model_variant"),
+                "supporting_variant_label": finalized.get("model_variant_label"),
+            }
+        )
+        selected.append(finalized)
+        per_player[player_id] = per_player.get(player_id, 0) + 1
+        if len(selected) >= MAX_VARIANT_PICKS:
+            break
+    for index, pick in enumerate(selected, start=1):
+        pick["ml_rank"] = index
+        pick["model_rank"] = index
+        pick["rank"] = index
+    return selected
+
+
+def _merge_reason_counts(*counts: dict[str, int]) -> dict[str, int]:
+    merged: dict[str, int] = {}
+    for count in counts:
+        for reason, value in count.items():
+            merged[reason] = merged.get(reason, 0) + int(value)
+    return merged
 
 
 def _consensus_rejection_diagnostics(scored: list[dict[str, Any]]) -> tuple[dict[str, int], list[dict[str, Any]]]:
@@ -599,7 +704,8 @@ def build_variant_buckets(
     ]
     market_candidates = [pick for pick in raw_candidates if pick.get("market_priced") is True]
     candidates = market_candidates or raw_candidates
-    buckets: dict[str, dict[str, Any]] = {}
+    scored_by_variant: dict[str, list[dict[str, Any]]] = {}
+    selected_by_variant: dict[str, list[dict[str, Any]]] = {}
     for variant in VARIANT_ORDER:
         model_key = keys[variant]
         scored: list[dict[str, Any]] = []
@@ -622,43 +728,51 @@ def build_variant_buckets(
                     )
                 )
             )
-        picks = _select_variant(scored, variant)
-        rejection_reasons, rejection_examples = _consensus_rejection_diagnostics(scored)
-        method_window = HISTORY_WINDOWS.get(sport, "prior seasons")
-        buckets[model_key] = {
-            "ok": bool(base_model.get("ok", True)),
-            "sport": sport,
-            "date": date_iso,
-            "games": int(base_model.get("games") or 0),
-            "picks": picks,
-            "errors": list(base_model.get("errors") or []),
-            "model": player_prop_variant_source(sport, variant),
-            "model_key": model_key,
-            "variant": variant,
-            "ranking_epoch": f"{sport}:{VARIANT_VERSION}:{variant}:{_variant_fingerprint()}",
-            "method": (
-                "Current-season player-prop ML and market edge"
-                if variant == "season"
-                else f"{method_window} roster-aware player outcome model"
-                if variant == "all_time"
-                else "Last-10 prop hit-rate selector with 50%+ hit-rate gate"
-                if variant == "hot_l10"
-                else "Opponent, position, pitcher, and direct H2H matchup selector"
-            ),
-            "candidate_count": len(candidates),
-            "scored_count": len(scored),
-            "consensus_required": any(pick.get("consensus_required") is True for pick in scored),
-            "consensus_rejected_count": sum(
-                pick.get("consensus_required") is True and pick.get("consensus_qualified") is not True
-                for pick in scored
-            ),
-            "consensus_rejection_reasons": rejection_reasons,
-            "consensus_rejections": rejection_examples,
-            "abstained": bool(candidates and not picks),
-            "note": (
-                ""
-                if picks
-                else f"No {sport} {VARIANT_LABELS[variant]} prop cleared the consensus publication gate."
-            ),
-        }
-    return buckets
+        scored_by_variant[variant] = scored
+        selected_by_variant[variant] = _select_variant(scored, variant)
+    _dedupe_variant_publications(selected_by_variant)
+    picks = _rank_sport_picks(selected_by_variant, sport)
+    rejection_diagnostics = [
+        _consensus_rejection_diagnostics(scored_by_variant[variant])
+        for variant in VARIANT_ORDER
+    ]
+    rejection_reasons = _merge_reason_counts(*(reasons for reasons, _examples in rejection_diagnostics))
+    rejection_examples = [
+        example
+        for _reasons, examples in rejection_diagnostics
+        for example in examples
+    ][:12]
+    scored_count = sum(len(scored_by_variant[variant]) for variant in VARIANT_ORDER)
+    rejected_count = sum(
+        pick.get("consensus_required") is True and pick.get("consensus_qualified") is not True
+        for variant in VARIANT_ORDER
+        for pick in scored_by_variant[variant]
+    )
+    model_key = player_prop_sport_key(sport)
+    fingerprint = _variant_fingerprint()
+    bucket = {
+        "ok": bool(base_model.get("ok", True)),
+        "sport": sport,
+        "date": date_iso,
+        "games": int(base_model.get("games") or 0),
+        "picks": picks,
+        "errors": list(base_model.get("errors") or []),
+        "model": player_prop_sport_source(sport),
+        "model_key": model_key,
+        "model_variants": list(VARIANT_ORDER),
+        "ranking_epoch": f"{sport}:player_props_consensus_v2.0.0:published:{fingerprint}",
+        "method": "Consensus-qualified player props using season, history, L10, and matchup signals as supporting inputs",
+        "candidate_count": len(candidates),
+        "scored_count": scored_count,
+        "consensus_required": any(
+            pick.get("consensus_required") is True
+            for variant in VARIANT_ORDER
+            for pick in scored_by_variant[variant]
+        ),
+        "consensus_rejected_count": rejected_count,
+        "consensus_rejection_reasons": rejection_reasons,
+        "consensus_rejections": rejection_examples,
+        "abstained": bool(candidates and not picks),
+        "note": "" if picks else f"No {sport} prop cleared the consensus publication gate.",
+    }
+    return {model_key: bucket}

@@ -15,18 +15,7 @@ from player_props.schema import decision_and_stake
 ROOT = Path(__file__).resolve().parents[2]
 DATE = "2026-06-12"
 STAMP = "2026-06-12T12:00:00Z"
-WNBA_VARIANT_KEYS = {
-    "wnba_player_props_season",
-    "wnba_player_props_all_time",
-    "wnba_player_props_hot_l10",
-    "wnba_player_props_matchup_h2h",
-}
-MLB_VARIANT_KEYS = {
-    "mlb_player_props_season",
-    "mlb_player_props_all_time",
-    "mlb_player_props_hot_l10",
-    "mlb_player_props_matchup_h2h",
-}
+PLAYER_PROP_MODEL_KEYS = {"wnba_player_props", "mlb_player_props"}
 
 
 @pytest.fixture(autouse=True)
@@ -492,7 +481,7 @@ def _variant_candidate(
 def test_empty_leagues_are_healthy():
     payload = generate_payload(DATE, client=EmptyClient(), generated_at=STAMP)
     assert set(payload) == {"date", "generatedAt", "updatedAt", "models"}
-    assert WNBA_VARIANT_KEYS | MLB_VARIANT_KEYS | {"nba_player_props"} == set(payload["models"])
+    assert PLAYER_PROP_MODEL_KEYS == set(payload["models"])
     assert all(model["ok"] for model in payload["models"].values())
     assert all(model["picks"] == [] for model in payload["models"].values())
 
@@ -509,11 +498,11 @@ def test_refresh_script_blank_date_uses_central_today(monkeypatch):
 def test_basketball_props_use_actual_markets_and_apply_next_man_up():
     first = generate_payload(DATE, client=MockClient(), generated_at=STAMP)
     second = generate_payload(DATE, client=MockClient(), generated_at="2026-06-12T13:00:00Z")
-    picks = first["models"]["wnba_player_props_season"]["picks"]
+    picks = first["models"]["wnba_player_props"]["picks"]
 
     assert 5 <= len(picks) <= 8
     assert [pick["id"] for pick in picks] == [
-        pick["id"] for pick in second["models"]["wnba_player_props_season"]["picks"]
+        pick["id"] for pick in second["models"]["wnba_player_props"]["picks"]
     ]
     assert all(pick["scope"] == "player" and pick["result"] == "pending" for pick in picks)
     assert all(pick["player_name"] != "Star Player" for pick in picks)
@@ -528,18 +517,17 @@ def test_basketball_props_use_actual_markets_and_apply_next_man_up():
     assert all(pick["ml_expected_value"] is not None for pick in picks)
     assert all(pick["ml_rank"] >= 1 for pick in picks)
     assert [pick["rank"] for pick in picks] == [pick["ml_rank"] for pick in picks]
-    assert all(pick["ml_rank_epoch"].startswith("WNBA:player_props_variant_v1.0.0:season:") for pick in picks)
+    assert all(pick["ml_rank_epoch"].startswith("WNBA:player_props_consensus_v2.0.0:published:") for pick in picks)
     assert all(pick["ranking_epoch"] == pick["ml_rank_epoch"] for pick in picks)
     assert all(pick["model_epoch"] == pick["ml_rank_epoch"] for pick in picks)
     assert all(pick["ranking_updated_at"] == STAMP for pick in picks)
     assert all(pick["actionability"] == "market_priced" for pick in picks)
-    assert all(pick["model_variant"] == "season" for pick in picks)
-    assert all(pick["model_key"] == "wnba_player_props_season" for pick in picks)
+    assert all(pick["model_variant"] in {"season", "all_time", "hot_l10", "matchup_h2h"} for pick in picks)
+    assert all(pick["model_key"] == "wnba_player_props" for pick in picks)
     assert len({pick["id"] for pick in picks}) == len(picks)
     assert all(pick["market_implied_probability"] is not None for pick in picks)
     assert all(
-        pick["ml_probability_mode"]
-        == "season_variant"
+        str(pick["ml_probability_mode"]).endswith("_variant")
         for pick in picks
     )
     assert all(pick["units"] <= (1.0 if pick["ml_model_active"] else 0.5) for pick in picks)
@@ -565,7 +553,7 @@ def test_basketball_props_fall_back_to_synthetic_lines_when_markets_are_missing(
 
 def test_mlb_props_use_actual_markets_and_reject_reliever_starter_lines():
     payload = generate_payload(DATE, client=MockClient(), generated_at=STAMP)
-    model = payload["models"]["mlb_player_props_season"]
+    model = payload["models"]["mlb_player_props"]
     picks = model["picks"]
 
     assert model["ok"] is True
@@ -582,20 +570,19 @@ def test_mlb_props_use_actual_markets_and_reject_reliever_starter_lines():
     assert all(pick["ml_expected_value"] is not None for pick in picks)
     assert [pick["ml_rank"] for pick in picks] == sorted(pick["ml_rank"] for pick in picks)
     assert [pick["rank"] for pick in picks] == [pick["ml_rank"] for pick in picks]
-    assert all(pick["ml_rank_epoch"].startswith("MLB:player_props_variant_v1.0.0:season:") for pick in picks)
+    assert all(pick["ml_rank_epoch"].startswith("MLB:player_props_consensus_v2.0.0:published:") for pick in picks)
     assert all(pick["ranking_epoch"] == pick["ml_rank_epoch"] for pick in picks)
     assert all(pick["model_epoch"] == pick["ml_rank_epoch"] for pick in picks)
     assert all(pick["ranking_updated_at"] == STAMP for pick in picks)
     assert model["ranking_epoch"] == picks[0]["ml_rank_epoch"]
     assert model["ranking_updated_at"] == STAMP
     assert all(pick["actionability"] == "market_priced" for pick in picks)
-    assert all(pick["model_variant"] == "season" for pick in picks)
-    assert all(pick["model_key"] == "mlb_player_props_season" for pick in picks)
+    assert all(pick["model_variant"] in {"season", "all_time", "hot_l10", "matchup_h2h"} for pick in picks)
+    assert all(pick["model_key"] == "mlb_player_props" for pick in picks)
     assert len({pick["id"] for pick in picks}) == len(picks)
     assert all(pick["market_implied_probability"] is not None for pick in picks)
     assert all(
-        pick["ml_probability_mode"]
-        == "season_variant"
+        str(pick["ml_probability_mode"]).endswith("_variant")
         for pick in picks
     )
     assert all(pick["units"] <= (1.0 if pick["ml_model_active"] else 0.5) for pick in picks)
@@ -607,7 +594,7 @@ def test_mlb_props_use_actual_markets_and_reject_reliever_starter_lines():
 
 
 def test_mlb_props_resolve_athletes_when_pregame_summary_has_no_rosters():
-    model = generate_payload(DATE, client=MissingSummaryRosterClient(), generated_at=STAMP)["models"]["mlb_player_props_season"]
+    model = generate_payload(DATE, client=MissingSummaryRosterClient(), generated_at=STAMP)["models"]["mlb_player_props"]
 
     assert model["ok"] is True
     assert model["picks"]
@@ -756,7 +743,7 @@ def test_variant_boards_abstain_when_consensus_policy_rejects_publication(
     }
 
     bucket = variants.build_variant_buckets(sport=sport, date_iso=DATE, base_model=base_model)[
-        f"{sport.lower()}_player_props_season"
+        f"{sport.lower()}_player_props"
     ]
 
     assert bucket["picks"] == []
@@ -817,7 +804,7 @@ def test_variant_board_uses_consensus_probability_when_gate_qualifies(monkeypatc
     }
 
     bucket = variants.build_variant_buckets(sport="WNBA", date_iso=DATE, base_model=base_model)[
-        "wnba_player_props_season"
+        "wnba_player_props"
     ]
 
     assert len(bucket["picks"]) == 1
@@ -834,6 +821,9 @@ def test_variant_board_uses_consensus_probability_when_gate_qualifies(monkeypatc
     assert pick["selected_side_implied_probability"] == 0.4545
     assert pick["market_no_vig_selected_probability"] is not None
     assert pick["consensus_conservative_validation_accuracy"] == 0.71
+    assert pick["model_key"] == "wnba_player_props"
+    assert pick["source"] == "WNBAPlayerProps"
+    assert pick["supporting_variant"] == "season"
 
 
 def test_consensus_rejects_miscalibrated_publication_policy(monkeypatch):

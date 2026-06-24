@@ -108,7 +108,7 @@ let latestPicksUpdatedAt = '';
 const HOME_SCORE_TTL_MS = 45_000;
 const DISPLAY_TIME_ZONE = 'America/Chicago';
 const AUTO_REFRESH_MS = 5 * 60_000;
-const PLAYER_PROP_RANKING_START_DATE = '2026-06-20';
+const PLAYER_PROP_RANKING_START_DATE = '2026-06-23';
 const YOUR_BETS_STORAGE_KEY = 'pickledger_your_bets_v1';
 const PRIMARY_FILTERS = ['ALL', 'MLB', 'WNBA', 'FIFA WC'];
 let lastCentralDate = '';
@@ -217,8 +217,7 @@ function consensusModelName(label: string): string {
 }
 
 function playerRankingNames(pick: Pick): string[] {
-  const names = consensusApplicableModelLabels(pick).map(consensusModelName).filter(Boolean);
-  return names.length ? [...new Set(names)] : [sourceName(pick)];
+  return [sourceName(pick)];
 }
 
 function rankingBucketNames(pick: Pick): string[] {
@@ -226,7 +225,7 @@ function rankingBucketNames(pick: Pick): string[] {
 }
 
 function picksForRankingBucket(picks: Pick[], bucketName: string): Pick[] {
-  return picks.filter(pick => rankingBucketNames(pick).includes(bucketName));
+  return uniquePlayerRankingPicks(picks.filter(pick => rankingBucketNames(pick).includes(bucketName)));
 }
 
 function addPickToRankingBuckets(buckets: Map<string, Pick[]>, pick: Pick): void {
@@ -303,6 +302,31 @@ function playerRankingEpoch(pick: Pick): string {
   return String(pick.ml_rank_epoch || pick.ranking_epoch || pick.model_epoch || '').trim();
 }
 
+function playerRankingPickIdentity(pick: Pick): string {
+  return [
+    pick.sport,
+    pickDateKey(pick),
+    pick.game_id || pick.event_id || gameName(pick),
+    pick.player_id || pick.market_athlete_id || pick.player_name || pick.player,
+    pick.stat_key || pick.market_type || pick.market,
+    pick.selection || pick.pick,
+    pick.line ?? pick.market_line ?? '',
+  ].map(value => String(value ?? '').trim().toLowerCase()).join('::');
+}
+
+function uniquePlayerRankingPicks(picks: Pick[]): Pick[] {
+  if (activePickMode !== 'player') return picks;
+  const byMarket = new Map<string, Pick>();
+  picks.forEach(pick => {
+    const key = playerRankingPickIdentity(pick);
+    const current = byMarket.get(key);
+    if (!current || (playerModelRank(pick) ?? 9999) < (playerModelRank(current) ?? 9999)) {
+      byMarket.set(key, pick);
+    }
+  });
+  return [...byMarket.values()];
+}
+
 function activePlayerRankingEpochs(): Map<string, string> {
   const latest = new Map<string, { date: string; epoch: string; updatedAt: string }>();
   getAllPicks().forEach(pick => {
@@ -324,10 +348,10 @@ function isSettledPick(pick: Pick): boolean {
 
 function rankingComparablePicks(picks: Pick[]): Pick[] {
   if (activePickMode !== 'player') return picks;
-  return picks.filter(pick => {
+  return uniquePlayerRankingPicks(picks.filter(pick => {
     const date = pickDateKey(pick);
     return date >= PLAYER_PROP_RANKING_START_DATE;
-  });
+  }));
 }
 
 function latestAvailableDateKey(picks = getAllPicks()): string {
@@ -663,7 +687,7 @@ function ensureSelection(): void {
   const dates = [...new Set(getAllPicks().map(pickDateKey).filter(Boolean))].sort();
   const today = centralDateKey();
   const latest = dates.at(-1) || today;
-  if (activePickMode === 'player') selectedDate = latest;
+  if (activePickMode === 'player' && (!selectedDate || !dates.includes(selectedDate))) selectedDate = latest;
   else if (followCentralToday) selectedDate = dates.includes(today) ? today : latest;
   else if (!dates.includes(selectedDate)) selectedDate = dates.at(-1) || today;
   if (!calendarMonth) calendarMonth = selectedDate.slice(0, 7);
@@ -984,15 +1008,26 @@ function renderRankings(): void {
       : 'Source win rates by weekday. Green cells have at least three decided picks and a 55%+ win rate.';
   }
   const bySource = new Map<string, Pick[]>();
-  rankingPicks.forEach(pick => addPickToRankingBuckets(bySource, pick));
-  const ranked = [...bySource.entries()].map(([source, picks]) => ({ source, picks, stats: statsFor(picks) }))
-    .filter(item => item.stats.wins + item.stats.losses > 0)
-    .sort((a, b) => (b.stats.roi ?? -999) - (a.stats.roi ?? -999) || b.stats.net - a.stats.net);
+  (activePickMode === 'player' ? comparablePicks : rankingPicks).forEach(pick => addPickToRankingBuckets(bySource, pick));
+  const ranked = [...bySource.entries()].map(([source, picks]) => ({
+    source,
+    picks,
+    stats: statsFor(picks.filter(isSettledPick)),
+  }))
+    .filter(item => activePickMode === 'player' || item.stats.wins + item.stats.losses > 0)
+    .sort((a, b) => activePickMode === 'player'
+      ? (
+        (b.stats.wins + b.stats.losses) - (a.stats.wins + a.stats.losses)
+        || (b.stats.roi ?? -999) - (a.stats.roi ?? -999)
+        || b.stats.net - a.stats.net
+        || a.source.localeCompare(b.source)
+      )
+      : (b.stats.roi ?? -999) - (a.stats.roi ?? -999) || b.stats.net - a.stats.net);
   const leaderboard = document.getElementById('leaderboard');
   if (leaderboard) {
     leaderboard.innerHTML = ranked.length ? ranked.map((item, index) => {
       const expanded = expandedSourceKeys.has(item.source);
-      const records = sourceRecordLines(picksForRankingBucket(allPicks, item.source), centralDateKey());
+      const records = sourceRecordLines(picksForRankingBucket(comparablePicks, item.source), centralDateKey());
       return `<article class="source-card ${index < 3 ? `rank-${index + 1}` : ''} ${expanded ? 'expanded' : ''}" data-source-card="${escapeHtml(item.source)}" role="button" tabindex="0" aria-expanded="${expanded}">
         <div class="card-rank">${index + 1}</div><div class="card-name">${escapeHtml(item.source)}</div>
         <div class="score-bar-wrap"><div class="score-label"><span>ACCURACY</span><span class="score-val">${item.stats.winRate == null ? '—' : `${(item.stats.winRate * 100).toFixed(1)}%`} (${item.stats.wins}-${item.stats.losses})</span></div><div class="bar-bg"><div class="bar-fill bar-acc" style="width:${(item.stats.winRate || 0) * 100}%"></div></div></div>
@@ -1415,7 +1450,7 @@ function renderDaily(): void {
   if (!container) return;
   const dates = [...new Set(getAllPicks().map(pickDateKey).filter(Boolean))].sort();
   const today = centralDateKey();
-  const key = activePickMode === 'player' ? latestAvailableDateKey() : dates.includes(today) ? today : dates.at(-1) || today;
+  const key = activePickMode === 'player' ? selectedDate || latestAvailableDateKey() : dates.includes(today) ? today : dates.at(-1) || today;
   const picks = getAllPicks().filter(pick => pickDateKey(pick) === key);
   const stats = statsFor(picks);
   const pending = picks.filter(pick => pick.result === 'pending');

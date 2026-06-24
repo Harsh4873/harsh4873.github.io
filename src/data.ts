@@ -89,6 +89,7 @@ const ARCHIVED_SPORTS = new Set(['NBA']);
 const PLAYER_PROPS_ML_SOURCE = 'player_props_ml_v1';
 // First snapshot produced by the ML slate-engine launch in commit b6f9dbe.
 const PLAYER_PROPS_ML_FIRST_SNAPSHOT_AT = Date.parse('2026-06-16T19:04:34.909830Z');
+const PLAYER_PROPS_PUBLIC_START_DATE = '2026-06-23';
 const SOURCE_LABELS: Record<string, string> = {
   mlb_new: 'MLB Model',
   mlb_inning: 'MLB Inning',
@@ -275,6 +276,7 @@ function isPlayerScopedPick(pick: Pick): boolean {
 
 function isMlEraPlayerProp(pick: Pick): boolean {
   if (String(pick.probability_source || '').trim() !== PLAYER_PROPS_ML_SOURCE) return false;
+  if (String(pick.date || '') < PLAYER_PROPS_PUBLIC_START_DATE) return false;
   const timestamp = Date.parse(String(
     pick.ranking_updated_at || pick.generated_at || pick.created_at || '',
   ));

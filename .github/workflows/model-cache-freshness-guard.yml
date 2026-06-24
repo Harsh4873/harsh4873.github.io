@@ -71,15 +71,8 @@ jobs:
           from pathlib import Path
 
           required = {
-              "nba_player_props",
-              "mlb_player_props_season",
-              "mlb_player_props_all_time",
-              "mlb_player_props_hot_l10",
-              "mlb_player_props_matchup_h2h",
-              "wnba_player_props_season",
-              "wnba_player_props_all_time",
-              "wnba_player_props_hot_l10",
-              "wnba_player_props_matchup_h2h",
+              "mlb_player_props",
+              "wnba_player_props",
           }
           try:
               payload = json.loads(Path("data/player_props_cache/latest.json").read_text(encoding="utf-8"))
@@ -89,7 +82,7 @@ jobs:
           healthy = all(isinstance(models.get(key), dict) and models[key].get("ok") is True for key in required)
           for key in required:
               bucket = models.get(key) if isinstance(models.get(key), dict) else {}
-              if key.startswith(("mlb_player_props_", "wnba_player_props_")):
+              if key in {"mlb_player_props", "wnba_player_props"}:
                   if int(bucket.get("games") or 0) > 0 and not (bucket.get("picks") or []) and bucket.get("abstained") is not True:
                       healthy = False
           print("true" if healthy else "false")

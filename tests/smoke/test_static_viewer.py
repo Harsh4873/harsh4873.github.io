@@ -189,12 +189,12 @@ def test_source_rankings_expand_period_records_and_static_cards_do_not_fake_clic
     for label in ("TODAY", "YESTERDAY", "LAST 7 DAYS", "ALL TIME"):
         assert f"label: '{label}'" in main
     assert "function isSettledPick(" in main
-    assert "const PLAYER_PROP_RANKING_START_DATE = '2026-06-20'" in main
+    assert "const PLAYER_PROP_RANKING_START_DATE = '2026-06-23'" in main
     assert "if (activePickMode !== 'player') return picks" in main
     assert "date >= PLAYER_PROP_RANKING_START_DATE" in main
     assert "function rankingWindowLabel(" in main
     assert "function picksForRankingBucket(" in main
-    assert "sourceRecordLines(picksForRankingBucket(allPicks, item.source), centralDateKey())" in main
+    assert "sourceRecordLines(picksForRankingBucket(comparablePicks, item.source), centralDateKey())" in main
     assert 'data-source-card="${escapeHtml(item.source)}"' in main
     assert 'role="button" tabindex="0" aria-expanded="${expanded}"' in main
     assert "function bindSourceCards(" in main
@@ -278,10 +278,10 @@ def test_player_mode_keeps_best_bets_available_and_prop_sources_separate():
     assert "playerResearchPool" in main
     assert "function playerRankingEpoch(" in main
     assert "function rankingComparablePicks(" in main
-    assert "const PLAYER_PROP_RANKING_START_DATE = '2026-06-20'" in main
+    assert "const PLAYER_PROP_RANKING_START_DATE = '2026-06-23'" in main
     assert "if (activePickMode !== 'player') return picks" in main
     assert "function latestAvailableDateKey(" in main
-    assert "activePickMode === 'player' ? latestAvailableDateKey()" in main
+    assert "activePickMode === 'player' ? selectedDate || latestAvailableDateKey()" in main
     assert "function playerModelRank(" in main
     assert "return 10000 - modelRank" in main
     assert "function consensusModelPanelHtml(" in main
@@ -290,7 +290,7 @@ def test_player_mode_keeps_best_bets_available_and_prop_sources_separate():
     assert "function playerRankingNames(" in main
     assert "function rankingBucketNames(" in main
     assert "function addPickToRankingBuckets(" in main
-    assert "rankingPicks.forEach(pick => addPickToRankingBuckets(bySource, pick))" in main
+    assert "(activePickMode === 'player' ? comparablePicks : rankingPicks).forEach(pick => addPickToRankingBuckets(bySource, pick))" in main
     assert "rankingBucketNames(pick).forEach(source =>" in main
     assert "? 'Model Rankings' : 'Source Rankings'" in main
     assert "? 'Model' : 'Source'" in main
@@ -582,7 +582,7 @@ def test_refresh_timing_and_pages_deploy_are_deterministic():
     assert 'CACHE_HEALTHY="$(python - <<\'PY\'' in guard
     assert 'models[key].get("ok") is True for key in required' in guard
     assert 'PLAYER_CACHE_HEALTHY="$(python - <<\'PY\'' in guard
-    assert 'key.startswith(("mlb_player_props_", "wnba_player_props_"))' in guard
+    assert 'key in {"mlb_player_props", "wnba_player_props"}' in guard
     assert 'int(bucket.get("games") or 0) > 0 and not (bucket.get("picks") or [])' in guard
 
 
