@@ -23388,7 +23388,7 @@
           "game": "Baltimore Orioles @ Los Angeles Angels",
           "game_id": "824018",
           "game_order": 5,
-          "game_start_time": "2026-06-24T20:07:00Z",
+          "game_start_time": "2026-06-24T20:07Z",
           "home_team": "Los Angeles Angels",
           "league": "MLB",
           "line": null,
@@ -23438,7 +23438,7 @@
           "raw_probability": 0.6326,
           "source": "MLB First Five",
           "sport": "MLB",
-          "start_time": "2026-06-24T20:07:00Z",
+          "start_time": "2026-06-24T20:07Z",
           "team": "Los Angeles Angels"
         },
         {
@@ -24110,7 +24110,7 @@
           "game": "Houston Astros @ Toronto Blue Jays",
           "game_id": "822798",
           "game_order": 10,
-          "game_start_time": "2026-06-24T23:07:00Z",
+          "game_start_time": "2026-06-24T23:07Z",
           "home_team": "Toronto Blue Jays",
           "league": "MLB",
           "line": null,
@@ -24160,7 +24160,7 @@
           "raw_probability": 0.6613,
           "source": "MLB First Five",
           "sport": "MLB",
-          "start_time": "2026-06-24T23:07:00Z",
+          "start_time": "2026-06-24T23:07Z",
           "team": "Toronto Blue Jays"
         },
         {
@@ -24832,7 +24832,7 @@
           "game": "Athletics @ San Francisco Giants",
           "game_id": "823208",
           "game_order": 15,
-          "game_start_time": "2026-06-25T01:45:00Z",
+          "game_start_time": "2026-06-25T01:45Z",
           "home_team": "San Francisco Giants",
           "league": "MLB",
           "line": null,
@@ -24882,7 +24882,7 @@
           "raw_probability": 0.6742,
           "source": "MLB First Five",
           "sport": "MLB",
-          "start_time": "2026-06-25T01:45:00Z",
+          "start_time": "2026-06-25T01:45Z",
           "team": "Athletics"
         },
         {
@@ -29943,6 +29943,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Chicago Cubs @ New York Mets",
+          "game_start_time": "2026-06-24T17:10Z",
           "home_team": "New York Mets",
           "matchup": "Chicago Cubs @ New York Mets",
           "odds": -156,
@@ -29969,7 +29970,7 @@
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-22-06-2026-new-york-mets-chicago-cubs-prediction",
           "sport": "MLB",
-          "start_time": "2026-06-24T23:10Z",
+          "start_time": "2026-06-24T17:10Z",
           "tip": "Total Over (7,5)",
           "units": 1
         },
@@ -30653,6 +30654,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Switzerland vs Canada",
+          "game_start_time": "2026-06-24T19:00Z",
           "grade_supported": true,
           "market_type": "soccer_total",
           "matchup": "Switzerland vs Canada",
@@ -30661,6 +30663,7 @@
           "probability": null,
           "source": "SportsGamblerFIFAWorldCup",
           "sport": "FIFA WC",
+          "start_time": "2026-06-24T19:00Z",
           "units": 1
         },
         {
@@ -30736,6 +30739,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Miami Marlins vs Texas Rangers",
+          "game_start_time": "2026-06-24T16:10Z",
           "matchup": "Miami Marlins vs Texas Rangers",
           "odds": 105,
           "pick": "Miami Marlins to Win (Miami Marlins vs Texas Rangers)",
@@ -30755,6 +30759,7 @@
           "probability": null,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-06-24T16:10Z",
           "units": 1
         },
         {
@@ -30762,6 +30767,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Chicago White Sox vs Cleveland Guardians",
+          "game_start_time": "2026-06-24T18:10Z",
           "matchup": "Chicago White Sox vs Cleveland Guardians",
           "odds": -128,
           "pick": "Cleveland Guardians to Win (Chicago White Sox vs Cleveland Guardians)",
@@ -30781,6 +30787,7 @@
           "probability": null,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-06-24T18:10Z",
           "units": 1
         },
         {
@@ -30788,6 +30795,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Colorado Rockies vs Boston Red Sox",
+          "game_start_time": "2026-06-24T19:10Z",
           "matchup": "Colorado Rockies vs Boston Red Sox",
           "odds": -182,
           "pick": "Boston Red Sox to Win (Colorado Rockies vs Boston Red Sox)",
@@ -30807,6 +30815,7 @@
           "probability": null,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-06-24T19:10Z",
           "units": 1
         },
         {
@@ -30814,6 +30823,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Los Angeles Angels vs Baltimore Orioles",
+          "game_start_time": "2026-06-24T20:07Z",
           "matchup": "Los Angeles Angels vs Baltimore Orioles",
           "odds": 104,
           "pick": "Baltimore Orioles to Win (Los Angeles Angels vs Baltimore Orioles)",
@@ -30833,6 +30843,7 @@
           "probability": null,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-06-24T20:07Z",
           "units": 1
         },
         {
@@ -30840,6 +30851,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Detroit Tigers vs New York Yankees",
+          "game_start_time": "2026-06-24T22:40Z",
           "matchup": "Detroit Tigers vs New York Yankees",
           "odds": 118,
           "pick": "New York Yankees to Win (Detroit Tigers vs New York Yankees)",
@@ -30859,6 +30871,7 @@
           "probability": null,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-06-24T22:40Z",
           "units": 1
         },
         {
@@ -30866,6 +30879,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Pittsburgh Pirates vs Seattle Mariners",
+          "game_start_time": "2026-06-24T22:40Z",
           "matchup": "Pittsburgh Pirates vs Seattle Mariners",
           "odds": -108,
           "pick": "Seattle Mariners to Win (Pittsburgh Pirates vs Seattle Mariners)",
@@ -30885,6 +30899,7 @@
           "probability": null,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-06-24T22:40Z",
           "units": 1
         },
         {
@@ -30892,6 +30907,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Tampa Bay Rays vs Kansas City Royals",
+          "game_start_time": "2026-06-24T22:40Z",
           "matchup": "Tampa Bay Rays vs Kansas City Royals",
           "odds": -156,
           "pick": "Tampa Bay Rays to Win (Tampa Bay Rays vs Kansas City Royals)",
@@ -30911,6 +30927,7 @@
           "probability": null,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-06-24T22:40Z",
           "units": 1
         },
         {
@@ -30918,6 +30935,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Washington Nationals vs Philadelphia Phillies",
+          "game_start_time": "2026-06-24T22:45Z",
           "matchup": "Washington Nationals vs Philadelphia Phillies",
           "odds": -141,
           "pick": "Philadelphia Phillies to Win (Washington Nationals vs Philadelphia Phillies)",
@@ -30937,6 +30955,7 @@
           "probability": null,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-06-24T22:45Z",
           "units": 1
         },
         {
@@ -30944,6 +30963,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Toronto Blue Jays vs Houston Astros",
+          "game_start_time": "2026-06-24T23:07Z",
           "matchup": "Toronto Blue Jays vs Houston Astros",
           "odds": 128,
           "pick": "Houston Astros to Win (Toronto Blue Jays vs Houston Astros)",
@@ -30963,6 +30983,7 @@
           "probability": null,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-06-24T23:07Z",
           "units": 1
         },
         {
@@ -30970,6 +30991,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Cincinnati Reds vs Milwaukee Brewers",
+          "game_start_time": "2026-06-24T23:10Z",
           "matchup": "Cincinnati Reds vs Milwaukee Brewers",
           "odds": -143,
           "pick": "Milwaukee Brewers to Win (Cincinnati Reds vs Milwaukee Brewers)",
@@ -30989,6 +31011,7 @@
           "probability": null,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-06-24T23:10Z",
           "units": 1
         },
         {
@@ -30996,6 +31019,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Minnesota Twins vs Los Angeles Dodgers",
+          "game_start_time": "2026-06-24T23:40Z",
           "matchup": "Minnesota Twins vs Los Angeles Dodgers",
           "odds": 145,
           "pick": "Minnesota Twins to Win (Minnesota Twins vs Los Angeles Dodgers)",
@@ -31015,6 +31039,7 @@
           "probability": null,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-06-24T23:40Z",
           "units": 1
         },
         {
@@ -31022,6 +31047,7 @@
           "decision": "BET",
           "edge": null,
           "game": "St. Louis Cardinals vs Arizona Diamondbacks",
+          "game_start_time": "2026-06-24T23:45Z",
           "matchup": "St. Louis Cardinals vs Arizona Diamondbacks",
           "odds": 107,
           "pick": "Arizona Diamondbacks to Win (St. Louis Cardinals vs Arizona Diamondbacks)",
@@ -31041,6 +31067,7 @@
           "probability": null,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-06-24T23:45Z",
           "units": 1
         },
         {
@@ -31048,6 +31075,7 @@
           "decision": "BET",
           "edge": null,
           "game": "San Diego Padres vs Atlanta Braves",
+          "game_start_time": "2026-06-25T00:40Z",
           "matchup": "San Diego Padres vs Atlanta Braves",
           "odds": 112,
           "pick": "San Diego Padres to Win (San Diego Padres vs Atlanta Braves)",
@@ -31067,6 +31095,7 @@
           "probability": null,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-06-25T00:40Z",
           "units": 1
         },
         {
@@ -31074,6 +31103,7 @@
           "decision": "BET",
           "edge": null,
           "game": "San Francisco Giants vs Athletics",
+          "game_start_time": "2026-06-25T01:45Z",
           "matchup": "San Francisco Giants vs Athletics",
           "odds": 108,
           "pick": "San Francisco Giants to Win (San Francisco Giants vs Athletics)",
@@ -31093,6 +31123,7 @@
           "probability": null,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-06-25T01:45Z",
           "units": 1
         }
       ],
@@ -31139,6 +31170,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Indiana Fever vs Phoenix Mercury",
+          "game_start_time": "2026-06-24T23:30Z",
           "matchup": "Indiana Fever vs Phoenix Mercury",
           "odds": -114,
           "pick": "Fever -7.5 (Indiana Fever vs Phoenix Mercury)",
@@ -31158,6 +31190,7 @@
           "probability": null,
           "source": "SportsGamblerWNBA",
           "sport": "WNBA",
+          "start_time": "2026-06-24T23:30Z",
           "units": 1
         },
         {
@@ -31165,6 +31198,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Washington Mystics vs Minnesota Lynx",
+          "game_start_time": "2026-06-24T23:30Z",
           "matchup": "Washington Mystics vs Minnesota Lynx",
           "odds": -112,
           "pick": "Lynx -8.5 (Washington Mystics vs Minnesota Lynx)",
@@ -31184,6 +31218,7 @@
           "probability": null,
           "source": "SportsGamblerWNBA",
           "sport": "WNBA",
+          "start_time": "2026-06-24T23:30Z",
           "units": 1
         },
         {
@@ -31191,6 +31226,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Chicago Sky vs Portland Fire",
+          "game_start_time": "2026-06-25T00:00Z",
           "matchup": "Chicago Sky vs Portland Fire",
           "odds": -112,
           "pick": "Fire +2.5 (Chicago Sky vs Portland Fire)",
@@ -31210,6 +31246,7 @@
           "probability": null,
           "source": "SportsGamblerWNBA",
           "sport": "WNBA",
+          "start_time": "2026-06-25T00:00Z",
           "units": 1
         },
         {
@@ -31217,6 +31254,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Golden State Valkyries vs Atlanta Dream",
+          "game_start_time": "2026-06-25T02:00Z",
           "matchup": "Golden State Valkyries vs Atlanta Dream",
           "odds": -139,
           "pick": "Dream Moneyline (Golden State Valkyries vs Atlanta Dream)",
@@ -31236,6 +31274,7 @@
           "probability": null,
           "source": "SportsGamblerWNBA",
           "sport": "WNBA",
+          "start_time": "2026-06-25T02:00Z",
           "units": 1
         }
       ],
@@ -31264,6 +31303,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Switzerland vs Canada",
+          "game_start_time": "2026-06-24T19:00Z",
           "grade_supported": true,
           "market_type": "soccer_total",
           "matchup": "Switzerland vs Canada",
@@ -31272,6 +31312,7 @@
           "probability": null,
           "source": "SportyTraderFIFAWorldCup",
           "sport": "FIFA WC",
+          "start_time": "2026-06-24T19:00Z",
           "units": 1
         },
         {
@@ -31379,6 +31420,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Chicago White Sox vs Cleveland Guardians",
+          "game_start_time": "2026-06-24T18:10Z",
           "matchup": "Chicago White Sox vs Cleveland Guardians",
           "odds": -133,
           "pick": "White Sox ML (White Sox vs Guardians)",
@@ -31398,6 +31440,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-24T18:10Z",
           "units": 1
         },
         {
@@ -31405,6 +31448,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Colorado Rockies vs Boston Red Sox",
+          "game_start_time": "2026-06-24T19:10Z",
           "matchup": "Colorado Rockies vs Boston Red Sox",
           "odds": -105,
           "pick": "Rockies ML (Rockies vs Red Sox)",
@@ -31424,6 +31468,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-24T19:10Z",
           "units": 1
         },
         {
@@ -31431,6 +31476,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Pittsburgh Pirates vs Seattle Mariners",
+          "game_start_time": "2026-06-24T22:40Z",
           "matchup": "Pittsburgh Pirates vs Seattle Mariners",
           "odds": -109,
           "pick": "Over 7.5 Total Runs (Pirates vs Mariners)",
@@ -31450,6 +31496,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-24T22:40Z",
           "units": 1
         },
         {
@@ -31457,6 +31504,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Tampa Bay Rays vs Kansas City Royals",
+          "game_start_time": "2026-06-24T22:40Z",
           "matchup": "Tampa Bay Rays vs Kansas City Royals",
           "odds": 123,
           "pick": "Kansas City Royals ML (Rays vs Royals)",
@@ -31476,6 +31524,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-24T22:40Z",
           "units": 1
         },
         {
@@ -31483,6 +31532,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Washington Nationals vs Philadelphia Phillies",
+          "game_start_time": "2026-06-24T22:45Z",
           "matchup": "Washington Nationals vs Philadelphia Phillies",
           "odds": -104,
           "pick": "Over 9.5 (Nationals vs Phillies)",
@@ -31502,6 +31552,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-24T22:45Z",
           "units": 1
         },
         {
@@ -31509,6 +31560,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Toronto Blue Jays vs Houston Astros",
+          "game_start_time": "2026-06-24T23:07Z",
           "matchup": "Toronto Blue Jays vs Houston Astros",
           "odds": -163,
           "pick": "Toronto Blue Jays win the match (Blue Jays vs Astros)",
@@ -31528,6 +31580,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-24T23:07Z",
           "units": 1
         },
         {
@@ -31535,6 +31588,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Minnesota Twins vs Los Angeles Dodgers",
+          "game_start_time": "2026-06-24T23:40Z",
           "matchup": "Minnesota Twins vs Los Angeles Dodgers",
           "odds": -175,
           "pick": "Dodgers ML (Twins vs Dodgers)",
@@ -31554,6 +31608,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-24T23:40Z",
           "units": 1
         }
       ],
@@ -31600,6 +31655,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Washington Mystics vs Minnesota Lynx",
+          "game_start_time": "2026-06-24T23:30Z",
           "matchup": "Washington Mystics vs Minnesota Lynx",
           "odds": -210,
           "pick": "Minnesota Lynx on the -4.5 line (Mystics vs Lynx)",
@@ -31619,6 +31675,7 @@
           "probability": null,
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
+          "start_time": "2026-06-24T23:30Z",
           "units": 1
         },
         {
@@ -31626,6 +31683,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Indiana Fever vs Phoenix Mercury",
+          "game_start_time": "2026-06-24T23:30Z",
           "matchup": "Indiana Fever vs Phoenix Mercury",
           "odds": 430,
           "pick": "Indiana Fever to cover the -5.5 spread (Fever vs Mercury)",
@@ -31645,6 +31703,7 @@
           "probability": null,
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
+          "start_time": "2026-06-24T23:30Z",
           "units": 1
         },
         {
@@ -31652,6 +31711,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Chicago Sky vs Portland Fire",
+          "game_start_time": "2026-06-25T00:00Z",
           "matchup": "Chicago Sky vs Portland Fire",
           "odds": -116,
           "pick": "Under 170.5 (Sky vs Fire)",
@@ -31671,6 +31731,7 @@
           "probability": null,
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
+          "start_time": "2026-06-25T00:00Z",
           "units": 1
         },
         {
@@ -31678,6 +31739,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Golden State Valkyries vs Atlanta Dream",
+          "game_start_time": "2026-06-25T02:00Z",
           "matchup": "Golden State Valkyries vs Atlanta Dream",
           "odds": -125,
           "pick": "Atlanta Dream ML (Valkyries vs Dream)",
@@ -31697,6 +31759,7 @@
           "probability": null,
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
+          "start_time": "2026-06-25T02:00Z",
           "units": 1
         }
       ],
@@ -32037,6 +32100,7 @@
           "decision": "LEAN",
           "edge": 6.33,
           "game": "Minnesota Lynx @ Washington Mystics",
+          "game_start_time": "2026-06-24T23:30Z",
           "guardrail_reasons": [],
           "h2h_games": 0,
           "has_market_price": true,
@@ -32096,6 +32160,7 @@
           "selection": "Minnesota Lynx",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-24T23:30Z",
           "starters_out": [],
           "starters_questionable": [],
           "team": "Minnesota Lynx",
@@ -32348,6 +32413,7 @@
           "decision": "LEAN",
           "edge": 5.95,
           "game": "Portland Fire @ Chicago Sky",
+          "game_start_time": "2026-06-25T00:00Z",
           "guardrail_reasons": [
             "new totals market capped at LEAN while its live record is established"
           ],
@@ -32407,6 +32473,7 @@
           "selection": "Under",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-25T00:00Z",
           "units": 0.02,
           "vegas": 170.5
         },
