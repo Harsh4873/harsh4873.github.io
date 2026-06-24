@@ -16171,6 +16171,7 @@
           "raw_projected_home_goals": 1.909,
           "raw_projected_total": 2.55,
           "reason": "Projected goals Qatar 0.67, Bosnia-Herzegovina 1.99 after tournament-form, venue, and market-total blending.",
+          "result": "loss",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-06-24T19:00Z",
@@ -16257,6 +16258,7 @@
           "raw_projected_home_goals": 1.909,
           "raw_projected_total": 2.55,
           "reason": "Qatar has the best spread-cover edge at +1.5 from the venue-adjusted Poisson score grid.",
+          "result": "loss",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-06-24T19:00Z",
@@ -16345,6 +16347,7 @@
           "raw_projected_home_goals": 1.868,
           "raw_projected_total": 3.21,
           "reason": "Switzerland owns the stronger current-squad projection. Attack 91.3, midfield 90.5, defense 92.2, goalkeeper 93.8. Top player ranks: Gregor Kobel 97.0, Luca Jaquez 94.3, Noah Okafor 93.5. Switzerland form 1-1-0 (2.00 pts/g, 2.50-1.00 goals/g).",
+          "result": "win",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-06-24T19:00Z",
@@ -16433,6 +16436,7 @@
           "raw_projected_home_goals": 1.868,
           "raw_projected_total": 3.21,
           "reason": "Projected goals Canada 1.30, Switzerland 1.82 after tournament-form, venue, and market-total blending.",
+          "result": "win",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-06-24T19:00Z",
@@ -27757,6 +27761,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-24-06-2026-colorado-rockies-boston-red-sox-prediction",
           "sport": "MLB",
@@ -28591,6 +28596,7 @@
           "decision": "BET",
           "edge": null,
           "game": "New York Mets vs Chicago Cubs",
+          "game_start_time": "2026-06-24T17:10Z",
           "matchup": "New York Mets vs Chicago Cubs",
           "odds": -103,
           "pick": "Chicago Cubs to Win (New York Mets vs Chicago Cubs)",
@@ -28608,8 +28614,10 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-06-24T17:10Z",
           "units": 1
         },
         {
@@ -29096,6 +29104,7 @@
           "decision": "BET",
           "edge": null,
           "game": "New York Mets vs Chicago Cubs",
+          "game_start_time": "2026-06-24T17:10Z",
           "matchup": "New York Mets vs Chicago Cubs",
           "odds": -110,
           "pick": "Cubs ML (Mets vs Cubs)",
@@ -29113,8 +29122,10 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-24T17:10Z",
           "units": 1
         },
         {
@@ -29150,6 +29161,7 @@
           "decision": "BET",
           "edge": null,
           "game": "San Diego Padres vs Atlanta Braves",
+          "game_start_time": "2026-06-25T00:40Z",
           "matchup": "San Diego Padres vs Atlanta Braves",
           "odds": -120,
           "pick": "Braves -120 (Padres vs Braves)",
@@ -29169,6 +29181,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-25T00:40Z",
           "units": 1
         },
         {
@@ -29176,6 +29189,7 @@
           "decision": "BET",
           "edge": null,
           "game": "San Francisco Giants vs Athletics",
+          "game_start_time": "2026-06-25T01:45Z",
           "matchup": "San Francisco Giants vs Athletics",
           "odds": -117,
           "pick": "Athletics ML (Giants vs Athletics)",
@@ -29195,6 +29209,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-25T01:45Z",
           "units": 1
         }
       ],
@@ -29921,6 +29936,7 @@
           "decision": "LEAN",
           "edge": 3.21,
           "game": "Portland Fire @ Chicago Sky",
+          "game_start_time": "2026-06-25T00:00Z",
           "guardrail_reasons": [],
           "h2h_games": 0,
           "has_market_price": true,
@@ -29980,6 +29996,7 @@
           "selection": "Portland Fire",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-25T00:00Z",
           "starters_out": [],
           "starters_questionable": [],
           "team": "Portland Fire",
@@ -30001,6 +30018,7 @@
           "decision": "LEAN",
           "edge": 9.56,
           "game": "Portland Fire @ Chicago Sky",
+          "game_start_time": "2026-06-25T00:00Z",
           "guardrail_reasons": [
             "new totals market capped at LEAN while its live record is established"
           ],
@@ -30060,6 +30078,7 @@
           "selection": "Under",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-25T00:00Z",
           "units": 0.02,
           "vegas": 172.5
         },
