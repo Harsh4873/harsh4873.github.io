@@ -82,7 +82,13 @@ def test_latest_player_prop_records_remain_split_by_model_bucket():
         for pick in bucket.get("picks") or []:
             assert pick["scope"] == "player"
             assert pick["model_key"] == model_key
-            assert str(pick.get("ml_rank_epoch") or "").startswith(f"{pick['sport']}:player_props_variant_v1.0.0:")
+            rank_epoch = str(pick.get("ml_rank_epoch") or "")
+            assert rank_epoch.startswith(
+                (
+                    f"{pick['sport']}:player_props_variant_v1.0.0:",
+                    f"{pick['sport']}:player_props_consensus_v2.0.0:",
+                )
+            )
 
 
 def test_latest_player_prop_variant_boards_stay_capped_and_ranked():

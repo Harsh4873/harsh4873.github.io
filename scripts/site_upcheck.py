@@ -78,6 +78,15 @@ def _player_prop_market_key(pick: dict[str, Any]) -> tuple[str, ...]:
     )
 
 
+def _consensus_qualified_player_prop(pick: dict[str, Any]) -> bool:
+    return (
+        pick.get("consensus_qualified") is True
+        or pick.get("precision_qualified") is True
+        or str(pick.get("ml_probability_mode") or "").strip() == "four_model_consensus_gate"
+        or str(pick.get("ml_model_version") or "").strip() == "player_props_consensus_v2.0.0"
+    )
+
+
 def _published_player_prop_keys(payload: dict[str, Any], date_iso: str) -> set[tuple[str, ...]]:
     models = payload.get("models") if isinstance(payload.get("models"), dict) else {}
     keys: set[tuple[str, ...]] = set()
@@ -91,7 +100,11 @@ def _published_player_prop_keys(payload: dict[str, Any], date_iso: str) -> set[t
                 continue
             if str(pick.get("scope") or "").strip().lower() != "player":
                 continue
-            if pick.get("market_priced") is True and str(pick.get("probability_source") or "").strip() == "player_props_ml_v1":
+            if (
+                pick.get("market_priced") is True
+                and str(pick.get("probability_source") or "").strip() == "player_props_ml_v1"
+                and _consensus_qualified_player_prop(pick)
+            ):
                 keys.add(_player_prop_market_key(pick))
     return keys
 
