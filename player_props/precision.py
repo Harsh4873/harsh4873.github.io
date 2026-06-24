@@ -465,6 +465,7 @@ def apply_precision_to_pick(pick: dict[str, Any]) -> dict[str, Any]:  # type: ig
     line = safe_float(pick.get("line"))
     validation_accuracy = safe_float(result.get("validation_accuracy"))
     holdout_accuracy = safe_float(result.get("holdout_accuracy"))
+    conservative_accuracy = safe_float(result.get("conservative_validation_accuracy"))
     sport = str(pick.get("sport") or "").upper()
     bundle = load_precision_bundle() or {}
     metadata = bundle.get("metadata") if isinstance(bundle.get("metadata"), dict) else {}
@@ -511,6 +512,7 @@ def apply_precision_to_pick(pick: dict[str, Any]) -> dict[str, Any]:  # type: ig
             "precision_probability": round(probability, 4),
             "precision_validation_accuracy": validation_accuracy,
             "precision_holdout_accuracy": holdout_accuracy,
+            "precision_conservative_validation_accuracy": conservative_accuracy,
             "consensus_season_probability": result.get("season_probability"),
             "consensus_history_probability": result.get("history_probability"),
             "consensus_season_projection": result.get("season_projection"),
@@ -535,7 +537,8 @@ def apply_precision_to_pick(pick: dict[str, Any]) -> dict[str, Any]:  # type: ig
             f"Four-model consensus suite active: {consensus_model_names}",
             "2026 season model evaluated",
             f"Roster-aware {history_window} history model evaluated",
-            f"Conservative qualified-bucket accuracy {probability:.1%}",
+            f"Consensus pick-level probability {probability:.1%}",
+            f"Conservative validation floor {conservative_accuracy:.1%}",
         ]
     )
     fingerprint = str(result["training_fingerprint"] or "unfingerprinted")[:16]

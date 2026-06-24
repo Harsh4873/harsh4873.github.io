@@ -54,6 +54,10 @@ TARGET_STATS = {
 _BUNDLE: dict[str, Any] | None | bool = False
 
 
+def _clamp(value: float, low: float = 0.01, high: float = 0.99) -> float:
+    return max(low, min(high, value))
+
+
 def outcome_profile_key(sport: Any, athlete_id: Any, stat_key: Any) -> str:
     return "|".join((str(sport or "").upper(), str(athlete_id or "").strip(), str(stat_key or "").strip()))
 
@@ -294,6 +298,31 @@ def evaluate_consensus_pick(pick: dict[str, Any]) -> dict[str, Any]:
         return {"required": True, "qualified": False, "reason": f"{sport} four-model gate inactive"}
     if not isinstance(policy, dict):
         return {"required": True, "qualified": False, "reason": f"{stat_key} has not cleared 70%"}
+    validation = policy.get("validation") or {}
+    holdout = policy.get("holdout") or {}
+    activation = metadata.get("activation_requirements") or {}
+    target_accuracy = safe_float(
+        metadata.get("target_accuracy"),
+        safe_float(activation.get("minimum_accuracy"), 0.70),
+    )
+    minimum_validation_samples = safe_float(policy.get("minimum_validation_samples"), 0.0)
+    minimum_holdout_samples = safe_float(policy.get("minimum_holdout_samples"), 0.0)
+    if policy.get("active") is False:
+        return {"required": True, "qualified": False, "reason": f"{stat_key} has not cleared 70%"}
+    if (
+        safe_float(validation.get("samples"), 0.0) < minimum_validation_samples
+        or safe_float(holdout.get("samples"), 0.0) < minimum_holdout_samples
+    ):
+        return {"required": True, "qualified": False, "reason": f"{stat_key} sample size below publication floor"}
+    if (
+        safe_float(validation.get("accuracy"), 0.0) < target_accuracy
+        or safe_float(holdout.get("accuracy"), 0.0) < target_accuracy
+    ):
+        return {
+            "required": True,
+            "qualified": False,
+            "reason": f"{stat_key} consensus calibration below {target_accuracy:.0%}",
+        }
     if stat_key == "hits_runs_rbis" and safe_float(pick.get("line")) != 1.5:
         return {"required": True, "qualified": False, "reason": "HRR is restricted to the 1.5 line"}
     artifacts = bundle.get("artifacts") or {}
@@ -400,9 +429,13 @@ def evaluate_consensus_pick(pick: dict[str, Any]) -> dict[str, Any]:
         checks["meta_gate"] = gate_probability >= safe_float(policy.get("meta_gate_threshold"))
     qualified = all(checks.values())
     failed = [name for name, passed in checks.items() if not passed]
-    validation = policy.get("validation") or {}
-    holdout = policy.get("holdout") or {}
     conservative_accuracy = min(safe_float(validation.get("accuracy")), safe_float(holdout.get("accuracy")))
+    pick_probability_inputs = [
+        value
+        for value in (season_probability, history_probability, gate_probability)
+        if value is not None and math.isfinite(safe_float(value, float("nan")))
+    ]
+    pick_probability = statistics.fmean(pick_probability_inputs) if pick_probability_inputs else implied
     return {
         "required": True,
         "qualified": qualified,
@@ -410,7 +443,8 @@ def evaluate_consensus_pick(pick: dict[str, Any]) -> dict[str, Any]:
         "selection": selection,
         "odds": selected_odds,
         "implied_probability": implied,
-        "probability": conservative_accuracy,
+        "probability": _clamp(pick_probability),
+        "conservative_validation_accuracy": conservative_accuracy,
         "season_probability": season_probability,
         "history_probability": history_probability,
         "season_projection": season_projection,

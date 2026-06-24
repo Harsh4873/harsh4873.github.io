@@ -393,6 +393,102 @@ class ScheduledWithoutBasketballMarketsClient(MockClient):
         return {"items": []}
 
 
+def _active_test_policy(**overrides) -> dict:
+    policy = {
+        "active": True,
+        "minimum_validation_samples": 4,
+        "minimum_holdout_samples": 2,
+        "validation": {"accuracy": 0.75, "samples": 4, "wins": 3, "losses": 1},
+        "holdout": {"accuracy": 0.75, "samples": 4, "wins": 3, "losses": 1},
+    }
+    policy.update(overrides)
+    return policy
+
+
+def _consensus_metadata_for_tests() -> dict:
+    return {
+        "active": True,
+        "target_accuracy": 0.70,
+        "version": "player_props_consensus_v2.0.0",
+        "training_fingerprint": "test-consensus-fingerprint",
+        "sports": {
+            "WNBA": {
+                "active": True,
+                "policies": {
+                    "points": _active_test_policy(
+                        selection="Over",
+                        minimum_implied=0.55,
+                        minimum_season_probability=0.55,
+                        minimum_history_probability=0.50,
+                        minimum_season_rate=0.55,
+                        minimum_history_rate=0.0,
+                    )
+                },
+            },
+            "MLB": {
+                "active": True,
+                "policies": {
+                    "hits_runs_rbis": _active_test_policy(
+                        line=1.5,
+                        minimum_implied=0.55,
+                        minimum_season_probability=0.625,
+                        minimum_history_probability=0.70,
+                        minimum_season_rate=0.50,
+                        minimum_history_rate=0.0,
+                        require_classifier_agreement=True,
+                    )
+                },
+            },
+        },
+    }
+
+
+def _variant_candidate(
+    sport: str,
+    stat_key: str,
+    *,
+    line: float,
+    over_odds: int = -110,
+    under_odds: int = -110,
+) -> dict:
+    sport = sport.upper()
+    return {
+        "id": f"{sport.lower()}-{stat_key}",
+        "sport": sport,
+        "date": DATE,
+        "game_id": f"{sport.lower()}-game",
+        "start_time": STAMP,
+        "player_id": f"{sport.lower()}-player",
+        "market_athlete_id": f"{sport.lower()}-player",
+        "player_name": "Test Player",
+        "team": "Test Team",
+        "opponent": "Opp Team",
+        "opponent_id": "opp",
+        "stat_key": stat_key,
+        "stat_label": stat_key,
+        "market_type": stat_key,
+        "line": line,
+        "selection": "Over",
+        "odds": over_odds,
+        "market_over_odds": over_odds,
+        "market_under_odds": under_odds,
+        "market_priced": True,
+        "pricing_type": "market",
+        "market_source": "DraftKings via ESPN",
+        "line_source": "posted_market",
+        "odds_source": "posted_market",
+        "probability": 0.91,
+        "ml_probability": 0.91,
+        "ml_edge": 0.3862,
+        "ml_expected_value": 0.73,
+        "decision": "BET",
+        "units": 1.0,
+        "actionability": "market_priced",
+        "key_factors": ["synthetic candidate"],
+        "result": "pending",
+    }
+
+
 def test_empty_leagues_are_healthy():
     payload = generate_payload(DATE, client=EmptyClient(), generated_at=STAMP)
     assert set(payload) == {"date", "generatedAt", "updatedAt", "models"}
@@ -620,6 +716,145 @@ def test_inactive_precision_artifact_abstains_instead_of_using_legacy_ranker(mon
         }
     ])
     assert selected == []
+
+
+@pytest.mark.parametrize(
+    ("sport", "stat_key", "line", "expected_reason"),
+    [
+        ("WNBA", "totalRebounds", 5.5, "totalRebounds has not cleared 70%"),
+        ("WNBA", "assists", 4.5, "assists has not cleared 70%"),
+        ("MLB", "hits", 0.5, "hits has not cleared 70%"),
+        ("MLB", "hits_runs_rbis", 2.5, "HRR is restricted to the 1.5 line"),
+        ("WNBA", "steals", 1.5, "steals has not cleared 70%"),
+    ],
+)
+def test_variant_boards_abstain_when_consensus_policy_rejects_publication(
+    monkeypatch,
+    sport: str,
+    stat_key: str,
+    line: float,
+    expected_reason: str,
+):
+    import player_props.consensus as consensus
+    import player_props.variants as variants
+
+    monkeypatch.delenv("PICKLEDGER_DISABLE_PRECISION_MODEL", raising=False)
+    consensus._BUNDLE = {"metadata": _consensus_metadata_for_tests(), "artifacts": {}}
+
+    def high_probability_signal(pick, variant):
+        if variant != "season":
+            return None
+        return "Over", 0.91, int(pick["market_over_odds"]), 0.5238, ["synthetic high-probability signal"]
+
+    monkeypatch.setattr(variants, "_choice_for_variant", high_probability_signal)
+    base_model = {
+        "ok": True,
+        "sport": sport,
+        "date": DATE,
+        "games": 1,
+        "picks": [_variant_candidate(sport, stat_key, line=line)],
+    }
+
+    bucket = variants.build_variant_buckets(sport=sport, date_iso=DATE, base_model=base_model)[
+        f"{sport.lower()}_player_props_season"
+    ]
+
+    assert bucket["picks"] == []
+    assert bucket["abstained"] is True
+    assert bucket["scored_count"] == 1
+    assert bucket["consensus_required"] is True
+    assert bucket["consensus_rejected_count"] == 1
+    assert bucket["consensus_rejection_reasons"] == {expected_reason: 1}
+    assert bucket["consensus_rejections"][0]["reason"] == expected_reason
+
+
+def test_variant_board_uses_consensus_probability_when_gate_qualifies(monkeypatch):
+    import player_props.variants as variants
+
+    monkeypatch.delenv("PICKLEDGER_DISABLE_PRECISION_MODEL", raising=False)
+    monkeypatch.setattr(
+        variants,
+        "load_consensus_bundle",
+        lambda: {"metadata": {"training_fingerprint": "qualified-test-fingerprint"}, "artifacts": {}},
+    )
+
+    def high_probability_signal(pick, variant):
+        if variant != "season":
+            return None
+        return "Over", 0.91, int(pick["market_over_odds"]), 0.5238, ["synthetic high-probability signal"]
+
+    monkeypatch.setattr(variants, "_choice_for_variant", high_probability_signal)
+    monkeypatch.setattr(
+        variants,
+        "evaluate_consensus_pick",
+        lambda pick: {
+            "required": True,
+            "qualified": True,
+            "reason": "qualified",
+            "selection": "Under",
+            "odds": 120,
+            "implied_probability": 100 / 220,
+            "probability": 0.62,
+            "season_probability": 0.61,
+            "history_probability": 0.63,
+            "season_projection": 12.1,
+            "history_projection": 12.4,
+            "agreement": True,
+            "consensus_score": 0.62,
+            "validation_accuracy": 0.72,
+            "holdout_accuracy": 0.71,
+            "conservative_validation_accuracy": 0.71,
+            "model_version": "player_props_consensus_v2.0.0",
+            "training_fingerprint": "qualified-test-fingerprint",
+        },
+    )
+    base_model = {
+        "ok": True,
+        "sport": "WNBA",
+        "date": DATE,
+        "games": 1,
+        "picks": [_variant_candidate("WNBA", "points", line=14.5, over_odds=-150, under_odds=120)],
+    }
+
+    bucket = variants.build_variant_buckets(sport="WNBA", date_iso=DATE, base_model=base_model)[
+        "wnba_player_props_season"
+    ]
+
+    assert len(bucket["picks"]) == 1
+    pick = bucket["picks"][0]
+    assert pick["selection"] == "Under"
+    assert pick["odds"] == 120
+    assert pick["probability"] == 0.62
+    assert pick["ml_probability_mode"] == "four_model_consensus_gate"
+    assert pick["variant_signal_probability"] == 0.91
+    assert pick["consensus_qualified"] is True
+    assert pick["precision_qualified"] is True
+    assert pick["precision_reason"] == "qualified"
+    assert pick["actionability"] == "consensus_qualified"
+    assert pick["selected_side_implied_probability"] == 0.4545
+    assert pick["market_no_vig_selected_probability"] is not None
+    assert pick["consensus_conservative_validation_accuracy"] == 0.71
+
+
+def test_consensus_rejects_miscalibrated_publication_policy(monkeypatch):
+    import player_props.consensus as consensus
+
+    monkeypatch.delenv("PICKLEDGER_DISABLE_PRECISION_MODEL", raising=False)
+    metadata = _consensus_metadata_for_tests()
+    metadata["sports"]["WNBA"]["policies"]["points"] = _active_test_policy(
+        selection="Over",
+        minimum_validation_samples=10,
+        minimum_holdout_samples=10,
+        validation={"accuracy": 0.95, "samples": 40, "wins": 38, "losses": 2},
+        holdout={"accuracy": 0.55, "samples": 20, "wins": 11, "losses": 9},
+    )
+    consensus._BUNDLE = {"metadata": metadata, "artifacts": {}}
+
+    result = consensus.evaluate_consensus_pick(_variant_candidate("WNBA", "points", line=14.5))
+
+    assert result["required"] is True
+    assert result["qualified"] is False
+    assert result["reason"] == "points consensus calibration below 70%"
 
 
 def test_ml_selection_caps_board_and_rejects_weak_or_extreme_props():

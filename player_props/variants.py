@@ -5,10 +5,11 @@ from __future__ import annotations
 import copy
 import hashlib
 import math
+import os
 import statistics
 from typing import Any
 
-from .consensus import load_consensus_bundle, outcome_profile_key
+from .consensus import evaluate_consensus_pick, load_consensus_bundle, outcome_profile_key
 from .ml import MAX_PUBLISHED_POSITIVE_ODDS, ML_SOURCE, expected_value, market_family_for_stat
 from .schema import american_implied_probability, decision_and_stake, normal_probability, safe_float
 
@@ -41,6 +42,28 @@ def player_prop_variant_source(sport: str, variant: str) -> str:
 
 def _clamp(value: float, low: float = 0.01, high: float = 0.99) -> float:
     return max(low, min(high, value))
+
+
+def _consensus_gate_disabled() -> bool:
+    return os.environ.get("PICKLEDGER_DISABLE_PRECISION_MODEL", "").strip().lower() in {"1", "true", "yes"}
+
+
+def _market_probability_context(pick: dict[str, Any], selection: str) -> dict[str, Any]:
+    over_implied = american_implied_probability(_market_odds(pick, "Over"))
+    under_implied = american_implied_probability(_market_odds(pick, "Under"))
+    no_vig_over = None
+    no_vig_selected = None
+    if over_implied is not None and under_implied is not None and over_implied + under_implied > 0:
+        no_vig_over = over_implied / (over_implied + under_implied)
+        no_vig_selected = no_vig_over if selection == "Over" else 1.0 - no_vig_over
+    selected_implied = over_implied if selection == "Over" else under_implied
+    return {
+        "selected_side_implied_probability": round(selected_implied, 4) if selected_implied is not None else None,
+        "market_no_vig_over_probability": round(no_vig_over, 4) if no_vig_over is not None else None,
+        "market_no_vig_selected_probability": round(no_vig_selected, 4) if no_vig_selected is not None else None,
+        "closing_line_movement": None,
+        "closing_line_source": "not_tracked",
+    }
 
 
 def _variant_fingerprint() -> str:
@@ -383,6 +406,120 @@ def _variant_pick(
     return pick
 
 
+def _apply_consensus_publication_gate(pick: dict[str, Any]) -> dict[str, Any]:
+    pick.update(
+        {
+            "variant_signal_selection": pick.get("selection"),
+            "variant_signal_probability": pick.get("probability"),
+            "variant_signal_edge": pick.get("ml_edge"),
+            "variant_signal_expected_value": pick.get("ml_expected_value"),
+            "variant_signal_odds": pick.get("odds"),
+        }
+    )
+    pick.update(_market_probability_context(pick, str(pick.get("selection") or "Over")))
+    if _consensus_gate_disabled():
+        pick["consensus_required"] = False
+        return pick
+
+    result = evaluate_consensus_pick(pick)
+    if result.get("required") is not True:
+        result = {
+            **result,
+            "required": True,
+            "qualified": False,
+            "reason": result.get("reason") or "four-model consensus unavailable",
+        }
+    reason = str(result.get("reason") or "unknown consensus result")
+    qualified = bool(result.get("qualified"))
+    pick.update(
+        {
+            "consensus_required": True,
+            "consensus_evaluated": True,
+            "consensus_qualified": qualified,
+            "precision_required": True,
+            "precision_evaluated": True,
+            "precision_qualified": qualified,
+            "precision_reason": reason,
+            "consensus_rejection_reason": None if qualified else reason,
+            "consensus_season_probability": result.get("season_probability"),
+            "consensus_history_probability": result.get("history_probability"),
+            "consensus_season_projection": result.get("season_projection"),
+            "consensus_history_projection": result.get("history_projection"),
+            "consensus_model_agreement": result.get("agreement"),
+            "consensus_score": safe_float(result.get("consensus_score")),
+            "consensus_validation_accuracy": result.get("validation_accuracy"),
+            "consensus_holdout_accuracy": result.get("holdout_accuracy"),
+            "consensus_conservative_validation_accuracy": result.get("conservative_validation_accuracy"),
+        }
+    )
+    if not qualified:
+        pick.update(
+            {
+                "decision": "PASS",
+                "units": 0.0,
+                "full_kelly": 0.0,
+                "quarter_kelly": 0.0,
+                "confidence": "Low",
+                "actionability": "research_signal",
+                "ml_model_active": False,
+                "ml_probability_mode": f"{pick.get('model_variant')}_variant_research_only",
+                "reason": (
+                    f"{pick.get('source')} is research-only: the active four-model consensus gate "
+                    f"rejected this signal ({reason})."
+                ),
+            }
+        )
+        pick.setdefault("key_factors", []).insert(0, f"Consensus gate rejected publication: {reason}")
+        return pick
+
+    selection = str(result.get("selection") or pick.get("selection") or "Over")
+    odds = int(result["odds"])
+    implied = safe_float(result.get("implied_probability"), american_implied_probability(odds) or 0.0)
+    probability = _clamp(safe_float(result.get("probability"), safe_float(pick.get("probability"), 0.5)))
+    decision, edge_pp, full_kelly, quarter_kelly, units = decision_and_stake(probability, odds)
+    line = safe_float(pick.get("line"))
+    stat_label = str(pick.get("stat_label") or pick.get("market_type") or pick.get("stat_key") or "").strip()
+    player_name = str(pick.get("player_name") or pick.get("player") or "").strip()
+    model_version = str(result.get("model_version") or pick.get("ml_model_version") or VARIANT_VERSION)
+    fingerprint = str(result.get("training_fingerprint") or pick.get("ml_training_fingerprint") or "unfingerprinted")
+    rank_epoch = f"{str(pick.get('sport') or '').upper()}:{model_version}:{pick.get('model_variant')}:consensus:{fingerprint[:16]}"
+    pick.update(
+        {
+            "selection": selection,
+            "pick": f"{player_name} {selection} {line:.1f} {stat_label}",
+            "odds": odds,
+            "market_implied_probability": round(implied, 4),
+            "probability": round(probability, 4),
+            "ml_probability": round(probability, 4),
+            "ml_raw_probability": round(probability, 4),
+            "ml_edge": round(probability - implied, 6),
+            "ml_expected_value": round(expected_value(probability, odds), 6),
+            "ml_model_active": True,
+            "ml_model_version": model_version,
+            "ml_probability_mode": "four_model_consensus_gate",
+            "ml_training_fingerprint": fingerprint,
+            "ml_rank_epoch": rank_epoch,
+            "ranking_epoch": rank_epoch,
+            "model_epoch": rank_epoch,
+            "decision": decision,
+            "confidence": "High" if probability >= 0.58 and probability - implied >= 0.07 else "Medium",
+            "edge": edge_pp,
+            "full_kelly": full_kelly,
+            "quarter_kelly": quarter_kelly,
+            "units": 0.0 if decision == "PASS" else min(units, 1.0),
+            "actionability": "consensus_qualified",
+            "precision_probability": round(probability, 4),
+            "reason": (
+                f"The active four-model consensus gate qualifies this market at {probability:.1%}; "
+                f"the {pick.get('model_variant_label')} variant is retained as a supporting signal."
+            ),
+        }
+    )
+    pick.update(_market_probability_context(pick, selection))
+    pick.setdefault("key_factors", []).insert(0, "Active four-model consensus gate qualified publication")
+    return pick
+
+
 def _score_sort_key(pick: dict[str, Any]) -> tuple[float, int, float, float, str]:
     decision_rank = {"BET": 0, "LEAN": 1, "PASS": 2}
     return (
@@ -398,6 +535,8 @@ def _select_variant(scored: list[dict[str, Any]], variant: str) -> list[dict[str
     filtered = [
         pick for pick in scored
         if pick.get("market_priced") is True
+        and (pick.get("consensus_required") is not True or pick.get("consensus_qualified") is True)
+        and (pick.get("precision_required") is not True or pick.get("precision_qualified") is True)
         and str(pick.get("decision") or "") in {"BET", "LEAN"}
         and safe_float(pick.get("ml_probability") or pick.get("probability")) >= 0.52
         and safe_float(pick.get("ml_edge")) >= MIN_VARIANT_EDGE
@@ -421,6 +560,29 @@ def _select_variant(scored: list[dict[str, Any]], variant: str) -> list[dict[str
         pick["model_rank"] = index
         pick["rank"] = index
     return selected
+
+
+def _consensus_rejection_diagnostics(scored: list[dict[str, Any]]) -> tuple[dict[str, int], list[dict[str, Any]]]:
+    reason_counts: dict[str, int] = {}
+    examples: list[dict[str, Any]] = []
+    for pick in scored:
+        if pick.get("consensus_required") is not True or pick.get("consensus_qualified") is True:
+            continue
+        reason = str(pick.get("consensus_rejection_reason") or pick.get("precision_reason") or "unknown")
+        reason_counts[reason] = reason_counts.get(reason, 0) + 1
+        if len(examples) < 12:
+            examples.append(
+                {
+                    "id": pick.get("id"),
+                    "player_name": pick.get("player_name"),
+                    "stat_key": pick.get("stat_key"),
+                    "selection": pick.get("selection"),
+                    "line": pick.get("line"),
+                    "odds": pick.get("odds"),
+                    "reason": reason,
+                }
+            )
+    return reason_counts, examples
 
 
 def build_variant_buckets(
@@ -447,18 +609,21 @@ def build_variant_buckets(
                 continue
             selection, probability, odds, implied, notes = choice
             scored.append(
-                _variant_pick(
-                    candidate,
-                    model_key=model_key,
-                    variant=variant,
-                    selection=selection,
-                    probability=probability,
-                    odds=odds,
-                    implied=implied,
-                    notes=notes,
+                _apply_consensus_publication_gate(
+                    _variant_pick(
+                        candidate,
+                        model_key=model_key,
+                        variant=variant,
+                        selection=selection,
+                        probability=probability,
+                        odds=odds,
+                        implied=implied,
+                        notes=notes,
+                    )
                 )
             )
         picks = _select_variant(scored, variant)
+        rejection_reasons, rejection_examples = _consensus_rejection_diagnostics(scored)
         method_window = HISTORY_WINDOWS.get(sport, "prior seasons")
         buckets[model_key] = {
             "ok": bool(base_model.get("ok", True)),
@@ -482,11 +647,18 @@ def build_variant_buckets(
             ),
             "candidate_count": len(candidates),
             "scored_count": len(scored),
+            "consensus_required": any(pick.get("consensus_required") is True for pick in scored),
+            "consensus_rejected_count": sum(
+                pick.get("consensus_required") is True and pick.get("consensus_qualified") is not True
+                for pick in scored
+            ),
+            "consensus_rejection_reasons": rejection_reasons,
+            "consensus_rejections": rejection_examples,
             "abstained": bool(candidates and not picks),
             "note": (
                 ""
                 if picks
-                else f"No {sport} {VARIANT_LABELS[variant]} prop cleared the publication edge gate."
+                else f"No {sport} {VARIANT_LABELS[variant]} prop cleared the consensus publication gate."
             ),
         }
     return buckets
