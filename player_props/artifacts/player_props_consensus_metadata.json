@@ -23,14 +23,14 @@
       "totalRebounds": 3
     }
   },
-  "market_rows": 97229,
+  "market_rows": 98796,
   "models": {
     "mlb_history": "2022-26 five-year roster-aware outcome-history classifiers",
     "mlb_season": "2026 market classifier",
     "wnba_history": "2024-26 workload-aware market/count models",
     "wnba_season": "2026 market/count models"
   },
-  "outcome_rows": 390815,
+  "outcome_rows": 392407,
   "roster_aware": true,
   "roster_policy": "Current player IDs only; season features reset annually; recent 3/5/10-game workload dominates older priors.",
   "seasons": {
@@ -51,10 +51,10 @@
     "MLB": {
       "active": true,
       "combined_out_of_sample": {
-        "accuracy": 0.7619047619047619,
-        "losses": 10,
-        "samples": 42,
-        "wins": 32
+        "accuracy": 0.7191011235955056,
+        "losses": 25,
+        "samples": 89,
+        "wins": 64
       },
       "failed_policies": {
         "hits": {
@@ -80,8 +80,37 @@
             "wins": 189
           }
         },
-        "hits_runs_rbis": {
+        "pitcher_walks_allowed": {
           "active": false,
+          "holdout": {
+            "accuracy": 0.75,
+            "losses": 2,
+            "samples": 8,
+            "wins": 6
+          },
+          "minimum_history_probability": 0.65,
+          "minimum_history_rate": 0.0,
+          "minimum_holdout_samples": 5,
+          "minimum_implied": 0.6,
+          "minimum_season_probability": 0.6,
+          "minimum_season_rate": 0.55,
+          "minimum_validation_samples": 10,
+          "require_classifier_agreement": true,
+          "validation": {
+            "accuracy": 0.6363636363636364,
+            "losses": 8,
+            "samples": 22,
+            "wins": 14
+          }
+        }
+      },
+      "models": [
+        "season_2026",
+        "history_2022_2026"
+      ],
+      "policies": {
+        "hits_runs_rbis": {
+          "active": true,
           "holdout": {
             "accuracy": 0.75,
             "losses": 2,
@@ -98,41 +127,12 @@
           "minimum_validation_samples": 8,
           "require_classifier_agreement": true,
           "validation": {
-            "accuracy": 0.6842105263157895,
-            "losses": 12,
+            "accuracy": 0.7105263157894737,
+            "losses": 11,
             "samples": 38,
-            "wins": 26
+            "wins": 27
           }
         },
-        "pitcher_walks_allowed": {
-          "active": false,
-          "holdout": {
-            "accuracy": 0.7777777777777778,
-            "losses": 2,
-            "samples": 9,
-            "wins": 7
-          },
-          "minimum_history_probability": 0.65,
-          "minimum_history_rate": 0.0,
-          "minimum_holdout_samples": 5,
-          "minimum_implied": 0.6,
-          "minimum_season_probability": 0.6,
-          "minimum_season_rate": 0.55,
-          "minimum_validation_samples": 10,
-          "require_classifier_agreement": true,
-          "validation": {
-            "accuracy": 0.6818181818181818,
-            "losses": 7,
-            "samples": 22,
-            "wins": 15
-          }
-        }
-      },
-      "models": [
-        "season_2026",
-        "history_2022_2026"
-      ],
-      "policies": {
         "strikeouts": {
           "active": true,
           "holdout": {
@@ -150,10 +150,10 @@
           "minimum_validation_samples": 20,
           "require_classifier_agreement": true,
           "validation": {
-            "accuracy": 0.7692307692307693,
-            "losses": 6,
-            "samples": 26,
-            "wins": 20
+            "accuracy": 0.7037037037037037,
+            "losses": 8,
+            "samples": 27,
+            "wins": 19
           }
         }
       }
@@ -245,6 +245,6 @@
     }
   },
   "target_accuracy": 0.7,
-  "training_fingerprint": "d6a643f5d5e4cd898202533a67473a43699e77c9990fe0e513251b52d37b2d15",
+  "training_fingerprint": "2a913ea89690ecbcd868040327d8be052a0d5790266c46ed8ce77fe76c5e512b",
   "version": "player_props_consensus_v2.0.0"
 }
