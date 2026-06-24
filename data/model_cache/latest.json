@@ -32396,6 +32396,7 @@
           "decision": "LEAN",
           "edge": 3.78,
           "game": "Minnesota Lynx @ Washington Mystics",
+          "game_start_time": "2026-06-24T23:30Z",
           "guardrail_reasons": [
             "picked side has a key starter out; spread capped at LEAN"
           ],
@@ -32461,6 +32462,7 @@
           "selection": "Minnesota Lynx",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-24T23:30Z",
           "starters_out": [
             "Napheesa Collier"
           ],
@@ -32715,6 +32717,7 @@
           "decision": "LEAN",
           "edge": 7.84,
           "game": "Portland Fire @ Chicago Sky",
+          "game_start_time": "2026-06-25T00:00Z",
           "guardrail_reasons": [
             "new totals market capped at LEAN while its live record is established"
           ],
@@ -32774,6 +32777,7 @@
           "selection": "Under",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-25T00:00Z",
           "units": 0.02,
           "vegas": 171.5
         },
