@@ -218,6 +218,58 @@ def test_universal_ledger_deduplicates_and_keeps_exact_pregame_context(tmp_path:
     assert "result" not in record["pregame_snapshot"]
 
 
+def test_player_prop_snapshots_remain_available_to_outcome_ledger(tmp_path: Path):
+    model_dir = tmp_path / "data" / "model_cache"
+    props_dir = tmp_path / "data" / "player_props_cache"
+    snapshots_dir = tmp_path / "data" / "player_props_snapshots" / "2026-06-21"
+    model_dir.mkdir(parents=True)
+    props_dir.mkdir(parents=True)
+    snapshots_dir.mkdir(parents=True)
+
+    def prop(pick_id: str, player_id: str) -> dict:
+        return {
+            "id": pick_id,
+            "scope": "player",
+            "source": "MLB Season Props",
+            "sport": "MLB",
+            "date": "2026-06-21",
+            "game_id": "1",
+            "player_id": player_id,
+            "stat_key": "hits",
+            "selection": "Over",
+            "line": 0.5,
+            "pick": f"Player {player_id} Over 0.5 Hits",
+            "matchup": "Away @ Home",
+            "market_priced": True,
+            "probability_source": "player_props_ml_v1",
+            "probability": 0.61,
+            "odds": -110,
+            "decision": "BET",
+            "result": "pending",
+        }
+
+    old_payload = {
+        "date": "2026-06-21",
+        "generatedAt": "2026-06-21T18:00:00Z",
+        "models": {"mlb_player_props_season": {"picks": [prop("old", "10")]}},
+    }
+    current_payload = {
+        "date": "2026-06-21",
+        "generatedAt": "2026-06-21T20:00:00Z",
+        "models": {"mlb_player_props_season": {"picks": [prop("new", "20")]}},
+    }
+    (snapshots_dir / "snapshot.json").write_text(json.dumps(old_payload), encoding="utf-8")
+    (props_dir / "2026-06-21.json").write_text(json.dumps(current_payload), encoding="utf-8")
+
+    ledger = build_outcome_ledger(tmp_path)
+
+    assert {record["pick"] for record in ledger["records"]} == {
+        "Player 10 Over 0.5 Hits",
+        "Player 20 Over 0.5 Hits",
+    }
+    assert ledger["summary"]["total_picks"] == 2
+
+
 def test_trainer_waits_for_100_new_decisions_then_force_evaluates(tmp_path: Path):
     calibration_dir = tmp_path / "calibration"
     calibration_dir.mkdir()

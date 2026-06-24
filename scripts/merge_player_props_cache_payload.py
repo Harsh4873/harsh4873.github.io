@@ -155,15 +155,6 @@ def _preserve_pick_metadata(source_buckets: list[Any], generated_bucket: Any, da
         _market_key(pick): {field: pick[field] for field in MARKET_METADATA_FIELDS if field in pick}
         for pick in source_picks
     }
-    generated_market_keys = {_market_key(pick) for pick in generated_picks if isinstance(pick, dict)}
-    carried = [
-        _ensure_consensus_fields({**pick, "carried_forward": True})
-        for pick in source_picks
-        if _carry_forward_allowed(pick, date_iso) and _market_key(pick) not in generated_market_keys
-    ]
-    carried_by_market: dict[tuple[str, ...], dict[str, Any]] = {}
-    for pick in carried:
-        carried_by_market[_market_key(pick)] = pick
     merged = dict(generated_bucket)
     merged["picks"] = [
         _ensure_consensus_fields({
@@ -172,7 +163,7 @@ def _preserve_pick_metadata(source_buckets: list[Any], generated_bucket: Any, da
             **metadata.get(_pick_key(pick), {}),
         }) if isinstance(pick, dict) else pick
         for pick in generated_picks
-    ] + list(carried_by_market.values())
+    ]
     return merged
 
 

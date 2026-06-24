@@ -83,3 +83,15 @@ def test_latest_player_prop_records_remain_split_by_model_bucket():
             assert pick["scope"] == "player"
             assert pick["model_key"] == model_key
             assert str(pick.get("ml_rank_epoch") or "").startswith(f"{pick['sport']}:player_props_variant_v1.0.0:")
+
+
+def test_latest_player_prop_variant_boards_stay_capped_and_ranked():
+    latest = _read_json(ROOT / "data" / "player_props_cache" / "latest.json")
+    models = latest.get("models") if isinstance(latest.get("models"), dict) else {}
+
+    for model_key in PLAYER_PROP_VARIANT_KEYS:
+        picks = models[model_key].get("picks") or []
+        ranks = [int(pick["ml_rank"]) for pick in picks]
+        assert len(picks) <= 8
+        assert ranks == list(range(1, len(picks) + 1))
+        assert not any(pick.get("carried_forward") for pick in picks)

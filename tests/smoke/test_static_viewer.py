@@ -927,8 +927,8 @@ def test_player_prop_merge_does_not_carry_results_across_rank_epochs(tmp_path):
     assert merged["models"]["mlb_player_props"]["picks"][0]["result"] == "pending"
 
 
-def test_player_prop_merge_carries_same_day_published_props_from_snapshots(tmp_path):
-    module = _load_module("merge_player_props_cache_payload_carry_forward", ROOT / "scripts" / "merge_player_props_cache_payload.py")
+def test_player_prop_merge_keeps_same_day_snapshot_props_out_of_latest_board(tmp_path):
+    module = _load_module("merge_player_props_cache_payload_current_board", ROOT / "scripts" / "merge_player_props_cache_payload.py")
     cache_dir = tmp_path / "data" / "player_props_cache"
     snapshot_dir = tmp_path / "data" / "player_props_snapshots"
     cache_dir.mkdir(parents=True)
@@ -992,8 +992,8 @@ def test_player_prop_merge_carries_same_day_published_props_from_snapshots(tmp_p
     merged = module.merge_payload(generated, cache_dir, snapshot_dir)
     picks = merged["models"]["mlb_player_props"]["picks"]
 
-    assert [pick["id"] for pick in picks] == ["new", "old"]
-    assert picks[1]["carried_forward"] is True
+    assert [pick["id"] for pick in picks] == ["new"]
+    assert all("carried_forward" not in pick for pick in picks)
 
 
 def test_external_feed_merge_does_not_promote_partial_cache_to_latest(tmp_path):

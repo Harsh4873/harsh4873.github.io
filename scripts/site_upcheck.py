@@ -44,6 +44,7 @@ REQUIRED_SCORES24_FEED_KEYS = {
 }
 TEAM_VISIBLE_DECISIONS = {"BET", "LEAN"}
 PLAYER_VISIBLE_DECISIONS = {"BET", "LEAN", "PASS"}
+MAX_PLAYER_PROP_BOARD_SIZE = 8
 
 
 def _read_json(path: Path) -> dict[str, Any] | None:
@@ -284,6 +285,20 @@ def main() -> int:
             failures.append(f"player-props bucket {key} has scheduled games but zero picks")
         else:
             picks = bucket.get("picks") or []
+            if key.startswith(("mlb_player_props_", "wnba_player_props_")):
+                if len(picks) > MAX_PLAYER_PROP_BOARD_SIZE:
+                    failures.append(
+                        f"player-props bucket {key} has {len(picks)} visible picks, expected at most {MAX_PLAYER_PROP_BOARD_SIZE}"
+                    )
+                ranks = [
+                    int(pick.get("ml_rank") or 0)
+                    for pick in picks
+                    if isinstance(pick, dict) and str(pick.get("ml_rank") or "").strip()
+                ]
+                if ranks and ranks != list(range(1, len(ranks) + 1)):
+                    failures.append(f"player-props bucket {key} has non-contiguous ML ranks: {ranks}")
+                if any(isinstance(pick, dict) and pick.get("carried_forward") for pick in picks):
+                    failures.append(f"player-props bucket {key} includes carried-forward snapshot props in latest board")
             market_picks = [pick for pick in picks if isinstance(pick, dict) and pick.get("market_priced") is True]
             if market_picks and any(str(pick.get("probability_source") or "") != "player_props_ml_v1" for pick in market_picks):
                 failures.append(f"player-props bucket {key} has market-priced picks without player_props_ml_v1 probability")

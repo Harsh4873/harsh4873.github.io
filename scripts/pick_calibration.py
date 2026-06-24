@@ -416,18 +416,21 @@ def _iter_bucket_records(
 
 def build_outcome_ledger(repo_root: Path = REPO_ROOT) -> dict[str, Any]:
     records_by_id: dict[str, dict[str, Any]] = {}
-    sources = (
-        ("model_cache", repo_root / "data" / "model_cache"),
-        ("player_props_cache", repo_root / "data" / "player_props_cache"),
-    )
-    for cache_type, cache_dir in sources:
-        for path in sorted(cache_dir.glob("20??-??-??.json")):
-            payload = read_json(path)
-            if not payload:
-                continue
-            fallback_date = str(payload.get("date") or path.stem)
-            for record in _iter_bucket_records(payload, cache_type=cache_type, fallback_date=fallback_date):
-                records_by_id[record["id"]] = record
+
+    def add_payload(path: Path, *, cache_type: str, fallback_stem: str | None = None) -> None:
+        payload = read_json(path)
+        if not payload:
+            return
+        fallback_date = str(payload.get("date") or payload.get("slate_date") or fallback_stem or path.stem)
+        for record in _iter_bucket_records(payload, cache_type=cache_type, fallback_date=fallback_date):
+            records_by_id[record["id"]] = record
+
+    for path in sorted((repo_root / "data" / "model_cache").glob("20??-??-??.json")):
+        add_payload(path, cache_type="model_cache")
+    for path in sorted((repo_root / "data" / "player_props_snapshots").glob("20??-??-??/*.json")):
+        add_payload(path, cache_type="player_props_cache", fallback_stem=path.parent.name)
+    for path in sorted((repo_root / "data" / "player_props_cache").glob("20??-??-??.json")):
+        add_payload(path, cache_type="player_props_cache")
 
     records = sorted(
         records_by_id.values(),
