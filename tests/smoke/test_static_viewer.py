@@ -927,7 +927,7 @@ def test_player_prop_merge_does_not_carry_results_across_rank_epochs(tmp_path):
     assert merged["models"]["mlb_player_props"]["picks"][0]["result"] == "pending"
 
 
-def test_player_prop_merge_keeps_same_day_snapshot_props_out_of_latest_board(tmp_path):
+def test_player_prop_merge_preserves_same_day_snapshot_props_in_latest_board(tmp_path):
     module = _load_module("merge_player_props_cache_payload_current_board", ROOT / "scripts" / "merge_player_props_cache_payload.py")
     cache_dir = tmp_path / "data" / "player_props_cache"
     snapshot_dir = tmp_path / "data" / "player_props_snapshots"
@@ -954,6 +954,10 @@ def test_player_prop_merge_keeps_same_day_snapshot_props_out_of_latest_board(tmp
                         "matchup": "A @ B",
                         "market_priced": True,
                         "probability_source": "player_props_ml_v1",
+                        "decision": "LEAN",
+                        "ml_model_version": "player_props_consensus_v2.0.0",
+                        "ml_probability_mode": "four_model_consensus_gate",
+                        "consensus_qualified": True,
                         "result": "pending",
                     }
                 ],
@@ -970,6 +974,7 @@ def test_player_prop_merge_keeps_same_day_snapshot_props_out_of_latest_board(tmp
                         "id": "new",
                         "scope": "player",
                         "source": "MLBPlayerProps",
+                        "model_key": "mlb_player_props",
                         "sport": "MLB",
                         "date": "2026-06-20",
                         "game_id": "2",
@@ -981,6 +986,10 @@ def test_player_prop_merge_keeps_same_day_snapshot_props_out_of_latest_board(tmp
                         "matchup": "C @ D",
                         "market_priced": True,
                         "probability_source": "player_props_ml_v1",
+                        "decision": "LEAN",
+                        "ml_model_version": "player_props_consensus_v2.0.0",
+                        "ml_probability_mode": "four_model_consensus_gate",
+                        "consensus_qualified": True,
                     }
                 ],
             }
@@ -992,8 +1001,72 @@ def test_player_prop_merge_keeps_same_day_snapshot_props_out_of_latest_board(tmp
     merged = module.merge_payload(generated, cache_dir, snapshot_dir)
     picks = merged["models"]["mlb_player_props"]["picks"]
 
-    assert [pick["id"] for pick in picks] == ["new"]
+    assert {pick["id"] for pick in picks} == {"new", "old"}
+    assert {pick["source"] for pick in picks} == {"MLBPlayerProps"}
+    assert {pick["model_key"] for pick in picks} == {"mlb_player_props"}
     assert all("carried_forward" not in pick for pick in picks)
+
+
+def test_player_prop_merge_migrates_legacy_variant_snapshots_into_sport_bucket(tmp_path):
+    module = _load_module("merge_player_props_cache_payload_legacy_variants", ROOT / "scripts" / "merge_player_props_cache_payload.py")
+    cache_dir = tmp_path / "data" / "player_props_cache"
+    snapshot_dir = tmp_path / "data" / "player_props_snapshots"
+    cache_dir.mkdir(parents=True)
+    (snapshot_dir / "2026-06-24").mkdir(parents=True)
+    snapshot = {
+        "date": "2026-06-24",
+        "models": {
+            "wnba_player_props_all_time": {
+                "ok": True,
+                "picks": [
+                    {
+                        "id": "pp_michaela_all_time",
+                        "scope": "player",
+                        "source": "WNBA All Time Props",
+                        "sport": "WNBA",
+                        "date": "2026-06-24",
+                        "game_id": "401857018",
+                        "player_id": "4281173",
+                        "stat_key": "points",
+                        "selection": "Over",
+                        "line": 9.5,
+                        "pick": "Michaela Onyenwere Over 9.5 Points",
+                        "matchup": "A @ B",
+                        "market_priced": True,
+                        "probability_source": "player_props_ml_v1",
+                        "decision": "LEAN",
+                        "ml_model_version": "player_props_consensus_v2.0.0",
+                        "ml_probability_mode": "four_model_consensus_gate",
+                        "consensus_qualified": True,
+                        "model_variant": "all_time",
+                        "result": "pending",
+                    }
+                ],
+            }
+        },
+    }
+    generated = {
+        "date": "2026-06-24",
+        "models": {
+            "wnba_player_props": {
+                "ok": True,
+                "ranking_epoch": "WNBA:player_props_consensus_v2.0.0:published:test",
+                "picks": [],
+            }
+        },
+    }
+    (cache_dir / "2026-06-24.json").write_text(json.dumps({"date": "2026-06-24", "models": {}}), encoding="utf-8")
+    (snapshot_dir / "2026-06-24" / "snapshot.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    merged = module.merge_payload(generated, cache_dir, snapshot_dir)
+    picks = merged["models"]["wnba_player_props"]["picks"]
+
+    assert len(picks) == 1
+    assert picks[0]["id"] == "pp_michaela_consensus"
+    assert picks[0]["source"] == "WNBAPlayerProps"
+    assert picks[0]["model_key"] == "wnba_player_props"
+    assert picks[0]["supporting_variant"] == "all_time"
+    assert picks[0]["ml_rank_epoch"] == "WNBA:player_props_consensus_v2.0.0:published:test"
 
 
 def test_external_feed_merge_does_not_promote_partial_cache_to_latest(tmp_path):
