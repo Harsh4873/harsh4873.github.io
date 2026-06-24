@@ -160,28 +160,13 @@
           "closing_line_movement": null,
           "closing_line_source": "not_tracked",
           "confidence": "High",
-          "consensus_applicable_models": [
-            "mlb_history: 2022-26 five-year roster-aware outcome-history classifiers",
-            "mlb_season: 2026 market classifier"
-          ],
           "consensus_conservative_validation_accuracy": 0.7105263157894737,
           "consensus_evaluated": true,
           "consensus_history_probability": 0.7334641516208649,
           "consensus_history_projection": null,
           "consensus_holdout_accuracy": 0.75,
           "consensus_model_agreement": true,
-          "consensus_model_count": 4,
-          "consensus_models": [
-            "mlb_history: 2022-26 five-year roster-aware outcome-history classifiers",
-            "mlb_season: 2026 market classifier",
-            "wnba_history: 2024-26 workload-aware market/count models",
-            "wnba_season: 2026 market/count models"
-          ],
           "consensus_qualified": true,
-          "consensus_record_models": [
-            "mlb_history: 2022-26 five-year roster-aware outcome-history classifiers",
-            "mlb_season: 2026 market classifier"
-          ],
           "consensus_rejection_reason": null,
           "consensus_required": true,
           "consensus_score": 0.6695578713087166,
@@ -203,7 +188,6 @@
           "home_team": "Chicago White Sox",
           "id": "pp_d5d711b3415fb6ee3111_all_time",
           "key_factors": [
-            "Four-model consensus suite active: mlb_history, mlb_season, wnba_history, wnba_season",
             "Active four-model consensus gate qualified publication",
             "All Time model signal",
             "History model over probability 26.7%",
@@ -301,28 +285,13 @@
           "closing_line_movement": null,
           "closing_line_source": "not_tracked",
           "confidence": "Medium",
-          "consensus_applicable_models": [
-            "mlb_history: 2022-26 five-year roster-aware outcome-history classifiers",
-            "mlb_season: 2026 market classifier"
-          ],
           "consensus_conservative_validation_accuracy": 0.7105263157894737,
           "consensus_evaluated": true,
           "consensus_history_probability": 0.7039687633514404,
           "consensus_history_projection": null,
           "consensus_holdout_accuracy": 0.75,
           "consensus_model_agreement": true,
-          "consensus_model_count": 4,
-          "consensus_models": [
-            "mlb_history: 2022-26 five-year roster-aware outcome-history classifiers",
-            "mlb_season: 2026 market classifier",
-            "wnba_history: 2024-26 workload-aware market/count models",
-            "wnba_season: 2026 market/count models"
-          ],
           "consensus_qualified": true,
-          "consensus_record_models": [
-            "mlb_history: 2022-26 five-year roster-aware outcome-history classifiers",
-            "mlb_season: 2026 market classifier"
-          ],
           "consensus_rejection_reason": null,
           "consensus_required": true,
           "consensus_score": 0.6582476952929556,
@@ -344,7 +313,6 @@
           "home_team": "Colorado Rockies",
           "id": "pp_f4f31ec1d2480c76e48a_all_time",
           "key_factors": [
-            "Four-model consensus suite active: mlb_history, mlb_season, wnba_history, wnba_season",
             "Active four-model consensus gate qualified publication",
             "All Time model signal",
             "History model over probability 29.6%",
@@ -600,28 +568,13 @@
           "closing_line_movement": null,
           "closing_line_source": "not_tracked",
           "confidence": "High",
-          "consensus_applicable_models": [
-            "mlb_history: 2022-26 five-year roster-aware outcome-history classifiers",
-            "mlb_season: 2026 market classifier"
-          ],
           "consensus_conservative_validation_accuracy": 0.7105263157894737,
           "consensus_evaluated": true,
           "consensus_history_probability": 0.7334641516208649,
           "consensus_history_projection": null,
           "consensus_holdout_accuracy": 0.75,
           "consensus_model_agreement": true,
-          "consensus_model_count": 4,
-          "consensus_models": [
-            "mlb_history: 2022-26 five-year roster-aware outcome-history classifiers",
-            "mlb_season: 2026 market classifier",
-            "wnba_history: 2024-26 workload-aware market/count models",
-            "wnba_season: 2026 market/count models"
-          ],
           "consensus_qualified": true,
-          "consensus_record_models": [
-            "mlb_history: 2022-26 five-year roster-aware outcome-history classifiers",
-            "mlb_season: 2026 market classifier"
-          ],
           "consensus_rejection_reason": null,
           "consensus_required": true,
           "consensus_score": 0.6695578713087166,
@@ -645,7 +598,6 @@
           "hot_l10_record": "9-10",
           "id": "pp_d5d711b3415fb6ee3111_hot_l10",
           "key_factors": [
-            "Four-model consensus suite active: mlb_history, mlb_season, wnba_history, wnba_season",
             "Active four-model consensus gate qualified publication",
             "Hot (L10) model signal",
             "Last-10 hit rate 9-10 (90.0%) for under 1.5",
@@ -743,28 +695,13 @@
           "closing_line_movement": null,
           "closing_line_source": "not_tracked",
           "confidence": "Medium",
-          "consensus_applicable_models": [
-            "mlb_history: 2022-26 five-year roster-aware outcome-history classifiers",
-            "mlb_season: 2026 market classifier"
-          ],
           "consensus_conservative_validation_accuracy": 0.7105263157894737,
           "consensus_evaluated": true,
           "consensus_history_probability": 0.7039687633514404,
           "consensus_history_projection": null,
           "consensus_holdout_accuracy": 0.75,
           "consensus_model_agreement": true,
-          "consensus_model_count": 4,
-          "consensus_models": [
-            "mlb_history: 2022-26 five-year roster-aware outcome-history classifiers",
-            "mlb_season: 2026 market classifier",
-            "wnba_history: 2024-26 workload-aware market/count models",
-            "wnba_season: 2026 market/count models"
-          ],
           "consensus_qualified": true,
-          "consensus_record_models": [
-            "mlb_history: 2022-26 five-year roster-aware outcome-history classifiers",
-            "mlb_season: 2026 market classifier"
-          ],
           "consensus_rejection_reason": null,
           "consensus_required": true,
           "consensus_score": 0.6582476952929556,
@@ -788,7 +725,6 @@
           "hot_l10_record": "7-10",
           "id": "pp_f4f31ec1d2480c76e48a_hot_l10",
           "key_factors": [
-            "Four-model consensus suite active: mlb_history, mlb_season, wnba_history, wnba_season",
             "Active four-model consensus gate qualified publication",
             "Hot (L10) model signal",
             "Last-10 hit rate 7-10 (70.0%) for under 1.5",
@@ -1051,28 +987,13 @@
           "closing_line_movement": null,
           "closing_line_source": "not_tracked",
           "confidence": "High",
-          "consensus_applicable_models": [
-            "mlb_history: 2022-26 five-year roster-aware outcome-history classifiers",
-            "mlb_season: 2026 market classifier"
-          ],
           "consensus_conservative_validation_accuracy": 0.7105263157894737,
           "consensus_evaluated": true,
           "consensus_history_probability": 0.7334641516208649,
           "consensus_history_projection": null,
           "consensus_holdout_accuracy": 0.75,
           "consensus_model_agreement": true,
-          "consensus_model_count": 4,
-          "consensus_models": [
-            "mlb_history: 2022-26 five-year roster-aware outcome-history classifiers",
-            "mlb_season: 2026 market classifier",
-            "wnba_history: 2024-26 workload-aware market/count models",
-            "wnba_season: 2026 market/count models"
-          ],
           "consensus_qualified": true,
-          "consensus_record_models": [
-            "mlb_history: 2022-26 five-year roster-aware outcome-history classifiers",
-            "mlb_season: 2026 market classifier"
-          ],
           "consensus_rejection_reason": null,
           "consensus_required": true,
           "consensus_score": 0.6695578713087166,
@@ -1094,7 +1015,6 @@
           "home_team": "Chicago White Sox",
           "id": "pp_d5d711b3415fb6ee3111_matchup_h2h",
           "key_factors": [
-            "Four-model consensus suite active: mlb_history, mlb_season, wnba_history, wnba_season",
             "Active four-model consensus gate qualified publication",
             "Matchup (H2H) model signal",
             "Current matchup factor 1.000",
@@ -1191,28 +1111,13 @@
           "closing_line_movement": null,
           "closing_line_source": "not_tracked",
           "confidence": "Medium",
-          "consensus_applicable_models": [
-            "mlb_history: 2022-26 five-year roster-aware outcome-history classifiers",
-            "mlb_season: 2026 market classifier"
-          ],
           "consensus_conservative_validation_accuracy": 0.7105263157894737,
           "consensus_evaluated": true,
           "consensus_history_probability": 0.7039687633514404,
           "consensus_history_projection": null,
           "consensus_holdout_accuracy": 0.75,
           "consensus_model_agreement": true,
-          "consensus_model_count": 4,
-          "consensus_models": [
-            "mlb_history: 2022-26 five-year roster-aware outcome-history classifiers",
-            "mlb_season: 2026 market classifier",
-            "wnba_history: 2024-26 workload-aware market/count models",
-            "wnba_season: 2026 market/count models"
-          ],
           "consensus_qualified": true,
-          "consensus_record_models": [
-            "mlb_history: 2022-26 five-year roster-aware outcome-history classifiers",
-            "mlb_season: 2026 market classifier"
-          ],
           "consensus_rejection_reason": null,
           "consensus_required": true,
           "consensus_score": 0.6582476952929556,
@@ -1234,7 +1139,6 @@
           "home_team": "Colorado Rockies",
           "id": "pp_f4f31ec1d2480c76e48a_matchup_h2h",
           "key_factors": [
-            "Four-model consensus suite active: mlb_history, mlb_season, wnba_history, wnba_season",
             "Active four-model consensus gate qualified publication",
             "Matchup (H2H) model signal",
             "Current matchup factor 1.000",
@@ -1496,28 +1400,13 @@
           "closing_line_movement": null,
           "closing_line_source": "not_tracked",
           "confidence": "High",
-          "consensus_applicable_models": [
-            "mlb_history: 2022-26 five-year roster-aware outcome-history classifiers",
-            "mlb_season: 2026 market classifier"
-          ],
           "consensus_conservative_validation_accuracy": 0.7105263157894737,
           "consensus_evaluated": true,
           "consensus_history_probability": 0.7334641516208649,
           "consensus_history_projection": null,
           "consensus_holdout_accuracy": 0.75,
           "consensus_model_agreement": true,
-          "consensus_model_count": 4,
-          "consensus_models": [
-            "mlb_history: 2022-26 five-year roster-aware outcome-history classifiers",
-            "mlb_season: 2026 market classifier",
-            "wnba_history: 2024-26 workload-aware market/count models",
-            "wnba_season: 2026 market/count models"
-          ],
           "consensus_qualified": true,
-          "consensus_record_models": [
-            "mlb_history: 2022-26 five-year roster-aware outcome-history classifiers",
-            "mlb_season: 2026 market classifier"
-          ],
           "consensus_rejection_reason": null,
           "consensus_required": true,
           "consensus_score": 0.6695578713087166,
@@ -1539,7 +1428,6 @@
           "home_team": "Chicago White Sox",
           "id": "pp_d5d711b3415fb6ee3111_season",
           "key_factors": [
-            "Four-model consensus suite active: mlb_history, mlb_season, wnba_history, wnba_season",
             "Active four-model consensus gate qualified publication",
             "Season model signal",
             "Current-season ML probability 64.2%",
@@ -1637,28 +1525,13 @@
           "closing_line_movement": null,
           "closing_line_source": "not_tracked",
           "confidence": "Medium",
-          "consensus_applicable_models": [
-            "mlb_history: 2022-26 five-year roster-aware outcome-history classifiers",
-            "mlb_season: 2026 market classifier"
-          ],
           "consensus_conservative_validation_accuracy": 0.7105263157894737,
           "consensus_evaluated": true,
           "consensus_history_probability": 0.7039687633514404,
           "consensus_history_projection": null,
           "consensus_holdout_accuracy": 0.75,
           "consensus_model_agreement": true,
-          "consensus_model_count": 4,
-          "consensus_models": [
-            "mlb_history: 2022-26 five-year roster-aware outcome-history classifiers",
-            "mlb_season: 2026 market classifier",
-            "wnba_history: 2024-26 workload-aware market/count models",
-            "wnba_season: 2026 market/count models"
-          ],
           "consensus_qualified": true,
-          "consensus_record_models": [
-            "mlb_history: 2022-26 five-year roster-aware outcome-history classifiers",
-            "mlb_season: 2026 market classifier"
-          ],
           "consensus_rejection_reason": null,
           "consensus_required": true,
           "consensus_score": 0.6582476952929556,
@@ -1680,7 +1553,6 @@
           "home_team": "Colorado Rockies",
           "id": "pp_f4f31ec1d2480c76e48a_season",
           "key_factors": [
-            "Four-model consensus suite active: mlb_history, mlb_season, wnba_history, wnba_season",
             "Active four-model consensus gate qualified publication",
             "Season model signal",
             "Current-season ML probability 63.2%",
@@ -1940,28 +1812,13 @@
           "closing_line_movement": null,
           "closing_line_source": "not_tracked",
           "confidence": "Medium",
-          "consensus_applicable_models": [
-            "wnba_history: 2024-26 workload-aware market/count models",
-            "wnba_season: 2026 market/count models"
-          ],
           "consensus_conservative_validation_accuracy": 0.7142857142857143,
           "consensus_evaluated": true,
           "consensus_history_probability": 0.6137833595275879,
           "consensus_history_projection": null,
           "consensus_holdout_accuracy": 0.7142857142857143,
           "consensus_model_agreement": true,
-          "consensus_model_count": 4,
-          "consensus_models": [
-            "mlb_history: 2022-26 five-year roster-aware outcome-history classifiers",
-            "mlb_season: 2026 market classifier",
-            "wnba_history: 2024-26 workload-aware market/count models",
-            "wnba_season: 2026 market/count models"
-          ],
           "consensus_qualified": true,
-          "consensus_record_models": [
-            "wnba_history: 2024-26 workload-aware market/count models",
-            "wnba_season: 2026 market/count models"
-          ],
           "consensus_rejection_reason": null,
           "consensus_required": true,
           "consensus_score": 0.6101293280253722,
@@ -1977,7 +1834,6 @@
           "id": "pp_80a7e02d2c6290d348a9_all_time",
           "injury_status": "Healthy",
           "key_factors": [
-            "Four-model consensus suite active: mlb_history, mlb_season, wnba_history, wnba_season",
             "Active four-model consensus gate qualified publication",
             "All Time model signal",
             "History model over probability 61.4%",
@@ -2234,28 +2090,13 @@
           "closing_line_movement": null,
           "closing_line_source": "not_tracked",
           "confidence": "Medium",
-          "consensus_applicable_models": [
-            "wnba_history: 2024-26 workload-aware market/count models",
-            "wnba_season: 2026 market/count models"
-          ],
           "consensus_conservative_validation_accuracy": 0.7142857142857143,
           "consensus_evaluated": true,
           "consensus_history_probability": 0.6137833595275879,
           "consensus_history_projection": null,
           "consensus_holdout_accuracy": 0.7142857142857143,
           "consensus_model_agreement": true,
-          "consensus_model_count": 4,
-          "consensus_models": [
-            "mlb_history: 2022-26 five-year roster-aware outcome-history classifiers",
-            "mlb_season: 2026 market classifier",
-            "wnba_history: 2024-26 workload-aware market/count models",
-            "wnba_season: 2026 market/count models"
-          ],
           "consensus_qualified": true,
-          "consensus_record_models": [
-            "wnba_history: 2024-26 workload-aware market/count models",
-            "wnba_season: 2026 market/count models"
-          ],
           "consensus_rejection_reason": null,
           "consensus_required": true,
           "consensus_score": 0.6101293280253722,
@@ -2273,7 +2114,6 @@
           "id": "pp_80a7e02d2c6290d348a9_hot_l10",
           "injury_status": "Healthy",
           "key_factors": [
-            "Four-model consensus suite active: mlb_history, mlb_season, wnba_history, wnba_season",
             "Active four-model consensus gate qualified publication",
             "Hot (L10) model signal",
             "Last-10 hit rate 7-10 (70.0%) for over 9.5",
@@ -2534,28 +2374,13 @@
           "closing_line_movement": null,
           "closing_line_source": "not_tracked",
           "confidence": "Medium",
-          "consensus_applicable_models": [
-            "wnba_history: 2024-26 workload-aware market/count models",
-            "wnba_season: 2026 market/count models"
-          ],
           "consensus_conservative_validation_accuracy": 0.7142857142857143,
           "consensus_evaluated": true,
           "consensus_history_probability": 0.6137833595275879,
           "consensus_history_projection": null,
           "consensus_holdout_accuracy": 0.7142857142857143,
           "consensus_model_agreement": true,
-          "consensus_model_count": 4,
-          "consensus_models": [
-            "mlb_history: 2022-26 five-year roster-aware outcome-history classifiers",
-            "mlb_season: 2026 market classifier",
-            "wnba_history: 2024-26 workload-aware market/count models",
-            "wnba_season: 2026 market/count models"
-          ],
           "consensus_qualified": true,
-          "consensus_record_models": [
-            "wnba_history: 2024-26 workload-aware market/count models",
-            "wnba_season: 2026 market/count models"
-          ],
           "consensus_rejection_reason": null,
           "consensus_required": true,
           "consensus_score": 0.6101293280253722,
@@ -2573,7 +2398,6 @@
           "id": "pp_80a7e02d2c6290d348a9_matchup_h2h",
           "injury_status": "Healthy",
           "key_factors": [
-            "Four-model consensus suite active: mlb_history, mlb_season, wnba_history, wnba_season",
             "Active four-model consensus gate qualified publication",
             "Matchup (H2H) model signal",
             "Opponent H2H over hit rate 2-6 (33.3%)",
@@ -2837,28 +2661,13 @@
           "closing_line_movement": null,
           "closing_line_source": "not_tracked",
           "confidence": "Medium",
-          "consensus_applicable_models": [
-            "wnba_history: 2024-26 workload-aware market/count models",
-            "wnba_season: 2026 market/count models"
-          ],
           "consensus_conservative_validation_accuracy": 0.7142857142857143,
           "consensus_evaluated": true,
           "consensus_history_probability": 0.6137833595275879,
           "consensus_history_projection": null,
           "consensus_holdout_accuracy": 0.7142857142857143,
           "consensus_model_agreement": true,
-          "consensus_model_count": 4,
-          "consensus_models": [
-            "mlb_history: 2022-26 five-year roster-aware outcome-history classifiers",
-            "mlb_season: 2026 market classifier",
-            "wnba_history: 2024-26 workload-aware market/count models",
-            "wnba_season: 2026 market/count models"
-          ],
           "consensus_qualified": true,
-          "consensus_record_models": [
-            "wnba_history: 2024-26 workload-aware market/count models",
-            "wnba_season: 2026 market/count models"
-          ],
           "consensus_rejection_reason": null,
           "consensus_required": true,
           "consensus_score": 0.6101293280253722,
@@ -2874,7 +2683,6 @@
           "id": "pp_80a7e02d2c6290d348a9_season",
           "injury_status": "Healthy",
           "key_factors": [
-            "Four-model consensus suite active: mlb_history, mlb_season, wnba_history, wnba_season",
             "Active four-model consensus gate qualified publication",
             "Season model signal",
             "Current-season ML probability 61.3%",
