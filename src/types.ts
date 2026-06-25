@@ -26,10 +26,15 @@ export interface SupersetPair {
   exerciseIds: [string, string];
 }
 
-export interface ExerciseDetail {
+export interface ExerciseSet {
+  id: string;
   weightMode: WeightMode;
   pounds: string;
   reps: string;
+}
+
+export interface ExerciseDetail {
+  sets: ExerciseSet[];
   legacyNote?: string;
 }
 
@@ -46,3 +51,5 @@ export interface WorkoutLog {
 }
 
 export type LogsByDate = Record<string, WorkoutLog>;
+
+export type ExerciseOrderByDay = Record<Weekday, string[]>;

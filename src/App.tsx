@@ -1,5 +1,7 @@
 import {
   Activity,
+  ArrowDown,
+  ArrowUp,
   Ban,
   BookOpen,
   CalendarDays,
@@ -12,6 +14,7 @@ import {
   Dumbbell,
   ExternalLink,
   Flame,
+  GripVertical,
   Headphones,
   Link2,
   ListChecks,
@@ -31,7 +34,7 @@ import {
   Upload,
   X,
 } from 'lucide-react';
-import type { ChangeEvent, ComponentType, CSSProperties, Dispatch, SetStateAction, SVGProps } from 'react';
+import type { ChangeEvent, ComponentType, CSSProperties, Dispatch, DragEvent, SetStateAction, SVGProps } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import {
   addDays,
@@ -40,17 +43,29 @@ import {
   formatMonth,
   formatShortDate,
   getExercisesForDate,
+  getWeekday,
   parseDateKey,
   startOfMonth,
   startOfWeek,
   toDateKey,
 } from './dateUtils';
 import { getBasketballMinutes, isStretchExercise, WEEK_DAYS } from './program';
-import { createEmptyExerciseDetail, createEmptyLog, loadLogs, normalizeLog, saveLogs } from './storage';
+import {
+  createEmptyExerciseDetail,
+  createEmptyExerciseSet,
+  createEmptyLog,
+  loadExerciseOrder,
+  loadLogs,
+  normalizeExerciseOrder,
+  normalizeLog,
+  saveExerciseOrder,
+  saveLogs,
+} from './storage';
 import type {
   DayStatus,
   Exercise,
-  ExerciseDetail,
+  ExerciseOrderByDay,
+  ExerciseSet,
   LogsByDate,
   SupersetPair,
   TabId,
@@ -64,6 +79,8 @@ type IconType = ComponentType<SVGProps<SVGSVGElement>>;
 const THEME_STORAGE_KEY = 'harsh-gym-theme-v1';
 const MOBILE_PREVIEW_STORAGE_KEY = 'harsh-gym-mobile-preview-v1';
 const REP_OPTIONS = Array.from({ length: 20 }, (_, index) => String(index + 1));
+
+type GetExercisesForDate = (dateKey: string) => Exercise[];
 
 interface ExerciseGroup {
   id: string;
@@ -97,6 +114,10 @@ function getStoredMobilePreview(): boolean {
   return window.localStorage.getItem(MOBILE_PREVIEW_STORAGE_KEY) === 'mobile';
 }
 
+function createSetId(): string {
+  return `set-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
+}
+
 function isPlainRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
 }
@@ -107,6 +128,34 @@ function uniqueList(items: string[]): string[] {
 
 function touchLog(log: WorkoutLog): WorkoutLog {
   return { ...log, updatedAt: new Date().toISOString() };
+}
+
+function applyExerciseOrder(exercises: Exercise[], orderedIds: string[]): Exercise[] {
+  const byId = new Map(exercises.map((exercise) => [exercise.id, exercise]));
+  const orderedExercises = orderedIds.map((id) => byId.get(id)).filter(Boolean) as Exercise[];
+  const orderedSet = new Set(orderedExercises.map((exercise) => exercise.id));
+
+  return [...orderedExercises, ...exercises.filter((exercise) => !orderedSet.has(exercise.id))];
+}
+
+function getOrderedExercisesForDate(dateKey: string, exerciseOrder: ExerciseOrderByDay): Exercise[] {
+  const exercises = getExercisesForDate(dateKey);
+  const day = getWeekday(parseDateKey(dateKey));
+  return applyExerciseOrder(exercises, exerciseOrder[day]);
+}
+
+function mergeExerciseOrderForDate(dateKey: string, orderedIds: string[]): string[] {
+  const defaultIds = getExercisesForDate(dateKey).map((exercise) => exercise.id);
+  const validIds = new Set(defaultIds);
+  const nextIds: string[] = [];
+
+  orderedIds.forEach((id) => {
+    if (validIds.has(id) && !nextIds.includes(id)) {
+      nextIds.push(id);
+    }
+  });
+
+  return [...nextIds, ...defaultIds.filter((id) => !nextIds.includes(id))];
 }
 
 function countCompleted(exercises: Exercise[], log: WorkoutLog): number {
@@ -122,13 +171,17 @@ function hasLogActivity(log: WorkoutLog): boolean {
     Boolean(log.notes.trim()) ||
     Boolean(log.prNote.trim()) ||
     Object.values(log.details).some((detail) => {
-      return Boolean(detail.reps.trim() || detail.pounds.trim() || detail.legacyNote?.trim());
+      return Boolean(
+        detail.legacyNote?.trim() ||
+          detail.sets.some((set) => {
+            return Boolean(set.reps.trim() || set.pounds.trim());
+          }),
+      );
     })
   );
 }
 
-function getDayStatus(dateKey: string, log: WorkoutLog, todayKey: string): DayStatus {
-  const exercises = getExercisesForDate(dateKey);
+function getDayStatus(dateKey: string, log: WorkoutLog, todayKey: string, exercises = getExercisesForDate(dateKey)): DayStatus {
   const completed = countCompleted(exercises, log);
 
   if (dateKey > todayKey) {
@@ -152,32 +205,45 @@ function getDayStatus(dateKey: string, log: WorkoutLog, todayKey: string): DaySt
 
 function buildExerciseGroups(exercises: Exercise[], supersets: SupersetPair[]): ExerciseGroup[] {
   const byId = new Map(exercises.map((exercise) => [exercise.id, exercise]));
+  const supersetByExerciseId = new Map<string, SupersetPair>();
   const used = new Set<string>();
   const groups: ExerciseGroup[] = [];
 
   supersets.forEach((superset) => {
-    const pair = superset.exerciseIds.map((id) => byId.get(id)).filter(Boolean) as Exercise[];
-    if (pair.length !== 2 || pair.some((exercise) => used.has(exercise.id))) {
+    const pairExists = superset.exerciseIds.every((id) => byId.has(id));
+    if (!pairExists) {
       return;
     }
 
-    pair.forEach((exercise) => used.add(exercise.id));
-    groups.push({
-      id: superset.id,
-      type: 'superset',
-      exercises: pair,
-      supersetId: superset.id,
-    });
+    superset.exerciseIds.forEach((id) => supersetByExerciseId.set(id, superset));
   });
 
   exercises.forEach((exercise) => {
-    if (!used.has(exercise.id)) {
-      groups.push({
-        id: exercise.id,
-        type: 'single',
-        exercises: [exercise],
-      });
+    if (used.has(exercise.id)) {
+      return;
     }
+
+    const superset = supersetByExerciseId.get(exercise.id);
+    if (superset) {
+      const pair = exercises.filter((candidate) => superset.exerciseIds.includes(candidate.id));
+      if (pair.length === 2 && pair.every((pairedExercise) => !used.has(pairedExercise.id))) {
+        pair.forEach((pairedExercise) => used.add(pairedExercise.id));
+        groups.push({
+          id: superset.id,
+          type: 'superset',
+          exercises: pair,
+          supersetId: superset.id,
+        });
+        return;
+      }
+    }
+
+    used.add(exercise.id);
+    groups.push({
+      id: exercise.id,
+      type: 'single',
+      exercises: [exercise],
+    });
   });
 
   return groups;
@@ -327,22 +393,28 @@ function AppChrome({
 
 function WorkoutPanel({
   dateKey,
+  exercises,
   log,
   todayKey,
+  onReorder,
   onUpdate,
   onClear,
 }: {
   dateKey: string;
+  exercises: Exercise[];
   log: WorkoutLog;
   todayKey: string;
+  onReorder: (exerciseIds: string[]) => void;
   onUpdate: (updater: (log: WorkoutLog) => WorkoutLog) => void;
   onClear: () => void;
 }) {
-  const exercises = getExercisesForDate(dateKey);
   const [firstSupersetId, setFirstSupersetId] = useState(exercises[0]?.id ?? '');
   const [secondSupersetId, setSecondSupersetId] = useState(exercises[1]?.id ?? '');
+  const [draggedGroupId, setDraggedGroupId] = useState<string | null>(null);
+  const [dragOverGroupId, setDragOverGroupId] = useState<string | null>(null);
+  const exerciseOrderSignature = exercises.map((exercise) => exercise.id).join('|');
   const progress = getProgressMeta(exercises, log);
-  const status = getDayStatus(dateKey, log, todayKey);
+  const status = getDayStatus(dateKey, log, todayKey, exercises);
   const supersetExerciseCount = getSupersetExerciseCount(log);
   const pairedIds = new Set(log.supersets.flatMap((pair) => pair.exerciseIds));
   const unpairedExercises = exercises.filter((exercise) => !pairedIds.has(exercise.id));
@@ -352,7 +424,7 @@ function WorkoutPanel({
     const available = exercises.filter((exercise) => !pairedIds.has(exercise.id));
     setFirstSupersetId(available[0]?.id ?? '');
     setSecondSupersetId(available[1]?.id ?? '');
-  }, [dateKey, log.supersets.length]);
+  }, [dateKey, exerciseOrderSignature, log.supersets.length]);
 
   const canAddSuperset =
     firstSupersetId &&
@@ -391,27 +463,137 @@ function WorkoutPanel({
     });
   };
 
-  const updateDetail = (exerciseId: string, detailPatch: Partial<ExerciseDetail>) => {
+  const updateExerciseSet = (exerciseId: string, setId: string, setPatch: Partial<ExerciseSet>) => {
     onUpdate((current) => {
       const currentDetail = current.details[exerciseId] ?? createEmptyExerciseDetail();
-      const nextDetail: ExerciseDetail = {
-        ...currentDetail,
-        ...detailPatch,
+      const nextSets = currentDetail.sets.map((set) => {
+        if (set.id !== setId) {
+          return set;
+        }
+
+        const nextSet: ExerciseSet = {
+          ...set,
+          ...setPatch,
+        };
+
+        return {
+          ...nextSet,
+          pounds: nextSet.weightMode === 'bodyweight' ? '' : nextSet.pounds,
+        };
+      });
+
+      return touchLog({
+        ...current,
+        details: {
+          ...current.details,
+          [exerciseId]: {
+            ...currentDetail,
+            sets: nextSets,
+          },
+        },
+        daySkipped: false,
+      });
+    });
+  };
+
+  const addExerciseSet = (exerciseId: string) => {
+    onUpdate((current) => {
+      const currentDetail = current.details[exerciseId] ?? createEmptyExerciseDetail();
+      const previousSet = currentDetail.sets[currentDetail.sets.length - 1];
+      const nextSet = {
+        ...createEmptyExerciseSet(createSetId()),
+        weightMode: previousSet?.weightMode ?? 'bodyweight',
+        pounds: previousSet?.weightMode === 'pounds' ? previousSet.pounds : '',
       };
 
-      if (nextDetail.weightMode === 'bodyweight') {
-        nextDetail.pounds = '';
+      return touchLog({
+        ...current,
+        details: {
+          ...current.details,
+          [exerciseId]: {
+            ...currentDetail,
+            sets: [...currentDetail.sets, nextSet],
+          },
+        },
+        daySkipped: false,
+      });
+    });
+  };
+
+  const removeExerciseSet = (exerciseId: string, setId: string) => {
+    onUpdate((current) => {
+      const currentDetail = current.details[exerciseId] ?? createEmptyExerciseDetail();
+      if (currentDetail.sets.length <= 1) {
+        return current;
       }
 
       return touchLog({
         ...current,
         details: {
           ...current.details,
-          [exerciseId]: nextDetail,
+          [exerciseId]: {
+            ...currentDetail,
+            sets: currentDetail.sets.filter((set) => set.id !== setId),
+          },
         },
         daySkipped: false,
       });
     });
+  };
+
+  const reorderGroups = (nextGroups: ExerciseGroup[]) => {
+    onReorder(nextGroups.flatMap((group) => group.exercises.map((exercise) => exercise.id)));
+  };
+
+  const moveGroup = (groupId: string, direction: -1 | 1) => {
+    const currentIndex = groups.findIndex((group) => group.id === groupId);
+    const nextIndex = currentIndex + direction;
+    if (currentIndex < 0 || nextIndex < 0 || nextIndex >= groups.length) {
+      return;
+    }
+
+    const nextGroups = [...groups];
+    [nextGroups[currentIndex], nextGroups[nextIndex]] = [nextGroups[nextIndex], nextGroups[currentIndex]];
+    reorderGroups(nextGroups);
+  };
+
+  const handleDragStart = (event: DragEvent<HTMLButtonElement>, groupId: string) => {
+    setDraggedGroupId(groupId);
+    event.dataTransfer.effectAllowed = 'move';
+    event.dataTransfer.setData('text/plain', groupId);
+  };
+
+  const handleDragOver = (event: DragEvent<HTMLElement>, targetGroupId: string) => {
+    const sourceGroupId = draggedGroupId || event.dataTransfer.getData('text/plain');
+    if (!sourceGroupId || sourceGroupId === targetGroupId) {
+      return;
+    }
+
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'move';
+    setDragOverGroupId(targetGroupId);
+  };
+
+  const handleDrop = (event: DragEvent<HTMLElement>, targetGroupId: string) => {
+    event.preventDefault();
+    const sourceGroupId = draggedGroupId || event.dataTransfer.getData('text/plain');
+    setDraggedGroupId(null);
+    setDragOverGroupId(null);
+
+    if (!sourceGroupId || sourceGroupId === targetGroupId) {
+      return;
+    }
+
+    const sourceIndex = groups.findIndex((group) => group.id === sourceGroupId);
+    const targetIndex = groups.findIndex((group) => group.id === targetGroupId);
+    if (sourceIndex < 0 || targetIndex < 0) {
+      return;
+    }
+
+    const nextGroups = [...groups];
+    const [movedGroup] = nextGroups.splice(sourceIndex, 1);
+    nextGroups.splice(targetIndex, 0, movedGroup);
+    reorderGroups(nextGroups);
   };
 
   const addSuperset = () => {
@@ -535,100 +717,185 @@ function WorkoutPanel({
       </section>
 
       <div className="exercise-stack">
-        {groups.map((group) => (
-          <article key={group.id} className={`exercise-group ${group.type}`}>
-            {group.type === 'superset' && (
-              <div className="group-header">
-                <span>
-                  <Link2 aria-hidden="true" />
-                  Superset
-                </span>
-                <button
-                  className="icon-only-button small"
-                  type="button"
-                  aria-label="Remove superset"
-                  onClick={() => group.supersetId && removeSuperset(group.supersetId)}
-                >
-                  <X aria-hidden="true" />
-                </button>
-              </div>
-            )}
+        {groups.map((group, groupIndex) => {
+          const groupLabel =
+            group.type === 'superset'
+              ? `superset with ${group.exercises.map((exercise) => exercise.name).join(' and ')}`
+              : group.exercises[0]?.name ?? 'exercise';
 
-            {group.exercises.map((exercise) => {
-              const completed = log.completed.includes(exercise.id);
-              const skipped = log.skipped.includes(exercise.id);
-              const detail = log.details[exercise.id] ?? createEmptyExerciseDetail();
-
-              return (
-                <div key={exercise.id} className={`exercise-row ${completed ? 'done' : ''} ${skipped ? 'skipped' : ''}`}>
+          return (
+            <article
+              key={group.id}
+              className={`exercise-group ${group.type} ${draggedGroupId === group.id ? 'dragging' : ''} ${
+                dragOverGroupId === group.id ? 'drop-target' : ''
+              }`}
+              onDragOver={(event) => handleDragOver(event, group.id)}
+              onDrop={(event) => handleDrop(event, group.id)}
+            >
+              {group.type === 'superset' && (
+                <div className="group-header">
+                  <span>
+                    <Link2 aria-hidden="true" />
+                    Superset
+                  </span>
                   <button
-                    className="check-button"
+                    className="icon-only-button small"
                     type="button"
-                    aria-label={`Toggle ${exercise.name}`}
-                    onClick={() => toggleComplete(exercise.id)}
+                    aria-label="Remove superset"
+                    onClick={() => group.supersetId && removeSuperset(group.supersetId)}
                   >
-                    {completed ? <Check aria-hidden="true" /> : <Circle aria-hidden="true" />}
-                  </button>
-                  <div className="exercise-copy">
-                    <strong>{exercise.name}</strong>
-                    <div className={`exercise-detail-grid ${detail.weightMode === 'pounds' ? 'with-pounds' : ''}`}>
-                      <label>
-                        <span>Weight</span>
-                        <select
-                          value={detail.weightMode}
-                          onChange={(event) =>
-                            updateDetail(exercise.id, {
-                              weightMode: event.target.value as WeightMode,
-                            })
-                          }
-                        >
-                          <option value="bodyweight">Body weight</option>
-                          <option value="pounds">Pounds</option>
-                        </select>
-                      </label>
-                      {detail.weightMode === 'pounds' && (
-                        <label>
-                          <span>Pounds</span>
-                          <input
-                            type="number"
-                            min="0"
-                            step="0.5"
-                            inputMode="decimal"
-                            value={detail.pounds}
-                            onChange={(event) => updateDetail(exercise.id, { pounds: event.target.value })}
-                          />
-                        </label>
-                      )}
-                      <label>
-                        <span>Reps</span>
-                        <select
-                          value={detail.reps}
-                          onChange={(event) => updateDetail(exercise.id, { reps: event.target.value })}
-                        >
-                          <option value="">-</option>
-                          {REP_OPTIONS.map((rep) => (
-                            <option key={rep} value={rep}>
-                              {rep}
-                            </option>
-                          ))}
-                        </select>
-                      </label>
-                    </div>
-                    {detail.legacyNote && <small className="legacy-detail">Previous detail: {detail.legacyNote}</small>}
-                  </div>
-                  <button
-                    className={`skip-button ${skipped ? 'active' : ''}`}
-                    type="button"
-                    aria-label={`Skip ${exercise.name}`}
-                    onClick={() => toggleSkip(exercise.id)}
-                  >
-                    <Ban aria-hidden="true" />
+                    <X aria-hidden="true" />
                   </button>
                 </div>
-              );
-            })}
-          </article>
-        ))}
+              )}
+
+              <div className="exercise-group-body">
+                <div className="group-move-controls">
+                  <button
+                    className="drag-button"
+                    type="button"
+                    draggable
+                    aria-label={`Drag ${groupLabel} to reorder`}
+                    onDragStart={(event) => handleDragStart(event, group.id)}
+                    onDragEnd={() => {
+                      setDraggedGroupId(null);
+                      setDragOverGroupId(null);
+                    }}
+                  >
+                    <GripVertical aria-hidden="true" />
+                  </button>
+                  <div className="move-pair">
+                    <button
+                      className="move-mini-button"
+                      type="button"
+                      aria-label={`Move ${groupLabel} up`}
+                      onClick={() => moveGroup(group.id, -1)}
+                      disabled={groupIndex === 0}
+                    >
+                      <ArrowUp aria-hidden="true" />
+                    </button>
+                    <button
+                      className="move-mini-button"
+                      type="button"
+                      aria-label={`Move ${groupLabel} down`}
+                      onClick={() => moveGroup(group.id, 1)}
+                      disabled={groupIndex === groups.length - 1}
+                    >
+                      <ArrowDown aria-hidden="true" />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="group-exercise-list">
+                  {group.exercises.map((exercise) => {
+                    const completed = log.completed.includes(exercise.id);
+                    const skipped = log.skipped.includes(exercise.id);
+                    const detail = log.details[exercise.id] ?? createEmptyExerciseDetail();
+
+                    return (
+                      <div
+                        key={exercise.id}
+                        className={`exercise-row ${completed ? 'done' : ''} ${skipped ? 'skipped' : ''}`}
+                      >
+                        <button
+                          className="check-button"
+                          type="button"
+                          aria-label={`Toggle ${exercise.name}`}
+                          onClick={() => toggleComplete(exercise.id)}
+                        >
+                          {completed ? <Check aria-hidden="true" /> : <Circle aria-hidden="true" />}
+                        </button>
+                        <div className="exercise-copy">
+                          <strong>{exercise.name}</strong>
+                          <div className="set-stack">
+                            {detail.sets.map((set, setIndex) => (
+                              <div
+                                key={set.id}
+                                className={`set-row ${set.weightMode === 'pounds' ? 'with-pounds' : ''} ${
+                                  detail.sets.length > 1 ? 'can-remove' : ''
+                                }`}
+                              >
+                                <span className="set-index">Set {setIndex + 1}</span>
+                                <label>
+                                  <span>Weight</span>
+                                  <select
+                                    value={set.weightMode}
+                                    onChange={(event) =>
+                                      updateExerciseSet(exercise.id, set.id, {
+                                        weightMode: event.target.value as WeightMode,
+                                      })
+                                    }
+                                  >
+                                    <option value="bodyweight">Body weight</option>
+                                    <option value="pounds">Pounds</option>
+                                  </select>
+                                </label>
+                                {set.weightMode === 'pounds' && (
+                                  <label>
+                                    <span>Pounds</span>
+                                    <input
+                                      type="number"
+                                      min="0"
+                                      step="0.5"
+                                      inputMode="decimal"
+                                      value={set.pounds}
+                                      onChange={(event) => updateExerciseSet(exercise.id, set.id, { pounds: event.target.value })}
+                                    />
+                                  </label>
+                                )}
+                                <label>
+                                  <span>Reps</span>
+                                  <select
+                                    value={set.reps}
+                                    onChange={(event) => updateExerciseSet(exercise.id, set.id, { reps: event.target.value })}
+                                  >
+                                    <option value="">-</option>
+                                    {REP_OPTIONS.map((rep) => (
+                                      <option key={rep} value={rep}>
+                                        {rep}
+                                      </option>
+                                    ))}
+                                  </select>
+                                </label>
+                                {detail.sets.length > 1 && (
+                                  <button
+                                    className="set-remove-button"
+                                    type="button"
+                                    aria-label={`Remove set ${setIndex + 1} from ${exercise.name}`}
+                                    onClick={() => removeExerciseSet(exercise.id, set.id)}
+                                  >
+                                    <X aria-hidden="true" />
+                                  </button>
+                                )}
+                              </div>
+                            ))}
+                            <button
+                              className="icon-text-button compact set-add-button"
+                              type="button"
+                              onClick={() => addExerciseSet(exercise.id)}
+                            >
+                              <Plus aria-hidden="true" />
+                              <span>Add Set</span>
+                            </button>
+                          </div>
+                          {detail.legacyNote && <small className="legacy-detail">Previous detail: {detail.legacyNote}</small>}
+                        </div>
+                        <button
+                          className={`skip-button ${skipped ? 'active' : ''}`}
+                          type="button"
+                          aria-label={`Skip ${exercise.name}`}
+                          onClick={() => toggleSkip(exercise.id)}
+                        >
+                          <Ban aria-hidden="true" />
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </article>
+          );
+        })}
       </div>
 
       <div className="notes-grid">
@@ -670,16 +937,20 @@ function WorkoutPanel({
 function TodayView({
   logs,
   todayKey,
+  getExercises,
+  updateExerciseOrder,
   updateLog,
   clearLog,
 }: {
   logs: LogsByDate;
   todayKey: string;
+  getExercises: GetExercisesForDate;
+  updateExerciseOrder: (dateKey: string, exerciseIds: string[]) => void;
   updateLog: (dateKey: string, updater: (log: WorkoutLog) => WorkoutLog) => void;
   clearLog: (dateKey: string) => void;
 }) {
   const log = normalizeLog(todayKey, logs[todayKey]);
-  const exercises = getExercisesForDate(todayKey);
+  const exercises = getExercises(todayKey);
   const progress = getProgressMeta(exercises, log);
   const remaining = Math.max(progress.total - progress.completed - progress.skipped, 0);
 
@@ -715,8 +986,10 @@ function TodayView({
       </div>
       <WorkoutPanel
         dateKey={todayKey}
+        exercises={exercises}
         log={log}
         todayKey={todayKey}
+        onReorder={(exerciseIds) => updateExerciseOrder(todayKey, exerciseIds)}
         onUpdate={(updater) => updateLog(todayKey, updater)}
         onClear={() => clearLog(todayKey)}
       />
@@ -728,12 +1001,14 @@ function WeekView({
   logs,
   todayKey,
   selectedDate,
+  getExercises,
   setSelectedDate,
   openLogbook,
 }: {
   logs: LogsByDate;
   todayKey: string;
   selectedDate: string;
+  getExercises: GetExercisesForDate;
   setSelectedDate: (dateKey: string) => void;
   openLogbook: (dateKey: string) => void;
 }) {
@@ -742,9 +1017,9 @@ function WeekView({
     const date = addDays(weekStart, index);
     const dateKey = toDateKey(date);
     const log = normalizeLog(dateKey, logs[dateKey]);
-    const exercises = getExercisesForDate(dateKey);
+    const exercises = getExercises(dateKey);
     const progress = getProgressMeta(exercises, log);
-    const status = getDayStatus(dateKey, log, todayKey);
+    const status = getDayStatus(dateKey, log, todayKey, exercises);
     return { day, dateKey, exercises, progress, status };
   });
 
@@ -817,12 +1092,14 @@ function CalendarView({
   logs,
   todayKey,
   selectedDate,
+  getExercises,
   setSelectedDate,
   openLogbook,
 }: {
   logs: LogsByDate;
   todayKey: string;
   selectedDate: string;
+  getExercises: GetExercisesForDate;
   setSelectedDate: (dateKey: string) => void;
   openLogbook: (dateKey: string) => void;
 }) {
@@ -834,12 +1111,12 @@ function CalendarView({
     const date = addDays(gridStart, index);
     const dateKey = toDateKey(date);
     const log = normalizeLog(dateKey, logs[dateKey]);
-    const exercises = getExercisesForDate(dateKey);
+    const exercises = getExercises(dateKey);
     return {
       date,
       dateKey,
       inMonth: date >= monthStart && date <= monthEnd,
-      status: getDayStatus(dateKey, log, todayKey),
+      status: getDayStatus(dateKey, log, todayKey, exercises),
       progress: getProgressMeta(exercises, log),
     };
   });
@@ -914,7 +1191,15 @@ function buildRecentDates(todayKey: string, days: number): string[] {
   return Array.from({ length: days }, (_, index) => toDateKey(addDays(today, -index)));
 }
 
-function MilestonesView({ logs, todayKey }: { logs: LogsByDate; todayKey: string }) {
+function MilestonesView({
+  logs,
+  todayKey,
+  getExercises,
+}: {
+  logs: LogsByDate;
+  todayKey: string;
+  getExercises: GetExercisesForDate;
+}) {
   const allDates = buildRecentDates(todayKey, 180).reverse();
   let completedSessions = 0;
   let basketballMinutes = 0;
@@ -923,7 +1208,7 @@ function MilestonesView({ logs, todayKey }: { logs: LogsByDate; todayKey: string
 
   allDates.forEach((dateKey) => {
     const log = normalizeLog(dateKey, logs[dateKey]);
-    const exercises = getExercisesForDate(dateKey);
+    const exercises = getExercises(dateKey);
     const progress = getProgressMeta(exercises, log);
     if (progress.completed === progress.total && progress.total > 0) {
       completedSessions += 1;
@@ -948,7 +1233,7 @@ function MilestonesView({ logs, todayKey }: { logs: LogsByDate; todayKey: string
   let streak = 0;
   for (const dateKey of buildRecentDates(todayKey, 90)) {
     const log = normalizeLog(dateKey, logs[dateKey]);
-    const exercises = getExercisesForDate(dateKey);
+    const exercises = getExercises(dateKey);
     const progress = getProgressMeta(exercises, log);
     if (progress.completed === progress.total && progress.total > 0) {
       streak += 1;
@@ -1003,14 +1288,18 @@ function LogbookView({
   logs,
   todayKey,
   selectedDate,
+  getExercises,
   setSelectedDate,
+  updateExerciseOrder,
   updateLog,
   clearLog,
 }: {
   logs: LogsByDate;
   todayKey: string;
   selectedDate: string;
+  getExercises: GetExercisesForDate;
   setSelectedDate: (dateKey: string) => void;
+  updateExerciseOrder: (dateKey: string, exerciseIds: string[]) => void;
   updateLog: (dateKey: string, updater: (log: WorkoutLog) => WorkoutLog) => void;
   clearLog: (dateKey: string) => void;
 }) {
@@ -1055,8 +1344,10 @@ function LogbookView({
 
         <WorkoutPanel
           dateKey={selectedDate}
+          exercises={getExercises(selectedDate)}
           log={normalizeLog(selectedDate, logs[selectedDate])}
           todayKey={todayKey}
+          onReorder={(exerciseIds) => updateExerciseOrder(selectedDate, exerciseIds)}
           onUpdate={(updater) => updateLog(selectedDate, updater)}
           onClear={() => clearLog(selectedDate)}
         />
@@ -1069,7 +1360,7 @@ function LogbookView({
         </div>
         {recentEntries.length > 0 ? (
           recentEntries.map((entry) => {
-            const exercises = getExercisesForDate(entry.date);
+            const exercises = getExercises(entry.date);
             const progress = getProgressMeta(exercises, entry);
             return (
               <button key={entry.date} type="button" className="recent-entry" onClick={() => setSelectedDate(entry.date)}>
@@ -1090,18 +1381,23 @@ function LogbookView({
 
 function SettingsView({
   logs,
+  exerciseOrder,
   setLogs,
+  setExerciseOrder,
 }: {
   logs: LogsByDate;
+  exerciseOrder: ExerciseOrderByDay;
   setLogs: Dispatch<SetStateAction<LogsByDate>>;
+  setExerciseOrder: Dispatch<SetStateAction<ExerciseOrderByDay>>;
 }) {
   const [message, setMessage] = useState('');
 
   const exportLogs = () => {
     const payload = JSON.stringify(
       {
-        version: 1,
+        version: 2,
         exportedAt: new Date().toISOString(),
+        exerciseOrder,
         logs,
       },
       null,
@@ -1135,6 +1431,9 @@ function SettingsView({
           Object.entries(source).map(([date, log]) => [date, normalizeLog(date, log as Partial<WorkoutLog>)]),
         );
         setLogs(nextLogs);
+        if (isPlainRecord(parsed) && isPlainRecord(parsed.exerciseOrder)) {
+          setExerciseOrder(normalizeExerciseOrder(parsed.exerciseOrder));
+        }
         setMessage('Import complete.');
       } catch {
         setMessage('Import failed.');
@@ -1200,12 +1499,17 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<TabId>('today');
   const [selectedDate, setSelectedDate] = useState(todayKey);
   const [logs, setLogs] = useState<LogsByDate>(() => loadLogs());
+  const [exerciseOrder, setExerciseOrder] = useState<ExerciseOrderByDay>(() => loadExerciseOrder());
   const [theme, setTheme] = useState<ThemeMode>(() => getStoredTheme());
   const [mobilePreview, setMobilePreview] = useState(() => getStoredMobilePreview());
 
   useEffect(() => {
     saveLogs(logs);
   }, [logs]);
+
+  useEffect(() => {
+    saveExerciseOrder(exerciseOrder);
+  }, [exerciseOrder]);
 
   useEffect(() => {
     document.body.setAttribute('data-theme', theme);
@@ -1245,8 +1549,18 @@ export default function App() {
     setActiveTab('logbook');
   };
 
+  const getExercises: GetExercisesForDate = (dateKey) => getOrderedExercisesForDate(dateKey, exerciseOrder);
+
+  const updateExerciseOrder = (dateKey: string, exerciseIds: string[]) => {
+    const day = getWeekday(parseDateKey(dateKey));
+    setExerciseOrder((current) => ({
+      ...current,
+      [day]: mergeExerciseOrderForDate(dateKey, exerciseIds),
+    }));
+  };
+
   const currentLog = normalizeLog(todayKey, logs[todayKey] ?? createEmptyLog(todayKey));
-  const currentExercises = getExercisesForDate(todayKey);
+  const currentExercises = getExercises(todayKey);
   const currentProgress = getProgressMeta(currentExercises, currentLog);
 
   return (
@@ -1288,13 +1602,21 @@ export default function App() {
           onMobilePreviewToggle={() => setMobilePreview((current) => !current)}
         />
         {activeTab === 'today' && (
-          <TodayView logs={logs} todayKey={todayKey} updateLog={updateLog} clearLog={clearLog} />
+          <TodayView
+            logs={logs}
+            todayKey={todayKey}
+            getExercises={getExercises}
+            updateExerciseOrder={updateExerciseOrder}
+            updateLog={updateLog}
+            clearLog={clearLog}
+          />
         )}
         {activeTab === 'week' && (
           <WeekView
             logs={logs}
             todayKey={todayKey}
             selectedDate={selectedDate}
+            getExercises={getExercises}
             setSelectedDate={setSelectedDate}
             openLogbook={openLogbook}
           />
@@ -1304,22 +1626,32 @@ export default function App() {
             logs={logs}
             todayKey={todayKey}
             selectedDate={selectedDate}
+            getExercises={getExercises}
             setSelectedDate={setSelectedDate}
             openLogbook={openLogbook}
           />
         )}
-        {activeTab === 'milestones' && <MilestonesView logs={logs} todayKey={todayKey} />}
+        {activeTab === 'milestones' && <MilestonesView logs={logs} todayKey={todayKey} getExercises={getExercises} />}
         {activeTab === 'logbook' && (
           <LogbookView
             logs={logs}
             todayKey={todayKey}
             selectedDate={selectedDate}
+            getExercises={getExercises}
             setSelectedDate={setSelectedDate}
+            updateExerciseOrder={updateExerciseOrder}
             updateLog={updateLog}
             clearLog={clearLog}
           />
         )}
-        {activeTab === 'settings' && <SettingsView logs={logs} setLogs={setLogs} />}
+        {activeTab === 'settings' && (
+          <SettingsView
+            logs={logs}
+            exerciseOrder={exerciseOrder}
+            setLogs={setLogs}
+            setExerciseOrder={setExerciseOrder}
+          />
+        )}
       </main>
 
       <nav className="bottom-tabs" aria-label="Gym tabs">

@@ -658,8 +658,8 @@ body[data-theme="light"] .workout-banner {
 
 .superset-controls select,
 .date-input,
-.exercise-detail-grid select,
-.exercise-detail-grid input,
+.set-row select,
+.set-row input,
 .notes-grid textarea {
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -670,8 +670,8 @@ body[data-theme="light"] .workout-banner {
 
 .superset-controls select:focus,
 .date-input:focus,
-.exercise-detail-grid select:focus,
-.exercise-detail-grid input:focus,
+.set-row select:focus,
+.set-row input:focus,
 .notes-grid textarea:focus {
   border-color: var(--green);
   box-shadow: 0 0 0 3px rgba(85, 216, 139, 0.13);
@@ -704,6 +704,15 @@ body[data-theme="light"] .workout-banner {
     var(--card);
 }
 
+.exercise-group.dragging {
+  opacity: 0.66;
+}
+
+.exercise-group.drop-target {
+  border-color: rgba(85, 216, 139, 0.72);
+  box-shadow: 0 0 0 3px rgba(85, 216, 139, 0.12), var(--shadow-soft);
+}
+
 .group-header {
   display: flex;
   align-items: center;
@@ -725,6 +734,70 @@ body[data-theme="light"] .workout-banner {
 .group-header svg {
   width: 0.95rem;
   height: 0.95rem;
+}
+
+.exercise-group-body {
+  display: grid;
+  grid-template-columns: 2.2rem minmax(0, 1fr);
+  gap: 0.55rem;
+  align-items: start;
+}
+
+.group-move-controls {
+  display: grid;
+  gap: 0.32rem;
+  padding-top: 0.5rem;
+}
+
+.drag-button,
+.move-mini-button,
+.set-remove-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--muted);
+  background: var(--paper);
+}
+
+.drag-button {
+  width: 2rem;
+  height: 2.4rem;
+  cursor: grab;
+}
+
+.drag-button:active {
+  cursor: grabbing;
+}
+
+.drag-button:hover,
+.move-mini-button:hover,
+.set-remove-button:hover {
+  color: var(--ink);
+  border-color: var(--line-strong);
+}
+
+.drag-button svg,
+.move-mini-button svg,
+.set-remove-button svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.move-pair {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.move-mini-button {
+  width: 2rem;
+  height: 1.7rem;
+  padding: 0;
+}
+
+.group-exercise-list {
+  display: grid;
 }
 
 .exercise-row {
@@ -776,35 +849,68 @@ body[data-theme="light"] .workout-banner {
   overflow-wrap: anywhere;
 }
 
-.exercise-detail-grid {
+.set-stack {
   display: grid;
-  grid-template-columns: minmax(8.5rem, 1fr) minmax(4.6rem, 0.45fr);
+  gap: 0.45rem;
+}
+
+.set-row {
+  display: grid;
+  grid-template-columns: 3.8rem minmax(8.5rem, 1fr) minmax(4.6rem, 0.45fr);
   gap: 0.45rem;
   align-items: end;
+  padding: 0.42rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.025);
 }
 
-.exercise-detail-grid.with-pounds {
-  grid-template-columns: minmax(8.5rem, 1fr) minmax(6rem, 0.6fr) minmax(4.6rem, 0.45fr);
+.set-row.with-pounds {
+  grid-template-columns: 3.8rem minmax(8.5rem, 1fr) minmax(6rem, 0.6fr) minmax(4.6rem, 0.45fr);
 }
 
-.exercise-detail-grid label {
+.set-row.can-remove {
+  grid-template-columns: 3.8rem minmax(8.5rem, 1fr) minmax(4.6rem, 0.45fr) 2rem;
+}
+
+.set-row.with-pounds.can-remove {
+  grid-template-columns: 3.8rem minmax(8.5rem, 1fr) minmax(6rem, 0.6fr) minmax(4.6rem, 0.45fr) 2rem;
+}
+
+.set-row label {
   display: grid;
   gap: 0.24rem;
   min-width: 0;
 }
 
-.exercise-detail-grid span {
+.set-row label span,
+.set-index {
   color: var(--muted);
   font-size: 0.66rem;
   font-weight: 900;
   text-transform: uppercase;
 }
 
-.exercise-detail-grid select,
-.exercise-detail-grid input {
+.set-index {
+  align-self: center;
+  color: var(--yellow);
+}
+
+.set-row select,
+.set-row input {
   width: 100%;
   min-height: 2.3rem;
   padding: 0 0.58rem;
+}
+
+.set-remove-button {
+  width: 2rem;
+  height: 2.3rem;
+  padding: 0;
+}
+
+.set-add-button {
+  justify-self: start;
 }
 
 .legacy-detail {
@@ -1204,12 +1310,19 @@ body[data-theme="light"] .workout-banner {
   flex: 1 1 0;
 }
 
-.app-shell.mobile-preview .exercise-detail-grid,
-.app-shell.mobile-preview .exercise-detail-grid.with-pounds {
+.app-shell.mobile-preview .exercise-group-body {
+  grid-template-columns: 1.9rem minmax(0, 1fr);
+  gap: 0.4rem;
+}
+
+.app-shell.mobile-preview .set-row,
+.app-shell.mobile-preview .set-row.with-pounds,
+.app-shell.mobile-preview .set-row.can-remove,
+.app-shell.mobile-preview .set-row.with-pounds.can-remove {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.app-shell.mobile-preview .exercise-detail-grid.with-pounds label:first-child {
+.app-shell.mobile-preview .set-index {
   grid-column: 1 / -1;
 }
 
@@ -1420,12 +1533,19 @@ body[data-theme="light"] .app-shell.mobile-preview .bottom-tabs {
     gap: 0.45rem;
   }
 
-  .exercise-detail-grid,
-  .exercise-detail-grid.with-pounds {
+  .exercise-group-body {
+    grid-template-columns: 1.9rem minmax(0, 1fr);
+    gap: 0.4rem;
+  }
+
+  .set-row,
+  .set-row.with-pounds,
+  .set-row.can-remove,
+  .set-row.with-pounds.can-remove {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .exercise-detail-grid.with-pounds label:first-child {
+  .set-index {
     grid-column: 1 / -1;
   }
 
