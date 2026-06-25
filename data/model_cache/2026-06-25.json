@@ -21188,6 +21188,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Toronto Blue Jays vs Texas Rangers",
+          "game_start_time": "2026-06-25T23:07Z",
           "matchup": "Toronto Blue Jays vs Texas Rangers",
           "odds": 129,
           "pick": "Texas ML (Blue Jays vs Rangers)",
@@ -21207,6 +21208,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-25T23:07Z",
           "units": 1
         }
       ],
@@ -21479,6 +21481,7 @@
           "decision": "LEAN",
           "edge": 3.81,
           "game": "Los Angeles Sparks @ Toronto Tempo",
+          "game_start_time": "2026-06-25T23:00Z",
           "guardrail_reasons": [
             "new totals market capped at LEAN while its live record is established"
           ],
@@ -21538,6 +21541,7 @@
           "selection": "Under",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-25T23:00Z",
           "units": 0.01,
           "vegas": 180.5
         },
