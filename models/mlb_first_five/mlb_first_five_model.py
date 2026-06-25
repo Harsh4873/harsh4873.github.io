@@ -58,6 +58,11 @@ F5_SIDE_SIGMA = 3.10
 F5_TOTAL_SIGMA = 1.85
 ASSUMED_PRICE = -110
 ASSUMED_BREAKEVEN = 0.5238
+F5_TOTAL_USER_LINE_ODDS = {
+    3.5: -170,
+    4.5: -130,
+    5.5: -170,
+}
 TOTAL_BET_GAP = 0.65
 TOTAL_LEAN_GAP = 0.50
 SIDE_BET_MARGIN = 0.90
@@ -665,13 +670,14 @@ def _side_pick(
 def _total_pick(total_runs: float) -> dict[str, Any]:
     if total_runs >= LEAGUE_F5_TOTAL:
         side = "Over"
-        line = _half_line_below(total_runs)
+        line = _nearest_f5_total_line(_half_line_below(total_runs))
         probability = _clamp(1.0 - _normal_cdf((line - total_runs) / F5_TOTAL_SIGMA), 0.05, 0.95)
     else:
         side = "Under"
-        line = _half_line_above(total_runs)
+        line = _nearest_f5_total_line(_half_line_above(total_runs))
         probability = _clamp(_normal_cdf((line - total_runs) / F5_TOTAL_SIGMA), 0.05, 0.95)
-    edge_pct = (probability - ASSUMED_BREAKEVEN) * 100.0
+    assumed_odds = F5_TOTAL_USER_LINE_ODDS[line]
+    edge_pct = (probability - _american_implied_probability(assumed_odds)) * 100.0
     projection_gap = abs(total_runs - line)
     return {
         "market": "f5_total",
@@ -681,7 +687,7 @@ def _total_pick(total_runs: float) -> dict[str, Any]:
         "edge_pct": round(edge_pct, 2),
         "decision": _decision(probability, edge_pct),
         "confidence": _confidence(probability, edge_pct),
-        "assumed_odds": ASSUMED_PRICE,
+        "assumed_odds": assumed_odds,
         "vegas_line": line,
         "projection_gap": round(projection_gap, 2),
         "model_prediction": f"{total_runs:.2f} F5 total",
@@ -1005,6 +1011,16 @@ def _half_line_below(value: float) -> float:
 
 def _half_line_above(value: float) -> float:
     return _clamp(math.ceil(value - 0.5) + 0.5, 2.5, 8.5)
+
+
+def _nearest_f5_total_line(value: float) -> float:
+    return min(F5_TOTAL_USER_LINE_ODDS, key=lambda line: abs(line - value))
+
+
+def _american_implied_probability(odds: int) -> float:
+    if odds > 0:
+        return 100.0 / (odds + 100.0)
+    return abs(float(odds)) / (abs(float(odds)) + 100.0)
 
 
 def _normal_cdf(value: float) -> float:

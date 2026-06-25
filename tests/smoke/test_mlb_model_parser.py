@@ -214,8 +214,10 @@ def test_mlb_new_artifact_status_accepts_v2_metadata(tmp_path):
     assert status["ready"] is True
 
 
-def test_synthetic_mlb_specialty_rows_are_labeled_research_signals():
+def test_mlb_specialty_rows_use_user_assumed_prices(monkeypatch):
     from pickgrader_server import _mlb_first_five_pick_rows, _mlb_inning_pick_rows
+
+    _stub_sl_get_ml(monkeypatch, ml_home=-145, ml_away=125)
 
     inning_rows = _mlb_inning_pick_rows({
         "date": "2026-06-12",
@@ -247,17 +249,37 @@ def test_synthetic_mlb_specialty_rows_are_labeled_research_signals():
                 "market": "f5_total",
                 "pick": "Under 3.5 F5",
                 "vegas_line": 3.5,
-                "assumed_odds": -110,
                 "probability": 0.58,
                 "edge_pct": 5.6,
+                "decision": "LEAN",
+            }, {
+                "market": "f5_side",
+                "pick": "Away F5 ML",
+                "team": "Away",
+                "probability": 0.57,
+                "edge_pct": 4.0,
                 "decision": "LEAN",
             }],
         }],
     })
 
-    for row in [*inning_rows, *f5_rows]:
-        assert row["pricing_type"] == "assumed"
-        assert row["odds_source"] == "default_assumed"
-        assert row["market_priced"] is False
-        assert row["actionability"] == "research_signal"
-        assert row["assumed_odds"] == -110
+    assert inning_rows[0]["pricing_type"] == "user_assumed"
+    assert inning_rows[0]["odds_source"] == "user_assumed_no_run_inning_-120"
+    assert inning_rows[0]["market_priced"] is True
+    assert inning_rows[0]["odds"] == -120
+    assert inning_rows[0]["assumed_odds"] == -120
+
+    total_row = next(row for row in f5_rows if row["market"] == "f5_total")
+    assert total_row["pricing_type"] == "user_assumed"
+    assert total_row["odds_source"] == "user_assumed_f5_total_3.5"
+    assert total_row["market_priced"] is True
+    assert total_row["line"] == 3.5
+    assert total_row["odds"] == -170
+    assert total_row["assumed_odds"] == -170
+
+    side_row = next(row for row in f5_rows if row["market"] == "f5_side")
+    assert side_row["pricing_type"] == "user_assumed"
+    assert side_row["odds_source"] == "whole_game_moneyline_proxy"
+    assert side_row["market_priced"] is True
+    assert side_row["odds"] == 125
+    assert side_row["market_implied_probability"] is not None

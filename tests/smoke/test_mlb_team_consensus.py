@@ -13,6 +13,7 @@ GOOD_PERFORMANCE = {
     ("mlb_new", "h2h"): {"samples": 80, "wins": 48, "losses": 32, "profit": 9.2, "stake": 80.0, "roi": 0.115, "qualified": True},
     ("mlb_new", "totals"): {"samples": 80, "wins": 45, "losses": 35, "profit": 4.0, "stake": 80.0, "roi": 0.05, "qualified": True},
     ("mlb_first_five", "f5_side"): {"samples": 90, "wins": 55, "losses": 35, "profit": 6.0, "stake": 90.0, "roi": 0.067, "qualified": True},
+    ("mlb_first_five", "f5_total"): {"samples": 90, "wins": 55, "losses": 35, "profit": 6.0, "stake": 90.0, "roi": 0.067, "qualified": True},
     ("mlb_inning", "no_run_inning"): {"samples": 90, "wins": 55, "losses": 35, "profit": 6.0, "stake": 90.0, "roi": 0.067, "qualified": True},
 }
 
@@ -237,6 +238,36 @@ def test_first_five_assumed_price_stays_research_only():
     assert "unsupported_assumed_price" in result["hard_blockers"]
 
 
+def test_first_five_user_assumed_total_ladder_is_evaluable():
+    pick = _f5_pick(
+        market="f5_total",
+        team="",
+        pick="Over 4.5 F5",
+        line=4.5,
+        odds=-130,
+        assumed_odds=-130,
+        market_implied_probability=0.565217,
+        market_priced=True,
+        pricing_type="user_assumed",
+        odds_source="user_assumed_f5_total_4.5",
+        line_source="user_assumed_f5_total_ladder",
+        probability=0.64,
+        calibrated_probability=0.64,
+        edge=7.48,
+        pregame_snapshot={"decision": "BET", "units": 0.7, "probability": 0.68},
+    )
+    result = evaluate_mlb_team_pick(
+        pick,
+        "mlb_first_five",
+        _f5_bucket(pick),
+        performance=GOOD_PERFORMANCE,
+    )
+
+    assert result["decision"] == "BET"
+    assert "unsupported_assumed_price" not in result["hard_blockers"]
+    assert "missing_reliable_market_price" not in result["hard_blockers"]
+
+
 def test_inning_model_uses_inning_baseline_and_context_with_real_market():
     pick = _inning_pick()
     result = evaluate_mlb_team_pick(
@@ -299,6 +330,32 @@ def test_inning_assumed_price_stays_research_only():
 
     assert result["decision"] == "PASS"
     assert "unsupported_assumed_price" in result["hard_blockers"]
+
+
+def test_inning_user_assumed_minus_120_price_is_evaluable():
+    pick = _inning_pick(
+        odds=-120,
+        assumed_odds=-120,
+        market_implied_probability=0.545455,
+        market_priced=True,
+        pricing_type="user_assumed",
+        odds_source="user_assumed_no_run_inning_-120",
+        line_source="user_assumed_no_run_inning_price",
+        probability=0.66,
+        calibrated_probability=0.66,
+        edge=11.45,
+        pregame_snapshot={"decision": "BET", "units": 0.6, "probability": 0.70},
+    )
+    result = evaluate_mlb_team_pick(
+        pick,
+        "mlb_inning",
+        _inning_bucket(pick),
+        performance=GOOD_PERFORMANCE,
+    )
+
+    assert result["decision"] == "BET"
+    assert "unsupported_assumed_price" not in result["hard_blockers"]
+    assert "missing_reliable_market_price" not in result["hard_blockers"]
 
 
 def test_payload_gate_only_touches_three_mlb_team_models():

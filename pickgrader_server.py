@@ -3032,6 +3032,76 @@ def _model_cache_response(payload: dict[str, Any], date_iso: str, model_key: str
     return response
 
 
+MLB_INNING_USER_ASSUMED_ODDS = -120
+MLB_F5_SIDE_FALLBACK_USER_ASSUMED_ODDS = -110
+MLB_F5_TOTAL_USER_LINE_ODDS = {
+    3.5: -170,
+    4.5: -130,
+    5.5: -170,
+}
+
+
+def _american_implied_probability_value(value: Any) -> float | None:
+    try:
+        odds = float(value)
+    except (TypeError, ValueError):
+        return None
+    if not _math.isfinite(odds) or odds == 0:
+        return None
+    if odds > 0:
+        return 100.0 / (odds + 100.0)
+    return abs(odds) / (abs(odds) + 100.0)
+
+
+def _nearest_mlb_f5_total_line(value: Any) -> float:
+    try:
+        line = float(value)
+    except (TypeError, ValueError):
+        line = 4.5
+    return min(MLB_F5_TOTAL_USER_LINE_ODDS, key=lambda candidate: abs(candidate - line))
+
+
+def _team_name_matches(value: str, full_name: str) -> bool:
+    raw = str(value or "").strip().lower()
+    full = str(full_name or "").strip().lower()
+    short = _shorten_mlb_name(full_name).strip().lower()
+    return bool(raw and (raw == full or raw == short))
+
+
+def _vig_removed_selected_probability(home_odds: Any, away_odds: Any, *, selected_is_away: bool) -> float | None:
+    home_implied = _american_implied_probability_value(home_odds)
+    away_implied = _american_implied_probability_value(away_odds)
+    if home_implied is None or away_implied is None:
+        return None
+    denom = home_implied + away_implied
+    if denom <= 0:
+        return None
+    return (away_implied if selected_is_away else home_implied) / denom
+
+
+def _mlb_f5_side_price(home_team: str, away_team: str, selected_team: str) -> tuple[int, float | None, str]:
+    selected_is_away = _team_name_matches(selected_team, away_team)
+    selected_is_home = _team_name_matches(selected_team, home_team)
+    ml_home, ml_away = _sl_get_ml(home_team, away_team, "MLB")
+    selected_odds: int | None = None
+    selected_probability: float | None = None
+
+    if selected_is_away:
+        selected_odds = ml_away
+        selected_probability = _vig_removed_selected_probability(ml_home, ml_away, selected_is_away=True)
+    elif selected_is_home:
+        selected_odds = ml_home
+        selected_probability = _vig_removed_selected_probability(ml_home, ml_away, selected_is_away=False)
+
+    if selected_odds is not None:
+        if selected_probability is None:
+            selected_probability = _american_implied_probability_value(selected_odds)
+        return int(selected_odds), selected_probability, "whole_game_moneyline_proxy"
+
+    fallback = MLB_F5_SIDE_FALLBACK_USER_ASSUMED_ODDS
+    return fallback, _american_implied_probability_value(fallback), "user_assumed_f5_moneyline_fallback"
+
+
 def _load_cached_model_result(date_str: str | None, model_key: str) -> dict[str, Any] | None:
     date_iso, _ = _parse_model_date_arg(date_str)
     return (
@@ -4908,6 +4978,8 @@ def _mlb_inning_pick_rows(payload: dict[str, Any]) -> list[dict[str, Any]]:
             except (TypeError, ValueError):
                 edge_value = None
             baseline_value = pick.get("baseline")
+            inning_odds = MLB_INNING_USER_ASSUMED_ODDS
+            inning_implied = _american_implied_probability_value(inning_odds)
             rows.append({
                 "source": "MLB Inning",
                 "pick": f"Inning {inning} - No Run Scored" if inning else str(pick.get("label") or "No Run Scored"),
@@ -4925,12 +4997,13 @@ def _mlb_inning_pick_rows(payload: dict[str, Any]) -> list[dict[str, Any]]:
                 "team": "",
                 "market": "no_run_inning",
                 "inning": inning,
-                "odds": None,
-                "assumed_odds": -110,
-                "pricing_type": "assumed",
-                "line_source": "in_house_probability_baseline",
-                "odds_source": "default_assumed",
-                "market_priced": False,
+                "odds": inning_odds,
+                "assumed_odds": inning_odds,
+                "pricing_type": "user_assumed",
+                "line_source": "user_assumed_no_run_inning_price",
+                "odds_source": "user_assumed_no_run_inning_-120",
+                "market_priced": True,
+                "market_implied_probability": round(inning_implied, 6) if inning_implied is not None else None,
                 "actionability": "research_signal",
                 "probability": probability_f,
                 "edge": edge_value,
@@ -5043,13 +5116,42 @@ def _mlb_first_five_pick_rows(payload: dict[str, Any]) -> list[dict[str, Any]]:
             except (TypeError, ValueError):
                 edge_f = None
             market = str(pick.get("market") or "f5").strip()
+            line_value = pick.get("vegas_line")
+            odds_value: int | None = None
+            implied_value: float | None = None
+            odds_source = "user_assumed_f5_price"
+            line_source = "user_assumed_f5_price"
+            market_priced = True
+            if market == "f5_total":
+                line_value = _nearest_mlb_f5_total_line(line_value)
+                odds_value = MLB_F5_TOTAL_USER_LINE_ODDS[line_value]
+                implied_value = _american_implied_probability_value(odds_value)
+                odds_source = f"user_assumed_f5_total_{line_value:g}"
+                line_source = "user_assumed_f5_total_ladder"
+                if probability_f is not None and implied_value is not None:
+                    edge_f = round((probability_f - implied_value) * 100.0, 2)
+            elif market == "f5_side":
+                odds_value, implied_value, odds_source = _mlb_f5_side_price(
+                    home_team,
+                    away_team,
+                    str(pick.get("team") or "").strip(),
+                )
+                line_source = "whole_game_moneyline_proxy"
+                if probability_f is not None and implied_value is not None:
+                    edge_f = round((probability_f - implied_value) * 100.0, 2)
+            else:
+                market_priced = False
             row_notes = (
                 f"{game_notes} Projection: {away_team} {projection.get('away_runs')}, "
                 f"{home_team} {projection.get('home_runs')}; total {projection.get('total_runs')}."
             ).strip()
+            pick_label = str(pick.get("pick") or "").strip() or "First Five projection"
+            if market == "f5_total" and line_value is not None:
+                direction = "Under" if pick_label.lower().startswith("under") else "Over"
+                pick_label = f"{direction} {float(line_value):.1f} F5"
             rows.append({
                 "source": "MLB First Five",
-                "pick": str(pick.get("pick") or "").strip() or "First Five projection",
+                "pick": pick_label,
                 "sport": "MLB",
                 "league": "MLB",
                 "date": date_str,
@@ -5063,13 +5165,14 @@ def _mlb_first_five_pick_rows(payload: dict[str, Any]) -> list[dict[str, Any]]:
                 "away_team": away_team,
                 "team": str(pick.get("team") or "").strip(),
                 "market": market,
-                "line": pick.get("vegas_line"),
-                "odds": None,
-                "assumed_odds": pick.get("assumed_odds", -110),
-                "pricing_type": "assumed",
-                "line_source": "model_generated" if market == "f5_total" else "in_house_projection",
-                "odds_source": "default_assumed",
-                "market_priced": False,
+                "line": line_value,
+                "odds": odds_value,
+                "assumed_odds": odds_value,
+                "pricing_type": "user_assumed" if market_priced else "assumed",
+                "line_source": line_source if market_priced else ("model_generated" if market == "f5_total" else "in_house_projection"),
+                "odds_source": odds_source if market_priced else "default_assumed",
+                "market_priced": market_priced,
+                "market_implied_probability": round(implied_value, 6) if implied_value is not None else None,
                 "actionability": "research_signal",
                 "probability": probability_f,
                 "edge": edge_f,
