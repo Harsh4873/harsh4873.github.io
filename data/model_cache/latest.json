@@ -1,11 +1,11 @@
 {
   "date": "2026-06-25",
   "errors": [],
-  "externalFeedsUpdatedAt": "2026-06-25T16:37:23.602807Z",
+  "externalFeedsUpdatedAt": "2026-06-25T20:04:09.173525Z",
   "external_feeds": {
     "scores24_fifa_world_cup": {
       "date": "2026-06-25",
-      "generatedAt": "2026-06-25T13:26:25.765343Z",
+      "generatedAt": "2026-06-25T20:04:09.173525Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "attemptedUrls": 6,
@@ -21,7 +21,7 @@
         "missingMatchups": [],
         "officialMatchups": 6,
         "unpublishedMatchups": [],
-        "updatedAt": "2026-06-25T13:26:25.765343Z"
+        "updatedAt": "2026-06-25T20:04:09.173525Z"
       },
       "note": "Scores24FIFAWorldCup matched 6 published editorial choice(s) against 6 official 2026-06-25 matchup(s).",
       "ok": true,
@@ -153,11 +153,11 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-25T13:26:25.765343Z"
+      "updatedAt": "2026-06-25T20:04:09.173525Z"
     },
     "scores24_mlb": {
       "date": "2026-06-25",
-      "generatedAt": "2026-06-25T13:26:25.765343Z",
+      "generatedAt": "2026-06-25T20:04:09.173525Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "attemptedUrls": 9,
@@ -173,7 +173,7 @@
         "missingMatchups": [],
         "officialMatchups": 9,
         "unpublishedMatchups": [],
-        "updatedAt": "2026-06-25T13:26:25.765343Z"
+        "updatedAt": "2026-06-25T20:04:09.173525Z"
       },
       "note": "Scores24MLB matched 9 published editorial choice(s) against 9 official 2026-06-25 matchup(s).",
       "ok": true,
@@ -402,8 +402,8 @@
           "game": "Chicago Cubs @ New York Mets",
           "home_team": "New York Mets",
           "matchup": "Chicago Cubs @ New York Mets",
-          "odds": 100,
-          "pick": "New York Mets ML (Chicago Cubs @ New York Mets)",
+          "odds": -137,
+          "pick": "Total Over (7,5) (Chicago Cubs @ New York Mets)",
           "pregame_snapshot": {
             "away_team": "Chicago Cubs",
             "date": "2026-06-25",
@@ -412,22 +412,22 @@
             "game": "Chicago Cubs @ New York Mets",
             "home_team": "New York Mets",
             "matchup": "Chicago Cubs @ New York Mets",
-            "odds": 100,
-            "pick": "New York Mets ML (Chicago Cubs @ New York Mets)",
+            "odds": -137,
+            "pick": "Total Over (7,5) (Chicago Cubs @ New York Mets)",
             "probability": null,
             "source": "Scores24MLB",
-            "source_url": "https://scores24.live/en/baseball/m-24-06-2026-new-york-mets-chicago-cubs-prediction",
+            "source_url": "https://scores24.live/en/baseball/m-25-06-2026-new-york-mets-chicago-cubs-prediction",
             "sport": "MLB",
             "start_time": "2026-06-25T23:10Z",
-            "tip": "New York Mets Win",
+            "tip": "Total Over (7,5)",
             "units": 1
           },
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-24-06-2026-new-york-mets-chicago-cubs-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-25-06-2026-new-york-mets-chicago-cubs-prediction",
           "sport": "MLB",
           "start_time": "2026-06-25T23:10Z",
-          "tip": "New York Mets Win",
+          "tip": "Total Over (7,5)",
           "units": 1
         },
         {
@@ -503,11 +503,11 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-25T13:26:25.765343Z"
+      "updatedAt": "2026-06-25T20:04:09.173525Z"
     },
     "scores24_wnba": {
       "date": "2026-06-25",
-      "generatedAt": "2026-06-25T13:26:25.765343Z",
+      "generatedAt": "2026-06-25T20:04:09.173525Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "attemptedUrls": 3,
@@ -523,7 +523,7 @@
         "missingMatchups": [],
         "officialMatchups": 3,
         "unpublishedMatchups": [],
-        "updatedAt": "2026-06-25T13:26:25.765343Z"
+        "updatedAt": "2026-06-25T20:04:09.173525Z"
       },
       "note": "Scores24WNBA matched 3 published editorial choice(s) against 3 official 2026-06-25 matchup(s).",
       "ok": true,
@@ -637,7 +637,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-25T13:26:25.765343Z"
+      "updatedAt": "2026-06-25T20:04:09.173525Z"
     },
     "sportsgambler_fifa_world_cup": {
       "date": "2026-06-25",
@@ -34942,7 +34942,7 @@
     },
     "scores24_fifa_world_cup": {
       "date": "2026-06-25",
-      "generatedAt": "2026-06-25T13:26:25.765343Z",
+      "generatedAt": "2026-06-25T20:04:09.173525Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "attemptedUrls": 6,
@@ -34958,7 +34958,7 @@
         "missingMatchups": [],
         "officialMatchups": 6,
         "unpublishedMatchups": [],
-        "updatedAt": "2026-06-25T13:26:25.765343Z"
+        "updatedAt": "2026-06-25T20:04:09.173525Z"
       },
       "note": "Scores24FIFAWorldCup matched 6 published editorial choice(s) against 6 official 2026-06-25 matchup(s).",
       "ok": true,
@@ -35090,11 +35090,11 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-25T13:26:25.765343Z"
+      "updatedAt": "2026-06-25T20:04:09.173525Z"
     },
     "scores24_mlb": {
       "date": "2026-06-25",
-      "generatedAt": "2026-06-25T13:26:25.765343Z",
+      "generatedAt": "2026-06-25T20:04:09.173525Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "attemptedUrls": 9,
@@ -35110,7 +35110,7 @@
         "missingMatchups": [],
         "officialMatchups": 9,
         "unpublishedMatchups": [],
-        "updatedAt": "2026-06-25T13:26:25.765343Z"
+        "updatedAt": "2026-06-25T20:04:09.173525Z"
       },
       "note": "Scores24MLB matched 9 published editorial choice(s) against 9 official 2026-06-25 matchup(s).",
       "ok": true,
@@ -35341,8 +35341,8 @@
           "game": "Chicago Cubs @ New York Mets",
           "home_team": "New York Mets",
           "matchup": "Chicago Cubs @ New York Mets",
-          "odds": 100,
-          "pick": "New York Mets ML (Chicago Cubs @ New York Mets)",
+          "odds": -137,
+          "pick": "Total Over (7,5) (Chicago Cubs @ New York Mets)",
           "pregame_snapshot": {
             "away_team": "Chicago Cubs",
             "date": "2026-06-25",
@@ -35351,22 +35351,22 @@
             "game": "Chicago Cubs @ New York Mets",
             "home_team": "New York Mets",
             "matchup": "Chicago Cubs @ New York Mets",
-            "odds": 100,
-            "pick": "New York Mets ML (Chicago Cubs @ New York Mets)",
+            "odds": -137,
+            "pick": "Total Over (7,5) (Chicago Cubs @ New York Mets)",
             "probability": null,
             "source": "Scores24MLB",
-            "source_url": "https://scores24.live/en/baseball/m-24-06-2026-new-york-mets-chicago-cubs-prediction",
+            "source_url": "https://scores24.live/en/baseball/m-25-06-2026-new-york-mets-chicago-cubs-prediction",
             "sport": "MLB",
             "start_time": "2026-06-25T23:10Z",
-            "tip": "New York Mets Win",
+            "tip": "Total Over (7,5)",
             "units": 1
           },
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-24-06-2026-new-york-mets-chicago-cubs-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-25-06-2026-new-york-mets-chicago-cubs-prediction",
           "sport": "MLB",
           "start_time": "2026-06-25T23:10Z",
-          "tip": "New York Mets Win",
+          "tip": "Total Over (7,5)",
           "units": 1
         },
         {
@@ -35442,11 +35442,11 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-25T13:26:25.765343Z"
+      "updatedAt": "2026-06-25T20:04:09.173525Z"
     },
     "scores24_wnba": {
       "date": "2026-06-25",
-      "generatedAt": "2026-06-25T13:26:25.765343Z",
+      "generatedAt": "2026-06-25T20:04:09.173525Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "attemptedUrls": 3,
@@ -35462,7 +35462,7 @@
         "missingMatchups": [],
         "officialMatchups": 3,
         "unpublishedMatchups": [],
-        "updatedAt": "2026-06-25T13:26:25.765343Z"
+        "updatedAt": "2026-06-25T20:04:09.173525Z"
       },
       "note": "Scores24WNBA matched 3 published editorial choice(s) against 3 official 2026-06-25 matchup(s).",
       "ok": true,
@@ -35576,7 +35576,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-25T13:26:25.765343Z"
+      "updatedAt": "2026-06-25T20:04:09.173525Z"
     },
     "sportsgambler_fifa_world_cup": {
       "date": "2026-06-25",
@@ -37378,7 +37378,7 @@
   "nba_props": {},
   "scores24_fifa_world_cup": {
     "date": "2026-06-25",
-    "generatedAt": "2026-06-25T13:26:25.765343Z",
+    "generatedAt": "2026-06-25T20:04:09.173525Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "attemptedUrls": 6,
@@ -37394,7 +37394,7 @@
       "missingMatchups": [],
       "officialMatchups": 6,
       "unpublishedMatchups": [],
-      "updatedAt": "2026-06-25T13:26:25.765343Z"
+      "updatedAt": "2026-06-25T20:04:09.173525Z"
     },
     "note": "Scores24FIFAWorldCup matched 6 published editorial choice(s) against 6 official 2026-06-25 matchup(s).",
     "ok": true,
@@ -37526,11 +37526,11 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-25T13:26:25.765343Z"
+    "updatedAt": "2026-06-25T20:04:09.173525Z"
   },
   "scores24_mlb": {
     "date": "2026-06-25",
-    "generatedAt": "2026-06-25T13:26:25.765343Z",
+    "generatedAt": "2026-06-25T20:04:09.173525Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "attemptedUrls": 9,
@@ -37546,7 +37546,7 @@
       "missingMatchups": [],
       "officialMatchups": 9,
       "unpublishedMatchups": [],
-      "updatedAt": "2026-06-25T13:26:25.765343Z"
+      "updatedAt": "2026-06-25T20:04:09.173525Z"
     },
     "note": "Scores24MLB matched 9 published editorial choice(s) against 9 official 2026-06-25 matchup(s).",
     "ok": true,
@@ -37775,8 +37775,8 @@
         "game": "Chicago Cubs @ New York Mets",
         "home_team": "New York Mets",
         "matchup": "Chicago Cubs @ New York Mets",
-        "odds": 100,
-        "pick": "New York Mets ML (Chicago Cubs @ New York Mets)",
+        "odds": -137,
+        "pick": "Total Over (7,5) (Chicago Cubs @ New York Mets)",
         "pregame_snapshot": {
           "away_team": "Chicago Cubs",
           "date": "2026-06-25",
@@ -37785,22 +37785,22 @@
           "game": "Chicago Cubs @ New York Mets",
           "home_team": "New York Mets",
           "matchup": "Chicago Cubs @ New York Mets",
-          "odds": 100,
-          "pick": "New York Mets ML (Chicago Cubs @ New York Mets)",
+          "odds": -137,
+          "pick": "Total Over (7,5) (Chicago Cubs @ New York Mets)",
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-24-06-2026-new-york-mets-chicago-cubs-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-25-06-2026-new-york-mets-chicago-cubs-prediction",
           "sport": "MLB",
           "start_time": "2026-06-25T23:10Z",
-          "tip": "New York Mets Win",
+          "tip": "Total Over (7,5)",
           "units": 1
         },
         "probability": null,
         "source": "Scores24MLB",
-        "source_url": "https://scores24.live/en/baseball/m-24-06-2026-new-york-mets-chicago-cubs-prediction",
+        "source_url": "https://scores24.live/en/baseball/m-25-06-2026-new-york-mets-chicago-cubs-prediction",
         "sport": "MLB",
         "start_time": "2026-06-25T23:10Z",
-        "tip": "New York Mets Win",
+        "tip": "Total Over (7,5)",
         "units": 1
       },
       {
@@ -37876,11 +37876,11 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-25T13:26:25.765343Z"
+    "updatedAt": "2026-06-25T20:04:09.173525Z"
   },
   "scores24_wnba": {
     "date": "2026-06-25",
-    "generatedAt": "2026-06-25T13:26:25.765343Z",
+    "generatedAt": "2026-06-25T20:04:09.173525Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "attemptedUrls": 3,
@@ -37896,7 +37896,7 @@
       "missingMatchups": [],
       "officialMatchups": 3,
       "unpublishedMatchups": [],
-      "updatedAt": "2026-06-25T13:26:25.765343Z"
+      "updatedAt": "2026-06-25T20:04:09.173525Z"
     },
     "note": "Scores24WNBA matched 3 published editorial choice(s) against 3 official 2026-06-25 matchup(s).",
     "ok": true,
@@ -38010,7 +38010,7 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-25T13:26:25.765343Z"
+    "updatedAt": "2026-06-25T20:04:09.173525Z"
   },
   "sportsgambler_fifa_world_cup": {
     "date": "2026-06-25",
@@ -38814,7 +38814,7 @@
     ],
     "updatedAt": "2026-06-25T16:37:23.602807Z"
   },
-  "updatedAt": "2026-06-25T17:34:14.200724Z",
+  "updatedAt": "2026-06-25T20:04:09.173525Z",
   "wnba": {
     "ok": true,
     "picks": [
