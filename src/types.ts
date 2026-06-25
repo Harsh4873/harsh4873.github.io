@@ -9,6 +9,8 @@ export type Weekday =
 
 export type TabId = 'today' | 'week' | 'calendar' | 'milestones' | 'logbook' | 'settings';
 
+export type ThemeMode = 'dark' | 'light';
+
 export type DayStatus = 'completed' | 'partial' | 'skipped' | 'future';
 
 export interface Exercise {

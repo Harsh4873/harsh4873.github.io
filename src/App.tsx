@@ -14,9 +14,14 @@ import {
   Link2,
   ListChecks,
   Medal,
+  Monitor,
+  Moon,
   Plus,
   RotateCcw,
   Settings,
+  Smartphone,
+  Sparkles,
+  Sun,
   Target,
   Timer,
   Trash2,
@@ -40,9 +45,12 @@ import {
 } from './dateUtils';
 import { getBasketballMinutes, isStretchExercise, WEEK_DAYS } from './program';
 import { createEmptyLog, loadLogs, normalizeLog, saveLogs } from './storage';
-import type { DayStatus, Exercise, LogsByDate, SupersetPair, TabId, WorkoutLog } from './types';
+import type { DayStatus, Exercise, LogsByDate, SupersetPair, TabId, ThemeMode, WorkoutLog } from './types';
 
 type IconType = ComponentType<SVGProps<SVGSVGElement>>;
+
+const THEME_STORAGE_KEY = 'harsh-gym-theme-v1';
+const MOBILE_PREVIEW_STORAGE_KEY = 'harsh-gym-mobile-preview-v1';
 
 interface ExerciseGroup {
   id: string;
@@ -66,6 +74,15 @@ const STATUS_LABELS: Record<DayStatus, string> = {
   skipped: 'Skipped',
   future: 'Future',
 };
+
+function getStoredTheme(): ThemeMode {
+  const stored = window.localStorage.getItem(THEME_STORAGE_KEY);
+  return stored === 'light' ? 'light' : 'dark';
+}
+
+function getStoredMobilePreview(): boolean {
+  return window.localStorage.getItem(MOBILE_PREVIEW_STORAGE_KEY) === 'mobile';
+}
 
 function isPlainRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
@@ -160,6 +177,10 @@ function getProgressMeta(exercises: Exercise[], log: WorkoutLog) {
   return { completed, skipped, total, percent };
 }
 
+function getSupersetExerciseCount(log: WorkoutLog): number {
+  return log.supersets.reduce((total, superset) => total + superset.exerciseIds.length, 0);
+}
+
 function MetricTile({
   icon: Icon,
   label,
@@ -207,6 +228,88 @@ function StatusPill({ status }: { status: DayStatus }) {
   return <span className={`status-pill ${status}`}>{STATUS_LABELS[status]}</span>;
 }
 
+function ModeToggle({
+  active,
+  activeIcon: ActiveIcon,
+  inactiveIcon: InactiveIcon,
+  activeLabel,
+  inactiveLabel,
+  onClick,
+  ariaLabel,
+}: {
+  active: boolean;
+  activeIcon: IconType;
+  inactiveIcon: IconType;
+  activeLabel: string;
+  inactiveLabel: string;
+  onClick: () => void;
+  ariaLabel: string;
+}) {
+  const Icon = active ? ActiveIcon : InactiveIcon;
+
+  return (
+    <button className={`mode-toggle ${active ? 'active' : ''}`} type="button" onClick={onClick} aria-label={ariaLabel} aria-pressed={active}>
+      <Icon aria-hidden="true" />
+      <span className="mode-toggle-track">
+        <span />
+      </span>
+      <strong>{active ? activeLabel : inactiveLabel}</strong>
+    </button>
+  );
+}
+
+function AppChrome({
+  currentProgress,
+  theme,
+  mobilePreview,
+  onThemeToggle,
+  onMobilePreviewToggle,
+}: {
+  currentProgress: ReturnType<typeof getProgressMeta>;
+  theme: ThemeMode;
+  mobilePreview: boolean;
+  onThemeToggle: () => void;
+  onMobilePreviewToggle: () => void;
+}) {
+  return (
+    <header className="app-chrome">
+      <div className="chrome-brand">
+        <span className="chrome-mark">
+          <Dumbbell aria-hidden="true" />
+        </span>
+        <div>
+          <strong>Gym</strong>
+          <span>Local training ledger</span>
+        </div>
+      </div>
+      <div className="chrome-status">
+        <span>{currentProgress.completed}/{currentProgress.total}</span>
+        <strong>{currentProgress.percent}%</strong>
+      </div>
+      <div className="chrome-controls">
+        <ModeToggle
+          active={theme === 'light'}
+          activeIcon={Sun}
+          inactiveIcon={Moon}
+          activeLabel="Light"
+          inactiveLabel="Dark"
+          onClick={onThemeToggle}
+          ariaLabel="Toggle theme"
+        />
+        <ModeToggle
+          active={mobilePreview}
+          activeIcon={Smartphone}
+          inactiveIcon={Monitor}
+          activeLabel="Mobile"
+          inactiveLabel="Desk"
+          onClick={onMobilePreviewToggle}
+          ariaLabel="Toggle mobile view"
+        />
+      </div>
+    </header>
+  );
+}
+
 function WorkoutPanel({
   dateKey,
   log,
@@ -225,6 +328,7 @@ function WorkoutPanel({
   const [secondSupersetId, setSecondSupersetId] = useState(exercises[1]?.id ?? '');
   const progress = getProgressMeta(exercises, log);
   const status = getDayStatus(dateKey, log, todayKey);
+  const supersetExerciseCount = getSupersetExerciseCount(log);
   const pairedIds = new Set(log.supersets.flatMap((pair) => pair.exerciseIds));
   const unpairedExercises = exercises.filter((exercise) => !pairedIds.has(exercise.id));
   const groups = buildExerciseGroups(exercises, log.supersets);
@@ -342,7 +446,11 @@ function WorkoutPanel({
         <div>
           <p className="eyebrow">{formatDateLabel(dateKey)}</p>
           <h2>{progress.completed}/{progress.total} logged</h2>
-          <StatusPill status={status} />
+          <div className="banner-chips">
+            <StatusPill status={status} />
+            <span>{log.supersets.length} supersets</span>
+            <span>{supersetExerciseCount} paired</span>
+          </div>
         </div>
         <div className="progress-orb" style={{ '--progress': `${progress.percent}%` } as CSSProperties}>
           <strong>{progress.percent}%</strong>
@@ -508,6 +616,7 @@ function TodayView({
   const log = normalizeLog(todayKey, logs[todayKey]);
   const exercises = getExercisesForDate(todayKey);
   const progress = getProgressMeta(exercises, log);
+  const remaining = Math.max(progress.total - progress.completed - progress.skipped, 0);
 
   return (
     <div className="view-stack">
@@ -522,6 +631,23 @@ function TodayView({
           <span>moves</span>
         </div>
       </section>
+      <div className="today-strip">
+        <article>
+          <Check aria-hidden="true" />
+          <span>Done</span>
+          <strong>{progress.completed}</strong>
+        </article>
+        <article>
+          <Link2 aria-hidden="true" />
+          <span>Supersets</span>
+          <strong>{log.supersets.length}</strong>
+        </article>
+        <article>
+          <Sparkles aria-hidden="true" />
+          <span>Remaining</span>
+          <strong>{remaining}</strong>
+        </article>
+      </div>
       <WorkoutPanel
         dateKey={todayKey}
         log={log}
@@ -1004,10 +1130,27 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<TabId>('today');
   const [selectedDate, setSelectedDate] = useState(todayKey);
   const [logs, setLogs] = useState<LogsByDate>(() => loadLogs());
+  const [theme, setTheme] = useState<ThemeMode>(() => getStoredTheme());
+  const [mobilePreview, setMobilePreview] = useState(() => getStoredMobilePreview());
 
   useEffect(() => {
     saveLogs(logs);
   }, [logs]);
+
+  useEffect(() => {
+    document.body.setAttribute('data-theme', theme);
+    document.documentElement.style.colorScheme = theme;
+    const metaTheme = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+    if (metaTheme) {
+      metaTheme.content = theme === 'dark' ? '#08110d' : '#f5f7f2';
+    }
+    window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+  }, [theme]);
+
+  useEffect(() => {
+    document.body.classList.toggle('gym-mobile-preview', mobilePreview);
+    window.localStorage.setItem(MOBILE_PREVIEW_STORAGE_KEY, mobilePreview ? 'mobile' : 'desktop');
+  }, [mobilePreview]);
 
   const updateLog = (dateKey: string, updater: (log: WorkoutLog) => WorkoutLog) => {
     setLogs((current) => {
@@ -1037,13 +1180,20 @@ export default function App() {
   const currentProgress = getProgressMeta(currentExercises, currentLog);
 
   return (
-    <div className="app-shell">
+    <div className={`app-shell ${mobilePreview ? 'mobile-preview' : ''}`} data-theme={theme}>
       <aside className="app-rail">
         <div className="brand-mark">
           <Dumbbell aria-hidden="true" />
           <div>
             <strong>Gym</strong>
             <span>{currentProgress.percent}% today</span>
+          </div>
+        </div>
+        <div className="rail-summary">
+          <span>Today</span>
+          <strong>{currentProgress.completed}/{currentProgress.total}</strong>
+          <div className="thin-progress">
+            <span style={{ width: `${currentProgress.percent}%` }} />
           </div>
         </div>
         <nav>
@@ -1060,6 +1210,13 @@ export default function App() {
       </aside>
 
       <main className="app-main">
+        <AppChrome
+          currentProgress={currentProgress}
+          theme={theme}
+          mobilePreview={mobilePreview}
+          onThemeToggle={() => setTheme((current) => (current === 'dark' ? 'light' : 'dark'))}
+          onMobilePreviewToggle={() => setMobilePreview((current) => !current)}
+        />
         {activeTab === 'today' && (
           <TodayView logs={logs} todayKey={todayKey} updateLog={updateLog} clearLog={clearLog} />
         )}
