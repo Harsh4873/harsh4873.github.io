@@ -1204,6 +1204,15 @@ body[data-theme="light"] .workout-banner {
   flex: 1 1 0;
 }
 
+.app-shell.mobile-preview .exercise-detail-grid,
+.app-shell.mobile-preview .exercise-detail-grid.with-pounds {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.app-shell.mobile-preview .exercise-detail-grid.with-pounds label:first-child {
+  grid-column: 1 / -1;
+}
+
 .app-shell.mobile-preview .topline,
 .app-shell.mobile-preview .workout-banner {
   align-items: stretch;
@@ -1409,6 +1418,15 @@ body[data-theme="light"] .app-shell.mobile-preview .bottom-tabs {
   .exercise-row {
     grid-template-columns: 2.25rem minmax(0, 1fr) 2.25rem;
     gap: 0.45rem;
+  }
+
+  .exercise-detail-grid,
+  .exercise-detail-grid.with-pounds {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .exercise-detail-grid.with-pounds label:first-child {
+    grid-column: 1 / -1;
   }
 
   .metrics-grid {
