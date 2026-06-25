@@ -110,6 +110,8 @@ const DISPLAY_TIME_ZONE = 'America/Chicago';
 const AUTO_REFRESH_MS = 5 * 60_000;
 const PLAYER_PROP_RANKING_START_DATE = '2026-06-23';
 const YOUR_BETS_STORAGE_KEY = 'pickledger_your_bets_v1';
+const MLB_TEAM_CONSENSUS_EPOCH_PREFIX = 'MLB:mlb_team_consensus_v1';
+const MLB_TEAM_CONSENSUS_SOURCES = new Set(['MLB Model', 'MLB First Five', 'MLB Inning']);
 const PRIMARY_FILTERS = ['ALL', 'MLB', 'WNBA', 'FIFA WC'];
 let lastCentralDate = '';
 
@@ -347,7 +349,14 @@ function isSettledPick(pick: Pick): boolean {
 }
 
 function rankingComparablePicks(picks: Pick[]): Pick[] {
-  if (activePickMode !== 'player') return picks;
+  if (activePickMode !== 'player') {
+    return picks.filter(pick => {
+      if (String(pick.sport || '').toUpperCase() !== 'MLB') return true;
+      if (!MLB_TEAM_CONSENSUS_SOURCES.has(sourceName(pick))) return true;
+      const epoch = String(pick.ml_rank_epoch || pick.ranking_epoch || pick.model_epoch || '').trim();
+      return epoch.startsWith(MLB_TEAM_CONSENSUS_EPOCH_PREFIX);
+    });
+  }
   return uniquePlayerRankingPicks(picks.filter(pick => {
     const date = pickDateKey(pick);
     return date >= PLAYER_PROP_RANKING_START_DATE;
@@ -366,7 +375,7 @@ function playerModelRank(pick: Pick): number | null {
 function rankingWindowLabel(): string {
   return activePickMode === 'player'
     ? `SINCE ${dateLabel(PLAYER_PROP_RANKING_START_DATE).toUpperCase()}`
-    : 'ALL TIME';
+    : 'ALL TIME | MLB TEAM CONSENSUS V1';
 }
 
 function gameName(pick: Pick): string {
