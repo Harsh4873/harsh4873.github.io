@@ -44,6 +44,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Checkout Gym app
+        uses: actions/checkout@v4
+        with:
+          ref: gym
+          path: gym-app
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
@@ -52,8 +58,15 @@ jobs:
         with:
           node-version: "22"
           cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            gym-app/package-lock.json
 
       - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Install Gym dependencies
+        working-directory: gym-app
         run: npm ci
 
       - name: Build site artifact
@@ -66,6 +79,13 @@ jobs:
           cp ipl/ipl_frontend.js dist/ipl/ || true
           cp -R data/. dist/data/ || true
 
+      - name: Build Gym artifact
+        working-directory: gym-app
+        run: |
+          npm run build
+          mkdir -p ../dist/gym
+          cp -R dist/. ../dist/gym/
+
       - name: Verify styled Pages artifact
         run: |
           grep -q 'rel="stylesheet"' dist/index.html
@@ -74,6 +94,10 @@ jobs:
           test -n "$(find dist/assets -maxdepth 1 -name '*.js' -print -quit)"
           ! grep -q 'src/main.ts' dist/index.html
           test -f dist/data/model_cache/index.json
+          test -f dist/gym/index.html
+          grep -q '/gym/assets/' dist/gym/index.html
+          test -n "$(find dist/gym/assets -maxdepth 1 -name '*.css' -print -quit)"
+          test -n "$(find dist/gym/assets -maxdepth 1 -name '*.js' -print -quit)"
           python scripts/site_upcheck.py
 
       - name: Upload artifact

@@ -2,6 +2,14 @@
 
 For any coding or production-maintenance task in this repository:
 
+## Product Boundaries
+
+- PickLedgerPro stays on `main` in `/Users/harshdave/Documents/PickLedgerPro`.
+- Gym lives on the `gym` branch in `/Users/harshdave/Documents/Gym` and publishes under `/gym/`.
+- Do not touch Gym unless the user asks for Gym work.
+- Do not touch PickLedger, gambling, prediction, scraper, grading, model-cache, player-prop, or betting code from the Gym worktree.
+- Gym work on `main` is limited to boundary documentation and Pages deployment plumbing that copies the built Gym app into `dist/gym`.
+
 ## Verification (agents only — not the user)
 
 - Never open the deployed site, a browser, rendered Pages output, or live URLs to verify that a change worked. The user confirms production behavior.
@@ -16,6 +24,7 @@ For any coding or production-maintenance task in this repository:
 - **Never** add AI co-author trailers, `Co-authored-by:` lines, or any AI/Cursor/Codex tagline to commit messages or pushes.
 - Keep GitHub Pages configured for GitHub Actions deployment (`build_type: workflow`), never legacy branch deployment.
 - Do not overwrite or revert unrelated user changes.
+- For Gym coding changes, commit and push the `gym` branch first, then commit and push any required `main` deployment updates, and deploy through `deploy-pages.yml`.
 
 ## Cursor Automations
 
