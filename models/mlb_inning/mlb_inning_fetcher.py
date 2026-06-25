@@ -29,6 +29,47 @@ DEFAULT_PITCHER = {
     "opponent_slg": 0.410,
 }
 
+EARTH_RADIUS_MILES = 3958.8
+
+# Approximate MLB venue geography for travel fatigue. Timezone offsets are
+# standard-time relative values; only the difference matters for east/west
+# travel direction, so DST does not change the model signal.
+VENUE_TRAVEL_CONTEXT: dict[str, dict[str, float]] = {
+    "angel stadium": {"lat": 33.8003, "lon": -117.8827, "tz": -8},
+    "american family field": {"lat": 43.0280, "lon": -87.9712, "tz": -6},
+    "busch stadium": {"lat": 38.6226, "lon": -90.1928, "tz": -6},
+    "camden yards": {"lat": 39.2840, "lon": -76.6217, "tz": -5},
+    "chase field": {"lat": 33.4455, "lon": -112.0667, "tz": -7},
+    "citi field": {"lat": 40.7571, "lon": -73.8458, "tz": -5},
+    "citizens bank park": {"lat": 39.9061, "lon": -75.1665, "tz": -5},
+    "coors field": {"lat": 39.7559, "lon": -104.9942, "tz": -7},
+    "comerica park": {"lat": 42.3390, "lon": -83.0485, "tz": -5},
+    "daikin park": {"lat": 29.7573, "lon": -95.3555, "tz": -6},
+    "dodger stadium": {"lat": 34.0739, "lon": -118.2400, "tz": -8},
+    "fenway park": {"lat": 42.3467, "lon": -71.0972, "tz": -5},
+    "globe life field": {"lat": 32.7473, "lon": -97.0842, "tz": -6},
+    "great american ball park": {"lat": 39.0974, "lon": -84.5066, "tz": -5},
+    "guaranteed rate field": {"lat": 41.8300, "lon": -87.6339, "tz": -6},
+    "kauffman stadium": {"lat": 39.0517, "lon": -94.4803, "tz": -6},
+    "loanDepot park": {"lat": 25.7781, "lon": -80.2197, "tz": -5},
+    "loandepot park": {"lat": 25.7781, "lon": -80.2197, "tz": -5},
+    "minute maid park": {"lat": 29.7573, "lon": -95.3555, "tz": -6},
+    "nationals park": {"lat": 38.8730, "lon": -77.0074, "tz": -5},
+    "oracle park": {"lat": 37.7786, "lon": -122.3893, "tz": -8},
+    "petco park": {"lat": 32.7073, "lon": -117.1566, "tz": -8},
+    "pnc park": {"lat": 40.4469, "lon": -80.0057, "tz": -5},
+    "progressive field": {"lat": 41.4962, "lon": -81.6852, "tz": -5},
+    "rate field": {"lat": 41.8300, "lon": -87.6339, "tz": -6},
+    "rogers centre": {"lat": 43.6414, "lon": -79.3894, "tz": -5},
+    "sutter health park": {"lat": 38.5803, "lon": -121.5139, "tz": -8},
+    "target field": {"lat": 44.9817, "lon": -93.2776, "tz": -6},
+    "t-mobile park": {"lat": 47.5914, "lon": -122.3325, "tz": -8},
+    "tropicana field": {"lat": 27.7682, "lon": -82.6534, "tz": -5},
+    "truist park": {"lat": 33.8907, "lon": -84.4677, "tz": -5},
+    "wrigley field": {"lat": 41.9484, "lon": -87.6553, "tz": -6},
+    "yankee stadium": {"lat": 40.8296, "lon": -73.9262, "tz": -5},
+}
+
 
 def log_warning(message: str) -> None:
     print(f"[MLBInning] Warning: {message}")
@@ -170,6 +211,8 @@ def fetch_todays_games(target_date: str | date | None = None) -> list[dict[str, 
 
         game_data = feed.get("gameData") or {}
         venue_raw = game_data.get("venue") or schedule_game.get("venue") or {}
+        venue_id = safe_int(venue_raw.get("id"))
+        venue_name = str(venue_raw.get("name") or "")
         weather_raw = game_data.get("weather") or {}
         probable_pitchers = game_data.get("probablePitchers") or {}
         home_pitcher_raw = probable_pitchers.get("home") or ((teams.get("home") or {}).get("probablePitcher") or {})
@@ -205,6 +248,9 @@ def fetch_todays_games(target_date: str | date | None = None) -> list[dict[str, 
         if len(away_lineup) < 9:
             away_lineup = _last_known_lineup(away_team_id, game_date) or _active_roster_lineup(away_team_id, game_date)
 
+        home_travel = _team_travel_context(home_team_id, game_date, venue_id, venue_name)
+        away_travel = _team_travel_context(away_team_id, game_date, venue_id, venue_name)
+
         games.append(
             {
                 "game_id": str(game_id),
@@ -216,12 +262,16 @@ def fetch_todays_games(target_date: str | date | None = None) -> list[dict[str, 
                 "away_team": away_team_name,
                 "home_team_id": home_team_id,
                 "away_team_id": away_team_id,
-                "venue_id": safe_int(venue_raw.get("id")),
-                "venue_name": str(venue_raw.get("name") or ""),
+                "venue_id": venue_id,
+                "venue_name": venue_name,
                 "weather": {
                     "temp": str(weather_raw.get("temp") or ""),
                     "condition": str(weather_raw.get("condition") or ""),
                     "wind": str(weather_raw.get("wind") or ""),
+                },
+                "travel": {
+                    "home": home_travel,
+                    "away": away_travel,
                 },
                 "home_pitcher": home_pitcher,
                 "away_pitcher": away_pitcher,
@@ -463,8 +513,173 @@ def _batter_entry(order: int, player_id: int, name: str | None, stat: dict[str, 
     }
 
 
+def _team_travel_context(
+    team_id: int,
+    game_date: str,
+    current_venue_id: int,
+    current_venue_name: str,
+) -> dict[str, Any]:
+    if not team_id:
+        return {"available": False, "reason": "missing_team_id"}
+
+    previous_game: dict[str, Any] | None = None
+    for game in _recent_team_games(team_id, game_date, lookback_days=10):
+        if "final" in _status_state(game).lower():
+            previous_game = game
+            break
+
+    if previous_game is None:
+        return {"available": False, "reason": "no_recent_final_game"}
+
+    previous_venue = previous_game.get("venue") or {}
+    previous_venue_id = safe_int(previous_venue.get("id"))
+    previous_venue_name = str(previous_venue.get("name") or "")
+    previous_date = _parse_game_date(previous_game.get("officialDate") or previous_game.get("gameDate"))
+    target_date = _parse_game_date(game_date)
+    days_since = (target_date - previous_date).days if previous_date and target_date else None
+
+    current_geo = _venue_travel_context(current_venue_name)
+    previous_geo = _venue_travel_context(previous_venue_name)
+    same_venue = False
+    if current_venue_id and previous_venue_id and current_venue_id == previous_venue_id:
+        same_venue = True
+    elif _normalize_venue_name(current_venue_name) and _normalize_venue_name(current_venue_name) == _normalize_venue_name(previous_venue_name):
+        same_venue = True
+
+    distance_miles: float | None = None
+    timezone_shift: int | None = None
+    travel_direction = "unknown"
+    if same_venue:
+        distance_miles = 0.0
+        timezone_shift = 0
+        travel_direction = "same"
+    elif current_geo and previous_geo:
+        distance_miles = _haversine_miles(
+            previous_geo["lat"],
+            previous_geo["lon"],
+            current_geo["lat"],
+            current_geo["lon"],
+        )
+        timezone_shift = int(current_geo["tz"] - previous_geo["tz"])
+        if timezone_shift > 0:
+            travel_direction = "east"
+        elif timezone_shift < 0:
+            travel_direction = "west"
+        else:
+            travel_direction = "same_timezone"
+
+    fatigue_index = _travel_fatigue_index(days_since, distance_miles, timezone_shift, same_venue)
+    run_delta = _travel_run_delta(fatigue_index)
+
+    label_bits: list[str] = []
+    if days_since is not None:
+        label_bits.append(f"{days_since}d since previous game")
+    if distance_miles is not None:
+        label_bits.append(f"{round(distance_miles)} mi")
+    if timezone_shift is not None and timezone_shift:
+        label_bits.append(f"{abs(timezone_shift)}h {travel_direction}")
+    if not label_bits:
+        label_bits.append("travel geography unavailable")
+
+    return {
+        "available": True,
+        "previous_game_date": previous_date.isoformat() if previous_date else None,
+        "previous_venue_id": previous_venue_id,
+        "previous_venue_name": previous_venue_name,
+        "current_venue_id": current_venue_id,
+        "current_venue_name": current_venue_name,
+        "days_since_previous_game": days_since,
+        "same_venue": same_venue,
+        "distance_miles": round(distance_miles, 1) if distance_miles is not None else None,
+        "timezone_shift_hours": timezone_shift,
+        "travel_direction": travel_direction,
+        "travel_fatigue_index": fatigue_index,
+        "travel_run_delta": run_delta,
+        "label": "; ".join(label_bits),
+    }
+
+
+def _venue_travel_context(venue_name: str) -> dict[str, float] | None:
+    normalized = _normalize_venue_name(venue_name)
+    if not normalized:
+        return None
+    if normalized in VENUE_TRAVEL_CONTEXT:
+        return VENUE_TRAVEL_CONTEXT[normalized]
+    for key, value in VENUE_TRAVEL_CONTEXT.items():
+        if normalized in key or key in normalized:
+            return value
+    return None
+
+
+def _normalize_venue_name(venue_name: str) -> str:
+    text = str(venue_name or "").strip().lower()
+    text = re.sub(r"[^a-z0-9]+", " ", text)
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def _haversine_miles(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+    phi1 = math.radians(lat1)
+    phi2 = math.radians(lat2)
+    delta_phi = math.radians(lat2 - lat1)
+    delta_lambda = math.radians(lon2 - lon1)
+    a = (
+        math.sin(delta_phi / 2) ** 2
+        + math.cos(phi1) * math.cos(phi2) * math.sin(delta_lambda / 2) ** 2
+    )
+    return EARTH_RADIUS_MILES * 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+
+
+def _travel_fatigue_index(
+    days_since: int | None,
+    distance_miles: float | None,
+    timezone_shift: int | None,
+    same_venue: bool,
+) -> float:
+    if same_venue:
+        return 0.0
+
+    fatigue = 0.0
+    if days_since is not None:
+        if days_since <= 0:
+            fatigue += 0.35
+        elif days_since == 1:
+            fatigue += 0.20
+        elif days_since == 2:
+            fatigue += 0.08
+
+    if distance_miles is not None:
+        if distance_miles >= 2000:
+            fatigue += 0.25
+        elif distance_miles >= 1200:
+            fatigue += 0.16
+        elif distance_miles >= 600:
+            fatigue += 0.08
+
+    if timezone_shift is not None:
+        if timezone_shift >= 2:
+            fatigue += 0.20
+        elif timezone_shift == 1:
+            fatigue += 0.08
+        elif timezone_shift <= -3:
+            fatigue += 0.05
+
+    return round(min(1.0, fatigue), 3)
+
+
+def _travel_run_delta(fatigue_index: float) -> float:
+    return round(-0.16 * max(0.0, min(1.0, safe_float(fatigue_index, 0.0))), 3)
+
+
 def _season_for_date(game_date: str) -> int:
     return datetime.strptime(game_date, "%Y-%m-%d").year
+
+
+def _parse_game_date(raw_value: Any):
+    raw = str(raw_value or "")[:10]
+    try:
+        return datetime.strptime(raw, "%Y-%m-%d").date()
+    except ValueError:
+        return None
 
 
 def _safe_cache_key(key: str) -> str:

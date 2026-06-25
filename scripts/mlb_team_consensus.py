@@ -198,8 +198,130 @@ def _matching_game(pick: dict[str, Any], lookup: dict[str, dict[str, Any]]) -> d
     return lookup.get(key, {}) if key else {}
 
 
-def _add_signal(signals: list[dict[str, Any]], name: str, detail: str, strength: float = 1.0) -> None:
-    signals.append({"name": name, "detail": detail, "strength": round(float(strength), 3)})
+def _add_signal(
+    signals: list[dict[str, Any]],
+    name: str,
+    detail: str,
+    strength: float = 1.0,
+    *,
+    category: str = "general",
+    impact: str = "support",
+) -> None:
+    signals.append({
+        "name": name,
+        "detail": detail,
+        "strength": round(float(strength), 3),
+        "category": category,
+        "impact": impact,
+    })
+
+
+def _add_missing_signal(signals: list[dict[str, Any]], name: str, detail: str, category: str) -> None:
+    _add_signal(signals, name, detail, 0.0, category=category, impact="missing")
+
+
+def _add_risk_signal(
+    signals: list[dict[str, Any]],
+    name: str,
+    detail: str,
+    strength: float = -1.0,
+    *,
+    category: str,
+) -> None:
+    _add_signal(signals, name, detail, strength, category=category, impact="risk")
+
+
+def _supporting_signal_names(signals: list[dict[str, Any]]) -> set[str]:
+    return {
+        str(signal.get("name") or "")
+        for signal in signals
+        if str(signal.get("name") or "")
+        and _number(signal.get("strength")) is not None
+        and float(signal.get("strength") or 0.0) > 0
+        and str(signal.get("impact") or "support") == "support"
+    }
+
+
+def _factor_categories(signals: list[dict[str, Any]]) -> dict[str, dict[str, list[str]]]:
+    categories: dict[str, dict[str, list[str]]] = {}
+    for signal in signals:
+        category = str(signal.get("category") or "general")
+        name = str(signal.get("name") or "").strip()
+        if not name:
+            continue
+        impact = str(signal.get("impact") or "support")
+        bucket = categories.setdefault(category, {"support": [], "risk": [], "missing": []})
+        if impact == "risk":
+            target = "risk"
+        elif impact == "missing":
+            target = "missing"
+        else:
+            target = "support"
+        if name not in bucket[target]:
+            bucket[target].append(name)
+    return categories
+
+
+def _travel_context_for(game: dict[str, Any], side_prefix: str) -> dict[str, Any]:
+    travel = game.get("travel") if isinstance(game.get("travel"), dict) else {}
+    context = travel.get(side_prefix) if side_prefix and isinstance(travel.get(side_prefix), dict) else {}
+    if context:
+        return context
+    features = game.get("features") if isinstance(game.get("features"), dict) else {}
+    nested = features.get("travel") if isinstance(features.get("travel"), dict) else {}
+    return nested.get(side_prefix) if side_prefix and isinstance(nested.get(side_prefix), dict) else {}
+
+
+def _add_travel_signals(signals: list[dict[str, Any]], context: dict[str, Any], label: str = "selected side") -> None:
+    if not isinstance(context, dict) or not context:
+        _add_missing_signal(signals, "travel_context_missing", "travel/rest geography not available", "travel_rest")
+        return
+    if context.get("available") is False:
+        _add_missing_signal(
+            signals,
+            "travel_context_missing",
+            str(context.get("reason") or "travel/rest geography not available"),
+            "travel_rest",
+        )
+        return
+
+    fatigue = _number(context.get("travel_fatigue_index")) or 0.0
+    distance = _number(context.get("distance_miles"))
+    tz_shift = _number(context.get("timezone_shift_hours"))
+    days_since = context.get("days_since_previous_game")
+    detail = f"{label}: {context.get('label') or 'travel context available'}"
+    _add_signal(signals, "travel_rest_context", detail, 1.0, category="travel_rest")
+    if distance is not None and distance >= 1200:
+        _add_signal(signals, "long_distance_travel", f"{label}: {round(distance)} miles since previous game", 0.7, category="travel_rest")
+    if tz_shift is not None and tz_shift >= 2:
+        _add_risk_signal(signals, "eastward_timezone_risk", f"{label}: {int(tz_shift)} hour eastward shift", -0.7, category="travel_rest")
+    if days_since is not None and _number(days_since) is not None and float(days_since) <= 1:
+        _add_signal(signals, "short_rest_schedule", f"{label}: {int(float(days_since))} day(s) since previous game", 0.6, category="travel_rest")
+    if fatigue >= 0.45:
+        _add_risk_signal(signals, "travel_fatigue_risk", f"{label}: fatigue index {fatigue:.2f}", -fatigue, category="travel_rest")
+
+
+def _add_bullpen_signals(signals: list[dict[str, Any]], pitcher: dict[str, Any], label: str) -> None:
+    bullpen = pitcher.get("team_bullpen") if isinstance(pitcher.get("team_bullpen"), dict) else {}
+    if not bullpen:
+        _add_missing_signal(signals, "bullpen_workload_missing", f"{label}: bullpen workload not available", "bullpen")
+        return
+    games_inspected = int(_number(bullpen.get("games_inspected")) or 0)
+    fatigue = _number(bullpen.get("fatigue_index")) or 0.0
+    unavailable = bullpen.get("unavailable_today")
+    unavailable_count = len(unavailable) if isinstance(unavailable, list) else int(_number(bullpen.get("unavailable_today_count")) or 0)
+    if games_inspected > 0:
+        _add_signal(signals, "bullpen_workload", f"{label}: bullpen workload checked over {games_inspected} game(s)", 1.0, category="bullpen")
+    else:
+        _add_missing_signal(signals, "bullpen_workload_missing", f"{label}: no recent bullpen games inspected", "bullpen")
+    if fatigue > 0:
+        detail = f"{label}: fatigue index {fatigue:.2f}, unavailable arms {unavailable_count}"
+        if fatigue >= 0.35:
+            _add_risk_signal(signals, "bullpen_fatigue_risk", detail, -fatigue, category="bullpen")
+        else:
+            _add_signal(signals, "bullpen_freshness", detail, 0.5, category="bullpen")
+    else:
+        _add_signal(signals, "bullpen_freshness", f"{label}: no bullpen fatigue detected", 0.6, category="bullpen")
 
 
 def _f5_signals(pick: dict[str, Any], game: dict[str, Any], signals: list[dict[str, Any]]) -> None:
@@ -209,37 +331,104 @@ def _f5_signals(pick: dict[str, Any], game: dict[str, Any], signals: list[dict[s
     away_team = str(pick.get("away_team") or game.get("away_team") or "").strip()
     home_team = str(pick.get("home_team") or game.get("home_team") or "").strip()
     side_prefix = "away" if side_team and side_team == away_team else "home" if side_team and side_team == home_team else ""
-    offense = features.get(f"{side_prefix}_offense") if side_prefix and isinstance(features.get(f"{side_prefix}_offense"), dict) else {}
-    lineup = features.get(f"{side_prefix}_lineup_matchup") if side_prefix and isinstance(features.get(f"{side_prefix}_lineup_matchup"), dict) else {}
-    pitcher_key = "home_pitcher" if side_prefix == "away" else "away_pitcher" if side_prefix == "home" else ""
-    pitcher = features.get(pitcher_key) if pitcher_key and isinstance(features.get(pitcher_key), dict) else {}
     venue = features.get("venue") if isinstance(features.get("venue"), dict) else {}
 
-    if pitcher and int(pitcher.get("current_starts") or 0) >= 3:
-        _add_signal(signals, "starting_pitcher", "starter sample and rest profile available")
-    if lineup and int(lineup.get("sampled_batters") or 0) >= 7:
-        _add_signal(signals, "lineup_offense", "lineup matchup covers at least seven expected hitters")
-    if offense and (offense.get("pitcher_rest_days") is not None or offense.get("pitcher_rest_label")):
-        _add_signal(signals, "travel_rest_schedule", "starter rest and schedule context present")
-    if venue and (int(venue.get("games") or 0) >= 20 or venue.get("park_blend") or venue.get("wind_mph") is not None):
-        _add_signal(signals, "park_weather", "park and weather run-environment context present")
+    prefixes = [side_prefix] if side_prefix else ["away", "home"]
+    for prefix in prefixes:
+        offense = features.get(f"{prefix}_offense") if isinstance(features.get(f"{prefix}_offense"), dict) else {}
+        lineup = features.get(f"{prefix}_lineup_matchup") if isinstance(features.get(f"{prefix}_lineup_matchup"), dict) else {}
+        pitcher_key = "home_pitcher" if prefix == "away" else "away_pitcher"
+        pitcher = features.get(pitcher_key) if isinstance(features.get(pitcher_key), dict) else {}
+        label = "away offense" if prefix == "away" else "home offense"
+
+        if pitcher and int(pitcher.get("current_starts") or 0) >= 3:
+            _add_signal(signals, "starting_pitcher", f"{label}: opposing starter sample available", category="starting_pitcher")
+        else:
+            _add_missing_signal(signals, "starter_sample_missing", f"{label}: thin or missing starter sample", "starting_pitcher")
+        if pitcher and int(pitcher.get("recent_starts") or 0) >= 3:
+            _add_signal(signals, "starter_recent_form", f"{label}: recent starter form included", 0.8, category="starting_pitcher")
+        if pitcher and (int(pitcher.get("current_vs_opponent_starts") or 0) + int(pitcher.get("prior_vs_opponent_starts") or 0)) > 0:
+            _add_signal(signals, "starter_vs_opponent_history", f"{label}: starter matchup history included", 0.7, category="starting_pitcher")
+        if pitcher and int(pitcher.get("venue_starts") or 0) > 0:
+            _add_signal(signals, "starter_venue_history", f"{label}: starter venue history included", 0.6, category="starting_pitcher")
+        if pitcher:
+            _add_bullpen_signals(signals, pitcher, label)
+
+        if lineup and int(lineup.get("sampled_batters") or 0) >= 7:
+            _add_signal(signals, "lineup_offense", f"{label}: lineup matchup covers expected hitters", category="lineup_matchup")
+        else:
+            _add_missing_signal(signals, "lineup_depth_missing", f"{label}: expected lineup depth missing", "lineup_matchup")
+        bvp_pa = int(lineup.get("current_bvp_pa") or 0) + int(lineup.get("older_bvp_pa") or 0) if lineup else 0
+        if bvp_pa >= 10:
+            _add_signal(signals, "batter_pitcher_history", f"{label}: {bvp_pa} batter-vs-pitcher PA included", 0.7, category="lineup_matchup")
+        if lineup and lineup.get("threat_score") is not None:
+            _add_signal(signals, "lineup_threat_quality", f"{label}: lineup threat score included", 0.6, category="lineup_matchup")
+
+        if offense and (offense.get("team_current_f5_runs") is not None or offense.get("team_recent_f5_runs") is not None):
+            _add_signal(signals, "team_offense_form", f"{label}: current/recent F5 offense included", 0.8, category="team_form")
+        if offense and offense.get("team_venue_f5_runs") is not None:
+            _add_signal(signals, "team_venue_form", f"{label}: venue-specific team offense included", 0.5, category="team_form")
+        if offense and (offense.get("pitcher_rest_days") is not None or offense.get("pitcher_rest_label")):
+            _add_signal(signals, "travel_rest_schedule", f"{label}: starter rest context present", category="travel_rest")
+
+        travel_context = _travel_context_for(game, prefix)
+        if not travel_context and offense:
+            travel_context = {
+                "available": offense.get("travel_label") not in {None, ""},
+                "label": offense.get("travel_label"),
+                "travel_fatigue_index": offense.get("travel_fatigue_index"),
+                "distance_miles": offense.get("travel_distance_miles"),
+                "timezone_shift_hours": offense.get("travel_timezone_shift_hours"),
+                "days_since_previous_game": offense.get("travel_days_since_previous_game"),
+            }
+        _add_travel_signals(signals, travel_context, label)
+
+    if venue and (int(venue.get("games") or 0) >= 20 or venue.get("park_blend") or venue.get("park_factor") is not None):
+        _add_signal(signals, "park_weather", "park run-environment context present", category="park_weather")
+        _add_signal(signals, "park_factor", "park factor or learned venue run delta included", 0.8, category="park_weather")
+    else:
+        _add_missing_signal(signals, "park_factor_missing", "park factor context not available", "park_weather")
+    if venue and (venue.get("wind_mph") is not None or venue.get("weather_raw")):
+        _add_signal(signals, "wind_weather", "wind/weather flight context included", 0.8, category="park_weather")
+    else:
+        _add_missing_signal(signals, "wind_weather_missing", "wind/weather context not available", "park_weather")
     if market == "f5_total" and _number(pick.get("line")) is not None and _number(pick.get("edge")) is not None:
-        _add_signal(signals, "run_environment_gap", "projected F5 total differs from market line")
+        _add_signal(signals, "run_environment_gap", "projected F5 total differs from market line", category="model_edge")
+    if market == "f5_side" and _number(pick.get("edge")) is not None:
+        _add_signal(signals, "projected_margin_gap", "projected F5 side edge is available", 0.7, category="model_edge")
 
 
 def _inning_signals(pick: dict[str, Any], game: dict[str, Any], signals: list[dict[str, Any]]) -> None:
     inning = int(_number(pick.get("inning")) or 0)
     edge_pp = _number(pick.get("edge_pp")) or _number(pick.get("raw_edge")) or 0.0
     if edge_pp >= 3.0:
-        _add_signal(signals, "inning_baseline_edge", "scoreless probability beats inning baseline")
+        _add_signal(signals, "inning_baseline_edge", "scoreless probability beats inning baseline", category="inning_baseline")
     if inning and inning <= 6 and game.get("home_pitcher") and game.get("away_pitcher"):
-        _add_signal(signals, "starting_pitcher", "starter inning profile is applicable")
+        _add_signal(signals, "starting_pitcher", "starter inning profile is applicable", category="starting_pitcher")
+        for side in ("home", "away"):
+            pitcher = game.get(f"{side}_pitcher_context") if isinstance(game.get(f"{side}_pitcher_context"), dict) else {}
+            if pitcher:
+                _add_signal(signals, "starter_run_prevention", f"{side}: ERA/WHIP run-prevention context included", 0.7, category="starting_pitcher")
+            else:
+                _add_missing_signal(signals, "starter_context_missing", f"{side}: starter context not available", "starting_pitcher")
     if inning >= 7:
-        _add_signal(signals, "bullpen_condition", "late inning depends on bullpen workload/fatigue model")
+        _add_signal(signals, "bullpen_condition", "late inning depends on bullpen workload/fatigue model", category="bullpen")
+        for side in ("home", "away"):
+            pitcher = game.get(f"{side}_pitcher_context") if isinstance(game.get(f"{side}_pitcher_context"), dict) else {}
+            _add_bullpen_signals(signals, pitcher, side)
     if game.get("venue_factor") is not None:
-        _add_signal(signals, "park_weather", "venue factor included in inning projection")
+        _add_signal(signals, "park_weather", "venue factor included in inning projection", category="park_weather")
+        _add_signal(signals, "park_factor", "park run factor included", 0.8, category="park_weather")
+    venue = game.get("venue") if isinstance(game.get("venue"), dict) else {}
+    weather = game.get("weather") if isinstance(game.get("weather"), dict) else {}
+    if venue and venue.get("name"):
+        _add_signal(signals, "venue_context", f"venue context included: {venue.get('name')}", 0.5, category="park_weather")
+    if weather and (weather.get("wind") or weather.get("temp") or weather.get("condition")):
+        _add_signal(signals, "wind_weather", "weather context included for inning run environment", 0.6, category="park_weather")
     if isinstance(game.get("full_inning_table"), dict) and len(game.get("full_inning_table") or {}) >= 6:
-        _add_signal(signals, "matchup_structure", "full inning table available for matchup shape")
+        _add_signal(signals, "matchup_structure", "full inning table available for matchup shape", category="inning_baseline")
+    for side in ("away", "home"):
+        _add_travel_signals(signals, _travel_context_for(game, side), f"{side} team")
 
 
 def _base_signals(
@@ -254,18 +443,26 @@ def _base_signals(
 ) -> list[dict[str, Any]]:
     signals: list[dict[str, Any]] = []
     if implied is not None and edge is not None and edge > 0:
-        _add_signal(signals, "market_price", "calibrated probability beats selected-side market price", edge / 10.0)
+        _add_signal(signals, "market_price", "calibrated probability beats selected-side market price", edge / 10.0, category="market_price")
     calibration = pick.get("calibration") if isinstance(pick.get("calibration"), dict) else {}
     if calibration.get("applied") is True and int(calibration.get("samples") or 0) >= 30:
-        _add_signal(signals, "probability_calibration", "active calibration group has enough samples")
+        _add_signal(signals, "probability_calibration", "active calibration group has enough samples", category="calibration")
+    else:
+        _add_missing_signal(signals, "probability_calibration_missing", "active calibration bucket missing or thin", "calibration")
     if performance.get("qualified") is True:
-        _add_signal(signals, "walk_forward_validation", "model family has positive decided history in the gated era input")
+        _add_signal(signals, "walk_forward_validation", "model family has positive decided history in the gated era input", category="walk_forward")
     if model_key == "mlb_new":
         artifact_status = bucket.get("artifact_status") if isinstance(bucket.get("artifact_status"), dict) else {}
         if artifact_status.get("ready") is True or str(bucket.get("model_stack") or "").lower() == "v2":
-            _add_signal(signals, "model_stack_ready", "MLB full-game v2 artifacts are ready")
+            _add_signal(signals, "model_stack_ready", "MLB full-game v2 artifacts are ready", category="model_stack")
+        else:
+            _add_missing_signal(signals, "model_stack_not_ready", "MLB full-game v2 artifact readiness not confirmed", "model_stack")
         if probability is not None and probability >= 0.55:
-            _add_signal(signals, "team_strength", "model probability has meaningful separation from coin-flip")
+            _add_signal(signals, "team_strength", "model probability has meaningful separation from coin-flip", category="team_form")
+        for field in ("away_team", "home_team", "team"):
+            if pick.get(field):
+                _add_signal(signals, "team_identity_context", "selected MLB team context present", 0.4, category="team_form")
+                break
     elif model_key == "mlb_first_five":
         _f5_signals(pick, game, signals)
     elif model_key == "mlb_inning":
@@ -316,7 +513,7 @@ def evaluate_mlb_team_pick(
     if model_key in {"mlb_first_five", "mlb_inning"} and _line_is_assumed(pick):
         hard_blockers.append("unsupported_assumed_price")
 
-    signal_count = len({signal["name"] for signal in signals})
+    signal_count = len(_supporting_signal_names(signals))
     decision = "PASS"
     actionability = "research_signal"
     if not hard_blockers and probability is not None and edge is not None:
@@ -357,6 +554,7 @@ def evaluate_mlb_team_pick(
         "hard_blockers": hard_blockers,
         "signals": signals,
         "signal_count": signal_count,
+        "factor_categories": _factor_categories(signals),
         "market_no_vig_probability": implied,
         "selected_side_implied_probability": implied,
         "raw_model_probability": raw_probability,
@@ -417,6 +615,7 @@ def apply_mlb_team_consensus_to_payload(
                 "consensus_rejection_reason": result["consensus_rejection_reason"],
                 "consensus_signal_count": result["signal_count"],
                 "consensus_signals": result["signals"],
+                "consensus_factor_categories": result["factor_categories"],
                 "consensus_hard_blockers": result["hard_blockers"],
                 "market_no_vig_probability": result["market_no_vig_probability"],
                 "selected_side_implied_probability": result["selected_side_implied_probability"],
@@ -445,4 +644,3 @@ def apply_mlb_team_consensus_to_payload(
         if alias in models:
             payload[alias] = models[alias]
     return payload
-

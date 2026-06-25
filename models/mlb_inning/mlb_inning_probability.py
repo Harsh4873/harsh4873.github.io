@@ -100,6 +100,15 @@ def compute_inning_probabilities(
         "away_team": away_team,
         "home_pitcher": (game.get("home_pitcher") or {}).get("name") or "TBD",
         "away_pitcher": (game.get("away_pitcher") or {}).get("name") or "TBD",
+        "home_pitcher_context": _pitcher_context(game.get("home_pitcher") or {}),
+        "away_pitcher_context": _pitcher_context(game.get("away_pitcher") or {}),
+        "travel": game.get("travel") if isinstance(game.get("travel"), dict) else {},
+        "weather": game.get("weather") if isinstance(game.get("weather"), dict) else {},
+        "venue": {
+            "id": game.get("venue_id"),
+            "name": game.get("venue_name"),
+            "run_factor": round(venue_factor, 3),
+        },
         "venue_factor": round(venue_factor, 3),
         "top_2_picks": top_picks,
         "full_inning_table": full_inning_table,
@@ -234,6 +243,28 @@ def _venue_factor(game: dict[str, Any]) -> float:
         except (TypeError, ValueError):
             pass
     return 1.0
+
+
+def _pitcher_context(pitcher: dict[str, Any]) -> dict[str, Any]:
+    if not isinstance(pitcher, dict):
+        return {}
+    bullpen = pitcher.get("team_bullpen") if isinstance(pitcher.get("team_bullpen"), dict) else {}
+    return {
+        "name": pitcher.get("name") or "TBD",
+        "era": safe_float(pitcher.get("era"), DEFAULT_PITCHER["era"]),
+        "whip": safe_float(pitcher.get("whip"), DEFAULT_PITCHER["whip"]),
+        "opponent_obp": safe_float(pitcher.get("opponent_obp"), DEFAULT_PITCHER["opponent_obp"]),
+        "opponent_slg": safe_float(pitcher.get("opponent_slg"), DEFAULT_PITCHER["opponent_slg"]),
+        "team_bullpen": {
+            "lookback_games": bullpen.get("lookback_games"),
+            "games_inspected": bullpen.get("games_inspected"),
+            "fatigue_index": safe_float(bullpen.get("fatigue_index"), 0.0),
+            "effective_unavailable_count": safe_float(bullpen.get("effective_unavailable_count"), 0.0),
+            "unavailable_today_count": len(bullpen.get("unavailable_today") or []),
+            "back_to_back_arms_count": len(bullpen.get("back_to_back_arms") or []),
+            "high_leverage_used_count": len(bullpen.get("high_leverage_used_pitcher_ids") or []),
+        },
+    }
 
 
 def _history_rate(team_histories: dict[str, dict[int, dict[str, float]]], team_name: str, inning: int) -> float:

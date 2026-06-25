@@ -77,9 +77,26 @@ def _f5_bucket(pick):
             "away_team": "Away",
             "home_team": "Home",
             "features": {
-                "away_lineup_matchup": {"sampled_batters": 9},
-                "away_offense": {"pitcher_rest_days": 5, "pitcher_rest_label": "normal rest"},
-                "home_pitcher": {"current_starts": 8},
+                "away_lineup_matchup": {"sampled_batters": 9, "current_bvp_pa": 6, "older_bvp_pa": 8, "threat_score": 0.381},
+                "away_offense": {
+                    "pitcher_rest_days": 5,
+                    "pitcher_rest_label": "normal rest",
+                    "team_current_f5_runs": 2.6,
+                    "team_recent_f5_runs": 2.9,
+                    "team_venue_f5_runs": 2.4,
+                    "travel_fatigue_index": 0.0,
+                    "travel_label": "same venue",
+                },
+                "home_pitcher": {
+                    "current_starts": 8,
+                    "recent_starts": 5,
+                    "current_vs_opponent_starts": 1,
+                    "venue_starts": 2,
+                    "team_bullpen": {"games_inspected": 2, "fatigue_index": 0.08, "unavailable_today": []},
+                },
+                "travel": {
+                    "away": {"available": True, "label": "same venue", "travel_fatigue_index": 0.0, "distance_miles": 0, "timezone_shift_hours": 0, "days_since_previous_game": 1}
+                },
                 "venue": {"games": 44, "park_blend": {"final_delta": 0.05}, "wind_mph": 9.0},
             },
         }],
@@ -122,6 +139,13 @@ def _inning_bucket(pick):
             "game_id": "game-2",
             "home_pitcher": "Home SP",
             "away_pitcher": "Away SP",
+            "home_pitcher_context": {"team_bullpen": {"games_inspected": 2, "fatigue_index": 0.05, "unavailable_today_count": 0}},
+            "away_pitcher_context": {"team_bullpen": {"games_inspected": 2, "fatigue_index": 0.1, "unavailable_today_count": 0}},
+            "travel": {
+                "home": {"available": True, "label": "same venue", "travel_fatigue_index": 0.0, "distance_miles": 0, "timezone_shift_hours": 0, "days_since_previous_game": 1},
+                "away": {"available": True, "label": "900 mi; 1h east", "travel_fatigue_index": 0.28, "distance_miles": 900, "timezone_shift_hours": 1, "days_since_previous_game": 1},
+            },
+            "weather": {"wind": "8 mph, Out To LF", "temp": "82"},
             "venue_factor": 0.96,
             "full_inning_table": {str(index): 0.55 for index in range(1, 9)},
         }],
@@ -186,10 +210,18 @@ def test_first_five_uses_baseball_context_when_real_market_price_exists():
     assert result["decision"] == "BET"
     assert {signal["name"] for signal in result["signals"]} >= {
         "starting_pitcher",
+        "starter_recent_form",
         "lineup_offense",
+        "batter_pitcher_history",
+        "team_offense_form",
+        "bullpen_workload",
         "travel_rest_schedule",
+        "travel_rest_context",
         "park_weather",
+        "wind_weather",
     }
+    assert result["factor_categories"]["travel_rest"]["support"]
+    assert result["factor_categories"]["bullpen"]["support"]
 
 
 def test_first_five_assumed_price_stays_research_only():
@@ -220,7 +252,40 @@ def test_inning_model_uses_inning_baseline_and_context_with_real_market():
         "starting_pitcher",
         "park_weather",
         "matchup_structure",
+        "travel_rest_context",
     }
+    assert "inning_baseline" in result["factor_categories"]
+    assert "park_weather" in result["factor_categories"]
+
+
+def test_missing_and_risk_signals_do_not_inflate_support_count():
+    pick = _f5_pick(probability=0.61, calibrated_probability=0.61, edge=9.0)
+    bucket = _f5_bucket(pick)
+    features = bucket["games"][0]["features"]
+    features["away_offense"]["travel_fatigue_index"] = 0.65
+    features["away_offense"]["travel_label"] = "1d since previous game; 2300 mi; 3h east"
+    features["travel"] = {
+        "away": {
+            "available": True,
+            "label": "1d since previous game; 2300 mi; 3h east",
+            "travel_fatigue_index": 0.65,
+            "distance_miles": 2300,
+            "timezone_shift_hours": 3,
+            "days_since_previous_game": 1,
+        }
+    }
+
+    result = evaluate_mlb_team_pick(pick, "mlb_first_five", bucket, performance=GOOD_PERFORMANCE)
+
+    signal_names = {signal["name"] for signal in result["signals"]}
+    assert "travel_fatigue_risk" in signal_names
+    assert "eastward_timezone_risk" in signal_names
+    assert result["factor_categories"]["travel_rest"]["risk"]
+    assert result["signal_count"] == len({
+        signal["name"]
+        for signal in result["signals"]
+        if signal.get("impact") == "support" and signal.get("strength", 0) > 0
+    })
 
 
 def test_inning_assumed_price_stays_research_only():
@@ -253,4 +318,3 @@ def test_payload_gate_only_touches_three_mlb_team_models():
     assert gated["models"]["mlb_new"]["picks"][0]["consensus_required"] is True
     assert "consensus_required" not in gated["models"]["wnba"]["picks"][0]
     assert gated["models"]["wnba"]["picks"][0] == wnba_pick
-

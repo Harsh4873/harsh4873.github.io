@@ -169,18 +169,23 @@ def _project_game(game: dict[str, Any], model_date: str) -> dict[str, Any]:
         "wind_direction": parsed_wind.get("direction") or "",
         "weather_raw": wind_string,
     }
+    travel = game.get("travel") if isinstance(game.get("travel"), dict) else {}
+    away_travel = travel.get("away") if isinstance(travel.get("away"), dict) else {}
+    home_travel = travel.get("home") if isinstance(travel.get("home"), dict) else {}
 
     away_runs, away_factors = _project_team_runs(
         offense_profile=away_team_profile,
         opposing_pitcher_profile=home_pitcher_profile,
         lineup_delta=away_lineup_delta,
         venue_profile=environment_profile,
+        travel_profile=away_travel,
     )
     home_runs, home_factors = _project_team_runs(
         offense_profile=home_team_profile,
         opposing_pitcher_profile=away_pitcher_profile,
         lineup_delta=home_lineup_delta,
         venue_profile=environment_profile,
+        travel_profile=home_travel,
     )
 
     total_runs = _clamp(away_runs + home_runs, 2.0, 8.5)
@@ -227,6 +232,10 @@ def _project_game(game: dict[str, Any], model_date: str) -> dict[str, Any]:
             "away_pitcher": away_pitcher_profile,
             "home_pitcher": home_pitcher_profile,
             "venue": environment_profile,
+            "travel": {
+                "away": away_travel,
+                "home": home_travel,
+            },
             "away_lineup_matchup": away_lineup_delta,
             "home_lineup_matchup": home_lineup_delta,
         },
@@ -240,6 +249,7 @@ def _project_team_runs(
     opposing_pitcher_profile: dict[str, Any],
     lineup_delta: dict[str, Any],
     venue_profile: dict[str, Any],
+    travel_profile: dict[str, Any] | None = None,
 ) -> tuple[float, dict[str, Any]]:
     offense_current = safe_float(offense_profile.get("current_for"), LEAGUE_TEAM_F5_RUNS)
     offense_recent = safe_float(offense_profile.get("recent_for"), offense_current)
@@ -280,6 +290,9 @@ def _project_team_runs(
     # AGAINST the opposing pitcher, so we add it to this team's projection.
     rest_modifier = safe_float(opposing_pitcher_profile.get("rest_runs_modifier"), 0.0)
     projected += rest_modifier
+    travel_profile = travel_profile if isinstance(travel_profile, dict) else {}
+    travel_delta = safe_float(travel_profile.get("travel_run_delta"), 0.0)
+    projected += travel_delta
 
     factors = {
         "projected_runs": round(_clamp(projected, 0.55, 5.25), 2),
@@ -301,6 +314,13 @@ def _project_team_runs(
         "wind_run_delta_per_team": wind_delta,
         "wind_mph": safe_float(venue_profile.get("wind_mph"), 0.0),
         "wind_direction": str(venue_profile.get("wind_direction") or ""),
+        "travel_run_delta": travel_delta,
+        "travel_fatigue_index": safe_float(travel_profile.get("travel_fatigue_index"), 0.0),
+        "travel_days_since_previous_game": travel_profile.get("days_since_previous_game"),
+        "travel_distance_miles": travel_profile.get("distance_miles"),
+        "travel_timezone_shift_hours": travel_profile.get("timezone_shift_hours"),
+        "travel_direction": str(travel_profile.get("travel_direction") or ""),
+        "travel_label": str(travel_profile.get("label") or ""),
     }
     return factors["projected_runs"], factors
 
@@ -435,6 +455,7 @@ def _pitcher_f5_profile(
         "rest_days": rest_days,
         "rest_runs_modifier": rest_runs_modifier,
         "rest_label": rest_label,
+        "team_bullpen": pitcher.get("team_bullpen") if isinstance(pitcher.get("team_bullpen"), dict) else {},
     }
     cache_set(cache_key, profile)
     return profile
@@ -1057,6 +1078,10 @@ def _default_pitcher_profile(pitcher: dict[str, Any]) -> dict[str, Any]:
         "current_vs_opponent_starts": 0,
         "prior_vs_opponent_starts": 0,
         "venue_starts": 0,
+        "rest_days": pitcher.get("rest_days"),
+        "rest_runs_modifier": safe_float(pitcher.get("rest_runs_modifier"), 0.0),
+        "rest_label": str(pitcher.get("rest_label") or "rest unknown"),
+        "team_bullpen": pitcher.get("team_bullpen") if isinstance(pitcher.get("team_bullpen"), dict) else {},
     }
 
 
@@ -1066,6 +1091,17 @@ def _game_notes(game_projection: dict[str, Any]) -> str:
     away_lineup = features.get("away_lineup_matchup") or {}
     home_lineup = features.get("home_lineup_matchup") or {}
     venue = features.get("venue") or {}
+    travel = features.get("travel") if isinstance(features.get("travel"), dict) else {}
+    away_travel = travel.get("away") if isinstance(travel.get("away"), dict) else {}
+    home_travel = travel.get("home") if isinstance(travel.get("home"), dict) else {}
+    travel_note = ""
+    if away_travel or home_travel:
+        travel_note = (
+            f" Travel away/home: {away_travel.get('label') or 'n/a'} "
+            f"(fatigue {safe_float(away_travel.get('travel_fatigue_index'), 0.0):.2f}) / "
+            f"{home_travel.get('label') or 'n/a'} "
+            f"(fatigue {safe_float(home_travel.get('travel_fatigue_index'), 0.0):.2f})."
+        )
     return (
         f"F5 projection {game_projection.get('away_team')} {projected.get('away_runs')}, "
         f"{game_projection.get('home_team')} {projected.get('home_runs')} "
@@ -1073,6 +1109,7 @@ def _game_notes(game_projection: dict[str, Any]) -> str:
         f"BvP PA away/home: {safe_int(away_lineup.get('current_bvp_pa'))}+{safe_int(away_lineup.get('older_bvp_pa'))}/"
         f"{safe_int(home_lineup.get('current_bvp_pa'))}+{safe_int(home_lineup.get('older_bvp_pa'))}; "
         f"venue F5 total {safe_float(venue.get('f5_total'), LEAGUE_F5_TOTAL):.2f} over {safe_int(venue.get('games'))} games."
+        f"{travel_note}"
     )
 
 
