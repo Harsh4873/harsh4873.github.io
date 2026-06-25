@@ -43,7 +43,7 @@ type DailySourceForm = {
   recentStats: Stats;
   lastStats: Stats;
   recentDates: string[];
-  todayBets: Pick[];
+  todayCalls: Pick[];
   score: number;
 };
 
@@ -1247,6 +1247,11 @@ function dailyDecision(pick: Pick): string {
   return String(pick.decision || 'WATCH').trim().toUpperCase();
 }
 
+function isPublishedDailyPick(pick: Pick): boolean {
+  const decision = dailyDecision(pick);
+  return decision === 'BET' || decision === 'LEAN';
+}
+
 function dailyPickKey(pick: Pick): string {
   const selection = pick.pick.split('(', 1)[0].trim().toLowerCase()
     .replace(/\bfirst five\b/g, 'f5')
@@ -1278,11 +1283,11 @@ function dailySourceForms(date: string, todaysPicks: Pick[]): DailySourceForm[] 
     const last = recent.filter(pick => pickDateKey(pick) === lastDate);
     const recentStats = statsFor(recent);
     const lastStats = statsFor(last);
-    const todayBets = uniqueDailyPicks(todaysPicks
-      .filter(pick => sourceName(pick) === source && pick.result === 'pending' && dailyDecision(pick) === 'BET')
+    const todayCalls = uniqueDailyPicks(todaysPicks
+      .filter(pick => sourceName(pick) === source && pick.result === 'pending' && isPublishedDailyPick(pick))
       .sort(comparePickActionableStart));
     const score = (recentStats.winRate || 0) * 100 + Math.min(recentStats.wins + recentStats.losses, 20) * 0.35 + recentStats.net * 0.08;
-    return { source, recentStats, lastStats, recentDates, todayBets, score };
+    return { source, recentStats, lastStats, recentDates, todayCalls, score };
   }).filter(form => form.recentStats.wins + form.recentStats.losses >= 3)
     .sort((a, b) => b.score - a.score);
 }
@@ -1323,9 +1328,9 @@ function sortDailyGroups(groups: DailyPickGroup[]): DailyPickGroup[] {
 
 function compareDailySourceForms(left: DailySourceForm, right: DailySourceForm): number {
   if (dailySort === 'time') {
-    return comparePickActionableStart(left.todayBets[0], right.todayBets[0]) || right.score - left.score;
+    return comparePickActionableStart(left.todayCalls[0], right.todayCalls[0]) || right.score - left.score;
   }
-  return right.score - left.score || comparePickActionableStart(left.todayBets[0], right.todayBets[0]);
+  return right.score - left.score || comparePickActionableStart(left.todayCalls[0], right.todayCalls[0]);
 }
 
 function compareDailyConsensusSignal(
@@ -1374,7 +1379,7 @@ function dailyPickGroupCard(group: DailyPickGroup): string {
   const metricLabel = probability != null ? 'MODEL WIN PROB' : edge != null ? 'MODEL EDGE' : 'MARKET PRICE';
   const sources = [...new Set(group.picks.map(sourceName))];
   const note = group.tags.includes('MODEL GREENLIGHT')
-    ? 'At least one model issued a BET call. Compare the source lines and prices before sizing.'
+    ? 'At least one model issued a BET/LEAN greenlight. Compare the source lines and prices before sizing.'
     : group.tags.includes('PROBABILITY LEADER')
       ? 'High expected win probability, but price and the official model decision still matter.'
       : 'Useful context for review, but it does not currently qualify as a top actionable pick.';
@@ -1414,11 +1419,11 @@ function dailyPickGrid(groups: DailyPickGroup[]): string {
 function dailyHotModelCard(form: DailySourceForm): string {
   const recentDecided = form.recentStats.wins + form.recentStats.losses;
   const lastDecided = form.lastStats.wins + form.lastStats.losses;
-  const todays = form.todayBets.slice(0, 3);
+  const todays = form.todayCalls.slice(0, 3);
   return `<article class="daily-model-card">
     <div class="daily-model-head"><div><div class="daily-model-kicker">HOT SOURCE</div><div class="daily-model-name">${escapeHtml(form.source)}</div></div><div class="daily-model-rate">${form.recentStats.winRate == null ? '—' : `${(form.recentStats.winRate * 100).toFixed(0)}%`}</div></div>
     <div class="daily-model-records"><span>Last ${form.recentDates.length} slates: ${form.recentStats.wins}-${form.recentStats.losses}${form.recentStats.pushes ? `-${form.recentStats.pushes}` : ''}</span><span>Last slate: ${lastDecided ? `${form.lastStats.wins}-${form.lastStats.losses}${form.lastStats.pushes ? `-${form.lastStats.pushes}` : ''}` : 'No decisions'}</span></div>
-    <div class="daily-model-picks">${todays.length ? todays.map(pick => `<div><strong>${escapeHtml(pick.pick)}</strong><span>${escapeHtml([formatOdds(pick), pickProbability(pick) == null ? '' : `${(pickProbability(pick)! * 100).toFixed(1)}%`].filter(Boolean).join(' | '))}</span></div>`).join('') : '<div><strong>No BET call today</strong><span>Recent form is hot, but the model is sitting out.</span></div>'}</div>
+    <div class="daily-model-picks">${todays.length ? todays.map(pick => `<div><strong>${escapeHtml(pick.pick)}</strong><span>${escapeHtml([dailyDecision(pick), formatOdds(pick), pickProbability(pick) == null ? '' : `${(pickProbability(pick)! * 100).toFixed(1)}%`].filter(Boolean).join(' | '))}</span></div>`).join('') : '<div><strong>No published call today</strong><span>Recent form is hot, but the model is sitting out.</span></div>'}</div>
     <div class="daily-model-foot">${recentDecided} recent decisions | ${signedUnits(form.recentStats.net)}</div>
   </article>`;
 }
@@ -1467,12 +1472,12 @@ function renderDaily(): void {
   const forms = dailySourceForms(key, picks);
   const formsBySource = new Map(forms.map(form => [form.source, form]));
   const ranked = (candidates: Pick[]) => [...candidates].sort((a, b) => dailyPickScore(b, formsBySource) - dailyPickScore(a, formsBySource));
-  const modelBets = uniqueDailyPicks(ranked(pending.filter(pick => dailyDecision(pick) === 'BET'))).slice(0, 8);
+  const modelCalls = uniqueDailyPicks(ranked(pending.filter(isPublishedDailyPick))).slice(0, 8);
   const probabilityLeaders = uniqueDailyPicks([...pending].filter(pick => pickProbability(pick) != null)
     .sort((a, b) => (pickProbability(b) || 0) - (pickProbability(a) || 0))).slice(0, 8);
-  const valueZone = uniqueDailyPicks(ranked(pending.filter(pick => dailyDecision(pick) === 'BET' && ((pick.odds || 0) > 0 || (pickEdgePercent(pick) || 0) >= 10)))).slice(0, 6);
+  const valueZone = uniqueDailyPicks(ranked(pending.filter(pick => isPublishedDailyPick(pick) && ((pick.odds || 0) > 0 || (pickEdgePercent(pick) || 0) >= 10)))).slice(0, 6);
   const researchQueue = uniqueDailyPicks([...pending].filter(pick => (
-    (pickProbability(pick) || 0) >= 0.6 && dailyDecision(pick) !== 'BET'
+    (pickProbability(pick) || 0) >= 0.6 && !isPublishedDailyPick(pick)
   ) || (pick.odds != null && pick.odds <= -300)).sort((a, b) => (pickProbability(b) || 0) - (pickProbability(a) || 0))).slice(0, 6);
   const priceyCount = uniqueDailyPicks(pending.filter(pick => pick.odds != null && pick.odds <= -300)).length;
   const tagsById = new Map<string, Set<string>>();
@@ -1481,21 +1486,21 @@ function renderDaily(): void {
     tags.add(tag);
     tagsById.set(pick.id, tags);
   });
-  addTag(modelBets, 'MODEL GREENLIGHT');
+  addTag(modelCalls, 'MODEL GREENLIGHT');
   addTag(valueZone, 'VALUE');
   addTag(probabilityLeaders, 'PROBABILITY LEADER');
   addTag(researchQueue, 'RESEARCH');
   addTag(pending.filter(pick => pick.odds != null && pick.odds <= -300), 'PRICEY FAVORITE');
 
   const topCandidates = [...new Map(
-    [...modelBets, ...valueZone, ...probabilityLeaders.filter(pick => dailyDecision(pick) === 'BET')]
+    [...modelCalls, ...valueZone, ...probabilityLeaders.filter(isPublishedDailyPick)]
       .map(pick => [pick.id, pick]),
   ).values()];
   const topGroups = sortDailyGroups(dailyPickGroups(topCandidates, tagsById, formsBySource, pending));
   const topKeys = new Set(topGroups.map(group => group.key));
   const playerResearchPool = activePickMode === 'player'
     ? uniqueDailyPicks(ranked(pending.filter(pick => !topKeys.has(dailyPickKey(pick)) && (
-      dailyDecision(pick) !== 'BET' ||
+      !isPublishedDailyPick(pick) ||
       pickProbability(pick) != null ||
       pickEdgePercent(pick) != null ||
       Boolean(pick.reason || pick.rationale || pick.key_factors)
@@ -1503,12 +1508,12 @@ function renderDaily(): void {
     : [];
   addTag(playerResearchPool, 'RESEARCH');
   const researchCandidates = [...new Map(
-    [...researchQueue, ...playerResearchPool, ...probabilityLeaders.filter(pick => dailyDecision(pick) !== 'BET')]
+    [...researchQueue, ...playerResearchPool, ...probabilityLeaders.filter(pick => !isPublishedDailyPick(pick))]
       .filter(pick => !topKeys.has(dailyPickKey(pick)))
       .map(pick => [pick.id, pick]),
   ).values()];
   const researchGroups = sortDailyGroups(dailyPickGroups(researchCandidates, tagsById, formsBySource, pending));
-  const hotForms = forms.filter(form => form.todayBets.length)
+  const hotForms = forms.filter(form => form.todayCalls.length)
     .sort(compareDailySourceForms)
     .slice(0, 8);
   const games = new Map<string, Pick[]>();
@@ -1517,7 +1522,7 @@ function renderDaily(): void {
   const viewOptionsBase: DailyViewOption[] = [
     { key: 'picks', label: 'Top Picks', count: topGroups.length, description: 'Unique actionable markets' },
     { key: 'consensus', label: 'Consensus', count: consensusCount, description: 'All matching market signals' },
-    { key: 'sources', label: 'Active Sources', count: hotForms.length, description: 'Sources issuing BET calls today' },
+    { key: 'sources', label: 'Active Sources', count: hotForms.length, description: 'Sources issuing BET/LEAN calls today' },
     { key: 'research', label: 'Research', count: researchGroups.length, description: activePickMode === 'player' ? 'Next-best prop candidates' : 'High probability and pricey spots' },
   ];
   const viewOptions = viewOptionsBase.filter(option => activePickMode !== 'player' || option.key !== 'consensus');
@@ -1529,14 +1534,14 @@ function renderDaily(): void {
   const activeSort = sortOptions.find(option => option.key === dailySort) || sortOptions[0];
   const dailyFocus = activePickMode === 'player' ? 'top picks, sources, or research' : 'picks, consensus, sources, or research';
   const researchSubtitle = activePickMode === 'player'
-    ? 'Next-best player prop candidates and lean/pass research, excluding anything already in Top Picks.'
-    : 'High-probability non-BET calls and expensive favorites, excluding anything already in Top Picks.';
+    ? 'Next-best player prop candidates and pass research, excluding anything already in Top Picks.'
+    : 'High-probability non-published calls and expensive favorites, excluding anything already in Top Picks.';
   const activeBody = dailyView === 'picks'
-    ? dailySection('Top Picks', 'Greenlights, value, and high-probability BET calls merged into one card per market.', dailyPickGrid(topGroups), `${topGroups.length} unique markets`)
+    ? dailySection('Top Picks', 'Greenlights, value, and high-probability BET/LEAN calls merged into one card per market.', dailyPickGrid(topGroups), `${topGroups.length} unique markets`)
     : dailyView === 'consensus'
       ? dailySection('Consensus Signals', 'Same market selection from at least two independent sources.', dailyConsensusCards(pending), `${consensusCount} matching signals`)
       : dailyView === 'sources'
-        ? dailySection('Hot Sources', 'Recent three-slate form plus each source’s unique BET calls today.', hotForms.length ? `<div class="daily-model-grid">${hotForms.map(dailyHotModelCard).join('')}</div>` : '<div class="daily-empty"><div class="daily-empty-title">No hot source has a BET today</div><div class="daily-empty-sub">This view appears when a source has enough recent decisions and a current greenlight.</div></div>', `${hotForms.length} active sources`)
+        ? dailySection('Hot Sources', 'Recent three-slate form plus each source’s unique BET/LEAN calls today.', hotForms.length ? `<div class="daily-model-grid">${hotForms.map(dailyHotModelCard).join('')}</div>` : '<div class="daily-empty"><div class="daily-empty-title">No hot source has a published call today</div><div class="daily-empty-sub">This view appears when a source has enough recent decisions and a current greenlight.</div></div>', `${hotForms.length} active sources`)
         : dailySection('Research Queue', researchSubtitle, dailyPickGrid(researchGroups), `${researchGroups.length} unique markets`);
 
   container.innerHTML = `<div class="daily-hero"><div class="daily-hero-row"><div><div class="daily-eyebrow">TODAY'S QUICK READ</div><div class="daily-title">The Shortlist</div><div class="daily-sub">${escapeHtml(dateLabel(key, true))} | Each unique market appears once. Choose a view to focus on ${dailyFocus}.</div></div><div class="daily-clock-wrap"><div class="daily-clock-label">PICKS FOR</div><div class="daily-clock">${escapeHtml(key)}</div></div></div></div>

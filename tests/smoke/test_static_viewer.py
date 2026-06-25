@@ -223,6 +223,7 @@ def test_daily_tab_uses_focused_views_and_merges_duplicate_markets():
     assert "function dailyPickScore(" in main
     assert "function dailyPickKey(" in main
     assert "function dailyPickGroups(" in main
+    assert "function isPublishedDailyPick(" in main
     assert "type DailySort = 'time' | 'percentage'" in main
     assert "let dailySort: DailySort = 'time'" in main
     assert "function setDailySort(" in main
@@ -233,12 +234,13 @@ def test_daily_tab_uses_focused_views_and_merges_duplicate_markets():
     assert "By Time" in main
     assert "By Percentage" in main
     assert "allPicks: Pick[] = picks" in main
-    assert "uniqueDailyPicks(ranked(pending.filter" in main
+    assert "uniqueDailyPicks(ranked(pending.filter(isPublishedDailyPick)))" in main
     assert "function dailyConsensusCards(" in main
     consensus_cards = main[main.index("function dailyConsensusCards("):main.index("function setDailyView(")]
     assert ".slice(0, 6)" not in consensus_cards
     assert "All matching market signals" in main
-    assert "Sources issuing BET calls today" in main
+    assert "Sources issuing BET/LEAN calls today" in main
+    assert "Greenlights, value, and high-probability BET/LEAN calls" in main
     assert "function setDailyView(" in main
     assert "researchDetailsHtml(pick, expanded)" in main
     assert "yourBetAddButton(pick)" in main
