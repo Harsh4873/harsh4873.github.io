@@ -28382,6 +28382,7 @@
           "raw_edge": 14.11,
           "raw_model_probability": 0.6649,
           "raw_probability": 0.6649,
+          "result": "loss",
           "selected_side_implied_probability": 0.52381,
           "source": "MLB First Five",
           "sport": "MLB",
@@ -35143,6 +35144,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-25-06-2026-tampa-bay-rays-kansas-city-royals-prediction",
           "sport": "MLB",
@@ -35179,6 +35181,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-25-06-2026-pittsburgh-pirates-seattle-mariners-prediction",
           "sport": "MLB",
@@ -35717,6 +35720,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-25T16:10Z",
@@ -35745,6 +35749,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-25T16:35Z",
