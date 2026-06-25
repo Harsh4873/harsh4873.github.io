@@ -1,9 +1,47 @@
-import type { LogsByDate, WorkoutLog } from './types';
+import type { ExerciseDetail, LogsByDate, WorkoutLog } from './types';
 
 export const STORAGE_KEY = 'harsh-gym-logs-v1';
 
 function isPlainRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+}
+
+export function createEmptyExerciseDetail(): ExerciseDetail {
+  return {
+    weightMode: 'bodyweight',
+    pounds: '',
+    reps: '',
+  };
+}
+
+function normalizeExerciseDetail(value: unknown): ExerciseDetail {
+  if (typeof value === 'string') {
+    return {
+      ...createEmptyExerciseDetail(),
+      legacyNote: value,
+    };
+  }
+
+  if (!isPlainRecord(value)) {
+    return createEmptyExerciseDetail();
+  }
+
+  return {
+    weightMode: value.weightMode === 'pounds' ? 'pounds' : 'bodyweight',
+    pounds: typeof value.pounds === 'string' ? value.pounds : '',
+    reps: typeof value.reps === 'string' ? value.reps : '',
+    legacyNote: typeof value.legacyNote === 'string' ? value.legacyNote : undefined,
+  };
+}
+
+function normalizeDetails(details: unknown): WorkoutLog['details'] {
+  if (!isPlainRecord(details)) {
+    return {};
+  }
+
+  return Object.fromEntries(
+    Object.entries(details).map(([exerciseId, detail]) => [exerciseId, normalizeExerciseDetail(detail)]),
+  );
 }
 
 export function createEmptyLog(date: string): WorkoutLog {
@@ -27,7 +65,7 @@ export function normalizeLog(date: string, log?: Partial<WorkoutLog>): WorkoutLo
     date,
     completed: Array.isArray(log?.completed) ? log.completed : [],
     skipped: Array.isArray(log?.skipped) ? log.skipped : [],
-    details: log?.details && typeof log.details === 'object' ? log.details : {},
+    details: normalizeDetails(log?.details),
     supersets: Array.isArray(log?.supersets)
       ? log.supersets.filter((pair): pair is WorkoutLog['supersets'][number] => {
           return (

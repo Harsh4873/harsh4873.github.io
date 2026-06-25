@@ -10,7 +10,9 @@ import {
   ClipboardList,
   Download,
   Dumbbell,
+  ExternalLink,
   Flame,
+  Headphones,
   Link2,
   ListChecks,
   Medal,
@@ -44,13 +46,24 @@ import {
   toDateKey,
 } from './dateUtils';
 import { getBasketballMinutes, isStretchExercise, WEEK_DAYS } from './program';
-import { createEmptyLog, loadLogs, normalizeLog, saveLogs } from './storage';
-import type { DayStatus, Exercise, LogsByDate, SupersetPair, TabId, ThemeMode, WorkoutLog } from './types';
+import { createEmptyExerciseDetail, createEmptyLog, loadLogs, normalizeLog, saveLogs } from './storage';
+import type {
+  DayStatus,
+  Exercise,
+  ExerciseDetail,
+  LogsByDate,
+  SupersetPair,
+  TabId,
+  ThemeMode,
+  WeightMode,
+  WorkoutLog,
+} from './types';
 
 type IconType = ComponentType<SVGProps<SVGSVGElement>>;
 
 const THEME_STORAGE_KEY = 'harsh-gym-theme-v1';
 const MOBILE_PREVIEW_STORAGE_KEY = 'harsh-gym-mobile-preview-v1';
+const REP_OPTIONS = Array.from({ length: 20 }, (_, index) => String(index + 1));
 
 interface ExerciseGroup {
   id: string;
@@ -108,7 +121,9 @@ function hasLogActivity(log: WorkoutLog): boolean {
     log.supersets.length > 0 ||
     Boolean(log.notes.trim()) ||
     Boolean(log.prNote.trim()) ||
-    Object.values(log.details).some((value) => value.trim().length > 0)
+    Object.values(log.details).some((detail) => {
+      return Boolean(detail.reps.trim() || detail.pounds.trim() || detail.legacyNote?.trim());
+    })
   );
 }
 
@@ -376,17 +391,27 @@ function WorkoutPanel({
     });
   };
 
-  const updateDetail = (exerciseId: string, detail: string) => {
-    onUpdate((current) =>
-      touchLog({
+  const updateDetail = (exerciseId: string, detailPatch: Partial<ExerciseDetail>) => {
+    onUpdate((current) => {
+      const currentDetail = current.details[exerciseId] ?? createEmptyExerciseDetail();
+      const nextDetail: ExerciseDetail = {
+        ...currentDetail,
+        ...detailPatch,
+      };
+
+      if (nextDetail.weightMode === 'bodyweight') {
+        nextDetail.pounds = '';
+      }
+
+      return touchLog({
         ...current,
         details: {
           ...current.details,
-          [exerciseId]: detail,
+          [exerciseId]: nextDetail,
         },
         daySkipped: false,
-      }),
-    );
+      });
+    });
   };
 
   const addSuperset = () => {
@@ -532,6 +557,7 @@ function WorkoutPanel({
             {group.exercises.map((exercise) => {
               const completed = log.completed.includes(exercise.id);
               const skipped = log.skipped.includes(exercise.id);
+              const detail = log.details[exercise.id] ?? createEmptyExerciseDetail();
 
               return (
                 <div key={exercise.id} className={`exercise-row ${completed ? 'done' : ''} ${skipped ? 'skipped' : ''}`}>
@@ -545,11 +571,50 @@ function WorkoutPanel({
                   </button>
                   <div className="exercise-copy">
                     <strong>{exercise.name}</strong>
-                    <input
-                      value={log.details[exercise.id] ?? ''}
-                      placeholder="Weight / reps / details"
-                      onChange={(event) => updateDetail(exercise.id, event.target.value)}
-                    />
+                    <div className={`exercise-detail-grid ${detail.weightMode === 'pounds' ? 'with-pounds' : ''}`}>
+                      <label>
+                        <span>Weight</span>
+                        <select
+                          value={detail.weightMode}
+                          onChange={(event) =>
+                            updateDetail(exercise.id, {
+                              weightMode: event.target.value as WeightMode,
+                            })
+                          }
+                        >
+                          <option value="bodyweight">Body weight</option>
+                          <option value="pounds">Pounds</option>
+                        </select>
+                      </label>
+                      {detail.weightMode === 'pounds' && (
+                        <label>
+                          <span>Pounds</span>
+                          <input
+                            type="number"
+                            min="0"
+                            step="0.5"
+                            inputMode="decimal"
+                            value={detail.pounds}
+                            onChange={(event) => updateDetail(exercise.id, { pounds: event.target.value })}
+                          />
+                        </label>
+                      )}
+                      <label>
+                        <span>Reps</span>
+                        <select
+                          value={detail.reps}
+                          onChange={(event) => updateDetail(exercise.id, { reps: event.target.value })}
+                        >
+                          <option value="">-</option>
+                          {REP_OPTIONS.map((rep) => (
+                            <option key={rep} value={rep}>
+                              {rep}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                    </div>
+                    {detail.legacyNote && <small className="legacy-detail">Previous detail: {detail.legacyNote}</small>}
                   </div>
                   <button
                     className={`skip-button ${skipped ? 'active' : ''}`}
@@ -1100,6 +1165,11 @@ function SettingsView({
           <Download aria-hidden="true" />
           <span>Export JSON</span>
         </button>
+        <a className="settings-action spotify-action" href="https://open.spotify.com/" target="_blank" rel="noreferrer">
+          <Headphones aria-hidden="true" />
+          <span>Spotify</span>
+          <ExternalLink aria-hidden="true" />
+        </a>
         <label className="settings-action">
           <Upload aria-hidden="true" />
           <span>Import JSON</span>

@@ -658,7 +658,8 @@ body[data-theme="light"] .workout-banner {
 
 .superset-controls select,
 .date-input,
-.exercise-copy input,
+.exercise-detail-grid select,
+.exercise-detail-grid input,
 .notes-grid textarea {
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -669,7 +670,8 @@ body[data-theme="light"] .workout-banner {
 
 .superset-controls select:focus,
 .date-input:focus,
-.exercise-copy input:focus,
+.exercise-detail-grid select:focus,
+.exercise-detail-grid input:focus,
 .notes-grid textarea:focus {
   border-color: var(--green);
   box-shadow: 0 0 0 3px rgba(85, 216, 139, 0.13);
@@ -774,10 +776,43 @@ body[data-theme="light"] .workout-banner {
   overflow-wrap: anywhere;
 }
 
-.exercise-copy input {
+.exercise-detail-grid {
+  display: grid;
+  grid-template-columns: minmax(8.5rem, 1fr) minmax(4.6rem, 0.45fr);
+  gap: 0.45rem;
+  align-items: end;
+}
+
+.exercise-detail-grid.with-pounds {
+  grid-template-columns: minmax(8.5rem, 1fr) minmax(6rem, 0.6fr) minmax(4.6rem, 0.45fr);
+}
+
+.exercise-detail-grid label {
+  display: grid;
+  gap: 0.24rem;
+  min-width: 0;
+}
+
+.exercise-detail-grid span {
+  color: var(--muted);
+  font-size: 0.66rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.exercise-detail-grid select,
+.exercise-detail-grid input {
   width: 100%;
-  min-height: 2.25rem;
-  padding: 0 0.65rem;
+  min-height: 2.3rem;
+  padding: 0 0.58rem;
+}
+
+.legacy-detail {
+  display: block;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  overflow-wrap: anywhere;
 }
 
 .notes-grid {
@@ -1073,7 +1108,7 @@ body[data-theme="light"] .workout-banner {
 }
 
 .settings-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .settings-action {
@@ -1083,6 +1118,7 @@ body[data-theme="light"] .workout-banner {
   min-height: 9rem;
   color: var(--ink);
   font-weight: 900;
+  text-decoration: none;
 }
 
 .settings-action svg {
@@ -1093,6 +1129,19 @@ body[data-theme="light"] .workout-banner {
 
 .settings-action.danger svg {
   color: var(--coral);
+}
+
+.settings-action.spotify-action {
+  border-color: rgba(85, 216, 139, 0.34);
+  background:
+    linear-gradient(135deg, rgba(85, 216, 139, 0.13), rgba(110, 168, 255, 0.08)),
+    var(--card);
+}
+
+.settings-action.spotify-action svg:last-child {
+  width: 1rem;
+  height: 1rem;
+  color: var(--muted);
 }
 
 .settings-action input {

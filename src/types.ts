@@ -13,6 +13,8 @@ export type ThemeMode = 'dark' | 'light';
 
 export type DayStatus = 'completed' | 'partial' | 'skipped' | 'future';
 
+export type WeightMode = 'bodyweight' | 'pounds';
+
 export interface Exercise {
   id: string;
   day: Weekday;
@@ -24,11 +26,18 @@ export interface SupersetPair {
   exerciseIds: [string, string];
 }
 
+export interface ExerciseDetail {
+  weightMode: WeightMode;
+  pounds: string;
+  reps: string;
+  legacyNote?: string;
+}
+
 export interface WorkoutLog {
   date: string;
   completed: string[];
   skipped: string[];
-  details: Record<string, string>;
+  details: Record<string, ExerciseDetail>;
   notes: string;
   prNote: string;
   supersets: SupersetPair[];
