@@ -385,6 +385,9 @@ body[data-theme="light"] .app-chrome {
 .calendar-shell,
 .timeline-section,
 .recent-panel,
+.program-side-panel,
+.program-editor-panel,
+.program-workout-row,
 .storage-panel,
 .superset-builder,
 .week-day,
@@ -658,6 +661,8 @@ body[data-theme="light"] .workout-banner {
 
 .superset-controls select,
 .date-input,
+.program-add-row input,
+.program-workout-row input,
 .set-row select,
 .set-row input,
 .notes-grid textarea {
@@ -670,6 +675,8 @@ body[data-theme="light"] .workout-banner {
 
 .superset-controls select:focus,
 .date-input:focus,
+.program-add-row input:focus,
+.program-workout-row input:focus,
 .set-row select:focus,
 .set-row input:focus,
 .notes-grid textarea:focus {
@@ -1250,12 +1257,112 @@ body[data-theme="light"] .workout-banner {
   color: var(--muted);
 }
 
-.settings-action input {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-  pointer-events: none;
+.program-editor-layout {
+  display: grid;
+  grid-template-columns: 16rem minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.program-side-panel,
+.program-editor-panel {
+  display: grid;
+  gap: 0.85rem;
+  padding: 0.95rem;
+}
+
+.program-day-tabs {
+  display: grid;
+  gap: 0.42rem;
+}
+
+.program-day-button {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  min-height: 2.7rem;
+  padding: 0 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  background: var(--paper);
+  text-align: left;
+}
+
+.program-day-button.active {
+  border-color: rgba(85, 216, 139, 0.48);
+  background: linear-gradient(135deg, rgba(85, 216, 139, 0.16), rgba(241, 196, 77, 0.08));
+}
+
+.program-day-button span,
+.program-day-button strong {
+  min-width: 0;
+}
+
+.program-day-button span {
+  overflow-wrap: anywhere;
+  font-size: 0.9rem;
+  font-weight: 900;
+}
+
+.program-day-button strong {
+  color: var(--green);
+  font-size: 0.82rem;
+}
+
+.program-spotify {
+  min-height: 6.2rem;
+}
+
+.program-editor-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.program-editor-head > span {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.program-add-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.55rem;
+}
+
+.program-add-row input,
+.program-workout-row input {
+  min-height: 2.65rem;
+  padding: 0 0.7rem;
+}
+
+.program-workout-list {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.program-workout-row {
+  display: grid;
+  grid-template-columns: 4.35rem minmax(0, 1fr) 2.3rem;
+  gap: 0.55rem;
+  align-items: center;
+  min-height: 3.65rem;
+  padding: 0.55rem;
+}
+
+.program-workout-row .move-pair {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.program-workout-row .move-mini-button {
+  width: 2rem;
+  height: 2.2rem;
 }
 
 .storage-panel {
@@ -1346,6 +1453,7 @@ body[data-theme="light"] .workout-banner {
 
 .app-shell.mobile-preview .today-strip,
 .app-shell.mobile-preview .notes-grid,
+.app-shell.mobile-preview .program-editor-layout,
 .app-shell.mobile-preview .settings-grid,
 .app-shell.mobile-preview .storage-panel,
 .app-shell.mobile-preview .metrics-grid,
@@ -1362,6 +1470,15 @@ body[data-theme="light"] .workout-banner {
 .app-shell.mobile-preview .calendar-cell {
   min-height: 4.8rem;
   padding: 0.4rem;
+}
+
+.app-shell.mobile-preview .program-add-row,
+.app-shell.mobile-preview .program-workout-row {
+  grid-template-columns: 1fr;
+}
+
+.app-shell.mobile-preview .program-workout-row .move-pair {
+  display: flex;
 }
 
 .app-shell.mobile-preview .bottom-tabs {
@@ -1503,6 +1620,7 @@ body[data-theme="light"] .app-shell.mobile-preview .bottom-tabs {
 
   .today-strip,
   .notes-grid,
+  .program-editor-layout,
   .settings-grid,
   .storage-panel {
     grid-template-columns: 1fr;
@@ -1520,6 +1638,15 @@ body[data-theme="light"] .app-shell.mobile-preview .bottom-tabs {
 
   .calendar-cell small {
     font-size: 0.68rem;
+  }
+
+  .program-add-row,
+  .program-workout-row {
+    grid-template-columns: 1fr;
+  }
+
+  .program-workout-row .move-pair {
+    display: flex;
   }
 }
 

@@ -10,7 +10,6 @@ import {
   ChevronRight,
   Circle,
   ClipboardList,
-  Download,
   Dumbbell,
   ExternalLink,
   Flame,
@@ -29,12 +28,10 @@ import {
   Sun,
   Target,
   Timer,
-  Trash2,
   Trophy,
-  Upload,
   X,
 } from 'lucide-react';
-import type { ChangeEvent, ComponentType, CSSProperties, Dispatch, DragEvent, SetStateAction, SVGProps } from 'react';
+import type { ComponentType, CSSProperties, Dispatch, DragEvent, SetStateAction, SVGProps } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import {
   addDays,
@@ -54,22 +51,22 @@ import {
   createEmptyExerciseDetail,
   createEmptyExerciseSet,
   createEmptyLog,
-  loadExerciseOrder,
   loadLogs,
-  normalizeExerciseOrder,
   normalizeLog,
-  saveExerciseOrder,
+  loadProgram,
   saveLogs,
+  saveProgram,
 } from './storage';
 import type {
   DayStatus,
   Exercise,
-  ExerciseOrderByDay,
   ExerciseSet,
   LogsByDate,
+  ProgramByDay,
   SupersetPair,
   TabId,
   ThemeMode,
+  Weekday,
   WeightMode,
   WorkoutLog,
 } from './types';
@@ -118,10 +115,6 @@ function createSetId(): string {
   return `set-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
 }
 
-function isPlainRecord(value: unknown): value is Record<string, unknown> {
-  return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
-}
-
 function uniqueList(items: string[]): string[] {
   return Array.from(new Set(items));
 }
@@ -138,24 +131,13 @@ function applyExerciseOrder(exercises: Exercise[], orderedIds: string[]): Exerci
   return [...orderedExercises, ...exercises.filter((exercise) => !orderedSet.has(exercise.id))];
 }
 
-function getOrderedExercisesForDate(dateKey: string, exerciseOrder: ExerciseOrderByDay): Exercise[] {
-  const exercises = getExercisesForDate(dateKey);
+function getProgramExercisesForDate(dateKey: string, program: ProgramByDay): Exercise[] {
   const day = getWeekday(parseDateKey(dateKey));
-  return applyExerciseOrder(exercises, exerciseOrder[day]);
+  return program[day];
 }
 
-function mergeExerciseOrderForDate(dateKey: string, orderedIds: string[]): string[] {
-  const defaultIds = getExercisesForDate(dateKey).map((exercise) => exercise.id);
-  const validIds = new Set(defaultIds);
-  const nextIds: string[] = [];
-
-  orderedIds.forEach((id) => {
-    if (validIds.has(id) && !nextIds.includes(id)) {
-      nextIds.push(id);
-    }
-  });
-
-  return [...nextIds, ...defaultIds.filter((id) => !nextIds.includes(id))];
+function createWorkoutId(day: Weekday): string {
+  return `${day.toLowerCase()}-custom-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
 }
 
 function countCompleted(exercises: Exercise[], log: WorkoutLog): number {
@@ -1380,74 +1362,73 @@ function LogbookView({
 }
 
 function SettingsView({
-  logs,
-  exerciseOrder,
-  setLogs,
-  setExerciseOrder,
+  program,
+  setProgram,
 }: {
-  logs: LogsByDate;
-  exerciseOrder: ExerciseOrderByDay;
-  setLogs: Dispatch<SetStateAction<LogsByDate>>;
-  setExerciseOrder: Dispatch<SetStateAction<ExerciseOrderByDay>>;
+  program: ProgramByDay;
+  setProgram: Dispatch<SetStateAction<ProgramByDay>>;
 }) {
-  const [message, setMessage] = useState('');
+  const [selectedProgramDay, setSelectedProgramDay] = useState<Weekday>(() => getWeekday(new Date()));
+  const [newWorkoutName, setNewWorkoutName] = useState('');
+  const dayWorkouts = program[selectedProgramDay];
 
-  const exportLogs = () => {
-    const payload = JSON.stringify(
-      {
-        version: 2,
-        exportedAt: new Date().toISOString(),
-        exerciseOrder,
-        logs,
-      },
-      null,
-      2,
-    );
-    const blob = new Blob([payload], { type: 'application/json' });
-    const url = window.URL.createObjectURL(blob);
-    const anchor = document.createElement('a');
-    anchor.href = url;
-    anchor.download = `gym-logbook-${toDateKey(new Date())}.json`;
-    anchor.click();
-    window.URL.revokeObjectURL(url);
-    setMessage('Export ready.');
+  const updateWorkoutName = (exerciseId: string, name: string) => {
+    setProgram((current) => ({
+      ...current,
+      [selectedProgramDay]: current[selectedProgramDay].map((exercise) =>
+        exercise.id === exerciseId ? { ...exercise, name } : exercise,
+      ),
+    }));
   };
 
-  const importLogs = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) {
+  const normalizeWorkoutName = (exerciseId: string, name: string) => {
+    const trimmedName = name.trim();
+    updateWorkoutName(exerciseId, trimmedName || 'Untitled Workout');
+  };
+
+  const addWorkout = () => {
+    const name = newWorkoutName.trim();
+    if (!name) {
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      try {
-        const parsed = JSON.parse(String(reader.result)) as unknown;
-        if (!isPlainRecord(parsed)) {
-          throw new Error('Invalid import');
-        }
-        const source = isPlainRecord(parsed.logs) ? parsed.logs : parsed;
-        const nextLogs = Object.fromEntries(
-          Object.entries(source).map(([date, log]) => [date, normalizeLog(date, log as Partial<WorkoutLog>)]),
-        );
-        setLogs(nextLogs);
-        if (isPlainRecord(parsed) && isPlainRecord(parsed.exerciseOrder)) {
-          setExerciseOrder(normalizeExerciseOrder(parsed.exerciseOrder));
-        }
-        setMessage('Import complete.');
-      } catch {
-        setMessage('Import failed.');
-      }
-    };
-    reader.readAsText(file);
-    event.target.value = '';
+    setProgram((current) => ({
+      ...current,
+      [selectedProgramDay]: [
+        ...current[selectedProgramDay],
+        {
+          id: createWorkoutId(selectedProgramDay),
+          day: selectedProgramDay,
+          name,
+        },
+      ],
+    }));
+    setNewWorkoutName('');
   };
 
-  const clearAll = () => {
-    if (window.confirm('Clear all Gym logs on this device?')) {
-      setLogs({});
-      setMessage('Logs cleared.');
-    }
+  const removeWorkout = (exerciseId: string) => {
+    setProgram((current) => ({
+      ...current,
+      [selectedProgramDay]: current[selectedProgramDay].filter((exercise) => exercise.id !== exerciseId),
+    }));
+  };
+
+  const moveWorkout = (exerciseId: string, direction: -1 | 1) => {
+    setProgram((current) => {
+      const workouts = current[selectedProgramDay];
+      const currentIndex = workouts.findIndex((exercise) => exercise.id === exerciseId);
+      const nextIndex = currentIndex + direction;
+      if (currentIndex < 0 || nextIndex < 0 || nextIndex >= workouts.length) {
+        return current;
+      }
+
+      const nextWorkouts = [...workouts];
+      [nextWorkouts[currentIndex], nextWorkouts[nextIndex]] = [nextWorkouts[nextIndex], nextWorkouts[currentIndex]];
+      return {
+        ...current,
+        [selectedProgramDay]: nextWorkouts,
+      };
+    });
   };
 
   return (
@@ -1455,41 +1436,109 @@ function SettingsView({
       <section className="topline">
         <div>
           <p className="eyebrow">Settings</p>
-          <h1>Device backup</h1>
+          <h1>Program editor</h1>
         </div>
       </section>
 
-      <div className="settings-grid">
-        <button className="settings-action" type="button" onClick={exportLogs}>
-          <Download aria-hidden="true" />
-          <span>Export JSON</span>
-        </button>
-        <a className="settings-action spotify-action" href="https://open.spotify.com/" target="_blank" rel="noreferrer">
-          <Headphones aria-hidden="true" />
-          <span>Spotify</span>
-          <ExternalLink aria-hidden="true" />
-        </a>
-        <label className="settings-action">
-          <Upload aria-hidden="true" />
-          <span>Import JSON</span>
-          <input type="file" accept="application/json" onChange={importLogs} />
-        </label>
-        <button className="settings-action danger" type="button" onClick={clearAll}>
-          <Trash2 aria-hidden="true" />
-          <span>Reset Logs</span>
-        </button>
+      <div className="program-editor-layout">
+        <aside className="program-side-panel">
+          <div className="section-title">
+            <CalendarDays aria-hidden="true" />
+            <h3>Days</h3>
+          </div>
+          <div className="program-day-tabs">
+            {WEEK_DAYS.map((day) => (
+              <button
+                key={day}
+                className={`program-day-button ${day === selectedProgramDay ? 'active' : ''}`}
+                type="button"
+                onClick={() => setSelectedProgramDay(day)}
+              >
+                <span>{day}</span>
+                <strong>{program[day].length}</strong>
+              </button>
+            ))}
+          </div>
+          <a className="settings-action spotify-action program-spotify" href="https://open.spotify.com/" target="_blank" rel="noreferrer">
+            <Headphones aria-hidden="true" />
+            <span>Spotify</span>
+            <ExternalLink aria-hidden="true" />
+          </a>
+        </aside>
+
+        <section className="program-editor-panel">
+          <div className="program-editor-head">
+            <div className="section-title">
+              <ListChecks aria-hidden="true" />
+              <h3>{selectedProgramDay} Workouts</h3>
+            </div>
+            <span>{dayWorkouts.length} saved</span>
+          </div>
+
+          <form
+            className="program-add-row"
+            onSubmit={(event) => {
+              event.preventDefault();
+              addWorkout();
+            }}
+          >
+            <input
+              value={newWorkoutName}
+              placeholder="Add workout"
+              onChange={(event) => setNewWorkoutName(event.target.value)}
+            />
+            <button className="icon-text-button compact" type="submit" disabled={!newWorkoutName.trim()}>
+              <Plus aria-hidden="true" />
+              <span>Add</span>
+            </button>
+          </form>
+
+          <div className="program-workout-list">
+            {dayWorkouts.length > 0 ? (
+              dayWorkouts.map((exercise, index) => (
+                <article key={exercise.id} className="program-workout-row">
+                  <div className="move-pair">
+                    <button
+                      className="move-mini-button"
+                      type="button"
+                      aria-label={`Move ${exercise.name} up`}
+                      onClick={() => moveWorkout(exercise.id, -1)}
+                      disabled={index === 0}
+                    >
+                      <ArrowUp aria-hidden="true" />
+                    </button>
+                    <button
+                      className="move-mini-button"
+                      type="button"
+                      aria-label={`Move ${exercise.name} down`}
+                      onClick={() => moveWorkout(exercise.id, 1)}
+                      disabled={index === dayWorkouts.length - 1}
+                    >
+                      <ArrowDown aria-hidden="true" />
+                    </button>
+                  </div>
+                  <input
+                    value={exercise.name}
+                    aria-label={`Rename ${exercise.name}`}
+                    onChange={(event) => updateWorkoutName(exercise.id, event.target.value)}
+                    onBlur={(event) => normalizeWorkoutName(exercise.id, event.target.value)}
+                  />
+                  <button
+                    className="set-remove-button"
+                    type="button"
+                    aria-label={`Remove ${exercise.name}`}
+                    onClick={() => removeWorkout(exercise.id)}
+                  >
+                    <X aria-hidden="true" />
+                  </button>
+                </article>
+              ))
+            ) : (
+              <p className="empty-note">No workouts saved for {selectedProgramDay}.</p>
+            )}
+          </div>
+        </section>
       </div>
-
-      <section className="storage-panel">
-        <div>
-          <span>Stored days</span>
-          <strong>{Object.keys(logs).length}</strong>
-        </div>
-        <div>
-          <span>Backup status</span>
-          <strong>{message || 'Local'}</strong>
-        </div>
-      </section>
     </div>
   );
 }
@@ -1499,7 +1548,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<TabId>('today');
   const [selectedDate, setSelectedDate] = useState(todayKey);
   const [logs, setLogs] = useState<LogsByDate>(() => loadLogs());
-  const [exerciseOrder, setExerciseOrder] = useState<ExerciseOrderByDay>(() => loadExerciseOrder());
+  const [program, setProgram] = useState<ProgramByDay>(() => loadProgram());
   const [theme, setTheme] = useState<ThemeMode>(() => getStoredTheme());
   const [mobilePreview, setMobilePreview] = useState(() => getStoredMobilePreview());
 
@@ -1508,8 +1557,8 @@ export default function App() {
   }, [logs]);
 
   useEffect(() => {
-    saveExerciseOrder(exerciseOrder);
-  }, [exerciseOrder]);
+    saveProgram(program);
+  }, [program]);
 
   useEffect(() => {
     document.body.setAttribute('data-theme', theme);
@@ -1549,13 +1598,13 @@ export default function App() {
     setActiveTab('logbook');
   };
 
-  const getExercises: GetExercisesForDate = (dateKey) => getOrderedExercisesForDate(dateKey, exerciseOrder);
+  const getExercises: GetExercisesForDate = (dateKey) => getProgramExercisesForDate(dateKey, program);
 
   const updateExerciseOrder = (dateKey: string, exerciseIds: string[]) => {
     const day = getWeekday(parseDateKey(dateKey));
-    setExerciseOrder((current) => ({
+    setProgram((current) => ({
       ...current,
-      [day]: mergeExerciseOrderForDate(dateKey, exerciseIds),
+      [day]: applyExerciseOrder(current[day], exerciseIds),
     }));
   };
 
@@ -1646,10 +1695,8 @@ export default function App() {
         )}
         {activeTab === 'settings' && (
           <SettingsView
-            logs={logs}
-            exerciseOrder={exerciseOrder}
-            setLogs={setLogs}
-            setExerciseOrder={setExerciseOrder}
+            program={program}
+            setProgram={setProgram}
           />
         )}
       </main>

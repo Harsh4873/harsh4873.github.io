@@ -53,3 +53,5 @@ export interface WorkoutLog {
 export type LogsByDate = Record<string, WorkoutLog>;
 
 export type ExerciseOrderByDay = Record<Weekday, string[]>;
+
+export type ProgramByDay = Record<Weekday, Exercise[]>;
