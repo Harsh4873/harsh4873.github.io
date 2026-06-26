@@ -34842,6 +34842,7 @@
           "raw_projected_home_goals": 1.161,
           "raw_projected_total": 2.46,
           "reason": "Projected goals France 1.39, Norway 1.25 after tournament-form, venue, and market-total blending.",
+          "result": "loss",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-06-26T19:00Z",
@@ -34928,6 +34929,7 @@
           "raw_projected_home_goals": 1.161,
           "raw_projected_total": 2.46,
           "reason": "Norway has the best spread-cover edge at +1.5 from the venue-adjusted Poisson score grid.",
+          "result": "loss",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-06-26T19:00Z",
@@ -35104,6 +35106,7 @@
           "raw_projected_home_goals": 2.348,
           "raw_projected_total": 3.0,
           "reason": "Projected goals Iraq 0.68, Senegal 2.42 after tournament-form, venue, and market-total blending.",
+          "result": "loss",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-06-26T19:00Z",
@@ -68230,6 +68233,7 @@
           "decision": "BET",
           "edge": null,
           "game": "New York Mets vs Philadelphia Phillies",
+          "game_start_time": "2026-06-26T23:10Z",
           "matchup": "New York Mets vs Philadelphia Phillies",
           "odds": 105,
           "pick": "Phillies -1.5 (Mets vs Phillies)",
@@ -68249,6 +68253,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-26T23:10Z",
           "units": 1
         },
         {
@@ -68312,6 +68317,7 @@
           "decision": "BET",
           "edge": null,
           "game": "San Diego Padres vs Los Angeles Dodgers",
+          "game_start_time": "2026-06-27T01:45Z",
           "matchup": "San Diego Padres vs Los Angeles Dodgers",
           "odds": -115,
           "pick": "Over 7.5 (Padres vs Dodgers)",
@@ -68331,6 +68337,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-27T01:45Z",
           "units": 1
         },
         {
@@ -68338,6 +68345,7 @@
           "decision": "BET",
           "edge": null,
           "game": "San Francisco Giants vs Atlanta Braves",
+          "game_start_time": "2026-06-27T02:15Z",
           "matchup": "San Francisco Giants vs Atlanta Braves",
           "odds": -116,
           "pick": "Braves ML (Giants vs Braves)",
@@ -68357,6 +68365,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-27T02:15Z",
           "units": 1
         }
       ],
