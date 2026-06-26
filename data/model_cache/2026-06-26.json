@@ -1,7 +1,7 @@
 {
   "date": "2026-06-26",
   "errors": [],
-  "externalFeedsUpdatedAt": "2026-06-26T20:12:01.515860Z",
+  "externalFeedsUpdatedAt": "2026-06-26T21:38:55.255427Z",
   "external_feeds": {
     "scores24_fifa_world_cup": {
       "date": "2026-06-26",
@@ -824,52 +824,20 @@
     "sportsgambler_fifa_world_cup": {
       "date": "2026-06-26",
       "errors": [],
-      "generatedAt": "2026-06-26T16:30:11.265283Z",
+      "generatedAt": "2026-06-26T21:38:55.255427Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-26",
         "feed": "sportsgambler_fifa_world_cup",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 6,
+        "pick_count": 4,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-26T16:30:11.265283Z"
+        "updatedAt": "2026-06-26T21:38:55.255427Z"
       },
-      "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 6 pick(s).",
+      "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 4 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "calibration_excluded": true,
-          "date": "2026-06-26",
-          "decision": "BET",
-          "edge": null,
-          "game": "Norway vs France",
-          "grade_supported": true,
-          "market_type": "soccer_total",
-          "matchup": "Norway vs France",
-          "odds": -167,
-          "pick": "Over 2.5 Goals (Norway vs France)",
-          "probability": null,
-          "source": "SportsGamblerFIFAWorldCup",
-          "sport": "FIFA WC",
-          "units": 1
-        },
-        {
-          "calibration_excluded": true,
-          "date": "2026-06-26",
-          "decision": "BET",
-          "edge": null,
-          "game": "Senegal vs Iraq",
-          "grade_supported": false,
-          "market_type": "soccer_asian_handicap",
-          "matchup": "Senegal vs Iraq",
-          "odds": 102,
-          "pick": "Senegal Asian Hcp -2 (Senegal vs Iraq)",
-          "probability": null,
-          "source": "SportsGamblerFIFAWorldCup",
-          "sport": "FIFA WC",
-          "units": 1
-        },
         {
           "calibration_excluded": true,
           "date": "2026-06-26",
@@ -935,12 +903,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-26T16:30:11.265283Z"
+      "updatedAt": "2026-06-26T21:38:55.255427Z"
     },
     "sportsgambler_mlb": {
       "date": "2026-06-26",
       "errors": [],
-      "generatedAt": "2026-06-26T16:30:11.265283Z",
+      "generatedAt": "2026-06-26T21:38:55.255427Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-26",
@@ -949,7 +917,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 14,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-26T16:30:11.265283Z"
+        "updatedAt": "2026-06-26T21:38:55.255427Z"
       },
       "note": "Scheduled sportsgambler_mlb refresh returned 14 pick(s).",
       "ok": true,
@@ -1319,12 +1287,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-26T16:30:11.265283Z"
+      "updatedAt": "2026-06-26T21:38:55.255427Z"
     },
     "sportsgambler_nba": {
       "date": "2026-06-26",
       "errors": [],
-      "generatedAt": "2026-06-26T16:30:11.265283Z",
+      "generatedAt": "2026-06-26T21:38:55.255427Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-26",
@@ -1333,17 +1301,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-26T16:30:11.265283Z"
+        "updatedAt": "2026-06-26T21:38:55.255427Z"
       },
       "note": "Scheduled sportsgambler_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-06-26T16:30:11.265283Z"
+      "updatedAt": "2026-06-26T21:38:55.255427Z"
     },
     "sportsgambler_wnba": {
       "date": "2026-06-26",
       "errors": [],
-      "generatedAt": "2026-06-26T16:30:11.265283Z",
+      "generatedAt": "2026-06-26T21:38:55.255427Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-26",
@@ -1352,7 +1320,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 3,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-26T16:30:11.265283Z"
+        "updatedAt": "2026-06-26T21:38:55.255427Z"
       },
       "note": "Scheduled sportsgambler_wnba refresh returned 3 pick(s).",
       "ok": true,
@@ -1436,57 +1404,25 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-26T16:30:11.265283Z"
+      "updatedAt": "2026-06-26T21:38:55.255427Z"
     },
     "sportytrader_fifa_world_cup": {
       "date": "2026-06-26",
       "errors": [],
-      "generatedAt": "2026-06-26T16:30:11.265283Z",
+      "generatedAt": "2026-06-26T21:38:55.255427Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-26",
         "feed": "sportytrader_fifa_world_cup",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 5,
+        "pick_count": 3,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-26T16:30:11.265283Z"
+        "updatedAt": "2026-06-26T21:38:55.255427Z"
       },
-      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 5 pick(s).",
+      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 3 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "calibration_excluded": true,
-          "date": "2026-06-26",
-          "decision": "BET",
-          "edge": null,
-          "game": "Norway vs France",
-          "grade_supported": false,
-          "market_type": "soccer_specialty",
-          "matchup": "Norway vs France",
-          "odds": 110,
-          "pick": "Over 3.0 Asian Total (Norway vs France)",
-          "probability": null,
-          "source": "SportyTraderFIFAWorldCup",
-          "sport": "FIFA WC",
-          "units": 1
-        },
-        {
-          "calibration_excluded": true,
-          "date": "2026-06-26",
-          "decision": "BET",
-          "edge": null,
-          "game": "Senegal vs Iraq",
-          "grade_supported": false,
-          "market_type": "soccer_specialty",
-          "matchup": "Senegal vs Iraq",
-          "odds": -250,
-          "pick": "Senegal to Win & Over 1.5 Goals (Senegal vs Iraq)",
-          "probability": null,
-          "source": "SportyTraderFIFAWorldCup",
-          "sport": "FIFA WC",
-          "units": 1
-        },
         {
           "calibration_excluded": true,
           "date": "2026-06-26",
@@ -1536,23 +1472,23 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-26T16:30:11.265283Z"
+      "updatedAt": "2026-06-26T21:38:55.255427Z"
     },
     "sportytrader_mlb": {
       "date": "2026-06-26",
       "errors": [],
-      "generatedAt": "2026-06-26T16:30:11.265283Z",
+      "generatedAt": "2026-06-26T21:38:55.255427Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-26",
         "feed": "sportytrader_mlb",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 7,
+        "pick_count": 10,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-26T16:30:11.265283Z"
+        "updatedAt": "2026-06-26T21:38:55.255427Z"
       },
-      "note": "Scheduled sportytrader_mlb refresh returned 7 pick(s).",
+      "note": "Scheduled sportytrader_mlb refresh returned 10 pick(s).",
       "ok": true,
       "picks": [
         {
@@ -1689,6 +1625,32 @@
           "date": "2026-06-26",
           "decision": "BET",
           "edge": null,
+          "game": "New York Mets vs Philadelphia Phillies",
+          "matchup": "New York Mets vs Philadelphia Phillies",
+          "odds": 105,
+          "pick": "Phillies -1.5 (Mets vs Phillies)",
+          "pregame_snapshot": {
+            "date": "2026-06-26",
+            "decision": "BET",
+            "edge": null,
+            "game": "New York Mets vs Philadelphia Phillies",
+            "matchup": "New York Mets vs Philadelphia Phillies",
+            "odds": 105,
+            "pick": "Phillies -1.5 (Mets vs Phillies)",
+            "probability": null,
+            "source": "SportyTraderMLB",
+            "sport": "MLB",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "date": "2026-06-26",
+          "decision": "BET",
+          "edge": null,
           "game": "Minnesota Twins vs Colorado Rockies",
           "matchup": "Minnesota Twins vs Colorado Rockies",
           "odds": 123,
@@ -1736,14 +1698,66 @@
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "units": 1
+        },
+        {
+          "date": "2026-06-26",
+          "decision": "BET",
+          "edge": null,
+          "game": "San Diego Padres vs Los Angeles Dodgers",
+          "matchup": "San Diego Padres vs Los Angeles Dodgers",
+          "odds": -115,
+          "pick": "Over 7.5 (Padres vs Dodgers)",
+          "pregame_snapshot": {
+            "date": "2026-06-26",
+            "decision": "BET",
+            "edge": null,
+            "game": "San Diego Padres vs Los Angeles Dodgers",
+            "matchup": "San Diego Padres vs Los Angeles Dodgers",
+            "odds": -115,
+            "pick": "Over 7.5 (Padres vs Dodgers)",
+            "probability": null,
+            "source": "SportyTraderMLB",
+            "sport": "MLB",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "date": "2026-06-26",
+          "decision": "BET",
+          "edge": null,
+          "game": "San Francisco Giants vs Atlanta Braves",
+          "matchup": "San Francisco Giants vs Atlanta Braves",
+          "odds": -116,
+          "pick": "Braves ML (Giants vs Braves)",
+          "pregame_snapshot": {
+            "date": "2026-06-26",
+            "decision": "BET",
+            "edge": null,
+            "game": "San Francisco Giants vs Atlanta Braves",
+            "matchup": "San Francisco Giants vs Atlanta Braves",
+            "odds": -116,
+            "pick": "Braves ML (Giants vs Braves)",
+            "probability": null,
+            "source": "SportyTraderMLB",
+            "sport": "MLB",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
         }
       ],
-      "updatedAt": "2026-06-26T16:30:11.265283Z"
+      "updatedAt": "2026-06-26T21:38:55.255427Z"
     },
     "sportytrader_nba": {
       "date": "2026-06-26",
       "errors": [],
-      "generatedAt": "2026-06-26T16:30:11.265283Z",
+      "generatedAt": "2026-06-26T21:38:55.255427Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-26",
@@ -1752,17 +1766,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-26T16:30:11.265283Z"
+        "updatedAt": "2026-06-26T21:38:55.255427Z"
       },
       "note": "Scheduled sportytrader_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-06-26T16:30:11.265283Z"
+      "updatedAt": "2026-06-26T21:38:55.255427Z"
     },
     "sportytrader_wnba": {
       "date": "2026-06-26",
       "errors": [],
-      "generatedAt": "2026-06-26T16:30:11.265283Z",
+      "generatedAt": "2026-06-26T21:38:55.255427Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-26",
@@ -1771,7 +1785,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 4,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-26T16:30:11.265283Z"
+        "updatedAt": "2026-06-26T21:38:55.255427Z"
       },
       "note": "Scheduled sportytrader_wnba refresh returned 4 pick(s).",
       "ok": true,
@@ -1881,7 +1895,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-26T16:30:11.265283Z"
+      "updatedAt": "2026-06-26T21:38:55.255427Z"
     }
   },
   "fifa_world_cup": {
@@ -67366,54 +67380,20 @@
     "sportsgambler_fifa_world_cup": {
       "date": "2026-06-26",
       "errors": [],
-      "generatedAt": "2026-06-26T16:30:11.265283Z",
+      "generatedAt": "2026-06-26T21:38:55.255427Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-26",
         "feed": "sportsgambler_fifa_world_cup",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 6,
+        "pick_count": 4,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-26T16:30:11.265283Z"
+        "updatedAt": "2026-06-26T21:38:55.255427Z"
       },
-      "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 6 pick(s).",
+      "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 4 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "calibration_excluded": true,
-          "date": "2026-06-26",
-          "decision": "BET",
-          "edge": null,
-          "game": "Norway vs France",
-          "game_start_time": "2026-06-26T19:00Z",
-          "grade_supported": true,
-          "market_type": "soccer_total",
-          "matchup": "Norway vs France",
-          "odds": -167,
-          "pick": "Over 2.5 Goals (Norway vs France)",
-          "probability": null,
-          "source": "SportsGamblerFIFAWorldCup",
-          "sport": "FIFA WC",
-          "start_time": "2026-06-26T19:00Z",
-          "units": 1
-        },
-        {
-          "calibration_excluded": true,
-          "date": "2026-06-26",
-          "decision": "BET",
-          "edge": null,
-          "game": "Senegal vs Iraq",
-          "grade_supported": false,
-          "market_type": "soccer_asian_handicap",
-          "matchup": "Senegal vs Iraq",
-          "odds": 102,
-          "pick": "Senegal Asian Hcp -2 (Senegal vs Iraq)",
-          "probability": null,
-          "source": "SportsGamblerFIFAWorldCup",
-          "sport": "FIFA WC",
-          "units": 1
-        },
         {
           "calibration_excluded": true,
           "date": "2026-06-26",
@@ -67483,12 +67463,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-26T16:30:11.265283Z"
+      "updatedAt": "2026-06-26T21:38:55.255427Z"
     },
     "sportsgambler_mlb": {
       "date": "2026-06-26",
       "errors": [],
-      "generatedAt": "2026-06-26T16:30:11.265283Z",
+      "generatedAt": "2026-06-26T21:38:55.255427Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-26",
@@ -67497,7 +67477,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 14,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-26T16:30:11.265283Z"
+        "updatedAt": "2026-06-26T21:38:55.255427Z"
       },
       "note": "Scheduled sportsgambler_mlb refresh returned 14 pick(s).",
       "ok": true,
@@ -67895,12 +67875,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-26T16:30:11.265283Z"
+      "updatedAt": "2026-06-26T21:38:55.255427Z"
     },
     "sportsgambler_nba": {
       "date": "2026-06-26",
       "errors": [],
-      "generatedAt": "2026-06-26T16:30:11.265283Z",
+      "generatedAt": "2026-06-26T21:38:55.255427Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-26",
@@ -67909,17 +67889,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-26T16:30:11.265283Z"
+        "updatedAt": "2026-06-26T21:38:55.255427Z"
       },
       "note": "Scheduled sportsgambler_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-06-26T16:30:11.265283Z"
+      "updatedAt": "2026-06-26T21:38:55.255427Z"
     },
     "sportsgambler_wnba": {
       "date": "2026-06-26",
       "errors": [],
-      "generatedAt": "2026-06-26T16:30:11.265283Z",
+      "generatedAt": "2026-06-26T21:38:55.255427Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-26",
@@ -67928,7 +67908,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 3,
         "provider": "sportsgambler",
-        "updatedAt": "2026-06-26T16:30:11.265283Z"
+        "updatedAt": "2026-06-26T21:38:55.255427Z"
       },
       "note": "Scheduled sportsgambler_wnba refresh returned 3 pick(s).",
       "ok": true,
@@ -68018,57 +67998,25 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-26T16:30:11.265283Z"
+      "updatedAt": "2026-06-26T21:38:55.255427Z"
     },
     "sportytrader_fifa_world_cup": {
       "date": "2026-06-26",
       "errors": [],
-      "generatedAt": "2026-06-26T16:30:11.265283Z",
+      "generatedAt": "2026-06-26T21:38:55.255427Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-26",
         "feed": "sportytrader_fifa_world_cup",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 5,
+        "pick_count": 3,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-26T16:30:11.265283Z"
+        "updatedAt": "2026-06-26T21:38:55.255427Z"
       },
-      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 5 pick(s).",
+      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 3 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "calibration_excluded": true,
-          "date": "2026-06-26",
-          "decision": "BET",
-          "edge": null,
-          "game": "Norway vs France",
-          "grade_supported": false,
-          "market_type": "soccer_specialty",
-          "matchup": "Norway vs France",
-          "odds": 110,
-          "pick": "Over 3.0 Asian Total (Norway vs France)",
-          "probability": null,
-          "source": "SportyTraderFIFAWorldCup",
-          "sport": "FIFA WC",
-          "units": 1
-        },
-        {
-          "calibration_excluded": true,
-          "date": "2026-06-26",
-          "decision": "BET",
-          "edge": null,
-          "game": "Senegal vs Iraq",
-          "grade_supported": false,
-          "market_type": "soccer_specialty",
-          "matchup": "Senegal vs Iraq",
-          "odds": -250,
-          "pick": "Senegal to Win & Over 1.5 Goals (Senegal vs Iraq)",
-          "probability": null,
-          "source": "SportyTraderFIFAWorldCup",
-          "sport": "FIFA WC",
-          "units": 1
-        },
         {
           "calibration_excluded": true,
           "date": "2026-06-26",
@@ -68118,23 +68066,23 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-26T16:30:11.265283Z"
+      "updatedAt": "2026-06-26T21:38:55.255427Z"
     },
     "sportytrader_mlb": {
       "date": "2026-06-26",
       "errors": [],
-      "generatedAt": "2026-06-26T16:30:11.265283Z",
+      "generatedAt": "2026-06-26T21:38:55.255427Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-26",
         "feed": "sportytrader_mlb",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 7,
+        "pick_count": 10,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-26T16:30:11.265283Z"
+        "updatedAt": "2026-06-26T21:38:55.255427Z"
       },
-      "note": "Scheduled sportytrader_mlb refresh returned 7 pick(s).",
+      "note": "Scheduled sportytrader_mlb refresh returned 10 pick(s).",
       "ok": true,
       "picks": [
         {
@@ -68281,6 +68229,32 @@
           "date": "2026-06-26",
           "decision": "BET",
           "edge": null,
+          "game": "New York Mets vs Philadelphia Phillies",
+          "matchup": "New York Mets vs Philadelphia Phillies",
+          "odds": 105,
+          "pick": "Phillies -1.5 (Mets vs Phillies)",
+          "pregame_snapshot": {
+            "date": "2026-06-26",
+            "decision": "BET",
+            "edge": null,
+            "game": "New York Mets vs Philadelphia Phillies",
+            "matchup": "New York Mets vs Philadelphia Phillies",
+            "odds": 105,
+            "pick": "Phillies -1.5 (Mets vs Phillies)",
+            "probability": null,
+            "source": "SportyTraderMLB",
+            "sport": "MLB",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "date": "2026-06-26",
+          "decision": "BET",
+          "edge": null,
           "game": "Minnesota Twins vs Colorado Rockies",
           "game_start_time": "2026-06-27T00:10Z",
           "matchup": "Minnesota Twins vs Colorado Rockies",
@@ -68332,14 +68306,66 @@
           "sport": "MLB",
           "start_time": "2026-06-27T00:15Z",
           "units": 1
+        },
+        {
+          "date": "2026-06-26",
+          "decision": "BET",
+          "edge": null,
+          "game": "San Diego Padres vs Los Angeles Dodgers",
+          "matchup": "San Diego Padres vs Los Angeles Dodgers",
+          "odds": -115,
+          "pick": "Over 7.5 (Padres vs Dodgers)",
+          "pregame_snapshot": {
+            "date": "2026-06-26",
+            "decision": "BET",
+            "edge": null,
+            "game": "San Diego Padres vs Los Angeles Dodgers",
+            "matchup": "San Diego Padres vs Los Angeles Dodgers",
+            "odds": -115,
+            "pick": "Over 7.5 (Padres vs Dodgers)",
+            "probability": null,
+            "source": "SportyTraderMLB",
+            "sport": "MLB",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "date": "2026-06-26",
+          "decision": "BET",
+          "edge": null,
+          "game": "San Francisco Giants vs Atlanta Braves",
+          "matchup": "San Francisco Giants vs Atlanta Braves",
+          "odds": -116,
+          "pick": "Braves ML (Giants vs Braves)",
+          "pregame_snapshot": {
+            "date": "2026-06-26",
+            "decision": "BET",
+            "edge": null,
+            "game": "San Francisco Giants vs Atlanta Braves",
+            "matchup": "San Francisco Giants vs Atlanta Braves",
+            "odds": -116,
+            "pick": "Braves ML (Giants vs Braves)",
+            "probability": null,
+            "source": "SportyTraderMLB",
+            "sport": "MLB",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
         }
       ],
-      "updatedAt": "2026-06-26T16:30:11.265283Z"
+      "updatedAt": "2026-06-26T21:38:55.255427Z"
     },
     "sportytrader_nba": {
       "date": "2026-06-26",
       "errors": [],
-      "generatedAt": "2026-06-26T16:30:11.265283Z",
+      "generatedAt": "2026-06-26T21:38:55.255427Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-26",
@@ -68348,17 +68374,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-26T16:30:11.265283Z"
+        "updatedAt": "2026-06-26T21:38:55.255427Z"
       },
       "note": "Scheduled sportytrader_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-06-26T16:30:11.265283Z"
+      "updatedAt": "2026-06-26T21:38:55.255427Z"
     },
     "sportytrader_wnba": {
       "date": "2026-06-26",
       "errors": [],
-      "generatedAt": "2026-06-26T16:30:11.265283Z",
+      "generatedAt": "2026-06-26T21:38:55.255427Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-06-26",
@@ -68367,7 +68393,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 4,
         "provider": "sportytrader",
-        "updatedAt": "2026-06-26T16:30:11.265283Z"
+        "updatedAt": "2026-06-26T21:38:55.255427Z"
       },
       "note": "Scheduled sportytrader_wnba refresh returned 4 pick(s).",
       "ok": true,
@@ -68485,7 +68511,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-26T16:30:11.265283Z"
+      "updatedAt": "2026-06-26T21:38:55.255427Z"
     },
     "wnba": {
       "ok": true,
@@ -70189,52 +70215,20 @@
   "sportsgambler_fifa_world_cup": {
     "date": "2026-06-26",
     "errors": [],
-    "generatedAt": "2026-06-26T16:30:11.265283Z",
+    "generatedAt": "2026-06-26T21:38:55.255427Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-26",
       "feed": "sportsgambler_fifa_world_cup",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 6,
+      "pick_count": 4,
       "provider": "sportsgambler",
-      "updatedAt": "2026-06-26T16:30:11.265283Z"
+      "updatedAt": "2026-06-26T21:38:55.255427Z"
     },
-    "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 6 pick(s).",
+    "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 4 pick(s).",
     "ok": true,
     "picks": [
-      {
-        "calibration_excluded": true,
-        "date": "2026-06-26",
-        "decision": "BET",
-        "edge": null,
-        "game": "Norway vs France",
-        "grade_supported": true,
-        "market_type": "soccer_total",
-        "matchup": "Norway vs France",
-        "odds": -167,
-        "pick": "Over 2.5 Goals (Norway vs France)",
-        "probability": null,
-        "source": "SportsGamblerFIFAWorldCup",
-        "sport": "FIFA WC",
-        "units": 1
-      },
-      {
-        "calibration_excluded": true,
-        "date": "2026-06-26",
-        "decision": "BET",
-        "edge": null,
-        "game": "Senegal vs Iraq",
-        "grade_supported": false,
-        "market_type": "soccer_asian_handicap",
-        "matchup": "Senegal vs Iraq",
-        "odds": 102,
-        "pick": "Senegal Asian Hcp -2 (Senegal vs Iraq)",
-        "probability": null,
-        "source": "SportsGamblerFIFAWorldCup",
-        "sport": "FIFA WC",
-        "units": 1
-      },
       {
         "calibration_excluded": true,
         "date": "2026-06-26",
@@ -70300,12 +70294,12 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-26T16:30:11.265283Z"
+    "updatedAt": "2026-06-26T21:38:55.255427Z"
   },
   "sportsgambler_mlb": {
     "date": "2026-06-26",
     "errors": [],
-    "generatedAt": "2026-06-26T16:30:11.265283Z",
+    "generatedAt": "2026-06-26T21:38:55.255427Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-26",
@@ -70314,7 +70308,7 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 14,
       "provider": "sportsgambler",
-      "updatedAt": "2026-06-26T16:30:11.265283Z"
+      "updatedAt": "2026-06-26T21:38:55.255427Z"
     },
     "note": "Scheduled sportsgambler_mlb refresh returned 14 pick(s).",
     "ok": true,
@@ -70684,12 +70678,12 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-26T16:30:11.265283Z"
+    "updatedAt": "2026-06-26T21:38:55.255427Z"
   },
   "sportsgambler_nba": {
     "date": "2026-06-26",
     "errors": [],
-    "generatedAt": "2026-06-26T16:30:11.265283Z",
+    "generatedAt": "2026-06-26T21:38:55.255427Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-26",
@@ -70698,17 +70692,17 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 0,
       "provider": "sportsgambler",
-      "updatedAt": "2026-06-26T16:30:11.265283Z"
+      "updatedAt": "2026-06-26T21:38:55.255427Z"
     },
     "note": "Scheduled sportsgambler_nba refresh returned 0 pick(s).",
     "ok": true,
     "picks": [],
-    "updatedAt": "2026-06-26T16:30:11.265283Z"
+    "updatedAt": "2026-06-26T21:38:55.255427Z"
   },
   "sportsgambler_wnba": {
     "date": "2026-06-26",
     "errors": [],
-    "generatedAt": "2026-06-26T16:30:11.265283Z",
+    "generatedAt": "2026-06-26T21:38:55.255427Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-26",
@@ -70717,7 +70711,7 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 3,
       "provider": "sportsgambler",
-      "updatedAt": "2026-06-26T16:30:11.265283Z"
+      "updatedAt": "2026-06-26T21:38:55.255427Z"
     },
     "note": "Scheduled sportsgambler_wnba refresh returned 3 pick(s).",
     "ok": true,
@@ -70801,57 +70795,25 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-26T16:30:11.265283Z"
+    "updatedAt": "2026-06-26T21:38:55.255427Z"
   },
   "sportytrader_fifa_world_cup": {
     "date": "2026-06-26",
     "errors": [],
-    "generatedAt": "2026-06-26T16:30:11.265283Z",
+    "generatedAt": "2026-06-26T21:38:55.255427Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-26",
       "feed": "sportytrader_fifa_world_cup",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 5,
+      "pick_count": 3,
       "provider": "sportytrader",
-      "updatedAt": "2026-06-26T16:30:11.265283Z"
+      "updatedAt": "2026-06-26T21:38:55.255427Z"
     },
-    "note": "Scheduled sportytrader_fifa_world_cup refresh returned 5 pick(s).",
+    "note": "Scheduled sportytrader_fifa_world_cup refresh returned 3 pick(s).",
     "ok": true,
     "picks": [
-      {
-        "calibration_excluded": true,
-        "date": "2026-06-26",
-        "decision": "BET",
-        "edge": null,
-        "game": "Norway vs France",
-        "grade_supported": false,
-        "market_type": "soccer_specialty",
-        "matchup": "Norway vs France",
-        "odds": 110,
-        "pick": "Over 3.0 Asian Total (Norway vs France)",
-        "probability": null,
-        "source": "SportyTraderFIFAWorldCup",
-        "sport": "FIFA WC",
-        "units": 1
-      },
-      {
-        "calibration_excluded": true,
-        "date": "2026-06-26",
-        "decision": "BET",
-        "edge": null,
-        "game": "Senegal vs Iraq",
-        "grade_supported": false,
-        "market_type": "soccer_specialty",
-        "matchup": "Senegal vs Iraq",
-        "odds": -250,
-        "pick": "Senegal to Win & Over 1.5 Goals (Senegal vs Iraq)",
-        "probability": null,
-        "source": "SportyTraderFIFAWorldCup",
-        "sport": "FIFA WC",
-        "units": 1
-      },
       {
         "calibration_excluded": true,
         "date": "2026-06-26",
@@ -70901,23 +70863,23 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-26T16:30:11.265283Z"
+    "updatedAt": "2026-06-26T21:38:55.255427Z"
   },
   "sportytrader_mlb": {
     "date": "2026-06-26",
     "errors": [],
-    "generatedAt": "2026-06-26T16:30:11.265283Z",
+    "generatedAt": "2026-06-26T21:38:55.255427Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-26",
       "feed": "sportytrader_mlb",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 7,
+      "pick_count": 10,
       "provider": "sportytrader",
-      "updatedAt": "2026-06-26T16:30:11.265283Z"
+      "updatedAt": "2026-06-26T21:38:55.255427Z"
     },
-    "note": "Scheduled sportytrader_mlb refresh returned 7 pick(s).",
+    "note": "Scheduled sportytrader_mlb refresh returned 10 pick(s).",
     "ok": true,
     "picks": [
       {
@@ -71054,6 +71016,32 @@
         "date": "2026-06-26",
         "decision": "BET",
         "edge": null,
+        "game": "New York Mets vs Philadelphia Phillies",
+        "matchup": "New York Mets vs Philadelphia Phillies",
+        "odds": 105,
+        "pick": "Phillies -1.5 (Mets vs Phillies)",
+        "pregame_snapshot": {
+          "date": "2026-06-26",
+          "decision": "BET",
+          "edge": null,
+          "game": "New York Mets vs Philadelphia Phillies",
+          "matchup": "New York Mets vs Philadelphia Phillies",
+          "odds": 105,
+          "pick": "Phillies -1.5 (Mets vs Phillies)",
+          "probability": null,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
+        },
+        "probability": null,
+        "source": "SportyTraderMLB",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "date": "2026-06-26",
+        "decision": "BET",
+        "edge": null,
         "game": "Minnesota Twins vs Colorado Rockies",
         "matchup": "Minnesota Twins vs Colorado Rockies",
         "odds": 123,
@@ -71101,14 +71089,66 @@
         "source": "SportyTraderMLB",
         "sport": "MLB",
         "units": 1
+      },
+      {
+        "date": "2026-06-26",
+        "decision": "BET",
+        "edge": null,
+        "game": "San Diego Padres vs Los Angeles Dodgers",
+        "matchup": "San Diego Padres vs Los Angeles Dodgers",
+        "odds": -115,
+        "pick": "Over 7.5 (Padres vs Dodgers)",
+        "pregame_snapshot": {
+          "date": "2026-06-26",
+          "decision": "BET",
+          "edge": null,
+          "game": "San Diego Padres vs Los Angeles Dodgers",
+          "matchup": "San Diego Padres vs Los Angeles Dodgers",
+          "odds": -115,
+          "pick": "Over 7.5 (Padres vs Dodgers)",
+          "probability": null,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
+        },
+        "probability": null,
+        "source": "SportyTraderMLB",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "date": "2026-06-26",
+        "decision": "BET",
+        "edge": null,
+        "game": "San Francisco Giants vs Atlanta Braves",
+        "matchup": "San Francisco Giants vs Atlanta Braves",
+        "odds": -116,
+        "pick": "Braves ML (Giants vs Braves)",
+        "pregame_snapshot": {
+          "date": "2026-06-26",
+          "decision": "BET",
+          "edge": null,
+          "game": "San Francisco Giants vs Atlanta Braves",
+          "matchup": "San Francisco Giants vs Atlanta Braves",
+          "odds": -116,
+          "pick": "Braves ML (Giants vs Braves)",
+          "probability": null,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
+        },
+        "probability": null,
+        "source": "SportyTraderMLB",
+        "sport": "MLB",
+        "units": 1
       }
     ],
-    "updatedAt": "2026-06-26T16:30:11.265283Z"
+    "updatedAt": "2026-06-26T21:38:55.255427Z"
   },
   "sportytrader_nba": {
     "date": "2026-06-26",
     "errors": [],
-    "generatedAt": "2026-06-26T16:30:11.265283Z",
+    "generatedAt": "2026-06-26T21:38:55.255427Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-26",
@@ -71117,17 +71157,17 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 0,
       "provider": "sportytrader",
-      "updatedAt": "2026-06-26T16:30:11.265283Z"
+      "updatedAt": "2026-06-26T21:38:55.255427Z"
     },
     "note": "Scheduled sportytrader_nba refresh returned 0 pick(s).",
     "ok": true,
     "picks": [],
-    "updatedAt": "2026-06-26T16:30:11.265283Z"
+    "updatedAt": "2026-06-26T21:38:55.255427Z"
   },
   "sportytrader_wnba": {
     "date": "2026-06-26",
     "errors": [],
-    "generatedAt": "2026-06-26T16:30:11.265283Z",
+    "generatedAt": "2026-06-26T21:38:55.255427Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-06-26",
@@ -71136,7 +71176,7 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 4,
       "provider": "sportytrader",
-      "updatedAt": "2026-06-26T16:30:11.265283Z"
+      "updatedAt": "2026-06-26T21:38:55.255427Z"
     },
     "note": "Scheduled sportytrader_wnba refresh returned 4 pick(s).",
     "ok": true,
@@ -71246,9 +71286,9 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-26T16:30:11.265283Z"
+    "updatedAt": "2026-06-26T21:38:55.255427Z"
   },
-  "updatedAt": "2026-06-26T20:12:01.515860Z",
+  "updatedAt": "2026-06-26T21:38:55.255427Z",
   "wnba": {
     "ok": true,
     "picks": [
