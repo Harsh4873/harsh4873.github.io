@@ -1,24 +1,6 @@
 {
-  "last_updated": "2026-06-25T13:09:18.048633",
+  "last_updated": "2026-06-26T13:11:22.251192",
   "report": {
-    "allisha gray": {
-      "player_name": "Allisha Gray",
-      "team_abbr": "ATL",
-      "status": "Day-To-Day",
-      "sources": [
-        "espn"
-      ],
-      "comment": "Gray won't return to Wednesday's game against the Valkyries due to an upper-body injury, Kendra Andrews of ESPN reports. She'll finish with eight points (3-10 FG, 1-5 3Pt, 1-3 FT), one rebound and one steal in 25 minutes."
-    },
-    "amy okonkwo": {
-      "player_name": "Amy Okonkwo",
-      "team_abbr": "ATL",
-      "status": "Out",
-      "sources": [
-        "espn"
-      ],
-      "comment": "Okonkwo (coach's decision) has been ruled out for Wednesday's game against the Valkyries."
-    },
     "aaliyah nye": {
       "player_name": "Aaliyah Nye",
       "team_abbr": "ATL",
@@ -26,7 +8,7 @@
       "sources": [
         "espn"
       ],
-      "comment": "Nye (Knee) is listed as out for Wednesday's game against Golden State."
+      "comment": "Nye (knee) is listed as out for Friday's game against Golden State."
     },
     "brionna jones": {
       "player_name": "Brionna Jones",
@@ -37,15 +19,6 @@
       ],
       "comment": "The Dream expect Jones (knee) to resume team activities in the coming weeks, per Myles Ehrlich of Winsidr.com."
     },
-    "maddy westbeld": {
-      "player_name": "Maddy Westbeld",
-      "team_abbr": "CHI",
-      "status": "Day-To-Day",
-      "sources": [
-        "espn"
-      ],
-      "comment": "day-to-day"
-    },
     "courtney vandersloot": {
       "player_name": "Courtney Vandersloot",
       "team_abbr": "CHI",
@@ -53,7 +26,7 @@
       "sources": [
         "espn"
       ],
-      "comment": "Vandersloot (knee) does not have a timetable to return to the court."
+      "comment": "Vandersloot (knee) is expected to play in Friday's game against the Fire, WNBA reporter Kareem Copeland reports."
     },
     "dijonai carrington": {
       "player_name": "DiJonai Carrington",
@@ -73,24 +46,6 @@
       ],
       "comment": "The Sky announced Tuesday that Jackson will miss the remainder of the season after suffering a torn ACL in her left knee during Sunday's 86-79 win over the Lynx."
     },
-    "saniya rivers": {
-      "player_name": "Saniya Rivers",
-      "team_abbr": "CON",
-      "status": "Day-To-Day",
-      "sources": [
-        "espn"
-      ],
-      "comment": "Rivers won't return to Monday's game against the Sky due to a left ankle sprain, and she'll finish with four points (0-2 FG, 4-4 FT), three rebounds and one block in 13 minutes."
-    },
-    "ashlon jackson": {
-      "player_name": "Ashlon Jackson",
-      "team_abbr": "CON",
-      "status": "Out",
-      "sources": [
-        "espn"
-      ],
-      "comment": "Jackson (coach's decision) won't play in Monday's game against Chicago."
-    },
     "hailey van lith": {
       "player_name": "Hailey Van Lith",
       "team_abbr": "CON",
@@ -98,7 +53,34 @@
       "sources": [
         "espn"
       ],
-      "comment": "Van Lith (ankle) has been ruled out for Monday's matchup with the Sky."
+      "comment": "Van Lith (ankle) is out for Friday's game against the Mystics."
+    },
+    "saniya rivers": {
+      "player_name": "Saniya Rivers",
+      "team_abbr": "CON",
+      "status": "Out",
+      "sources": [
+        "espn"
+      ],
+      "comment": "Rivers (ankle) is out for Friday's game against the Mystics."
+    },
+    "aneesah morrow": {
+      "player_name": "Aneesah Morrow",
+      "team_abbr": "CON",
+      "status": "Out",
+      "sources": [
+        "espn"
+      ],
+      "comment": "Morrow (leg) is out for Friday's game against the Mystics."
+    },
+    "costanza verona": {
+      "player_name": "Costanza Verona",
+      "team_abbr": "DAL",
+      "status": "Out",
+      "sources": [
+        "espn"
+      ],
+      "comment": "Verona (coach's decision) is listed as out for Thursday's game versus Las Vegas."
     },
     "alanna smith": {
       "player_name": "Alanna Smith",
@@ -108,15 +90,6 @@
         "espn"
       ],
       "comment": "Smith (concussion) is out for Thursday's game in Las Vegas."
-    },
-    "alysha clark": {
-      "player_name": "Alysha Clark",
-      "team_abbr": "DAL",
-      "status": "Day-To-Day",
-      "sources": [
-        "espn"
-      ],
-      "comment": "Clark (leg) is listed as probable for Thursday's game versus the Aces."
     },
     "odyssey sims": {
       "player_name": "Odyssey Sims",
@@ -181,6 +154,15 @@
       ],
       "comment": "Hall (coach's decision) has been ruled out for Wednesday's game against the Mercury."
     },
+    "kate martin": {
+      "player_name": "Kate Martin",
+      "team_abbr": "LA",
+      "status": "Day-To-Day",
+      "sources": [
+        "espn"
+      ],
+      "comment": "day-to-day"
+    },
     "cameron brink": {
       "player_name": "Cameron Brink",
       "team_abbr": "LA",
@@ -188,7 +170,7 @@
       "sources": [
         "espn"
       ],
-      "comment": "Brink (ankle) has been ruled out for Thursday's game against the Tempo."
+      "comment": "Brink (ankle) will be re-evaluated in two weeks, John W. Davis of Long Beach Press-Telegram reports."
     },
     "kelsey plum": {
       "player_name": "Kelsey Plum",
@@ -199,6 +181,15 @@
       ],
       "comment": "Plum has suffered a lower left leg injury and will be re-evaluated in four weeks, Mitchell Hansen of CanisHoopus.com reports."
     },
+    "dana evans": {
+      "player_name": "Dana Evans",
+      "team_abbr": "LV",
+      "status": "Out",
+      "sources": [
+        "espn"
+      ],
+      "comment": "Evans (leg) has been ruled out for Thursday's game versus the Wings."
+    },
     "janiah barker": {
       "player_name": "Janiah Barker",
       "team_abbr": "LV",
@@ -207,15 +198,6 @@
         "espn"
       ],
       "comment": "Barker (leg) has been ruled out for Thursday's game against the Wings."
-    },
-    "dana evans": {
-      "player_name": "Dana Evans",
-      "team_abbr": "LV",
-      "status": "Out",
-      "sources": [
-        "espn"
-      ],
-      "comment": "Evans (leg) is doubtful for Thursday's game versus the Wings."
     },
     "chennedy carter": {
       "player_name": "Chennedy Carter",
@@ -280,6 +262,33 @@
       ],
       "comment": "day-to-day"
     },
+    "breanna stewart": {
+      "player_name": "Breanna Stewart",
+      "team_abbr": "NY",
+      "status": "Day-To-Day",
+      "sources": [
+        "espn"
+      ],
+      "comment": "day-to-day"
+    },
+    "marine fauthoux": {
+      "player_name": "Marine Fauthoux",
+      "team_abbr": "NY",
+      "status": "Out",
+      "sources": [
+        "espn"
+      ],
+      "comment": "Fauthoux (coach's decision) is out for Thursday's game in Seattle."
+    },
+    "alyssa thomas": {
+      "player_name": "Alyssa Thomas",
+      "team_abbr": "PHX",
+      "status": "Out",
+      "sources": [
+        "espn"
+      ],
+      "comment": "The WNBA announced Thursday that Thomas is being suspended for one game due to a Flagrant Foul 2 penalty."
+    },
     "shay ciezki": {
       "player_name": "Shay Ciezki",
       "team_abbr": "PHX",
@@ -325,23 +334,23 @@
       ],
       "comment": "Whitcomb will undergo an arthroscopy on Thursday to remove a loose body in her left knee. She will be re-evaluated in four to six weeks, Shane Young of the Mercury's official site reports."
     },
-    "jordan harrison": {
-      "player_name": "Jordan Harrison",
+    "karlie samuelson": {
+      "player_name": "Karlie Samuelson",
       "team_abbr": "POR",
-      "status": "Out",
+      "status": "Day-To-Day",
       "sources": [
         "espn"
       ],
-      "comment": "Harrison (coach's decision) has been ruled out for Wednesday's game against the Sky."
+      "comment": "Samuelson is questionable for Friday's game in Chicago due to a left middle finger injury."
     },
     "taina mair": {
       "player_name": "Taina Mair",
       "team_abbr": "SEA",
-      "status": "Out",
+      "status": "Day-To-Day",
       "sources": [
         "espn"
       ],
-      "comment": "Mair (coach's decision) has been ruled out for Thursday's game against the Liberty."
+      "comment": "day-to-day"
     },
     "jordan horston": {
       "player_name": "Jordan Horston",
@@ -378,15 +387,6 @@
         "espn"
       ],
       "comment": "Rice (ankle) remains sidelined by a Grade 3 left ankle sprain, according to WNBA reporter Kareem Copeland."
-    },
-    "darianna littlepage-buggs": {
-      "player_name": "Darianna Littlepage-Buggs",
-      "team_abbr": "WAS",
-      "status": "Day-To-Day",
-      "sources": [
-        "espn"
-      ],
-      "comment": "day-to-day"
     }
   }
 }
