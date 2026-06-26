@@ -20260,6 +20260,7 @@
           "raw_projected_home_goals": 1.484,
           "raw_projected_total": 3.1,
           "reason": "Sweden owns the stronger current-squad projection. Attack 90.8, midfield 89.6, defense 87.8, goalkeeper 71.0. Top player ranks: Daniel Svensson 97.0, Gabriel Gudmundsson 93.5, Hjalmar Ekdal 93.5. Sweden form 1-0-1 (1.50 pts/g, 3.00-3.00 goals/g).",
+          "result": "loss",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-06-25T23:00Z",
@@ -20348,6 +20349,7 @@
           "raw_projected_home_goals": 1.484,
           "raw_projected_total": 3.1,
           "reason": "Projected goals Sweden 1.56, Japan 1.43 after tournament-form, venue, and market-total blending.",
+          "result": "loss",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-06-25T23:00Z",
@@ -20434,6 +20436,7 @@
           "raw_projected_home_goals": 1.484,
           "raw_projected_total": 3.1,
           "reason": "Sweden has the best spread-cover edge at +0.5 from the venue-adjusted Poisson score grid.",
+          "result": "win",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-06-25T23:00Z",
@@ -20610,6 +20613,7 @@
           "raw_projected_home_goals": 0.681,
           "raw_projected_total": 2.91,
           "reason": "Projected goals Netherlands 2.31, Tunisia 0.71 after tournament-form, venue, and market-total blending.",
+          "result": "loss",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-06-25T23:00Z",
@@ -20696,6 +20700,7 @@
           "raw_projected_home_goals": 0.681,
           "raw_projected_total": 2.91,
           "reason": "Tunisia has the best spread-cover edge at +2.5 from the venue-adjusted Poisson score grid.",
+          "result": "win",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-06-25T23:00Z",
@@ -20784,6 +20789,7 @@
           "raw_projected_home_goals": 1.534,
           "raw_projected_total": 2.31,
           "reason": "Paraguay owns the stronger current-squad projection. Attack 88.6, midfield 89.7, defense 84.0, goalkeeper 78.8. Top player ranks: Maur\u00edcio 93.5, Ram\u00f3n Sosa 93.5, Omar Alderete 93.5. Paraguay form 1-0-1 (1.50 pts/g, 1.00-2.00 goals/g).",
+          "result": "loss",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-06-26T02:00Z",
@@ -20872,6 +20878,7 @@
           "raw_projected_home_goals": 1.534,
           "raw_projected_total": 2.31,
           "reason": "Projected goals Australia 0.72, Paraguay 1.44 after tournament-form, venue, and market-total blending.",
+          "result": "loss",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-06-26T02:00Z",
@@ -20958,6 +20965,7 @@
           "raw_projected_home_goals": 1.534,
           "raw_projected_total": 2.31,
           "reason": "Paraguay has the best spread-cover edge at -0.5 from the venue-adjusted Poisson score grid.",
+          "result": "loss",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-06-26T02:00Z",
@@ -21220,6 +21228,7 @@
           "raw_projected_home_goals": 1.391,
           "raw_projected_total": 2.71,
           "reason": "T\u00fcrkiye has the best spread-cover edge at +0.5 from the venue-adjusted Poisson score grid.",
+          "result": "win",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-06-26T02:00Z",
@@ -38490,6 +38499,7 @@
           "odds": -111,
           "pick": "Japan ML (Sweden @ Japan)",
           "probability": null,
+          "result": "loss",
           "source": "Scores24FIFAWorldCup",
           "source_url": "https://scores24.live/en/soccer/m-25-06-2026-japan-sweden-prediction",
           "sport": "FIFA WC",
@@ -38726,6 +38736,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-25-06-2026-detroit-tigers-houston-astros-prediction",
           "sport": "MLB",
@@ -38762,6 +38773,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-25-06-2026-washington-nationals-philadelphia-phillies-prediction",
           "sport": "MLB",
@@ -38798,6 +38810,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-25-06-2026-toronto-blue-jays-texas-rangers-prediction",
           "sport": "MLB",
@@ -38834,6 +38847,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-25-06-2026-new-york-mets-chicago-cubs-prediction",
           "sport": "MLB",
@@ -38870,6 +38884,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-25-06-2026-boston-red-sox-new-york-yankees-prediction",
           "sport": "MLB",
@@ -38906,6 +38921,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "push",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-24-06-2026-st-louis-cardinals-arizona-diamondbacks-prediction",
           "sport": "MLB",
@@ -38968,6 +38984,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24WNBA",
           "source_url": "https://scores24.live/en/basketball/m-25-06-2026-toronto-tempo-los-angeles-sparks-w--prediction",
           "sport": "WNBA",
@@ -39004,6 +39021,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24WNBA",
           "source_url": "https://scores24.live/en/basketball/m-26-06-2026-las-vegas-aces-w-dallas-wings-w--prediction",
           "sport": "WNBA",
@@ -39040,6 +39058,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24WNBA",
           "source_url": "https://scores24.live/en/basketball/m-26-06-2026-seattle-storm-w-new-york-liberty-w--prediction",
           "sport": "WNBA",
@@ -39128,6 +39147,7 @@
           "odds": -147,
           "pick": "Over 2.5 Goals (Japan vs Sweden)",
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerFIFAWorldCup",
           "sport": "FIFA WC",
           "start_time": "2026-06-25T23:00Z",
@@ -39192,6 +39212,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-25T22:40Z",
@@ -39220,6 +39241,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-25T22:45Z",
@@ -39248,6 +39270,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-25T23:07Z",
@@ -39276,6 +39299,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-25T23:10Z",
@@ -39304,6 +39328,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-25T23:10Z",
@@ -39332,6 +39357,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "push",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-25T23:45Z",
@@ -39399,6 +39425,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerWNBA",
           "sport": "WNBA",
           "start_time": "2026-06-25T23:00Z",
@@ -39427,6 +39454,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerWNBA",
           "sport": "WNBA",
           "start_time": "2026-06-26T02:00Z",
@@ -39455,6 +39483,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerWNBA",
           "sport": "WNBA",
           "start_time": "2026-06-26T02:00Z",
@@ -39605,6 +39634,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-25T22:45Z",
@@ -39633,6 +39663,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-25T23:07Z",
@@ -39661,6 +39692,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-25T23:10Z",
@@ -39689,6 +39721,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-25T23:07Z",
@@ -39756,6 +39789,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
           "start_time": "2026-06-26T02:00Z",
@@ -39784,6 +39818,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
           "start_time": "2026-06-26T02:00Z",
@@ -40021,6 +40056,7 @@
           "raw_edge": 19.94,
           "raw_probability": 0.7232,
           "raw_units": 0.03,
+          "result": "loss",
           "selection": "Under",
           "source": "WNBA Model",
           "sport": "WNBA",
@@ -40174,6 +40210,7 @@
           "raw_edge": 19.12,
           "raw_probability": 0.715,
           "raw_units": 0.05,
+          "result": "loss",
           "selection": "Dallas Wings",
           "source": "WNBA Model",
           "sport": "WNBA",
@@ -40417,6 +40454,7 @@
           "raw_edge": 22.27,
           "raw_probability": 0.7465,
           "raw_units": 0.04,
+          "result": "loss",
           "selection": "New York Liberty",
           "source": "WNBA Model",
           "sport": "WNBA",
@@ -40656,6 +40694,7 @@
           "raw_edge": 19.89,
           "raw_probability": 0.7227,
           "raw_units": 0.05,
+          "result": "loss",
           "selection": "New York Liberty",
           "source": "WNBA Model",
           "sport": "WNBA",
