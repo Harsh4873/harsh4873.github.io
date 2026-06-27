@@ -1,11 +1,11 @@
 {
   "date": "2026-06-27",
   "errors": [],
-  "externalFeedsUpdatedAt": "2026-06-27T17:51:03.661684Z",
+  "externalFeedsUpdatedAt": "2026-06-27T20:02:44.982465Z",
   "external_feeds": {
     "scores24_fifa_world_cup": {
       "date": "2026-06-27",
-      "generatedAt": "2026-06-27T17:51:03.661684Z",
+      "generatedAt": "2026-06-27T20:02:44.982465Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "attemptedUrls": 6,
@@ -21,7 +21,7 @@
         "missingMatchups": [],
         "officialMatchups": 6,
         "unpublishedMatchups": [],
-        "updatedAt": "2026-06-27T17:51:03.661684Z"
+        "updatedAt": "2026-06-27T20:02:44.982465Z"
       },
       "note": "Scores24FIFAWorldCup matched 6 published editorial choice(s) against 6 official 2026-06-27 matchup(s).",
       "ok": true,
@@ -153,11 +153,11 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-27T17:51:03.661684Z"
+      "updatedAt": "2026-06-27T20:02:44.982465Z"
     },
     "scores24_mlb": {
       "date": "2026-06-27",
-      "generatedAt": "2026-06-27T17:51:03.661684Z",
+      "generatedAt": "2026-06-27T20:02:44.982465Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "attemptedUrls": 15,
@@ -173,7 +173,7 @@
         "missingMatchups": [],
         "officialMatchups": 15,
         "unpublishedMatchups": [],
-        "updatedAt": "2026-06-27T17:51:03.661684Z"
+        "updatedAt": "2026-06-27T20:02:44.982465Z"
       },
       "note": "Scores24MLB matched 15 published editorial choice(s) against 15 official 2026-06-27 matchup(s).",
       "ok": true,
@@ -287,42 +287,6 @@
           "units": 1
         },
         {
-          "away_team": "Cincinnati Reds",
-          "date": "2026-06-27",
-          "decision": "BET",
-          "edge": null,
-          "game": "Cincinnati Reds @ Pittsburgh Pirates",
-          "home_team": "Pittsburgh Pirates",
-          "matchup": "Cincinnati Reds @ Pittsburgh Pirates",
-          "odds": -116,
-          "pick": "Cincinnati Reds ML (Cincinnati Reds @ Pittsburgh Pirates)",
-          "pregame_snapshot": {
-            "away_team": "Cincinnati Reds",
-            "date": "2026-06-27",
-            "decision": "BET",
-            "edge": null,
-            "game": "Cincinnati Reds @ Pittsburgh Pirates",
-            "home_team": "Pittsburgh Pirates",
-            "matchup": "Cincinnati Reds @ Pittsburgh Pirates",
-            "odds": -116,
-            "pick": "Cincinnati Reds ML (Cincinnati Reds @ Pittsburgh Pirates)",
-            "probability": null,
-            "source": "Scores24MLB",
-            "source_url": "https://scores24.live/en/baseball/m-27-06-2026-pittsburgh-pirates-cincinnati-reds-prediction",
-            "sport": "MLB",
-            "start_time": "2026-06-27T20:05Z",
-            "tip": "Cincinnati Reds Win",
-            "units": 1
-          },
-          "probability": null,
-          "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-27-06-2026-pittsburgh-pirates-cincinnati-reds-prediction",
-          "sport": "MLB",
-          "start_time": "2026-06-27T20:05Z",
-          "tip": "Cincinnati Reds Win",
-          "units": 1
-        },
-        {
           "away_team": "Philadelphia Phillies",
           "date": "2026-06-27",
           "decision": "BET",
@@ -392,6 +356,42 @@
           "sport": "MLB",
           "start_time": "2026-06-27T20:10Z",
           "tip": "Total Under (8,5)",
+          "units": 1
+        },
+        {
+          "away_team": "Cincinnati Reds",
+          "date": "2026-06-27",
+          "decision": "BET",
+          "edge": null,
+          "game": "Cincinnati Reds @ Pittsburgh Pirates",
+          "home_team": "Pittsburgh Pirates",
+          "matchup": "Cincinnati Reds @ Pittsburgh Pirates",
+          "odds": -116,
+          "pick": "Cincinnati Reds ML (Cincinnati Reds @ Pittsburgh Pirates)",
+          "pregame_snapshot": {
+            "away_team": "Cincinnati Reds",
+            "date": "2026-06-27",
+            "decision": "BET",
+            "edge": null,
+            "game": "Cincinnati Reds @ Pittsburgh Pirates",
+            "home_team": "Pittsburgh Pirates",
+            "matchup": "Cincinnati Reds @ Pittsburgh Pirates",
+            "odds": -116,
+            "pick": "Cincinnati Reds ML (Cincinnati Reds @ Pittsburgh Pirates)",
+            "probability": null,
+            "source": "Scores24MLB",
+            "source_url": "https://scores24.live/en/baseball/m-27-06-2026-pittsburgh-pirates-cincinnati-reds-prediction",
+            "sport": "MLB",
+            "start_time": "2026-06-27T20:05Z",
+            "tip": "Cincinnati Reds Win",
+            "units": 1
+          },
+          "probability": null,
+          "source": "Scores24MLB",
+          "source_url": "https://scores24.live/en/baseball/m-27-06-2026-pittsburgh-pirates-cincinnati-reds-prediction",
+          "sport": "MLB",
+          "start_time": "2026-06-27T20:05Z",
+          "tip": "Cincinnati Reds Win",
           "units": 1
         },
         {
@@ -510,8 +510,8 @@
           "game": "Chicago Cubs @ Milwaukee Brewers",
           "home_team": "Milwaukee Brewers",
           "matchup": "Chicago Cubs @ Milwaukee Brewers",
-          "odds": -189,
-          "pick": "Total Over (6,5) (Chicago Cubs @ Milwaukee Brewers)",
+          "odds": -164,
+          "pick": "Milwaukee Brewers ML (Chicago Cubs @ Milwaukee Brewers)",
           "pregame_snapshot": {
             "away_team": "Chicago Cubs",
             "date": "2026-06-27",
@@ -520,22 +520,22 @@
             "game": "Chicago Cubs @ Milwaukee Brewers",
             "home_team": "Milwaukee Brewers",
             "matchup": "Chicago Cubs @ Milwaukee Brewers",
-            "odds": -189,
-            "pick": "Total Over (6,5) (Chicago Cubs @ Milwaukee Brewers)",
+            "odds": -164,
+            "pick": "Milwaukee Brewers ML (Chicago Cubs @ Milwaukee Brewers)",
             "probability": null,
             "source": "Scores24MLB",
-            "source_url": "https://scores24.live/en/baseball/m-26-06-2026-milwaukee-brewers-chicago-cubs-prediction",
+            "source_url": "https://scores24.live/en/baseball/m-27-06-2026-milwaukee-brewers-chicago-cubs-prediction",
             "sport": "MLB",
             "start_time": "2026-06-27T23:10Z",
-            "tip": "Total Over (6,5)",
+            "tip": "Milwaukee Brewers Win",
             "units": 1
           },
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-26-06-2026-milwaukee-brewers-chicago-cubs-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-27-06-2026-milwaukee-brewers-chicago-cubs-prediction",
           "sport": "MLB",
           "start_time": "2026-06-27T23:10Z",
-          "tip": "Total Over (6,5)",
+          "tip": "Milwaukee Brewers Win",
           "units": 1
         },
         {
@@ -719,14 +719,14 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-27T17:51:03.661684Z"
+      "updatedAt": "2026-06-27T20:02:44.982465Z"
     },
     "scores24_wnba": {
       "date": "2026-06-27",
-      "generatedAt": "2026-06-27T17:51:03.661684Z",
+      "generatedAt": "2026-06-27T20:02:44.982465Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
-        "attemptedUrls": 3,
+        "attemptedUrls": 10,
         "blockRetryRounds": 0,
         "blockedUrls": 0,
         "date": "2026-06-27",
@@ -739,7 +739,7 @@
         "missingMatchups": [],
         "officialMatchups": 3,
         "unpublishedMatchups": [],
-        "updatedAt": "2026-06-27T17:51:03.661684Z"
+        "updatedAt": "2026-06-27T20:02:44.982465Z"
       },
       "note": "Scores24WNBA matched 3 published editorial choice(s) against 3 official 2026-06-27 matchup(s).",
       "ok": true,
@@ -853,7 +853,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-27T17:51:03.661684Z"
+      "updatedAt": "2026-06-27T20:02:44.982465Z"
     },
     "sportsgambler_fifa_world_cup": {
       "date": "2026-06-27",
@@ -66300,7 +66300,7 @@
     },
     "scores24_fifa_world_cup": {
       "date": "2026-06-27",
-      "generatedAt": "2026-06-27T17:51:03.661684Z",
+      "generatedAt": "2026-06-27T20:02:44.982465Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "attemptedUrls": 6,
@@ -66316,7 +66316,7 @@
         "missingMatchups": [],
         "officialMatchups": 6,
         "unpublishedMatchups": [],
-        "updatedAt": "2026-06-27T17:51:03.661684Z"
+        "updatedAt": "2026-06-27T20:02:44.982465Z"
       },
       "note": "Scores24FIFAWorldCup matched 6 published editorial choice(s) against 6 official 2026-06-27 matchup(s).",
       "ok": true,
@@ -66448,11 +66448,11 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-27T17:51:03.661684Z"
+      "updatedAt": "2026-06-27T20:02:44.982465Z"
     },
     "scores24_mlb": {
       "date": "2026-06-27",
-      "generatedAt": "2026-06-27T17:51:03.661684Z",
+      "generatedAt": "2026-06-27T20:02:44.982465Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "attemptedUrls": 15,
@@ -66468,7 +66468,7 @@
         "missingMatchups": [],
         "officialMatchups": 15,
         "unpublishedMatchups": [],
-        "updatedAt": "2026-06-27T17:51:03.661684Z"
+        "updatedAt": "2026-06-27T20:02:44.982465Z"
       },
       "note": "Scores24MLB matched 15 published editorial choice(s) against 15 official 2026-06-27 matchup(s).",
       "ok": true,
@@ -66582,42 +66582,6 @@
           "units": 1
         },
         {
-          "away_team": "Cincinnati Reds",
-          "date": "2026-06-27",
-          "decision": "BET",
-          "edge": null,
-          "game": "Cincinnati Reds @ Pittsburgh Pirates",
-          "home_team": "Pittsburgh Pirates",
-          "matchup": "Cincinnati Reds @ Pittsburgh Pirates",
-          "odds": -116,
-          "pick": "Cincinnati Reds ML (Cincinnati Reds @ Pittsburgh Pirates)",
-          "pregame_snapshot": {
-            "away_team": "Cincinnati Reds",
-            "date": "2026-06-27",
-            "decision": "BET",
-            "edge": null,
-            "game": "Cincinnati Reds @ Pittsburgh Pirates",
-            "home_team": "Pittsburgh Pirates",
-            "matchup": "Cincinnati Reds @ Pittsburgh Pirates",
-            "odds": -116,
-            "pick": "Cincinnati Reds ML (Cincinnati Reds @ Pittsburgh Pirates)",
-            "probability": null,
-            "source": "Scores24MLB",
-            "source_url": "https://scores24.live/en/baseball/m-27-06-2026-pittsburgh-pirates-cincinnati-reds-prediction",
-            "sport": "MLB",
-            "start_time": "2026-06-27T20:05Z",
-            "tip": "Cincinnati Reds Win",
-            "units": 1
-          },
-          "probability": null,
-          "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-27-06-2026-pittsburgh-pirates-cincinnati-reds-prediction",
-          "sport": "MLB",
-          "start_time": "2026-06-27T20:05Z",
-          "tip": "Cincinnati Reds Win",
-          "units": 1
-        },
-        {
           "away_team": "Philadelphia Phillies",
           "date": "2026-06-27",
           "decision": "BET",
@@ -66687,6 +66651,42 @@
           "sport": "MLB",
           "start_time": "2026-06-27T20:10Z",
           "tip": "Total Under (8,5)",
+          "units": 1
+        },
+        {
+          "away_team": "Cincinnati Reds",
+          "date": "2026-06-27",
+          "decision": "BET",
+          "edge": null,
+          "game": "Cincinnati Reds @ Pittsburgh Pirates",
+          "home_team": "Pittsburgh Pirates",
+          "matchup": "Cincinnati Reds @ Pittsburgh Pirates",
+          "odds": -116,
+          "pick": "Cincinnati Reds ML (Cincinnati Reds @ Pittsburgh Pirates)",
+          "pregame_snapshot": {
+            "away_team": "Cincinnati Reds",
+            "date": "2026-06-27",
+            "decision": "BET",
+            "edge": null,
+            "game": "Cincinnati Reds @ Pittsburgh Pirates",
+            "home_team": "Pittsburgh Pirates",
+            "matchup": "Cincinnati Reds @ Pittsburgh Pirates",
+            "odds": -116,
+            "pick": "Cincinnati Reds ML (Cincinnati Reds @ Pittsburgh Pirates)",
+            "probability": null,
+            "source": "Scores24MLB",
+            "source_url": "https://scores24.live/en/baseball/m-27-06-2026-pittsburgh-pirates-cincinnati-reds-prediction",
+            "sport": "MLB",
+            "start_time": "2026-06-27T20:05Z",
+            "tip": "Cincinnati Reds Win",
+            "units": 1
+          },
+          "probability": null,
+          "source": "Scores24MLB",
+          "source_url": "https://scores24.live/en/baseball/m-27-06-2026-pittsburgh-pirates-cincinnati-reds-prediction",
+          "sport": "MLB",
+          "start_time": "2026-06-27T20:05Z",
+          "tip": "Cincinnati Reds Win",
           "units": 1
         },
         {
@@ -66805,8 +66805,8 @@
           "game": "Chicago Cubs @ Milwaukee Brewers",
           "home_team": "Milwaukee Brewers",
           "matchup": "Chicago Cubs @ Milwaukee Brewers",
-          "odds": -189,
-          "pick": "Total Over (6,5) (Chicago Cubs @ Milwaukee Brewers)",
+          "odds": -164,
+          "pick": "Milwaukee Brewers ML (Chicago Cubs @ Milwaukee Brewers)",
           "pregame_snapshot": {
             "away_team": "Chicago Cubs",
             "date": "2026-06-27",
@@ -66815,22 +66815,22 @@
             "game": "Chicago Cubs @ Milwaukee Brewers",
             "home_team": "Milwaukee Brewers",
             "matchup": "Chicago Cubs @ Milwaukee Brewers",
-            "odds": -189,
-            "pick": "Total Over (6,5) (Chicago Cubs @ Milwaukee Brewers)",
+            "odds": -164,
+            "pick": "Milwaukee Brewers ML (Chicago Cubs @ Milwaukee Brewers)",
             "probability": null,
             "source": "Scores24MLB",
-            "source_url": "https://scores24.live/en/baseball/m-26-06-2026-milwaukee-brewers-chicago-cubs-prediction",
+            "source_url": "https://scores24.live/en/baseball/m-27-06-2026-milwaukee-brewers-chicago-cubs-prediction",
             "sport": "MLB",
             "start_time": "2026-06-27T23:10Z",
-            "tip": "Total Over (6,5)",
+            "tip": "Milwaukee Brewers Win",
             "units": 1
           },
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-26-06-2026-milwaukee-brewers-chicago-cubs-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-27-06-2026-milwaukee-brewers-chicago-cubs-prediction",
           "sport": "MLB",
           "start_time": "2026-06-27T23:10Z",
-          "tip": "Total Over (6,5)",
+          "tip": "Milwaukee Brewers Win",
           "units": 1
         },
         {
@@ -67014,14 +67014,14 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-27T17:51:03.661684Z"
+      "updatedAt": "2026-06-27T20:02:44.982465Z"
     },
     "scores24_wnba": {
       "date": "2026-06-27",
-      "generatedAt": "2026-06-27T17:51:03.661684Z",
+      "generatedAt": "2026-06-27T20:02:44.982465Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
-        "attemptedUrls": 3,
+        "attemptedUrls": 10,
         "blockRetryRounds": 0,
         "blockedUrls": 0,
         "date": "2026-06-27",
@@ -67034,7 +67034,7 @@
         "missingMatchups": [],
         "officialMatchups": 3,
         "unpublishedMatchups": [],
-        "updatedAt": "2026-06-27T17:51:03.661684Z"
+        "updatedAt": "2026-06-27T20:02:44.982465Z"
       },
       "note": "Scores24WNBA matched 3 published editorial choice(s) against 3 official 2026-06-27 matchup(s).",
       "ok": true,
@@ -67148,7 +67148,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-27T17:51:03.661684Z"
+      "updatedAt": "2026-06-27T20:02:44.982465Z"
     },
     "sportsgambler_fifa_world_cup": {
       "date": "2026-06-27",
@@ -69366,7 +69366,7 @@
   },
   "scores24_fifa_world_cup": {
     "date": "2026-06-27",
-    "generatedAt": "2026-06-27T17:51:03.661684Z",
+    "generatedAt": "2026-06-27T20:02:44.982465Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "attemptedUrls": 6,
@@ -69382,7 +69382,7 @@
       "missingMatchups": [],
       "officialMatchups": 6,
       "unpublishedMatchups": [],
-      "updatedAt": "2026-06-27T17:51:03.661684Z"
+      "updatedAt": "2026-06-27T20:02:44.982465Z"
     },
     "note": "Scores24FIFAWorldCup matched 6 published editorial choice(s) against 6 official 2026-06-27 matchup(s).",
     "ok": true,
@@ -69514,11 +69514,11 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-27T17:51:03.661684Z"
+    "updatedAt": "2026-06-27T20:02:44.982465Z"
   },
   "scores24_mlb": {
     "date": "2026-06-27",
-    "generatedAt": "2026-06-27T17:51:03.661684Z",
+    "generatedAt": "2026-06-27T20:02:44.982465Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "attemptedUrls": 15,
@@ -69534,7 +69534,7 @@
       "missingMatchups": [],
       "officialMatchups": 15,
       "unpublishedMatchups": [],
-      "updatedAt": "2026-06-27T17:51:03.661684Z"
+      "updatedAt": "2026-06-27T20:02:44.982465Z"
     },
     "note": "Scores24MLB matched 15 published editorial choice(s) against 15 official 2026-06-27 matchup(s).",
     "ok": true,
@@ -69648,42 +69648,6 @@
         "units": 1
       },
       {
-        "away_team": "Cincinnati Reds",
-        "date": "2026-06-27",
-        "decision": "BET",
-        "edge": null,
-        "game": "Cincinnati Reds @ Pittsburgh Pirates",
-        "home_team": "Pittsburgh Pirates",
-        "matchup": "Cincinnati Reds @ Pittsburgh Pirates",
-        "odds": -116,
-        "pick": "Cincinnati Reds ML (Cincinnati Reds @ Pittsburgh Pirates)",
-        "pregame_snapshot": {
-          "away_team": "Cincinnati Reds",
-          "date": "2026-06-27",
-          "decision": "BET",
-          "edge": null,
-          "game": "Cincinnati Reds @ Pittsburgh Pirates",
-          "home_team": "Pittsburgh Pirates",
-          "matchup": "Cincinnati Reds @ Pittsburgh Pirates",
-          "odds": -116,
-          "pick": "Cincinnati Reds ML (Cincinnati Reds @ Pittsburgh Pirates)",
-          "probability": null,
-          "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-27-06-2026-pittsburgh-pirates-cincinnati-reds-prediction",
-          "sport": "MLB",
-          "start_time": "2026-06-27T20:05Z",
-          "tip": "Cincinnati Reds Win",
-          "units": 1
-        },
-        "probability": null,
-        "source": "Scores24MLB",
-        "source_url": "https://scores24.live/en/baseball/m-27-06-2026-pittsburgh-pirates-cincinnati-reds-prediction",
-        "sport": "MLB",
-        "start_time": "2026-06-27T20:05Z",
-        "tip": "Cincinnati Reds Win",
-        "units": 1
-      },
-      {
         "away_team": "Philadelphia Phillies",
         "date": "2026-06-27",
         "decision": "BET",
@@ -69753,6 +69717,42 @@
         "sport": "MLB",
         "start_time": "2026-06-27T20:10Z",
         "tip": "Total Under (8,5)",
+        "units": 1
+      },
+      {
+        "away_team": "Cincinnati Reds",
+        "date": "2026-06-27",
+        "decision": "BET",
+        "edge": null,
+        "game": "Cincinnati Reds @ Pittsburgh Pirates",
+        "home_team": "Pittsburgh Pirates",
+        "matchup": "Cincinnati Reds @ Pittsburgh Pirates",
+        "odds": -116,
+        "pick": "Cincinnati Reds ML (Cincinnati Reds @ Pittsburgh Pirates)",
+        "pregame_snapshot": {
+          "away_team": "Cincinnati Reds",
+          "date": "2026-06-27",
+          "decision": "BET",
+          "edge": null,
+          "game": "Cincinnati Reds @ Pittsburgh Pirates",
+          "home_team": "Pittsburgh Pirates",
+          "matchup": "Cincinnati Reds @ Pittsburgh Pirates",
+          "odds": -116,
+          "pick": "Cincinnati Reds ML (Cincinnati Reds @ Pittsburgh Pirates)",
+          "probability": null,
+          "source": "Scores24MLB",
+          "source_url": "https://scores24.live/en/baseball/m-27-06-2026-pittsburgh-pirates-cincinnati-reds-prediction",
+          "sport": "MLB",
+          "start_time": "2026-06-27T20:05Z",
+          "tip": "Cincinnati Reds Win",
+          "units": 1
+        },
+        "probability": null,
+        "source": "Scores24MLB",
+        "source_url": "https://scores24.live/en/baseball/m-27-06-2026-pittsburgh-pirates-cincinnati-reds-prediction",
+        "sport": "MLB",
+        "start_time": "2026-06-27T20:05Z",
+        "tip": "Cincinnati Reds Win",
         "units": 1
       },
       {
@@ -69871,8 +69871,8 @@
         "game": "Chicago Cubs @ Milwaukee Brewers",
         "home_team": "Milwaukee Brewers",
         "matchup": "Chicago Cubs @ Milwaukee Brewers",
-        "odds": -189,
-        "pick": "Total Over (6,5) (Chicago Cubs @ Milwaukee Brewers)",
+        "odds": -164,
+        "pick": "Milwaukee Brewers ML (Chicago Cubs @ Milwaukee Brewers)",
         "pregame_snapshot": {
           "away_team": "Chicago Cubs",
           "date": "2026-06-27",
@@ -69881,22 +69881,22 @@
           "game": "Chicago Cubs @ Milwaukee Brewers",
           "home_team": "Milwaukee Brewers",
           "matchup": "Chicago Cubs @ Milwaukee Brewers",
-          "odds": -189,
-          "pick": "Total Over (6,5) (Chicago Cubs @ Milwaukee Brewers)",
+          "odds": -164,
+          "pick": "Milwaukee Brewers ML (Chicago Cubs @ Milwaukee Brewers)",
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-26-06-2026-milwaukee-brewers-chicago-cubs-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-27-06-2026-milwaukee-brewers-chicago-cubs-prediction",
           "sport": "MLB",
           "start_time": "2026-06-27T23:10Z",
-          "tip": "Total Over (6,5)",
+          "tip": "Milwaukee Brewers Win",
           "units": 1
         },
         "probability": null,
         "source": "Scores24MLB",
-        "source_url": "https://scores24.live/en/baseball/m-26-06-2026-milwaukee-brewers-chicago-cubs-prediction",
+        "source_url": "https://scores24.live/en/baseball/m-27-06-2026-milwaukee-brewers-chicago-cubs-prediction",
         "sport": "MLB",
         "start_time": "2026-06-27T23:10Z",
-        "tip": "Total Over (6,5)",
+        "tip": "Milwaukee Brewers Win",
         "units": 1
       },
       {
@@ -70080,14 +70080,14 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-27T17:51:03.661684Z"
+    "updatedAt": "2026-06-27T20:02:44.982465Z"
   },
   "scores24_wnba": {
     "date": "2026-06-27",
-    "generatedAt": "2026-06-27T17:51:03.661684Z",
+    "generatedAt": "2026-06-27T20:02:44.982465Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
-      "attemptedUrls": 3,
+      "attemptedUrls": 10,
       "blockRetryRounds": 0,
       "blockedUrls": 0,
       "date": "2026-06-27",
@@ -70100,7 +70100,7 @@
       "missingMatchups": [],
       "officialMatchups": 3,
       "unpublishedMatchups": [],
-      "updatedAt": "2026-06-27T17:51:03.661684Z"
+      "updatedAt": "2026-06-27T20:02:44.982465Z"
     },
     "note": "Scores24WNBA matched 3 published editorial choice(s) against 3 official 2026-06-27 matchup(s).",
     "ok": true,
@@ -70214,7 +70214,7 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-27T17:51:03.661684Z"
+    "updatedAt": "2026-06-27T20:02:44.982465Z"
   },
   "sportsgambler_fifa_world_cup": {
     "date": "2026-06-27",
@@ -71236,7 +71236,7 @@
     ],
     "updatedAt": "2026-06-27T15:28:33.114671Z"
   },
-  "updatedAt": "2026-06-27T17:51:03.661684Z",
+  "updatedAt": "2026-06-27T20:02:44.982465Z",
   "wnba": {
     "ok": true,
     "picks": [
