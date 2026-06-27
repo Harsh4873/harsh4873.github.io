@@ -34771,6 +34771,7 @@
           "raw_projected_home_goals": 1.089,
           "raw_projected_total": 2.6,
           "reason": "Saudi Arabia owns the stronger current-squad projection. Attack 84.6, midfield 86.3, defense 86.0, goalkeeper 85.4. Top player ranks: Saud Abdulhamid 89.0, Hassan Al-Tambakti 86.5, Abdulelah Al-Amri 86.5. Saudi Arabia form 0-1-1 (0.50 pts/g, 0.50-2.50 goals/g).",
+          "result": "loss",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-06-27T00:00Z",
@@ -35121,6 +35122,7 @@
           "raw_projected_home_goals": 0.811,
           "raw_projected_total": 2.19,
           "reason": "Projected goals Spain 1.41, Uruguay 0.83 after tournament-form, venue, and market-total blending.",
+          "result": "win",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-06-27T00:00Z",
@@ -46184,6 +46186,7 @@
           "raw_edge": 12.33,
           "raw_model_probability": 0.6471,
           "raw_probability": 0.6471,
+          "result": "win",
           "selected_side_implied_probability": 0.52381,
           "source": "MLB First Five",
           "sport": "MLB",
@@ -46866,6 +46869,7 @@
           "raw_edge": 13.75,
           "raw_model_probability": 0.6613,
           "raw_probability": 0.6613,
+          "result": "push",
           "selected_side_implied_probability": 0.52381,
           "source": "MLB First Five",
           "sport": "MLB",
@@ -48918,6 +48922,7 @@
           "raw_edge": 14.34,
           "raw_model_probability": 0.6672,
           "raw_probability": 0.6672,
+          "result": "loss",
           "selected_side_implied_probability": 0.52381,
           "source": "MLB First Five",
           "sport": "MLB",
@@ -67083,6 +67088,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-26-06-2026-pittsburgh-pirates-cincinnati-reds-prediction",
           "sport": "MLB",
@@ -67119,6 +67125,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-26-06-2026-detroit-tigers-houston-astros-prediction",
           "sport": "MLB",
@@ -67155,6 +67162,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-26-06-2026-baltimore-orioles-washington-nationals-prediction",
           "sport": "MLB",
@@ -67191,6 +67199,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-26-06-2026-toronto-blue-jays-texas-rangers-prediction",
           "sport": "MLB",
@@ -67227,6 +67236,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-26-06-2026-tampa-bay-rays-arizona-diamondbacks-prediction",
           "sport": "MLB",
@@ -67263,6 +67273,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-26-06-2026-boston-red-sox-new-york-yankees-prediction",
           "sport": "MLB",
@@ -67299,6 +67310,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-26-06-2026-new-york-mets-philadelphia-phillies-prediction",
           "sport": "MLB",
@@ -67335,6 +67347,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-26-06-2026-cleveland-guardians-seattle-mariners-prediction",
           "sport": "MLB",
@@ -67371,6 +67384,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-26-06-2026-chicago-white-sox-kansas-city-royals-prediction",
           "sport": "MLB",
@@ -67407,6 +67421,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-26-06-2026-milwaukee-brewers-chicago-cubs-prediction",
           "sport": "MLB",
@@ -67443,6 +67458,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-26-06-2026-minnesota-twins-colorado-rockies-prediction",
           "sport": "MLB",
@@ -67479,6 +67495,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-26-06-2026-st-louis-cardinals-miami-marlins-prediction",
           "sport": "MLB",
@@ -67613,6 +67630,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24WNBA",
           "source_url": "https://scores24.live/en/basketball/m-26-06-2026-connecticut-sun-w-washington-mystics-w--prediction",
           "sport": "WNBA",
@@ -67649,6 +67667,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24WNBA",
           "source_url": "https://scores24.live/en/basketball/m-26-06-2026-chicago-sky-w-portland-fire-prediction",
           "sport": "WNBA",
@@ -67741,6 +67760,7 @@
           "odds": -127,
           "pick": "Under 2.5 Goals (Cape Verde vs Saudi Arabia)",
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerFIFAWorldCup",
           "sport": "FIFA WC",
           "start_time": "2026-06-27T00:00Z",
@@ -67823,6 +67843,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-26T22:40Z",
@@ -67851,6 +67872,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-26T22:40Z",
@@ -67879,6 +67901,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-26T23:05Z",
@@ -67907,6 +67930,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-26T23:07Z",
@@ -67935,6 +67959,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-26T23:10Z",
@@ -67963,6 +67988,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-26T23:10Z",
@@ -67991,6 +68017,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-26T23:10Z",
@@ -68019,6 +68046,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-26T23:10Z",
@@ -68047,6 +68075,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-26T23:40Z",
@@ -68075,6 +68104,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-26T23:45Z",
@@ -68103,6 +68133,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-27T00:10Z",
@@ -68131,6 +68162,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-27T00:15Z",
@@ -68254,6 +68286,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerWNBA",
           "sport": "WNBA",
           "start_time": "2026-06-26T23:30Z",
@@ -68282,6 +68315,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerWNBA",
           "sport": "WNBA",
           "start_time": "2026-06-26T23:30Z",
@@ -68426,6 +68460,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "push",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-26T22:40Z",
@@ -68454,6 +68489,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-26T22:40Z",
@@ -68482,6 +68518,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-26T23:07Z",
@@ -68510,6 +68547,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-26T23:10Z",
@@ -68538,6 +68576,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-26T23:10Z",
@@ -68566,6 +68605,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-26T23:10Z",
@@ -68594,6 +68634,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-27T00:10Z",
@@ -68622,6 +68663,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-27T00:15Z",
@@ -68745,6 +68787,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
           "start_time": "2026-06-26T23:30Z",
@@ -68773,6 +68816,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
           "start_time": "2026-06-26T23:30Z",
@@ -69293,6 +69337,7 @@
           "raw_edge": 26.43,
           "raw_probability": 0.7881,
           "raw_units": 0.04,
+          "result": "loss",
           "selection": "Under",
           "source": "WNBA Model",
           "sport": "WNBA",
