@@ -35297,6 +35297,7 @@
           "raw_projected_home_goals": 1.671,
           "raw_projected_total": 2.87,
           "reason": "Egypt owns the stronger current-squad projection. Attack 82.8, midfield 71.4, defense 73.9, goalkeeper 71.1. Top player ranks: Omar Marmoush 93.5, Mohamed Salah 91.2, Mohamed Abdelmoneim 89.0. Egypt form 1-1-0 (2.00 pts/g, 2.00-1.00 goals/g).",
+          "result": "loss",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-06-27T03:00Z",
@@ -35385,6 +35386,7 @@
           "raw_projected_home_goals": 1.671,
           "raw_projected_total": 2.87,
           "reason": "Projected goals Iran 1.10, Egypt 1.53 after tournament-form, venue, and market-total blending.",
+          "result": "win",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-06-27T03:00Z",
@@ -35647,6 +35649,7 @@
           "raw_projected_home_goals": 0.763,
           "raw_projected_total": 3.3,
           "reason": "Projected goals Belgium 2.57, New Zealand 0.77 after tournament-form, venue, and market-total blending.",
+          "result": "loss",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-06-27T03:00Z",
@@ -35733,6 +35736,7 @@
           "raw_projected_home_goals": 0.763,
           "raw_projected_total": 3.3,
           "reason": "New Zealand has the best spread-cover edge at +2.5 from the venue-adjusted Poisson score grid.",
+          "result": "loss",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-06-27T03:00Z",
@@ -67532,6 +67536,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-26-06-2026-los-angeles-angels-athletics-prediction",
           "sport": "MLB",
@@ -67568,6 +67573,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-26-06-2026-san-diego-padres-los-angeles-dodgers-prediction",
           "sport": "MLB",
@@ -67704,6 +67710,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24WNBA",
           "source_url": "https://scores24.live/en/basketball/m-27-06-2026-golden-state-valkyries-w-atlanta-dream-w--prediction",
           "sport": "WNBA",
@@ -67795,6 +67802,7 @@
           "odds": 145,
           "pick": "Egypt To Win (Egypt vs Iran)",
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerFIFAWorldCup",
           "sport": "FIFA WC",
           "start_time": "2026-06-27T03:00Z",
@@ -68191,6 +68199,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-27T01:38Z",
@@ -68219,6 +68228,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-27T01:45Z",
@@ -68344,6 +68354,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerWNBA",
           "sport": "WNBA",
           "start_time": "2026-06-27T02:00Z",
@@ -68692,6 +68703,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-27T01:45Z",
@@ -68720,6 +68732,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-27T02:15Z",
@@ -68845,6 +68858,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
           "start_time": "2026-06-27T02:00Z",
