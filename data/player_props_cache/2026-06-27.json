@@ -203,6 +203,7 @@
           "edge": 6.07,
           "full_kelly": 0.1579,
           "game_id": "823038",
+          "game_start_time": "2026-06-27T23:15Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -292,7 +293,7 @@
           "selection": "Under",
           "source": "MLBPlayerProps",
           "sport": "MLB",
-          "start_time": "2026-06-27T23:15:00Z",
+          "start_time": "2026-06-27T23:15Z",
           "stat_key": "hits_runs_rbis",
           "stat_label": "Hits + Runs + RBIs",
           "supporting_variant": "all_time",
@@ -349,6 +350,7 @@
           "edge": 5.65,
           "full_kelly": 0.1428,
           "game_id": "822794",
+          "game_start_time": "2026-06-27T19:07Z",
           "home_team": "Toronto Blue Jays",
           "id": "pp_8019d9e2ec8b43e06a65_consensus",
           "key_factors": [
@@ -434,7 +436,7 @@
           "selection": "Over",
           "source": "MLBPlayerProps",
           "sport": "MLB",
-          "start_time": "2026-06-27T19:07:00Z",
+          "start_time": "2026-06-27T19:07Z",
           "stat_key": "strikeouts",
           "stat_label": "Strikeouts",
           "supporting_variant": "all_time",
