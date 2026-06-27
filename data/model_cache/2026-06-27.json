@@ -63158,6 +63158,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-27-06-2026-toronto-blue-jays-texas-rangers-prediction",
           "sport": "MLB",
@@ -63230,6 +63231,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-27-06-2026-chicago-white-sox-kansas-city-royals-prediction",
           "sport": "MLB",
@@ -64549,6 +64551,7 @@
           "confidence_label": "High",
           "decision": "BET",
           "game": "Phoenix Mercury @ Toronto Tempo",
+          "game_start_time": "2026-06-27T18:00Z",
           "guardrail_reasons": [
             "no SportsLine market price found"
           ],
@@ -64601,8 +64604,10 @@
           "projected_total": 169.0,
           "raw_probability": 0.77,
           "raw_units": 0.72,
+          "result": "loss",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-27T18:00Z",
           "starters_out": [],
           "starters_questionable": [],
           "starters_total": 0,
