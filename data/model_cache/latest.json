@@ -1,11 +1,11 @@
 {
   "date": "2026-06-28",
   "errors": [],
-  "externalFeedsUpdatedAt": "2026-06-28T15:37:13.694515Z",
+  "externalFeedsUpdatedAt": "2026-06-28T19:30:46.050253Z",
   "external_feeds": {
     "scores24_fifa_world_cup": {
       "date": "2026-06-28",
-      "generatedAt": "2026-06-28T13:11:05.278895Z",
+      "generatedAt": "2026-06-28T19:30:46.050253Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "attemptedUrls": 1,
@@ -16,12 +16,12 @@
         "feed": "scores24_fifa_world_cup",
         "from": "github-actions",
         "leagues": "mlb,wnba,fifa_world_cup",
-        "listingLinks": 10,
+        "listingLinks": 12,
         "matchedPicks": 1,
         "missingMatchups": [],
         "officialMatchups": 1,
         "unpublishedMatchups": [],
-        "updatedAt": "2026-06-28T13:11:05.278895Z"
+        "updatedAt": "2026-06-28T19:30:46.050253Z"
       },
       "note": "Scores24FIFAWorldCup matched 1 published editorial choice(s) against 1 official 2026-06-28 matchup(s).",
       "ok": true,
@@ -48,11 +48,11 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-28T13:11:05.278895Z"
+      "updatedAt": "2026-06-28T19:30:46.050253Z"
     },
     "scores24_mlb": {
       "date": "2026-06-28",
-      "generatedAt": "2026-06-28T13:11:05.278895Z",
+      "generatedAt": "2026-06-28T19:30:46.050253Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "attemptedUrls": 15,
@@ -63,12 +63,12 @@
         "feed": "scores24_mlb",
         "from": "github-actions",
         "leagues": "mlb,wnba,fifa_world_cup",
-        "listingLinks": 12,
+        "listingLinks": 9,
         "matchedPicks": 15,
         "missingMatchups": [],
         "officialMatchups": 15,
         "unpublishedMatchups": [],
-        "updatedAt": "2026-06-28T13:11:05.278895Z"
+        "updatedAt": "2026-06-28T19:30:46.050253Z"
       },
       "note": "Scores24MLB matched 15 published editorial choice(s) against 15 official 2026-06-28 matchup(s).",
       "ok": true,
@@ -513,7 +513,7 @@
           "game": "Atlanta Braves @ San Francisco Giants",
           "home_team": "San Francisco Giants",
           "matchup": "Atlanta Braves @ San Francisco Giants",
-          "odds": 114,
+          "odds": -159,
           "pick": "Atlanta Braves ML (Atlanta Braves @ San Francisco Giants)",
           "pregame_snapshot": {
             "away_team": "Atlanta Braves",
@@ -535,7 +535,7 @@
           },
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-27-06-2026-san-francisco-giants-atlanta-braves-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-28-06-2026-san-francisco-giants-atlanta-braves-prediction",
           "sport": "MLB",
           "start_time": "2026-06-28T20:05Z",
           "tip": "Atlanta Braves Win",
@@ -549,8 +549,8 @@
           "game": "Los Angeles Dodgers @ San Diego Padres",
           "home_team": "San Diego Padres",
           "matchup": "Los Angeles Dodgers @ San Diego Padres",
-          "odds": -133,
-          "pick": "Total Under (8,5) (Los Angeles Dodgers @ San Diego Padres)",
+          "odds": -128,
+          "pick": "Total Over (7,5) (Los Angeles Dodgers @ San Diego Padres)",
           "pregame_snapshot": {
             "away_team": "Los Angeles Dodgers",
             "date": "2026-06-28",
@@ -559,22 +559,22 @@
             "game": "Los Angeles Dodgers @ San Diego Padres",
             "home_team": "San Diego Padres",
             "matchup": "Los Angeles Dodgers @ San Diego Padres",
-            "odds": -133,
-            "pick": "Total Under (8,5) (Los Angeles Dodgers @ San Diego Padres)",
+            "odds": -128,
+            "pick": "Total Over (7,5) (Los Angeles Dodgers @ San Diego Padres)",
             "probability": null,
             "source": "Scores24MLB",
-            "source_url": "https://scores24.live/en/baseball/m-27-06-2026-san-diego-padres-los-angeles-dodgers-prediction",
+            "source_url": "https://scores24.live/en/baseball/m-28-06-2026-san-diego-padres-los-angeles-dodgers-prediction",
             "sport": "MLB",
             "start_time": "2026-06-28T20:10Z",
-            "tip": "Total Under (8,5)",
+            "tip": "Total Over (7,5)",
             "units": 1
           },
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-27-06-2026-san-diego-padres-los-angeles-dodgers-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-28-06-2026-san-diego-padres-los-angeles-dodgers-prediction",
           "sport": "MLB",
           "start_time": "2026-06-28T20:10Z",
-          "tip": "Total Under (8,5)",
+          "tip": "Total Over (7,5)",
           "units": 1
         },
         {
@@ -614,14 +614,14 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-28T13:11:05.278895Z"
+      "updatedAt": "2026-06-28T19:30:46.050253Z"
     },
     "scores24_wnba": {
       "date": "2026-06-28",
-      "generatedAt": "2026-06-28T13:11:05.278895Z",
+      "generatedAt": "2026-06-28T19:30:46.050253Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
-        "attemptedUrls": 4,
+        "attemptedUrls": 35,
         "blockRetryRounds": 0,
         "blockedUrls": 0,
         "date": "2026-06-28",
@@ -629,12 +629,12 @@
         "feed": "scores24_wnba",
         "from": "github-actions",
         "leagues": "mlb,wnba,fifa_world_cup",
-        "listingLinks": 10,
+        "listingLinks": 8,
         "matchedPicks": 4,
         "missingMatchups": [],
         "officialMatchups": 4,
         "unpublishedMatchups": [],
-        "updatedAt": "2026-06-28T13:11:05.278895Z"
+        "updatedAt": "2026-06-28T19:30:46.050253Z"
       },
       "note": "Scores24WNBA matched 4 published editorial choice(s) against 4 official 2026-06-28 matchup(s).",
       "ok": true,
@@ -784,7 +784,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-28T13:11:05.278895Z"
+      "updatedAt": "2026-06-28T19:30:46.050253Z"
     },
     "sportsgambler_fifa_world_cup": {
       "date": "2026-06-28",
@@ -61379,7 +61379,7 @@
     },
     "scores24_fifa_world_cup": {
       "date": "2026-06-28",
-      "generatedAt": "2026-06-28T13:11:05.278895Z",
+      "generatedAt": "2026-06-28T19:30:46.050253Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "attemptedUrls": 1,
@@ -61390,12 +61390,12 @@
         "feed": "scores24_fifa_world_cup",
         "from": "github-actions",
         "leagues": "mlb,wnba,fifa_world_cup",
-        "listingLinks": 10,
+        "listingLinks": 12,
         "matchedPicks": 1,
         "missingMatchups": [],
         "officialMatchups": 1,
         "unpublishedMatchups": [],
-        "updatedAt": "2026-06-28T13:11:05.278895Z"
+        "updatedAt": "2026-06-28T19:30:46.050253Z"
       },
       "note": "Scores24FIFAWorldCup matched 1 published editorial choice(s) against 1 official 2026-06-28 matchup(s).",
       "ok": true,
@@ -61422,11 +61422,11 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-28T13:11:05.278895Z"
+      "updatedAt": "2026-06-28T19:30:46.050253Z"
     },
     "scores24_mlb": {
       "date": "2026-06-28",
-      "generatedAt": "2026-06-28T13:11:05.278895Z",
+      "generatedAt": "2026-06-28T19:30:46.050253Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "attemptedUrls": 15,
@@ -61437,12 +61437,12 @@
         "feed": "scores24_mlb",
         "from": "github-actions",
         "leagues": "mlb,wnba,fifa_world_cup",
-        "listingLinks": 12,
+        "listingLinks": 9,
         "matchedPicks": 15,
         "missingMatchups": [],
         "officialMatchups": 15,
         "unpublishedMatchups": [],
-        "updatedAt": "2026-06-28T13:11:05.278895Z"
+        "updatedAt": "2026-06-28T19:30:46.050253Z"
       },
       "note": "Scores24MLB matched 15 published editorial choice(s) against 15 official 2026-06-28 matchup(s).",
       "ok": true,
@@ -61887,7 +61887,7 @@
           "game": "Atlanta Braves @ San Francisco Giants",
           "home_team": "San Francisco Giants",
           "matchup": "Atlanta Braves @ San Francisco Giants",
-          "odds": 114,
+          "odds": -159,
           "pick": "Atlanta Braves ML (Atlanta Braves @ San Francisco Giants)",
           "pregame_snapshot": {
             "away_team": "Atlanta Braves",
@@ -61909,7 +61909,7 @@
           },
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-27-06-2026-san-francisco-giants-atlanta-braves-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-28-06-2026-san-francisco-giants-atlanta-braves-prediction",
           "sport": "MLB",
           "start_time": "2026-06-28T20:05Z",
           "tip": "Atlanta Braves Win",
@@ -61923,8 +61923,8 @@
           "game": "Los Angeles Dodgers @ San Diego Padres",
           "home_team": "San Diego Padres",
           "matchup": "Los Angeles Dodgers @ San Diego Padres",
-          "odds": -133,
-          "pick": "Total Under (8,5) (Los Angeles Dodgers @ San Diego Padres)",
+          "odds": -128,
+          "pick": "Total Over (7,5) (Los Angeles Dodgers @ San Diego Padres)",
           "pregame_snapshot": {
             "away_team": "Los Angeles Dodgers",
             "date": "2026-06-28",
@@ -61933,22 +61933,22 @@
             "game": "Los Angeles Dodgers @ San Diego Padres",
             "home_team": "San Diego Padres",
             "matchup": "Los Angeles Dodgers @ San Diego Padres",
-            "odds": -133,
-            "pick": "Total Under (8,5) (Los Angeles Dodgers @ San Diego Padres)",
+            "odds": -128,
+            "pick": "Total Over (7,5) (Los Angeles Dodgers @ San Diego Padres)",
             "probability": null,
             "source": "Scores24MLB",
-            "source_url": "https://scores24.live/en/baseball/m-27-06-2026-san-diego-padres-los-angeles-dodgers-prediction",
+            "source_url": "https://scores24.live/en/baseball/m-28-06-2026-san-diego-padres-los-angeles-dodgers-prediction",
             "sport": "MLB",
             "start_time": "2026-06-28T20:10Z",
-            "tip": "Total Under (8,5)",
+            "tip": "Total Over (7,5)",
             "units": 1
           },
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-27-06-2026-san-diego-padres-los-angeles-dodgers-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-28-06-2026-san-diego-padres-los-angeles-dodgers-prediction",
           "sport": "MLB",
           "start_time": "2026-06-28T20:10Z",
-          "tip": "Total Under (8,5)",
+          "tip": "Total Over (7,5)",
           "units": 1
         },
         {
@@ -61988,14 +61988,14 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-28T13:11:05.278895Z"
+      "updatedAt": "2026-06-28T19:30:46.050253Z"
     },
     "scores24_wnba": {
       "date": "2026-06-28",
-      "generatedAt": "2026-06-28T13:11:05.278895Z",
+      "generatedAt": "2026-06-28T19:30:46.050253Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
-        "attemptedUrls": 4,
+        "attemptedUrls": 35,
         "blockRetryRounds": 0,
         "blockedUrls": 0,
         "date": "2026-06-28",
@@ -62003,12 +62003,12 @@
         "feed": "scores24_wnba",
         "from": "github-actions",
         "leagues": "mlb,wnba,fifa_world_cup",
-        "listingLinks": 10,
+        "listingLinks": 8,
         "matchedPicks": 4,
         "missingMatchups": [],
         "officialMatchups": 4,
         "unpublishedMatchups": [],
-        "updatedAt": "2026-06-28T13:11:05.278895Z"
+        "updatedAt": "2026-06-28T19:30:46.050253Z"
       },
       "note": "Scores24WNBA matched 4 published editorial choice(s) against 4 official 2026-06-28 matchup(s).",
       "ok": true,
@@ -62158,7 +62158,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-28T13:11:05.278895Z"
+      "updatedAt": "2026-06-28T19:30:46.050253Z"
     },
     "sportsgambler_fifa_world_cup": {
       "date": "2026-06-28",
@@ -64348,7 +64348,7 @@
   "nba_props": {},
   "scores24_fifa_world_cup": {
     "date": "2026-06-28",
-    "generatedAt": "2026-06-28T13:11:05.278895Z",
+    "generatedAt": "2026-06-28T19:30:46.050253Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "attemptedUrls": 1,
@@ -64359,12 +64359,12 @@
       "feed": "scores24_fifa_world_cup",
       "from": "github-actions",
       "leagues": "mlb,wnba,fifa_world_cup",
-      "listingLinks": 10,
+      "listingLinks": 12,
       "matchedPicks": 1,
       "missingMatchups": [],
       "officialMatchups": 1,
       "unpublishedMatchups": [],
-      "updatedAt": "2026-06-28T13:11:05.278895Z"
+      "updatedAt": "2026-06-28T19:30:46.050253Z"
     },
     "note": "Scores24FIFAWorldCup matched 1 published editorial choice(s) against 1 official 2026-06-28 matchup(s).",
     "ok": true,
@@ -64391,11 +64391,11 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-28T13:11:05.278895Z"
+    "updatedAt": "2026-06-28T19:30:46.050253Z"
   },
   "scores24_mlb": {
     "date": "2026-06-28",
-    "generatedAt": "2026-06-28T13:11:05.278895Z",
+    "generatedAt": "2026-06-28T19:30:46.050253Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "attemptedUrls": 15,
@@ -64406,12 +64406,12 @@
       "feed": "scores24_mlb",
       "from": "github-actions",
       "leagues": "mlb,wnba,fifa_world_cup",
-      "listingLinks": 12,
+      "listingLinks": 9,
       "matchedPicks": 15,
       "missingMatchups": [],
       "officialMatchups": 15,
       "unpublishedMatchups": [],
-      "updatedAt": "2026-06-28T13:11:05.278895Z"
+      "updatedAt": "2026-06-28T19:30:46.050253Z"
     },
     "note": "Scores24MLB matched 15 published editorial choice(s) against 15 official 2026-06-28 matchup(s).",
     "ok": true,
@@ -64856,7 +64856,7 @@
         "game": "Atlanta Braves @ San Francisco Giants",
         "home_team": "San Francisco Giants",
         "matchup": "Atlanta Braves @ San Francisco Giants",
-        "odds": 114,
+        "odds": -159,
         "pick": "Atlanta Braves ML (Atlanta Braves @ San Francisco Giants)",
         "pregame_snapshot": {
           "away_team": "Atlanta Braves",
@@ -64878,7 +64878,7 @@
         },
         "probability": null,
         "source": "Scores24MLB",
-        "source_url": "https://scores24.live/en/baseball/m-27-06-2026-san-francisco-giants-atlanta-braves-prediction",
+        "source_url": "https://scores24.live/en/baseball/m-28-06-2026-san-francisco-giants-atlanta-braves-prediction",
         "sport": "MLB",
         "start_time": "2026-06-28T20:05Z",
         "tip": "Atlanta Braves Win",
@@ -64892,8 +64892,8 @@
         "game": "Los Angeles Dodgers @ San Diego Padres",
         "home_team": "San Diego Padres",
         "matchup": "Los Angeles Dodgers @ San Diego Padres",
-        "odds": -133,
-        "pick": "Total Under (8,5) (Los Angeles Dodgers @ San Diego Padres)",
+        "odds": -128,
+        "pick": "Total Over (7,5) (Los Angeles Dodgers @ San Diego Padres)",
         "pregame_snapshot": {
           "away_team": "Los Angeles Dodgers",
           "date": "2026-06-28",
@@ -64902,22 +64902,22 @@
           "game": "Los Angeles Dodgers @ San Diego Padres",
           "home_team": "San Diego Padres",
           "matchup": "Los Angeles Dodgers @ San Diego Padres",
-          "odds": -133,
-          "pick": "Total Under (8,5) (Los Angeles Dodgers @ San Diego Padres)",
+          "odds": -128,
+          "pick": "Total Over (7,5) (Los Angeles Dodgers @ San Diego Padres)",
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-27-06-2026-san-diego-padres-los-angeles-dodgers-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-28-06-2026-san-diego-padres-los-angeles-dodgers-prediction",
           "sport": "MLB",
           "start_time": "2026-06-28T20:10Z",
-          "tip": "Total Under (8,5)",
+          "tip": "Total Over (7,5)",
           "units": 1
         },
         "probability": null,
         "source": "Scores24MLB",
-        "source_url": "https://scores24.live/en/baseball/m-27-06-2026-san-diego-padres-los-angeles-dodgers-prediction",
+        "source_url": "https://scores24.live/en/baseball/m-28-06-2026-san-diego-padres-los-angeles-dodgers-prediction",
         "sport": "MLB",
         "start_time": "2026-06-28T20:10Z",
-        "tip": "Total Under (8,5)",
+        "tip": "Total Over (7,5)",
         "units": 1
       },
       {
@@ -64957,14 +64957,14 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-28T13:11:05.278895Z"
+    "updatedAt": "2026-06-28T19:30:46.050253Z"
   },
   "scores24_wnba": {
     "date": "2026-06-28",
-    "generatedAt": "2026-06-28T13:11:05.278895Z",
+    "generatedAt": "2026-06-28T19:30:46.050253Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
-      "attemptedUrls": 4,
+      "attemptedUrls": 35,
       "blockRetryRounds": 0,
       "blockedUrls": 0,
       "date": "2026-06-28",
@@ -64972,12 +64972,12 @@
       "feed": "scores24_wnba",
       "from": "github-actions",
       "leagues": "mlb,wnba,fifa_world_cup",
-      "listingLinks": 10,
+      "listingLinks": 8,
       "matchedPicks": 4,
       "missingMatchups": [],
       "officialMatchups": 4,
       "unpublishedMatchups": [],
-      "updatedAt": "2026-06-28T13:11:05.278895Z"
+      "updatedAt": "2026-06-28T19:30:46.050253Z"
     },
     "note": "Scores24WNBA matched 4 published editorial choice(s) against 4 official 2026-06-28 matchup(s).",
     "ok": true,
@@ -65127,7 +65127,7 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-28T13:11:05.278895Z"
+    "updatedAt": "2026-06-28T19:30:46.050253Z"
   },
   "sportsgambler_fifa_world_cup": {
     "date": "2026-06-28",
@@ -65890,7 +65890,7 @@
     ],
     "updatedAt": "2026-06-28T15:37:13.694515Z"
   },
-  "updatedAt": "2026-06-28T16:46:16.806902Z",
+  "updatedAt": "2026-06-28T19:30:46.050253Z",
   "wnba": {
     "ok": true,
     "picks": [
