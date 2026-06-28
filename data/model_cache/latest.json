@@ -62009,6 +62009,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Dallas Wings vs Minnesota Lynx",
+          "game_start_time": "2026-06-28T18:00Z",
           "matchup": "Dallas Wings vs Minnesota Lynx",
           "odds": -179,
           "pick": "Over 173.5 (Wings vs Lynx)",
@@ -62028,6 +62029,7 @@
           "probability": null,
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
+          "start_time": "2026-06-28T18:00Z",
           "units": 1
         },
         {
@@ -62035,6 +62037,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Washington Mystics vs Portland Fire",
+          "game_start_time": "2026-06-28T19:00Z",
           "matchup": "Washington Mystics vs Portland Fire",
           "odds": -180,
           "pick": "Washington Mystics on the -3.5 line (Mystics vs Fire)",
@@ -62054,6 +62057,7 @@
           "probability": null,
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
+          "start_time": "2026-06-28T19:00Z",
           "units": 1
         },
         {
@@ -62061,6 +62065,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Chicago Sky vs Las Vegas Aces",
+          "game_start_time": "2026-06-28T20:00Z",
           "matchup": "Chicago Sky vs Las Vegas Aces",
           "odds": -140,
           "pick": "Las Vegas Aces to cover -5.5 spread (Sky vs Aces)",
@@ -62080,6 +62085,7 @@
           "probability": null,
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
+          "start_time": "2026-06-28T20:00Z",
           "units": 1
         },
         {
@@ -62087,6 +62093,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Golden State Valkyries vs New York Liberty",
+          "game_start_time": "2026-06-28T23:00Z",
           "matchup": "Golden State Valkyries vs New York Liberty",
           "odds": -120,
           "pick": "Valkyries ML (Valkyries vs Liberty)",
@@ -62106,6 +62113,7 @@
           "probability": null,
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
+          "start_time": "2026-06-28T23:00Z",
           "units": 1
         }
       ],
@@ -62777,6 +62785,7 @@
           "decision": "LEAN",
           "edge": 5.31,
           "game": "Las Vegas Aces @ Chicago Sky",
+          "game_start_time": "2026-06-28T20:00Z",
           "guardrail_reasons": [
             "new totals market capped at LEAN while its live record is established"
           ],
@@ -62836,6 +62845,7 @@
           "selection": "Under",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-28T20:00Z",
           "units": 0.02,
           "vegas": 180.5
         },
