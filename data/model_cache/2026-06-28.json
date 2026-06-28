@@ -26095,6 +26095,7 @@
           "raw_projected_home_goals": 1.068,
           "raw_projected_total": 3.21,
           "reason": "Canada owns the stronger current-squad projection. Attack 91.3, midfield 82.6, defense 84.3, goalkeeper 82.1. Top player ranks: Alphonso Davies 97.0, Tajon Buchanan 97.0, Tani Oluwaseyi 97.0. Canada form 1-0-1 (1.50 pts/g, 3.50-1.00 goals/g).",
+          "result": "win",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-06-28T19:00Z",
@@ -26183,6 +26184,7 @@
           "raw_projected_home_goals": 1.068,
           "raw_projected_total": 3.21,
           "reason": "Projected goals Canada 2.06, South Africa 1.02 after tournament-form, venue, and market-total blending.",
+          "result": "loss",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-06-28T19:00Z",
@@ -26269,6 +26271,7 @@
           "raw_projected_home_goals": 1.068,
           "raw_projected_total": 3.21,
           "reason": "Canada has the best spread-cover edge at -0.5 from the venue-adjusted Poisson score grid.",
+          "result": "win",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-06-28T19:00Z",
@@ -50986,6 +50989,7 @@
           "odds": -137,
           "pick": "Canada ML (Canada @ South Africa)",
           "probability": null,
+          "result": "win",
           "source": "Scores24FIFAWorldCup",
           "source_url": "https://scores24.live/en/soccer/m-28-06-2026-south-africa-canada-prediction",
           "sport": "FIFA WC",
@@ -51048,6 +51052,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-28-06-2026-pittsburgh-pirates-cincinnati-reds-prediction",
           "sport": "MLB",
@@ -51195,6 +51200,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-28-06-2026-detroit-tigers-houston-astros-prediction",
           "sport": "MLB",
@@ -51231,6 +51237,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-28-06-2026-new-york-mets-philadelphia-phillies-prediction",
           "sport": "MLB",
@@ -51267,6 +51274,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-28-06-2026-cleveland-guardians-seattle-mariners-prediction",
           "sport": "MLB",
@@ -51303,6 +51311,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-27-06-2026-milwaukee-brewers-chicago-cubs-prediction",
           "sport": "MLB",
@@ -51376,6 +51385,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-28-06-2026-chicago-white-sox-kansas-city-royals-prediction",
           "sport": "MLB",
@@ -52022,6 +52032,7 @@
           "confidence_label": "Medium",
           "decision": "LEAN",
           "game": "Minnesota Lynx @ Dallas Wings",
+          "game_start_time": "2026-06-28T18:00Z",
           "guardrail_reasons": [
             "no SportsLine market price found",
             "key starter(s) OUT (Napheesa Collier) \u2014 capped at LEAN"
@@ -52079,8 +52090,10 @@
           "projected_total": 173.7,
           "raw_probability": 0.795,
           "raw_units": 0.44,
+          "result": "win",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-28T18:00Z",
           "starters_out": [
             "Napheesa Collier"
           ],
@@ -52103,6 +52116,7 @@
           "confidence_label": "High",
           "decision": "BET",
           "game": "Portland Fire @ Washington Mystics",
+          "game_start_time": "2026-06-28T19:00Z",
           "guardrail_reasons": [
             "no SportsLine market price found"
           ],
@@ -52157,6 +52171,7 @@
           "raw_units": 0.84,
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-28T19:00Z",
           "starters_out": [],
           "starters_questionable": [],
           "starters_total": 0,
@@ -52177,6 +52192,7 @@
           "confidence_label": "Medium",
           "decision": "LEAN",
           "game": "Las Vegas Aces @ Chicago Sky",
+          "game_start_time": "2026-06-28T20:00Z",
           "guardrail_reasons": [
             "no SportsLine market price found",
             "key starter(s) OUT (Kelsey Plum) \u2014 capped at LEAN"
@@ -52236,6 +52252,7 @@
           "raw_units": 0.49,
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-06-28T20:00Z",
           "starters_out": [
             "Kelsey Plum"
           ],
