@@ -117,6 +117,35 @@ def test_same_game_legs_are_not_combined():
         assert len(game_keys) == len(set(game_keys))
 
 
+def test_team_and_player_legs_do_not_mix_in_one_slip():
+    team_payload = make_payload(
+        {
+            "mlb_new": [
+                make_pick(sport="MLB", source="MLB Model", pick="Orioles ML", game="White Sox @ Orioles"),
+                make_pick(sport="MLB", source="MLB Model", pick="Padres ML", game="Padres @ Cubs"),
+                make_pick(sport="FIFA WC", source="FIFA Model", pick="Brazil ML", game="Japan @ Brazil"),
+            ]
+        }
+    )
+    prop_payload = make_payload(
+        {
+            "mlb_player_props": [
+                make_pick(sport="MLB", source="MLBPlayerProps", pick="Player A Over 0.5 Hits", game="A @ B", player="Player A"),
+                make_pick(sport="MLB", source="MLBPlayerProps", pick="Player B Under 1.5 Bases", game="C @ D", player="Player B"),
+                make_pick(sport="MLB", source="MLBPlayerProps", pick="Player C Over 0.5 Runs", game="E @ F", player="Player C"),
+            ]
+        }
+    )
+
+    payload = parlays.build_parlay_payload(DATE, team_payload, prop_payload, team_history=[], prop_history=[], prior_payloads=[])
+
+    assert payload["cards"]
+    for card in payload["cards"]:
+        leg_types = {leg["sourceType"] for leg in card["legs"]}
+        assert leg_types == {"model"} or leg_types == {"player_prop"}
+        assert card["pickMode"] in {"team", "player"}
+
+
 def test_displayed_leg_exposure_is_capped_when_slate_is_not_thin():
     picks = [
         make_pick(sport="MLB", source="MLB Model", pick="Anchor ML", game="Anchor @ Game", probability=0.9),

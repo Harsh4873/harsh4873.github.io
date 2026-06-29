@@ -585,6 +585,9 @@ def valid_combo(legs: Iterable[Leg]) -> bool:
         return False
     if len({leg.market_key for leg in leg_list}) != len(leg_list):
         return False
+    pick_modes = {"player" if leg.source_type == "player_prop" else "team" for leg in leg_list}
+    if len(pick_modes) != 1:
+        return False
     return True
 
 
@@ -712,6 +715,7 @@ def _base_card(legs: tuple[Leg, ...]) -> dict[str, Any]:
         "sportPattern": sport_pattern(legs),
         "sports": sorted({leg.sport for leg in legs}),
         "hasPlayerProp": any(leg.source_type == "player_prop" for leg in legs),
+        "pickMode": "player" if all(leg.source_type == "player_prop" for leg in legs) else "team",
         "oddsAmerican": odds_american,
         "decimalOdds": round(decimal_odds, 4),
         "estimatedProbability": round(estimated_probability, 4),

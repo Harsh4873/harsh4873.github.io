@@ -229,7 +229,10 @@ def test_daily_tab_renders_parlay_board_filters_and_rankings():
     assert "BEST BETS PARLAY BOARD" in main
     assert "Algorithm Rankings" in main
     assert "No same-game legs, same-player duplicates, or duplicate markets are allowed" in main
-    assert "3-leg slips are built first from published BET/LEAN team picks and player props" in main
+    assert "function parlayCardsForMode(" in main
+    assert "function parlayCardPickMode(" in main
+    assert "3-leg slips are built only from published BET/LEAN team picks." in main
+    assert "3-leg slips are built only from published BET/LEAN player props." in main
     assert "function setDailyView(" in main
     assert "role=\"tablist\" aria-label=\"Parlay board filters\"" in main
     assert ".daily-view-nav" in css
@@ -280,7 +283,7 @@ def test_player_mode_keeps_best_bets_available_and_prop_sources_separate():
     assert "? 'Model' : 'Source'" in main
     assert "home-player-model-stack" in main
     assert "Models</strong>" in main
-    assert "published BET/LEAN team picks and player props" in main
+    assert "activePickMode === 'player' ? 'Player Prop' : 'Team'" in main
     for source in ("NBAPlayerProps", "MLBPlayerProps", "WNBAPlayerProps"):
         assert source in data
     assert "playerProp && fallbackSource" in data

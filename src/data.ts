@@ -116,6 +116,7 @@ export interface ParlayCard {
   sportPattern?: string;
   sports?: string[];
   hasPlayerProp?: boolean;
+  pickMode?: PickMode | 'mixed';
   oddsAmerican: number | null;
   decimalOdds?: number | null;
   estimatedProbability?: number | null;

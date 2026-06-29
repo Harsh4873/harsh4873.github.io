@@ -1476,8 +1476,37 @@ function parlayResultBadge(result: PickResult): string {
   return `<span class="daily-slate-result ${escapeHtml(result)}">${result === 'pending' ? 'OPEN' : result.toUpperCase()}</span>`;
 }
 
-function parlayFilterOptions(payload: ParlayCardsPayload | null): DailyViewOption[] {
-  const cards = payload?.cards || [];
+function parlayCardPickMode(card: ParlayCard): PickMode | 'mixed' {
+  if (card.pickMode === 'team' || card.pickMode === 'player') return card.pickMode;
+  const hasPlayerLegs = card.legs.some(leg => leg.sourceType === 'player_prop');
+  const hasTeamLegs = card.legs.some(leg => leg.sourceType !== 'player_prop');
+  if (hasPlayerLegs && hasTeamLegs) return 'mixed';
+  return hasPlayerLegs ? 'player' : 'team';
+}
+
+function parlayCardsForMode(payload: ParlayCardsPayload | null): ParlayCard[] {
+  return (payload?.cards || []).filter(card => parlayCardPickMode(card) === activePickMode);
+}
+
+function parlayRecordForCards(cards: ParlayCard[]): { wins: number; losses: number; pushes: number; pending: number } {
+  return {
+    wins: cards.filter(card => card.result === 'win').length,
+    losses: cards.filter(card => card.result === 'loss').length,
+    pushes: cards.filter(card => card.result === 'push').length,
+    pending: cards.filter(card => card.result === 'pending').length,
+  };
+}
+
+function parlayAverageOdds(cards: ParlayCard[]): number | null {
+  const odds = cards.map(card => card.oddsAmerican).filter((value): value is number => value != null && Number.isFinite(value));
+  return odds.length ? odds.reduce((sum, value) => sum + value, 0) / odds.length : null;
+}
+
+function parlayUniqueLegCount(cards: ParlayCard[]): number {
+  return new Set(cards.flatMap(card => card.legs.map(leg => leg.legId))).size;
+}
+
+function parlayFilterOptions(cards: ParlayCard[]): DailyViewOption[] {
   const count = (category: DailyView): number => category === 'all'
     ? cards.length
     : cards.filter(card => card.category === category).length;
@@ -1544,13 +1573,13 @@ function parlayGrid(cards: ParlayCard[]): string {
 }
 
 function parlaySections(payload: ParlayCardsPayload | null, view: DailyView): string {
-  const cards = payload?.cards || [];
+  const cards = parlayCardsForMode(payload);
   if (view !== 'all') {
-    const option = parlayFilterOptions(payload).find(item => item.key === view);
+    const option = parlayFilterOptions(cards).find(item => item.key === view);
     const filtered = cards.filter(card => card.category === view);
     return dailySection(option?.label || 'Parlays', option?.description || 'Qualified parlay cards.', parlayGrid(filtered), `${filtered.length} cards`);
   }
-  return parlayFilterOptions(payload)
+  return parlayFilterOptions(cards)
     .filter(option => option.key !== 'all')
     .map(option => {
       const filtered = cards.filter(card => card.category === option.key);
@@ -1558,6 +1587,37 @@ function parlaySections(payload: ParlayCardsPayload | null, view: DailyView): st
       return dailySection(option.label, option.description, parlayGrid(filtered), `${filtered.length} cards`);
     })
     .join('') || parlayGrid([]);
+}
+
+function parlayRankingsForCards(cards: ParlayCard[]): ParlayRanking[] {
+  const rows = parlayFilterOptions(cards)
+    .filter(option => option.key !== 'all')
+    .map(option => {
+      const categoryCards = cards.filter(card => card.category === option.key);
+      const record = parlayRecordForCards(categoryCards);
+      const settled = record.wins + record.losses;
+      const netUnits = Number(categoryCards.reduce((sum, card) => sum + Number(card.profitUnits || 0), 0).toFixed(2));
+      return {
+        category: option.key,
+        label: option.label,
+        description: option.description,
+        wins: record.wins,
+        losses: record.losses,
+        pushes: record.pushes,
+        pending: record.pending,
+        settled,
+        hitRate: settled ? record.wins / settled : null,
+        roi: settled ? netUnits / settled : null,
+        netUnits,
+        averageOdds: parlayAverageOdds(categoryCards),
+        recentForm: '',
+      };
+    });
+  return rows.sort((left, right) => (
+    (right.settled ? 1 : 0) - (left.settled ? 1 : 0)
+    || (right.hitRate || 0) - (left.hitRate || 0)
+    || right.pending - left.pending
+  ));
 }
 
 function parlayRankingsPanel(rankings: ParlayRanking[] = []): string {
@@ -1604,23 +1664,28 @@ function renderDaily(): void {
   const today = centralDateKey();
   const payload = getParlayCardsPayload(selectedDate || today) || getParlayCardsPayload();
   const key = payload?.date || selectedDate || today;
-  const viewOptions = parlayFilterOptions(payload);
+  const modeCards = parlayCardsForMode(payload);
+  const viewOptions = parlayFilterOptions(modeCards);
   const activeView = viewOptions.find(option => option.key === dailyView) || viewOptions[0];
   if (!viewOptions.some(option => option.key === dailyView)) dailyView = 'all';
-  const summary = payload?.summary || {};
-  const record = summary.record;
-  const averageOdds = summary.averageOdds == null ? '--' : formatAmericanOddsValue(summary.averageOdds);
+  const record = parlayRecordForCards(modeCards);
+  const threeLegCards = modeCards.filter(card => card.legCount === 3).length;
+  const averageOdds = formatAmericanOddsValue(parlayAverageOdds(modeCards));
+  const boardLabel = activePickMode === 'player' ? 'Player Prop' : 'Team';
+  const boardDescription = activePickMode === 'player'
+    ? '3-leg slips are built only from published BET/LEAN player props.'
+    : '3-leg slips are built only from published BET/LEAN team picks.';
   const generatedAt = payload?.generatedAt ? formatStart(payload.generatedAt) : 'TBD';
   const activeBody = parlaySections(payload, dailyView);
-  const rankingsPanel = parlayRankingsPanel(payload?.rankings || []);
+  const rankingsPanel = parlayRankingsPanel(parlayRankingsForCards(modeCards));
 
-  container.innerHTML = `<div class="daily-hero"><div class="daily-hero-row"><div><div class="daily-eyebrow">BEST BETS PARLAY BOARD</div><div class="daily-title">Parlay Board</div><div class="daily-sub">${escapeHtml(dateLabel(key, true))} | 3-leg slips are built first from published BET/LEAN team picks and player props.</div></div><div class="daily-clock-wrap"><div class="daily-clock-label">SLATE</div><div class="daily-clock">${escapeHtml(key)}</div><div class="daily-countdown">Updated ${escapeHtml(generatedAt)}</div></div></div></div>
+  container.innerHTML = `<div class="daily-hero"><div class="daily-hero-row"><div><div class="daily-eyebrow">BEST BETS PARLAY BOARD</div><div class="daily-title">${escapeHtml(boardLabel)} Parlay Board</div><div class="daily-sub">${escapeHtml(dateLabel(key, true))} | ${escapeHtml(boardDescription)}</div></div><div class="daily-clock-wrap"><div class="daily-clock-label">SLATE</div><div class="daily-clock">${escapeHtml(key)}</div><div class="daily-countdown">Updated ${escapeHtml(generatedAt)}</div></div></div></div>
     <div class="daily-stats-strip">
-      <div class="daily-stat"><div class="daily-stat-val accent">${summary.threeLegCards ?? 0}</div><div class="daily-stat-label">3-Leg Slips</div></div>
-      <div class="daily-stat"><div class="daily-stat-val">${summary.displayedCards ?? 0}</div><div class="daily-stat-label">Shown</div></div>
+      <div class="daily-stat"><div class="daily-stat-val accent">${threeLegCards}</div><div class="daily-stat-label">3-Leg Slips</div></div>
+      <div class="daily-stat"><div class="daily-stat-val">${modeCards.length}</div><div class="daily-stat-label">Shown</div></div>
       <div class="daily-stat"><div class="daily-stat-val accent3">${escapeHtml(averageOdds)}</div><div class="daily-stat-label">Avg Odds</div></div>
       <div class="daily-stat"><div class="daily-stat-val neutral">${escapeHtml(parlayRecordText(record))}</div><div class="daily-stat-label">Algo Record</div></div>
-      <div class="daily-stat"><div class="daily-stat-val">${summary.eligibleLegs ?? 0}</div><div class="daily-stat-label">Eligible Legs</div></div>
+      <div class="daily-stat"><div class="daily-stat-val">${parlayUniqueLegCount(modeCards)}</div><div class="daily-stat-label">Board Legs</div></div>
     </div>
     <div class="daily-view-shell">
       <div class="daily-view-copy"><div class="daily-view-eyebrow">FILTER PARLAYS</div><div class="daily-view-title">${escapeHtml(activeView.label)}</div><div class="daily-view-description">${escapeHtml(activeView.description)}. No same-game legs, same-player duplicates, or duplicate markets are allowed; weak slates show fewer cards instead of forced slips.</div></div>
