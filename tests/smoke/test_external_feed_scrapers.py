@@ -657,6 +657,26 @@ def test_scores24_distinguishes_unpublished_official_matchup_from_failure():
     assert result["meta"]["unpublishedMatchups"] == ["San Francisco Giants @ Miami Marlins"]
 
 
+def test_scores24_treats_resolved_empty_official_slate_as_ok():
+    module = _load_module(
+        "scores24_offday_test",
+        ROOT / "scripts" / "scrapers" / "scores24_scraper.py",
+    )
+
+    result = module.scrape_scores24(
+        "wnba",
+        "2026-06-29",
+        client=module.Scores24Client(browser_fallback=False),
+        matchups=[],
+    )
+
+    assert result["ok"] is True
+    assert result["picks"] == []
+    assert result["meta"]["officialMatchups"] == 0
+    assert result["meta"]["expectedMatchups"] == 0
+    assert result["meta"]["matchedPicks"] == 0
+
+
 def test_scores24_fifa_world_cup_keeps_specialty_market_ungraded():
     module = _load_module(
         "scores24_fifa_test",

@@ -185,8 +185,13 @@ def fetch_daily_matchups(
     sport: str,
     date_iso: str,
     session: requests.Session | None = None,
-) -> list[dict[str, str]]:
-    """Return official daily matchups, with committed cache as a resilient fallback."""
+) -> tuple[list[dict[str, str]], bool]:
+    """Return official daily matchups and whether the slate was resolved.
+
+    The second value is True when ESPN returned a scoreboard for the date or
+    committed cache supplied fallback matchups. A successful ESPN response with
+    zero events is still resolved (off-day).
+    """
     config = SPORT_CONFIG[sport]
     url = (
         "https://site.api.espn.com/apis/site/v2/sports/"
@@ -194,10 +199,12 @@ def fetch_daily_matchups(
     )
     client = session or requests.Session()
     matchups: dict[tuple[str, str], dict[str, str]] = {}
+    espn_resolved = False
     try:
         response = client.get(url, headers={"User-Agent": "PickLedgerScores24/1.0"}, timeout=20)
         response.raise_for_status()
         payload = response.json()
+        espn_resolved = True
     except (requests.RequestException, ValueError):
         payload = {}
 
@@ -221,11 +228,12 @@ def fetch_daily_matchups(
                 "start_time": _norm_space(event.get("date") or competition.get("date")),
             }
 
-    for matchup in _cache_matchups(sport, date_iso):
+    cached = _cache_matchups(sport, date_iso)
+    for matchup in cached:
         key = _matchup_key(matchup["away"], matchup["home"])
         if key:
             matchups.setdefault(key, matchup)
-    return list(matchups.values())
+    return list(matchups.values()), espn_resolved or bool(cached)
 
 
 def _looks_blocked(status: int, html: str) -> bool:
@@ -677,13 +685,34 @@ def scrape_scores24(
         raise ValueError(f"unsupported Scores24 sport: {sport}")
     _parse_target_date(date_iso)
     config = SPORT_CONFIG[sport_key]
-    expected = matchups if matchups is not None else fetch_daily_matchups(sport_key, date_iso)
+    if matchups is not None:
+        expected = matchups
+        slate_resolved = True
+    else:
+        expected, slate_resolved = fetch_daily_matchups(sport_key, date_iso)
     if not expected:
+        if not slate_resolved:
+            return {
+                "ok": False,
+                "date": date_iso,
+                "picks": [],
+                "error": f"{config['source']} could not resolve an official {date_iso} slate",
+            }
         return {
-            "ok": False,
+            "ok": True,
             "date": date_iso,
             "picks": [],
-            "error": f"{config['source']} could not resolve an official {date_iso} slate",
+            "note": f"{config['source']} has no official {date_iso} matchups.",
+            "meta": {
+                "officialMatchups": 0,
+                "expectedMatchups": 0,
+                "matchedPicks": 0,
+                "missingMatchups": [],
+                "unpublishedMatchups": [],
+                "attemptedUrls": 0,
+                "blockedUrls": 0,
+                "blockRetryRounds": 0,
+            },
         }
 
     owns_client = client is None
