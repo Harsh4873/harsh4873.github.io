@@ -826,6 +826,50 @@ def test_variant_board_uses_consensus_probability_when_gate_qualifies(monkeypatc
     assert pick["supporting_variant"] == "season"
 
 
+def test_consensus_ml_fallback_publishes_market_priced_variant_when_gate_rejects(monkeypatch):
+    import player_props.variants as variants
+
+    monkeypatch.delenv("PICKLEDGER_DISABLE_PRECISION_MODEL", raising=False)
+    monkeypatch.setattr(
+        variants,
+        "load_consensus_bundle",
+        lambda: {"metadata": {"training_fingerprint": "fallback-test-fingerprint"}, "artifacts": {}},
+    )
+    monkeypatch.setattr(
+        variants,
+        "evaluate_consensus_pick",
+        lambda pick: {
+            "required": True,
+            "qualified": False,
+            "reason": "failed: season_probability, history_probability, model_agreement",
+        },
+    )
+    base_model = {
+        "ok": True,
+        "sport": "MLB",
+        "date": DATE,
+        "games": 1,
+        "picks": [_variant_candidate("MLB", "strikeouts", line=5.5, over_odds=-115, under_odds=-105)],
+    }
+    monkeypatch.setattr(
+        variants,
+        "_season_choice",
+        lambda pick: ("Over", 0.58, -115, 0.5349, ["season signal"]),
+    )
+
+    bucket = variants.build_variant_buckets(sport="MLB", date_iso=DATE, base_model=base_model)[
+        "mlb_player_props"
+    ]
+
+    assert bucket["picks"]
+    pick = bucket["picks"][0]
+    assert pick["probability_source"] == "player_props_ml_v1"
+    assert pick["market_priced"] is True
+    assert pick["actionability"] == "market_priced"
+    assert pick["consensus_qualified"] is not True
+    assert str(pick["ml_probability_mode"]).endswith("_variant")
+
+
 def test_consensus_rejects_miscalibrated_publication_policy(monkeypatch):
     import player_props.consensus as consensus
 

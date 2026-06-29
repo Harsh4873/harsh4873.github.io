@@ -10,7 +10,15 @@ import statistics
 from typing import Any
 
 from .consensus import evaluate_consensus_pick, load_consensus_bundle, outcome_profile_key
-from .ml import MAX_PUBLISHED_POSITIVE_ODDS, ML_SOURCE, expected_value, market_family_for_stat
+from .ml import (
+    MAX_PUBLISHED_POSITIVE_ODDS,
+    MIN_PUBLISHED_EDGE,
+    MIN_PUBLISHED_EXPECTED_VALUE,
+    MIN_PUBLISHED_PROBABILITY,
+    ML_SOURCE,
+    expected_value,
+    market_family_for_stat,
+)
 from .schema import american_implied_probability, decision_and_stake, normal_probability, safe_float
 
 
@@ -54,6 +62,95 @@ def _clamp(value: float, low: float = 0.01, high: float = 0.99) -> float:
 
 def _consensus_gate_disabled() -> bool:
     return os.environ.get("PICKLEDGER_DISABLE_PRECISION_MODEL", "").strip().lower() in {"1", "true", "yes"}
+
+
+def _consensus_allows_ml_fallback(reason: str) -> bool:
+    """ML publication may substitute only when an active policy failed probability gates."""
+    blocked_fragments = (
+        "has not cleared 70%",
+        "consensus calibration below",
+        "sample size below publication floor",
+        "four-model gate inactive",
+        "HRR is restricted to the 1.5 line",
+        "missing season/history player profile",
+        "price unavailable",
+        "invalid selected price",
+    )
+    normalized = str(reason or "").strip().lower()
+    if not normalized.startswith("failed:"):
+        return False
+    return not any(fragment in normalized for fragment in blocked_fragments)
+
+
+def _ml_variant_publication_qualified(pick: dict[str, Any]) -> bool:
+    """True when variant ML signals clear publication EV thresholds without consensus."""
+    if pick.get("market_priced") is not True:
+        return False
+    try:
+        odds = int(safe_float(pick.get("variant_signal_odds") or pick.get("odds")))
+    except (TypeError, ValueError):
+        return False
+    if odds > MAX_PUBLISHED_POSITIVE_ODDS:
+        return False
+    probability = safe_float(pick.get("variant_signal_probability") or pick.get("ml_probability") or pick.get("probability"))
+    edge = safe_float(pick.get("variant_signal_edge") or pick.get("ml_edge"))
+    ev = safe_float(pick.get("variant_signal_expected_value") or pick.get("ml_expected_value"))
+    if probability < MIN_PUBLISHED_PROBABILITY or edge < MIN_VARIANT_EDGE or ev < MIN_VARIANT_EV:
+        return False
+    decision, _, _, _, _ = decision_and_stake(probability, odds)
+    return decision in {"BET", "LEAN"}
+
+
+def _restore_ml_variant_publication(pick: dict[str, Any], *, consensus_reason: str) -> dict[str, Any]:
+    selection = str(pick.get("variant_signal_selection") or pick.get("selection") or "Over")
+    probability = _clamp(safe_float(pick.get("variant_signal_probability") or pick.get("ml_probability") or pick.get("probability"), 0.5))
+    try:
+        odds = int(safe_float(pick.get("variant_signal_odds") or pick.get("odds")))
+    except (TypeError, ValueError):
+        odds = int(safe_float(pick.get("odds")) or -110)
+    implied = american_implied_probability(odds) or safe_float(pick.get("market_implied_probability"), 0.5)
+    decision, edge_pp, full_kelly, quarter_kelly, units = decision_and_stake(probability, odds)
+    edge_fraction = probability - implied
+    variant = str(pick.get("model_variant") or "season")
+    variant_label = str(pick.get("model_variant_label") or VARIANT_LABELS.get(variant, variant))
+    pick.update(
+        {
+            "selection": selection,
+            "odds": odds,
+            "market_implied_probability": round(implied, 4),
+            "probability": round(probability, 4),
+            "ml_probability": round(probability, 4),
+            "ml_raw_probability": round(probability, 4),
+            "ml_edge": round(edge_fraction, 6),
+            "ml_expected_value": round(expected_value(probability, odds), 6),
+            "ml_model_active": True,
+            "ml_probability_mode": f"{variant}_variant",
+            "decision": decision,
+            "confidence": (
+                "High"
+                if probability >= 0.60 and edge_fraction >= 0.06
+                else "Medium"
+                if probability >= MIN_PUBLISHED_PROBABILITY
+                else "Low"
+            ),
+            "edge": edge_pp,
+            "full_kelly": full_kelly,
+            "quarter_kelly": quarter_kelly,
+            "units": 0.0 if decision == "PASS" else min(units, 1.0),
+            "actionability": "market_priced",
+            "ml_calibration_excluded": True,
+            "reason": (
+                f"{pick.get('source')} rates this {selection.lower()} at {probability:.1%} against a "
+                f"{implied:.1%} market price using the {variant_label.lower()} signal."
+            ),
+        }
+    )
+    pick.update(_market_probability_context(pick, selection))
+    pick.setdefault("key_factors", []).insert(
+        0,
+        f"Consensus gate withheld publication ({consensus_reason}); ML EV thresholds qualified this market.",
+    )
+    return pick
 
 
 def _market_probability_context(pick: dict[str, Any], selection: str) -> dict[str, Any]:
@@ -461,6 +558,8 @@ def _apply_consensus_publication_gate(pick: dict[str, Any]) -> dict[str, Any]:
         }
     )
     if not qualified:
+        if _consensus_allows_ml_fallback(reason) and _ml_variant_publication_qualified(pick):
+            return _restore_ml_variant_publication(pick, consensus_reason=reason)
         pick.update(
             {
                 "decision": "PASS",
@@ -555,8 +654,22 @@ def _select_variant(scored: list[dict[str, Any]], variant: str) -> list[dict[str
     filtered = [
         pick for pick in scored
         if pick.get("market_priced") is True
-        and (pick.get("consensus_required") is not True or pick.get("consensus_qualified") is True)
-        and (pick.get("precision_required") is not True or pick.get("precision_qualified") is True)
+        and (
+            (pick.get("consensus_required") is not True or pick.get("consensus_qualified") is True)
+            or (
+                pick.get("consensus_qualified") is not True
+                and pick.get("actionability") == "market_priced"
+                and _ml_variant_publication_qualified(pick)
+            )
+        )
+        and (
+            pick.get("precision_required") is not True
+            or pick.get("precision_qualified") is True
+            or (
+                pick.get("actionability") == "market_priced"
+                and _ml_variant_publication_qualified(pick)
+            )
+        )
         and str(pick.get("decision") or "") in {"BET", "LEAN"}
         and safe_float(pick.get("ml_probability") or pick.get("probability")) >= 0.52
         and safe_float(pick.get("ml_edge")) >= MIN_VARIANT_EDGE
