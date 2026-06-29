@@ -17,6 +17,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 MODEL_CACHE_DIR = REPO_ROOT / "data" / "model_cache"
 PLAYER_PROPS_CACHE_DIR = REPO_ROOT / "data" / "player_props_cache"
 PLAYER_PROPS_SNAPSHOT_DIR = REPO_ROOT / "data" / "player_props_snapshots"
+PARLAY_CARDS_DIR = REPO_ROOT / "data" / "parlay_cards"
 REQUIRED_MODEL_KEYS = {
     "mlb_new",
     "mlb_inning",
@@ -324,6 +325,34 @@ def main() -> int:
     failures.extend(contract_failures)
     warnings.extend(contract_warnings)
 
+    parlay_latest = _read_json(PARLAY_CARDS_DIR / "latest.json")
+    parlay_dated = _read_json(PARLAY_CARDS_DIR / f"{today}.json")
+    parlay_manifest = _read_json(PARLAY_CARDS_DIR / "index.json")
+    if not parlay_latest:
+        failures.append("data/parlay_cards/latest.json is missing or invalid")
+    elif str(parlay_latest.get("date") or "") != today:
+        failures.append(f"latest parlay cards are {parlay_latest.get('date') or 'undated'}, expected {today}")
+    if not parlay_dated:
+        failures.append(f"data/parlay_cards/{today}.json is missing or invalid")
+    if parlay_manifest and f"{today}.json" not in (parlay_manifest.get("files") or []):
+        failures.append(f"parlay-card manifest does not include {today}.json")
+    if parlay_latest:
+        parlay_cards = [card for card in parlay_latest.get("cards") or [] if isinstance(card, dict)]
+        if len(parlay_cards) > 15:
+            failures.append(f"latest parlay board has {len(parlay_cards)} cards, expected at most 15")
+        if any(int(card.get("legCount") or 0) < 2 for card in parlay_cards):
+            failures.append("latest parlay board includes a 1-leg card")
+        category_counts: dict[str, int] = {}
+        for card in parlay_cards:
+            category = str(card.get("category") or "").strip()
+            category_counts[category] = category_counts.get(category, 0) + 1
+        oversized = {category: count for category, count in category_counts.items() if count > 3}
+        if oversized:
+            failures.append(f"latest parlay board has category count(s) above 3: {oversized}")
+        summary = parlay_latest.get("summary") if isinstance(parlay_latest.get("summary"), dict) else {}
+        if int(summary.get("displayedCards") or 0) != len(parlay_cards):
+            failures.append("latest parlay summary displayedCards does not match cards length")
+
     if args.data_only:
         for message in warnings:
             print(f"[readiness] warning: {message}")
@@ -379,10 +408,14 @@ def main() -> int:
         for key, bucket in player_models.items()
         if key in REQUIRED_PLAYER_PROP_KEYS and isinstance(bucket, dict)
     }
+    parlay_count = len(parlay_latest.get("cards") or []) if parlay_latest else 0
+    parlay_summary = parlay_latest.get("summary") if isinstance(parlay_latest, dict) and isinstance(parlay_latest.get("summary"), dict) else {}
+    parlay_three_leg_count = int(parlay_summary.get("threeLegCards") or 0)
     print(
         f"[upcheck] healthy for {today}: "
         f"teams_raw={team_counts}, teams_visible={team_visible_counts}, "
-        f"player_props_raw={player_counts}, player_props_visible={player_visible_counts}"
+        f"player_props_raw={player_counts}, player_props_visible={player_visible_counts}, "
+        f"parlay_cards={parlay_count}, parlay_3_leg={parlay_three_leg_count}"
     )
     return 0
 

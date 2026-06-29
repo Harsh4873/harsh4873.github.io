@@ -86,7 +86,7 @@ def test_research_details_use_generator_schema_fields_across_pick_views():
     assert "isPlayer ? '' : `<span class=\"home-feed-row-sport\"" in main
     assert "function bindResearchDetailCards(" in main
     assert "bindPickCards(results)" in main
-    assert "bindPickCards(container)" in main
+    assert "function parlayCardHtml(" in main
     assert "Show research details" in main
     assert ".home-player-details" in css
     assert ".home-player-extra" in css
@@ -212,50 +212,32 @@ def test_source_rankings_expand_period_records_and_static_cards_do_not_fake_clic
     assert ".daily-bet-card:hover" not in css
 
 
-def test_daily_tab_uses_focused_views_and_merges_duplicate_markets():
+def test_daily_tab_renders_parlay_board_filters_and_rankings():
     main = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
     css = (ROOT / "src" / "styles" / "pickledger.css").read_text(encoding="utf-8")
+    builder = (ROOT / "scripts" / "build_parlay_cards.py").read_text(encoding="utf-8")
 
-    for section in ("Top Picks", "Consensus Signals", "Hot Sources", "Research Queue"):
-        assert section in main
-    assert "PRICEY FAVORITE" in main
-    assert "function dailySourceForms(" in main
-    assert "function dailyPickScore(" in main
-    assert "function dailyPickKey(" in main
-    assert "function dailyPickGroups(" in main
-    assert "function isPublishedDailyPick(" in main
-    assert "type DailySort = 'time' | 'percentage'" in main
-    assert "let dailySort: DailySort = 'time'" in main
-    assert "function setDailySort(" in main
-    assert "function sortDailyGroups(" in main
-    assert "function compareDailyGroupTime(" in main
-    assert "function compareDailyGroupPercentage(" in main
-    assert "role=\"group\" aria-label=\"Sort best bets\"" in main
-    assert "By Time" in main
-    assert "By Percentage" in main
-    assert "allPicks: Pick[] = picks" in main
-    assert "uniqueDailyPicks(ranked(pending.filter(isPublishedDailyPick)))" in main
-    assert "function dailyConsensusCards(" in main
-    consensus_cards = main[main.index("function dailyConsensusCards("):main.index("function setDailyView(")]
-    assert ".slice(0, 6)" not in consensus_cards
-    assert "All matching market signals" in main
-    assert "Sources issuing BET/LEAN calls today" in main
-    assert "Greenlights, value, and high-probability BET/LEAN calls" in main
+    for section in ("Consensus Parlays", "Surefire Parlays", "Best Odds Parlays", "Hot Model Parlays", "Cross-Sport Parlays", "Same-Sport Parlays"):
+        assert section in builder
+    assert "type DailyView = 'all' | 'cross_sport' | 'same_sport' | 'consensus' | 'surefire' | 'best_odds' | 'hot_models'" in main
+    assert "let dailyView: DailyView = 'all'" in main
+    assert "getParlayCardsPayload" in main
+    assert "function parlayFilterOptions(" in main
+    assert "function parlayCardHtml(" in main
+    assert "function parlayRankingsPanel(" in main
+    assert "Parlay Board" in main
+    assert "BEST BETS PARLAY BOARD" in main
+    assert "Algorithm Rankings" in main
+    assert "No same-game legs, same-player duplicates, or duplicate markets are allowed" in main
+    assert "3-leg slips are built first from published BET/LEAN team picks and player props" in main
     assert "function setDailyView(" in main
-    assert "researchDetailsHtml(pick, expanded)" in main
-    assert "yourBetAddButton(pick)" in main
-    assert "researchDetailsHtml(game, expanded)" in main
-    assert "yourBetAddButton(game)" in main
-    assert "Each unique market appears once." in main
-    assert "excluding anything already in Top Picks" in main
-    assert ".daily-bet-card" in css
-    assert ".daily-model-card" in css
-    assert ".daily-consensus-card" in css
+    assert "role=\"tablist\" aria-label=\"Parlay board filters\"" in main
     assert ".daily-view-nav" in css
     assert ".daily-view-select-wrap" in css
-    assert ".daily-sort-control" in css
-    assert ".daily-pick-source-list" in css
-    assert "daily-slate-grid" not in main
+    assert ".parlay-grid" in css
+    assert ".parlay-card" in css
+    assert ".parlay-metrics" in css
+    assert ".parlay-leg-list" in css
 
 
 def test_soccer_consensus_keeps_lines_and_specialty_markets_distinct():
@@ -275,15 +257,15 @@ def test_player_mode_keeps_best_bets_available_and_prop_sources_separate():
     assert 'data-player-hidden-tab="trends"' not in html
     assert "function syncModeTabs(" not in main
     assert 'onclick="switchTab(\'daily\')">BEST BETS</button>' in html
-    assert "activePickMode !== 'player' || option.key !== 'consensus'" in main
-    assert "activePickMode === 'player' && view === 'consensus'" in main
-    assert "playerResearchPool" in main
+    assert "dailyView = 'all'" in main
+    assert "Parlay filter" in main
+    assert "getParlayCardsPayload(selectedDate || today)" in main
     assert "function playerRankingEpoch(" in main
     assert "function rankingComparablePicks(" in main
     assert "const PLAYER_PROP_RANKING_START_DATE = '2026-06-23'" in main
     assert "if (activePickMode !== 'player') return picks" in main
     assert "function latestAvailableDateKey(" in main
-    assert "activePickMode === 'player' ? selectedDate || latestAvailableDateKey()" in main
+    assert "getParlayCardsPayload(selectedDate || today)" in main
     assert "function playerModelRank(" in main
     assert "return 10000 - modelRank" in main
     assert "function consensusModelPanelHtml(" in main
@@ -298,7 +280,7 @@ def test_player_mode_keeps_best_bets_available_and_prop_sources_separate():
     assert "? 'Model' : 'Source'" in main
     assert "home-player-model-stack" in main
     assert "Models</strong>" in main
-    assert "Next-best player prop candidates" in main
+    assert "published BET/LEAN team picks and player props" in main
     for source in ("NBAPlayerProps", "MLBPlayerProps", "WNBAPlayerProps"):
         assert source in data
     assert "playerProp && fallbackSource" in data

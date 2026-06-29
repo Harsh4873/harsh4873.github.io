@@ -1970,15 +1970,36 @@
   .trend-evidence-origin { color: var(--muted); }
   .trend-evidence-text { margin-top: 4px; font-size: 11px; color: var(--text); line-height: 1.4; }
   .trend-subsection-empty { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); margin-top: 8px; }
-  .parlay-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 16px; }
-  .parlay-card { background: linear-gradient(180deg, rgba(77,166,255,0.06), transparent 40%), var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 18px; }
+  .parlay-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); gap: 16px; }
+  .parlay-card { background: linear-gradient(180deg, rgba(77,166,255,0.06), transparent 40%), var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 18px; position: relative; overflow: hidden; }
+  .parlay-card::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 3px; background: linear-gradient(90deg, var(--accent3), var(--accent)); }
+  .parlay-card.result-win::before { background: linear-gradient(90deg, var(--win), rgba(0,229,160,0.4)); }
+  .parlay-card.result-loss::before { background: linear-gradient(90deg, var(--loss), rgba(255,69,96,0.4)); }
+  .parlay-card.result-push::before { background: linear-gradient(90deg, var(--push), rgba(255,215,0,0.4)); }
   .parlay-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
   .parlay-title { font-family: 'Bebas Neue', sans-serif; font-size: 25px; letter-spacing: 1px; color: var(--text); }
-  .parlay-meta { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); text-align: right; line-height: 1.5; }
-  .parlay-leg { border-top: 1px solid var(--border); padding: 10px 0; }
-  .parlay-leg:first-of-type { border-top: none; padding-top: 0; }
+  .parlay-meta { min-width: 84px; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); text-align: right; line-height: 1.5; }
+  .parlay-meta strong { display: block; font-family: 'Bebas Neue', sans-serif; font-size: 34px; line-height: 0.95; color: var(--accent); letter-spacing: 0.7px; }
+  .parlay-meta span { display: block; margin-top: 4px; }
+  .parlay-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 7px; margin: 12px 0 14px; }
+  .parlay-metrics div { border: 1px solid var(--border); border-radius: 10px; padding: 8px 9px; background: rgba(0,0,0,0.12); min-width: 0; }
+  .parlay-metrics span { display: block; font-family: 'DM Mono', monospace; font-size: 8px; color: var(--muted); letter-spacing: 0.8px; text-transform: uppercase; }
+  .parlay-metrics strong { display: block; margin-top: 4px; font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text); overflow-wrap: anywhere; }
+  .parlay-metrics strong.positive { color: var(--win); }
+  .parlay-metrics strong.negative { color: var(--loss); }
+  .parlay-metrics strong.win { color: var(--win); }
+  .parlay-metrics strong.loss { color: var(--loss); }
+  .parlay-metrics strong.push { color: var(--push); }
+  .parlay-metrics strong.pending { color: var(--accent3); }
+  .parlay-leg-list { display: flex; flex-direction: column; gap: 8px; }
+  .parlay-leg { border: 1px solid var(--border); border-radius: 12px; padding: 10px 11px; background: rgba(0,0,0,0.12); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 10px; align-items: center; }
+  .parlay-leg:first-of-type { border-top: 1px solid var(--border); padding-top: 10px; }
   .parlay-leg-main { font-size: 14px; font-weight: 700; color: var(--text); }
   .parlay-leg-meta { margin-top: 4px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 0.4px; }
+  .parlay-leg-sub { grid-column: 1 / -1; font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 0.4px; line-height: 1.4; }
+  .parlay-leg.result-win { border-color: rgba(0,229,160,0.32); }
+  .parlay-leg.result-loss { border-color: rgba(255,69,96,0.32); }
+  .parlay-leg.result-push { border-color: rgba(255,215,0,0.32); }
   .parlay-warn { margin-top: 10px; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent3); }
   .parlay-subtitle { margin-top: 6px; margin-bottom: 14px; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.4px; }
   .parlay-footnote { margin-top: 14px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); }
@@ -2714,6 +2735,7 @@
   body[data-theme="light"] .daily-slate-card,
   body[data-theme="light"] .daily-podium-card,
   body[data-theme="light"] .daily-ranking-row,
+  body[data-theme="light"] .parlay-card,
   body[data-theme="light"] .daily-bet-card,
   body[data-theme="light"] .daily-model-card,
   body[data-theme="light"] .daily-consensus-card {
@@ -2721,6 +2743,8 @@
     border-color: var(--border);
   }
   body[data-theme="light"] .daily-slate-pick { background: #f7f9fc; }
+  body[data-theme="light"] .parlay-leg,
+  body[data-theme="light"] .parlay-metrics div { background: #f7f9fc; }
   body[data-theme="light"] .daily-stat { background: rgba(255,255,255,0.9); }
   body[data-theme="light"] .daily-clock { color: var(--accent); }
   body[data-theme="light"] .daily-eyebrow { color: var(--accent); }
@@ -2759,6 +2783,11 @@
     .daily-sort-control { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; }
     .daily-sort-control button { min-width: 0; text-align: center; }
     .daily-bet-grid, .daily-model-grid, .daily-consensus-grid { grid-template-columns: 1fr; }
+    .parlay-grid { grid-template-columns: 1fr; }
+    .parlay-header { display: grid; grid-template-columns: 1fr; }
+    .parlay-meta { text-align: left; }
+    .parlay-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .parlay-leg { grid-template-columns: 1fr; }
     .daily-bet-top { grid-template-columns: 1fr; }
     .daily-bet-score { text-align: left; }
     .daily-pick-source-row { grid-template-columns: 1fr; gap: 4px; }

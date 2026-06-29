@@ -66,6 +66,9 @@ jobs:
             --max-workers 3 \
             --skip-firestore
 
+      - name: Rebuild parlay cards
+        run: python scripts/build_parlay_cards.py --date "${{ github.event.inputs.date || '' }}"
+
       - name: Commit cache JSON if changed
         id: commit-cache
         run: |
@@ -73,8 +76,8 @@ jobs:
           git config user.name  "${GITHUB_ACTOR}"
           git config user.email "${ACTOR_EMAIL}"
           BRANCH="${GITHUB_REF_NAME:-main}"
-          if [ -z "$(git status --porcelain -- data/model_cache)" ]; then
-            echo "No change in data/model_cache — skipping commit."
+          if [ -z "$(git status --porcelain -- data/model_cache data/parlay_cards)" ]; then
+            echo "No change in data/model_cache or data/parlay_cards — skipping commit."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
@@ -84,13 +87,14 @@ jobs:
             git fetch origin "$BRANCH"
             git reset --hard "origin/${BRANCH}"
             python scripts/merge_model_cache_payload.py "$GENERATED_CACHE"
-            git add data/model_cache
+            CACHE_DATE=$(python -c "import json; print(json.load(open('data/model_cache/latest.json'))['date'])")
+            python scripts/build_parlay_cards.py --date "$CACHE_DATE"
+            git add data/model_cache data/parlay_cards
             if git diff --cached --quiet; then
               echo "No staged cache change after merge — skipping commit."
               echo "changed=false" >> "$GITHUB_OUTPUT"
               exit 0
             fi
-            CACHE_DATE=$(python -c "import json; print(json.load(open('data/model_cache/latest.json'))['date'])")
             git commit -m "chore(models): refresh model cache for ${CACHE_DATE}"
             if git push origin "HEAD:${BRANCH}"; then
               echo "changed=true" >> "$GITHUB_OUTPUT"

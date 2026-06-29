@@ -2,10 +2,14 @@ import { initMobileMode, initPickMode, initSettingsUI, initTheme, type PickMode 
 import {
   getAllPicks,
   getCacheStatus,
+  getParlayCardsPayload,
   loadAllData,
   setPickMode as setDataPickMode,
   setLocalGameTime,
   setLocalResult,
+  type ParlayCard,
+  type ParlayCardsPayload,
+  type ParlayRanking,
   type Pick,
   type PickResult,
 } from './data';
@@ -47,7 +51,7 @@ type DailySourceForm = {
   score: number;
 };
 
-type DailyView = 'picks' | 'consensus' | 'sources' | 'research';
+type DailyView = 'all' | 'cross_sport' | 'same_sport' | 'consensus' | 'surefire' | 'best_odds' | 'hot_models';
 type DailySort = 'time' | 'percentage';
 type DailyViewOption = {
   key: DailyView;
@@ -90,7 +94,7 @@ const ESPN_ENDPOINTS: Record<string, [string, string]> = {
 const activeFilters = new Set<string>();
 let activePickMode: PickMode = 'team';
 let homeMode: 'pending' | 'all' | 'settled' = 'pending';
-let dailyView: DailyView = 'picks';
+let dailyView: DailyView = 'all';
 let dailySort: DailySort = 'time';
 let selectedDate = '';
 let followCentralToday = true;
@@ -1444,9 +1448,144 @@ function dailyConsensusCards(picks: Pick[]): string {
   }).join('')}</div>`;
 }
 
+function formatAmericanOddsValue(odds: number | null | undefined): string {
+  if (odds == null || !Number.isFinite(Number(odds))) return '--';
+  return odds > 0 ? `+${Math.round(odds)}` : String(Math.round(odds));
+}
+
+function formatProbabilityValue(value: number | null | undefined): string {
+  if (value == null || !Number.isFinite(Number(value))) return '--';
+  return `${(Number(value) * 100).toFixed(1)}%`;
+}
+
+function formatEvValue(value: number | null | undefined): string {
+  if (value == null || !Number.isFinite(Number(value))) return '--';
+  const percent = Number(value) * 100;
+  return `${percent >= 0 ? '+' : ''}${percent.toFixed(1)}%`;
+}
+
+function parlayRecordText(record: { wins?: number; losses?: number; pushes?: number } | null | undefined): string {
+  if (!record || typeof record !== 'object') return '0-0';
+  const wins = Number((record as { wins?: number }).wins || 0);
+  const losses = Number((record as { losses?: number }).losses || 0);
+  const pushes = Number((record as { pushes?: number }).pushes || 0);
+  return `${wins}-${losses}${pushes ? `-${pushes}` : ''}`;
+}
+
+function parlayResultBadge(result: PickResult): string {
+  return `<span class="daily-slate-result ${escapeHtml(result)}">${result === 'pending' ? 'OPEN' : result.toUpperCase()}</span>`;
+}
+
+function parlayFilterOptions(payload: ParlayCardsPayload | null): DailyViewOption[] {
+  const cards = payload?.cards || [];
+  const count = (category: DailyView): number => category === 'all'
+    ? cards.length
+    : cards.filter(card => card.category === category).length;
+  return [
+    { key: 'all', label: 'All', count: count('all'), description: 'Every qualified card' },
+    { key: 'cross_sport', label: 'Cross-Sport', count: count('cross_sport'), description: 'Mixed sports and sources' },
+    { key: 'same_sport', label: 'Same-Sport', count: count('same_sport'), description: 'One-sport clean combos' },
+    { key: 'consensus', label: 'Consensus', count: count('consensus'), description: 'Matching source support' },
+    { key: 'surefire', label: 'Surefire', count: count('surefire'), description: 'Highest hit probability' },
+    { key: 'best_odds', label: 'Best Odds', count: count('best_odds'), description: 'EV and payout balance' },
+    { key: 'hot_models', label: 'Hot Models', count: count('hot_models'), description: 'Recent model form' },
+  ];
+}
+
+function parlayLegHtml(leg: ParlayCard['legs'][number]): string {
+  const sourceMeta = [
+    leg.source,
+    leg.decision,
+    formatAmericanOddsValue(leg.oddsAmerican),
+    formatProbabilityValue(leg.estimatedProbability),
+  ].filter(Boolean).join(' | ');
+  const gameLine = [
+    leg.game || leg.player || leg.market || 'Market',
+    leg.startTime ? formatStart(leg.startTime) : '',
+  ].filter(Boolean).join(' | ');
+  return `<div class="parlay-leg result-${escapeHtml(leg.result)}">
+    <div class="parlay-leg-main">${escapeHtml(leg.pick)}</div>
+    <div class="parlay-leg-meta">${escapeHtml(sourceMeta)}</div>
+    <div class="parlay-leg-sub">${escapeHtml(gameLine)}</div>
+    ${parlayResultBadge(leg.result)}
+  </div>`;
+}
+
+function parlayCardHtml(card: ParlayCard): string {
+  const projectedPayout = card.oddsAmerican == null
+    ? '--'
+    : signedUnits(card.oddsAmerican > 0 ? card.oddsAmerican / 100 : 100 / Math.abs(card.oddsAmerican));
+  const result = card.result || 'pending';
+  const resultClass = result === 'win' ? 'win' : result === 'loss' ? 'loss' : result === 'push' ? 'push' : 'pending';
+  return `<article class="parlay-card result-${resultClass}">
+    <div class="parlay-header">
+      <div>
+        <div class="parlay-title">${escapeHtml(card.categoryShortLabel || card.categoryLabel)}</div>
+        <div class="parlay-subtitle">${escapeHtml(card.sportMix)} | ${card.legCount} legs${card.fallback ? ' | fallback' : ''}</div>
+      </div>
+      <div class="parlay-meta"><strong>${escapeHtml(formatAmericanOddsValue(card.oddsAmerican))}</strong><span>${escapeHtml(projectedPayout)} on 1u</span></div>
+    </div>
+    <div class="parlay-metrics">
+      <div><span>Hit Prob</span><strong>${escapeHtml(formatProbabilityValue(card.estimatedProbability))}</strong></div>
+      <div><span>EV</span><strong class="${Number(card.parlayEv || 0) >= 0 ? 'positive' : 'negative'}">${escapeHtml(formatEvValue(card.parlayEv))}</strong></div>
+      <div><span>Fair</span><strong>${escapeHtml(formatAmericanOddsValue(card.fairOdds))}</strong></div>
+      <div><span>Result</span><strong class="${resultClass}">${result === 'pending' ? 'OPEN' : result.toUpperCase()}</strong></div>
+    </div>
+    <div class="parlay-leg-list">${card.legs.map(parlayLegHtml).join('')}</div>
+    <div class="parlay-warn">${escapeHtml(card.whyQualified || 'Qualified by parlay engine rules.')}</div>
+  </article>`;
+}
+
+function parlayGrid(cards: ParlayCard[]): string {
+  if (!cards.length) {
+    return '<div class="daily-empty"><div class="daily-empty-title">No qualified slips</div><div class="daily-empty-sub">The engine leaves weak slates blank instead of forcing action.</div></div>';
+  }
+  return `<div class="parlay-grid">${cards.map(parlayCardHtml).join('')}</div>`;
+}
+
+function parlaySections(payload: ParlayCardsPayload | null, view: DailyView): string {
+  const cards = payload?.cards || [];
+  if (view !== 'all') {
+    const option = parlayFilterOptions(payload).find(item => item.key === view);
+    const filtered = cards.filter(card => card.category === view);
+    return dailySection(option?.label || 'Parlays', option?.description || 'Qualified parlay cards.', parlayGrid(filtered), `${filtered.length} cards`);
+  }
+  return parlayFilterOptions(payload)
+    .filter(option => option.key !== 'all')
+    .map(option => {
+      const filtered = cards.filter(card => card.category === option.key);
+      if (!filtered.length) return '';
+      return dailySection(option.label, option.description, parlayGrid(filtered), `${filtered.length} cards`);
+    })
+    .join('') || parlayGrid([]);
+}
+
+function parlayRankingsPanel(rankings: ParlayRanking[] = []): string {
+  if (!rankings.length) {
+    return dailySection('Algorithm Rankings', 'Category records appear after generated slips settle.', '<div class="daily-empty"><div class="daily-empty-title">No settled cards yet</div><div class="daily-empty-sub">Rankings update as parlay cards are graded.</div></div>');
+  }
+  const rows = rankings.map((row, index) => {
+    const hitRate = row.hitRate == null ? '--' : `${(row.hitRate * 100).toFixed(1)}%`;
+    const roi = row.roi == null ? '--' : `${(row.roi * 100).toFixed(1)}%`;
+    const netClass = row.netUnits > 0 ? 'positive' : row.netUnits < 0 ? 'negative' : 'neutral';
+    return `<div class="daily-ranking-row rank-${index + 1}">
+      <div class="daily-ranking-rank">${index + 1}</div>
+      <div class="daily-ranking-source">${escapeHtml(row.label)}</div>
+      <div class="daily-ranking-metric">${row.wins}-${row.losses}${row.pushes ? `-${row.pushes}` : ''}</div>
+      <div class="daily-ranking-metric daily-ranking-hide-sm">${escapeHtml(hitRate)}</div>
+      <div class="daily-ranking-metric ${netClass}">${escapeHtml(signedUnits(row.netUnits))}</div>
+      <div class="daily-ranking-metric daily-ranking-hide-sm">${escapeHtml(roi)}</div>
+    </div>`;
+  }).join('');
+  return dailySection(
+    'Algorithm Rankings',
+    'Category records, hit rate, ROI, average odds, and recent form from generated 1u parlay tracking.',
+    `<div class="daily-ranking-list"><div class="daily-ranking-row header"><div>#</div><div>Category</div><div>Record</div><div class="daily-ranking-hide-sm">Hit Rate</div><div>Units</div><div class="daily-ranking-hide-sm">ROI</div></div>${rows}</div>`,
+  );
+}
+
 function setDailyView(view: string): void {
-  if (activePickMode === 'player' && view === 'consensus') view = 'picks';
-  if (view === 'picks' || view === 'consensus' || view === 'sources' || view === 'research') {
+  if (view === 'all' || view === 'cross_sport' || view === 'same_sport' || view === 'consensus' || view === 'surefire' || view === 'best_odds' || view === 'hot_models') {
     dailyView = view;
     renderDaily();
   }
@@ -1462,100 +1601,36 @@ function setDailySort(sort: string): void {
 function renderDaily(): void {
   const container = document.getElementById('daily-container');
   if (!container) return;
-  const dates = [...new Set(getAllPicks().map(pickDateKey).filter(Boolean))].sort();
   const today = centralDateKey();
-  const key = activePickMode === 'player' ? selectedDate || latestAvailableDateKey() : dates.includes(today) ? today : dates.at(-1) || today;
-  const picks = getAllPicks().filter(pick => pickDateKey(pick) === key);
-  const stats = statsFor(picks);
-  const pending = picks.filter(pick => pick.result === 'pending');
-  if (activePickMode === 'player' && dailyView === 'consensus') dailyView = 'picks';
-  const forms = dailySourceForms(key, picks);
-  const formsBySource = new Map(forms.map(form => [form.source, form]));
-  const ranked = (candidates: Pick[]) => [...candidates].sort((a, b) => dailyPickScore(b, formsBySource) - dailyPickScore(a, formsBySource));
-  const modelCalls = uniqueDailyPicks(ranked(pending.filter(isPublishedDailyPick))).slice(0, 8);
-  const probabilityLeaders = uniqueDailyPicks([...pending].filter(pick => pickProbability(pick) != null)
-    .sort((a, b) => (pickProbability(b) || 0) - (pickProbability(a) || 0))).slice(0, 8);
-  const valueZone = uniqueDailyPicks(ranked(pending.filter(pick => isPublishedDailyPick(pick) && ((pick.odds || 0) > 0 || (pickEdgePercent(pick) || 0) >= 10)))).slice(0, 6);
-  const researchQueue = uniqueDailyPicks([...pending].filter(pick => (
-    (pickProbability(pick) || 0) >= 0.6 && !isPublishedDailyPick(pick)
-  ) || (pick.odds != null && pick.odds <= -300)).sort((a, b) => (pickProbability(b) || 0) - (pickProbability(a) || 0))).slice(0, 6);
-  const priceyCount = uniqueDailyPicks(pending.filter(pick => pick.odds != null && pick.odds <= -300)).length;
-  const tagsById = new Map<string, Set<string>>();
-  const addTag = (tagPicks: Pick[], tag: string): void => tagPicks.forEach(pick => {
-    const tags = tagsById.get(pick.id) || new Set<string>();
-    tags.add(tag);
-    tagsById.set(pick.id, tags);
-  });
-  addTag(modelCalls, 'MODEL GREENLIGHT');
-  addTag(valueZone, 'VALUE');
-  addTag(probabilityLeaders, 'PROBABILITY LEADER');
-  addTag(researchQueue, 'RESEARCH');
-  addTag(pending.filter(pick => pick.odds != null && pick.odds <= -300), 'PRICEY FAVORITE');
-
-  const topCandidates = [...new Map(
-    [...modelCalls, ...valueZone, ...probabilityLeaders.filter(isPublishedDailyPick)]
-      .map(pick => [pick.id, pick]),
-  ).values()];
-  const topGroups = sortDailyGroups(dailyPickGroups(topCandidates, tagsById, formsBySource, pending));
-  const topKeys = new Set(topGroups.map(group => group.key));
-  const playerResearchPool = activePickMode === 'player'
-    ? uniqueDailyPicks(ranked(pending.filter(pick => !topKeys.has(dailyPickKey(pick)) && (
-      !isPublishedDailyPick(pick) ||
-      pickProbability(pick) != null ||
-      pickEdgePercent(pick) != null ||
-      Boolean(pick.reason || pick.rationale || pick.key_factors)
-    )))).slice(0, 8)
-    : [];
-  addTag(playerResearchPool, 'RESEARCH');
-  const researchCandidates = [...new Map(
-    [...researchQueue, ...playerResearchPool, ...probabilityLeaders.filter(pick => !isPublishedDailyPick(pick))]
-      .filter(pick => !topKeys.has(dailyPickKey(pick)))
-      .map(pick => [pick.id, pick]),
-  ).values()];
-  const researchGroups = sortDailyGroups(dailyPickGroups(researchCandidates, tagsById, formsBySource, pending));
-  const hotForms = forms.filter(form => form.todayCalls.length)
-    .sort(compareDailySourceForms)
-    .slice(0, 8);
-  const games = new Map<string, Pick[]>();
-  pending.forEach(pick => games.set(gameKey(pick), [...(games.get(gameKey(pick)) || []), pick]));
-  const consensusCount = [...games.values()].reduce((total, gamePicks) => total + trendSignalGroups(gamePicks).filter(signal => signal.matching).length, 0);
-  const viewOptionsBase: DailyViewOption[] = [
-    { key: 'picks', label: 'Top Picks', count: topGroups.length, description: 'Unique actionable markets' },
-    { key: 'consensus', label: 'Consensus', count: consensusCount, description: 'All matching market signals' },
-    { key: 'sources', label: 'Active Sources', count: hotForms.length, description: 'Sources issuing BET/LEAN calls today' },
-    { key: 'research', label: 'Research', count: researchGroups.length, description: activePickMode === 'player' ? 'Next-best prop candidates' : 'High probability and pricey spots' },
-  ];
-  const viewOptions = viewOptionsBase.filter(option => activePickMode !== 'player' || option.key !== 'consensus');
+  const payload = getParlayCardsPayload(selectedDate || today) || getParlayCardsPayload();
+  const key = payload?.date || selectedDate || today;
+  const viewOptions = parlayFilterOptions(payload);
   const activeView = viewOptions.find(option => option.key === dailyView) || viewOptions[0];
-  const sortOptions: Array<{ key: DailySort; label: string; description: string }> = [
-    { key: 'time', label: 'By Time', description: 'Upcoming first' },
-    { key: 'percentage', label: 'By Percentage', description: 'Highest model % first' },
-  ];
-  const activeSort = sortOptions.find(option => option.key === dailySort) || sortOptions[0];
-  const dailyFocus = activePickMode === 'player' ? 'top picks, sources, or research' : 'picks, consensus, sources, or research';
-  const researchSubtitle = activePickMode === 'player'
-    ? 'Next-best player prop candidates and pass research, excluding anything already in Top Picks.'
-    : 'High-probability non-published calls and expensive favorites, excluding anything already in Top Picks.';
-  const activeBody = dailyView === 'picks'
-    ? dailySection('Top Picks', 'Greenlights, value, and high-probability BET/LEAN calls merged into one card per market.', dailyPickGrid(topGroups), `${topGroups.length} unique markets`)
-    : dailyView === 'consensus'
-      ? dailySection('Consensus Signals', 'Same market selection from at least two independent sources.', dailyConsensusCards(pending), `${consensusCount} matching signals`)
-      : dailyView === 'sources'
-        ? dailySection('Hot Sources', 'Recent three-slate form plus each source’s unique BET/LEAN calls today.', hotForms.length ? `<div class="daily-model-grid">${hotForms.map(dailyHotModelCard).join('')}</div>` : '<div class="daily-empty"><div class="daily-empty-title">No hot source has a published call today</div><div class="daily-empty-sub">This view appears when a source has enough recent decisions and a current greenlight.</div></div>', `${hotForms.length} active sources`)
-        : dailySection('Research Queue', researchSubtitle, dailyPickGrid(researchGroups), `${researchGroups.length} unique markets`);
+  if (!viewOptions.some(option => option.key === dailyView)) dailyView = 'all';
+  const summary = payload?.summary || {};
+  const record = summary.record;
+  const averageOdds = summary.averageOdds == null ? '--' : formatAmericanOddsValue(summary.averageOdds);
+  const generatedAt = payload?.generatedAt ? formatStart(payload.generatedAt) : 'TBD';
+  const activeBody = parlaySections(payload, dailyView);
+  const rankingsPanel = parlayRankingsPanel(payload?.rankings || []);
 
-  container.innerHTML = `<div class="daily-hero"><div class="daily-hero-row"><div><div class="daily-eyebrow">TODAY'S QUICK READ</div><div class="daily-title">The Shortlist</div><div class="daily-sub">${escapeHtml(dateLabel(key, true))} | Each unique market appears once. Choose a view to focus on ${dailyFocus}.</div></div><div class="daily-clock-wrap"><div class="daily-clock-label">PICKS FOR</div><div class="daily-clock">${escapeHtml(key)}</div></div></div></div>
+  container.innerHTML = `<div class="daily-hero"><div class="daily-hero-row"><div><div class="daily-eyebrow">BEST BETS PARLAY BOARD</div><div class="daily-title">Parlay Board</div><div class="daily-sub">${escapeHtml(dateLabel(key, true))} | 3-leg slips are built first from published BET/LEAN team picks and player props.</div></div><div class="daily-clock-wrap"><div class="daily-clock-label">SLATE</div><div class="daily-clock">${escapeHtml(key)}</div><div class="daily-countdown">Updated ${escapeHtml(generatedAt)}</div></div></div></div>
+    <div class="daily-stats-strip">
+      <div class="daily-stat"><div class="daily-stat-val accent">${summary.threeLegCards ?? 0}</div><div class="daily-stat-label">3-Leg Slips</div></div>
+      <div class="daily-stat"><div class="daily-stat-val">${summary.displayedCards ?? 0}</div><div class="daily-stat-label">Shown</div></div>
+      <div class="daily-stat"><div class="daily-stat-val accent3">${escapeHtml(averageOdds)}</div><div class="daily-stat-label">Avg Odds</div></div>
+      <div class="daily-stat"><div class="daily-stat-val neutral">${escapeHtml(parlayRecordText(record))}</div><div class="daily-stat-label">Algo Record</div></div>
+      <div class="daily-stat"><div class="daily-stat-val">${summary.eligibleLegs ?? 0}</div><div class="daily-stat-label">Eligible Legs</div></div>
+    </div>
     <div class="daily-view-shell">
-      <div class="daily-view-copy"><div class="daily-view-eyebrow">CHOOSE A VIEW</div><div class="daily-view-title">${escapeHtml(activeView.label)}</div><div class="daily-view-description">${escapeHtml(activeView.description)}. Sorted ${escapeHtml(activeSort.label.toLowerCase())}; ${stats.pending} picks remain open and ${priceyCount} are pricey favorites.</div></div>
-      <div class="daily-view-nav" role="tablist" aria-label="Daily shortlist categories">${viewOptions.map(option => `<button class="daily-view-tab ${dailyView === option.key ? 'active' : ''}" type="button" role="tab" aria-selected="${dailyView === option.key}" onclick="setDailyView('${option.key}')"><span class="daily-view-tab-count">${option.count}</span><span class="daily-view-tab-label">${option.label}</span><span class="daily-view-tab-desc">${option.description}</span></button>`).join('')}</div>
+      <div class="daily-view-copy"><div class="daily-view-eyebrow">FILTER PARLAYS</div><div class="daily-view-title">${escapeHtml(activeView.label)}</div><div class="daily-view-description">${escapeHtml(activeView.description)}. No same-game legs, same-player duplicates, or duplicate markets are allowed; weak slates show fewer cards instead of forced slips.</div></div>
+      <div class="daily-view-nav" role="tablist" aria-label="Parlay board filters">${viewOptions.map(option => `<button class="daily-view-tab ${dailyView === option.key ? 'active' : ''}" type="button" role="tab" aria-selected="${dailyView === option.key}" onclick="setDailyView('${option.key}')"><span class="daily-view-tab-count">${option.count}</span><span class="daily-view-tab-label">${option.label}</span><span class="daily-view-tab-desc">${option.description}</span></button>`).join('')}</div>
       <div class="daily-controls-row">
-        <label class="daily-view-select-wrap"><span>Daily category</span><select class="daily-view-select" onchange="setDailyView(this.value)">${viewOptions.map(option => `<option value="${option.key}" ${dailyView === option.key ? 'selected' : ''}>${option.label} (${option.count})</option>`).join('')}</select></label>
-        <div class="daily-sort-control" role="group" aria-label="Sort best bets">${sortOptions.map(option => `<button type="button" class="${dailySort === option.key ? 'active' : ''}" onclick="setDailySort('${option.key}')"><span>${escapeHtml(option.label)}</span><small>${escapeHtml(option.description)}</small></button>`).join('')}</div>
+        <label class="daily-view-select-wrap"><span>Parlay filter</span><select class="daily-view-select" onchange="setDailyView(this.value)">${viewOptions.map(option => `<option value="${option.key}" ${dailyView === option.key ? 'selected' : ''}>${option.label} (${option.count})</option>`).join('')}</select></label>
       </div>
     </div>
-    <div class="daily-active-content">${activeBody}</div>
-    <div class="daily-disclaimer"><strong>Quick read, not a blind card.</strong> Model probability estimates the chance of winning. Edge compares that chance with the market price. Recent records and consensus add context, but none guarantees the next result. Duplicate market cards are merged, with every contributing source shown inside the card.</div>`;
-  bindPickCards(container);
+    <div class="daily-active-content">${activeBody}${rankingsPanel}</div>
+    <div class="daily-disclaimer"><strong>Parlay tracking, not a forced ticket.</strong> Odds are multiplied from individual American prices, hit probability is estimated from published model or market-implied leg probabilities, and every generated slip is tracked at 1u for algorithm rankings.</div>`;
 }
 
 function yourBetRecord(stats: Stats): string {
@@ -2248,7 +2323,7 @@ function switchPickMode(mode: PickMode): void {
   setDataPickMode(mode);
   activeFilters.clear();
   homeMode = 'pending';
-  dailyView = 'picks';
+  dailyView = 'all';
   selectedDate = '';
   followCentralToday = true;
   calendarMonth = '';

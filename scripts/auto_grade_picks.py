@@ -20,6 +20,7 @@ sys.path.insert(0, str(REPO_ROOT))
 
 import pickgrader_server  # noqa: E402
 from scripts.pick_calibration import rebuild_outcome_ledger  # noqa: E402
+from scripts.build_parlay_cards import rebuild_parlay_cards  # noqa: E402
 from player_props.era import is_ml_era_pick  # noqa: E402
 
 
@@ -149,6 +150,8 @@ def main() -> int:
         f"{ledger['summary']['decided_picks']} decided, "
         f"changed={ledger_changed}"
     )
+    parlay_changed = rebuild_parlay_cards(all_dates=True)
+    print(f"[auto-grade] parlay cards: {parlay_changed} file update(s)")
     print(f"[auto-grade] complete: {total} update(s)")
     return 0
 

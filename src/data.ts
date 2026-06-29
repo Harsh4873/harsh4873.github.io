@@ -83,6 +83,113 @@ interface PlayerPropsPayload {
   [key: string]: unknown;
 }
 
+export interface ParlayLeg {
+  legId: string;
+  pickId?: string;
+  source: string;
+  sourceType?: string;
+  sport: string;
+  pick: string;
+  decision?: string;
+  oddsAmerican: number | null;
+  decimalOdds?: number | null;
+  estimatedProbability?: number | null;
+  probabilitySource?: string;
+  game?: string;
+  market?: string;
+  player?: string;
+  result: PickResult;
+  startTime?: string;
+  consensusSources?: string[];
+}
+
+export interface ParlayCard {
+  id: string;
+  category: string;
+  categoryLabel: string;
+  categoryShortLabel?: string;
+  title?: string;
+  fallback?: boolean;
+  legCount: number;
+  activeLegCount?: number;
+  sportMix: string;
+  sportPattern?: string;
+  sports?: string[];
+  hasPlayerProp?: boolean;
+  oddsAmerican: number | null;
+  decimalOdds?: number | null;
+  estimatedProbability?: number | null;
+  geomeanProbability?: number | null;
+  fairOdds?: number | null;
+  parlayEv?: number | null;
+  payoutQuality?: number | null;
+  averageSourceForm?: number | null;
+  consensusLegs?: number;
+  result: PickResult;
+  profitUnits?: number | null;
+  stakeUnits?: number | null;
+  whyQualified?: string;
+  legs: ParlayLeg[];
+}
+
+export interface ParlayCategorySummary {
+  key: string;
+  label: string;
+  shortLabel?: string;
+  description?: string;
+  count: number;
+  threeLegCount?: number;
+  fallbackCount?: number;
+  weight?: number;
+  record?: {
+    wins?: number;
+    losses?: number;
+    pushes?: number;
+    pending?: number;
+    hitRate?: number | null;
+    roi?: number | null;
+    netUnits?: number | null;
+    averageOdds?: number | null;
+    recentForm?: string;
+  };
+}
+
+export interface ParlayRanking {
+  category: string;
+  label: string;
+  description?: string;
+  wins: number;
+  losses: number;
+  pushes: number;
+  pending: number;
+  settled: number;
+  hitRate: number | null;
+  roi: number | null;
+  netUnits: number;
+  averageOdds: number | null;
+  recentForm?: string;
+}
+
+export interface ParlayCardsPayload {
+  date: string;
+  generatedAt?: string;
+  engineVersion?: string;
+  summary?: {
+    eligibleLegs?: number;
+    generatedThreeLegCandidates?: number;
+    displayedCards?: number;
+    threeLegCards?: number;
+    twoLegFallbackCards?: number;
+    averageOdds?: number | null;
+    record?: ParlayCategorySummary['record'];
+  };
+  categories?: ParlayCategorySummary[];
+  rankings?: ParlayRanking[];
+  cards?: ParlayCard[];
+  notices?: string[];
+  [key: string]: unknown;
+}
+
 const RESULT_STORAGE_KEY = 'pickledger_static_results_v2';
 const GAME_TIME_STORAGE_KEY = 'pickledger_static_game_times_v2';
 const ARCHIVED_SPORTS = new Set(['NBA']);
@@ -140,6 +247,8 @@ let resultOverrides: Record<string, PickResult> = {};
 let gameTimes: Record<string, string> = {};
 let latestTeamCache: ModelCachePayload | null = null;
 let latestPlayerCache: PlayerPropsPayload | null = null;
+let parlayPayloads: ParlayCardsPayload[] = [];
+let latestParlayPayload: ParlayCardsPayload | null = null;
 
 function readStorage<T>(key: string, fallback: T): T {
   try {
@@ -388,6 +497,27 @@ async function loadPlayerCacheFiles(): Promise<PlayerPropsPayload[]> {
   return payloads;
 }
 
+async function loadParlayCardFiles(): Promise<ParlayCardsPayload[]> {
+  const manifest = await fetchJson<CacheManifest>('./data/parlay_cards/index.json');
+  const files = Array.isArray(manifest?.files)
+    ? manifest.files.filter(file => /^\d{4}-\d{2}-\d{2}\.json$/.test(file))
+    : [];
+  if (!files.length) {
+    const fallback = await fetchJson<ParlayCardsPayload>('./data/parlay_cards/latest.json');
+    latestParlayPayload = fallback;
+    parlayPayloads = fallback ? [fallback] : [];
+    return parlayPayloads;
+  }
+
+  const payloads = (await Promise.all(
+    files.map(file => fetchJson<ParlayCardsPayload>(`./data/parlay_cards/${file}`)),
+  )).filter((payload): payload is ParlayCardsPayload => Boolean(payload));
+  payloads.sort((a, b) => String(a.date || '').localeCompare(String(b.date || '')));
+  latestParlayPayload = payloads[payloads.length - 1] || null;
+  parlayPayloads = payloads;
+  return payloads;
+}
+
 function sortPicks(picks: Pick[]): Pick[] {
   return picks.sort((a, b) => (
     a.date.localeCompare(b.date) ||
@@ -411,6 +541,7 @@ export async function loadAllData(): Promise<Pick[]> {
   const [cachePayloads, playerPayloads] = await Promise.all([
     loadCacheFiles(),
     loadPlayerCacheFiles(),
+    loadParlayCardFiles(),
   ]);
   const teamById = new Map<string, Pick>();
   const playerById = new Map<string, Pick>();
@@ -428,6 +559,17 @@ export async function loadAllData(): Promise<Pick[]> {
 
 export function getAllPicks(): Pick[] {
   return activePickMode === 'player' ? playerPicks : teamPicks;
+}
+
+export function getParlayCardsPayload(date?: string): ParlayCardsPayload | null {
+  if (date) {
+    return parlayPayloads.find(payload => payload.date === date) || latestParlayPayload;
+  }
+  return latestParlayPayload;
+}
+
+export function getParlayCardPayloads(): ParlayCardsPayload[] {
+  return parlayPayloads;
 }
 
 export function getResults(): Record<string, PickResult> {

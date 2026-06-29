@@ -76,6 +76,9 @@ jobs:
       - name: Archive immutable published snapshot
         run: python scripts/archive_player_prop_snapshot.py
 
+      - name: Rebuild parlay cards
+        run: python scripts/build_parlay_cards.py --date "${{ github.event.inputs.date || '' }}"
+
       - name: Commit player-props cache if changed
         id: commit-props
         run: |
@@ -83,8 +86,8 @@ jobs:
           git config user.name  "${GITHUB_ACTOR}"
           git config user.email "${ACTOR_EMAIL}"
           BRANCH="${GITHUB_REF_NAME:-main}"
-          if [ -z "$(git status --porcelain -- data/player_props_cache data/player_props_snapshots data/player_props_training data/calibration/outcome_ledger.json player_props/artifacts)" ]; then
-            echo "No player-props cache or ML artifact change; skipping commit."
+          if [ -z "$(git status --porcelain -- data/player_props_cache data/player_props_snapshots data/player_props_training data/calibration/outcome_ledger.json data/parlay_cards player_props/artifacts)" ]; then
+            echo "No player-props cache, parlay-card, or ML artifact change; skipping commit."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
@@ -114,13 +117,14 @@ jobs:
             cp "$GENERATED_OUTCOMES" data/player_props_training/outcome_history_2022_2026.jsonl.gz
             cp -R "$GENERATED_SNAPSHOTS"/. data/player_props_snapshots/
             cp -R "$GENERATED_ARTIFACTS"/. player_props/artifacts/
-            git add data/player_props_cache data/player_props_snapshots data/player_props_training data/calibration/outcome_ledger.json player_props/artifacts
+            CACHE_DATE=$(python -c "import json; print(json.load(open('data/player_props_cache/latest.json'))['date'])")
+            python scripts/build_parlay_cards.py --date "$CACHE_DATE"
+            git add data/player_props_cache data/player_props_snapshots data/player_props_training data/calibration/outcome_ledger.json data/parlay_cards player_props/artifacts
             if git diff --cached --quiet; then
               echo "No staged player-props change after merge; skipping commit."
               echo "changed=false" >> "$GITHUB_OUTPUT"
               exit 0
             fi
-            CACHE_DATE=$(python -c "import json; print(json.load(open('data/player_props_cache/latest.json'))['date'])")
             git commit -m "chore(props): refresh ML player props for ${CACHE_DATE}"
             if git push origin "HEAD:${BRANCH}"; then
               echo "changed=true" >> "$GITHUB_OUTPUT"
