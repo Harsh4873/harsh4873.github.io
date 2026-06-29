@@ -19,9 +19,11 @@ from scripts.pick_calibration import american_implied_probability, normalize_pro
 REPO_ROOT = Path(__file__).resolve().parents[1]
 OUTCOME_LEDGER_PATH = REPO_ROOT / "data" / "calibration" / "outcome_ledger.json"
 MLB_TEAM_MODEL_KEYS = {"mlb_new", "mlb_first_five", "mlb_inning"}
-MLB_TEAM_CONSENSUS_VERSION = "mlb_team_consensus_v1.0.0"
+MLB_TEAM_CONSENSUS_VERSION = "mlb_team_consensus_v1.1.0"
 MLB_TEAM_RANKING_EPOCH_PREFIX = f"MLB:{MLB_TEAM_CONSENSUS_VERSION}"
 MIN_WALK_FORWARD_SAMPLES = 30
+VALIDATION_LEAN_MODELS = {"mlb_new", "mlb_inning"}
+VALIDATION_LEAN_LIMIT = 3
 
 MODEL_BET_TYPE_DEFAULTS = {
     "mlb_new": "h2h",
@@ -33,6 +35,11 @@ PUBLICATION_THRESHOLDS = {
     "mlb_new": {"lean_edge": 3.0, "bet_edge": 7.0, "lean_prob": 0.53, "bet_prob": 0.56, "lean_signals": 3, "bet_signals": 4},
     "mlb_first_five": {"lean_edge": 3.0, "bet_edge": 7.0, "lean_prob": 0.54, "bet_prob": 0.58, "lean_signals": 4, "bet_signals": 5},
     "mlb_inning": {"lean_edge": 5.0, "bet_edge": 10.0, "lean_prob": 0.55, "bet_prob": 0.60, "lean_signals": 4, "bet_signals": 5},
+}
+
+VALIDATION_LEAN_THRESHOLDS = {
+    "mlb_new": {"raw_prob": 0.57, "raw_edge": 6.0, "signals": 3},
+    "mlb_inning": {"raw_prob": 0.60, "raw_edge": 8.0, "signals": 2},
 }
 
 
@@ -144,6 +151,14 @@ def _calibrated_edge(pick: dict[str, Any], implied: float | None) -> float | Non
     probability = _calibrated_probability(pick)
     if probability is not None and implied is not None:
         return (probability - implied) * 100.0
+    return None
+
+
+def _raw_edge(pick: dict[str, Any]) -> float | None:
+    for field in ("raw_edge", "edge_pp", "model_edge", "edge"):
+        edge = _number(pick.get(field))
+        if edge is not None:
+            return edge
     return None
 
 
@@ -577,6 +592,104 @@ def _stake_units(pick: dict[str, Any], decision: str) -> float:
     return round(min(1.5, raw_units if decision == "BET" else raw_units * 0.6), 2)
 
 
+def _raw_snapshot_decision(pick: dict[str, Any]) -> str:
+    snapshot = pick.get("pregame_snapshot") if isinstance(pick.get("pregame_snapshot"), dict) else {}
+    return str(snapshot.get("decision") or pick.get("decision") or "").strip().upper()
+
+
+def _has_publishable_price(pick: dict[str, Any]) -> bool:
+    return (
+        _number(pick.get("odds")) is not None
+        or _number(pick.get("assumed_odds")) is not None
+        or normalize_probability(pick.get("market_implied_probability")) is not None
+        or normalize_probability(pick.get("market_pick_prob")) is not None
+        or normalize_probability(pick.get("market_probability")) is not None
+    )
+
+
+def _validation_candidate_score(
+    pick: dict[str, Any],
+    result: dict[str, Any],
+    model_key: str,
+) -> float | None:
+    if model_key not in VALIDATION_LEAN_MODELS:
+        return None
+    if str(result.get("decision") or "").upper() != "PASS":
+        return None
+    if _raw_snapshot_decision(pick) not in {"BET", "LEAN"}:
+        return None
+    if not _has_publishable_price(pick):
+        return None
+
+    thresholds = VALIDATION_LEAN_THRESHOLDS.get(model_key, {})
+    raw_probability = result.get("raw_model_probability")
+    raw_probability_f = float(raw_probability) if isinstance(raw_probability, (int, float)) else None
+    raw_edge = _raw_edge(pick)
+    signal_count = int(result.get("signal_count") or 0)
+    if raw_probability_f is None or raw_edge is None:
+        return None
+    if raw_probability_f < float(thresholds.get("raw_prob") or 0.0):
+        return None
+    if raw_edge < float(thresholds.get("raw_edge") or 0.0):
+        return None
+    if signal_count < int(thresholds.get("signals") or 0):
+        return None
+
+    return round(
+        max(0.0, raw_edge)
+        + max(0.0, raw_probability_f - 0.5) * 100.0
+        + signal_count * 2.5,
+        3,
+    )
+
+
+def _promote_validation_leans(
+    model_key: str,
+    evaluated: list[tuple[dict[str, Any], dict[str, Any]]],
+) -> int:
+    if model_key not in VALIDATION_LEAN_MODELS:
+        return 0
+    if any(str(pick.get("decision") or "").upper() in {"BET", "LEAN"} for pick, _ in evaluated):
+        return 0
+
+    candidates: list[tuple[float, dict[str, Any], dict[str, Any]]] = []
+    for pick, result in evaluated:
+        score = _validation_candidate_score(pick, result, model_key)
+        if score is not None:
+            candidates.append((score, pick, result))
+    candidates.sort(key=lambda item: item[0], reverse=True)
+
+    promoted = 0
+    seen_games: set[str] = set()
+    for score, pick, result in candidates:
+        game_key = _game_key(pick) or str(pick.get("matchup") or pick.get("game") or pick.get("pick") or "")
+        if game_key in seen_games:
+            continue
+        seen_games.add(game_key)
+        strict_reason = str(result.get("consensus_rejection_reason") or pick.get("consensus_rejection_reason") or "")
+        pick.update({
+            "decision": "LEAN",
+            "units": 0.25,
+            "actionability": "validation_lean",
+            "consensus_passed": True,
+            "consensus_qualified": False,
+            "primary_consensus_passed": False,
+            "consensus_publication_mode": "validation_fallback",
+            "validation_lean": True,
+            "validation_score": score,
+            "validation_reason": (
+                f"validation fallback: {model_key} had zero strict BET/LEAN publications; "
+                "published top raw model signal as a small LEAN for tracking"
+            ),
+            "consensus_rejection_reason": strict_reason,
+            "consensus_hard_blockers": result.get("hard_blockers") or [],
+        })
+        promoted += 1
+        if promoted >= VALIDATION_LEAN_LIMIT:
+            break
+    return promoted
+
+
 def apply_mlb_team_consensus_to_payload(
     payload: dict[str, Any],
     *,
@@ -594,6 +707,7 @@ def apply_mlb_team_consensus_to_payload(
         bucket["consensus_gate_version"] = MLB_TEAM_CONSENSUS_VERSION
         bucket["ranking_epoch"] = f"{MLB_TEAM_RANKING_EPOCH_PREFIX}:{model_key}"
         picks = bucket.get("picks") if isinstance(bucket.get("picks"), list) else []
+        evaluated: list[tuple[dict[str, Any], dict[str, Any]]] = []
         for pick in picks:
             if not isinstance(pick, dict):
                 continue
@@ -604,6 +718,7 @@ def apply_mlb_team_consensus_to_payload(
                 performance=performance,
                 game_lookup=lookup,
             )
+            evaluated.append((pick, result))
             decision = result["decision"]
             pick.update({
                 "consensus_required": True,
@@ -611,6 +726,8 @@ def apply_mlb_team_consensus_to_payload(
                 "mlb_team_consensus_version": MLB_TEAM_CONSENSUS_VERSION,
                 "consensus_passed": result["consensus_passed"],
                 "consensus_qualified": result["consensus_passed"],
+                "primary_consensus_passed": result["consensus_passed"],
+                "consensus_publication_mode": "strict" if result["consensus_passed"] else "research",
                 "consensus_score": result["consensus_score"],
                 "consensus_rejection_reason": result["consensus_rejection_reason"],
                 "consensus_signal_count": result["signal_count"],
@@ -631,6 +748,10 @@ def apply_mlb_team_consensus_to_payload(
                 "ranking_epoch": f"{MLB_TEAM_RANKING_EPOCH_PREFIX}:{model_key}",
                 "model_epoch": f"{MLB_TEAM_RANKING_EPOCH_PREFIX}:{model_key}",
             })
+        promoted = _promote_validation_leans(str(model_key), evaluated)
+        if promoted:
+            bucket["validation_leans_published"] = promoted
+            bucket["validation_publication_mode"] = "fallback_when_strict_gate_empty"
         summary: dict[str, int] = {}
         for pick in picks:
             if not isinstance(pick, dict):
