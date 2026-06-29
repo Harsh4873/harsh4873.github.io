@@ -20,9 +20,11 @@ def generate_payload(
 ) -> dict[str, Any]:
     api = client or DirectApiClient()
     timestamp = generated_at or datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+    nba_candidates = generate_basketball_candidate_model(api, "nba", "NBA", date_iso)
     wnba_candidates = generate_basketball_candidate_model(api, "wnba", "WNBA", date_iso)
     mlb_candidates = generate_mlb_candidate_model(api, date_iso)
     models = {
+        **build_variant_buckets(sport="NBA", date_iso=date_iso, base_model=nba_candidates),
         **build_variant_buckets(sport="WNBA", date_iso=date_iso, base_model=wnba_candidates),
         **build_variant_buckets(sport="MLB", date_iso=date_iso, base_model=mlb_candidates),
     }

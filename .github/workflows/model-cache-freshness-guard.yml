@@ -71,6 +71,7 @@ jobs:
           from pathlib import Path
 
           required = {
+              "nba_player_props",
               "mlb_player_props",
               "wnba_player_props",
           }
@@ -82,7 +83,7 @@ jobs:
           healthy = all(isinstance(models.get(key), dict) and models[key].get("ok") is True for key in required)
           for key in required:
               bucket = models.get(key) if isinstance(models.get(key), dict) else {}
-              if key in {"mlb_player_props", "wnba_player_props"}:
+              if key in required:
                   if int(bucket.get("games") or 0) > 0 and not (bucket.get("picks") or []) and bucket.get("abstained") is not True:
                       healthy = False
           print("true" if healthy else "false")

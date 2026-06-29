@@ -584,7 +584,8 @@ def test_refresh_timing_and_pages_deploy_are_deterministic():
     assert 'CACHE_HEALTHY="$(python - <<\'PY\'' in guard
     assert 'models[key].get("ok") is True for key in required' in guard
     assert 'PLAYER_CACHE_HEALTHY="$(python - <<\'PY\'' in guard
-    assert 'key in {"mlb_player_props", "wnba_player_props"}' in guard
+    assert '"nba_player_props"' in guard
+    assert 'key in required' in guard
     assert 'int(bucket.get("games") or 0) > 0 and not (bucket.get("picks") or [])' in guard
 
 
