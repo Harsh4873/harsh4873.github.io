@@ -46851,7 +46851,7 @@
           "game": "New York Yankees vs Detroit Tigers",
           "game_id": "823529",
           "game_order": 2,
-          "game_start_time": "2026-06-29T23:05:00Z",
+          "game_start_time": "2026-06-29T23:05Z",
           "home_team": "New York Yankees",
           "inning": 6,
           "league": "MLB",
@@ -46913,7 +46913,7 @@
           "selected_side_implied_probability": 0.545455,
           "source": "MLB Inning",
           "sport": "MLB",
-          "start_time": "2026-06-29T23:05:00Z",
+          "start_time": "2026-06-29T23:05Z",
           "team": "",
           "units": 0.25,
           "validation_lean": true,
@@ -48109,7 +48109,7 @@
           "game": "Cleveland Guardians vs Texas Rangers",
           "game_id": "824420",
           "game_order": 5,
-          "game_start_time": "2026-06-29T23:10:00Z",
+          "game_start_time": "2026-06-29T23:00Z",
           "home_team": "Cleveland Guardians",
           "inning": 2,
           "league": "MLB",
@@ -48171,7 +48171,7 @@
           "selected_side_implied_probability": 0.545455,
           "source": "MLB Inning",
           "sport": "MLB",
-          "start_time": "2026-06-29T23:10:00Z",
+          "start_time": "2026-06-29T23:00Z",
           "team": "",
           "units": 0.25,
           "validation_lean": true,
@@ -52628,6 +52628,7 @@
           "decision": "LEAN",
           "direction": "Under",
           "edge": -4.19,
+          "game_start_time": "2026-06-29T23:00Z",
           "home_team": "Cleveland Guardians",
           "kelly": 3.31,
           "line": 7.5,
@@ -52676,6 +52677,7 @@
           "selection": "Under",
           "source": "MLB Model",
           "sport": "MLB",
+          "start_time": "2026-06-29T23:00Z",
           "units": 0.25,
           "validation_lean": true,
           "validation_reason": "validation fallback: mlb_new had zero strict BET/LEAN publications; published top raw model signal as a small LEAN for tracking",
@@ -56349,6 +56351,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Philadelphia Phillies vs Pittsburgh Pirates",
+          "game_start_time": "2026-06-29T22:40Z",
           "matchup": "Philadelphia Phillies vs Pittsburgh Pirates",
           "odds": -172,
           "pick": "Over 7.5 (Phillies vs Pirates)",
@@ -56368,6 +56371,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-29T22:40Z",
           "units": 1
         },
         {
@@ -56375,6 +56379,7 @@
           "decision": "BET",
           "edge": null,
           "game": "New York Yankees vs Detroit Tigers",
+          "game_start_time": "2026-06-29T23:05Z",
           "matchup": "New York Yankees vs Detroit Tigers",
           "odds": -140,
           "pick": "Under 8.5 (Yankees vs Tigers)",
@@ -56394,6 +56399,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-29T23:05Z",
           "units": 1
         },
         {
@@ -56401,6 +56407,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Toronto Blue Jays vs New York Mets",
+          "game_start_time": "2026-06-29T23:07Z",
           "matchup": "Toronto Blue Jays vs New York Mets",
           "odds": -162,
           "pick": "Under 9.5 (Blue Jays vs Mets)",
@@ -56420,6 +56427,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-29T23:07Z",
           "units": 1
         },
         {
@@ -56427,6 +56435,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Cleveland Guardians vs Texas Rangers",
+          "game_start_time": "2026-06-29T23:00Z",
           "matchup": "Cleveland Guardians vs Texas Rangers",
           "odds": 122,
           "pick": "Rangers ML (Guardians vs Rangers)",
@@ -56446,6 +56455,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-29T23:00Z",
           "units": 1
         },
         {
@@ -56453,6 +56463,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Milwaukee Brewers vs Cincinnati Reds",
+          "game_start_time": "2026-06-29T23:40Z",
           "matchup": "Milwaukee Brewers vs Cincinnati Reds",
           "odds": -140,
           "pick": "Brewers ML (Brewers vs Reds)",
@@ -56472,6 +56483,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-29T23:40Z",
           "units": 1
         },
         {
@@ -56479,6 +56491,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Colorado Rockies vs Miami Marlins",
+          "game_start_time": "2026-06-30T00:40Z",
           "matchup": "Colorado Rockies vs Miami Marlins",
           "odds": -136,
           "pick": "Marlins ML (Rockies vs Marlins)",
@@ -56498,6 +56511,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-30T00:40Z",
           "units": 1
         },
         {
@@ -56505,6 +56519,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Seattle Mariners vs Los Angeles Angels",
+          "game_start_time": "2026-06-30T01:40Z",
           "matchup": "Seattle Mariners vs Los Angeles Angels",
           "odds": -150,
           "pick": "Under 8.5 (Mariners vs Angels)",
@@ -56524,6 +56539,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-06-30T01:40Z",
           "units": 1
         }
       ],
