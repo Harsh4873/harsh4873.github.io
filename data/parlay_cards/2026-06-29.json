@@ -40,7 +40,7 @@
           "sourceKey": "mlb_player_props",
           "sourceType": "player_prop",
           "sport": "MLB",
-          "startTime": "2026-06-30T00:40:00Z"
+          "startTime": "2026-06-30T00:40Z"
         },
         {
           "consensusSources": [],
@@ -86,7 +86,7 @@
           "sourceKey": "mlb_player_props",
           "sourceType": "player_prop",
           "sport": "MLB",
-          "startTime": "2026-06-30T01:40:00Z"
+          "startTime": "2026-06-30T01:40Z"
         }
       ],
       "oddsAmerican": 452,
@@ -145,7 +145,7 @@
           "sourceKey": "mlb_player_props",
           "sourceType": "player_prop",
           "sport": "MLB",
-          "startTime": "2026-06-30T00:40:00Z"
+          "startTime": "2026-06-30T00:40Z"
         },
         {
           "consensusSources": [],
@@ -296,7 +296,7 @@
           "sourceKey": "mlb_player_props",
           "sourceType": "player_prop",
           "sport": "MLB",
-          "startTime": "2026-06-30T01:40:00Z"
+          "startTime": "2026-06-30T01:40Z"
         }
       ],
       "oddsAmerican": 536,
@@ -355,7 +355,7 @@
           "sourceKey": "mlb_player_props",
           "sourceType": "player_prop",
           "sport": "MLB",
-          "startTime": "2026-06-30T00:40:00Z"
+          "startTime": "2026-06-30T00:40Z"
         },
         {
           "consensusSources": [],
@@ -401,7 +401,7 @@
           "sourceKey": "mlb_player_props",
           "sourceType": "player_prop",
           "sport": "MLB",
-          "startTime": "2026-06-30T01:40:00Z"
+          "startTime": "2026-06-30T01:40Z"
         }
       ],
       "oddsAmerican": 444,
@@ -506,7 +506,7 @@
           "sourceKey": "mlb_first_five",
           "sourceType": "model",
           "sport": "MLB",
-          "startTime": "2026-06-29T23:10:00Z"
+          "startTime": "2026-06-29T23:10Z"
         }
       ],
       "oddsAmerican": 556,
@@ -1115,7 +1115,7 @@
           "sourceKey": "mlb_first_five",
           "sourceType": "model",
           "sport": "MLB",
-          "startTime": "2026-06-29T23:10:00Z"
+          "startTime": "2026-06-29T23:10Z"
         },
         {
           "consensusSources": [],
@@ -1221,7 +1221,7 @@
           "sourceKey": "mlb_first_five",
           "sourceType": "model",
           "sport": "MLB",
-          "startTime": "2026-06-29T23:10:00Z"
+          "startTime": "2026-06-29T23:10Z"
         },
         {
           "consensusSources": [],
@@ -1327,7 +1327,7 @@
           "sourceKey": "mlb_inning",
           "sourceType": "model",
           "sport": "MLB",
-          "startTime": "2026-06-29T23:10:00Z"
+          "startTime": "2026-06-29T23:00Z"
         },
         {
           "consensusSources": [],
@@ -1456,7 +1456,7 @@
           "sourceKey": "mlb_inning",
           "sourceType": "model",
           "sport": "MLB",
-          "startTime": "2026-06-29T23:10:00Z"
+          "startTime": "2026-06-29T23:00Z"
         }
       ],
       "oddsAmerican": 312,
@@ -1562,7 +1562,7 @@
           "sourceKey": "mlb_inning",
           "sourceType": "model",
           "sport": "MLB",
-          "startTime": "2026-06-29T23:10:00Z"
+          "startTime": "2026-06-29T23:00Z"
         }
       ],
       "oddsAmerican": 291,
@@ -1718,7 +1718,7 @@
   ],
   "date": "2026-06-29",
   "engineVersion": "parlay_cards_v1",
-  "generatedAt": "2026-06-29T22:11:07.590147Z",
+  "generatedAt": "2026-06-29T22:36:55.219062Z",
   "notices": [
     "No same-game legs, same-player duplicates, or duplicate markets are allowed in a slip.",
     "3-leg slips are generated and ranked before any 2-leg fallback cards.",

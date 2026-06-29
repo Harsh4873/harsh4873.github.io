@@ -583,6 +583,7 @@
           "edge": 29.2,
           "full_kelly": 0.2,
           "game_id": "824986",
+          "game_start_time": "2026-06-30T01:40Z",
           "h2h": {
             "at_bats": 0,
             "available": false,
@@ -673,7 +674,7 @@
           "selection": "Under",
           "source": "MLBPlayerProps",
           "sport": "MLB",
-          "start_time": "2026-06-30T01:40:00Z",
+          "start_time": "2026-06-30T01:40Z",
           "stat_key": "hits_runs_rbis",
           "stat_label": "Hits + Runs + RBIs",
           "supporting_variant": "hot_l10",
@@ -1106,6 +1107,7 @@
           "edge": 29.12,
           "full_kelly": 0.2,
           "game_id": "824339",
+          "game_start_time": "2026-06-30T00:40Z",
           "h2h": {
             "at_bats": 2,
             "available": true,
@@ -1196,7 +1198,7 @@
           "selection": "Over",
           "source": "MLBPlayerProps",
           "sport": "MLB",
-          "start_time": "2026-06-30T00:40:00Z",
+          "start_time": "2026-06-30T00:40Z",
           "stat_key": "hits_runs_rbis",
           "stat_label": "Hits + Runs + RBIs",
           "supporting_variant": "hot_l10",
