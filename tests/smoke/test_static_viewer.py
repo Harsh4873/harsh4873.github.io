@@ -60,6 +60,8 @@ def test_frontend_player_mode_is_persisted_isolated_and_team_defaulted():
     assert "selectedDate = ''" in main
     assert "search.value = ''" in main
     assert "function isOpenPick(" in main
+    assert "pick.result === 'pending' && !isUnsupportedPendingPick(pick) && isPublishedDailyPick(pick)" in main
+    assert "dailyDecision(pick) === 'PASS'" in main
     assert "const pending = getAllPicks().filter(isOpenPick)" in main
     assert "UNTRACKED" in main
     assert "mlbLivePlayerStat(" in main

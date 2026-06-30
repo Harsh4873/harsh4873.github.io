@@ -357,7 +357,7 @@ function isUnsupportedPendingPick(pick: Pick): boolean {
 }
 
 function isOpenPick(pick: Pick): boolean {
-  return pick.result === 'pending' && !isUnsupportedPendingPick(pick);
+  return pick.result === 'pending' && !isUnsupportedPendingPick(pick) && isPublishedDailyPick(pick);
 }
 
 function rankingComparablePicks(picks: Pick[]): Pick[] {
@@ -609,6 +609,7 @@ function resultBadge(result: PickResult): string {
 
 function pickResultBadge(pick: Pick): string {
   if (isUnsupportedPendingPick(pick)) return '<span class="badge badge-pending">UNTRACKED</span>';
+  if (pick.result === 'pending' && dailyDecision(pick) === 'PASS') return '<span class="badge badge-pending">PASS</span>';
   return resultBadge(pick.result);
 }
 
