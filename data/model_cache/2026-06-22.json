@@ -24612,6 +24612,8 @@
           "edge": null,
           "game": "Miami Marlins vs Texas Rangers",
           "game_start_time": "2026-06-22T22:40Z",
+          "grade_supported": false,
+          "market_type": "external_team_mismatch",
           "matchup": "Miami Marlins vs Texas Rangers",
           "odds": -124,
           "pick": "Miami ML (Marlins vs Rangers)",
@@ -24629,7 +24631,7 @@
             "units": 1
           },
           "probability": null,
-          "result": "loss",
+          "result": "pending",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-22T22:40Z",

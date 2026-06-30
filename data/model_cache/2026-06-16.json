@@ -25624,6 +25624,8 @@
           "edge": null,
           "game": "Texas Rangers vs Minnesota Twins",
           "game_start_time": "2026-06-17T00:05Z",
+          "grade_supported": false,
+          "market_type": "external_team_mismatch",
           "matchup": "Texas Rangers vs Minnesota Twins",
           "odds": -132,
           "pick": "Texas ML (Rangers vs Twins)",
@@ -25641,7 +25643,7 @@
             "units": 1
           },
           "probability": null,
-          "result": "loss",
+          "result": "pending",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-17T00:05Z",

@@ -769,7 +769,7 @@
       "whyQualified": "Balances projected payout, fair odds, EV, and single-leg price discipline."
     },
     {
-      "activeLegCount": 3,
+      "activeLegCount": 2,
       "averageSourceForm": 56.34,
       "category": "best_odds",
       "categoryLabel": "Best Odds Parlays",
@@ -826,7 +826,7 @@
           "pickId": "pp_a8b9a5f9716f877d6dc1_matchup_h2h",
           "player": "Ezequiel Tovar",
           "probabilitySource": "probability",
-          "result": "pending",
+          "result": "push",
           "source": "MLB Matchup (H2H) Props",
           "sourceKey": "mlb_player_props_matchup_h2h",
           "sourceType": "player_prop",
@@ -874,7 +874,7 @@
       "whyQualified": "Balances projected payout, fair odds, EV, and single-leg price discipline."
     },
     {
-      "activeLegCount": 3,
+      "activeLegCount": 2,
       "averageSourceForm": 60.46,
       "category": "best_odds",
       "categoryLabel": "Best Odds Parlays",
@@ -908,7 +908,7 @@
           "pickId": "pp_a8b9a5f9716f877d6dc1_matchup_h2h",
           "player": "Ezequiel Tovar",
           "probabilitySource": "probability",
-          "result": "pending",
+          "result": "push",
           "source": "MLB Matchup (H2H) Props",
           "sourceKey": "mlb_player_props_matchup_h2h",
           "sourceType": "player_prop",
@@ -979,7 +979,7 @@
       "whyQualified": "Balances projected payout, fair odds, EV, and single-leg price discipline."
     },
     {
-      "activeLegCount": 3,
+      "activeLegCount": 2,
       "averageSourceForm": 60.46,
       "category": "hot_models",
       "categoryLabel": "Hot Model Parlays",
@@ -1036,7 +1036,7 @@
           "pickId": "pp_a8b9a5f9716f877d6dc1_matchup_h2h",
           "player": "Ezequiel Tovar",
           "probabilitySource": "probability",
-          "result": "pending",
+          "result": "push",
           "source": "MLB Matchup (H2H) Props",
           "sourceKey": "mlb_player_props_matchup_h2h",
           "sourceType": "player_prop",
@@ -1751,7 +1751,7 @@
   ],
   "date": "2026-06-21",
   "engineVersion": "parlay_cards_v1",
-  "generatedAt": "2026-06-30T05:15:45.074899Z",
+  "generatedAt": "2026-06-30T06:20:26.439044Z",
   "notices": [
     "No same-game legs, same-player duplicates, or duplicate markets are allowed in a slip.",
     "3-leg slips are generated and ranked before any 2-leg fallback cards.",

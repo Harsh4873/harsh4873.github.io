@@ -1726,7 +1726,7 @@
   ],
   "date": "2026-06-14",
   "engineVersion": "parlay_cards_v1",
-  "generatedAt": "2026-06-30T05:14:37.506430Z",
+  "generatedAt": "2026-06-30T06:18:41.443960Z",
   "notices": [
     "No same-game legs, same-player duplicates, or duplicate markets are allowed in a slip.",
     "3-leg slips are generated and ranked before any 2-leg fallback cards.",
@@ -1833,8 +1833,8 @@
   "summary": {
     "averageOdds": 646.7,
     "displayedCards": 15,
-    "eligibleLegs": 120,
-    "generatedThreeLegCandidates": 75764,
+    "eligibleLegs": 119,
+    "generatedThreeLegCandidates": 75016,
     "record": {
       "averageOdds": 646.7,
       "hitRate": 0.2,

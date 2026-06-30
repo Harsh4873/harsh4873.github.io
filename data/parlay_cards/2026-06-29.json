@@ -1718,7 +1718,7 @@
   ],
   "date": "2026-06-29",
   "engineVersion": "parlay_cards_v1",
-  "generatedAt": "2026-06-30T05:15:58.300050Z",
+  "generatedAt": "2026-06-30T06:20:53.092518Z",
   "notices": [
     "No same-game legs, same-player duplicates, or duplicate markets are allowed in a slip.",
     "3-leg slips are generated and ranked before any 2-leg fallback cards.",
@@ -1742,7 +1742,7 @@
       "wins": 12
     },
     {
-      "averageOdds": 540.1,
+      "averageOdds": 541.7,
       "category": "cross_sport",
       "description": "Clean mixes across MLB, FIFA, WNBA, and player-prop sources.",
       "hitRate": 0.2034,
@@ -1826,7 +1826,7 @@
     "averageOdds": 575.9,
     "displayedCards": 15,
     "eligibleLegs": 51,
-    "generatedThreeLegCandidates": 10906,
+    "generatedThreeLegCandidates": 10912,
     "record": {
       "averageOdds": 575.9,
       "hitRate": 0.4,
