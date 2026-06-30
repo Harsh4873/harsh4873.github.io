@@ -226,8 +226,11 @@ def test_daily_tab_renders_parlay_board_filters_and_rankings():
     assert "type DailyView = 'all' | 'cross_sport' | 'same_sport' | 'consensus' | 'surefire' | 'best_odds' | 'hot_models'" in main
     assert "let dailyView: DailyView = 'all'" in main
     assert "getParlayCardsPayload" in main
+    assert "getParlayCardPayloads" in main
     assert "function parlayFilterOptions(" in main
     assert "function parlayCardHtml(" in main
+    assert "function parlayRankingCardsForDate(" in main
+    assert "parlayRankingCardsForDate(key, modeCards)" in main
     assert "function parlayRankingsPanel(" in main
     assert "Parlay Board" in main
     assert "BEST BETS PARLAY BOARD" in main

@@ -3,6 +3,7 @@ import {
   getAllPicks,
   getCacheStatus,
   getParlayCardsPayload,
+  getParlayCardPayloads,
   loadAllData,
   setPickMode as setDataPickMode,
   setLocalGameTime,
@@ -1502,6 +1503,15 @@ function parlayCardsForMode(payload: ParlayCardsPayload | null): ParlayCard[] {
   return (payload?.cards || []).filter(card => parlayCardPickMode(card) === activePickMode);
 }
 
+function parlayRankingCardsForDate(date: string, fallbackCards: ParlayCard[]): ParlayCard[] {
+  const cutoff = date || centralDateKey();
+  const historical = getParlayCardPayloads()
+    .filter(payload => String(payload.date || '') <= cutoff)
+    .flatMap(payload => payload.cards || [])
+    .filter(card => parlayCardPickMode(card) === activePickMode);
+  return historical.length ? historical : fallbackCards;
+}
+
 function parlayRecordForCards(cards: ParlayCard[]): { wins: number; losses: number; pushes: number; pending: number } {
   return {
     wins: cards.filter(card => card.result === 'win').length,
@@ -1626,7 +1636,8 @@ function parlayRankingsForCards(cards: ParlayCard[]): ParlayRanking[] {
         averageOdds: parlayAverageOdds(categoryCards),
         recentForm: '',
       };
-    });
+    })
+    .filter(row => row.settled || row.pushes || row.pending);
   return rows.sort((left, right) => (
     (right.settled ? 1 : 0) - (left.settled ? 1 : 0)
     || (right.hitRate || 0) - (left.hitRate || 0)
@@ -1691,7 +1702,7 @@ function renderDaily(): void {
     : '3-leg slips are built only from published BET/LEAN team picks.';
   const generatedAt = payload?.generatedAt ? formatStart(payload.generatedAt) : 'TBD';
   const activeBody = parlaySections(payload, dailyView);
-  const rankingsPanel = parlayRankingsPanel(parlayRankingsForCards(modeCards));
+  const rankingsPanel = parlayRankingsPanel(parlayRankingsForCards(parlayRankingCardsForDate(key, modeCards)));
 
   container.innerHTML = `<div class="daily-hero"><div class="daily-hero-row"><div><div class="daily-eyebrow">BEST BETS PARLAY BOARD</div><div class="daily-title">${escapeHtml(boardLabel)} Parlay Board</div><div class="daily-sub">${escapeHtml(dateLabel(key, true))} | ${escapeHtml(boardDescription)}</div></div><div class="daily-clock-wrap"><div class="daily-clock-label">SLATE</div><div class="daily-clock">${escapeHtml(key)}</div><div class="daily-countdown">Updated ${escapeHtml(generatedAt)}</div></div></div></div>
     <div class="daily-stats-strip">
