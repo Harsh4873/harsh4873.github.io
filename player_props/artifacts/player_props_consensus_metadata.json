@@ -23,7 +23,7 @@
       "totalRebounds": 3
     }
   },
-  "market_rows": 106743,
+  "market_rows": 108051,
   "models": {
     "mlb_history": "2022-26 five-year roster-aware outcome-history classifiers",
     "mlb_season": "2026 market classifier",
@@ -245,6 +245,6 @@
     }
   },
   "target_accuracy": 0.7,
-  "training_fingerprint": "0c893fa756a11f9eb66e10538ba89c267d5f4fc132a9e8e4b06ccb6fb528aaaf",
+  "training_fingerprint": "23060ec2061e4db8fa888468cb1c9d53bfb5ea5ccd75c92ba688d95fe057c89f",
   "version": "player_props_consensus_v2.0.0"
 }
