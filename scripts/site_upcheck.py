@@ -83,13 +83,6 @@ def _consensus_qualified_player_prop(pick: dict[str, Any]) -> bool:
         pick.get("consensus_qualified") is True
         or pick.get("precision_qualified") is True
         or mode == "four_model_consensus_gate"
-        or str(pick.get("ml_model_version") or "").strip() == "player_props_consensus_v2.0.0"
-        or (
-            pick.get("market_priced") is True
-            and str(pick.get("probability_source") or "").strip() == "player_props_ml_v1"
-            and str(pick.get("actionability") or "").strip() == "market_priced"
-            and mode.endswith("_variant")
-        )
     )
 
 
@@ -294,13 +287,6 @@ def main() -> int:
                 "latest player-props cache reintroduced legacy public bucket(s): "
                 + ", ".join(legacy_public_models)
             )
-        latest_prop_keys = _published_player_prop_keys(player_latest, today)
-        archived_prop_keys = _snapshot_player_prop_keys(today)
-        missing_archived = archived_prop_keys - latest_prop_keys
-        if missing_archived:
-            failures.append(
-                f"latest player-props cache is missing {len(missing_archived)} same-day published prop(s) from snapshots"
-            )
     for key in sorted(REQUIRED_PLAYER_PROP_KEYS):
         bucket = player_models.get(key)
         if not isinstance(bucket, dict):
@@ -329,6 +315,12 @@ def main() -> int:
             market_picks = [pick for pick in picks if isinstance(pick, dict) and pick.get("market_priced") is True]
             if market_picks and any(str(pick.get("probability_source") or "") != "player_props_ml_v1" for pick in market_picks):
                 failures.append(f"player-props bucket {key} has market-priced picks without player_props_ml_v1 probability")
+            public_picks = [
+                pick for pick in market_picks
+                if str(pick.get("decision") or "").strip().upper() in {"BET", "LEAN"}
+            ]
+            if any(not _consensus_qualified_player_prop(pick) for pick in public_picks):
+                failures.append(f"player-props bucket {key} has visible picks that did not pass strict consensus")
 
     contract_failures, contract_warnings = _cache_contract_messages(MODEL_CACHE_DIR, player_props=False, today=today)
     failures.extend(contract_failures)
@@ -350,20 +342,44 @@ def main() -> int:
         failures.append(f"parlay-card manifest does not include {today}.json")
     if parlay_latest:
         parlay_cards = [card for card in parlay_latest.get("cards") or [] if isinstance(card, dict)]
-        if len(parlay_cards) > 15:
-            failures.append(f"latest parlay board has {len(parlay_cards)} cards, expected at most 15")
+        mode_cards: dict[str, list[dict[str, Any]]] = {"team": [], "player": []}
+        for card in parlay_cards:
+            mode = str(card.get("pickMode") or "").strip().lower()
+            if mode in mode_cards:
+                mode_cards[mode].append(card)
+        oversized_modes = {mode: len(cards) for mode, cards in mode_cards.items() if len(cards) > 15}
+        if oversized_modes:
+            failures.append(f"latest parlay board has mode count(s) above 15: {oversized_modes}")
         if any(int(card.get("legCount") or 0) < 2 for card in parlay_cards):
             failures.append("latest parlay board includes a 1-leg card")
-        category_counts: dict[str, int] = {}
-        for card in parlay_cards:
-            category = str(card.get("category") or "").strip()
-            category_counts[category] = category_counts.get(category, 0) + 1
-        oversized = {category: count for category, count in category_counts.items() if count > 3}
+        category_counts: dict[tuple[str, str], int] = {}
+        for mode, cards in mode_cards.items():
+            for card in cards:
+                category = str(card.get("category") or "").strip()
+                category_counts[(mode, category)] = category_counts.get((mode, category), 0) + 1
+        oversized = {f"{mode}:{category}": count for (mode, category), count in category_counts.items() if count > 3}
         if oversized:
-            failures.append(f"latest parlay board has category count(s) above 3: {oversized}")
+            failures.append(f"latest parlay board has mode/category count(s) above 3: {oversized}")
+        team_visible_leg_count = sum(
+            1
+            for bucket in models.values()
+            if isinstance(bucket, dict)
+            for pick in bucket.get("picks") or []
+            if isinstance(pick, dict)
+            and str(pick.get("decision") or "").strip().upper() in TEAM_VISIBLE_DECISIONS
+            and str(pick.get("pick") or "").strip()
+            and pick.get("grade_supported") is not False
+        )
+        if team_visible_leg_count >= 3 and not mode_cards["team"]:
+            failures.append("latest parlay board has eligible team legs but zero team-mode cards")
         summary = parlay_latest.get("summary") if isinstance(parlay_latest.get("summary"), dict) else {}
         if int(summary.get("displayedCards") or 0) != len(parlay_cards):
             failures.append("latest parlay summary displayedCards does not match cards length")
+        mode_summary = summary.get("modes") if isinstance(summary.get("modes"), dict) else {}
+        for mode, cards in mode_cards.items():
+            values = mode_summary.get(mode) if isinstance(mode_summary.get(mode), dict) else {}
+            if values and int(values.get("displayedCards") or 0) != len(cards):
+                failures.append(f"latest parlay summary {mode} displayedCards does not match cards length")
 
     if args.data_only:
         for message in warnings:

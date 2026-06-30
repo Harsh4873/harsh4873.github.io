@@ -52,14 +52,18 @@ type DailySourceForm = {
   score: number;
 };
 
-type DailyView = 'all' | 'cross_sport' | 'same_sport' | 'consensus' | 'surefire' | 'best_odds' | 'hot_models';
+type DailyView = 'picks' | 'consensus' | 'sources' | 'research';
+type ParlayView = 'all' | 'cross_sport' | 'same_sport' | 'consensus' | 'surefire' | 'best_odds' | 'hot_models';
 type DailySort = 'time' | 'percentage';
-type DailyViewOption = {
-  key: DailyView;
+type ResultMode = 'pending' | 'all' | 'settled';
+type ViewOption<Key extends string> = {
+  key: Key;
   label: string;
   count: number;
   description: string;
 };
+type DailyViewOption = ViewOption<DailyView>;
+type ParlayViewOption = ViewOption<ParlayView>;
 
 type DailyPickGroup = {
   key: string;
@@ -94,13 +98,17 @@ const ESPN_ENDPOINTS: Record<string, [string, string]> = {
 
 const activeFilters = new Set<string>();
 let activePickMode: PickMode = 'team';
-let homeMode: 'pending' | 'all' | 'settled' = 'pending';
-let dailyView: DailyView = 'all';
+let homeMode: ResultMode = 'pending';
+let dailyView: DailyView = 'picks';
+let parlayView: ParlayView = 'all';
+let parlayResultMode: ResultMode = 'pending';
 let dailySort: DailySort = 'time';
 let selectedDate = '';
 let followCentralToday = true;
 let calendarMonth = '';
 let calendarOpen = false;
+let dailyCalendarOpen = false;
+let parlayCalendarOpen = false;
 let filterMoreOpen = false;
 let refreshInFlight = false;
 const homeScores = new Map<string, HomeScoreInfo>();
@@ -563,8 +571,8 @@ function removeYourBet(id: string): void {
 }
 
 function yourBetAddButton(pick: Pick): string {
-  const existing = yourBets.find(bet => bet.pickMode === activePickMode && bet.pickId === pick.id && bet.date === pickDateKey(pick));
-  return `<button type="button" class="add-ledger-btn ${existing ? 'is-added' : ''}" data-add-your-bet="${escapeHtml(pick.id)}">${existing ? `ADD 1U | ${escapeHtml(formatPlayerMeasure(existing.units))}U SAVED` : 'ADD TO YOUR BETS'}</button>`;
+  void pick;
+  return '';
 }
 
 function shiftedDateKey(key: string, days: number): string {
@@ -812,6 +820,54 @@ function bindCalendar(): void {
       followCentralToday = selectedDate === centralDateKey();
       calendarMonth = selectedDate.slice(0, 7);
       calendarOpen = false;
+      render();
+    });
+  });
+  popover.querySelectorAll<HTMLButtonElement>('[data-month-shift]').forEach(button => {
+    button.addEventListener('click', event => {
+      event.stopPropagation();
+      const current = parseDateKey(`${calendarMonth}-01`) || new Date();
+      current.setMonth(current.getMonth() + Number(button.dataset.monthShift || 0));
+      calendarMonth = calendarDateKey(current).slice(0, 7);
+      render();
+    });
+  });
+}
+
+function inlineDatePickerHtml(prefix: 'daily' | 'parlay', open: boolean, label: string): string {
+  const toggle = prefix === 'daily' ? 'toggleDailyDatePicker' : 'toggleParlayDatePicker';
+  const selectedAll = filteredPicks().filter(pick => pickDateKey(pick) === selectedDate);
+  return `<div class="home-date-wrap inline-date-wrap" id="${prefix}-date-wrap">
+    <button
+      id="${prefix}-date-trigger"
+      class="home-date-trigger"
+      type="button"
+      onclick="${toggle}(event)"
+      aria-haspopup="dialog"
+      aria-expanded="${open}"
+    >
+      <span class="home-date-trigger-copy">
+        <span class="home-date-trigger-label">${escapeHtml(label)}</span>
+        <span class="home-date-trigger-value">${escapeHtml(dateLabel(selectedDate, true))}</span>
+      </span>
+      <span class="home-date-trigger-meta">${selectedDate === centralDateKey() ? 'Today | CT' : `${selectedAll.length} picks`}</span>
+      <span class="home-date-trigger-caret">&#9662;</span>
+    </button>
+    <div id="${prefix}-date-popover" class="home-date-popover ${open ? 'open' : ''}" role="dialog" aria-label="Select board date">${calendarHtml()}</div>
+  </div>`;
+}
+
+function bindInlineDatePicker(prefix: 'daily' | 'parlay'): void {
+  const popover = document.getElementById(`${prefix}-date-popover`);
+  if (!popover) return;
+  popover.querySelectorAll<HTMLButtonElement>('[data-date]').forEach(button => {
+    button.addEventListener('click', () => {
+      selectedDate = button.dataset.date || selectedDate;
+      followCentralToday = selectedDate === centralDateKey();
+      calendarMonth = selectedDate.slice(0, 7);
+      calendarOpen = false;
+      dailyCalendarOpen = false;
+      parlayCalendarOpen = false;
       render();
     });
   });
@@ -1503,21 +1559,44 @@ function parlayCardsForMode(payload: ParlayCardsPayload | null): ParlayCard[] {
   return (payload?.cards || []).filter(card => parlayCardPickMode(card) === activePickMode);
 }
 
+function parlayCardDedupeKey(card: ParlayCard): string {
+  return [
+    card.date || '',
+    card.category || '',
+    card.id || '',
+    String(card.comboKey || ''),
+  ].join('|');
+}
+
+function dedupeParlayCards(cards: ParlayCard[]): ParlayCard[] {
+  const byKey = new Map<string, ParlayCard>();
+  cards.forEach(card => byKey.set(parlayCardDedupeKey(card), card));
+  return [...byKey.values()];
+}
+
 function parlayRankingCardsForDate(date: string, fallbackCards: ParlayCard[]): ParlayCard[] {
   const cutoff = date || centralDateKey();
   const historical = getParlayCardPayloads()
     .filter(payload => String(payload.date || '') <= cutoff)
     .flatMap(payload => payload.cards || [])
     .filter(card => parlayCardPickMode(card) === activePickMode);
-  return historical.length ? historical : fallbackCards;
+  return dedupeParlayCards(historical.length ? historical : fallbackCards);
+}
+
+function parlayResultMatches(card: ParlayCard): boolean {
+  const result = card.result || 'pending';
+  if (parlayResultMode === 'all') return true;
+  if (parlayResultMode === 'pending') return result === 'pending';
+  return result !== 'pending';
 }
 
 function parlayRecordForCards(cards: ParlayCard[]): { wins: number; losses: number; pushes: number; pending: number } {
+  const uniqueCards = dedupeParlayCards(cards);
   return {
-    wins: cards.filter(card => card.result === 'win').length,
-    losses: cards.filter(card => card.result === 'loss').length,
-    pushes: cards.filter(card => card.result === 'push').length,
-    pending: cards.filter(card => card.result === 'pending').length,
+    wins: uniqueCards.filter(card => card.result === 'win').length,
+    losses: uniqueCards.filter(card => card.result === 'loss').length,
+    pushes: uniqueCards.filter(card => card.result === 'push').length,
+    pending: uniqueCards.filter(card => card.result === 'pending').length,
   };
 }
 
@@ -1530,8 +1609,8 @@ function parlayUniqueLegCount(cards: ParlayCard[]): number {
   return new Set(cards.flatMap(card => card.legs.map(leg => leg.legId))).size;
 }
 
-function parlayFilterOptions(cards: ParlayCard[]): DailyViewOption[] {
-  const count = (category: DailyView): number => category === 'all'
+function parlayFilterOptions(cards: ParlayCard[]): ParlayViewOption[] {
+  const count = (category: ParlayView): number => category === 'all'
     ? cards.length
     : cards.filter(card => card.category === category).length;
   return [
@@ -1596,31 +1675,37 @@ function parlayGrid(cards: ParlayCard[]): string {
   return `<div class="parlay-grid">${cards.map(parlayCardHtml).join('')}</div>`;
 }
 
-function parlaySections(payload: ParlayCardsPayload | null, view: DailyView): string {
-  const cards = parlayCardsForMode(payload);
+function parlaySections(cards: ParlayCard[], view: ParlayView): string {
   if (view !== 'all') {
     const option = parlayFilterOptions(cards).find(item => item.key === view);
     const filtered = cards.filter(card => card.category === view);
-    return dailySection(option?.label || 'Parlays', option?.description || 'Qualified parlay cards.', parlayGrid(filtered), `${filtered.length} cards`);
+    return dailySection(option?.label || 'Parlays', option?.description || 'Qualified parlay cards.', parlayGrid(filtered), `${filtered.length} slips`);
   }
   return parlayFilterOptions(cards)
     .filter(option => option.key !== 'all')
     .map(option => {
       const filtered = cards.filter(card => card.category === option.key);
       if (!filtered.length) return '';
-      return dailySection(option.label, option.description, parlayGrid(filtered), `${filtered.length} cards`);
+      return dailySection(option.label, option.description, parlayGrid(filtered), `${filtered.length} slips`);
     })
     .join('') || parlayGrid([]);
 }
 
 function parlayRankingsForCards(cards: ParlayCard[]): ParlayRanking[] {
-  const rows = parlayFilterOptions(cards)
+  const uniqueCards = dedupeParlayCards(cards);
+  const rows = parlayFilterOptions(uniqueCards)
     .filter(option => option.key !== 'all')
     .map(option => {
-      const categoryCards = cards.filter(card => card.category === option.key);
+      const categoryCards = uniqueCards.filter(card => card.category === option.key);
       const record = parlayRecordForCards(categoryCards);
       const settled = record.wins + record.losses;
       const netUnits = Number(categoryCards.reduce((sum, card) => sum + Number(card.profitUnits || 0), 0).toFixed(2));
+      const recentForm = categoryCards
+        .filter(card => card.result === 'win' || card.result === 'loss' || card.result === 'push')
+        .sort((left, right) => String(left.date || '').localeCompare(String(right.date || '')))
+        .slice(-5)
+        .map(card => card.result === 'win' ? 'W' : card.result === 'loss' ? 'L' : 'P')
+        .join('');
       return {
         category: option.key,
         label: option.label,
@@ -1634,7 +1719,7 @@ function parlayRankingsForCards(cards: ParlayCard[]): ParlayRanking[] {
         roi: settled ? netUnits / settled : null,
         netUnits,
         averageOdds: parlayAverageOdds(categoryCards),
-        recentForm: '',
+        recentForm,
       };
     })
     .filter(row => row.settled || row.pushes || row.pending);
@@ -1647,32 +1732,52 @@ function parlayRankingsForCards(cards: ParlayCard[]): ParlayRanking[] {
 
 function parlayRankingsPanel(rankings: ParlayRanking[] = []): string {
   if (!rankings.length) {
-    return dailySection('Algorithm Rankings', 'Category records appear after generated slips settle.', '<div class="daily-empty"><div class="daily-empty-title">No settled cards yet</div><div class="daily-empty-sub">Rankings update as parlay cards are graded.</div></div>');
+    return dailySection('Parlay Rankings', 'Whole-slip category records appear after generated cards settle.', '<div class="daily-empty"><div class="daily-empty-title">No settled slips yet</div><div class="daily-empty-sub">Rankings update as parlay cards are graded.</div></div>');
   }
   const rows = rankings.map((row, index) => {
     const hitRate = row.hitRate == null ? '--' : `${(row.hitRate * 100).toFixed(1)}%`;
     const roi = row.roi == null ? '--' : `${(row.roi * 100).toFixed(1)}%`;
+    const averageOdds = formatAmericanOddsValue(row.averageOdds);
+    const slips = row.settled + row.pushes + row.pending;
     const netClass = row.netUnits > 0 ? 'positive' : row.netUnits < 0 ? 'negative' : 'neutral';
     return `<div class="daily-ranking-row rank-${index + 1}">
       <div class="daily-ranking-rank">${index + 1}</div>
       <div class="daily-ranking-source">${escapeHtml(row.label)}</div>
+      <div class="daily-ranking-metric">${slips}</div>
       <div class="daily-ranking-metric">${row.wins}-${row.losses}${row.pushes ? `-${row.pushes}` : ''}</div>
       <div class="daily-ranking-metric daily-ranking-hide-sm">${escapeHtml(hitRate)}</div>
       <div class="daily-ranking-metric ${netClass}">${escapeHtml(signedUnits(row.netUnits))}</div>
       <div class="daily-ranking-metric daily-ranking-hide-sm">${escapeHtml(roi)}</div>
+      <div class="daily-ranking-metric daily-ranking-hide-sm">${escapeHtml(averageOdds)}</div>
+      <div class="daily-ranking-metric daily-ranking-hide-sm">${escapeHtml(row.recentForm || '--')}</div>
     </div>`;
   }).join('');
   return dailySection(
-    'Algorithm Rankings',
-    'Category records, hit rate, ROI, average odds, and recent form from generated 1u parlay tracking.',
-    `<div class="daily-ranking-list"><div class="daily-ranking-row header"><div>#</div><div>Category</div><div>Record</div><div class="daily-ranking-hide-sm">Hit Rate</div><div>Units</div><div class="daily-ranking-hide-sm">ROI</div></div>${rows}</div>`,
+    'Parlay Rankings',
+    'Whole-card records, units, ROI, average odds, and recent form from generated 1u slip tracking.',
+    `<div class="daily-ranking-list"><div class="daily-ranking-row header"><div>#</div><div>Category</div><div>Slips</div><div>Record</div><div class="daily-ranking-hide-sm">Hit Rate</div><div>Units</div><div class="daily-ranking-hide-sm">ROI</div><div class="daily-ranking-hide-sm">Avg Odds</div><div class="daily-ranking-hide-sm">Form</div></div>${rows}</div>`,
   );
 }
 
 function setDailyView(view: string): void {
-  if (view === 'all' || view === 'cross_sport' || view === 'same_sport' || view === 'consensus' || view === 'surefire' || view === 'best_odds' || view === 'hot_models') {
+  if (activePickMode === 'player' && view === 'consensus') view = 'picks';
+  if (view === 'picks' || view === 'consensus' || view === 'sources' || view === 'research') {
     dailyView = view;
     renderDaily();
+  }
+}
+
+function setParlayView(view: string): void {
+  if (view === 'all' || view === 'cross_sport' || view === 'same_sport' || view === 'consensus' || view === 'surefire' || view === 'best_odds' || view === 'hot_models') {
+    parlayView = view;
+    renderParlays();
+  }
+}
+
+function setParlayResultMode(mode: string): void {
+  if (mode === 'pending' || mode === 'all' || mode === 'settled') {
+    parlayResultMode = mode;
+    renderParlays();
   }
 }
 
@@ -1686,41 +1791,152 @@ function setDailySort(sort: string): void {
 function renderDaily(): void {
   const container = document.getElementById('daily-container');
   if (!container) return;
-  const today = centralDateKey();
-  const payload = getParlayCardsPayload(selectedDate || today) || getParlayCardsPayload();
-  const key = payload?.date || selectedDate || today;
-  const modeCards = parlayCardsForMode(payload);
-  const viewOptions = parlayFilterOptions(modeCards);
+  ensureSelection();
+  const key = selectedDate || latestAvailableDateKey();
+  const picks = getAllPicks().filter(pick => pickDateKey(pick) === key);
+  const stats = statsFor(picks);
+  const pending = picks.filter(isOpenPick);
+  if (activePickMode === 'player' && dailyView === 'consensus') dailyView = 'picks';
+  const forms = dailySourceForms(key, picks);
+  const formsBySource = new Map(forms.map(form => [form.source, form]));
+  const ranked = (candidates: Pick[]) => [...candidates].sort((a, b) => dailyPickScore(b, formsBySource) - dailyPickScore(a, formsBySource));
+  const modelCalls = uniqueDailyPicks(ranked(pending.filter(isPublishedDailyPick))).slice(0, 8);
+  const probabilityLeaders = uniqueDailyPicks([...pending].filter(pick => pickProbability(pick) != null)
+    .sort((a, b) => (pickProbability(b) || 0) - (pickProbability(a) || 0))).slice(0, 8);
+  const valueZone = uniqueDailyPicks(ranked(pending.filter(pick => isPublishedDailyPick(pick) && ((pick.odds || 0) > 0 || (pickEdgePercent(pick) || 0) >= 10)))).slice(0, 6);
+  const researchQueue = uniqueDailyPicks([...pending].filter(pick => (
+    (pickProbability(pick) || 0) >= 0.6 && !isPublishedDailyPick(pick)
+  ) || (pick.odds != null && pick.odds <= -300)).sort((a, b) => (pickProbability(b) || 0) - (pickProbability(a) || 0))).slice(0, 6);
+  const priceyCount = uniqueDailyPicks(pending.filter(pick => pick.odds != null && pick.odds <= -300)).length;
+  const tagsById = new Map<string, Set<string>>();
+  const addTag = (tagPicks: Pick[], tag: string): void => tagPicks.forEach(pick => {
+    const tags = tagsById.get(pick.id) || new Set<string>();
+    tags.add(tag);
+    tagsById.set(pick.id, tags);
+  });
+  addTag(modelCalls, 'MODEL GREENLIGHT');
+  addTag(valueZone, 'VALUE');
+  addTag(probabilityLeaders, 'PROBABILITY LEADER');
+  addTag(researchQueue, 'RESEARCH');
+  addTag(pending.filter(pick => pick.odds != null && pick.odds <= -300), 'PRICEY FAVORITE');
+
+  const topCandidates = [...new Map(
+    [...modelCalls, ...valueZone, ...probabilityLeaders.filter(isPublishedDailyPick)]
+      .map(pick => [pick.id, pick]),
+  ).values()];
+  const topGroups = sortDailyGroups(dailyPickGroups(topCandidates, tagsById, formsBySource, pending));
+  const topKeys = new Set(topGroups.map(group => group.key));
+  const playerResearchPool = activePickMode === 'player'
+    ? uniqueDailyPicks(ranked(pending.filter(pick => !topKeys.has(dailyPickKey(pick)) && (
+      !isPublishedDailyPick(pick) ||
+      pickProbability(pick) != null ||
+      pickEdgePercent(pick) != null ||
+      Boolean(pick.reason || pick.rationale || pick.key_factors)
+    )))).slice(0, 8)
+    : [];
+  addTag(playerResearchPool, 'RESEARCH');
+  const researchCandidates = [...new Map(
+    [...researchQueue, ...playerResearchPool, ...probabilityLeaders.filter(pick => !isPublishedDailyPick(pick))]
+      .filter(pick => !topKeys.has(dailyPickKey(pick)))
+      .map(pick => [pick.id, pick]),
+  ).values()];
+  const researchGroups = sortDailyGroups(dailyPickGroups(researchCandidates, tagsById, formsBySource, pending));
+  const hotForms = forms.filter(form => form.todayCalls.length)
+    .sort(compareDailySourceForms)
+    .slice(0, 8);
+  const games = new Map<string, Pick[]>();
+  pending.forEach(pick => games.set(gameKey(pick), [...(games.get(gameKey(pick)) || []), pick]));
+  const consensusCount = [...games.values()].reduce((total, gamePicks) => total + trendSignalGroups(gamePicks).filter(signal => signal.matching).length, 0);
+  const viewOptionsBase: DailyViewOption[] = [
+    { key: 'picks', label: 'Top Picks', count: topGroups.length, description: 'Unique actionable markets' },
+    { key: 'consensus', label: 'Consensus', count: consensusCount, description: 'All matching market signals' },
+    { key: 'sources', label: 'Active Sources', count: hotForms.length, description: 'Sources issuing BET/LEAN calls today' },
+    { key: 'research', label: 'Research', count: researchGroups.length, description: activePickMode === 'player' ? 'Next-best prop candidates' : 'High probability and pricey spots' },
+  ];
+  const viewOptions = viewOptionsBase.filter(option => activePickMode !== 'player' || option.key !== 'consensus');
   const activeView = viewOptions.find(option => option.key === dailyView) || viewOptions[0];
-  if (!viewOptions.some(option => option.key === dailyView)) dailyView = 'all';
+  const sortOptions: Array<{ key: DailySort; label: string; description: string }> = [
+    { key: 'time', label: 'By Time', description: 'Upcoming first' },
+    { key: 'percentage', label: 'By Percentage', description: 'Highest model % first' },
+  ];
+  const activeSort = sortOptions.find(option => option.key === dailySort) || sortOptions[0];
+  const dailyFocus = activePickMode === 'player' ? 'top picks, sources, or research' : 'picks, consensus, sources, or research';
+  const researchSubtitle = activePickMode === 'player'
+    ? 'Next-best player prop candidates and pass research, excluding anything already in Top Picks.'
+    : 'High-probability non-published calls and expensive favorites, excluding anything already in Top Picks.';
+  const activeBody = dailyView === 'picks'
+    ? dailySection('Top Picks', 'Greenlights, value, and high-probability BET/LEAN calls merged into one card per market.', dailyPickGrid(topGroups), `${topGroups.length} unique markets`)
+    : dailyView === 'consensus'
+      ? dailySection('Consensus Signals', 'Same market selection from at least two independent sources.', dailyConsensusCards(pending), `${consensusCount} matching signals`)
+      : dailyView === 'sources'
+        ? dailySection('Hot Sources', 'Recent three-slate form plus each source’s unique BET/LEAN calls today.', hotForms.length ? `<div class="daily-model-grid">${hotForms.map(dailyHotModelCard).join('')}</div>` : '<div class="daily-empty"><div class="daily-empty-title">No hot source has a published call today</div><div class="daily-empty-sub">This view appears when a source has enough recent decisions and a current greenlight.</div></div>', `${hotForms.length} active sources`)
+        : dailySection('Research Queue', researchSubtitle, dailyPickGrid(researchGroups), `${researchGroups.length} unique markets`);
+
+  container.innerHTML = `<div class="daily-hero"><div class="daily-hero-row"><div><div class="daily-eyebrow">TODAY'S QUICK READ</div><div class="daily-title">The Shortlist</div><div class="daily-sub">${escapeHtml(dateLabel(key, true))} | Each unique market appears once. Choose a view to focus on ${dailyFocus}.</div></div><div class="daily-clock-wrap"><div class="daily-clock-label">PICKS FOR</div><div class="daily-clock">${escapeHtml(key)}</div></div></div></div>
+    <div class="daily-view-shell">
+      <div class="daily-view-copy"><div class="daily-view-eyebrow">CHOOSE A VIEW</div><div class="daily-view-title">${escapeHtml(activeView.label)}</div><div class="daily-view-description">${escapeHtml(activeView.description)}. Sorted ${escapeHtml(activeSort.label.toLowerCase())}; ${stats.pending} picks remain open and ${priceyCount} are pricey favorites.</div></div>
+      <div class="daily-view-nav" role="tablist" aria-label="Daily shortlist categories">${viewOptions.map(option => `<button class="daily-view-tab ${dailyView === option.key ? 'active' : ''}" type="button" role="tab" aria-selected="${dailyView === option.key}" onclick="setDailyView('${option.key}')"><span class="daily-view-tab-count">${option.count}</span><span class="daily-view-tab-label">${option.label}</span><span class="daily-view-tab-desc">${option.description}</span></button>`).join('')}</div>
+      <div class="daily-controls-row">
+        ${inlineDatePickerHtml('daily', dailyCalendarOpen, 'Best Bets Date')}
+        <label class="daily-view-select-wrap"><span>Daily category</span><select class="daily-view-select" onchange="setDailyView(this.value)">${viewOptions.map(option => `<option value="${option.key}" ${dailyView === option.key ? 'selected' : ''}>${option.label} (${option.count})</option>`).join('')}</select></label>
+        <div class="daily-sort-control" role="group" aria-label="Sort best bets">${sortOptions.map(option => `<button type="button" class="${dailySort === option.key ? 'active' : ''}" onclick="setDailySort('${option.key}')"><span>${escapeHtml(option.label)}</span><small>${escapeHtml(option.description)}</small></button>`).join('')}</div>
+      </div>
+    </div>
+    <div class="daily-active-content">${activeBody}</div>
+    <div class="daily-disclaimer"><strong>Quick read, not a blind card.</strong> Model probability estimates the chance of winning. Edge compares that chance with the market price. Recent records and consensus add context, but none guarantees the next result. Duplicate market cards are merged, with every contributing source shown inside the card.</div>`;
+  bindInlineDatePicker('daily');
+  bindPickCards(container);
+}
+
+function renderParlays(): void {
+  const container = document.getElementById('parlays-container');
+  if (!container) return;
+  ensureSelection();
+  const today = centralDateKey();
+  const requestedDate = selectedDate || today;
+  const payload = getParlayCardsPayload(requestedDate) || (selectedDate ? null : getParlayCardsPayload());
+  const key = payload?.date || requestedDate;
+  const modeCards = parlayCardsForMode(payload);
+  const visibleCards = modeCards.filter(parlayResultMatches);
+  const viewOptions = parlayFilterOptions(visibleCards);
+  const activeView = viewOptions.find(option => option.key === parlayView) || viewOptions[0];
+  if (!viewOptions.some(option => option.key === parlayView)) parlayView = 'all';
   const record = parlayRecordForCards(modeCards);
-  const threeLegCards = modeCards.filter(card => card.legCount === 3).length;
-  const averageOdds = formatAmericanOddsValue(parlayAverageOdds(modeCards));
+  const threeLegCards = visibleCards.filter(card => card.legCount === 3).length;
+  const averageOdds = formatAmericanOddsValue(parlayAverageOdds(visibleCards));
   const boardLabel = activePickMode === 'player' ? 'Player Prop' : 'Team';
   const boardDescription = activePickMode === 'player'
-    ? '3-leg slips are built only from published BET/LEAN player props.'
+    ? '3-leg slips are built only from strict published BET/LEAN player props.'
     : '3-leg slips are built only from published BET/LEAN team picks.';
   const generatedAt = payload?.generatedAt ? formatStart(payload.generatedAt) : 'TBD';
-  const activeBody = parlaySections(payload, dailyView);
+  const resultOptions: Array<{ key: ResultMode; label: string; description: string }> = [
+    { key: 'pending', label: 'Open', description: 'Unsettled slips' },
+    { key: 'all', label: 'All', description: 'Every slip' },
+    { key: 'settled', label: 'Results', description: 'Settled slips' },
+  ];
+  const activeBody = parlaySections(visibleCards, parlayView);
   const rankingsPanel = parlayRankingsPanel(parlayRankingsForCards(parlayRankingCardsForDate(key, modeCards)));
 
-  container.innerHTML = `<div class="daily-hero"><div class="daily-hero-row"><div><div class="daily-eyebrow">BEST BETS PARLAY BOARD</div><div class="daily-title">${escapeHtml(boardLabel)} Parlay Board</div><div class="daily-sub">${escapeHtml(dateLabel(key, true))} | ${escapeHtml(boardDescription)}</div></div><div class="daily-clock-wrap"><div class="daily-clock-label">SLATE</div><div class="daily-clock">${escapeHtml(key)}</div><div class="daily-countdown">Updated ${escapeHtml(generatedAt)}</div></div></div></div>
+  container.innerHTML = `<div class="daily-hero"><div class="daily-hero-row"><div><div class="daily-eyebrow">PARLAY BOARD</div><div class="daily-title">${escapeHtml(boardLabel)} Parlays</div><div class="daily-sub">${escapeHtml(dateLabel(key, true))} | ${escapeHtml(boardDescription)}</div></div><div class="daily-clock-wrap"><div class="daily-clock-label">SLATE</div><div class="daily-clock">${escapeHtml(key)}</div><div class="daily-countdown">Updated ${escapeHtml(generatedAt)}</div></div></div></div>
     <div class="daily-stats-strip">
-      <div class="daily-stat"><div class="daily-stat-val accent">${threeLegCards}</div><div class="daily-stat-label">3-Leg Slips</div></div>
-      <div class="daily-stat"><div class="daily-stat-val">${modeCards.length}</div><div class="daily-stat-label">Shown</div></div>
-      <div class="daily-stat"><div class="daily-stat-val accent3">${escapeHtml(averageOdds)}</div><div class="daily-stat-label">Avg Odds</div></div>
-      <div class="daily-stat"><div class="daily-stat-val neutral">${escapeHtml(parlayRecordText(record))}</div><div class="daily-stat-label">Algo Record</div></div>
+      <div class="daily-stat"><div class="daily-stat-val accent">${threeLegCards}</div><div class="daily-stat-label">Shown 3-Leg Slips</div></div>
+      <div class="daily-stat"><div class="daily-stat-val">${visibleCards.length}</div><div class="daily-stat-label">Shown Slips</div></div>
+      <div class="daily-stat"><div class="daily-stat-val accent3">${escapeHtml(averageOdds)}</div><div class="daily-stat-label">Shown Avg Odds</div></div>
+      <div class="daily-stat"><div class="daily-stat-val neutral">${escapeHtml(parlayRecordText(record))}</div><div class="daily-stat-label">Card Record</div></div>
       <div class="daily-stat"><div class="daily-stat-val">${parlayUniqueLegCount(modeCards)}</div><div class="daily-stat-label">Board Legs</div></div>
     </div>
     <div class="daily-view-shell">
-      <div class="daily-view-copy"><div class="daily-view-eyebrow">FILTER PARLAYS</div><div class="daily-view-title">${escapeHtml(activeView.label)}</div><div class="daily-view-description">${escapeHtml(activeView.description)}. No same-game legs, same-player duplicates, or duplicate markets are allowed; weak slates show fewer cards instead of forced slips.</div></div>
-      <div class="daily-view-nav" role="tablist" aria-label="Parlay board filters">${viewOptions.map(option => `<button class="daily-view-tab ${dailyView === option.key ? 'active' : ''}" type="button" role="tab" aria-selected="${dailyView === option.key}" onclick="setDailyView('${option.key}')"><span class="daily-view-tab-count">${option.count}</span><span class="daily-view-tab-label">${option.label}</span><span class="daily-view-tab-desc">${option.description}</span></button>`).join('')}</div>
+      <div class="daily-view-copy"><div class="daily-view-eyebrow">FILTER PARLAYS</div><div class="daily-view-title">${escapeHtml(activeView.label)}</div><div class="daily-view-description">${escapeHtml(activeView.description)}. Records count each whole parlay slip once; leg results only decide whether the card wins, loses, pushes, or stays open. No same-game legs, same-player duplicates, or duplicate markets are allowed.</div></div>
+      <div class="daily-view-nav" role="tablist" aria-label="Parlay board filters">${viewOptions.map(option => `<button class="daily-view-tab ${parlayView === option.key ? 'active' : ''}" type="button" role="tab" aria-selected="${parlayView === option.key}" onclick="setParlayView('${option.key}')"><span class="daily-view-tab-count">${option.count}</span><span class="daily-view-tab-label">${option.label}</span><span class="daily-view-tab-desc">${option.description}</span></button>`).join('')}</div>
       <div class="daily-controls-row">
-        <label class="daily-view-select-wrap"><span>Parlay filter</span><select class="daily-view-select" onchange="setDailyView(this.value)">${viewOptions.map(option => `<option value="${option.key}" ${dailyView === option.key ? 'selected' : ''}>${option.label} (${option.count})</option>`).join('')}</select></label>
+        ${inlineDatePickerHtml('parlay', parlayCalendarOpen, 'Parlay Date')}
+        <label class="daily-view-select-wrap"><span>Parlay filter</span><select class="daily-view-select" onchange="setParlayView(this.value)">${viewOptions.map(option => `<option value="${option.key}" ${parlayView === option.key ? 'selected' : ''}>${option.label} (${option.count})</option>`).join('')}</select></label>
+        <div class="daily-sort-control" role="group" aria-label="Parlay result filter">${resultOptions.map(option => `<button type="button" class="${parlayResultMode === option.key ? 'active' : ''}" onclick="setParlayResultMode('${option.key}')"><span>${escapeHtml(option.label)}</span><small>${escapeHtml(option.description)}</small></button>`).join('')}</div>
       </div>
     </div>
     <div class="daily-active-content">${activeBody}${rankingsPanel}</div>
-    <div class="daily-disclaimer"><strong>Parlay tracking, not a forced ticket.</strong> Odds are multiplied from individual American prices, hit probability is estimated from published model or market-implied leg probabilities, and every generated slip is tracked at 1u for algorithm rankings.</div>`;
+    <div class="daily-disclaimer"><strong>Parlay tracking, not a forced ticket.</strong> Odds are multiplied from individual American prices, hit probability is estimated from published model or market-implied leg probabilities, and every generated slip is tracked at 1u as one card for rankings.</div>`;
+  bindInlineDatePicker('parlay');
 }
 
 function yourBetRecord(stats: Stats): string {
@@ -1778,10 +1994,10 @@ function render(): void {
   renderHome();
   updateOverallStats();
   renderRankings();
-  renderYourBets();
   const active = document.querySelector('.tab-content.active')?.id;
   if (active === 'tab-search') renderSearch();
   if (active === 'tab-daily') renderDaily();
+  if (active === 'tab-parlays') renderParlays();
 }
 
 function switchTab(name: string): void {
@@ -1792,7 +2008,7 @@ function switchTab(name: string): void {
   if (name === 'home') renderHome();
   if (name === 'search') renderSearch();
   if (name === 'daily') renderDaily();
-  if (name === 'your-bets') renderYourBets();
+  if (name === 'parlays') renderParlays();
 }
 
 function setHomeResultMode(mode: string): void {
@@ -1805,7 +2021,25 @@ function setHomeResultMode(mode: string): void {
 function toggleHomeDatePicker(event?: Event): void {
   event?.stopPropagation();
   calendarOpen = !calendarOpen;
+  dailyCalendarOpen = false;
+  parlayCalendarOpen = false;
   renderHome();
+}
+
+function toggleDailyDatePicker(event?: Event): void {
+  event?.stopPropagation();
+  dailyCalendarOpen = !dailyCalendarOpen;
+  calendarOpen = false;
+  parlayCalendarOpen = false;
+  renderDaily();
+}
+
+function toggleParlayDatePicker(event?: Event): void {
+  event?.stopPropagation();
+  parlayCalendarOpen = !parlayCalendarOpen;
+  calendarOpen = false;
+  dailyCalendarOpen = false;
+  renderParlays();
 }
 
 function normalizeTeam(value: unknown): string {
@@ -2440,11 +2674,15 @@ function switchPickMode(mode: PickMode): void {
   setDataPickMode(mode);
   activeFilters.clear();
   homeMode = 'pending';
-  dailyView = 'all';
+  dailyView = 'picks';
+  parlayView = 'all';
+  parlayResultMode = 'pending';
   selectedDate = '';
   followCentralToday = true;
   calendarMonth = '';
   calendarOpen = false;
+  dailyCalendarOpen = false;
+  parlayCalendarOpen = false;
   filterMoreOpen = false;
   expandedSourceKeys.clear();
   expandedResearchPickKeys.clear();
@@ -2471,8 +2709,12 @@ Object.assign(window, {
   goHome,
   setHomeResultMode,
   setDailyView,
+  setParlayView,
+  setParlayResultMode,
   setDailySort,
   toggleHomeDatePicker,
+  toggleDailyDatePicker,
+  toggleParlayDatePicker,
   refreshAutoGrades,
   renderSearch,
   updateYourBetUnits,
@@ -2484,6 +2726,16 @@ document.addEventListener('click', event => {
   if (calendarOpen && wrap && !wrap.contains(event.target as Node)) {
     calendarOpen = false;
     renderHome();
+  }
+  const dailyWrap = document.getElementById('daily-date-wrap');
+  if (dailyCalendarOpen && dailyWrap && !dailyWrap.contains(event.target as Node)) {
+    dailyCalendarOpen = false;
+    renderDaily();
+  }
+  const parlayWrap = document.getElementById('parlay-date-wrap');
+  if (parlayCalendarOpen && parlayWrap && !parlayWrap.contains(event.target as Node)) {
+    parlayCalendarOpen = false;
+    renderParlays();
   }
   const filterWrap = document.getElementById('filter-more-wrap');
   if (filterMoreOpen && filterWrap && !filterWrap.contains(event.target as Node)) {

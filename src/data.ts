@@ -105,6 +105,8 @@ export interface ParlayLeg {
 
 export interface ParlayCard {
   id: string;
+  comboKey?: string;
+  date?: string;
   category: string;
   categoryLabel: string;
   categoryShortLabel?: string;

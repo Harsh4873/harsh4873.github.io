@@ -14,6 +14,8 @@ def _pick(
     *,
     selection: str = "Under",
     line: float = 0.5,
+    consensus_qualified: bool = True,
+    mode: str = "four_model_consensus_gate",
 ) -> dict:
     return {
         "id": pick_id,
@@ -33,8 +35,8 @@ def _pick(
         "probability_source": "player_props_ml_v1",
         "decision": "BET",
         "ml_model_version": "player_props_consensus_v2.0.0",
-        "ml_probability_mode": "four_model_consensus_gate",
-        "consensus_qualified": True,
+        "ml_probability_mode": mode,
+        "consensus_qualified": consensus_qualified,
         "ml_rank": 1,
         "ml_edge": 0.1,
         "ml_expected_value": 0.1,
@@ -94,3 +96,46 @@ def test_merge_keeps_current_and_snapshot_same_day_markets_visible(tmp_path: Pat
     assert merged_keys == expected_keys
     assert len(merged_picks) == len(expected_keys)
     assert [pick["ml_rank"] for pick in merged_picks] == list(range(1, len(merged_picks) + 1))
+
+
+def test_merge_does_not_force_rejected_variant_snapshots_into_latest_board(tmp_path: Path):
+    cache_dir = tmp_path / "data" / "player_props_cache"
+    snapshot_dir = tmp_path / "data" / "player_props_snapshots"
+    cache_dir.mkdir(parents=True)
+    (snapshot_dir / "2026-06-20").mkdir(parents=True)
+
+    snapshot = {
+        "date": "2026-06-20",
+        "models": {
+            "mlb_player_props": {
+                "ok": True,
+                "picks": [
+                    _pick(
+                        "fallback-snapshot",
+                        "fallback-snapshot",
+                        "Rejected Variant",
+                        consensus_qualified=False,
+                        mode="all_time_variant",
+                    )
+                ],
+            }
+        },
+    }
+    generated = {
+        "date": "2026-06-20",
+        "models": {
+            "mlb_player_props": {
+                "ok": True,
+                "ranking_epoch": "MLB:player_props_consensus_v2.0.0:published:test",
+                "picks": [_pick("generated", "generated", "Generated")],
+            }
+        },
+    }
+
+    (cache_dir / "2026-06-20.json").write_text(json.dumps({"date": "2026-06-20", "models": {}}), encoding="utf-8")
+    (snapshot_dir / "2026-06-20" / "snapshot.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    merged = merge_payload(generated, cache_dir, snapshot_dir)
+    picks = merged["models"]["mlb_player_props"]["picks"]
+
+    assert [pick["id"] for pick in picks] == ["generated"]

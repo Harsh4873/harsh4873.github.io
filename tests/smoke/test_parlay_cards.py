@@ -142,10 +142,39 @@ def test_team_and_player_legs_do_not_mix_in_one_slip():
     payload = parlays.build_parlay_payload(DATE, team_payload, prop_payload, team_history=[], prop_history=[], prior_payloads=[])
 
     assert payload["cards"]
+    assert {"team", "player"} <= {card["pickMode"] for card in payload["cards"]}
     for card in payload["cards"]:
         leg_types = {leg["sourceType"] for leg in card["legs"]}
         assert leg_types == {"model"} or leg_types == {"player_prop"}
         assert card["pickMode"] in {"team", "player"}
+
+
+def test_team_and_player_cards_are_selected_independently():
+    team_payload = make_payload(
+        {
+            "mlb_new": [
+                make_pick(sport="MLB", source="MLB Model", pick="Orioles ML", game="White Sox @ Orioles"),
+                make_pick(sport="MLB", source="MLB Model", pick="Padres ML", game="Padres @ Cubs"),
+                make_pick(sport="FIFA WC", source="FIFA Model", pick="Brazil ML", game="Japan @ Brazil"),
+            ]
+        }
+    )
+    prop_payload = make_payload(
+        {
+            "mlb_player_props": [
+                make_pick(sport="MLB", source="MLBPlayerProps", pick=f"Player {index} Over 0.5 Hits", game=f"Game {index} @ Home", player=f"Player {index}")
+                for index in range(10)
+            ]
+        }
+    )
+
+    payload = parlays.build_parlay_payload(DATE, team_payload, prop_payload, team_history=[], prop_history=[], prior_payloads=[])
+    mode_counts = Counter(card["pickMode"] for card in payload["cards"])
+
+    assert mode_counts["team"] > 0
+    assert mode_counts["player"] > 0
+    assert mode_counts["team"] <= 15
+    assert mode_counts["player"] <= 15
 
 
 def test_ungradeable_legs_are_excluded_from_slips():
@@ -209,6 +238,45 @@ def test_dynamic_category_weights_shrink_from_prior_results():
     assert weights["cross_sport"] > 1
     assert weights["same_sport"] < 1
     assert weights["cross_sport"] > weights["same_sport"]
+
+
+def test_rankings_count_whole_parlay_cards_not_legs():
+    cards = [
+        {
+            "id": "card-win",
+            "comboKey": "a|b|c",
+            "date": DATE,
+            "category": "consensus",
+            "result": "win",
+            "profitUnits": 2.5,
+            "oddsAmerican": 250,
+            "legs": [
+                {"result": "win"},
+                {"result": "win"},
+                {"result": "win"},
+            ],
+        },
+        {
+            "id": "card-loss",
+            "comboKey": "d|e|f",
+            "date": DATE,
+            "category": "consensus",
+            "result": "loss",
+            "profitUnits": -1.0,
+            "oddsAmerican": 220,
+            "legs": [
+                {"result": "win"},
+                {"result": "win"},
+                {"result": "loss"},
+            ],
+        },
+    ]
+
+    row = next(item for item in parlays.rankings([], cards) if item["category"] == "consensus")
+
+    assert row["wins"] == 1
+    assert row["losses"] == 1
+    assert row["settled"] == 2
 
 
 def test_push_grading_reduces_to_remaining_active_legs():

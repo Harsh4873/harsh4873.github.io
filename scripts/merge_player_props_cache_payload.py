@@ -129,13 +129,6 @@ def _consensus_qualified_player_prop(pick: dict[str, Any]) -> bool:
         pick.get("consensus_qualified") is True
         or pick.get("precision_qualified") is True
         or mode == "four_model_consensus_gate"
-        or str(pick.get("ml_model_version") or "").strip() == "player_props_consensus_v2.0.0"
-        or (
-            pick.get("market_priced") is True
-            and str(pick.get("probability_source") or "").strip() == "player_props_ml_v1"
-            and str(pick.get("actionability") or "").strip() == "market_priced"
-            and mode.endswith("_variant")
-        )
     )
 
 

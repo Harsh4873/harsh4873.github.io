@@ -558,8 +558,6 @@ def _apply_consensus_publication_gate(pick: dict[str, Any]) -> dict[str, Any]:
         }
     )
     if not qualified:
-        if _consensus_allows_ml_fallback(reason) and _ml_variant_publication_qualified(pick):
-            return _restore_ml_variant_publication(pick, consensus_reason=reason)
         pick.update(
             {
                 "decision": "PASS",
@@ -654,22 +652,8 @@ def _select_variant(scored: list[dict[str, Any]], variant: str) -> list[dict[str
     filtered = [
         pick for pick in scored
         if pick.get("market_priced") is True
-        and (
-            (pick.get("consensus_required") is not True or pick.get("consensus_qualified") is True)
-            or (
-                pick.get("consensus_qualified") is not True
-                and pick.get("actionability") == "market_priced"
-                and _ml_variant_publication_qualified(pick)
-            )
-        )
-        and (
-            pick.get("precision_required") is not True
-            or pick.get("precision_qualified") is True
-            or (
-                pick.get("actionability") == "market_priced"
-                and _ml_variant_publication_qualified(pick)
-            )
-        )
+        and (pick.get("consensus_required") is not True or pick.get("consensus_qualified") is True)
+        and (pick.get("precision_required") is not True or pick.get("precision_qualified") is True)
         and str(pick.get("decision") or "") in {"BET", "LEAN"}
         and safe_float(pick.get("ml_probability") or pick.get("probability")) >= 0.52
         and safe_float(pick.get("ml_edge")) >= MIN_VARIANT_EDGE

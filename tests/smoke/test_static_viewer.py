@@ -143,13 +143,14 @@ def test_static_viewer_keeps_public_tabs_and_client_grading():
     data = (ROOT / "src" / "data.ts").read_text(encoding="utf-8")
     html = (ROOT / "index.html").read_text(encoding="utf-8")
 
-    for tab in ("home", "search", "rankings", "daily", "your-bets"):
+    for tab in ("home", "search", "rankings", "daily", "parlays"):
         assert f"id=\"tab-{tab}\"" in html
     assert 'id="tab-trends"' not in html
     assert ">TRENDS</button>" not in html
     assert 'onclick="switchTab(\'daily\')">BEST BETS</button>' in html
-    assert 'onclick="switchTab(\'your-bets\')">YOUR BETS</button>' in html
-    assert html.index(">BEST BETS</button>") < html.index(">YOUR BETS</button>")
+    assert 'onclick="switchTab(\'parlays\')">PARLAYS</button>' in html
+    assert ">YOUR BETS</button>" not in html
+    assert html.index(">BEST BETS</button>") < html.index(">PARLAYS</button>")
     assert "async function refreshAutoGrades()" in main
     assert "async function gradeDate(" in main
     assert "site.api.espn.com" in main
@@ -216,31 +217,56 @@ def test_source_rankings_expand_period_records_and_static_cards_do_not_fake_clic
     assert ".daily-bet-card:hover" not in css
 
 
-def test_daily_tab_renders_parlay_board_filters_and_rankings():
+def test_daily_tab_restores_shortlist_views_and_calendar():
+    main = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
+    css = (ROOT / "src" / "styles" / "pickledger.css").read_text(encoding="utf-8")
+
+    for section in ("Top Picks", "Consensus Signals", "Hot Sources", "Research Queue"):
+        assert section in main
+    assert "type DailyView = 'picks' | 'consensus' | 'sources' | 'research'" in main
+    assert "let dailyView: DailyView = 'picks'" in main
+    assert "function dailySourceForms(" in main
+    assert "function dailyPickScore(" in main
+    assert "function dailyPickGroups(" in main
+    assert "Best Bets Date" in main
+    assert "function toggleDailyDatePicker(" in main
+    assert "role=\"tablist\" aria-label=\"Daily shortlist categories\"" in main
+    assert "TODAY'S QUICK READ" in main
+    assert "The Shortlist" in main
+    assert "Quick read, not a blind card." in main
+    assert ".daily-bet-card" in css
+    assert ".daily-model-card" in css
+    assert ".daily-consensus-card" in css
+    assert ".daily-sort-control" in css
+
+
+def test_parlays_tab_renders_card_level_filters_and_rankings():
     main = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
     css = (ROOT / "src" / "styles" / "pickledger.css").read_text(encoding="utf-8")
     builder = (ROOT / "scripts" / "build_parlay_cards.py").read_text(encoding="utf-8")
 
     for section in ("Consensus Parlays", "Surefire Parlays", "Best Odds Parlays", "Hot Model Parlays", "Cross-Sport Parlays", "Same-Sport Parlays"):
         assert section in builder
-    assert "type DailyView = 'all' | 'cross_sport' | 'same_sport' | 'consensus' | 'surefire' | 'best_odds' | 'hot_models'" in main
-    assert "let dailyView: DailyView = 'all'" in main
-    assert "getParlayCardsPayload" in main
-    assert "getParlayCardPayloads" in main
+    assert "type ParlayView = 'all' | 'cross_sport' | 'same_sport' | 'consensus' | 'surefire' | 'best_odds' | 'hot_models'" in main
+    assert "let parlayView: ParlayView = 'all'" in main
+    assert "let parlayResultMode: ResultMode = 'pending'" in main
+    assert "function renderParlays(" in main
+    assert "function setParlayView(" in main
+    assert "function setParlayResultMode(" in main
     assert "function parlayFilterOptions(" in main
     assert "function parlayCardHtml(" in main
     assert "function parlayRankingCardsForDate(" in main
-    assert "parlayRankingCardsForDate(key, modeCards)" in main
+    assert "dedupeParlayCards(historical.length ? historical : fallbackCards)" in main
     assert "function parlayRankingsPanel(" in main
-    assert "Parlay Board" in main
-    assert "BEST BETS PARLAY BOARD" in main
-    assert "Algorithm Rankings" in main
+    assert "Parlay Rankings" in main
+    assert "Whole-card records" in main
+    assert "Records count each whole parlay slip once" in main
     assert "No same-game legs, same-player duplicates, or duplicate markets are allowed" in main
     assert "function parlayCardsForMode(" in main
     assert "function parlayCardPickMode(" in main
     assert "3-leg slips are built only from published BET/LEAN team picks." in main
-    assert "3-leg slips are built only from published BET/LEAN player props." in main
-    assert "function setDailyView(" in main
+    assert "3-leg slips are built only from strict published BET/LEAN player props." in main
+    assert "Parlay Date" in main
     assert "role=\"tablist\" aria-label=\"Parlay board filters\"" in main
     assert ".daily-view-nav" in css
     assert ".daily-view-select-wrap" in css
@@ -267,15 +293,17 @@ def test_player_mode_keeps_best_bets_available_and_prop_sources_separate():
     assert 'data-player-hidden-tab="trends"' not in html
     assert "function syncModeTabs(" not in main
     assert 'onclick="switchTab(\'daily\')">BEST BETS</button>' in html
-    assert "dailyView = 'all'" in main
+    assert 'onclick="switchTab(\'parlays\')">PARLAYS</button>' in html
+    assert "dailyView = 'picks'" in main
+    assert "parlayView = 'all'" in main
     assert "Parlay filter" in main
-    assert "getParlayCardsPayload(selectedDate || today)" in main
+    assert "const requestedDate = selectedDate || today" in main
+    assert "getParlayCardsPayload(requestedDate)" in main
     assert "function playerRankingEpoch(" in main
     assert "function rankingComparablePicks(" in main
     assert "const PLAYER_PROP_RANKING_START_DATE = '2026-06-23'" in main
     assert "if (activePickMode !== 'player') return picks" in main
     assert "function latestAvailableDateKey(" in main
-    assert "getParlayCardsPayload(selectedDate || today)" in main
     assert "function playerModelRank(" in main
     assert "return 10000 - modelRank" in main
     assert "function consensusModelPanelHtml(" in main
@@ -323,7 +351,7 @@ def test_home_filters_prioritize_primary_sports_and_use_more_menu():
     assert "overflow: visible" in mobile_filter[:220]
 
 
-def test_your_bets_is_mode_separated_locked_device_local_ledger():
+def test_your_bets_slot_is_replaced_by_parlays_without_clearing_storage_helpers():
     main = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
     html = (ROOT / "index.html").read_text(encoding="utf-8")
     css = (ROOT / "src" / "styles" / "pickledger.css").read_text(encoding="utf-8")
@@ -334,8 +362,10 @@ def test_your_bets_is_mode_separated_locked_device_local_ledger():
     assert "function updateYourBetUnits(" in main
     assert "function syncYourBetResults(" in main
     assert "const modeBets = yourBets.filter(bet => bet.pickMode === activePickMode)" in main
-    assert "bet.pickMode === activePickMode && bet.pickId === pick.id" in main
-    assert "Results are locked and graded by PickLedger" in main
+    assert "function yourBetAddButton(pick: Pick): string" in main
+    assert "return ''" in main
+    assert ">YOUR BETS</button>" not in html
+    assert 'onclick="switchTab(\'parlays\')">PARLAYS</button>' in html
     assert "Locked and graded by PickLedger" in main
     assert "function addCustomYourBet(" not in main
     assert "function updateYourBetResult(" not in main
@@ -344,7 +374,8 @@ def test_your_bets_is_mode_separated_locked_device_local_ledger():
     assert "UNDO CHANGE" not in main
     for label in ("TODAY", "YESTERDAY", "ALL TIME"):
         assert f"yourBetSummaryCard('{label}'" in main
-    assert 'id="tab-your-bets"' in html
+    assert 'id="tab-your-bets"' not in html
+    assert 'id="tab-parlays"' in html
     assert ".your-bets-shell" in css
     assert ".your-bet-card" in css
     assert ".your-bet-locked-result" in css

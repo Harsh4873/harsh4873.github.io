@@ -958,12 +958,61 @@ def select_cards(three_leg_cards: list[dict[str, Any]], two_leg_cards: list[dict
     return selected[:MAX_CARDS]
 
 
+def _card_pick_mode(card: dict[str, Any]) -> str:
+    mode = _clean_text(card.get("pickMode")).lower()
+    if mode in {"team", "player"}:
+        return mode
+    legs = [leg for leg in card.get("legs") or [] if isinstance(leg, dict)]
+    has_player = any(_clean_text(leg.get("sourceType")) == "player_prop" for leg in legs)
+    has_team = any(_clean_text(leg.get("sourceType")) != "player_prop" for leg in legs)
+    if has_player and has_team:
+        return "mixed"
+    return "player" if has_player else "team"
+
+
+def select_cards_by_mode(
+    three_leg_cards: list[dict[str, Any]],
+    two_leg_cards: list[dict[str, Any]],
+    weights: dict[str, float],
+) -> list[dict[str, Any]]:
+    selected: list[dict[str, Any]] = []
+    for mode in ("team", "player"):
+        mode_three = [card for card in three_leg_cards if _card_pick_mode(card) == mode]
+        mode_two = [card for card in two_leg_cards if _card_pick_mode(card) == mode]
+        selected.extend(select_cards(mode_three, mode_two, weights))
+    selected.sort(
+        key=lambda card: (
+            0 if _card_pick_mode(card) == "team" else 1,
+            CATEGORY_ORDER.index(str(card["category"])),
+            -float(card["categoryScore"]),
+        )
+    )
+    return selected
+
+
+def _card_dedupe_key(card: dict[str, Any]) -> tuple[str, str, str, str]:
+    return (
+        _clean_text(card.get("date")),
+        _clean_text(card.get("category")),
+        _clean_text(card.get("id")),
+        _clean_text(card.get("comboKey")),
+    )
+
+
+def _dedupe_cards(cards: Iterable[dict[str, Any]]) -> list[dict[str, Any]]:
+    deduped: dict[tuple[str, str, str, str], dict[str, Any]] = {}
+    for card in cards:
+        if isinstance(card, dict):
+            deduped[_card_dedupe_key(card)] = card
+    return list(deduped.values())
+
+
 def _record_from_cards(cards: Iterable[dict[str, Any]]) -> dict[str, Any]:
     wins = losses = pushes = pending = 0
     net = 0.0
     odds_values: list[int] = []
     recent_results: list[str] = []
-    for card in cards:
+    for card in _dedupe_cards(cards):
         result = _clean_text(card.get("result")).lower() or "pending"
         wins += result == "win"
         losses += result == "loss"
@@ -1001,7 +1050,8 @@ def rankings(prior_payloads: list[dict[str, Any]], selected_cards: list[dict[str
 
     rows = []
     for category in CATEGORY_ORDER:
-        record = _record_from_cards(by_category[category])
+        category_cards = _dedupe_cards(by_category[category])
+        record = _record_from_cards(category_cards)
         row = {
             "category": category,
             "label": CATEGORY_DEFS[category]["shortLabel"],
@@ -1032,7 +1082,7 @@ def build_parlay_payload(
     three_leg_cards = generate_candidate_cards(legs, 3)
     two_leg_cards = generate_candidate_cards(legs, 2)
     weights = category_weights(prior_payloads)
-    cards = select_cards(three_leg_cards, two_leg_cards, weights)
+    cards = select_cards_by_mode(three_leg_cards, two_leg_cards, weights)
 
     category_summaries = []
     for category in CATEGORY_ORDER:
@@ -1050,6 +1100,22 @@ def build_parlay_payload(
                 "weight": weights.get(category, 1.0),
             }
         )
+
+    mode_summaries: dict[str, dict[str, Any]] = {}
+    for mode in ("team", "player"):
+        mode_cards = [card for card in cards if _card_pick_mode(card) == mode]
+        mode_three_leg_count = sum(1 for card in mode_cards if int(card.get("legCount") or 0) == 3)
+        mode_summaries[mode] = {
+            "displayedCards": len(mode_cards),
+            "threeLegCards": mode_three_leg_count,
+            "twoLegFallbackCards": len(mode_cards) - mode_three_leg_count,
+            "averageOdds": (
+                round(sum(int(card["oddsAmerican"]) for card in mode_cards) / len(mode_cards), 1)
+                if mode_cards
+                else None
+            ),
+            "record": _record_from_cards(mode_cards),
+        }
 
     average_odds = (
         round(sum(int(card["oddsAmerican"]) for card in cards) / len(cards), 1)
@@ -1077,6 +1143,7 @@ def build_parlay_payload(
             "twoLegFallbackCards": len(cards) - three_leg_count,
             "averageOdds": average_odds,
             "record": _record_from_cards(cards),
+            "modes": mode_summaries,
         },
         "categories": category_summaries,
         "rankings": rankings(prior_payloads, cards),

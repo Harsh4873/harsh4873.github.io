@@ -826,7 +826,7 @@ def test_variant_board_uses_consensus_probability_when_gate_qualifies(monkeypatc
     assert pick["supporting_variant"] == "season"
 
 
-def test_consensus_ml_fallback_publishes_market_priced_variant_when_gate_rejects(monkeypatch):
+def test_consensus_ml_fallback_stays_research_only_when_gate_rejects(monkeypatch):
     import player_props.variants as variants
 
     monkeypatch.delenv("PICKLEDGER_DISABLE_PRECISION_MODEL", raising=False)
@@ -861,13 +861,10 @@ def test_consensus_ml_fallback_publishes_market_priced_variant_when_gate_rejects
         "mlb_player_props"
     ]
 
-    assert bucket["picks"]
-    pick = bucket["picks"][0]
-    assert pick["probability_source"] == "player_props_ml_v1"
-    assert pick["market_priced"] is True
-    assert pick["actionability"] == "market_priced"
-    assert pick["consensus_qualified"] is not True
-    assert str(pick["ml_probability_mode"]).endswith("_variant")
+    assert bucket["picks"] == []
+    assert bucket["abstained"] is True
+    assert bucket["consensus_required"] is True
+    assert bucket["consensus_rejected_count"] >= 1
 
 
 def test_consensus_rejects_miscalibrated_publication_policy(monkeypatch):
