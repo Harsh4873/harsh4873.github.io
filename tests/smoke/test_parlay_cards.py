@@ -240,6 +240,72 @@ def test_dynamic_category_weights_shrink_from_prior_results():
     assert weights["cross_sport"] > weights["same_sport"]
 
 
+def test_cold_categories_are_capped_and_require_cleaner_cards():
+    prior_payloads = [
+        {
+            "cards": [
+                {"category": category, "result": "loss", "profitUnits": -1.0, "id": f"{category}-{index}", "comboKey": f"{category}-{index}"}
+                for category in ("surefire", "best_odds", "hot_models", "cross_sport", "same_sport")
+                for index in range(25)
+            ]
+        }
+    ]
+    team_payload = make_payload(
+        {
+            "mlb_new": [
+                make_pick(sport="MLB", source="MLB Model", pick=f"MLB {index} ML", game=f"MLB {index} @ Home", probability=0.7)
+                for index in range(5)
+            ],
+            "wnba": [
+                make_pick(sport="WNBA", source="WNBA Model", pick=f"WNBA {index} ML", game=f"WNBA {index} @ Home", probability=0.69)
+                for index in range(4)
+            ],
+            "fifa_world_cup": [
+                make_pick(sport="FIFA WC", source="FIFA Model", pick=f"FIFA {index} ML", game=f"FIFA {index} @ Home", probability=0.68)
+                for index in range(4)
+            ],
+        }
+    )
+
+    payload = parlays.build_parlay_payload(DATE, team_payload, None, team_history=[], prop_history=[], prior_payloads=prior_payloads)
+    counts = Counter(card["category"] for card in payload["cards"])
+
+    assert counts["surefire"] <= 2
+    assert counts["best_odds"] <= 1
+    assert counts["hot_models"] <= 1
+    assert counts["cross_sport"] <= 2
+    assert counts["same_sport"] <= 1
+    for card in payload["cards"]:
+        if card["category"] in {"surefire", "best_odds", "hot_models", "cross_sport", "same_sport"}:
+            assert card["geomeanProbability"] >= 0.62
+            assert max(leg["oddsAmerican"] for leg in card["legs"]) <= 220
+
+
+def test_v2_rankings_do_not_carry_forward_v1_category_records():
+    prior_payloads = [
+        {
+            "engineVersion": "parlay_cards_v1",
+            "cards": [
+                {"category": "same_sport", "result": "loss", "profitUnits": -1.0, "id": f"old-{index}", "comboKey": f"old-{index}"}
+                for index in range(30)
+            ],
+        }
+    ]
+    team_payload = make_payload(
+        {
+            "mlb_new": [
+                make_pick(sport="MLB", source="MLB Model", pick=f"MLB {index} ML", game=f"MLB {index} @ Home", probability=0.7)
+                for index in range(5)
+            ]
+        }
+    )
+
+    payload = parlays.build_parlay_payload(DATE, team_payload, None, team_history=[], prop_history=[], prior_payloads=prior_payloads)
+
+    assert payload["engineVersion"] == parlays.ENGINE_VERSION
+    assert all(row["losses"] == 0 for row in payload["rankings"])
+
+
 def test_rankings_count_whole_parlay_cards_not_legs():
     cards = [
         {

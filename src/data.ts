@@ -566,7 +566,7 @@ export function getAllPicks(): Pick[] {
 
 export function getParlayCardsPayload(date?: string): ParlayCardsPayload | null {
   if (date) {
-    return parlayPayloads.find(payload => payload.date === date) || latestParlayPayload;
+    return parlayPayloads.find(payload => payload.date === date) || null;
   }
   return latestParlayPayload;
 }

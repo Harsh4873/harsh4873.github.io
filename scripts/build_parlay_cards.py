@@ -25,6 +25,61 @@ MIN_GEOMEAN_PROBABILITY = 0.525
 MAX_CARDS = 15
 MAX_CARDS_PER_CATEGORY = 3
 DEFAULT_EXPOSURE_CAP = 3
+ENGINE_VERSION = "parlay_cards_v2_quality_guard"
+COLD_CATEGORY_MIN_SETTLED = 20
+COLD_CATEGORY_HIT_RATE = 0.24
+COLD_CATEGORY_ROI = -0.18
+
+COLD_CATEGORY_RULES: dict[str, dict[str, float]] = {
+    "surefire": {
+        "min_geomean": 0.66,
+        "min_leg_probability": 0.58,
+        "max_odds": 520,
+        "max_leg_odds": 180,
+        "min_ev": 0.02,
+        "min_source_form": 54.0,
+        "min_payout_quality": 0.72,
+        "max_cards": 2,
+    },
+    "best_odds": {
+        "min_geomean": 0.62,
+        "min_leg_probability": 0.56,
+        "max_odds": 850,
+        "max_leg_odds": 220,
+        "min_ev": 0.18,
+        "min_payout_quality": 0.72,
+        "max_cards": 1,
+    },
+    "hot_models": {
+        "min_geomean": 0.66,
+        "min_leg_probability": 0.58,
+        "max_odds": 650,
+        "max_leg_odds": 180,
+        "min_ev": 0.03,
+        "min_source_form": 57.5,
+        "min_payout_quality": 0.72,
+        "max_cards": 1,
+    },
+    "cross_sport": {
+        "min_geomean": 0.62,
+        "min_leg_probability": 0.56,
+        "max_odds": 650,
+        "max_leg_odds": 220,
+        "min_ev": 0.08,
+        "min_payout_quality": 0.72,
+        "max_cards": 2,
+    },
+    "same_sport": {
+        "min_geomean": 0.66,
+        "min_leg_probability": 0.60,
+        "max_odds": 500,
+        "max_leg_odds": 180,
+        "min_ev": 0.04,
+        "min_source_form": 56.0,
+        "min_payout_quality": 0.72,
+        "max_cards": 1,
+    },
+}
 
 SOURCE_LABELS: dict[str, str] = {
     "mlb_new": "MLB Model",
@@ -750,10 +805,16 @@ def _within_range(card: dict[str, Any], category: str) -> bool:
     return low <= int(card["oddsAmerican"]) <= high
 
 
-def qualifies_category(card: dict[str, Any], category: str) -> bool:
+def qualifies_category(
+    card: dict[str, Any],
+    category: str,
+    history: dict[str, dict[str, float]] | None = None,
+) -> bool:
     odds_values = [int(leg["oddsAmerican"]) for leg in card["legs"]]
     sports = set(card["sports"])
     if float(card["geomeanProbability"]) < MIN_GEOMEAN_PROBABILITY:
+        return False
+    if not _passes_cold_category_guard(card, category, history):
         return False
     if category == "consensus":
         return int(card["consensusLegs"]) >= 1 and _within_range(card, category)
@@ -822,8 +883,9 @@ def _prior_parlay_payloads(target_date: str) -> list[dict[str, Any]]:
     return payloads
 
 
-def category_weights(prior_payloads: list[dict[str, Any]]) -> dict[str, float]:
+def category_history(prior_payloads: list[dict[str, Any]]) -> dict[str, dict[str, float]]:
     stats: dict[str, dict[str, float]] = defaultdict(lambda: {"wins": 0, "losses": 0, "net": 0.0})
+    seen: set[tuple[str, str, str, str]] = set()
     for payload in prior_payloads:
         for card in payload.get("cards") or []:
             if not isinstance(card, dict):
@@ -832,20 +894,111 @@ def category_weights(prior_payloads: list[dict[str, Any]]) -> dict[str, float]:
             result = _clean_text(card.get("result")).lower()
             if category not in CATEGORY_DEFS or result not in {"win", "loss"}:
                 continue
+            key = (
+                _clean_text(payload.get("date") or card.get("date")),
+                category,
+                _clean_text(card.get("id")),
+                _clean_text(card.get("comboKey")),
+            )
+            if key in seen:
+                continue
+            seen.add(key)
             stats[category]["wins"] += 1 if result == "win" else 0
             stats[category]["losses"] += 1 if result == "loss" else 0
             stats[category]["net"] += float(card.get("profitUnits") or 0)
 
-    weights = {category: 1.0 for category in CATEGORY_DEFS}
-    for category, values in stats.items():
+    history: dict[str, dict[str, float]] = {}
+    for category in CATEGORY_DEFS:
+        values = stats[category]
         settled = values["wins"] + values["losses"]
+        history[category] = {
+            "wins": values["wins"],
+            "losses": values["losses"],
+            "settled": settled,
+            "net": values["net"],
+            "hitRate": values["wins"] / settled if settled else 0.0,
+            "roi": values["net"] / settled if settled else 0.0,
+        }
+    return history
+
+
+def category_weights(prior_payloads: list[dict[str, Any]]) -> dict[str, float]:
+    history = category_history(prior_payloads)
+
+    weights = {category: 1.0 for category in CATEGORY_DEFS}
+    for category, values in history.items():
+        settled = values["settled"]
         if not settled:
             continue
-        win_rate = values["wins"] / settled
+        win_rate = values["hitRate"]
         roi = max(-1.0, min(1.5, values["net"] / settled))
         shrink = settled / (settled + 20.0)
-        weights[category] = round(max(0.82, min(1.18, 1.0 + shrink * ((win_rate - 0.5) * 0.18 + roi * 0.06))), 4)
+        weights[category] = round(max(0.62, min(1.22, 1.0 + shrink * ((win_rate - 0.5) * 0.34 + roi * 0.16))), 4)
     return weights
+
+
+def _category_is_cold(category: str, history: dict[str, dict[str, float]]) -> bool:
+    values = history.get(category) or {}
+    settled = int(values.get("settled") or 0)
+    if settled < COLD_CATEGORY_MIN_SETTLED:
+        return False
+    return float(values.get("hitRate") or 0.0) < COLD_CATEGORY_HIT_RATE or float(values.get("roi") or 0.0) < COLD_CATEGORY_ROI
+
+
+def _cold_category_limit(category: str, history: dict[str, dict[str, float]]) -> int:
+    if not _category_is_cold(category, history):
+        return MAX_CARDS_PER_CATEGORY
+    rules = COLD_CATEGORY_RULES.get(category)
+    return int(rules.get("max_cards", 1)) if rules else MAX_CARDS_PER_CATEGORY
+
+
+def _leg_probabilities(card: dict[str, Any]) -> list[float]:
+    values: list[float] = []
+    for leg in card.get("legs") or []:
+        if isinstance(leg, dict):
+            probability = _number(leg.get("estimatedProbability"))
+            if probability is not None:
+                values.append(probability)
+    return values
+
+
+def _leg_odds(card: dict[str, Any]) -> list[int]:
+    values: list[int] = []
+    for leg in card.get("legs") or []:
+        if isinstance(leg, dict):
+            odds = _int_number(leg.get("oddsAmerican"))
+            if odds is not None:
+                values.append(odds)
+    return values
+
+
+def _passes_cold_category_guard(
+    card: dict[str, Any],
+    category: str,
+    history: dict[str, dict[str, float]] | None = None,
+) -> bool:
+    history = history or {}
+    rules = COLD_CATEGORY_RULES.get(category)
+    if not rules or not _category_is_cold(category, history):
+        return True
+    probabilities = _leg_probabilities(card)
+    odds_values = _leg_odds(card)
+    if float(card["geomeanProbability"]) < rules["min_geomean"]:
+        return False
+    if probabilities and min(probabilities) < rules["min_leg_probability"]:
+        return False
+    if int(card["oddsAmerican"]) > rules["max_odds"]:
+        return False
+    if odds_values and max(odds_values) > rules["max_leg_odds"]:
+        return False
+    if float(card["parlayEv"]) < rules["min_ev"]:
+        return False
+    min_source_form = rules.get("min_source_form")
+    if min_source_form is not None and float(card["averageSourceForm"]) < min_source_form:
+        return False
+    if float(card["payoutQuality"]) < rules["min_payout_quality"]:
+        return False
+    return True
 
 
 def generate_candidate_cards(legs: list[Leg], leg_count: int) -> list[dict[str, Any]]:
@@ -860,10 +1013,21 @@ def generate_candidate_cards(legs: list[Leg], leg_count: int) -> list[dict[str, 
     return cards
 
 
-def select_cards(three_leg_cards: list[dict[str, Any]], two_leg_cards: list[dict[str, Any]], weights: dict[str, float]) -> list[dict[str, Any]]:
+def select_cards(
+    three_leg_cards: list[dict[str, Any]],
+    two_leg_cards: list[dict[str, Any]],
+    weights: dict[str, float],
+    history: dict[str, dict[str, float]] | None = None,
+) -> list[dict[str, Any]]:
+    history = history or {}
     selected: list[dict[str, Any]] = []
     selected_combo_keys: set[str] = set()
     exposure: Counter[str] = Counter()
+    selected_category_counts: Counter[str] = Counter()
+    category_limits = {
+        category: _cold_category_limit(category, history)
+        for category in CATEGORY_ORDER
+    }
     unique_leg_ids = {
         str(leg["legId"])
         for card in three_leg_cards
@@ -877,7 +1041,7 @@ def select_cards(three_leg_cards: list[dict[str, Any]], two_leg_cards: list[dict
             [
                 _category_card(card, category, weights.get(category, 1.0), False)
                 for card in three_leg_cards
-                if qualifies_category(card, category)
+                if qualifies_category(card, category, history)
             ],
             key=lambda card: float(card["categoryScore"]),
             reverse=True,
@@ -889,7 +1053,7 @@ def select_cards(three_leg_cards: list[dict[str, Any]], two_leg_cards: list[dict
             [
                 _category_card(card, category, weights.get(category, 1.0), True)
                 for card in two_leg_cards
-                if qualifies_category(card, category)
+                if qualifies_category(card, category, history)
             ],
             key=lambda card: float(card["categoryScore"]),
             reverse=True,
@@ -907,7 +1071,7 @@ def select_cards(three_leg_cards: list[dict[str, Any]], two_leg_cards: list[dict
             if three_by_category[later] or fallback_by_category[later]
         )
         category_limit = min(
-            MAX_CARDS_PER_CATEGORY,
+            category_limits[category],
             max(0, MAX_CARDS - len(selected) - remaining_viable_categories),
         )
         for card in three_by_category[category]:
@@ -915,12 +1079,15 @@ def select_cards(three_leg_cards: list[dict[str, Any]], two_leg_cards: list[dict
                 break
             if card["comboKey"] in selected_combo_keys:
                 continue
+            if selected_category_counts[category] >= category_limits[category]:
+                continue
             leg_ids = [str(leg["legId"]) for leg in card["legs"]]
             if any(exposure[leg_id] >= exposure_cap for leg_id in leg_ids):
                 continue
             selected.append(card)
             selected_combo_keys.add(str(card["comboKey"]))
             exposure.update(leg_ids)
+            selected_category_counts[category] += 1
             picked_for_category += 1
 
         if picked_for_category:
@@ -932,12 +1099,15 @@ def select_cards(three_leg_cards: list[dict[str, Any]], two_leg_cards: list[dict
                 break
             if card["comboKey"] in selected_combo_keys:
                 continue
+            if selected_category_counts[category] >= category_limits[category]:
+                continue
             leg_ids = [str(leg["legId"]) for leg in card["legs"]]
             if any(exposure[leg_id] >= exposure_cap for leg_id in leg_ids):
                 continue
             selected.append(card)
             selected_combo_keys.add(str(card["comboKey"]))
             exposure.update(leg_ids)
+            selected_category_counts[category] += 1
             picked_for_category += 1
 
     if len(selected) < MAX_CARDS:
@@ -947,12 +1117,15 @@ def select_cards(three_leg_cards: list[dict[str, Any]], two_leg_cards: list[dict
                     break
                 if card["comboKey"] in selected_combo_keys:
                     continue
+                if selected_category_counts[category] >= category_limits[category]:
+                    continue
                 leg_ids = [str(leg["legId"]) for leg in card["legs"]]
                 if any(exposure[leg_id] >= exposure_cap for leg_id in leg_ids):
                     continue
                 selected.append(card)
                 selected_combo_keys.add(str(card["comboKey"]))
                 exposure.update(leg_ids)
+                selected_category_counts[category] += 1
 
     selected.sort(key=lambda card: (CATEGORY_ORDER.index(str(card["category"])), -float(card["categoryScore"])))
     return selected[:MAX_CARDS]
@@ -974,12 +1147,13 @@ def select_cards_by_mode(
     three_leg_cards: list[dict[str, Any]],
     two_leg_cards: list[dict[str, Any]],
     weights: dict[str, float],
+    history: dict[str, dict[str, float]] | None = None,
 ) -> list[dict[str, Any]]:
     selected: list[dict[str, Any]] = []
     for mode in ("team", "player"):
         mode_three = [card for card in three_leg_cards if _card_pick_mode(card) == mode]
         mode_two = [card for card in two_leg_cards if _card_pick_mode(card) == mode]
-        selected.extend(select_cards(mode_three, mode_two, weights))
+        selected.extend(select_cards(mode_three, mode_two, weights, history))
     selected.sort(
         key=lambda card: (
             0 if _card_pick_mode(card) == "team" else 1,
@@ -1081,8 +1255,13 @@ def build_parlay_payload(
     legs = collect_legs(date_iso, team_payload, prop_payload, source_forms)
     three_leg_cards = generate_candidate_cards(legs, 3)
     two_leg_cards = generate_candidate_cards(legs, 2)
+    history = category_history(prior_payloads)
     weights = category_weights(prior_payloads)
-    cards = select_cards_by_mode(three_leg_cards, two_leg_cards, weights)
+    cards = select_cards_by_mode(three_leg_cards, two_leg_cards, weights, history)
+    ranking_prior_payloads = [
+        payload for payload in prior_payloads
+        if _clean_text(payload.get("engineVersion")) == ENGINE_VERSION
+    ]
 
     category_summaries = []
     for category in CATEGORY_ORDER:
@@ -1134,7 +1313,7 @@ def build_parlay_payload(
     return {
         "date": date_iso,
         "generatedAt": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-        "engineVersion": "parlay_cards_v1",
+        "engineVersion": ENGINE_VERSION,
         "summary": {
             "eligibleLegs": len(legs),
             "generatedThreeLegCandidates": len(three_leg_cards),
@@ -1146,7 +1325,7 @@ def build_parlay_payload(
             "modes": mode_summaries,
         },
         "categories": category_summaries,
-        "rankings": rankings(prior_payloads, cards),
+        "rankings": rankings(ranking_prior_payloads, cards),
         "cards": cards,
         "notices": notices,
     }

@@ -256,10 +256,15 @@ def test_parlays_tab_renders_card_level_filters_and_rankings():
     assert "function parlayFilterOptions(" in main
     assert "function parlayCardHtml(" in main
     assert "function parlayRankingCardsForDate(" in main
+    assert ".filter(payload => !engineVersion || payload.engineVersion === engineVersion)" in main
     assert "dedupeParlayCards(historical.length ? historical : fallbackCards)" in main
     assert "function parlayRankingsPanel(" in main
     assert "Parlay Rankings" in main
     assert "Whole-card records" in main
+    assert "Team / Player" in main
+    assert "Switch to ${otherMode === 'team' ? 'Team' : 'Player'} mode for this slate" in main
+    assert "ENGINE_VERSION = \"parlay_cards_v2_quality_guard\"" in builder
+    assert "COLD_CATEGORY_RULES" in builder
     assert "Records count each whole parlay slip once" in main
     assert "No same-game legs, same-player duplicates, or duplicate markets are allowed" in main
     assert "function parlayCardsForMode(" in main

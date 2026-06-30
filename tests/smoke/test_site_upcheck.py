@@ -50,7 +50,12 @@ def _upcheck_repo(tmp_path: Path, date: str) -> Path:
         },
     }
     props_payload = {"date": date, "models": {key: {"ok": True, "picks": []} for key in PLAYER_PROP_KEYS}}
-    parlay_payload = {"date": date, "summary": {"displayedCards": 0, "threeLegCards": 0}, "cards": []}
+    parlay_payload = {
+        "date": date,
+        "engineVersion": "parlay_cards_v2_quality_guard",
+        "summary": {"displayedCards": 0, "threeLegCards": 0},
+        "cards": [],
+    }
     for cache_name, payload in (("model_cache", model_payload), ("player_props_cache", props_payload)):
         cache_dir = tmp_path / "data" / cache_name
         _write_json(cache_dir / "latest.json", payload)

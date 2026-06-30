@@ -1574,10 +1574,11 @@ function dedupeParlayCards(cards: ParlayCard[]): ParlayCard[] {
   return [...byKey.values()];
 }
 
-function parlayRankingCardsForDate(date: string, fallbackCards: ParlayCard[]): ParlayCard[] {
+function parlayRankingCardsForDate(date: string, fallbackCards: ParlayCard[], engineVersion?: string): ParlayCard[] {
   const cutoff = date || centralDateKey();
   const historical = getParlayCardPayloads()
     .filter(payload => String(payload.date || '') <= cutoff)
+    .filter(payload => !engineVersion || payload.engineVersion === engineVersion)
     .flatMap(payload => payload.cards || [])
     .filter(card => parlayCardPickMode(card) === activePickMode);
   return dedupeParlayCards(historical.length ? historical : fallbackCards);
@@ -1897,6 +1898,11 @@ function renderParlays(): void {
   const payload = getParlayCardsPayload(requestedDate) || (selectedDate ? null : getParlayCardsPayload());
   const key = payload?.date || requestedDate;
   const modeCards = parlayCardsForMode(payload);
+  const allCards = payload?.cards || [];
+  const teamCardCount = allCards.filter(card => parlayCardPickMode(card) === 'team').length;
+  const playerCardCount = allCards.filter(card => parlayCardPickMode(card) === 'player').length;
+  const otherMode = activePickMode === 'team' ? 'player' : 'team';
+  const otherModeCount = activePickMode === 'team' ? playerCardCount : teamCardCount;
   const visibleCards = modeCards.filter(parlayResultMatches);
   const viewOptions = parlayFilterOptions(visibleCards);
   const activeView = viewOptions.find(option => option.key === parlayView) || viewOptions[0];
@@ -1914,8 +1920,22 @@ function renderParlays(): void {
     { key: 'all', label: 'All', description: 'Every slip' },
     { key: 'settled', label: 'Results', description: 'Settled slips' },
   ];
-  const activeBody = parlaySections(visibleCards, parlayView);
-  const rankingsPanel = parlayRankingsPanel(parlayRankingsForCards(parlayRankingCardsForDate(key, modeCards)));
+  const emptyModeBody = !modeCards.length && otherModeCount
+    ? dailySection(
+      `No ${boardLabel} Slips`,
+      `${otherMode === 'team' ? 'Team' : 'Player'} mode has ${otherModeCount} slip${otherModeCount === 1 ? '' : 's'} for this date.`,
+      `<div class="daily-empty"><div class="daily-empty-title">Switch to ${otherMode === 'team' ? 'Team' : 'Player'} mode for this slate</div><div class="daily-empty-sub">The parlay engine keeps Team and Player boards separate so one side cannot crowd out the other.</div></div>`,
+    )
+    : '';
+  const noDatePayloadBody = !payload
+    ? dailySection(
+      'No Parlay Payload',
+      'No generated parlay-card file exists for the selected date.',
+      '<div class="daily-empty"><div class="daily-empty-title">No slips generated for this date</div><div class="daily-empty-sub">Pick another date or wait for the next parlay-card refresh.</div></div>',
+    )
+    : '';
+  const activeBody = noDatePayloadBody || emptyModeBody || parlaySections(visibleCards, parlayView);
+  const rankingsPanel = payload ? parlayRankingsPanel(parlayRankingsForCards(parlayRankingCardsForDate(key, modeCards, payload.engineVersion))) : '';
 
   container.innerHTML = `<div class="daily-hero"><div class="daily-hero-row"><div><div class="daily-eyebrow">PARLAY BOARD</div><div class="daily-title">${escapeHtml(boardLabel)} Parlays</div><div class="daily-sub">${escapeHtml(dateLabel(key, true))} | ${escapeHtml(boardDescription)}</div></div><div class="daily-clock-wrap"><div class="daily-clock-label">SLATE</div><div class="daily-clock">${escapeHtml(key)}</div><div class="daily-countdown">Updated ${escapeHtml(generatedAt)}</div></div></div></div>
     <div class="daily-stats-strip">
@@ -1923,7 +1943,7 @@ function renderParlays(): void {
       <div class="daily-stat"><div class="daily-stat-val">${visibleCards.length}</div><div class="daily-stat-label">Shown Slips</div></div>
       <div class="daily-stat"><div class="daily-stat-val accent3">${escapeHtml(averageOdds)}</div><div class="daily-stat-label">Shown Avg Odds</div></div>
       <div class="daily-stat"><div class="daily-stat-val neutral">${escapeHtml(parlayRecordText(record))}</div><div class="daily-stat-label">Card Record</div></div>
-      <div class="daily-stat"><div class="daily-stat-val">${parlayUniqueLegCount(modeCards)}</div><div class="daily-stat-label">Board Legs</div></div>
+      <div class="daily-stat"><div class="daily-stat-val">${teamCardCount}/${playerCardCount}</div><div class="daily-stat-label">Team / Player</div></div>
     </div>
     <div class="daily-view-shell">
       <div class="daily-view-copy"><div class="daily-view-eyebrow">FILTER PARLAYS</div><div class="daily-view-title">${escapeHtml(activeView.label)}</div><div class="daily-view-description">${escapeHtml(activeView.description)}. Records count each whole parlay slip once; leg results only decide whether the card wins, loses, pushes, or stays open. No same-game legs, same-player duplicates, or duplicate markets are allowed.</div></div>

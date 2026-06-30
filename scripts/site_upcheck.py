@@ -18,6 +18,7 @@ MODEL_CACHE_DIR = REPO_ROOT / "data" / "model_cache"
 PLAYER_PROPS_CACHE_DIR = REPO_ROOT / "data" / "player_props_cache"
 PLAYER_PROPS_SNAPSHOT_DIR = REPO_ROOT / "data" / "player_props_snapshots"
 PARLAY_CARDS_DIR = REPO_ROOT / "data" / "parlay_cards"
+PARLAY_ENGINE_VERSION = "parlay_cards_v2_quality_guard"
 REQUIRED_MODEL_KEYS = {
     "mlb_new",
     "mlb_inning",
@@ -342,6 +343,10 @@ def main() -> int:
         failures.append(f"parlay-card manifest does not include {today}.json")
     if parlay_latest:
         parlay_cards = [card for card in parlay_latest.get("cards") or [] if isinstance(card, dict)]
+        if str(parlay_latest.get("engineVersion") or "") != PARLAY_ENGINE_VERSION:
+            failures.append(
+                f"latest parlay cards use {parlay_latest.get('engineVersion') or 'unknown'} engine, expected {PARLAY_ENGINE_VERSION}"
+            )
         mode_cards: dict[str, list[dict[str, Any]]] = {"team": [], "player": []}
         for card in parlay_cards:
             mode = str(card.get("pickMode") or "").strip().lower()
