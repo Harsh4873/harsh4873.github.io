@@ -1,11 +1,11 @@
 {
   "date": "2026-06-30",
   "errors": [],
-  "externalFeedsUpdatedAt": "2026-06-30T05:43:27.151269Z",
+  "externalFeedsUpdatedAt": "2026-06-30T13:05:36.721261Z",
   "external_feeds": {
     "scores24_fifa_world_cup": {
       "date": "2026-06-30",
-      "generatedAt": "2026-06-30T05:43:27.151269Z",
+      "generatedAt": "2026-06-30T13:05:36.721261Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "attemptedUrls": 3,
@@ -21,7 +21,7 @@
         "missingMatchups": [],
         "officialMatchups": 3,
         "unpublishedMatchups": [],
-        "updatedAt": "2026-06-30T05:43:27.151269Z"
+        "updatedAt": "2026-06-30T13:05:36.721261Z"
       },
       "note": "Scores24FIFAWorldCup matched 3 published editorial choice(s) against 3 official 2026-06-30 matchup(s).",
       "ok": true,
@@ -90,14 +90,14 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-30T05:43:27.151269Z"
+      "updatedAt": "2026-06-30T13:05:36.721261Z"
     },
     "scores24_mlb": {
       "date": "2026-06-30",
-      "generatedAt": "2026-06-30T05:43:27.151269Z",
+      "generatedAt": "2026-06-30T13:05:36.721261Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
-        "attemptedUrls": 17,
+        "attemptedUrls": 15,
         "blockRetryRounds": 0,
         "blockedUrls": 0,
         "date": "2026-06-30",
@@ -110,7 +110,7 @@
         "missingMatchups": [],
         "officialMatchups": 15,
         "unpublishedMatchups": [],
-        "updatedAt": "2026-06-30T05:43:27.151269Z"
+        "updatedAt": "2026-06-30T13:05:36.721261Z"
       },
       "note": "Scores24MLB matched 15 published editorial choice(s) against 15 official 2026-06-30 matchup(s).",
       "ok": true,
@@ -375,8 +375,8 @@
           "game": "Cincinnati Reds @ Milwaukee Brewers",
           "home_team": "Milwaukee Brewers",
           "matchup": "Cincinnati Reds @ Milwaukee Brewers",
-          "odds": -213,
-          "pick": "Total Under (10,5) (Cincinnati Reds @ Milwaukee Brewers)",
+          "odds": -175,
+          "pick": "Milwaukee Brewers ML (Cincinnati Reds @ Milwaukee Brewers)",
           "pregame_snapshot": {
             "away_team": "Cincinnati Reds",
             "date": "2026-06-30",
@@ -385,22 +385,22 @@
             "game": "Cincinnati Reds @ Milwaukee Brewers",
             "home_team": "Milwaukee Brewers",
             "matchup": "Cincinnati Reds @ Milwaukee Brewers",
-            "odds": -213,
-            "pick": "Total Under (10,5) (Cincinnati Reds @ Milwaukee Brewers)",
+            "odds": -175,
+            "pick": "Milwaukee Brewers ML (Cincinnati Reds @ Milwaukee Brewers)",
             "probability": null,
             "source": "Scores24MLB",
-            "source_url": "https://scores24.live/en/baseball/m-29-06-2026-milwaukee-brewers-cincinnati-reds-prediction",
+            "source_url": "https://scores24.live/en/baseball/m-30-06-2026-milwaukee-brewers-cincinnati-reds-prediction",
             "sport": "MLB",
             "start_time": "2026-06-30T23:40Z",
-            "tip": "Total Under (10,5)",
+            "tip": "Milwaukee Brewers Win",
             "units": 1
           },
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-29-06-2026-milwaukee-brewers-cincinnati-reds-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-30-06-2026-milwaukee-brewers-cincinnati-reds-prediction",
           "sport": "MLB",
           "start_time": "2026-06-30T23:40Z",
-          "tip": "Total Under (10,5)",
+          "tip": "Milwaukee Brewers Win",
           "units": 1
         },
         {
@@ -656,11 +656,11 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-30T05:43:27.151269Z"
+      "updatedAt": "2026-06-30T13:05:36.721261Z"
     },
     "scores24_wnba": {
       "date": "2026-06-30",
-      "generatedAt": "2026-06-30T05:43:27.151269Z",
+      "generatedAt": "2026-06-30T13:05:36.721261Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "attemptedUrls": 1,
@@ -676,7 +676,7 @@
         "missingMatchups": [],
         "officialMatchups": 1,
         "unpublishedMatchups": [],
-        "updatedAt": "2026-06-30T05:43:27.151269Z"
+        "updatedAt": "2026-06-30T13:05:36.721261Z"
       },
       "note": "Scores24WNBA matched 1 published editorial choice(s) against 1 official 2026-06-30 matchup(s).",
       "ok": true,
@@ -718,7 +718,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-30T05:43:27.151269Z"
+      "updatedAt": "2026-06-30T13:05:36.721261Z"
     }
   },
   "fifa_world_cup": {
@@ -61772,7 +61772,7 @@
     },
     "scores24_fifa_world_cup": {
       "date": "2026-06-30",
-      "generatedAt": "2026-06-30T05:43:27.151269Z",
+      "generatedAt": "2026-06-30T13:05:36.721261Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "attemptedUrls": 3,
@@ -61788,7 +61788,7 @@
         "missingMatchups": [],
         "officialMatchups": 3,
         "unpublishedMatchups": [],
-        "updatedAt": "2026-06-30T05:43:27.151269Z"
+        "updatedAt": "2026-06-30T13:05:36.721261Z"
       },
       "note": "Scores24FIFAWorldCup matched 3 published editorial choice(s) against 3 official 2026-06-30 matchup(s).",
       "ok": true,
@@ -61857,14 +61857,14 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-30T05:43:27.151269Z"
+      "updatedAt": "2026-06-30T13:05:36.721261Z"
     },
     "scores24_mlb": {
       "date": "2026-06-30",
-      "generatedAt": "2026-06-30T05:43:27.151269Z",
+      "generatedAt": "2026-06-30T13:05:36.721261Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
-        "attemptedUrls": 17,
+        "attemptedUrls": 15,
         "blockRetryRounds": 0,
         "blockedUrls": 0,
         "date": "2026-06-30",
@@ -61877,7 +61877,7 @@
         "missingMatchups": [],
         "officialMatchups": 15,
         "unpublishedMatchups": [],
-        "updatedAt": "2026-06-30T05:43:27.151269Z"
+        "updatedAt": "2026-06-30T13:05:36.721261Z"
       },
       "note": "Scores24MLB matched 15 published editorial choice(s) against 15 official 2026-06-30 matchup(s).",
       "ok": true,
@@ -62142,8 +62142,8 @@
           "game": "Cincinnati Reds @ Milwaukee Brewers",
           "home_team": "Milwaukee Brewers",
           "matchup": "Cincinnati Reds @ Milwaukee Brewers",
-          "odds": -213,
-          "pick": "Total Under (10,5) (Cincinnati Reds @ Milwaukee Brewers)",
+          "odds": -175,
+          "pick": "Milwaukee Brewers ML (Cincinnati Reds @ Milwaukee Brewers)",
           "pregame_snapshot": {
             "away_team": "Cincinnati Reds",
             "date": "2026-06-30",
@@ -62152,22 +62152,22 @@
             "game": "Cincinnati Reds @ Milwaukee Brewers",
             "home_team": "Milwaukee Brewers",
             "matchup": "Cincinnati Reds @ Milwaukee Brewers",
-            "odds": -213,
-            "pick": "Total Under (10,5) (Cincinnati Reds @ Milwaukee Brewers)",
+            "odds": -175,
+            "pick": "Milwaukee Brewers ML (Cincinnati Reds @ Milwaukee Brewers)",
             "probability": null,
             "source": "Scores24MLB",
-            "source_url": "https://scores24.live/en/baseball/m-29-06-2026-milwaukee-brewers-cincinnati-reds-prediction",
+            "source_url": "https://scores24.live/en/baseball/m-30-06-2026-milwaukee-brewers-cincinnati-reds-prediction",
             "sport": "MLB",
             "start_time": "2026-06-30T23:40Z",
-            "tip": "Total Under (10,5)",
+            "tip": "Milwaukee Brewers Win",
             "units": 1
           },
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-29-06-2026-milwaukee-brewers-cincinnati-reds-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-30-06-2026-milwaukee-brewers-cincinnati-reds-prediction",
           "sport": "MLB",
           "start_time": "2026-06-30T23:40Z",
-          "tip": "Total Under (10,5)",
+          "tip": "Milwaukee Brewers Win",
           "units": 1
         },
         {
@@ -62423,11 +62423,11 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-30T05:43:27.151269Z"
+      "updatedAt": "2026-06-30T13:05:36.721261Z"
     },
     "scores24_wnba": {
       "date": "2026-06-30",
-      "generatedAt": "2026-06-30T05:43:27.151269Z",
+      "generatedAt": "2026-06-30T13:05:36.721261Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "attemptedUrls": 1,
@@ -62443,7 +62443,7 @@
         "missingMatchups": [],
         "officialMatchups": 1,
         "unpublishedMatchups": [],
-        "updatedAt": "2026-06-30T05:43:27.151269Z"
+        "updatedAt": "2026-06-30T13:05:36.721261Z"
       },
       "note": "Scores24WNBA matched 1 published editorial choice(s) against 1 official 2026-06-30 matchup(s).",
       "ok": true,
@@ -62485,7 +62485,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-06-30T05:43:27.151269Z"
+      "updatedAt": "2026-06-30T13:05:36.721261Z"
     },
     "wnba": {
       "ok": true,
@@ -62752,7 +62752,7 @@
   "nba_props": {},
   "scores24_fifa_world_cup": {
     "date": "2026-06-30",
-    "generatedAt": "2026-06-30T05:43:27.151269Z",
+    "generatedAt": "2026-06-30T13:05:36.721261Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "attemptedUrls": 3,
@@ -62768,7 +62768,7 @@
       "missingMatchups": [],
       "officialMatchups": 3,
       "unpublishedMatchups": [],
-      "updatedAt": "2026-06-30T05:43:27.151269Z"
+      "updatedAt": "2026-06-30T13:05:36.721261Z"
     },
     "note": "Scores24FIFAWorldCup matched 3 published editorial choice(s) against 3 official 2026-06-30 matchup(s).",
     "ok": true,
@@ -62837,14 +62837,14 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-30T05:43:27.151269Z"
+    "updatedAt": "2026-06-30T13:05:36.721261Z"
   },
   "scores24_mlb": {
     "date": "2026-06-30",
-    "generatedAt": "2026-06-30T05:43:27.151269Z",
+    "generatedAt": "2026-06-30T13:05:36.721261Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
-      "attemptedUrls": 17,
+      "attemptedUrls": 15,
       "blockRetryRounds": 0,
       "blockedUrls": 0,
       "date": "2026-06-30",
@@ -62857,7 +62857,7 @@
       "missingMatchups": [],
       "officialMatchups": 15,
       "unpublishedMatchups": [],
-      "updatedAt": "2026-06-30T05:43:27.151269Z"
+      "updatedAt": "2026-06-30T13:05:36.721261Z"
     },
     "note": "Scores24MLB matched 15 published editorial choice(s) against 15 official 2026-06-30 matchup(s).",
     "ok": true,
@@ -63122,8 +63122,8 @@
         "game": "Cincinnati Reds @ Milwaukee Brewers",
         "home_team": "Milwaukee Brewers",
         "matchup": "Cincinnati Reds @ Milwaukee Brewers",
-        "odds": -213,
-        "pick": "Total Under (10,5) (Cincinnati Reds @ Milwaukee Brewers)",
+        "odds": -175,
+        "pick": "Milwaukee Brewers ML (Cincinnati Reds @ Milwaukee Brewers)",
         "pregame_snapshot": {
           "away_team": "Cincinnati Reds",
           "date": "2026-06-30",
@@ -63132,22 +63132,22 @@
           "game": "Cincinnati Reds @ Milwaukee Brewers",
           "home_team": "Milwaukee Brewers",
           "matchup": "Cincinnati Reds @ Milwaukee Brewers",
-          "odds": -213,
-          "pick": "Total Under (10,5) (Cincinnati Reds @ Milwaukee Brewers)",
+          "odds": -175,
+          "pick": "Milwaukee Brewers ML (Cincinnati Reds @ Milwaukee Brewers)",
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-29-06-2026-milwaukee-brewers-cincinnati-reds-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-30-06-2026-milwaukee-brewers-cincinnati-reds-prediction",
           "sport": "MLB",
           "start_time": "2026-06-30T23:40Z",
-          "tip": "Total Under (10,5)",
+          "tip": "Milwaukee Brewers Win",
           "units": 1
         },
         "probability": null,
         "source": "Scores24MLB",
-        "source_url": "https://scores24.live/en/baseball/m-29-06-2026-milwaukee-brewers-cincinnati-reds-prediction",
+        "source_url": "https://scores24.live/en/baseball/m-30-06-2026-milwaukee-brewers-cincinnati-reds-prediction",
         "sport": "MLB",
         "start_time": "2026-06-30T23:40Z",
-        "tip": "Total Under (10,5)",
+        "tip": "Milwaukee Brewers Win",
         "units": 1
       },
       {
@@ -63403,11 +63403,11 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-30T05:43:27.151269Z"
+    "updatedAt": "2026-06-30T13:05:36.721261Z"
   },
   "scores24_wnba": {
     "date": "2026-06-30",
-    "generatedAt": "2026-06-30T05:43:27.151269Z",
+    "generatedAt": "2026-06-30T13:05:36.721261Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "attemptedUrls": 1,
@@ -63423,7 +63423,7 @@
       "missingMatchups": [],
       "officialMatchups": 1,
       "unpublishedMatchups": [],
-      "updatedAt": "2026-06-30T05:43:27.151269Z"
+      "updatedAt": "2026-06-30T13:05:36.721261Z"
     },
     "note": "Scores24WNBA matched 1 published editorial choice(s) against 1 official 2026-06-30 matchup(s).",
     "ok": true,
@@ -63465,9 +63465,9 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-06-30T05:43:27.151269Z"
+    "updatedAt": "2026-06-30T13:05:36.721261Z"
   },
-  "updatedAt": "2026-06-30T05:43:27.151269Z",
+  "updatedAt": "2026-06-30T13:05:36.721261Z",
   "wnba": {
     "ok": true,
     "picks": [
