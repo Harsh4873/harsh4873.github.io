@@ -1,70 +1,72 @@
 {
   "date": "2026-06-30",
-  "generatedAt": "2026-06-30T18:11:04.128304Z",
+  "generatedAt": "2026-06-30T22:12:39.385218Z",
   "models": {
     "mlb_player_props": {
-      "abstained": false,
-      "candidate_count": 1494,
-      "consensus_rejected_count": 4056,
+      "abstained": true,
+      "candidate_count": 1474,
+      "consensus_rejected_count": 3990,
       "consensus_rejection_reasons": {
-        "HRR is restricted to the 1.5 line": 208,
-        "batter_walks has not cleared 70%": 468,
+        "HRR is restricted to the 1.5 line": 244,
+        "batter_walks has not cleared 70%": 464,
         "failed: history_probability": 28,
+        "failed: history_probability, model_agreement": 4,
         "failed: history_probability, model_agreement, season_rate": 4,
+        "failed: history_probability, season_rate": 12,
         "failed: market_implied, history_probability, model_agreement, season_rate": 4,
-        "failed: market_implied, history_probability, season_rate": 12,
         "failed: market_implied, season_probability": 4,
-        "failed: market_implied, season_probability, history_probability": 60,
-        "failed: market_implied, season_probability, history_probability, model_agreement": 56,
-        "failed: market_implied, season_probability, history_probability, model_agreement, season_rate": 76,
-        "failed: market_implied, season_probability, history_probability, season_rate": 52,
+        "failed: market_implied, season_probability, history_probability": 68,
+        "failed: market_implied, season_probability, history_probability, model_agreement": 48,
+        "failed: market_implied, season_probability, history_probability, model_agreement, season_rate": 68,
+        "failed: market_implied, season_probability, history_probability, season_rate": 44,
         "failed: market_implied, season_rate": 4,
-        "failed: season_probability": 4,
-        "failed: season_probability, history_probability": 312,
-        "failed: season_probability, history_probability, model_agreement": 56,
-        "failed: season_probability, history_probability, model_agreement, season_rate": 112,
-        "failed: season_probability, history_probability, season_rate": 72,
-        "hits has not cleared 70%": 984,
+        "failed: season_probability": 12,
+        "failed: season_probability, history_probability": 272,
+        "failed: season_probability, history_probability, model_agreement": 52,
+        "failed: season_probability, history_probability, model_agreement, season_rate": 104,
+        "failed: season_probability, history_probability, season_rate": 64,
+        "failed: season_rate": 4,
+        "hits has not cleared 70%": 956,
         "pitcher_hits_allowed has not cleared 70%": 46,
         "pitcher_outs_recorded has not cleared 70%": 46,
         "pitcher_walks_allowed has not cleared 70%": 92,
-        "rbis has not cleared 70%": 490,
-        "runs has not cleared 70%": 492,
-        "stolen_bases has not cleared 70%": 116,
-        "total_bases has not cleared 70%": 258
+        "rbis has not cleared 70%": 472,
+        "runs has not cleared 70%": 478,
+        "stolen_bases has not cleared 70%": 140,
+        "total_bases has not cleared 70%": 256
       },
       "consensus_rejections": [
         {
           "id": "pp_39824a8984a19b9f53c4_season",
           "line": 3.5,
-          "odds": -139,
+          "odds": -136,
           "player_name": "Erick Fedde",
-          "reason": "failed: season_probability, history_probability, model_agreement",
+          "reason": "failed: market_implied, season_probability, history_probability, model_agreement",
           "selection": "Under",
           "stat_key": "strikeouts"
         },
         {
-          "id": "pp_819346ffd842e235460b_season",
+          "id": "pp_ee443a531a9c99955a99_season",
           "line": 5.5,
-          "odds": -153,
+          "odds": 109,
           "player_name": "Erick Fedde",
           "reason": "pitcher_hits_allowed has not cleared 70%",
-          "selection": "Under",
+          "selection": "Over",
           "stat_key": "pitcher_hits_allowed"
         },
         {
-          "id": "pp_2816ab99943d7f1d6cc5_season",
-          "line": 14.5,
-          "odds": -119,
+          "id": "pp_6c85ced8f837d9c09150_season",
+          "line": 13.5,
+          "odds": -142,
           "player_name": "Erick Fedde",
           "reason": "pitcher_outs_recorded has not cleared 70%",
-          "selection": "Under",
+          "selection": "Over",
           "stat_key": "pitcher_outs_recorded"
         },
         {
           "id": "pp_2c56a1b788e7455bc13e_season",
           "line": 1.5,
-          "odds": -151,
+          "odds": -174,
           "player_name": "Erick Fedde",
           "reason": "pitcher_walks_allowed has not cleared 70%",
           "selection": "Over",
@@ -73,16 +75,16 @@
         {
           "id": "pp_eea9e7f8b5a48146e51b_season",
           "line": 4.5,
-          "odds": -144,
+          "odds": -143,
           "player_name": "Trey Gibson",
           "reason": "failed: season_probability, history_probability, season_rate",
           "selection": "Under",
           "stat_key": "strikeouts"
         },
         {
-          "id": "pp_1c272a2cdc96f4a48ecd_season",
-          "line": 4.5,
-          "odds": 124,
+          "id": "pp_b68c3010e65a700a6c75_season",
+          "line": 5.5,
+          "odds": -166,
           "player_name": "Trey Gibson",
           "reason": "pitcher_hits_allowed has not cleared 70%",
           "selection": "Under",
@@ -91,7 +93,7 @@
         {
           "id": "pp_15afa5e4c3417a335532_season",
           "line": 14.5,
-          "odds": -112,
+          "odds": 113,
           "player_name": "Trey Gibson",
           "reason": "pitcher_outs_recorded has not cleared 70%",
           "selection": "Under",
@@ -100,47 +102,47 @@
         {
           "id": "pp_c3d64422190c9092087b_season",
           "line": 1.5,
-          "odds": -165,
+          "odds": -186,
           "player_name": "Trey Gibson",
           "reason": "pitcher_walks_allowed has not cleared 70%",
           "selection": "Over",
           "stat_key": "pitcher_walks_allowed"
         },
         {
-          "id": "pp_067a74b83a48de9695a6_season",
-          "line": 1.5,
-          "odds": 106,
-          "player_name": "Sam Antonacci",
-          "reason": "total_bases has not cleared 70%",
-          "selection": "Over",
-          "stat_key": "total_bases"
-        },
-        {
-          "id": "pp_3f1910c83b66ea0f9faa_season",
-          "line": 1.5,
-          "odds": 161,
-          "player_name": "Sam Antonacci",
+          "id": "pp_e725880badb2321279b2_season",
+          "line": 0.5,
+          "odds": -197,
+          "player_name": "Tristan Peters",
           "reason": "hits has not cleared 70%",
           "selection": "Over",
           "stat_key": "hits"
         },
         {
-          "id": "pp_2ea137ab07819c32eb4e_season",
+          "id": "pp_14b307f5e4bf2950a3b0_season",
           "line": 1.5,
-          "odds": -163,
-          "player_name": "Sam Antonacci",
+          "odds": -104,
+          "player_name": "Tristan Peters",
           "reason": "failed: season_probability, history_probability",
           "selection": "Over",
           "stat_key": "hits_runs_rbis"
         },
         {
-          "id": "pp_1a50993cb3544acded78_season",
+          "id": "pp_4500fee4122b8f7ee867_season",
           "line": 0.5,
-          "odds": 214,
-          "player_name": "Sam Antonacci",
+          "odds": 208,
+          "player_name": "Tristan Peters",
           "reason": "rbis has not cleared 70%",
           "selection": "Over",
           "stat_key": "rbis"
+        },
+        {
+          "id": "pp_56e704d54ccebcf392ff_season",
+          "line": 0.5,
+          "odds": 138,
+          "player_name": "Tristan Peters",
+          "reason": "runs has not cleared 70%",
+          "selection": "Over",
+          "stat_key": "runs"
         }
       ],
       "consensus_required": true,
@@ -156,8 +158,7 @@
         "hot_l10",
         "matchup_h2h"
       ],
-      "model_version": "player_props_consensus_v2.0.0",
-      "note": "",
+      "note": "No MLB prop cleared the consensus publication gate.",
       "ok": true,
       "picks": [
         {
@@ -169,13 +170,28 @@
           "closing_line_movement": null,
           "closing_line_source": "not_tracked",
           "confidence": "Medium",
+          "consensus_applicable_models": [
+            "mlb_history: 2022-26 five-year roster-aware outcome-history classifiers",
+            "mlb_season: 2026 market classifier"
+          ],
           "consensus_conservative_validation_accuracy": 0.7037037037037037,
           "consensus_evaluated": true,
           "consensus_history_probability": 0.6666927337646484,
           "consensus_history_projection": null,
           "consensus_holdout_accuracy": 0.75,
           "consensus_model_agreement": true,
+          "consensus_model_count": 4,
+          "consensus_models": [
+            "mlb_history: 2022-26 five-year roster-aware outcome-history classifiers",
+            "mlb_season: 2026 market classifier",
+            "wnba_history: 2024-26 workload-aware market/count models",
+            "wnba_season: 2026 market/count models"
+          ],
           "consensus_qualified": true,
+          "consensus_record_models": [
+            "mlb_history: 2022-26 five-year roster-aware outcome-history classifiers",
+            "mlb_season: 2026 market classifier"
+          ],
           "consensus_rejection_reason": null,
           "consensus_required": true,
           "consensus_score": 0.6356440568906153,
@@ -191,6 +207,7 @@
           "home_team": "Cleveland Guardians",
           "id": "pp_4c4563c24e96ca35f3d8_consensus",
           "key_factors": [
+            "Four-model consensus suite active: mlb_history, mlb_season, wnba_history, wnba_season",
             "Active four-model consensus gate qualified publication",
             "All Time model signal",
             "History model over probability 33.3%",
@@ -228,11 +245,11 @@
           "ml_probability": 0.6465,
           "ml_probability_mode": "four_model_consensus_gate",
           "ml_rank": 1,
-          "ml_rank_epoch": "MLB:player_props_consensus_v2.0.0:published:4f72261f6063b6c8",
+          "ml_rank_epoch": "MLB:player_props_consensus_v2.0.0:published:12bb3dd5b2db37f3",
           "ml_raw_probability": 0.6465,
           "ml_stake_cap": 0.5,
           "ml_training_fingerprint": "4f72261f6063b6c8b27718a3405c22349dca744b92db210f498cded47a59a779",
-          "model_epoch": "MLB:player_props_consensus_v2.0.0:published:4f72261f6063b6c8",
+          "model_epoch": "MLB:player_props_consensus_v2.0.0:published:12bb3dd5b2db37f3",
           "model_key": "mlb_player_props",
           "model_rank": 1,
           "model_variant": "all_time",
@@ -253,6 +270,7 @@
           "precision_qualified": true,
           "precision_reason": "qualified",
           "precision_required": true,
+          "preserved_from_prior_refresh": true,
           "pricing_type": "market",
           "probability": 0.6465,
           "probability_source": "player_props_ml_v1",
@@ -261,7 +279,7 @@
           "published_model": "MLBPlayerProps",
           "quarter_kelly": 0.0211,
           "rank": 1,
-          "ranking_epoch": "MLB:player_props_consensus_v2.0.0:published:4f72261f6063b6c8",
+          "ranking_epoch": "MLB:player_props_consensus_v2.0.0:published:12bb3dd5b2db37f3",
           "ranking_model": "MLBPlayerProps",
           "ranking_updated_at": "2026-06-30T18:11:04.128304Z",
           "reason": "The active four-model consensus gate qualifies this market at 64.7%; the All Time variant is retained as a supporting signal.",
@@ -287,11 +305,9 @@
           "variant_signal_selection": "Under"
         }
       ],
-      "ranking_epoch": "MLB:player_props_consensus_v2.0.0:published:4f72261f6063b6c8",
-      "ranking_updated_at": "2026-06-30T18:11:04.128304Z",
-      "scored_count": 4060,
-      "sport": "MLB",
-      "training_fingerprint": "4f72261f6063b6c8b27718a3405c22349dca744b92db210f498cded47a59a779"
+      "ranking_epoch": "MLB:player_props_consensus_v2.0.0:published:12bb3dd5b2db37f3",
+      "scored_count": 3994,
+      "sport": "MLB"
     },
     "wnba_player_props": {
       "abstained": true,
@@ -299,12 +315,12 @@
       "consensus_rejected_count": 168,
       "consensus_rejection_reasons": {
         "assists has not cleared 70%": 42,
-        "failed: market_implied, season_probability, history_probability": 4,
+        "failed: market_implied, season_probability, history_probability": 8,
         "failed: market_implied, season_probability, history_probability, model_agreement, season_rate": 4,
-        "failed: market_implied, season_probability, history_probability, season_rate": 19,
-        "failed: season_probability, history_probability, model_agreement, season_rate": 3,
-        "failed: season_probability, history_probability, season_rate": 3,
-        "failed: season_rate": 7,
+        "failed: market_implied, season_probability, history_probability, season_rate": 15,
+        "failed: season_probability, history_probability, model_agreement, season_rate": 6,
+        "failed: season_probability, season_rate": 3,
+        "failed: season_rate": 4,
         "points_assists has not cleared 70%": 24,
         "points_rebounds has not cleared 70%": 24,
         "totalRebounds has not cleared 70%": 38
@@ -313,7 +329,7 @@
         {
           "id": "pp_ae4547234837c5504089_season",
           "line": 19.5,
-          "odds": -109,
+          "odds": -106,
           "player_name": "Jackie Young",
           "reason": "failed: market_implied, season_probability, history_probability, model_agreement, season_rate",
           "selection": "Over",
@@ -331,7 +347,7 @@
         {
           "id": "pp_8b4e7bb1fbf546e96a40_season",
           "line": 6.5,
-          "odds": -107,
+          "odds": 108,
           "player_name": "Jackie Young",
           "reason": "assists has not cleared 70%",
           "selection": "Over",
@@ -340,7 +356,7 @@
         {
           "id": "pp_95cd20ff4da23fb5ff73_season",
           "line": 24.5,
-          "odds": -118,
+          "odds": -116,
           "player_name": "Jackie Young",
           "reason": "points_rebounds has not cleared 70%",
           "selection": "Over",
@@ -349,25 +365,25 @@
         {
           "id": "pp_6c7df0cebc8a3bf53670_season",
           "line": 25.5,
-          "odds": -125,
+          "odds": -117,
           "player_name": "Jackie Young",
           "reason": "points_assists has not cleared 70%",
           "selection": "Over",
           "stat_key": "points_assists"
         },
         {
-          "id": "pp_90a59a211d80272332c7_season",
-          "line": 14.5,
-          "odds": 124,
+          "id": "pp_ab89dbf730b9bdf8f4d8_season",
+          "line": 13.5,
+          "odds": -106,
           "player_name": "Chennedy Carter",
-          "reason": "failed: market_implied, season_probability, history_probability, season_rate",
+          "reason": "failed: market_implied, season_probability, history_probability",
           "selection": "Over",
           "stat_key": "points"
         },
         {
           "id": "pp_c195d776b1b779078866_season",
           "line": 2.5,
-          "odds": 134,
+          "odds": 120,
           "player_name": "Chennedy Carter",
           "reason": "totalRebounds has not cleared 70%",
           "selection": "Over",
@@ -376,15 +392,15 @@
         {
           "id": "pp_0043025776de4a3a3c06_season",
           "line": 1.5,
-          "odds": -134,
+          "odds": -139,
           "player_name": "Chennedy Carter",
           "reason": "assists has not cleared 70%",
           "selection": "Over",
           "stat_key": "assists"
         },
         {
-          "id": "pp_687d03b25fe6ccda98b2_season",
-          "line": 15.5,
+          "id": "pp_a574a125694ce0f99840_season",
+          "line": 16.5,
           "odds": -108,
           "player_name": "Chennedy Carter",
           "reason": "points_rebounds has not cleared 70%",
@@ -392,9 +408,9 @@
           "stat_key": "points_rebounds"
         },
         {
-          "id": "pp_c24323555c86c349e0b5_season",
-          "line": 14.5,
-          "odds": -124,
+          "id": "pp_a5b7206c9be42f85c1b1_season",
+          "line": 15.5,
+          "odds": -121,
           "player_name": "Chennedy Carter",
           "reason": "points_assists has not cleared 70%",
           "selection": "Over",
@@ -403,7 +419,7 @@
         {
           "id": "pp_3fba27be0c0a98ae9a92_season",
           "line": 14.5,
-          "odds": 102,
+          "odds": 105,
           "player_name": "Chelsea Gray",
           "reason": "failed: market_implied, season_probability, history_probability, season_rate",
           "selection": "Over",
@@ -412,7 +428,7 @@
         {
           "id": "pp_8ed993448637805e4e79_season",
           "line": 4.5,
-          "odds": 121,
+          "odds": 119,
           "player_name": "Chelsea Gray",
           "reason": "totalRebounds has not cleared 70%",
           "selection": "Over",
@@ -435,10 +451,10 @@
       "note": "No WNBA prop cleared the consensus publication gate.",
       "ok": true,
       "picks": [],
-      "ranking_epoch": "WNBA:player_props_consensus_v2.0.0:published:4f72261f6063b6c8",
+      "ranking_epoch": "WNBA:player_props_consensus_v2.0.0:published:12bb3dd5b2db37f3",
       "scored_count": 168,
       "sport": "WNBA"
     }
   },
-  "updatedAt": "2026-06-30T18:11:04.128304Z"
+  "updatedAt": "2026-06-30T22:12:39.385218Z"
 }
