@@ -18,7 +18,7 @@ MODEL_CACHE_DIR = REPO_ROOT / "data" / "model_cache"
 PLAYER_PROPS_CACHE_DIR = REPO_ROOT / "data" / "player_props_cache"
 PLAYER_PROPS_SNAPSHOT_DIR = REPO_ROOT / "data" / "player_props_snapshots"
 PARLAY_CARDS_DIR = REPO_ROOT / "data" / "parlay_cards"
-PARLAY_ENGINE_VERSION = "parlay_cards_v2_quality_guard"
+PARLAY_ENGINE_VERSION = "parlay_cards_v3_calibrated_portfolio"
 REQUIRED_MODEL_KEYS = {
     "mlb_new",
     "mlb_inning",
@@ -352,9 +352,9 @@ def main() -> int:
             mode = str(card.get("pickMode") or "").strip().lower()
             if mode in mode_cards:
                 mode_cards[mode].append(card)
-        oversized_modes = {mode: len(cards) for mode, cards in mode_cards.items() if len(cards) > 15}
+        oversized_modes = {mode: len(cards) for mode, cards in mode_cards.items() if len(cards) > 6}
         if oversized_modes:
-            failures.append(f"latest parlay board has mode count(s) above 15: {oversized_modes}")
+            failures.append(f"latest parlay board has mode count(s) above 6: {oversized_modes}")
         if any(int(card.get("legCount") or 0) < 2 for card in parlay_cards):
             failures.append("latest parlay board includes a 1-leg card")
         category_counts: dict[tuple[str, str], int] = {}
@@ -362,9 +362,9 @@ def main() -> int:
             for card in cards:
                 category = str(card.get("category") or "").strip()
                 category_counts[(mode, category)] = category_counts.get((mode, category), 0) + 1
-        oversized = {f"{mode}:{category}": count for (mode, category), count in category_counts.items() if count > 3}
+        oversized = {f"{mode}:{category}": count for (mode, category), count in category_counts.items() if count > 2}
         if oversized:
-            failures.append(f"latest parlay board has mode/category count(s) above 3: {oversized}")
+            failures.append(f"latest parlay board has mode/category count(s) above 2: {oversized}")
         team_visible_leg_count = sum(
             1
             for bucket in models.values()

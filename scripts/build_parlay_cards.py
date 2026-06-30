@@ -19,67 +19,18 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 MODEL_CACHE_DIR = REPO_ROOT / "data" / "model_cache"
 PLAYER_PROPS_CACHE_DIR = REPO_ROOT / "data" / "player_props_cache"
 PARLAY_CARDS_DIR = REPO_ROOT / "data" / "parlay_cards"
+OUTCOME_LEDGER_PATH = REPO_ROOT / "data" / "calibration" / "outcome_ledger.json"
 
 TEAM_VISIBLE_DECISIONS = {"BET", "LEAN"}
+MIN_LEG_EDGE = 0.015
 MIN_GEOMEAN_PROBABILITY = 0.525
-MAX_CARDS = 15
-MAX_CARDS_PER_CATEGORY = 3
-DEFAULT_EXPOSURE_CAP = 3
-ENGINE_VERSION = "parlay_cards_v2_quality_guard"
-COLD_CATEGORY_MIN_SETTLED = 20
-COLD_CATEGORY_HIT_RATE = 0.24
-COLD_CATEGORY_ROI = -0.18
-
-COLD_CATEGORY_RULES: dict[str, dict[str, float]] = {
-    "surefire": {
-        "min_geomean": 0.66,
-        "min_leg_probability": 0.58,
-        "max_odds": 520,
-        "max_leg_odds": 180,
-        "min_ev": 0.02,
-        "min_source_form": 54.0,
-        "min_payout_quality": 0.72,
-        "max_cards": 2,
-    },
-    "best_odds": {
-        "min_geomean": 0.62,
-        "min_leg_probability": 0.56,
-        "max_odds": 850,
-        "max_leg_odds": 220,
-        "min_ev": 0.18,
-        "min_payout_quality": 0.72,
-        "max_cards": 1,
-    },
-    "hot_models": {
-        "min_geomean": 0.66,
-        "min_leg_probability": 0.58,
-        "max_odds": 650,
-        "max_leg_odds": 180,
-        "min_ev": 0.03,
-        "min_source_form": 57.5,
-        "min_payout_quality": 0.72,
-        "max_cards": 1,
-    },
-    "cross_sport": {
-        "min_geomean": 0.62,
-        "min_leg_probability": 0.56,
-        "max_odds": 650,
-        "max_leg_odds": 220,
-        "min_ev": 0.08,
-        "min_payout_quality": 0.72,
-        "max_cards": 2,
-    },
-    "same_sport": {
-        "min_geomean": 0.66,
-        "min_leg_probability": 0.60,
-        "max_odds": 500,
-        "max_leg_odds": 180,
-        "min_ev": 0.04,
-        "min_source_form": 56.0,
-        "min_payout_quality": 0.72,
-        "max_cards": 1,
-    },
-}
+MAX_SINGLE_LEG_PLUS_ODDS = 220
+MAX_CARDS_PER_MODE = 6
+MAX_CARDS_PER_CATEGORY = 2
+DEFAULT_EXPOSURE_CAP = 2
+ENGINE_VERSION = "parlay_cards_v3_calibrated_portfolio"
+COLD_CATEGORY_MIN_SETTLED = 10
+COLD_CATEGORY_ROI = -0.15
 
 SOURCE_LABELS: dict[str, str] = {
     "mlb_new": "MLB Model",
@@ -111,45 +62,33 @@ PLAYER_PROP_SOURCE_LABELS: dict[str, str] = {
 }
 
 CATEGORY_DEFS: dict[str, dict[str, str]] = {
-    "consensus": {
-        "label": "Consensus Parlays",
+    "consensus_edge": {
+        "label": "Consensus Edge",
         "shortLabel": "Consensus",
-        "description": "Matching sources, consensus fields, or strong model agreement.",
+        "description": "Agreement-backed slips with positive calibrated edge on every leg.",
     },
-    "surefire": {
-        "label": "Surefire Parlays",
-        "shortLabel": "Surefire",
-        "description": "Highest estimated hit probability with playable combined odds.",
+    "three_leg_value": {
+        "label": "3-Leg Value",
+        "shortLabel": "3-Leg Value",
+        "description": "Positive-EV 3-leg slips inside the disciplined target odds window.",
     },
-    "best_odds": {
-        "label": "Best Odds Parlays",
-        "shortLabel": "Best Odds",
-        "description": "Best payout and EV balance without longshot junk.",
+    "validated_form": {
+        "label": "Validated Form",
+        "shortLabel": "Validated",
+        "description": "Team-only 3-leg slips backed by shrinkage-adjusted source form.",
     },
-    "hot_models": {
-        "label": "Hot Model Parlays",
-        "shortLabel": "Hot Models",
-        "description": "Weighted toward sources and models with recent or all-time form.",
-    },
-    "cross_sport": {
-        "label": "Cross-Sport Parlays",
-        "shortLabel": "Cross-Sport",
-        "description": "Clean mixes across MLB, FIFA, WNBA, and player-prop sources.",
-    },
-    "same_sport": {
-        "label": "Same-Sport Parlays",
-        "shortLabel": "Same-Sport",
-        "description": "Best same-sport cards when they grade above mixed alternatives.",
+    "compact_edge": {
+        "label": "Compact Edge",
+        "shortLabel": "Compact",
+        "description": "Selective 2-leg slips used only when they beat the available 3-leg utility or the slate is thin.",
     },
 }
 
 CATEGORY_ORDER = [
-    "consensus",
-    "surefire",
-    "best_odds",
-    "hot_models",
-    "cross_sport",
-    "same_sport",
+    "consensus_edge",
+    "three_leg_value",
+    "validated_form",
+    "compact_edge",
 ]
 
 
@@ -191,6 +130,20 @@ class SourceForm:
 
 
 @dataclass(frozen=True)
+class HistoricalCalibration:
+    wins: int = 0
+    losses: int = 0
+
+    @property
+    def settled(self) -> int:
+        return self.wins + self.losses
+
+    @property
+    def posterior(self) -> float:
+        return (self.wins + 1.0) / (self.settled + 2.0)
+
+
+@dataclass(frozen=True)
 class Leg:
     leg_id: str
     pick_id: str
@@ -204,6 +157,11 @@ class Leg:
     odds: int
     decimal_odds: float
     probability: float
+    raw_probability: float
+    market_probability: float
+    calibrated_edge: float
+    historical_probability: float
+    calibration_samples: int
     probability_source: str
     game_key: str
     game: str
@@ -345,11 +303,11 @@ def _iter_model_records(payload: dict[str, Any], *, player_props: bool) -> Itera
 
 def _extract_probability(pick: dict[str, Any]) -> tuple[float | None, str]:
     for key in (
+        "calibrated_probability",
+        "calibrated_model_probability",
         "probability",
         "model_probability",
         "predicted_probability",
-        "calibrated_probability",
-        "calibrated_model_probability",
         "ml_probability",
         "variant_signal_probability",
     ):
@@ -357,6 +315,157 @@ def _extract_probability(pick: dict[str, Any]) -> tuple[float | None, str]:
         if probability is not None:
             return probability, str(key)
     return None, "market_implied"
+
+
+def _selected_side_market_probability(pick: dict[str, Any], odds: int) -> float:
+    for key in (
+        "selected_side_implied_probability",
+        "market_implied_probability",
+        "market_pick_prob",
+        "market_pick_probability",
+        "market_probability",
+        "market_no_vig_selected_probability",
+        "market_no_vig_probability",
+    ):
+        probability = normalize_probability(pick.get(key))
+        if probability is not None:
+            return probability
+    snapshot = pick.get("pregame_snapshot")
+    if isinstance(snapshot, dict):
+        for key in (
+            "selected_side_implied_probability",
+            "market_implied_probability",
+            "market_pick_prob",
+            "market_probability",
+        ):
+            probability = normalize_probability(snapshot.get(key))
+            if probability is not None:
+                return probability
+    return implied_probability(odds)
+
+
+def _mode_for_record(cache_type: str) -> str:
+    return "player" if "player_props" in cache_type else "team"
+
+
+def _market_family(pick: dict[str, Any]) -> str:
+    return _norm_key(
+        pick.get("ml_market_family")
+        or pick.get("bet_type")
+        or pick.get("stat_key")
+        or pick.get("market")
+        or pick.get("market_type")
+        or pick.get("stat_label")
+        or "market"
+    )
+
+
+def _calibration_key(mode: str, model_key: str, sport: str, market_family: str) -> tuple[str, str, str, str]:
+    return (_norm_key(mode), _norm_key(model_key), _norm_key(sport), _norm_key(market_family))
+
+
+def _add_calibration_bucket(
+    totals: dict[tuple[str, str, str, str], dict[str, int]],
+    key: tuple[str, str, str, str],
+    outcome: str,
+) -> None:
+    if outcome == "win":
+        totals[key]["wins"] += 1
+    elif outcome == "loss":
+        totals[key]["losses"] += 1
+
+
+def build_historical_calibration(target_date: str, ledger_path: Path = OUTCOME_LEDGER_PATH) -> dict[tuple[str, str, str, str], HistoricalCalibration]:
+    payload = _read_json(ledger_path)
+    records = payload.get("records") if payload else []
+    totals: dict[tuple[str, str, str, str], dict[str, int]] = defaultdict(lambda: {"wins": 0, "losses": 0})
+    if not isinstance(records, list):
+        return {}
+
+    for record in records:
+        if not isinstance(record, dict):
+            continue
+        if _clean_text(record.get("date")) >= target_date:
+            continue
+        result = _clean_text(record.get("result")).lower()
+        if result not in {"win", "loss"}:
+            outcome = record.get("outcome")
+            if outcome == 1:
+                result = "win"
+            elif outcome == 0:
+                result = "loss"
+            else:
+                continue
+        mode = _mode_for_record(_clean_text(record.get("cache_type")))
+        model_key = _clean_text(record.get("model_key") or record.get("source"))
+        sport = _clean_text(record.get("sport") or "OTHER")
+        market = _clean_text(record.get("bet_type") or "market")
+        exact = _calibration_key(mode, model_key, sport, market)
+        for key in (
+            exact,
+            _calibration_key(mode, model_key, sport, "any"),
+            _calibration_key(mode, "any", sport, market),
+            _calibration_key(mode, "any", sport, "any"),
+            _calibration_key(mode, "any", "any", market),
+            _calibration_key(mode, "any", "any", "any"),
+        ):
+            _add_calibration_bucket(totals, key, result)
+
+    return {
+        key: HistoricalCalibration(wins=values["wins"], losses=values["losses"])
+        for key, values in totals.items()
+    }
+
+
+def calibration_for_leg(
+    calibrations: dict[tuple[str, str, str, str], HistoricalCalibration],
+    *,
+    mode: str,
+    model_key: str,
+    sport: str,
+    market_family: str,
+) -> HistoricalCalibration:
+    for key in (
+        _calibration_key(mode, model_key, sport, market_family),
+        _calibration_key(mode, model_key, sport, "any"),
+        _calibration_key(mode, "any", sport, market_family),
+        _calibration_key(mode, "any", sport, "any"),
+        _calibration_key(mode, "any", "any", market_family),
+        _calibration_key(mode, "any", "any", "any"),
+    ):
+        if key in calibrations:
+            return calibrations[key]
+    return HistoricalCalibration()
+
+
+def blended_leg_probability(
+    *,
+    mode: str,
+    raw_probability: float,
+    market_probability: float,
+    odds: int,
+    consensus: bool,
+    calibration: HistoricalCalibration,
+) -> tuple[float, float, float, float, float]:
+    model_weight = 0.35 if mode == "team" else 0.25
+    if consensus:
+        model_weight += 0.10
+    if calibration.settled < 30:
+        model_weight -= 0.10
+    model_weight = max(0.05, min(0.55, model_weight))
+    historical_weight = min(0.35, calibration.settled / (calibration.settled + 60.0) * 0.35) if calibration.settled else 0.0
+    market_weight = max(0.0, 1.0 - model_weight - historical_weight)
+    probability = (
+        market_probability * market_weight
+        + raw_probability * model_weight
+        + calibration.posterior * historical_weight
+    )
+    cap = 0.74 if mode == "team" else 0.68
+    if odds > 0:
+        cap = min(cap, 0.62)
+    probability = max(0.05, min(cap, probability))
+    edge = probability - market_probability
+    return probability, edge, model_weight, historical_weight, market_weight
 
 
 def _result(pick: dict[str, Any]) -> str:
@@ -525,8 +634,10 @@ def collect_legs(
     team_payload: dict[str, Any] | None,
     prop_payload: dict[str, Any] | None,
     source_forms: dict[str, SourceForm] | None = None,
+    historical_calibrations: dict[tuple[str, str, str, str], HistoricalCalibration] | None = None,
 ) -> list[Leg]:
     source_forms = source_forms or {}
+    historical_calibrations = historical_calibrations or build_historical_calibration(date_iso)
     records: list[tuple[str, str, str, dict[str, Any], bool]] = []
     if team_payload:
         records.extend((*record, False) for record in _iter_model_records(team_payload, player_props=False))
@@ -534,6 +645,7 @@ def collect_legs(
         records.extend((*record, True) for record in _iter_model_records(prop_payload, player_props=True))
 
     raw_legs: list[tuple[Leg, str]] = []
+    calibrations_by_leg_id: dict[str, HistoricalCalibration] = {}
     seen_ids: set[str] = set()
     for source_key, fallback_source, fallback_date, pick, player_props in records:
         decision = _clean_text(pick.get("decision")).upper()
@@ -550,6 +662,8 @@ def collect_legs(
         odds = _int_number(pick.get("odds") or pick.get("assumed_odds") or pick.get("american_odds") or pick.get("price"))
         if odds is None or odds == 0 or odds <= -1000 or odds >= 1000:
             continue
+        if odds > MAX_SINGLE_LEG_PLUS_ODDS:
+            continue
         source = _source_label(source_key, pick.get("source") or fallback_source, player_prop=player_props)
         leg_id = _leg_id(pick, source_key, source, fallback_date)
         if leg_id in seen_ids:
@@ -557,15 +671,11 @@ def collect_legs(
         seen_ids.add(leg_id)
         sport = _clean_text(pick.get("sport") or pick.get("league") or "OTHER").upper()
         decimal_odds = american_to_decimal(odds)
-        base_probability, probability_source = _extract_probability(pick)
-        if base_probability is None:
-            base_probability = implied_probability(odds)
+        raw_probability, probability_source = _extract_probability(pick)
+        market_probability = _selected_side_market_probability(pick, odds)
+        if raw_probability is None:
+            raw_probability = market_probability
         form = source_forms.get(source, SourceForm(source=source))
-        decision_bonus = 0.012 if decision == "BET" else 0.004
-        adjusted_probability = base_probability + form.probability_adjustment + decision_bonus
-        if probability_source != "market_implied":
-            adjusted_probability += 0.006
-        probability = max(0.35, min(0.92, adjusted_probability))
         game = _game_label(pick)
         game_key = _game_key(pick, sport, pick_date, leg_id)
         player = _clean_text(pick.get("player") or pick.get("player_name"))
@@ -575,6 +685,27 @@ def collect_legs(
         source_type = _source_type(source_key, pick, player_props=player_props)
         consensus_key = market_key
         model_rank = _int_number(pick.get("ml_rank") or pick.get("model_rank") or pick.get("rank"))
+        source_model_key = _clean_text(pick.get("model_key") or source_key or source)
+        mode = "player" if source_type == "player_prop" else "team"
+        early_consensus = _consensus_field_hit(pick)
+        calibration = calibration_for_leg(
+            historical_calibrations,
+            mode=mode,
+            model_key=source_model_key,
+            sport=sport,
+            market_family=_market_family(pick),
+        )
+        probability, calibrated_edge, _, _, _ = blended_leg_probability(
+            mode=mode,
+            raw_probability=raw_probability,
+            market_probability=market_probability,
+            odds=odds,
+            consensus=early_consensus,
+            calibration=calibration,
+        )
+        if calibrated_edge < MIN_LEG_EDGE:
+            continue
+        calibrations_by_leg_id[leg_id] = calibration
         raw_legs.append(
             (
                 Leg(
@@ -590,6 +721,11 @@ def collect_legs(
                     odds=odds,
                     decimal_odds=decimal_odds,
                     probability=probability,
+                    raw_probability=raw_probability,
+                    market_probability=market_probability,
+                    calibrated_edge=calibrated_edge,
+                    historical_probability=calibration.posterior,
+                    calibration_samples=calibration.settled,
                     probability_source=probability_source,
                     game_key=game_key,
                     game=game,
@@ -602,7 +738,7 @@ def collect_legs(
                     source_form_score=form.score,
                     model_rank=model_rank,
                     consensus_sources=(),
-                    consensus=_consensus_field_hit(pick),
+                    consensus=early_consensus,
                     raw=pick,
                 ),
                 consensus_key,
@@ -617,10 +753,26 @@ def collect_legs(
     for leg, consensus_key in raw_legs:
         consensus_sources = tuple(sorted(sources_by_market[consensus_key]))
         consensus = leg.consensus or len(consensus_sources) >= 2
+        probability = leg.probability
+        calibrated_edge = leg.calibrated_edge
+        if consensus != leg.consensus:
+            calibration = calibrations_by_leg_id.get(leg.leg_id, HistoricalCalibration())
+            probability, calibrated_edge, _, _, _ = blended_leg_probability(
+                mode="player" if leg.source_type == "player_prop" else "team",
+                raw_probability=leg.raw_probability,
+                market_probability=leg.market_probability,
+                odds=leg.odds,
+                consensus=consensus,
+                calibration=calibration,
+            )
+            if calibrated_edge < MIN_LEG_EDGE:
+                continue
         legs.append(
             Leg(
                 **{
                     **leg.__dict__,
+                    "probability": probability,
+                    "calibrated_edge": calibrated_edge,
                     "consensus_sources": consensus_sources if len(consensus_sources) >= 2 else (),
                     "consensus": consensus,
                 }
@@ -727,6 +879,11 @@ def _leg_payload(leg: Leg) -> dict[str, Any]:
         "oddsAmerican": leg.odds,
         "decimalOdds": round(leg.decimal_odds, 4),
         "estimatedProbability": round(leg.probability, 4),
+        "rawProbability": round(leg.raw_probability, 4),
+        "marketProbability": round(leg.market_probability, 4),
+        "calibratedEdge": round(leg.calibrated_edge, 4),
+        "historicalProbability": round(leg.historical_probability, 4),
+        "calibrationSamples": leg.calibration_samples,
         "probabilitySource": leg.probability_source,
         "game": leg.game,
         "gameKey": leg.game_key,
@@ -746,17 +903,21 @@ def _base_card(legs: tuple[Leg, ...]) -> dict[str, Any]:
     geomean_probability = estimated_probability ** (1.0 / len(legs))
     odds_american = decimal_to_american(decimal_odds)
     parlay_ev = estimated_probability * decimal_odds - 1.0
+    payout_profit = decimal_odds - 1.0
+    utility = (
+        estimated_probability * math.log1p(0.01 * payout_profit)
+        + (1.0 - estimated_probability) * math.log(0.99)
+    )
     payout_quality = payout_quality_score((leg.odds for leg in legs), odds_american)
     average_form = sum(leg.source_form_score for leg in legs) / len(legs)
     consensus_count = sum(1 for leg in legs if leg.consensus)
     rank_bonus = sum(max(0.0, 10.0 - float(leg.model_rank or 10)) for leg in legs) / len(legs)
     score = (
-        geomean_probability * 86.0
-        + max(-0.8, min(1.8, parlay_ev)) * 22.0
-        + math.log(decimal_odds) * 5.0
-        + payout_quality * 13.0
+        utility * 10000.0
+        + max(-0.8, min(1.8, parlay_ev)) * 18.0
         + (average_form - 50.0) * 0.32
         + consensus_count * 3.2
+        + (1.5 if len(legs) == 3 else 0.0)
         + rank_bonus * 0.45
     )
     leg_payloads = [_leg_payload(leg) for leg in legs]
@@ -779,6 +940,7 @@ def _base_card(legs: tuple[Leg, ...]) -> dict[str, Any]:
         "geomeanProbability": round(geomean_probability, 4),
         "fairOdds": fair_odds_from_probability(estimated_probability),
         "parlayEv": round(parlay_ev, 4),
+        "utility": round(utility, 6),
         "payoutQuality": payout_quality,
         "averageSourceForm": round(average_form, 2),
         "consensusLegs": consensus_count,
@@ -790,73 +952,84 @@ def _base_card(legs: tuple[Leg, ...]) -> dict[str, Any]:
     }
 
 
-def _target_range(category: str, leg_count: int) -> tuple[int, int]:
-    if category == "surefire":
-        return (100, 650) if leg_count == 2 else (180, 650)
-    if category == "best_odds":
-        return (180, 900) if leg_count == 2 else (400, 1200)
-    if category in {"hot_models", "cross_sport", "same_sport"}:
-        return (150, 800) if leg_count == 2 else (250, 900)
-    return (100, 1200) if leg_count == 2 else (180, 1200)
+def _target_range(category: str, leg_count: int, pick_mode: str) -> tuple[int, int]:
+    if leg_count == 2:
+        return (100, 390) if pick_mode == "player" else (100, 430)
+    if category == "consensus_edge":
+        return (240, 1000)
+    return (240, 850)
 
 
 def _within_range(card: dict[str, Any], category: str) -> bool:
-    low, high = _target_range(category, int(card["legCount"]))
+    low, high = _target_range(category, int(card["legCount"]), _card_pick_mode(card))
     return low <= int(card["oddsAmerican"]) <= high
+
+
+def _card_leg_edges(card: dict[str, Any]) -> list[float]:
+    values: list[float] = []
+    for leg in card.get("legs") or []:
+        if isinstance(leg, dict):
+            edge = _number(leg.get("calibratedEdge"))
+            if edge is not None:
+                values.append(edge)
+    return values
 
 
 def qualifies_category(
     card: dict[str, Any],
     category: str,
-    history: dict[str, dict[str, float]] | None = None,
 ) -> bool:
-    odds_values = [int(leg["oddsAmerican"]) for leg in card["legs"]]
-    sports = set(card["sports"])
+    pick_mode = _card_pick_mode(card)
+    leg_count = int(card["legCount"])
     if float(card["geomeanProbability"]) < MIN_GEOMEAN_PROBABILITY:
         return False
-    if not _passes_cold_category_guard(card, category, history):
+    if any(int(leg.get("oddsAmerican") or 0) > MAX_SINGLE_LEG_PLUS_ODDS for leg in card.get("legs") or []):
         return False
-    if category == "consensus":
-        return int(card["consensusLegs"]) >= 1 and _within_range(card, category)
-    if category == "surefire":
-        return _within_range(card, category) and min(odds_values) > -350 and float(card["payoutQuality"]) >= 0.48
-    if category == "best_odds":
-        return _within_range(card, category) and max(odds_values) <= 300 and float(card["parlayEv"]) > -0.25
-    if category == "hot_models":
-        return _within_range(card, category) and float(card["averageSourceForm"]) >= 48.0
-    if category == "cross_sport":
-        return _within_range(card, category) and len(sports) >= 2
-    if category == "same_sport":
-        return _within_range(card, category) and len(sports) == 1
+    edges = _card_leg_edges(card)
+    if edges and min(edges) < MIN_LEG_EDGE:
+        return False
+    if not _within_range(card, category):
+        return False
+    if category == "consensus_edge":
+        min_consensus_legs = 2 if pick_mode == "player" else 1
+        min_card_ev = 0.30 if pick_mode == "player" else -0.05
+        return leg_count == 3 and int(card["consensusLegs"]) >= min_consensus_legs and float(card["parlayEv"]) >= min_card_ev
+    if category == "three_leg_value":
+        if leg_count != 3 or float(card["parlayEv"]) < 0.45:
+            return False
+        return pick_mode == "team" or int(card["consensusLegs"]) >= 2
+    if category == "validated_form":
+        return (
+            pick_mode == "team"
+            and leg_count == 3
+            and float(card["parlayEv"]) >= 0.30
+            and float(card["averageSourceForm"]) >= 63.5
+        )
+    if category == "compact_edge":
+        return leg_count == 2 and float(card["parlayEv"]) >= 0.20 and (pick_mode == "team" or int(card["consensusLegs"]) >= 1)
     return False
 
 
 def _why_qualified(card: dict[str, Any], category: str, fallback: bool) -> str:
-    prefix = "Fallback 2-leg card. " if fallback else ""
-    if category == "consensus":
-        return prefix + "At least one leg is backed by matching sources, consensus fields, or model agreement."
-    if category == "surefire":
-        return prefix + "Built from the highest blended hit probabilities while avoiding ugly favorite stacks."
-    if category == "best_odds":
-        return prefix + "Balances projected payout, fair odds, EV, and single-leg price discipline."
-    if category == "hot_models":
-        return prefix + "Ranks higher because its sources or models have stronger recent and all-time form."
-    if category == "cross_sport":
-        return prefix + "Combines clean legs across sports and sources without same-game overlap."
-    if category == "same_sport":
-        return prefix + "Keeps one sport together because this clean combo outranks weaker mixed alternatives."
-    return prefix + "Qualified by the parlay engine."
+    prefix = "Selective 2-leg card. " if fallback else ""
+    if category == "consensus_edge":
+        return prefix + "Agreement-backed legs clear the calibrated edge gate and rank well on whole-slip utility."
+    if category == "three_leg_value":
+        return prefix + "A positive-EV 3-leg slip inside the disciplined target odds window."
+    if category == "validated_form":
+        return prefix + "Team sources have shrinkage-adjusted form support behind a positive-EV 3-leg slip."
+    if category == "compact_edge":
+        return prefix + "A 2-leg slip admitted only because the slate is thin or its utility beats the next viable 3-leg."
+    return prefix + "Qualified by the calibrated parlay engine."
 
 
-def _category_card(card: dict[str, Any], category: str, category_weight: float, fallback: bool) -> dict[str, Any]:
+def _category_card(card: dict[str, Any], category: str, fallback: bool) -> dict[str, Any]:
     category_def = CATEGORY_DEFS[category]
     category_bonus = {
-        "consensus": int(card["consensusLegs"]) * 5.0,
-        "surefire": float(card["geomeanProbability"]) * 18.0,
-        "best_odds": max(-0.5, float(card["parlayEv"])) * 16.0,
-        "hot_models": (float(card["averageSourceForm"]) - 50.0) * 0.65,
-        "cross_sport": len(card["sports"]) * 3.0 + (2.0 if card["hasPlayerProp"] else 0.0),
-        "same_sport": 4.0 if card["sportPattern"] == "3-same" else 1.0,
+        "consensus_edge": int(card["consensusLegs"]) * 5.0,
+        "three_leg_value": max(-0.5, float(card["parlayEv"])) * 12.0 + 1.5,
+        "validated_form": (float(card["averageSourceForm"]) - 50.0) * 0.8 + 1.0,
+        "compact_edge": max(-0.5, float(card["parlayEv"])) * 10.0,
     }[category]
     clone = dict(card)
     clone["id"] = f"{card['id']}-{category}"
@@ -866,7 +1039,7 @@ def _category_card(card: dict[str, Any], category: str, category_weight: float, 
     clone["title"] = category_def["label"]
     clone["fallback"] = fallback
     clone["whyQualified"] = _why_qualified(card, category, fallback)
-    clone["categoryScore"] = round((float(card["score"]) + category_bonus) * category_weight, 4)
+    clone["categoryScore"] = round(float(card["score"]) + category_bonus, 4)
     return clone
 
 
@@ -881,6 +1054,10 @@ def _prior_parlay_payloads(target_date: str) -> list[dict[str, Any]]:
         if payload:
             payloads.append(payload)
     return payloads
+
+
+def _empty_record_values() -> dict[str, float]:
+    return {"wins": 0, "losses": 0, "net": 0.0}
 
 
 def category_history(prior_payloads: list[dict[str, Any]]) -> dict[str, dict[str, float]]:
@@ -922,83 +1099,65 @@ def category_history(prior_payloads: list[dict[str, Any]]) -> dict[str, dict[str
     return history
 
 
-def category_weights(prior_payloads: list[dict[str, Any]]) -> dict[str, float]:
-    history = category_history(prior_payloads)
+def _mode_category_key(mode: str, category: str) -> str:
+    return f"{_clean_text(mode).lower()}:{_clean_text(category)}"
 
-    weights = {category: 1.0 for category in CATEGORY_DEFS}
-    for category, values in history.items():
-        settled = values["settled"]
-        if not settled:
+
+def mode_category_history(prior_payloads: list[dict[str, Any]]) -> dict[str, dict[str, float]]:
+    stats: dict[str, dict[str, float]] = defaultdict(_empty_record_values)
+    seen: set[tuple[str, str, str, str, str]] = set()
+    for payload in prior_payloads:
+        if _clean_text(payload.get("engineVersion")) != ENGINE_VERSION:
             continue
-        win_rate = values["hitRate"]
-        roi = max(-1.0, min(1.5, values["net"] / settled))
-        shrink = settled / (settled + 20.0)
-        weights[category] = round(max(0.62, min(1.22, 1.0 + shrink * ((win_rate - 0.5) * 0.34 + roi * 0.16))), 4)
-    return weights
+        for card in payload.get("cards") or []:
+            if not isinstance(card, dict):
+                continue
+            category = _clean_text(card.get("category"))
+            result = _clean_text(card.get("result")).lower()
+            mode = _card_pick_mode(card)
+            if category not in CATEGORY_DEFS or mode not in {"team", "player"} or result not in {"win", "loss"}:
+                continue
+            key = (
+                _clean_text(payload.get("date") or card.get("date")),
+                mode,
+                category,
+                _clean_text(card.get("id")),
+                _clean_text(card.get("comboKey")),
+            )
+            if key in seen:
+                continue
+            seen.add(key)
+            bucket = stats[_mode_category_key(mode, category)]
+            bucket["wins"] += 1 if result == "win" else 0
+            bucket["losses"] += 1 if result == "loss" else 0
+            bucket["net"] += float(card.get("profitUnits") or 0)
+
+    history: dict[str, dict[str, float]] = {}
+    for mode in ("team", "player"):
+        for category in CATEGORY_DEFS:
+            values = stats[_mode_category_key(mode, category)]
+            settled = values["wins"] + values["losses"]
+            history[_mode_category_key(mode, category)] = {
+                "wins": values["wins"],
+                "losses": values["losses"],
+                "settled": settled,
+                "net": values["net"],
+                "hitRate": values["wins"] / settled if settled else 0.0,
+                "roi": values["net"] / settled if settled else 0.0,
+            }
+    return history
 
 
-def _category_is_cold(category: str, history: dict[str, dict[str, float]]) -> bool:
-    values = history.get(category) or {}
+def category_weights(prior_payloads: list[dict[str, Any]]) -> dict[str, float]:
+    return {category: 1.0 for category in CATEGORY_DEFS}
+
+
+def _mode_category_is_shutdown(mode: str, category: str, history: dict[str, dict[str, float]]) -> bool:
+    values = history.get(_mode_category_key(mode, category)) or {}
     settled = int(values.get("settled") or 0)
     if settled < COLD_CATEGORY_MIN_SETTLED:
         return False
-    return float(values.get("hitRate") or 0.0) < COLD_CATEGORY_HIT_RATE or float(values.get("roi") or 0.0) < COLD_CATEGORY_ROI
-
-
-def _cold_category_limit(category: str, history: dict[str, dict[str, float]]) -> int:
-    if not _category_is_cold(category, history):
-        return MAX_CARDS_PER_CATEGORY
-    rules = COLD_CATEGORY_RULES.get(category)
-    return int(rules.get("max_cards", 1)) if rules else MAX_CARDS_PER_CATEGORY
-
-
-def _leg_probabilities(card: dict[str, Any]) -> list[float]:
-    values: list[float] = []
-    for leg in card.get("legs") or []:
-        if isinstance(leg, dict):
-            probability = _number(leg.get("estimatedProbability"))
-            if probability is not None:
-                values.append(probability)
-    return values
-
-
-def _leg_odds(card: dict[str, Any]) -> list[int]:
-    values: list[int] = []
-    for leg in card.get("legs") or []:
-        if isinstance(leg, dict):
-            odds = _int_number(leg.get("oddsAmerican"))
-            if odds is not None:
-                values.append(odds)
-    return values
-
-
-def _passes_cold_category_guard(
-    card: dict[str, Any],
-    category: str,
-    history: dict[str, dict[str, float]] | None = None,
-) -> bool:
-    history = history or {}
-    rules = COLD_CATEGORY_RULES.get(category)
-    if not rules or not _category_is_cold(category, history):
-        return True
-    probabilities = _leg_probabilities(card)
-    odds_values = _leg_odds(card)
-    if float(card["geomeanProbability"]) < rules["min_geomean"]:
-        return False
-    if probabilities and min(probabilities) < rules["min_leg_probability"]:
-        return False
-    if int(card["oddsAmerican"]) > rules["max_odds"]:
-        return False
-    if odds_values and max(odds_values) > rules["max_leg_odds"]:
-        return False
-    if float(card["parlayEv"]) < rules["min_ev"]:
-        return False
-    min_source_form = rules.get("min_source_form")
-    if min_source_form is not None and float(card["averageSourceForm"]) < min_source_form:
-        return False
-    if float(card["payoutQuality"]) < rules["min_payout_quality"]:
-        return False
-    return True
+    return float(values.get("roi") or 0.0) < COLD_CATEGORY_ROI
 
 
 def generate_candidate_cards(legs: list[Leg], leg_count: int) -> list[dict[str, Any]]:
@@ -1013,10 +1172,31 @@ def generate_candidate_cards(legs: list[Leg], leg_count: int) -> list[dict[str, 
     return cards
 
 
+def _portfolio_sort_key(card: dict[str, Any]) -> tuple[float, float, int, float, int, float]:
+    return (
+        float(card.get("utility") or 0.0),
+        float(card.get("parlayEv") or 0.0),
+        int(card.get("consensusLegs") or 0),
+        float(card.get("averageSourceForm") or 0.0),
+        1 if int(card.get("legCount") or 0) == 3 else 0,
+        float(card.get("categoryScore") or card.get("score") or 0.0),
+    )
+
+
+def _compact_edge_admitted(card: dict[str, Any], *, thin_slate: bool, best_three_utility: float | None) -> bool:
+    if thin_slate or best_three_utility is None:
+        return True
+    card_utility = float(card.get("utility") or 0.0)
+    if best_three_utility <= 0:
+        return card_utility > best_three_utility
+    return card_utility >= best_three_utility * 1.15
+
+
 def select_cards(
     three_leg_cards: list[dict[str, Any]],
     two_leg_cards: list[dict[str, Any]],
-    weights: dict[str, float],
+    *,
+    mode: str,
     history: dict[str, dict[str, float]] | None = None,
 ) -> list[dict[str, Any]]:
     history = history or {}
@@ -1024,111 +1204,81 @@ def select_cards(
     selected_combo_keys: set[str] = set()
     exposure: Counter[str] = Counter()
     selected_category_counts: Counter[str] = Counter()
-    category_limits = {
-        category: _cold_category_limit(category, history)
-        for category in CATEGORY_ORDER
-    }
     unique_leg_ids = {
         str(leg["legId"])
         for card in three_leg_cards
         for leg in card.get("legs", [])
         if isinstance(leg, dict)
     }
-    thin_slate = len(unique_leg_ids) < 10 or len(three_leg_cards) < 10
-    exposure_cap = 99 if thin_slate else DEFAULT_EXPOSURE_CAP
+    thin_slate = len(unique_leg_ids) < 5 or len(three_leg_cards) < 3
     three_by_category = {
         category: sorted(
             [
-                _category_card(card, category, weights.get(category, 1.0), False)
+                _category_card(card, category, False)
                 for card in three_leg_cards
-                if qualifies_category(card, category, history)
+                if category != "compact_edge"
+                and not _mode_category_is_shutdown(mode, category, history)
+                and qualifies_category(card, category)
             ],
-            key=lambda card: float(card["categoryScore"]),
+            key=_portfolio_sort_key,
             reverse=True,
         )
         for category in CATEGORY_ORDER
     }
-    fallback_by_category = {
-        category: sorted(
-            [
-                _category_card(card, category, weights.get(category, 1.0), True)
-                for card in two_leg_cards
-                if qualifies_category(card, category, history)
-            ],
-            key=lambda card: float(card["categoryScore"]),
-            reverse=True,
-        )
+    viable_three = [
+        card
         for category in CATEGORY_ORDER
-    }
+        if category != "compact_edge"
+        for card in three_by_category[category]
+    ]
+    best_three_utility = max((float(card.get("utility") or 0.0) for card in viable_three), default=None)
+    compact_cards = sorted(
+        [
+            _category_card(card, "compact_edge", True)
+            for card in two_leg_cards
+            if not _mode_category_is_shutdown(mode, "compact_edge", history)
+            and qualifies_category(card, "compact_edge")
+            and _compact_edge_admitted(card, thin_slate=thin_slate, best_three_utility=best_three_utility)
+        ],
+        key=_portfolio_sort_key,
+        reverse=True,
+    )
+    three_by_category["compact_edge"] = compact_cards
 
-    for index, category in enumerate(CATEGORY_ORDER):
-        if len(selected) >= MAX_CARDS:
+    def try_add(card: dict[str, Any]) -> bool:
+        category = _clean_text(card.get("category"))
+        if len(selected) >= MAX_CARDS_PER_MODE:
+            return False
+        if card["comboKey"] in selected_combo_keys:
+            return False
+        if selected_category_counts[category] >= MAX_CARDS_PER_CATEGORY:
+            return False
+        leg_ids = [str(leg["legId"]) for leg in card["legs"]]
+        if any(exposure[leg_id] >= DEFAULT_EXPOSURE_CAP for leg_id in leg_ids):
+            return False
+        selected.append(card)
+        selected_combo_keys.add(str(card["comboKey"]))
+        exposure.update(leg_ids)
+        selected_category_counts[category] += 1
+        return True
+
+    for category in CATEGORY_ORDER:
+        if len(selected) >= MAX_CARDS_PER_MODE:
             break
-        picked_for_category = 0
-        remaining_viable_categories = sum(
-            1
-            for later in CATEGORY_ORDER[index + 1 :]
-            if three_by_category[later] or fallback_by_category[later]
-        )
-        category_limit = min(
-            category_limits[category],
-            max(0, MAX_CARDS - len(selected) - remaining_viable_categories),
-        )
         for card in three_by_category[category]:
-            if picked_for_category >= category_limit or len(selected) >= MAX_CARDS:
+            if selected_category_counts[category] >= MAX_CARDS_PER_CATEGORY:
                 break
-            if card["comboKey"] in selected_combo_keys:
-                continue
-            if selected_category_counts[category] >= category_limits[category]:
-                continue
-            leg_ids = [str(leg["legId"]) for leg in card["legs"]]
-            if any(exposure[leg_id] >= exposure_cap for leg_id in leg_ids):
-                continue
-            selected.append(card)
-            selected_combo_keys.add(str(card["comboKey"]))
-            exposure.update(leg_ids)
-            selected_category_counts[category] += 1
-            picked_for_category += 1
+            try_add(card)
 
-        if picked_for_category:
-            continue
-
-        fallback_limit = min(2, category_limit)
-        for card in fallback_by_category[category]:
-            if picked_for_category >= fallback_limit or len(selected) >= MAX_CARDS:
-                break
-            if card["comboKey"] in selected_combo_keys:
-                continue
-            if selected_category_counts[category] >= category_limits[category]:
-                continue
-            leg_ids = [str(leg["legId"]) for leg in card["legs"]]
-            if any(exposure[leg_id] >= exposure_cap for leg_id in leg_ids):
-                continue
-            selected.append(card)
-            selected_combo_keys.add(str(card["comboKey"]))
-            exposure.update(leg_ids)
-            selected_category_counts[category] += 1
-            picked_for_category += 1
-
-    if len(selected) < MAX_CARDS:
+    if len(selected) < MAX_CARDS_PER_MODE:
         for category in CATEGORY_ORDER:
-            for card in three_by_category[category] + fallback_by_category[category]:
-                if len(selected) >= MAX_CARDS:
+            for card in three_by_category[category]:
+                if len(selected) >= MAX_CARDS_PER_MODE:
                     break
-                if card["comboKey"] in selected_combo_keys:
-                    continue
-                if selected_category_counts[category] >= category_limits[category]:
-                    continue
-                leg_ids = [str(leg["legId"]) for leg in card["legs"]]
-                if any(exposure[leg_id] >= exposure_cap for leg_id in leg_ids):
-                    continue
-                selected.append(card)
-                selected_combo_keys.add(str(card["comboKey"]))
-                exposure.update(leg_ids)
-                selected_category_counts[category] += 1
+                try_add(card)
 
     selected.sort(key=lambda card: (CATEGORY_ORDER.index(str(card["category"])), -float(card["categoryScore"])))
-    return selected[:MAX_CARDS]
+    return selected[:MAX_CARDS_PER_MODE]
 
 
 def _card_pick_mode(card: dict[str, Any]) -> str:
@@ -1146,14 +1296,13 @@ def _card_pick_mode(card: dict[str, Any]) -> str:
 def select_cards_by_mode(
     three_leg_cards: list[dict[str, Any]],
     two_leg_cards: list[dict[str, Any]],
-    weights: dict[str, float],
     history: dict[str, dict[str, float]] | None = None,
 ) -> list[dict[str, Any]]:
     selected: list[dict[str, Any]] = []
     for mode in ("team", "player"):
         mode_three = [card for card in three_leg_cards if _card_pick_mode(card) == mode]
         mode_two = [card for card in two_leg_cards if _card_pick_mode(card) == mode]
-        selected.extend(select_cards(mode_three, mode_two, weights, history))
+        selected.extend(select_cards(mode_three, mode_two, mode=mode, history=history))
     selected.sort(
         key=lambda card: (
             0 if _card_pick_mode(card) == "team" else 1,
@@ -1252,12 +1401,12 @@ def build_parlay_payload(
     prop_history = prop_history if prop_history is not None else _payloads_before(PLAYER_PROPS_CACHE_DIR, date_iso)
     prior_payloads = prior_payloads if prior_payloads is not None else _prior_parlay_payloads(date_iso)
     source_forms = build_source_forms(date_iso, team_history, prop_history)
-    legs = collect_legs(date_iso, team_payload, prop_payload, source_forms)
+    historical_calibrations = build_historical_calibration(date_iso)
+    legs = collect_legs(date_iso, team_payload, prop_payload, source_forms, historical_calibrations)
     three_leg_cards = generate_candidate_cards(legs, 3)
     two_leg_cards = generate_candidate_cards(legs, 2)
-    history = category_history(prior_payloads)
-    weights = category_weights(prior_payloads)
-    cards = select_cards_by_mode(three_leg_cards, two_leg_cards, weights, history)
+    mode_history = mode_category_history(prior_payloads)
+    cards = select_cards_by_mode(three_leg_cards, two_leg_cards, mode_history)
     ranking_prior_payloads = [
         payload for payload in prior_payloads
         if _clean_text(payload.get("engineVersion")) == ENGINE_VERSION
@@ -1276,7 +1425,10 @@ def build_parlay_payload(
                 "threeLegCount": sum(1 for card in category_cards if int(card.get("legCount") or 0) == 3),
                 "fallbackCount": sum(1 for card in category_cards if card.get("fallback")),
                 "record": _record_from_cards(category_cards),
-                "weight": weights.get(category, 1.0),
+                "shutdowns": {
+                    mode: _mode_category_is_shutdown(mode, category, mode_history)
+                    for mode in ("team", "player")
+                },
             }
         )
 
@@ -1304,7 +1456,8 @@ def build_parlay_payload(
     three_leg_count = sum(1 for card in cards if int(card.get("legCount") or 0) == 3)
     notices = [
         "No same-game legs, same-player duplicates, or duplicate markets are allowed in a slip.",
-        "3-leg slips are generated and ranked before any 2-leg fallback cards.",
+        "Every leg must clear at least +1.5 percentage points of calibrated edge over the market price.",
+        "Compact Edge is the only 2-leg category and is used only for thin slates or higher whole-slip utility.",
         "Weak slates are allowed to show fewer cards instead of forcing action.",
     ]
     if not cards:

@@ -52,7 +52,7 @@ def _upcheck_repo(tmp_path: Path, date: str) -> Path:
     props_payload = {"date": date, "models": {key: {"ok": True, "picks": []} for key in PLAYER_PROP_KEYS}}
     parlay_payload = {
         "date": date,
-        "engineVersion": "parlay_cards_v2_quality_guard",
+        "engineVersion": "parlay_cards_v3_calibrated_portfolio",
         "summary": {"displayedCards": 0, "threeLegCards": 0},
         "cards": [],
     }

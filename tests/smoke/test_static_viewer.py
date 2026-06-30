@@ -245,15 +245,16 @@ def test_parlays_tab_renders_card_level_filters_and_rankings():
     css = (ROOT / "src" / "styles" / "pickledger.css").read_text(encoding="utf-8")
     builder = (ROOT / "scripts" / "build_parlay_cards.py").read_text(encoding="utf-8")
 
-    for section in ("Consensus Parlays", "Surefire Parlays", "Best Odds Parlays", "Hot Model Parlays", "Cross-Sport Parlays", "Same-Sport Parlays"):
+    for section in ("Consensus Edge", "3-Leg Value", "Validated Form", "Compact Edge"):
         assert section in builder
-    assert "type ParlayView = 'all' | 'cross_sport' | 'same_sport' | 'consensus' | 'surefire' | 'best_odds' | 'hot_models'" in main
+    assert "type ParlayView = string" in main
     assert "let parlayView: ParlayView = 'all'" in main
     assert "let parlayResultMode: ResultMode = 'pending'" in main
     assert "function renderParlays(" in main
     assert "function setParlayView(" in main
     assert "function setParlayResultMode(" in main
     assert "function parlayFilterOptions(" in main
+    assert "function parlayCategoryOptions(" in main
     assert "function parlayCardHtml(" in main
     assert "function parlayRankingCardsForDate(" in main
     assert ".filter(payload => !engineVersion || payload.engineVersion === engineVersion)" in main
@@ -263,8 +264,8 @@ def test_parlays_tab_renders_card_level_filters_and_rankings():
     assert "Whole-card records" in main
     assert "Team / Player" in main
     assert "Switch to ${otherMode === 'team' ? 'Team' : 'Player'} mode for this slate" in main
-    assert "ENGINE_VERSION = \"parlay_cards_v2_quality_guard\"" in builder
-    assert "COLD_CATEGORY_RULES" in builder
+    assert "ENGINE_VERSION = \"parlay_cards_v3_calibrated_portfolio\"" in builder
+    assert "COLD_CATEGORY_ROI = -0.15" in builder
     assert "Records count each whole parlay slip once" in main
     assert "No same-game legs, same-player duplicates, or duplicate markets are allowed" in main
     assert "function parlayCardsForMode(" in main
