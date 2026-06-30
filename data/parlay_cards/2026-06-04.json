@@ -218,8 +218,8 @@
     }
   ],
   "date": "2026-06-04",
-  "engineVersion": "parlay_cards_v1",
-  "generatedAt": "2026-06-30T17:19:09.909742Z",
+  "engineVersion": "parlay_cards_v2_quality_guard",
+  "generatedAt": "2026-06-30T19:22:20.218305Z",
   "notices": [
     "No same-game legs, same-player duplicates, or duplicate markets are allowed in a slip.",
     "3-leg slips are generated and ranked before any 2-leg fallback cards.",
@@ -328,6 +328,44 @@
     "displayedCards": 1,
     "eligibleLegs": 2,
     "generatedThreeLegCandidates": 0,
+    "modes": {
+      "player": {
+        "averageOdds": null,
+        "displayedCards": 0,
+        "record": {
+          "averageOdds": null,
+          "hitRate": null,
+          "losses": 0,
+          "netUnits": 0.0,
+          "pending": 0,
+          "pushes": 0,
+          "recentForm": "",
+          "roi": null,
+          "settled": 0,
+          "wins": 0
+        },
+        "threeLegCards": 0,
+        "twoLegFallbackCards": 0
+      },
+      "team": {
+        "averageOdds": 203.0,
+        "displayedCards": 1,
+        "record": {
+          "averageOdds": 203.0,
+          "hitRate": 0.0,
+          "losses": 1,
+          "netUnits": -1.0,
+          "pending": 0,
+          "pushes": 0,
+          "recentForm": "L",
+          "roi": -1.0,
+          "settled": 1,
+          "wins": 0
+        },
+        "threeLegCards": 0,
+        "twoLegFallbackCards": 1
+      }
+    },
     "record": {
       "averageOdds": 203.0,
       "hitRate": 0.0,

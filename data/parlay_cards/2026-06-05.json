@@ -5,7 +5,7 @@
       "averageSourceForm": 50.03,
       "category": "surefire",
       "categoryLabel": "Surefire Parlays",
-      "categoryScore": 146.3952,
+      "categoryScore": 145.1272,
       "categoryShortLabel": "Surefire",
       "comboKey": "leg-0b08198f94c999d4|leg-5206dc636190010f|leg-78a77a0a52753805",
       "consensusLegs": 0,
@@ -111,7 +111,7 @@
       "averageSourceForm": 50.02,
       "category": "surefire",
       "categoryLabel": "Surefire Parlays",
-      "categoryScore": 143.0724,
+      "categoryScore": 141.8332,
       "categoryShortLabel": "Surefire",
       "comboKey": "leg-0b08198f94c999d4|leg-78a77a0a52753805|leg-a4d39166fb71bc16",
       "consensusLegs": 0,
@@ -217,7 +217,7 @@
       "averageSourceForm": 50.02,
       "category": "surefire",
       "categoryLabel": "Surefire Parlays",
-      "categoryScore": 142.9087,
+      "categoryScore": 141.6709,
       "categoryShortLabel": "Surefire",
       "comboKey": "leg-0b08198f94c999d4|leg-60b2c7572549a47b|leg-78a77a0a52753805",
       "consensusLegs": 0,
@@ -1626,7 +1626,7 @@
       },
       "shortLabel": "Surefire",
       "threeLegCount": 3,
-      "weight": 0.9929
+      "weight": 0.9843
     },
     {
       "count": 3,
@@ -1718,8 +1718,8 @@
     }
   ],
   "date": "2026-06-05",
-  "engineVersion": "parlay_cards_v1",
-  "generatedAt": "2026-06-30T17:19:10.920343Z",
+  "engineVersion": "parlay_cards_v2_quality_guard",
+  "generatedAt": "2026-06-30T19:22:21.318979Z",
   "notices": [
     "No same-game legs, same-player duplicates, or duplicate markets are allowed in a slip.",
     "3-leg slips are generated and ranked before any 2-leg fallback cards.",
@@ -1828,6 +1828,44 @@
     "displayedCards": 15,
     "eligibleLegs": 48,
     "generatedThreeLegCandidates": 15469,
+    "modes": {
+      "player": {
+        "averageOdds": null,
+        "displayedCards": 0,
+        "record": {
+          "averageOdds": null,
+          "hitRate": null,
+          "losses": 0,
+          "netUnits": 0.0,
+          "pending": 0,
+          "pushes": 0,
+          "recentForm": "",
+          "roi": null,
+          "settled": 0,
+          "wins": 0
+        },
+        "threeLegCards": 0,
+        "twoLegFallbackCards": 0
+      },
+      "team": {
+        "averageOdds": 537.9,
+        "displayedCards": 15,
+        "record": {
+          "averageOdds": 537.9,
+          "hitRate": 0.2,
+          "losses": 12,
+          "netUnits": -2.7,
+          "pending": 0,
+          "pushes": 0,
+          "recentForm": "LLLLL",
+          "roi": -0.18,
+          "settled": 15,
+          "wins": 3
+        },
+        "threeLegCards": 15,
+        "twoLegFallbackCards": 0
+      }
+    },
     "record": {
       "averageOdds": 537.9,
       "hitRate": 0.2,
