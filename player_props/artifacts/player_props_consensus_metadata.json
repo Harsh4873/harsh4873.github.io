@@ -30,7 +30,7 @@
     "wnba_history": "2024-26 workload-aware market/count models",
     "wnba_season": "2026 market/count models"
   },
-  "outcome_rows": 398095,
+  "outcome_rows": 398689,
   "roster_aware": true,
   "roster_policy": "Current player IDs only; season features reset annually; recent 3/5/10-game workload dominates older priors.",
   "seasons": {
@@ -245,6 +245,6 @@
     }
   },
   "target_accuracy": 0.7,
-  "training_fingerprint": "23060ec2061e4db8fa888468cb1c9d53bfb5ea5ccd75c92ba688d95fe057c89f",
+  "training_fingerprint": "bcf513ba5abb13fc91bd2434ce6738e2859f5835759ea42597ae72763513d303",
   "version": "player_props_consensus_v2.0.0"
 }
