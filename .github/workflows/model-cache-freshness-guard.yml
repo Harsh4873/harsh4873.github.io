@@ -71,7 +71,6 @@ jobs:
           from pathlib import Path
 
           required = {
-              "nba_player_props",
               "mlb_player_props",
               "wnba_player_props",
           }

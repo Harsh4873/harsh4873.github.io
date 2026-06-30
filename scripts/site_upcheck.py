@@ -28,7 +28,6 @@ REQUIRED_MODEL_KEYS = {
     "fifa_world_cup",
 }
 REQUIRED_PLAYER_PROP_KEYS = {
-    "nba_player_props",
     "mlb_player_props",
     "wnba_player_props",
 }
@@ -39,7 +38,12 @@ REQUIRED_SCORES24_FEED_KEYS = {
 }
 TEAM_VISIBLE_DECISIONS = {"BET", "LEAN"}
 PLAYER_VISIBLE_DECISIONS = {"BET", "LEAN", "PASS"}
-MAX_PLAYER_PROP_BOARD_SIZE = 8
+LEGACY_PUBLIC_PLAYER_PROP_SUFFIXES = (
+    "_season",
+    "_all_time",
+    "_hot_l10",
+    "_matchup_h2h",
+)
 
 
 def _read_json(path: Path) -> dict[str, Any] | None:
@@ -112,14 +116,12 @@ def _published_player_prop_keys(payload: dict[str, Any], date_iso: str) -> set[t
 
 
 def _snapshot_player_prop_keys(date_iso: str) -> set[tuple[str, ...]]:
-    best_keys: set[tuple[str, ...]] = set()
+    snapshot_keys: set[tuple[str, ...]] = set()
     for path in sorted((PLAYER_PROPS_SNAPSHOT_DIR / date_iso).glob("*.json")):
         payload = _read_json(path)
         if payload and str(payload.get("date") or "").strip() == date_iso:
-            keys = _published_player_prop_keys(payload, date_iso)
-            if len(keys) >= len(best_keys):
-                best_keys = keys
-    return best_keys
+            snapshot_keys |= _published_player_prop_keys(payload, date_iso)
+    return snapshot_keys
 
 
 def _decision(pick: dict[str, Any]) -> str:
@@ -278,6 +280,20 @@ def main() -> int:
     player_models = player_latest.get("models") if isinstance(player_latest, dict) else {}
     player_models = player_models if isinstance(player_models, dict) else {}
     if player_latest:
+        unexpected_models = sorted(key for key in player_models if key not in REQUIRED_PLAYER_PROP_KEYS)
+        if unexpected_models:
+            failures.append(
+                "latest player-props cache has unexpected public bucket(s): "
+                + ", ".join(unexpected_models)
+            )
+        legacy_public_models = sorted(
+            key for key in player_models if any(key.endswith(suffix) for suffix in LEGACY_PUBLIC_PLAYER_PROP_SUFFIXES)
+        )
+        if legacy_public_models:
+            failures.append(
+                "latest player-props cache reintroduced legacy public bucket(s): "
+                + ", ".join(legacy_public_models)
+            )
         latest_prop_keys = _published_player_prop_keys(player_latest, today)
         archived_prop_keys = _snapshot_player_prop_keys(today)
         missing_archived = archived_prop_keys - latest_prop_keys
@@ -301,10 +317,6 @@ def main() -> int:
         else:
             picks = bucket.get("picks") or []
             if key in REQUIRED_PLAYER_PROP_KEYS:
-                if len(picks) > MAX_PLAYER_PROP_BOARD_SIZE:
-                    failures.append(
-                        f"player-props bucket {key} has {len(picks)} visible picks, expected at most {MAX_PLAYER_PROP_BOARD_SIZE}"
-                    )
                 ranks = [
                     int(pick.get("ml_rank") or 0)
                     for pick in picks

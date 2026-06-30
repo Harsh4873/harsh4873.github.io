@@ -436,6 +436,36 @@ def test_external_compound_market_is_not_auto_graded():
     assert pick["result"] == "pending"
 
 
+def test_external_plus_compound_market_is_not_auto_graded():
+    import pickgrader_server as server
+
+    pick = {
+        "source": "SportyTraderMLB",
+        "sport": "MLB",
+        "pick": "The Yankees -1.5 runs + Under 8.0 Runs (Red Sox vs Yankees)",
+        "decision": "BET",
+    }
+
+    assert server.apply_external_pick_metadata(pick) == 2
+    assert pick["market_type"] == "compound"
+    assert pick["grade_supported"] is False
+
+
+def test_external_team_mismatch_market_is_not_auto_graded():
+    import pickgrader_server as server
+
+    pick = {
+        "source": "SportyTraderWNBA",
+        "sport": "WNBA",
+        "pick": "Las Vegas Aces on the -1.5 line (Valkyries vs Dream)",
+        "decision": "BET",
+    }
+
+    assert server.apply_external_pick_metadata(pick) == 2
+    assert pick["market_type"] == "external_team_mismatch"
+    assert pick["grade_supported"] is False
+
+
 def test_external_feed_refresh_splits_provider_buckets_by_sport():
     module = _load_module(
         "refresh_external_feeds_split_test",

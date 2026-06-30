@@ -19,7 +19,6 @@ PLAYER_PROPS_SNAPSHOT_DIR = Path("data/player_props_snapshots")
 CONSENSUS_METADATA_PATH = Path("player_props/artifacts/player_props_consensus_metadata.json")
 PICK_METADATA_FIELDS = {"result", "start_time", "game_start_time", "pregame_snapshot"}
 MARKET_METADATA_FIELDS = {"start_time", "game_start_time", "pregame_snapshot"}
-MAX_MERGED_PLAYER_PROPS = 8
 _CONSENSUS_MODELS: list[str] | None = None
 
 
@@ -232,23 +231,20 @@ def _rank_pick_sort_key(pick: dict[str, Any]) -> tuple[int, float, float, float,
     )
 
 
-def _best_snapshot_market_keys(date_iso: str, model_key: str, snapshot_dir: Path) -> set[tuple[str, ...]]:
-    best_keys: set[tuple[str, ...]] = set()
+def _snapshot_market_keys(date_iso: str, model_key: str, snapshot_dir: Path) -> set[tuple[str, ...]]:
+    snapshot_keys: set[tuple[str, ...]] = set()
     for path in sorted((snapshot_dir / date_iso).glob("*.json")):
         snapshot = _read_json(path)
         if not snapshot or str(snapshot.get("date") or "").strip() != date_iso:
             continue
         models = snapshot.get("models") if isinstance(snapshot.get("models"), dict) else {}
-        keys: set[tuple[str, ...]] = set()
         for bucket_key, bucket in models.items():
             if not isinstance(bucket, dict) or not _same_sport_model_bucket(model_key, str(bucket_key)):
                 continue
             for pick in bucket.get("picks") or []:
                 if isinstance(pick, dict) and _carry_forward_allowed(pick, date_iso):
-                    keys.add(_market_key(pick))
-        if len(keys) >= len(best_keys):
-            best_keys = keys
-    return best_keys
+                    snapshot_keys.add(_market_key(pick))
+    return snapshot_keys
 
 
 def _rank_merged_picks(
@@ -271,23 +267,13 @@ def _rank_merged_picks(
             selected.append(pick)
             known_markets.add(key)
 
-    for pick in pinned_sorted:
-        if len(selected) >= MAX_MERGED_PLAYER_PROPS:
-            break
-        key = _market_key(pick)
-        if key in known_markets:
-            continue
-        selected.append(pick)
-        known_markets.add(key)
-
-    for pick in fresh_sorted:
-        if len(selected) >= MAX_MERGED_PLAYER_PROPS:
-            break
-        key = _market_key(pick)
-        if key in known_markets:
-            continue
-        selected.append(pick)
-        known_markets.add(key)
+    for picks in (pinned_sorted, fresh_sorted):
+        for pick in picks:
+            key = _market_key(pick)
+            if key in known_markets:
+                continue
+            selected.append(pick)
+            known_markets.add(key)
 
     ranked = sorted(selected, key=_rank_pick_sort_key)
     for index, pick in enumerate(ranked, start=1):
@@ -350,7 +336,7 @@ def _preserve_pick_metadata(
         pinned_picks.append(_normalize_carried_pick(pick, merged))
         pinned_markets.add(key)
     fresh_only = [pick for pick in fresh_picks if _market_key(pick) not in pinned_markets]
-    required_market_keys = _best_snapshot_market_keys(date_iso, model_key, snapshot_dir)
+    required_market_keys = _snapshot_market_keys(date_iso, model_key, snapshot_dir)
     merged["picks"] = _rank_merged_picks(
         pinned_picks,
         fresh_only,

@@ -1277,7 +1277,7 @@
       "averageSourceForm": 55.51,
       "category": "cross_sport",
       "categoryLabel": "Cross-Sport Parlays",
-      "categoryScore": 82.5098,
+      "categoryScore": 83.7408,
       "categoryShortLabel": "Cross-Sport",
       "comboKey": "leg-377deebcd090d642|leg-3da5994800cc09a6|leg-72593d1d2375e502",
       "consensusLegs": 0,
@@ -1384,7 +1384,7 @@
       "averageSourceForm": 56.8,
       "category": "cross_sport",
       "categoryLabel": "Cross-Sport Parlays",
-      "categoryScore": 82.4874,
+      "categoryScore": 83.718,
       "categoryShortLabel": "Cross-Sport",
       "comboKey": "leg-2b9c14d544dc3c55|leg-3da5994800cc09a6|leg-72593d1d2375e502",
       "consensusLegs": 0,
@@ -1701,7 +1701,7 @@
       },
       "shortLabel": "Cross-Sport",
       "threeLegCount": 2,
-      "weight": 0.9518
+      "weight": 0.966
     },
     {
       "count": 1,
@@ -1728,7 +1728,7 @@
   ],
   "date": "2026-06-28",
   "engineVersion": "parlay_cards_v1",
-  "generatedAt": "2026-06-30T01:58:27.728925Z",
+  "generatedAt": "2026-06-30T05:15:57.797105Z",
   "notices": [
     "No same-game legs, same-player duplicates, or duplicate markets are allowed in a slip.",
     "3-leg slips are generated and ranked before any 2-leg fallback cards.",
@@ -1752,23 +1752,23 @@
       "wins": 11
     },
     {
-      "averageOdds": 554.6,
+      "averageOdds": 544.8,
       "category": "cross_sport",
       "description": "Clean mixes across MLB, FIFA, WNBA, and player-prop sources.",
-      "hitRate": 0.1667,
+      "hitRate": 0.2105,
       "label": "Cross-Sport",
       "losses": 45,
-      "netUnits": -8.86,
-      "pending": 3,
+      "netUnits": 1.99,
+      "pending": 0,
       "pushes": 0,
       "recentForm": "LLLLL",
-      "roi": -0.1641,
-      "score": 17.2075,
-      "settled": 54,
-      "wins": 9
+      "roi": 0.0349,
+      "score": 23.2585,
+      "settled": 57,
+      "wins": 12
     },
     {
-      "averageOdds": 547.6,
+      "averageOdds": 547.8,
       "category": "surefire",
       "description": "Highest estimated hit probability with playable combined odds.",
       "hitRate": 0.1316,
@@ -1800,7 +1800,7 @@
       "wins": 6
     },
     {
-      "averageOdds": 610.7,
+      "averageOdds": 610.9,
       "category": "hot_models",
       "description": "Weighted toward sources and models with recent or all-time form.",
       "hitRate": 0.0833,
@@ -1816,7 +1816,7 @@
       "wins": 6
     },
     {
-      "averageOdds": 593.6,
+      "averageOdds": 595.0,
       "category": "same_sport",
       "description": "Best same-sport cards when they grade above mixed alternatives.",
       "hitRate": 0.0625,

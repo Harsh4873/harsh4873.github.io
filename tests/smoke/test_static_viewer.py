@@ -59,7 +59,9 @@ def test_frontend_player_mode_is_persisted_isolated_and_team_defaulted():
     assert "activeFilters.clear()" in main
     assert "selectedDate = ''" in main
     assert "search.value = ''" in main
-    assert "const pending = getAllPicks().filter(pick => pick.result === 'pending')" in main
+    assert "function isOpenPick(" in main
+    assert "const pending = getAllPicks().filter(isOpenPick)" in main
+    assert "UNTRACKED" in main
     assert "mlbLivePlayerStat(" in main
     assert "espnPlayerStat(" in main
     assert "PLAYER_PROPS_ML_FIRST_SNAPSHOT_AT" in data
@@ -153,7 +155,7 @@ def test_static_viewer_keeps_public_tabs_and_client_grading():
     assert "await loadAllData();" in main
     assert "DISPLAY_TIME_ZONE = 'America/Chicago'" in main
     assert "function centralDateKey(" in main
-    assert "pick.result === 'pending' && pickDateKey(pick) === selectedDate" in main
+    assert "isOpenPick(pick) && pickDateKey(pick) === selectedDate" in main
     assert "window.setInterval(() => void refreshForCentralClock(), AUTO_REFRESH_MS)" in main
     assert "Find a team, matchup, or source in the selected date’s open picks" in html
     assert "embeddedResult === 'pending' ? localResult : embeddedResult" in data
@@ -569,7 +571,8 @@ def test_refresh_timing_and_pages_deploy_are_deterministic():
     assert 'CACHE_HEALTHY="$(python - <<\'PY\'' in guard
     assert 'models[key].get("ok") is True for key in required' in guard
     assert 'PLAYER_CACHE_HEALTHY="$(python - <<\'PY\'' in guard
-    assert '"nba_player_props"' in guard
+    assert '"mlb_player_props"' in guard
+    assert '"wnba_player_props"' in guard
     assert 'key in required' in guard
     assert 'int(bucket.get("games") or 0) > 0 and not (bucket.get("picks") or [])' in guard
 

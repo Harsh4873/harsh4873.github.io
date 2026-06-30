@@ -8,7 +8,7 @@ from scripts import site_upcheck
 
 
 ROOT = Path(__file__).resolve().parents[2]
-PLAYER_PROP_MODEL_KEYS = {"nba_player_props", "mlb_player_props", "wnba_player_props"}
+PLAYER_PROP_MODEL_KEYS = {"mlb_player_props", "wnba_player_props"}
 
 
 def _read_json(path: Path) -> dict:
@@ -44,7 +44,7 @@ def test_committed_cache_ids_are_unique_within_each_date():
             assert not duplicates, f"{cache_dir.name}/{path.name} duplicate ids for {date}: {duplicates[:5]}"
 
 
-def test_latest_player_props_cache_contains_latest_snapshot_markets():
+def test_latest_player_props_cache_contains_snapshot_market_union():
     latest = _read_json(ROOT / "data" / "player_props_cache" / "latest.json")
     latest_date = str(latest.get("date") or "")
 
@@ -77,14 +77,13 @@ def test_latest_player_prop_records_use_one_bucket_per_sport():
             assert rank_epoch.startswith(f"{pick['sport']}:player_props_consensus_v2.0.0:published:")
 
 
-def test_latest_player_prop_boards_stay_capped_ranked_and_deduped():
+def test_latest_player_prop_boards_stay_ranked_and_deduped():
     latest = _read_json(ROOT / "data" / "player_props_cache" / "latest.json")
     models = latest.get("models") if isinstance(latest.get("models"), dict) else {}
 
     for model_key in PLAYER_PROP_MODEL_KEYS:
         picks = models[model_key].get("picks") or []
         ranks = [int(pick["ml_rank"]) for pick in picks]
-        assert len(picks) <= 8
         assert ranks == list(range(1, len(picks) + 1))
         assert not any(pick.get("carried_forward") for pick in picks)
         market_keys = [

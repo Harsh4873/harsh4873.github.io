@@ -29,7 +29,7 @@ import uuid
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from typing import Any
+from typing import Any, Iterable
 from urllib.error import URLError, HTTPError
 from urllib.parse import urlencode, urlparse
 from urllib.request import Request, urlopen
@@ -2247,24 +2247,57 @@ def _extract_nba_player_stat(summary: dict[str, Any], player_name: str, stat_key
     return None
 
 
-def _extract_mlb_live_player_stat(feed: dict[str, Any], player_name: str, stat_key: str) -> float | None:
+def _clean_player_ids(*values: Any) -> set[str]:
+    return {str(value).strip() for value in values if str(value or "").strip()}
+
+
+def _find_mlb_live_player_record(
+    feed: dict[str, Any],
+    player_name: str,
+    player_ids: Iterable[Any] = (),
+) -> dict[str, Any] | None:
     boxscore = (feed.get("liveData") or {}).get("boxscore") if isinstance(feed, dict) else None
     teams = boxscore.get("teams") if isinstance(boxscore, dict) else None
     if not isinstance(teams, dict):
         return None
 
-    player_record: dict[str, Any] | None = None
+    target_ids = _clean_player_ids(*player_ids)
+    name_match: dict[str, Any] | None = None
     for side in ("away", "home"):
         team = teams.get(side)
         players = team.get("players") if isinstance(team, dict) else None
         for candidate in players.values() if isinstance(players, dict) else []:
             person = candidate.get("person") if isinstance(candidate, dict) else None
+            player_id = str(person.get("id") or "").strip() if isinstance(person, dict) else ""
+            if target_ids and player_id in target_ids:
+                return candidate
             display_name = str(person.get("fullName") or "") if isinstance(person, dict) else ""
-            if _person_names_match_loose(player_name, display_name):
-                player_record = candidate
-                break
-        if player_record is not None:
-            break
+            if name_match is None and _person_names_match_loose(player_name, display_name):
+                name_match = candidate
+    return name_match
+
+
+def _mlb_live_player_has_activity(
+    feed: dict[str, Any],
+    player_name: str,
+    player_ids: Iterable[Any] = (),
+) -> bool:
+    player_record = _find_mlb_live_player_record(feed, player_name, player_ids)
+    if player_record is None:
+        return False
+    stats = player_record.get("stats") if isinstance(player_record, dict) else None
+    batting = stats.get("batting") if isinstance(stats, dict) else None
+    pitching = stats.get("pitching") if isinstance(stats, dict) else None
+    return bool(batting) or bool(pitching)
+
+
+def _extract_mlb_live_player_stat(
+    feed: dict[str, Any],
+    player_name: str,
+    stat_key: str,
+    player_ids: Iterable[Any] = (),
+) -> float | None:
+    player_record = _find_mlb_live_player_record(feed, player_name, player_ids)
     if player_record is None:
         return None
 
@@ -2308,7 +2341,7 @@ def _extract_mlb_live_player_stat(feed: dict[str, Any], player_name: str, stat_k
         "hits_runs_rbis": ("hits", "runs", "rbis"),
     }.get(stat_key)
     if components:
-        values = [_extract_mlb_live_player_stat(feed, player_name, component) for component in components]
+        values = [_extract_mlb_live_player_stat(feed, player_name, component, player_ids) for component in components]
         return sum(values) if all(value is not None for value in values) else None
 
     hits = number(batting, "hits")
@@ -2339,15 +2372,24 @@ def grade_player_prop_pick(
         return "pending"
 
     actual = None
+    player_ids = (pick.get("player_id"), pick.get("market_athlete_id"))
     if str(pick.get("sport") or "").strip().upper() == "MLB" and mlb_live_feed:
         actual = _extract_mlb_live_player_stat(
             mlb_live_feed,
             str(prop["player_name"]),
             str(prop["stat_key"]),
+            player_ids,
         )
     if actual is None and summary:
         actual = _extract_nba_player_stat(summary, str(prop["player_name"]), str(prop["stat_key"]))
     if actual is None:
+        if (
+            str(pick.get("sport") or "").strip().upper() == "MLB"
+            and _mlb_game_is_final(mlb_live_feed)
+            and _find_mlb_live_player_record(mlb_live_feed or {}, str(prop["player_name"]), player_ids) is not None
+            and not _mlb_live_player_has_activity(mlb_live_feed or {}, str(prop["player_name"]), player_ids)
+        ):
+            return "push"
         return "pending"
 
     line = float(prop["line"])
@@ -5486,13 +5528,49 @@ def _external_player_market_metadata(pick_text: str) -> dict[str, Any] | None:
     }
 
 
+def _external_team_selection_mismatch(pick_text: str) -> bool:
+    selection = str(pick_text or "").split("(", 1)[0].strip()
+    lower = selection.lower()
+    if not re.search(r"\b(?:ml|moneyline|to win|wins?)\b|[+-]\d+(?:\.\d+)?", lower):
+        return False
+    if re.match(r"^(?:over|under|total|both teams|btts|draw)\b", lower):
+        return False
+
+    matchup = parse_matchup(str(pick_text or ""))
+    if not matchup:
+        return False
+    team_head = re.split(
+        r"\s+(?:on\s+the\s+)?(?:[+-]\d+(?:\.\d+)?|ml|moneyline|to win|wins?)\b",
+        selection,
+        maxsplit=1,
+        flags=re.IGNORECASE,
+    )[0]
+    team_head = re.sub(r"^(?:the)\s+", "", team_head, flags=re.IGNORECASE).strip()
+    if not team_head:
+        return False
+
+    def tokens(value: str) -> set[str]:
+        normalized = unicodedata.normalize("NFKD", value)
+        normalized = "".join(char for char in normalized if not unicodedata.combining(char))
+        return {
+            token
+            for token in re.sub(r"[^a-z0-9]+", " ", normalized.lower()).split()
+            if len(token) > 2 and token not in {"the", "line"}
+        }
+
+    matchup_tokens = tokens(" ".join(matchup))
+    return bool(tokens(team_head)) and tokens(team_head).isdisjoint(matchup_tokens)
+
+
 def _external_pick_market_metadata(sport: str, pick_text: str) -> dict[str, Any]:
+    selection = str(pick_text or "").split("(", 1)[0].strip()
+    if re.search(r"\b(?:and|&)\b|\s+\+\s+", selection, flags=re.IGNORECASE):
+        return {"market_type": "compound", "grade_supported": False}
     if player_metadata := _external_player_market_metadata(pick_text):
         return player_metadata
 
-    selection = str(pick_text or "").split("(", 1)[0].strip()
-    if re.search(r"\b(?:and|&)\b", selection, flags=re.IGNORECASE):
-        return {"market_type": "compound", "grade_supported": False}
+    if _external_team_selection_mismatch(pick_text):
+        return {"market_type": "external_team_mismatch", "grade_supported": False}
     if sport == "FIFA WC":
         return _soccer_external_market_metadata(pick_text)
     return {}

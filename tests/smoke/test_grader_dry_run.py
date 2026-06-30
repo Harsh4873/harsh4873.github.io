@@ -690,6 +690,44 @@ def test_grade_mlb_props_from_official_live_feed_when_espn_omits_stats():
     ) == "win"
 
 
+def test_final_mlb_player_prop_with_listed_inactive_player_pushes():
+    import pickgrader_server
+
+    live_feed = {
+        "gameData": {"status": {"abstractGameState": "Final", "codedGameState": "F"}},
+        "liveData": {
+            "boxscore": {
+                "teams": {
+                    "away": {"players": {}},
+                    "home": {
+                        "players": {
+                            "ID691723": {
+                                "person": {"id": 691723, "fullName": "Coby Mayo"},
+                                "stats": {"batting": {}},
+                            }
+                        }
+                    },
+                }
+            }
+        },
+    }
+
+    assert pickgrader_server.grade_player_prop_pick(
+        {
+            "sport": "MLB",
+            "player_id": "691723",
+            "player_name": "Coby Mayo",
+            "stat_key": "hits",
+            "selection": "Under",
+            "line": 0.5,
+            "pick": "Coby Mayo Under 0.5 Hits",
+        },
+        {},
+        None,
+        live_feed,
+    ) == "push"
+
+
 def test_auto_grade_mlb_player_props_from_official_feed_without_espn_completed(monkeypatch):
     import pickgrader_server
 

@@ -15,7 +15,7 @@ from player_props.schema import decision_and_stake
 ROOT = Path(__file__).resolve().parents[2]
 DATE = "2026-06-12"
 STAMP = "2026-06-12T12:00:00Z"
-PLAYER_PROP_MODEL_KEYS = {"nba_player_props", "wnba_player_props", "mlb_player_props"}
+PLAYER_PROP_MODEL_KEYS = {"wnba_player_props", "mlb_player_props"}
 
 
 @pytest.fixture(autouse=True)

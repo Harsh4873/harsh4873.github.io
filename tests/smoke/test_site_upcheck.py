@@ -20,7 +20,6 @@ MODEL_KEYS = {
     "fifa_world_cup",
 }
 PLAYER_PROP_KEYS = {
-    "nba_player_props",
     "mlb_player_props",
     "wnba_player_props",
 }
@@ -51,11 +50,16 @@ def _upcheck_repo(tmp_path: Path, date: str) -> Path:
         },
     }
     props_payload = {"date": date, "models": {key: {"ok": True, "picks": []} for key in PLAYER_PROP_KEYS}}
+    parlay_payload = {"date": date, "summary": {"displayedCards": 0, "threeLegCards": 0}, "cards": []}
     for cache_name, payload in (("model_cache", model_payload), ("player_props_cache", props_payload)):
         cache_dir = tmp_path / "data" / cache_name
         _write_json(cache_dir / "latest.json", payload)
         _write_json(cache_dir / f"{date}.json", payload)
         _write_json(cache_dir / "index.json", {"files": [f"{date}.json"]})
+    parlay_dir = tmp_path / "data" / "parlay_cards"
+    _write_json(parlay_dir / "latest.json", parlay_payload)
+    _write_json(parlay_dir / f"{date}.json", parlay_payload)
+    _write_json(parlay_dir / "index.json", {"files": [f"{date}.json"]})
     return scripts / "site_upcheck.py"
 
 

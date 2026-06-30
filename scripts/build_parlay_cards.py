@@ -484,6 +484,8 @@ def collect_legs(
         decision = _clean_text(pick.get("decision")).upper()
         if decision not in TEAM_VISIBLE_DECISIONS:
             continue
+        if pick.get("grade_supported") is False:
+            continue
         pick_text = _pick_text(pick)
         if not pick_text:
             continue

@@ -20,6 +20,7 @@ def make_pick(
     player: str = "",
     market: str = "moneyline",
     decision: str = "BET",
+    grade_supported: bool = True,
 ) -> dict:
     return {
         "date": DATE,
@@ -34,6 +35,7 @@ def make_pick(
         "player_name": player,
         "market_type": market,
         "decision": decision,
+        "grade_supported": grade_supported,
     }
 
 
@@ -144,6 +146,28 @@ def test_team_and_player_legs_do_not_mix_in_one_slip():
         leg_types = {leg["sourceType"] for leg in card["legs"]}
         assert leg_types == {"model"} or leg_types == {"player_prop"}
         assert card["pickMode"] in {"team", "player"}
+
+
+def test_ungradeable_legs_are_excluded_from_slips():
+    team_payload = make_payload(
+        {
+            "mlb_new": [
+                make_pick(sport="MLB", source="MLB Model", pick="Orioles ML", game="White Sox @ Orioles"),
+                make_pick(sport="MLB", source="MLB Model", pick="Padres ML", game="Padres @ Cubs"),
+                make_pick(sport="FIFA WC", source="Scores24FIFAWorldCup", pick="Both teams to score", game="Brazil @ Japan", grade_supported=False),
+            ]
+        }
+    )
+
+    payload = parlays.build_parlay_payload(DATE, team_payload, None, team_history=[], prop_history=[], prior_payloads=[])
+
+    assert payload["summary"]["eligibleLegs"] == 2
+    assert payload["cards"]
+    assert all(
+        leg["pick"] != "Both teams to score"
+        for card in payload["cards"]
+        for leg in card["legs"]
+    )
 
 
 def test_displayed_leg_exposure_is_capped_when_slate_is_not_thin():

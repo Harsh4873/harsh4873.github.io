@@ -352,6 +352,14 @@ function isSettledPick(pick: Pick): boolean {
   return pick.result !== 'pending';
 }
 
+function isUnsupportedPendingPick(pick: Pick): boolean {
+  return pick.result === 'pending' && pick.grade_supported === false;
+}
+
+function isOpenPick(pick: Pick): boolean {
+  return pick.result === 'pending' && !isUnsupportedPendingPick(pick);
+}
+
 function rankingComparablePicks(picks: Pick[]): Pick[] {
   if (activePickMode !== 'player') {
     return picks.filter(pick => {
@@ -404,7 +412,7 @@ function statsFor(picks: Pick[]): Stats {
   const wins = picks.filter(pick => pick.result === 'win').length;
   const losses = picks.filter(pick => pick.result === 'loss').length;
   const pushes = picks.filter(pick => pick.result === 'push').length;
-  const pending = picks.filter(pick => pick.result === 'pending').length;
+  const pending = picks.filter(isOpenPick).length;
   const decided = wins + losses;
   const net = Number(picks.reduce((sum, pick) => sum + pick.pl, 0).toFixed(2));
   const risk = Number(picks.filter(pick => pick.result !== 'pending' && pick.result !== 'push')
@@ -599,8 +607,13 @@ function resultBadge(result: PickResult): string {
   return `<span class="badge badge-${result}">${result === 'pending' ? 'OPEN' : result.toUpperCase()}</span>`;
 }
 
+function pickResultBadge(pick: Pick): string {
+  if (isUnsupportedPendingPick(pick)) return '<span class="badge badge-pending">UNTRACKED</span>';
+  return resultBadge(pick.result);
+}
+
 function statusClass(picks: Pick[]): string {
-  if (picks.some(pick => pick.result === 'pending')) return 'live';
+  if (picks.some(isOpenPick)) return 'live';
   const results = new Set(picks.map(pick => pick.result));
   if (results.size > 1) return 'mixed';
   return picks[0]?.result || 'live';
@@ -717,7 +730,7 @@ function filteredPicks(): Pick[] {
 function boardPicks(): Pick[] {
   return filteredPicks().filter(pick => {
     if (pickDateKey(pick) !== selectedDate) return false;
-    if (homeMode === 'pending') return pick.result === 'pending';
+    if (homeMode === 'pending') return isOpenPick(pick);
     if (homeMode === 'settled') return pick.result !== 'pending';
     return true;
   });
@@ -917,8 +930,8 @@ function renderPickRow(pick: Pick): string {
   return `<div class="home-feed-row result-${pick.result}${isPlayer ? ' player-row' : ''}${hasResearch ? ' is-expandable' : ''}${expanded ? ' expanded' : ''}"${researchAttrs}>
     ${isPlayer ? '' : `<span class="home-feed-row-sport">${escapeHtml(pick.sport)}</span>`}
     <div class="home-feed-row-body"><div class="home-feed-row-source">${escapeHtml(sourceName(pick))}</div><div class="home-feed-row-pick"${pickTextAttrs}>${escapeHtml(pick.pick)}</div><div class="home-feed-row-meta">${escapeHtml([formatOdds(pick), decision === 'PASS' ? '' : `${pick.units}u`, formatStart(pick.start_time), activePickMode === 'player' ? '' : pick.decision].filter(Boolean).join(' | '))}</div>${researchDetailsHtml(pick, expanded)}</div>
-    <div class="home-feed-row-pl ${pick.pl > 0 ? 'positive' : pick.pl < 0 ? 'negative' : 'neutral'}">${pick.result === 'pending' ? decision === 'PASS' ? 'Pass' : `${pick.units}u risk` : signedUnits(pick.pl)}</div>
-    <div class="home-feed-row-control">${resultBadge(pick.result)}${yourBetAddButton(pick)}</div>
+    <div class="home-feed-row-pl ${pick.pl > 0 ? 'positive' : pick.pl < 0 ? 'negative' : 'neutral'}">${isUnsupportedPendingPick(pick) ? 'Untracked' : pick.result === 'pending' ? decision === 'PASS' ? 'Pass' : `${pick.units}u risk` : signedUnits(pick.pl)}</div>
+    <div class="home-feed-row-control">${pickResultBadge(pick)}${yourBetAddButton(pick)}</div>
   </div>`;
 }
 
@@ -1134,7 +1147,7 @@ function renderSearch(): void {
   if (!input || !results || !meta) return;
   ensureSelection();
   const query = input.value.trim().toLowerCase();
-  const pending = getAllPicks().filter(pick => pick.result === 'pending' && pickDateKey(pick) === selectedDate);
+  const pending = getAllPicks().filter(pick => isOpenPick(pick) && pickDateKey(pick) === selectedDate);
   const itemLabel = activePickMode === 'player' ? 'props' : 'picks';
   const subjects = activePickMode === 'player' ? 'player, prop, matchup, or source' : 'team, matchup, or source';
   const scope = `${dateLabel(selectedDate, true)} open ${itemLabel} (Central time)`;
@@ -1162,7 +1175,7 @@ function renderSearch(): void {
     const hasResearch = Boolean(details.reason || details.factors.length);
     const expanded = hasResearch && expandedResearchPickKeys.has(pick.id);
     return `<article class="search-card ${hasResearch ? 'is-expandable' : ''} ${expanded ? 'expanded' : ''}" ${hasResearch ? `data-research-pick-card="${escapeHtml(pick.id)}" role="button" tabindex="0" aria-expanded="${expanded}"` : ''}>
-      <div class="search-card-top">${resultBadge(pick.result)}<span class="badge badge-source">${escapeHtml(sourceName(pick))}</span><div class="search-card-pick">${escapeHtml(pick.pick)}</div><div class="search-card-odds">${escapeHtml(formatOdds(pick))}</div></div>
+      <div class="search-card-top">${pickResultBadge(pick)}<span class="badge badge-source">${escapeHtml(sourceName(pick))}</span><div class="search-card-pick">${escapeHtml(pick.pick)}</div><div class="search-card-odds">${escapeHtml(formatOdds(pick))}</div></div>
       <div class="search-card-row"><div class="search-card-field"><span class="search-card-field-label">GAME</span><span class="search-card-field-val">${escapeHtml(gameName(pick))}</span></div><div class="search-card-field"><span class="search-card-field-label">DATE</span><span class="search-card-field-val">${escapeHtml(pick.date)}</span></div><div class="search-card-field"><span class="search-card-field-label">P/L</span><span class="search-card-field-val">${signedUnits(pick.pl)}</span></div></div>
       ${researchDetailsHtml(pick, expanded)}
       <div class="search-card-actions">${yourBetAddButton(pick)}</div>
@@ -1288,7 +1301,7 @@ function dailySourceForms(date: string, todaysPicks: Pick[]): DailySourceForm[] 
     const recentStats = statsFor(recent);
     const lastStats = statsFor(last);
     const todayCalls = uniqueDailyPicks(todaysPicks
-      .filter(pick => sourceName(pick) === source && pick.result === 'pending' && isPublishedDailyPick(pick))
+      .filter(pick => sourceName(pick) === source && isOpenPick(pick) && isPublishedDailyPick(pick))
       .sort(comparePickActionableStart));
     const score = (recentStats.winRate || 0) * 100 + Math.min(recentStats.wins + recentStats.losses, 20) * 0.35 + recentStats.net * 0.08;
     return { source, recentStats, lastStats, recentDates, todayCalls, score };
@@ -2034,6 +2047,7 @@ function gradePick(pick: Pick, game: Record<string, unknown>): PickResult {
 
 type PlayerPropDescriptor = {
   playerName: string;
+  playerIds: string[];
   statKey: string;
   selection: 'OVER' | 'UNDER';
   line: number;
@@ -2041,6 +2055,9 @@ type PlayerPropDescriptor = {
 
 function playerPropDescriptor(pick: Pick): PlayerPropDescriptor | null {
   const playerName = String(pick.player_name || pick.player || '').trim();
+  const playerIds = [pick.player_id, pick.market_athlete_id]
+    .map(value => String(value || '').trim())
+    .filter(Boolean);
   const aliases: Record<string, string> = {
     totalrebounds: 'rebounds',
     threepointersmade: 'three_pointers_made',
@@ -2065,7 +2082,7 @@ function playerPropDescriptor(pick: Pick): PlayerPropDescriptor | null {
   const selection = String(pick.selection || pick.direction || '').trim().toUpperCase();
   const line = Number(pick.line ?? pick.market_line);
   if (!playerName || !statKey || (selection !== 'OVER' && selection !== 'UNDER') || !Number.isFinite(line)) return null;
-  return { playerName, statKey, selection, line };
+  return { playerName, playerIds, statKey, selection, line };
 }
 
 function normalizePersonName(value: unknown): string[] {
@@ -2095,6 +2112,35 @@ function inningsToOuts(value: unknown): number | null {
   const whole = Number(innings);
   const remainder = Number(partial.slice(0, 1));
   return Number.isFinite(whole) && Number.isFinite(remainder) ? (whole * 3) + Math.min(2, Math.max(0, remainder)) : null;
+}
+
+function mlbLivePlayerRecord(feed: Record<string, unknown>, descriptor: PlayerPropDescriptor): Record<string, unknown> | null {
+  const liveData = feed.liveData && typeof feed.liveData === 'object' ? feed.liveData as Record<string, unknown> : {};
+  const boxscore = liveData.boxscore && typeof liveData.boxscore === 'object' ? liveData.boxscore as Record<string, unknown> : {};
+  const teams = boxscore.teams && typeof boxscore.teams === 'object' ? boxscore.teams as Record<string, unknown> : {};
+  let nameMatch: Record<string, unknown> | null = null;
+  for (const side of ['away', 'home']) {
+    const team = teams[side] && typeof teams[side] === 'object' ? teams[side] as Record<string, unknown> : {};
+    const roster = team.players && typeof team.players === 'object' ? team.players as Record<string, unknown> : {};
+    for (const candidate of Object.values(roster)) {
+      if (!candidate || typeof candidate !== 'object') continue;
+      const record = candidate as Record<string, unknown>;
+      const person = record.person && typeof record.person === 'object' ? record.person as Record<string, unknown> : {};
+      const personId = String(person.id || '').trim();
+      if (personId && descriptor.playerIds.includes(personId)) return record;
+      if (!nameMatch && personNamesMatch(descriptor.playerName, person.fullName)) nameMatch = record;
+    }
+  }
+  return nameMatch;
+}
+
+function mlbLivePlayerHasActivity(feed: Record<string, unknown>, descriptor: PlayerPropDescriptor): boolean {
+  const player = mlbLivePlayerRecord(feed, descriptor);
+  if (!player) return false;
+  const stats = player.stats && typeof player.stats === 'object' ? player.stats as Record<string, unknown> : {};
+  const batting = stats.batting && typeof stats.batting === 'object' ? stats.batting as Record<string, unknown> : {};
+  const pitching = stats.pitching && typeof stats.pitching === 'object' ? stats.pitching as Record<string, unknown> : {};
+  return Object.keys(batting).length > 0 || Object.keys(pitching).length > 0;
 }
 
 function espnPlayerStat(summary: Record<string, unknown>, descriptor: PlayerPropDescriptor): number | null {
@@ -2150,20 +2196,7 @@ function espnPlayerStat(summary: Record<string, unknown>, descriptor: PlayerProp
 }
 
 function mlbLivePlayerStat(feed: Record<string, unknown>, descriptor: PlayerPropDescriptor): number | null {
-  const liveData = feed.liveData && typeof feed.liveData === 'object' ? feed.liveData as Record<string, unknown> : {};
-  const boxscore = liveData.boxscore && typeof liveData.boxscore === 'object' ? liveData.boxscore as Record<string, unknown> : {};
-  const teams = boxscore.teams && typeof boxscore.teams === 'object' ? boxscore.teams as Record<string, unknown> : {};
-  let player: Record<string, unknown> | null = null;
-  for (const side of ['away', 'home']) {
-    const team = teams[side] && typeof teams[side] === 'object' ? teams[side] as Record<string, unknown> : {};
-    const roster = team.players && typeof team.players === 'object' ? team.players as Record<string, unknown> : {};
-    for (const candidate of Object.values(roster)) {
-      if (!candidate || typeof candidate !== 'object') continue;
-      const record = candidate as Record<string, unknown>;
-      const person = record.person && typeof record.person === 'object' ? record.person as Record<string, unknown> : {};
-      if (personNamesMatch(descriptor.playerName, person.fullName)) player = record;
-    }
-  }
+  const player = mlbLivePlayerRecord(feed, descriptor);
   if (!player) return null;
   const stats = player.stats && typeof player.stats === 'object' ? player.stats as Record<string, unknown> : {};
   const batting = stats.batting && typeof stats.batting === 'object' ? stats.batting as Record<string, unknown> : {};
@@ -2201,6 +2234,13 @@ function gradePlayerValue(descriptor: PlayerPropDescriptor, actual: number | nul
   return descriptor.selection === 'OVER'
     ? actual > descriptor.line ? 'win' : 'loss'
     : actual < descriptor.line ? 'win' : 'loss';
+}
+
+function gradeMlbPlayerValue(descriptor: PlayerPropDescriptor, feed: Record<string, unknown>): PickResult {
+  const result = gradePlayerValue(descriptor, mlbLivePlayerStat(feed, descriptor));
+  if (result !== 'pending') return result;
+  if (mlbGameIsFinal(feed) && mlbLivePlayerRecord(feed, descriptor) && !mlbLivePlayerHasActivity(feed, descriptor)) return 'push';
+  return 'pending';
 }
 
 async function fetchRemoteJson(url: string): Promise<Record<string, unknown> | null> {
@@ -2247,7 +2287,7 @@ async function gradeDate(date: string, picks: Pick[]): Promise<number> {
   const mlbFeedCache = new Map<string, Record<string, unknown> | null>();
   let mlbSchedule: Record<string, unknown> | null | undefined;
   for (const [sport, endpoint] of Object.entries(ESPN_ENDPOINTS)) {
-    const sportPicks = picks.filter(pick => pick.sport === sport && pick.result === 'pending');
+    const sportPicks = picks.filter(pick => pick.sport === sport && isOpenPick(pick));
     if (!sportPicks.length) continue;
     try {
       const response = await fetch(`https://site.api.espn.com/apis/site/v2/sports/${endpoint[0]}/${endpoint[1]}/scoreboard?dates=${dateParam}`, { cache: 'no-store' });
@@ -2277,7 +2317,7 @@ async function gradeDate(date: string, picks: Pick[]): Promise<number> {
             if (gamePk && !mlbFeedCache.has(gamePk)) {
               mlbFeedCache.set(gamePk, await fetchRemoteJson(`https://statsapi.mlb.com/api/v1.1/game/${encodeURIComponent(gamePk)}/feed/live`));
             }
-            result = gradePlayerValue(descriptor, gamePk ? mlbLivePlayerStat(mlbFeedCache.get(gamePk) || {}, descriptor) : null);
+            result = gamePk ? gradeMlbPlayerValue(descriptor, mlbFeedCache.get(gamePk) || {}) : 'pending';
           } else {
             const eventId = String(event.id || '');
             if (eventId && !summaryCache.has(eventId)) {
@@ -2298,7 +2338,7 @@ async function gradeDate(date: string, picks: Pick[]): Promise<number> {
 
   const mlbPlayerPending = picks.filter(pick => (
     pick.sport === 'MLB'
-    && pick.result === 'pending'
+    && isOpenPick(pick)
     && playerPropDescriptor(pick)
   ));
   if (mlbPlayerPending.length) {
@@ -2315,7 +2355,7 @@ async function gradeDate(date: string, picks: Pick[]): Promise<number> {
       }
       const feed = mlbFeedCache.get(gamePk) || {};
       if (!mlbGameIsFinal(feed)) continue;
-      const result = gradePlayerValue(descriptor, mlbLivePlayerStat(feed, descriptor));
+      const result = gradeMlbPlayerValue(descriptor, feed);
       if (result !== 'pending') {
         setLocalResult(pick.id, result);
         graded += 1;
@@ -2335,7 +2375,7 @@ async function refreshAutoGrades(): Promise<void> {
   try {
     await loadAllData();
     updateSyncStatus();
-    const pending = getAllPicks().filter(pick => pick.result === 'pending');
+    const pending = getAllPicks().filter(isOpenPick);
     const byDate = new Map<string, Pick[]>();
     pending.forEach(pick => byDate.set(pickDateKey(pick), [...(byDate.get(pickDateKey(pick)) || []), pick]));
     let graded = 0;

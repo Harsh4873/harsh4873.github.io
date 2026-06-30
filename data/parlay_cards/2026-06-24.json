@@ -1273,7 +1273,7 @@
       "averageSourceForm": 50.8,
       "category": "cross_sport",
       "categoryLabel": "Cross-Sport Parlays",
-      "categoryScore": 106.9137,
+      "categoryScore": 108.6097,
       "categoryShortLabel": "Cross-Sport",
       "comboKey": "pp_80a7e02d2c6290d348a9_consensus|pp_b7cf7609b5f37471e954_consensus|pp_d5d711b3415fb6ee3111_consensus",
       "consensusLegs": 3,
@@ -1379,7 +1379,7 @@
       "averageSourceForm": 51.6,
       "category": "cross_sport",
       "categoryLabel": "Cross-Sport Parlays",
-      "categoryScore": 106.3957,
+      "categoryScore": 108.0835,
       "categoryShortLabel": "Cross-Sport",
       "comboKey": "pp_8c3a61471cef35d18a2e_consensus|pp_b7cf7609b5f37471e954_consensus|pp_d5d711b3415fb6ee3111_consensus",
       "consensusLegs": 3,
@@ -1695,7 +1695,7 @@
       },
       "shortLabel": "Cross-Sport",
       "threeLegCount": 2,
-      "weight": 0.9645
+      "weight": 0.9798
     },
     {
       "count": 1,
@@ -1722,7 +1722,7 @@
   ],
   "date": "2026-06-24",
   "engineVersion": "parlay_cards_v1",
-  "generatedAt": "2026-06-30T01:58:17.393283Z",
+  "generatedAt": "2026-06-30T05:15:54.548017Z",
   "notices": [
     "No same-game legs, same-player duplicates, or duplicate markets are allowed in a slip.",
     "3-leg slips are generated and ranked before any 2-leg fallback cards.",
@@ -1746,20 +1746,20 @@
       "wins": 7
     },
     {
-      "averageOdds": 555.9,
+      "averageOdds": 544.0,
       "category": "cross_sport",
       "description": "Clean mixes across MLB, FIFA, WNBA, and player-prop sources.",
-      "hitRate": 0.1957,
+      "hitRate": 0.2449,
       "label": "Cross-Sport",
       "losses": 37,
-      "netUnits": -0.86,
-      "pending": 3,
+      "netUnits": 9.99,
+      "pending": 0,
       "pushes": 0,
-      "recentForm": "LWLLL",
-      "roi": -0.0187,
-      "score": 21.4185,
-      "settled": 46,
-      "wins": 9
+      "recentForm": "WWWLL",
+      "roi": 0.2039,
+      "score": 28.2015,
+      "settled": 49,
+      "wins": 12
     },
     {
       "averageOdds": 555.9,
@@ -1829,8 +1829,8 @@
   "summary": {
     "averageOdds": 739.2,
     "displayedCards": 15,
-    "eligibleLegs": 84,
-    "generatedThreeLegCandidates": 65916,
+    "eligibleLegs": 73,
+    "generatedThreeLegCandidates": 41063,
     "record": {
       "averageOdds": 739.2,
       "hitRate": 0.0667,
