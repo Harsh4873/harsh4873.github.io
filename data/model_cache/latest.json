@@ -35530,7 +35530,7 @@
           "edge": 19.15,
           "game": "Ecuador @ Mexico",
           "game_id": "760491",
-          "game_start_time": "2026-07-01T01:00Z",
+          "game_start_time": "2026-07-01T02:00Z",
           "home_team": "Mexico",
           "home_tournament_form": {
             "games": 2,
@@ -35572,9 +35572,10 @@
           "raw_projected_home_goals": 1.397,
           "raw_projected_total": 3.04,
           "reason": "Ecuador owns the stronger current-squad projection. Attack 89.7, midfield 88.8, defense 86.1, goalkeeper 76.1. Top player ranks: Piero Hincapi\u00e9 93.5, Mois\u00e9s Caicedo 93.5, Jeremy Ar\u00e9valo 93.0. Ecuador form 1-1-0 (2.00 pts/g, 1.00-0.50 goals/g).",
+          "result": "loss",
           "source": "FIFA Model",
           "sport": "FIFA WC",
-          "start_time": "2026-07-01T01:00Z",
+          "start_time": "2026-07-01T02:00Z",
           "team": "Ecuador",
           "total_market_blend": 0.18,
           "units": 0.82,
@@ -35617,7 +35618,7 @@
           "edge": 13.41,
           "game": "Ecuador @ Mexico",
           "game_id": "760491",
-          "game_start_time": "2026-07-01T01:00Z",
+          "game_start_time": "2026-07-01T02:00Z",
           "home_team": "Mexico",
           "home_tournament_form": {
             "games": 2,
@@ -35660,9 +35661,10 @@
           "raw_projected_home_goals": 1.397,
           "raw_projected_total": 3.04,
           "reason": "Projected goals Ecuador 1.50, Mexico 1.27 after tournament-form, venue, and market-total blending.",
+          "result": "win",
           "source": "FIFA Model",
           "sport": "FIFA WC",
-          "start_time": "2026-07-01T01:00Z",
+          "start_time": "2026-07-01T02:00Z",
           "team": "",
           "total_market_blend": 0.18,
           "units": 1.0,
@@ -35705,7 +35707,7 @@
           "edge": 8.62,
           "game": "Ecuador @ Mexico",
           "game_id": "760491",
-          "game_start_time": "2026-07-01T01:00Z",
+          "game_start_time": "2026-07-01T02:00Z",
           "home_team": "Mexico",
           "home_tournament_form": {
             "games": 2,
@@ -35746,9 +35748,10 @@
           "raw_projected_home_goals": 1.397,
           "raw_projected_total": 3.04,
           "reason": "Ecuador has the best spread-cover edge at +0.5 from the venue-adjusted Poisson score grid.",
+          "result": "loss",
           "source": "FIFA Model",
           "sport": "FIFA WC",
-          "start_time": "2026-07-01T01:00Z",
+          "start_time": "2026-07-01T02:00Z",
           "team": "Ecuador",
           "total_market_blend": 0.18,
           "units": 0.78,
@@ -50560,6 +50563,7 @@
           "raw_edge": 14.34,
           "raw_model_probability": 0.6672,
           "raw_probability": 0.6672,
+          "result": "win",
           "selected_side_implied_probability": 0.52381,
           "source": "MLB First Five",
           "sport": "MLB",
@@ -55465,6 +55469,7 @@
           "raw_edge": 8.47,
           "raw_model_probability": 0.603,
           "raw_probability": 0.603,
+          "result": "win",
           "selected_side_implied_probability": 0.545455,
           "source": "MLB Inning",
           "sport": "MLB",
@@ -62007,6 +62012,7 @@
           "raw_model_probability": 0.6198,
           "raw_probability": 0.6198,
           "raw_units": 0.05,
+          "result": "loss",
           "selected_side_implied_probability": 0.5238095238095238,
           "selection": "Over",
           "source": "MLB Model",
@@ -63913,6 +63919,7 @@
           "raw_model_probability": 0.6259,
           "raw_probability": 0.6259,
           "raw_units": 0.05,
+          "result": "push",
           "selected_side_implied_probability": 0.5238095238095238,
           "selection": "Over",
           "source": "MLB Model",
@@ -68714,6 +68721,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Ecuador @ Mexico",
+          "game_start_time": "2026-07-01T02:00Z",
           "grade_supported": true,
           "home_team": "Mexico",
           "market_type": "soccer_total",
@@ -68721,10 +68729,11 @@
           "odds": -130,
           "pick": "Under 2 (Ecuador @ Mexico)",
           "probability": null,
+          "result": "push",
           "source": "Scores24FIFAWorldCup",
           "source_url": "https://scores24.live/en/soccer/m-01-07-2026-mexico-ecuador-prediction",
           "sport": "FIFA WC",
-          "start_time": "2026-07-01T01:00Z",
+          "start_time": "2026-07-01T02:00Z",
           "tip": "Total goals Under (2)",
           "units": 1
         }
@@ -68783,6 +68792,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-30-06-2026-baltimore-orioles-chicago-white-sox-prediction",
           "sport": "MLB",
@@ -68819,6 +68829,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-30-06-2026-philadelphia-phillies-pittsburgh-pirates-prediction",
           "sport": "MLB",
@@ -68855,6 +68866,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-30-06-2026-cleveland-guardians-texas-rangers-prediction",
           "sport": "MLB",
@@ -68891,6 +68903,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-30-06-2026-new-york-yankees-detroit-tigers-prediction",
           "sport": "MLB",
@@ -68927,6 +68940,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-30-06-2026-toronto-blue-jays-new-york-mets-prediction",
           "sport": "MLB",
@@ -68963,6 +68977,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-30-06-2026-boston-red-sox-washington-nationals-prediction",
           "sport": "MLB",
@@ -68999,6 +69014,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-30-06-2026-atlanta-braves-st-louis-cardinals-prediction",
           "sport": "MLB",
@@ -69035,6 +69051,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-30-06-2026-milwaukee-brewers-cincinnati-reds-prediction",
           "sport": "MLB",
@@ -69071,6 +69088,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-30-06-2026-kansas-city-royals-tampa-bay-rays-prediction",
           "sport": "MLB",
@@ -69107,6 +69125,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-29-06-2026-chicago-cubs-san-diego-padres-prediction",
           "sport": "MLB",
@@ -69143,6 +69162,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-29-06-2026-houston-astros-minnesota-twins-prediction",
           "sport": "MLB",
@@ -69179,6 +69199,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-29-06-2026-colorado-rockies-miami-marlins-prediction",
           "sport": "MLB",
@@ -69251,6 +69272,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-29-06-2026-athletics-los-angeles-dodgers-prediction",
           "sport": "MLB",
@@ -69287,6 +69309,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-29-06-2026-arizona-diamondbacks-san-francisco-giants-prediction",
           "sport": "MLB",
@@ -69349,6 +69372,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24WNBA",
           "source_url": "https://scores24.live/en/basketball/m-30-06-2026-new-york-liberty-las-vegas-aces-prediction",
           "sport": "WNBA",
@@ -69401,16 +69425,17 @@
           "decision": "BET",
           "edge": null,
           "game": "Mexico vs Ecuador",
-          "game_start_time": "2026-07-01T01:00Z",
+          "game_start_time": "2026-07-01T02:00Z",
           "grade_supported": true,
           "market_type": "soccer_moneyline",
           "matchup": "Mexico vs Ecuador",
           "odds": 125,
           "pick": "Mexico To Win (Mexico vs Ecuador)",
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerFIFAWorldCup",
           "sport": "FIFA WC",
-          "start_time": "2026-07-01T01:00Z",
+          "start_time": "2026-07-01T02:00Z",
           "units": 1
         }
       ],
@@ -69456,6 +69481,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-30T22:35Z",
@@ -69484,6 +69510,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-30T22:40Z",
@@ -69512,6 +69539,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-30T22:40Z",
@@ -69540,6 +69568,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-30T23:05Z",
@@ -69568,6 +69597,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-30T23:07Z",
@@ -69596,6 +69626,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-30T23:10Z",
@@ -69624,6 +69655,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-30T23:15Z",
@@ -69652,6 +69684,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-30T23:40Z",
@@ -69680,6 +69713,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-06-30T23:40Z",
@@ -69708,6 +69742,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-01T00:05Z",
@@ -69736,6 +69771,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-01T00:10Z",
@@ -69764,6 +69800,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-01T00:40Z",
@@ -69792,6 +69829,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-01T01:40Z",
@@ -69848,6 +69886,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-01T01:40Z",
@@ -69915,6 +69954,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerWNBA",
           "sport": "WNBA",
           "start_time": "2026-06-30T23:00Z",
@@ -69999,6 +70039,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-30T23:15Z",
@@ -70027,6 +70068,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-30T23:40Z",
@@ -70055,6 +70097,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "push",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-06-30T23:40Z",
@@ -70083,6 +70126,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-07-01T00:40Z",
@@ -70139,6 +70183,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-07-01T01:40Z",
