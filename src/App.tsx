@@ -88,12 +88,13 @@ interface ExerciseGroup {
 
 const TABS: Array<{ id: TabId; label: string; icon: IconType }> = [
   { id: 'today', label: 'Today', icon: Activity },
-  { id: 'week', label: 'Week', icon: ListChecks },
-  { id: 'calendar', label: 'Calendar', icon: CalendarDays },
-  { id: 'milestones', label: 'Milestones', icon: Trophy },
   { id: 'logbook', label: 'Logbook', icon: BookOpen },
+  { id: 'calendar', label: 'Calendar', icon: CalendarDays },
+  { id: 'week', label: 'Week', icon: ListChecks },
+  { id: 'milestones', label: 'Progress', icon: Trophy },
   { id: 'settings', label: 'Settings', icon: Settings },
 ];
+const BOTTOM_TABS = TABS.filter((tab) => tab.id !== 'week');
 
 const STATUS_LABELS: Record<DayStatus, string> = {
   completed: 'Completed',
@@ -248,6 +249,219 @@ function getSupersetExerciseCount(log: WorkoutLog): number {
   return log.supersets.reduce((total, superset) => total + superset.exerciseIds.length, 0);
 }
 
+function normalizeExerciseName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/&/g, ' and ')
+    .replace(/\+/g, ' and ')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim()
+    .replace(/\s+/g, ' ');
+}
+
+function isSetFilled(set: ExerciseSet): boolean {
+  return Boolean(set.reps.trim() || (set.weightMode === 'pounds' && set.pounds.trim()));
+}
+
+function isExerciseDetailEmpty(detail?: ReturnType<typeof createEmptyExerciseDetail>): boolean {
+  if (!detail) {
+    return true;
+  }
+
+  return !detail.legacyNote?.trim() && detail.sets.every((set) => !isSetFilled(set));
+}
+
+function formatSetSummary(sets: ExerciseSet[]): string {
+  const filledSets = sets.filter(isSetFilled);
+  if (filledSets.length === 0) {
+    return '';
+  }
+
+  const summary = filledSets.slice(0, 3).map((set) => {
+    const reps = set.reps.trim();
+    if (set.weightMode === 'pounds' && set.pounds.trim()) {
+      return reps ? `${set.pounds.trim()} x ${reps}` : `${set.pounds.trim()} lb`;
+    }
+
+    return reps ? `BW x ${reps}` : 'Body weight';
+  });
+
+  const remaining = filledSets.length - summary.length;
+  return `${summary.join(', ')}${remaining > 0 ? ` +${remaining}` : ''}`;
+}
+
+function getSetVolume(set: ExerciseSet): number {
+  const reps = Number(set.reps);
+  const pounds = Number(set.pounds);
+  if (!Number.isFinite(reps) || reps <= 0) {
+    return 0;
+  }
+
+  if (set.weightMode !== 'pounds' || !Number.isFinite(pounds) || pounds <= 0) {
+    return 0;
+  }
+
+  return pounds * reps;
+}
+
+function getSetReps(set: ExerciseSet): number {
+  const reps = Number(set.reps);
+  return Number.isFinite(reps) && reps > 0 ? reps : 0;
+}
+
+function getLogSetCount(log: WorkoutLog): number {
+  return Object.values(log.details).reduce((total, detail) => total + detail.sets.filter(isSetFilled).length, 0);
+}
+
+function getLogReps(log: WorkoutLog): number {
+  return Object.values(log.details).reduce((total, detail) => {
+    return total + detail.sets.reduce((setTotal, set) => setTotal + getSetReps(set), 0);
+  }, 0);
+}
+
+function getLogVolume(log: WorkoutLog): number {
+  return Object.values(log.details).reduce((total, detail) => {
+    return total + detail.sets.reduce((setTotal, set) => setTotal + getSetVolume(set), 0);
+  }, 0);
+}
+
+function getCompletedBasketballMinutes(exercises: Exercise[], log: WorkoutLog): number {
+  return exercises.reduce((total, exercise) => {
+    return log.completed.includes(exercise.id) ? total + getBasketballMinutes(exercise.name) : total;
+  }, 0);
+}
+
+function findPreviousExerciseDetail(
+  exercise: Exercise,
+  dateKey: string,
+  logs: LogsByDate,
+  getExercises: GetExercisesForDate,
+) {
+  const targetName = normalizeExerciseName(exercise.name);
+  const previousDates = Object.keys(logs)
+    .filter((logDate) => logDate < dateKey)
+    .sort((a, b) => b.localeCompare(a));
+
+  for (const previousDate of previousDates) {
+    const previousLog = normalizeLog(previousDate, logs[previousDate]);
+    const previousExercise = getExercises(previousDate).find(
+      (candidate) => normalizeExerciseName(candidate.name) === targetName,
+    );
+    if (!previousExercise) {
+      continue;
+    }
+
+    const detail = previousLog.details[previousExercise.id];
+    if (detail && !isExerciseDetailEmpty(detail)) {
+      return { dateKey: previousDate, detail };
+    }
+  }
+
+  return null;
+}
+
+function getExercisePreviousBest(
+  exercise: Exercise,
+  dateKey: string,
+  logs: LogsByDate,
+  getExercises: GetExercisesForDate,
+): number {
+  const targetName = normalizeExerciseName(exercise.name);
+  return Object.keys(logs).reduce((best, logDate) => {
+    if (logDate >= dateKey) {
+      return best;
+    }
+
+    const previousLog = normalizeLog(logDate, logs[logDate]);
+    const previousExercise = getExercises(logDate).find(
+      (candidate) => normalizeExerciseName(candidate.name) === targetName,
+    );
+    const detail = previousExercise ? previousLog.details[previousExercise.id] : undefined;
+    if (!detail) {
+      return best;
+    }
+
+    return Math.max(best, ...detail.sets.map(getSetVolume));
+  }, 0);
+}
+
+function buildTrainingStats(logs: LogsByDate, todayKey: string, getExercises: GetExercisesForDate) {
+  const recentDates = buildRecentDates(todayKey, 28).reverse();
+  const weekDates = buildRecentDates(todayKey, 7).reverse();
+  let completedSessions = 0;
+  let basketballMinutes = 0;
+  let stretchDays = 0;
+  let totalReps = 0;
+  let totalVolume = 0;
+  const prNotes: Array<{ dateKey: string; note: string }> = [];
+  const weeklyTrend = weekDates.map((dateKey) => {
+    const log = normalizeLog(dateKey, logs[dateKey]);
+    const exercises = getExercises(dateKey);
+    const progress = getProgressMeta(exercises, log);
+    const volume = getLogVolume(log);
+    const reps = getLogReps(log);
+
+    if (progress.completed === progress.total && progress.total > 0) {
+      completedSessions += 1;
+    }
+
+    basketballMinutes += getCompletedBasketballMinutes(exercises, log);
+    totalReps += reps;
+    totalVolume += volume;
+
+    if (exercises.some((exercise) => log.completed.includes(exercise.id) && isStretchExercise(exercise.name))) {
+      stretchDays += 1;
+    }
+
+    if (log.prNote.trim()) {
+      prNotes.push({ dateKey, note: log.prNote.trim() });
+    }
+
+    return { dateKey, volume, reps, completed: progress.completed, total: progress.total };
+  });
+
+  recentDates.slice(0, -7).forEach((dateKey) => {
+    const log = normalizeLog(dateKey, logs[dateKey]);
+    const exercises = getExercises(dateKey);
+    const progress = getProgressMeta(exercises, log);
+    if (progress.completed === progress.total && progress.total > 0) {
+      completedSessions += 1;
+    }
+    basketballMinutes += getCompletedBasketballMinutes(exercises, log);
+    totalReps += getLogReps(log);
+    totalVolume += getLogVolume(log);
+    if (exercises.some((exercise) => log.completed.includes(exercise.id) && isStretchExercise(exercise.name))) {
+      stretchDays += 1;
+    }
+    if (log.prNote.trim()) {
+      prNotes.push({ dateKey, note: log.prNote.trim() });
+    }
+  });
+
+  let streak = 0;
+  for (const dateKey of buildRecentDates(todayKey, 90)) {
+    const log = normalizeLog(dateKey, logs[dateKey]);
+    const exercises = getExercises(dateKey);
+    const progress = getProgressMeta(exercises, log);
+    if (progress.completed === progress.total && progress.total > 0) {
+      streak += 1;
+    } else {
+      break;
+    }
+  }
+
+  return {
+    basketballMinutes,
+    completedSessions,
+    prNotes,
+    streak,
+    stretchDays,
+    totalReps,
+    totalVolume,
+    weeklyTrend,
+  };
+}
+
 function MetricTile({
   icon: Icon,
   label,
@@ -381,7 +595,9 @@ function WorkoutPanel({
   dateKey,
   exercises,
   log,
+  logs,
   todayKey,
+  getExercises,
   onReorder,
   onUpdate,
   onClear,
@@ -389,7 +605,9 @@ function WorkoutPanel({
   dateKey: string;
   exercises: Exercise[];
   log: WorkoutLog;
+  logs: LogsByDate;
   todayKey: string;
+  getExercises: GetExercisesForDate;
   onReorder: (exerciseIds: string[]) => void;
   onUpdate: (updater: (log: WorkoutLog) => WorkoutLog) => void;
   onClear: () => void;
@@ -398,19 +616,44 @@ function WorkoutPanel({
   const [secondSupersetId, setSecondSupersetId] = useState(exercises[1]?.id ?? '');
   const [draggedGroupId, setDraggedGroupId] = useState<string | null>(null);
   const [dragOverGroupId, setDragOverGroupId] = useState<string | null>(null);
+  const [restSeconds, setRestSeconds] = useState(0);
   const exerciseOrderSignature = exercises.map((exercise) => exercise.id).join('|');
   const progress = getProgressMeta(exercises, log);
   const status = getDayStatus(dateKey, log, todayKey, exercises);
   const supersetExerciseCount = getSupersetExerciseCount(log);
+  const loggedSets = getLogSetCount(log);
+  const sessionVolume = getLogVolume(log);
   const pairedIds = new Set(log.supersets.flatMap((pair) => pair.exerciseIds));
   const unpairedExercises = exercises.filter((exercise) => !pairedIds.has(exercise.id));
   const groups = buildExerciseGroups(exercises, log.supersets);
+  const previousByExerciseId = useMemo(() => {
+    return new Map(
+      exercises.map((exercise) => [exercise.id, findPreviousExerciseDetail(exercise, dateKey, logs, getExercises)]),
+    );
+  }, [dateKey, exerciseOrderSignature, logs, getExercises]);
+  const previousBestByExerciseId = useMemo(() => {
+    return new Map(
+      exercises.map((exercise) => [exercise.id, getExercisePreviousBest(exercise, dateKey, logs, getExercises)]),
+    );
+  }, [dateKey, exerciseOrderSignature, logs, getExercises]);
 
   useEffect(() => {
     const available = exercises.filter((exercise) => !pairedIds.has(exercise.id));
     setFirstSupersetId(available[0]?.id ?? '');
     setSecondSupersetId(available[1]?.id ?? '');
   }, [dateKey, exerciseOrderSignature, log.supersets.length]);
+
+  useEffect(() => {
+    if (restSeconds <= 0) {
+      return undefined;
+    }
+
+    const timer = window.setInterval(() => {
+      setRestSeconds((current) => Math.max(current - 1, 0));
+    }, 1000);
+
+    return () => window.clearInterval(timer);
+  }, [restSeconds]);
 
   const canAddSuperset =
     firstSupersetId &&
@@ -420,6 +663,11 @@ function WorkoutPanel({
     !pairedIds.has(secondSupersetId);
 
   const toggleComplete = (exerciseId: string) => {
+    const wasCompleted = log.completed.includes(exerciseId);
+    if (!wasCompleted) {
+      setRestSeconds(90);
+    }
+
     onUpdate((current) => {
       const completed = current.completed.includes(exerciseId)
         ? current.completed.filter((id) => id !== exerciseId)
@@ -429,6 +677,35 @@ function WorkoutPanel({
         ...current,
         completed,
         skipped: current.skipped.filter((id) => id !== exerciseId),
+        daySkipped: false,
+      });
+    });
+  };
+
+  const useLastSets = (exerciseId: string) => {
+    const previous = previousByExerciseId.get(exerciseId);
+    if (!previous) {
+      return;
+    }
+
+    onUpdate((current) => {
+      const currentDetail = current.details[exerciseId] ?? createEmptyExerciseDetail();
+      if (!isExerciseDetailEmpty(currentDetail)) {
+        return current;
+      }
+
+      return touchLog({
+        ...current,
+        details: {
+          ...current.details,
+          [exerciseId]: {
+            ...currentDetail,
+            sets: previous.detail.sets.map((set) => ({
+              ...set,
+              id: createSetId(),
+            })),
+          },
+        },
         daySkipped: false,
       });
     });
@@ -643,6 +920,13 @@ function WorkoutPanel({
             <StatusPill status={status} />
             <span>{log.supersets.length} supersets</span>
             <span>{supersetExerciseCount} paired</span>
+            <span>{loggedSets} sets</span>
+            <span>{sessionVolume.toLocaleString()} lb</span>
+            {restSeconds > 0 && (
+              <span className="rest-chip">
+                Rest {Math.floor(restSeconds / 60)}:{String(restSeconds % 60).padStart(2, '0')}
+              </span>
+            )}
           </div>
         </div>
         <div className="progress-orb" style={{ '--progress': `${progress.percent}%` } as CSSProperties}>
@@ -654,7 +938,7 @@ function WorkoutPanel({
       <div className="action-row">
         <button className="icon-text-button primary" type="button" onClick={completeAll}>
           <Check aria-hidden="true" />
-          <span>Complete All</span>
+          <span>Finish Workout</span>
         </button>
         <button className="icon-text-button" type="button" onClick={skipDay}>
           <Ban aria-hidden="true" />
@@ -777,6 +1061,13 @@ function WorkoutPanel({
                     const completed = log.completed.includes(exercise.id);
                     const skipped = log.skipped.includes(exercise.id);
                     const detail = log.details[exercise.id] ?? createEmptyExerciseDetail();
+                    const previous = previousByExerciseId.get(exercise.id);
+                    const lastSummary = previous ? formatSetSummary(previous.detail.sets) : '';
+                    const currentSummary = formatSetSummary(detail.sets);
+                    const previousBest = previousBestByExerciseId.get(exercise.id) ?? 0;
+                    const currentBest = Math.max(0, ...detail.sets.map(getSetVolume));
+                    const hasLocalPr = currentBest > 0 && currentBest > previousBest;
+                    const canUseLastSets = Boolean(previous && isExerciseDetailEmpty(detail));
 
                     return (
                       <div
@@ -792,7 +1083,20 @@ function WorkoutPanel({
                           {completed ? <Check aria-hidden="true" /> : <Circle aria-hidden="true" />}
                         </button>
                         <div className="exercise-copy">
-                          <strong>{exercise.name}</strong>
+                          <div className="exercise-title-row">
+                            <div>
+                              <strong>{exercise.name}</strong>
+                              {lastSummary && <small>Last time: {lastSummary}</small>}
+                            </div>
+                            {hasLocalPr && <span className="pr-chip">PR</span>}
+                          </div>
+                          {canUseLastSets && (
+                            <button className="last-sets-button" type="button" onClick={() => useLastSets(exercise.id)}>
+                              <RotateCcw aria-hidden="true" />
+                              <span>Use last sets</span>
+                            </button>
+                          )}
+                          {currentSummary && <div className="current-set-summary">{currentSummary}</div>}
                           <div className="set-stack">
                             {detail.sets.map((set, setIndex) => (
                               <div
@@ -916,6 +1220,16 @@ function WorkoutPanel({
           />
         </label>
       </div>
+      <div className="session-finish-bar">
+        <div>
+          <strong>{progress.completed}/{progress.total}</strong>
+          <span>{loggedSets} sets logged · {sessionVolume.toLocaleString()} lb volume</span>
+        </div>
+        <button className="icon-text-button primary" type="button" onClick={completeAll}>
+          <Check aria-hidden="true" />
+          <span>Finish</span>
+        </button>
+      </div>
     </section>
   );
 }
@@ -939,42 +1253,87 @@ function TodayView({
   const exercises = getExercises(todayKey);
   const progress = getProgressMeta(exercises, log);
   const remaining = Math.max(progress.total - progress.completed - progress.skipped, 0);
+  const stats = buildTrainingStats(logs, todayKey, getExercises);
+  const nextExercise = exercises.find((exercise) => !log.completed.includes(exercise.id) && !log.skipped.includes(exercise.id));
+  const loggedSets = getLogSetCount(log);
+  const sessionVolume = getLogVolume(log);
+  const todayBasketballMinutes = getCompletedBasketballMinutes(exercises, log);
+  const maxTrendVolume = Math.max(1, ...stats.weeklyTrend.map((entry) => entry.volume));
 
   return (
     <div className="view-stack">
-      <section className="topline">
-        <div>
+      <section className="today-dashboard">
+        <div className="today-hero">
           <p className="eyebrow">Today</p>
           <h1>{formatDateLabel(todayKey)}</h1>
+          <p>{nextExercise ? `Up next: ${nextExercise.name}` : 'Workout is wrapped. Nice work.'}</p>
+          <div className="hero-actions">
+            <a className="icon-text-button spotify-inline" href="https://open.spotify.com/" target="_blank" rel="noreferrer">
+              <Headphones aria-hidden="true" />
+              <span>Spotify</span>
+            </a>
+            <span>{remaining} left</span>
+          </div>
         </div>
-        <div className="topline-stat">
-          <Dumbbell aria-hidden="true" />
-          <strong>{progress.total}</strong>
-          <span>moves</span>
+
+        <div className="today-command">
+          <div className="progress-orb large" style={{ '--progress': `${progress.percent}%` } as CSSProperties}>
+            <strong>{progress.percent}%</strong>
+            <span>{progress.completed}/{progress.total}</span>
+          </div>
+          <div>
+            <span>Current focus</span>
+            <strong>{nextExercise?.name ?? 'Recovery'}</strong>
+            <p>{loggedSets} sets · {sessionVolume.toLocaleString()} lb · {todayBasketballMinutes} basketball min</p>
+          </div>
         </div>
       </section>
-      <div className="today-strip">
+
+      <div className="today-strip training-strip">
         <article>
-          <Check aria-hidden="true" />
-          <span>Done</span>
-          <strong>{progress.completed}</strong>
+          <Flame aria-hidden="true" />
+          <span>Streak</span>
+          <strong>{stats.streak}</strong>
         </article>
         <article>
-          <Link2 aria-hidden="true" />
-          <span>Supersets</span>
-          <strong>{log.supersets.length}</strong>
+          <Dumbbell aria-hidden="true" />
+          <span>Sets</span>
+          <strong>{loggedSets}</strong>
+        </article>
+        <article>
+          <Timer aria-hidden="true" />
+          <span>Basketball</span>
+          <strong>{stats.basketballMinutes}</strong>
         </article>
         <article>
           <Sparkles aria-hidden="true" />
-          <span>Remaining</span>
-          <strong>{remaining}</strong>
+          <span>Reps</span>
+          <strong>{stats.totalReps}</strong>
         </article>
       </div>
+
+      <section className="trend-card">
+        <div className="section-title">
+          <Activity aria-hidden="true" />
+          <h3>7 Day Load</h3>
+        </div>
+        <div className="trend-bars" aria-label="Seven day training volume">
+          {stats.weeklyTrend.map((entry) => (
+            <div key={entry.dateKey} className="trend-bar">
+              <span style={{ height: `${Math.max(8, Math.round((entry.volume / maxTrendVolume) * 100))}%` }} />
+              <small>{formatShortDate(entry.dateKey).slice(0, 3)}</small>
+            </div>
+          ))}
+        </div>
+      </section>
+
       <WorkoutPanel
         dateKey={todayKey}
         exercises={exercises}
         log={log}
+        logs={logs}
         todayKey={todayKey}
+        getExercises={getExercises}
         onReorder={(exerciseIds) => updateExerciseOrder(todayKey, exerciseIds)}
         onUpdate={(updater) => updateLog(todayKey, updater)}
         onClear={() => clearLog(todayKey)}
@@ -1186,72 +1545,53 @@ function MilestonesView({
   todayKey: string;
   getExercises: GetExercisesForDate;
 }) {
-  const allDates = buildRecentDates(todayKey, 180).reverse();
-  let completedSessions = 0;
-  let basketballMinutes = 0;
-  let stretchDays = 0;
-  const prNotes: Array<{ dateKey: string; note: string }> = [];
-
-  allDates.forEach((dateKey) => {
-    const log = normalizeLog(dateKey, logs[dateKey]);
-    const exercises = getExercises(dateKey);
-    const progress = getProgressMeta(exercises, log);
-    if (progress.completed === progress.total && progress.total > 0) {
-      completedSessions += 1;
-    }
-
-    basketballMinutes += exercises.reduce((total, exercise) => {
-      return log.completed.includes(exercise.id) ? total + getBasketballMinutes(exercise.name) : total;
-    }, 0);
-
-    const completedStretch = exercises.some(
-      (exercise) => log.completed.includes(exercise.id) && isStretchExercise(exercise.name),
-    );
-    if (completedStretch) {
-      stretchDays += 1;
-    }
-
-    if (log.prNote.trim()) {
-      prNotes.push({ dateKey, note: log.prNote.trim() });
-    }
-  });
-
-  let streak = 0;
-  for (const dateKey of buildRecentDates(todayKey, 90)) {
-    const log = normalizeLog(dateKey, logs[dateKey]);
-    const exercises = getExercises(dateKey);
-    const progress = getProgressMeta(exercises, log);
-    if (progress.completed === progress.total && progress.total > 0) {
-      streak += 1;
-    } else {
-      break;
-    }
-  }
+  const stats = buildTrainingStats(logs, todayKey, getExercises);
+  const maxVolume = Math.max(1, ...stats.weeklyTrend.map((entry) => entry.volume));
 
   return (
     <div className="view-stack">
       <section className="topline">
         <div>
-          <p className="eyebrow">Milestones</p>
+          <p className="eyebrow">Progress</p>
           <h1>Training signal</h1>
         </div>
       </section>
 
       <div className="metrics-grid">
-        <MetricTile icon={Flame} label="Current streak" value={`${streak} days`} accent="#f26440" />
-        <MetricTile icon={Check} label="Completed sessions" value={`${completedSessions}`} accent="#2e8f5b" />
-        <MetricTile icon={Timer} label="Basketball minutes" value={`${basketballMinutes}`} accent="#e4aa24" />
-        <MetricTile icon={Medal} label="Stretch days" value={`${stretchDays}`} accent="#3772ff" />
+        <MetricTile icon={Flame} label="Current streak" value={`${stats.streak} days`} accent="#f26440" />
+        <MetricTile icon={Check} label="Completed sessions" value={`${stats.completedSessions}`} accent="#2e8f5b" />
+        <MetricTile icon={Timer} label="Basketball minutes" value={`${stats.basketballMinutes}`} accent="#e4aa24" />
+        <MetricTile icon={Medal} label="Stretch days" value={`${stats.stretchDays}`} accent="#3772ff" />
+        <MetricTile icon={Activity} label="28 day volume" value={`${stats.totalVolume.toLocaleString()}`} accent="#6b8cae" />
+        <MetricTile icon={Target} label="28 day reps" value={`${stats.totalReps}`} accent="#9b7ba8" />
       </div>
+
+      <section className="timeline-section progress-section">
+        <div className="section-title">
+          <Activity aria-hidden="true" />
+          <h3>Weekly Load</h3>
+        </div>
+        <div className="progress-trend-list">
+          {stats.weeklyTrend.map((entry) => (
+            <article key={entry.dateKey} className="progress-trend-row">
+              <span>{formatShortDate(entry.dateKey)}</span>
+              <div className="thin-progress">
+                <span style={{ width: `${Math.max(2, Math.round((entry.volume / maxVolume) * 100))}%` }} />
+              </div>
+              <strong>{entry.volume.toLocaleString()} lb</strong>
+            </article>
+          ))}
+        </div>
+      </section>
 
       <section className="timeline-section">
         <div className="section-title">
           <Trophy aria-hidden="true" />
           <h3>PR Notes</h3>
         </div>
-        {prNotes.length > 0 ? (
+        {stats.prNotes.length > 0 ? (
           <div className="pr-list">
-            {prNotes
+            {stats.prNotes
               .slice()
               .reverse()
               .slice(0, 8)
@@ -1332,7 +1672,9 @@ function LogbookView({
           dateKey={selectedDate}
           exercises={getExercises(selectedDate)}
           log={normalizeLog(selectedDate, logs[selectedDate])}
+          logs={logs}
           todayKey={todayKey}
+          getExercises={getExercises}
           onReorder={(exerciseIds) => updateExerciseOrder(selectedDate, exerciseIds)}
           onUpdate={(updater) => updateLog(selectedDate, updater)}
           onClear={() => clearLog(selectedDate)}
@@ -1348,12 +1690,15 @@ function LogbookView({
           recentEntries.map((entry) => {
             const exercises = getExercises(entry.date);
             const progress = getProgressMeta(exercises, entry);
+            const sets = getLogSetCount(entry);
+            const volume = getLogVolume(entry);
             return (
               <button key={entry.date} type="button" className="recent-entry" onClick={() => setSelectedDate(entry.date)}>
-                <strong>{formatDateLabel(entry.date)}</strong>
-                <span>
-                  {progress.completed}/{progress.total}
-                </span>
+                <div>
+                  <strong>{formatDateLabel(entry.date)}</strong>
+                  <small>{sets} sets · {volume.toLocaleString()} lb</small>
+                </div>
+                <span>{progress.completed}/{progress.total}</span>
               </button>
             );
           })
@@ -1706,7 +2051,7 @@ export default function App() {
       </main>
 
       <nav className="bottom-tabs" aria-label="Gym tabs">
-        {TABS.map((tab) => (
+        {BOTTOM_TABS.map((tab) => (
           <TabButton
             key={tab.id}
             active={activeTab === tab.id}
