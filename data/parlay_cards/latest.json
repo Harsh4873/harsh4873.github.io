@@ -40,7 +40,7 @@
           "player": "",
           "probabilitySource": "probability",
           "rawProbability": 0.5813,
-          "result": "pending",
+          "result": "win",
           "source": "FIFA Model",
           "sourceKey": "fifa_world_cup",
           "sourceType": "model",
@@ -292,7 +292,7 @@
   ],
   "date": "2026-07-01",
   "engineVersion": "parlay_cards_v3_calibrated_portfolio",
-  "generatedAt": "2026-07-01T17:54:13.724021Z",
+  "generatedAt": "2026-07-01T18:34:49.079582Z",
   "notices": [
     "No same-game legs, same-player duplicates, or duplicate markets are allowed in a slip.",
     "Every leg must clear at least +1.5 percentage points of calibrated edge over the market price.",
