@@ -5,36 +5,36 @@
       "averageSourceForm": 55.67,
       "category": "compact_edge",
       "categoryLabel": "Compact Edge",
-      "categoryScore": 41.5253,
+      "categoryScore": 36.578,
       "categoryShortLabel": "Compact",
       "comboKey": "leg-0a80bb9c69224b29|leg-49f60487574427fa",
       "consensusLegs": 0,
       "date": "2026-07-01",
-      "decimalOdds": 4.5,
-      "estimatedProbability": 0.2948,
-      "fairOdds": 239,
+      "decimalOdds": 4.2955,
+      "estimatedProbability": 0.2996,
+      "fairOdds": 234,
       "fallback": true,
-      "geomeanProbability": 0.543,
+      "geomeanProbability": 0.5473,
       "hasPlayerProp": false,
       "id": "parlay-a33275aaa495acc9-compact_edge",
       "legCount": 2,
       "legs": [
         {
-          "calibratedEdge": 0.056,
+          "calibratedEdge": 0.0411,
           "calibrationSamples": 223,
           "consensusSources": [],
-          "decimalOdds": 2.0,
+          "decimalOdds": 1.9091,
           "decision": "BET",
-          "estimatedProbability": 0.556,
+          "estimatedProbability": 0.5649,
           "game": "Congo DR @ England",
           "gameKey": "2026-07-01:fifa wc:game:760495",
           "historicalProbability": 0.6,
           "legId": "leg-49f60487574427fa",
           "market": "soccer_total",
           "marketKey": "2026-07-01:fifa wc:game:760495::soccer total::over 2 5::2.5",
-          "marketProbability": 0.5,
+          "marketProbability": 0.5238,
           "modelRank": null,
-          "oddsAmerican": 100,
+          "oddsAmerican": -110,
           "pick": "Over 2.5 (Congo DR @ England)",
           "pickId": "leg-49f60487574427fa",
           "player": "",
@@ -76,13 +76,13 @@
           "startTime": "2026-07-02T00:00Z"
         }
       ],
-      "oddsAmerican": 350,
-      "parlayEv": 0.3268,
+      "oddsAmerican": 330,
+      "parlayEv": 0.2868,
       "payoutQuality": 1.0,
       "pickMode": "team",
       "profitUnits": 0.0,
       "result": "pending",
-      "score": 38.2573,
+      "score": 33.71,
       "sportMix": "FIFA WC + FIFA WC",
       "sportPattern": "2-same",
       "sports": [
@@ -90,7 +90,7 @@
       ],
       "stakeUnits": 1.0,
       "title": "Compact Edge",
-      "utility": 0.003056,
+      "utility": 0.002673,
       "whyQualified": "Selective 2-leg card. A 2-leg slip admitted only because the slate is thin or its utility beats the next viable 3-leg."
     },
     {
@@ -292,7 +292,7 @@
   ],
   "date": "2026-07-01",
   "engineVersion": "parlay_cards_v3_calibrated_portfolio",
-  "generatedAt": "2026-07-01T15:58:47.941135Z",
+  "generatedAt": "2026-07-01T16:37:39.506973Z",
   "notices": [
     "No same-game legs, same-player duplicates, or duplicate markets are allowed in a slip.",
     "Every leg must clear at least +1.5 percentage points of calibrated edge over the market price.",
@@ -366,10 +366,10 @@
     }
   ],
   "summary": {
-    "averageOdds": 346.5,
+    "averageOdds": 336.5,
     "displayedCards": 2,
     "eligibleLegs": 13,
-    "generatedThreeLegCandidates": 16,
+    "generatedThreeLegCandidates": 20,
     "modes": {
       "player": {
         "averageOdds": null,
@@ -390,7 +390,7 @@
         "twoLegFallbackCards": 0
       },
       "team": {
-        "averageOdds": 346.5,
+        "averageOdds": 336.5,
         "displayedCards": 2,
         "record": {
           "averageOdds": null,
