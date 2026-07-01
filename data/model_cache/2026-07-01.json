@@ -52478,6 +52478,7 @@
           "raw_edge": 10.92,
           "raw_model_probability": 0.628,
           "raw_probability": 0.628,
+          "result": "loss",
           "selected_side_implied_probability": 0.545455,
           "source": "MLB Inning",
           "sport": "MLB",
@@ -57159,6 +57160,7 @@
           "raw_model_probability": 0.6242,
           "raw_probability": 0.6242,
           "raw_units": 0.05,
+          "result": "win",
           "selected_side_implied_probability": 0.5238095238095238,
           "selection": "Over",
           "source": "MLB Model",
@@ -58732,6 +58734,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-01-07-2026-baltimore-orioles-chicago-white-sox-prediction",
           "sport": "MLB",
@@ -58768,6 +58771,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-01-07-2026-cleveland-guardians-texas-rangers-prediction",
           "sport": "MLB",
