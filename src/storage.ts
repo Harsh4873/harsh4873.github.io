@@ -13,6 +13,7 @@ import type {
 export const STORAGE_KEY = 'harsh-gym-logs-v1';
 export const EXERCISE_ORDER_STORAGE_KEY = 'harsh-gym-exercise-order-v1';
 export const PROGRAM_STORAGE_KEY = 'harsh-gym-program-v1';
+const PROGRAM_SCHEMA_VERSION = 2;
 
 function isPlainRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
@@ -269,6 +270,11 @@ export function loadProgram(): ProgramByDay {
     if (rawProgram) {
       const parsed = JSON.parse(rawProgram) as unknown;
       if (isPlainRecord(parsed)) {
+        const version = typeof parsed.version === 'number' ? parsed.version : 0;
+        if (version < PROGRAM_SCHEMA_VERSION) {
+          return getDefaultProgram();
+        }
+
         return normalizeProgram(isPlainRecord(parsed.program) ? parsed.program : parsed);
       }
     }
@@ -283,7 +289,7 @@ export function saveProgram(program: ProgramByDay): void {
   window.localStorage.setItem(
     PROGRAM_STORAGE_KEY,
     JSON.stringify({
-      version: 1,
+      version: PROGRAM_SCHEMA_VERSION,
       program: normalizeProgram(program),
       savedAt: new Date().toISOString(),
     }),
