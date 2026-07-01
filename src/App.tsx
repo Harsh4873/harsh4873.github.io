@@ -104,7 +104,11 @@ const STATUS_LABELS: Record<DayStatus, string> = {
 
 function getStoredTheme(): ThemeMode {
   const stored = window.localStorage.getItem(THEME_STORAGE_KEY);
-  return stored === 'light' ? 'light' : 'dark';
+  if (stored === 'dark' || stored === 'light') {
+    return stored;
+  }
+
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
 function getStoredMobilePreview(): boolean {
@@ -364,7 +368,7 @@ function AppChrome({
           activeIcon={Smartphone}
           inactiveIcon={Monitor}
           activeLabel="Mobile"
-          inactiveLabel="Desk"
+          inactiveLabel="Desktop"
           onClick={onMobilePreviewToggle}
           ariaLabel="Toggle mobile view"
         />
@@ -1565,7 +1569,7 @@ export default function App() {
     document.documentElement.style.colorScheme = theme;
     const metaTheme = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
     if (metaTheme) {
-      metaTheme.content = theme === 'dark' ? '#08110d' : '#f5f7f2';
+      metaTheme.content = theme === 'dark' ? '#23221d' : '#faf9f5';
     }
     window.localStorage.setItem(THEME_STORAGE_KEY, theme);
   }, [theme]);
