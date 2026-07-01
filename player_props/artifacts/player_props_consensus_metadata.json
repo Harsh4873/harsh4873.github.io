@@ -23,14 +23,14 @@
       "totalRebounds": 3
     }
   },
-  "market_rows": 108051,
+  "market_rows": 109603,
   "models": {
     "mlb_history": "2022-26 five-year roster-aware outcome-history classifiers",
     "mlb_season": "2026 market classifier",
     "wnba_history": "2024-26 workload-aware market/count models",
     "wnba_season": "2026 market/count models"
   },
-  "outcome_rows": 398689,
+  "outcome_rows": 399687,
   "roster_aware": true,
   "roster_policy": "Current player IDs only; season features reset annually; recent 3/5/10-game workload dominates older priors.",
   "seasons": {
@@ -161,32 +161,12 @@
     "WNBA": {
       "active": true,
       "combined_out_of_sample": {
-        "accuracy": 0.7272727272727273,
-        "losses": 3,
-        "samples": 11,
-        "wins": 8
+        "accuracy": 0.868421052631579,
+        "losses": 5,
+        "samples": 38,
+        "wins": 33
       },
       "failed_policies": {
-        "assists": {
-          "active": false,
-          "holdout": {
-            "accuracy": 0.6666666666666666,
-            "losses": 1,
-            "samples": 3,
-            "wins": 2
-          },
-          "meta_gate_threshold": 0.6,
-          "minimum_holdout_samples": 3,
-          "minimum_implied": 0.0,
-          "minimum_validation_samples": 5,
-          "selection": "Over",
-          "validation": {
-            "accuracy": 0.9090909090909091,
-            "losses": 2,
-            "samples": 22,
-            "wins": 20
-          }
-        },
         "totalRebounds": {
           "active": false,
           "history_only_publication": true,
@@ -217,6 +197,26 @@
         "history_2024_2026"
       ],
       "policies": {
+        "assists": {
+          "active": true,
+          "holdout": {
+            "accuracy": 0.75,
+            "losses": 1,
+            "samples": 4,
+            "wins": 3
+          },
+          "meta_gate_threshold": 0.6,
+          "minimum_holdout_samples": 3,
+          "minimum_implied": 0.0,
+          "minimum_validation_samples": 5,
+          "selection": "Over",
+          "validation": {
+            "accuracy": 0.9565217391304348,
+            "losses": 1,
+            "samples": 23,
+            "wins": 22
+          }
+        },
         "points": {
           "active": true,
           "holdout": {
@@ -245,6 +245,6 @@
     }
   },
   "target_accuracy": 0.7,
-  "training_fingerprint": "12bb3dd5b2db37f336ed8be55eca56875705ad7beca569d0d09760f0a7947794",
+  "training_fingerprint": "57ad76f632fe279c1b4fad88da857b3b9548eb121eae45bef0983adb537887a0",
   "version": "player_props_consensus_v2.0.0"
 }
