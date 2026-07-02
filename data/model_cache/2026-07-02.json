@@ -1,7 +1,7 @@
 {
   "date": "2026-07-02",
   "errors": [],
-  "externalFeedsUpdatedAt": "2026-07-02T16:15:00.658414Z",
+  "externalFeedsUpdatedAt": "2026-07-02T21:22:10.352795Z",
   "external_feeds": {
     "scores24_fifa_world_cup": {
       "date": "2026-07-02",
@@ -579,36 +579,20 @@
     "sportsgambler_fifa_world_cup": {
       "date": "2026-07-02",
       "errors": [],
-      "generatedAt": "2026-07-02T16:15:00.658414Z",
+      "generatedAt": "2026-07-02T21:22:10.352795Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-02",
         "feed": "sportsgambler_fifa_world_cup",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 3,
+        "pick_count": 2,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-02T16:15:00.658414Z"
+        "updatedAt": "2026-07-02T21:22:10.352795Z"
       },
-      "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 3 pick(s).",
+      "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 2 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "calibration_excluded": true,
-          "date": "2026-07-02",
-          "decision": "BET",
-          "edge": null,
-          "game": "Spain vs Austria",
-          "grade_supported": false,
-          "market_type": "soccer_asian_handicap",
-          "matchup": "Spain vs Austria",
-          "odds": -105,
-          "pick": "Spain Asian Hcp -1.5 (Spain vs Austria)",
-          "probability": null,
-          "source": "SportsGamblerFIFAWorldCup",
-          "sport": "FIFA WC",
-          "units": 1
-        },
         {
           "calibration_excluded": true,
           "date": "2026-07-02",
@@ -642,103 +626,25 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-02T16:15:00.658414Z"
+      "updatedAt": "2026-07-02T21:22:10.352795Z"
     },
     "sportsgambler_mlb": {
       "date": "2026-07-02",
       "errors": [],
-      "generatedAt": "2026-07-02T16:15:00.658414Z",
+      "generatedAt": "2026-07-02T21:22:10.352795Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-02",
         "feed": "sportsgambler_mlb",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 9,
+        "pick_count": 6,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-02T16:15:00.658414Z"
+        "updatedAt": "2026-07-02T21:22:10.352795Z"
       },
-      "note": "Scheduled sportsgambler_mlb refresh returned 9 pick(s).",
+      "note": "Scheduled sportsgambler_mlb refresh returned 6 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "date": "2026-07-02",
-          "decision": "BET",
-          "edge": null,
-          "game": "Philadelphia Phillies vs Pittsburgh Pirates",
-          "matchup": "Philadelphia Phillies vs Pittsburgh Pirates",
-          "odds": -135,
-          "pick": "Philadelphia Phillies to Win (Philadelphia Phillies vs Pittsburgh Pirates)",
-          "pregame_snapshot": {
-            "date": "2026-07-02",
-            "decision": "BET",
-            "edge": null,
-            "game": "Philadelphia Phillies vs Pittsburgh Pirates",
-            "matchup": "Philadelphia Phillies vs Pittsburgh Pirates",
-            "odds": -135,
-            "pick": "Philadelphia Phillies to Win (Philadelphia Phillies vs Pittsburgh Pirates)",
-            "probability": null,
-            "source": "SportsGamblerMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        {
-          "date": "2026-07-02",
-          "decision": "BET",
-          "edge": null,
-          "game": "Milwaukee Brewers vs Cincinnati Reds",
-          "matchup": "Milwaukee Brewers vs Cincinnati Reds",
-          "odds": -204,
-          "pick": "Milwaukee Brewers to Win (Milwaukee Brewers vs Cincinnati Reds)",
-          "pregame_snapshot": {
-            "date": "2026-07-02",
-            "decision": "BET",
-            "edge": null,
-            "game": "Milwaukee Brewers vs Cincinnati Reds",
-            "matchup": "Milwaukee Brewers vs Cincinnati Reds",
-            "odds": -204,
-            "pick": "Milwaukee Brewers to Win (Milwaukee Brewers vs Cincinnati Reds)",
-            "probability": null,
-            "source": "SportsGamblerMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        {
-          "date": "2026-07-02",
-          "decision": "BET",
-          "edge": null,
-          "game": "Colorado Rockies vs Miami Marlins",
-          "matchup": "Colorado Rockies vs Miami Marlins",
-          "odds": -130,
-          "pick": "Miami Marlins to Win (Colorado Rockies vs Miami Marlins)",
-          "pregame_snapshot": {
-            "date": "2026-07-02",
-            "decision": "BET",
-            "edge": null,
-            "game": "Colorado Rockies vs Miami Marlins",
-            "matchup": "Colorado Rockies vs Miami Marlins",
-            "odds": -130,
-            "pick": "Miami Marlins to Win (Colorado Rockies vs Miami Marlins)",
-            "probability": null,
-            "source": "SportsGamblerMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "units": 1
-        },
         {
           "date": "2026-07-02",
           "decision": "BET",
@@ -896,12 +802,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-02T16:15:00.658414Z"
+      "updatedAt": "2026-07-02T21:22:10.352795Z"
     },
     "sportsgambler_nba": {
       "date": "2026-07-02",
       "errors": [],
-      "generatedAt": "2026-07-02T16:15:00.658414Z",
+      "generatedAt": "2026-07-02T21:22:10.352795Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-02",
@@ -910,17 +816,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-02T16:15:00.658414Z"
+        "updatedAt": "2026-07-02T21:22:10.352795Z"
       },
       "note": "Scheduled sportsgambler_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-07-02T16:15:00.658414Z"
+      "updatedAt": "2026-07-02T21:22:10.352795Z"
     },
     "sportsgambler_wnba": {
       "date": "2026-07-02",
       "errors": [],
-      "generatedAt": "2026-07-02T16:15:00.658414Z",
+      "generatedAt": "2026-07-02T21:22:10.352795Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-02",
@@ -929,7 +835,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 3,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-02T16:15:00.658414Z"
+        "updatedAt": "2026-07-02T21:22:10.352795Z"
       },
       "note": "Scheduled sportsgambler_wnba refresh returned 3 pick(s).",
       "ok": true,
@@ -1013,41 +919,25 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-02T16:15:00.658414Z"
+      "updatedAt": "2026-07-02T21:22:10.352795Z"
     },
     "sportytrader_fifa_world_cup": {
       "date": "2026-07-02",
       "errors": [],
-      "generatedAt": "2026-07-02T16:15:00.658414Z",
+      "generatedAt": "2026-07-02T21:22:10.352795Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-02",
         "feed": "sportytrader_fifa_world_cup",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 3,
+        "pick_count": 2,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-02T16:15:00.658414Z"
+        "updatedAt": "2026-07-02T21:22:10.352795Z"
       },
-      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 3 pick(s).",
+      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 2 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "calibration_excluded": true,
-          "date": "2026-07-02",
-          "decision": "BET",
-          "edge": null,
-          "game": "Spain vs Austria",
-          "grade_supported": false,
-          "market_type": "soccer_specialty",
-          "matchup": "Spain vs Austria",
-          "odds": 255,
-          "pick": "Spain to Win & Both Teams to Score (Spain vs Austria)",
-          "probability": null,
-          "source": "SportyTraderFIFAWorldCup",
-          "sport": "FIFA WC",
-          "units": 1
-        },
         {
           "calibration_excluded": true,
           "date": "2026-07-02",
@@ -1081,77 +971,25 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-02T16:15:00.658414Z"
+      "updatedAt": "2026-07-02T21:22:10.352795Z"
     },
     "sportytrader_mlb": {
       "date": "2026-07-02",
       "errors": [],
-      "generatedAt": "2026-07-02T16:15:00.658414Z",
+      "generatedAt": "2026-07-02T21:22:10.352795Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-02",
         "feed": "sportytrader_mlb",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 7,
+        "pick_count": 5,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-02T16:15:00.658414Z"
+        "updatedAt": "2026-07-02T21:22:10.352795Z"
       },
-      "note": "Scheduled sportytrader_mlb refresh returned 7 pick(s).",
+      "note": "Scheduled sportytrader_mlb refresh returned 5 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "date": "2026-07-02",
-          "decision": "BET",
-          "edge": null,
-          "game": "Philadelphia Phillies vs Pittsburgh Pirates",
-          "matchup": "Philadelphia Phillies vs Pittsburgh Pirates",
-          "odds": 125,
-          "pick": "Over 11 (Phillies vs Pirates)",
-          "pregame_snapshot": {
-            "date": "2026-07-02",
-            "decision": "BET",
-            "edge": null,
-            "game": "Philadelphia Phillies vs Pittsburgh Pirates",
-            "matchup": "Philadelphia Phillies vs Pittsburgh Pirates",
-            "odds": 125,
-            "pick": "Over 11 (Phillies vs Pirates)",
-            "probability": null,
-            "source": "SportyTraderMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportyTraderMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        {
-          "date": "2026-07-02",
-          "decision": "BET",
-          "edge": null,
-          "game": "Milwaukee Brewers vs Cincinnati Reds",
-          "matchup": "Milwaukee Brewers vs Cincinnati Reds",
-          "odds": -128,
-          "pick": "Brewers ML (Brewers vs Reds)",
-          "pregame_snapshot": {
-            "date": "2026-07-02",
-            "decision": "BET",
-            "edge": null,
-            "game": "Milwaukee Brewers vs Cincinnati Reds",
-            "matchup": "Milwaukee Brewers vs Cincinnati Reds",
-            "odds": -128,
-            "pick": "Brewers ML (Brewers vs Reds)",
-            "probability": null,
-            "source": "SportyTraderMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportyTraderMLB",
-          "sport": "MLB",
-          "units": 1
-        },
         {
           "date": "2026-07-02",
           "decision": "BET",
@@ -1283,12 +1121,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-02T16:15:00.658414Z"
+      "updatedAt": "2026-07-02T21:22:10.352795Z"
     },
     "sportytrader_nba": {
       "date": "2026-07-02",
       "errors": [],
-      "generatedAt": "2026-07-02T16:15:00.658414Z",
+      "generatedAt": "2026-07-02T21:22:10.352795Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-02",
@@ -1297,31 +1135,110 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-02T16:15:00.658414Z"
+        "updatedAt": "2026-07-02T21:22:10.352795Z"
       },
       "note": "Scheduled sportytrader_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-07-02T16:15:00.658414Z"
+      "updatedAt": "2026-07-02T21:22:10.352795Z"
     },
     "sportytrader_wnba": {
       "date": "2026-07-02",
       "errors": [],
-      "generatedAt": "2026-07-02T16:15:00.658414Z",
+      "generatedAt": "2026-07-02T21:22:10.352795Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-02",
         "feed": "sportytrader_wnba",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 0,
+        "pick_count": 3,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-02T16:15:00.658414Z"
+        "updatedAt": "2026-07-02T21:22:10.352795Z"
       },
-      "note": "Scheduled sportytrader_wnba refresh returned 0 pick(s).",
+      "note": "Scheduled sportytrader_wnba refresh returned 3 pick(s).",
       "ok": true,
-      "picks": [],
-      "updatedAt": "2026-07-02T16:15:00.658414Z"
+      "picks": [
+        {
+          "date": "2026-07-02",
+          "decision": "BET",
+          "edge": null,
+          "game": "Washington Mystics vs Atlanta Dream",
+          "matchup": "Washington Mystics vs Atlanta Dream",
+          "odds": -146,
+          "pick": "Under 170.5 (Mystics vs Dream)",
+          "pregame_snapshot": {
+            "date": "2026-07-02",
+            "decision": "BET",
+            "edge": null,
+            "game": "Washington Mystics vs Atlanta Dream",
+            "matchup": "Washington Mystics vs Atlanta Dream",
+            "odds": -146,
+            "pick": "Under 170.5 (Mystics vs Dream)",
+            "probability": null,
+            "source": "SportyTraderWNBA",
+            "sport": "WNBA",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderWNBA",
+          "sport": "WNBA",
+          "units": 1
+        },
+        {
+          "date": "2026-07-02",
+          "decision": "BET",
+          "edge": null,
+          "game": "Connecticut Sun vs Dallas Wings",
+          "matchup": "Connecticut Sun vs Dallas Wings",
+          "odds": -225,
+          "pick": "Connecticut Sun on the +11.5 spread (Sun vs Wings)",
+          "pregame_snapshot": {
+            "date": "2026-07-02",
+            "decision": "BET",
+            "edge": null,
+            "game": "Connecticut Sun vs Dallas Wings",
+            "matchup": "Connecticut Sun vs Dallas Wings",
+            "odds": -225,
+            "pick": "Connecticut Sun on the +11.5 spread (Sun vs Wings)",
+            "probability": null,
+            "source": "SportyTraderWNBA",
+            "sport": "WNBA",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderWNBA",
+          "sport": "WNBA",
+          "units": 1
+        },
+        {
+          "date": "2026-07-02",
+          "decision": "BET",
+          "edge": null,
+          "game": "Phoenix Mercury vs Seattle Storm",
+          "matchup": "Phoenix Mercury vs Seattle Storm",
+          "odds": -182,
+          "pick": "Over 162.5 (Mercury vs Storm)",
+          "pregame_snapshot": {
+            "date": "2026-07-02",
+            "decision": "BET",
+            "edge": null,
+            "game": "Phoenix Mercury vs Seattle Storm",
+            "matchup": "Phoenix Mercury vs Seattle Storm",
+            "odds": -182,
+            "pick": "Over 162.5 (Mercury vs Storm)",
+            "probability": null,
+            "source": "SportyTraderWNBA",
+            "sport": "WNBA",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderWNBA",
+          "sport": "WNBA",
+          "units": 1
+        }
+      ],
+      "updatedAt": "2026-07-02T21:22:10.352795Z"
     }
   },
   "fifa_world_cup": {
@@ -41876,36 +41793,20 @@
     "sportsgambler_fifa_world_cup": {
       "date": "2026-07-02",
       "errors": [],
-      "generatedAt": "2026-07-02T16:15:00.658414Z",
+      "generatedAt": "2026-07-02T21:22:10.352795Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-02",
         "feed": "sportsgambler_fifa_world_cup",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 3,
+        "pick_count": 2,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-02T16:15:00.658414Z"
+        "updatedAt": "2026-07-02T21:22:10.352795Z"
       },
-      "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 3 pick(s).",
+      "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 2 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "calibration_excluded": true,
-          "date": "2026-07-02",
-          "decision": "BET",
-          "edge": null,
-          "game": "Spain vs Austria",
-          "grade_supported": false,
-          "market_type": "soccer_asian_handicap",
-          "matchup": "Spain vs Austria",
-          "odds": -105,
-          "pick": "Spain Asian Hcp -1.5 (Spain vs Austria)",
-          "probability": null,
-          "source": "SportsGamblerFIFAWorldCup",
-          "sport": "FIFA WC",
-          "units": 1
-        },
         {
           "calibration_excluded": true,
           "date": "2026-07-02",
@@ -41941,111 +41842,25 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-02T16:15:00.658414Z"
+      "updatedAt": "2026-07-02T21:22:10.352795Z"
     },
     "sportsgambler_mlb": {
       "date": "2026-07-02",
       "errors": [],
-      "generatedAt": "2026-07-02T16:15:00.658414Z",
+      "generatedAt": "2026-07-02T21:22:10.352795Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-02",
         "feed": "sportsgambler_mlb",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 9,
+        "pick_count": 6,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-02T16:15:00.658414Z"
+        "updatedAt": "2026-07-02T21:22:10.352795Z"
       },
-      "note": "Scheduled sportsgambler_mlb refresh returned 9 pick(s).",
+      "note": "Scheduled sportsgambler_mlb refresh returned 6 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "date": "2026-07-02",
-          "decision": "BET",
-          "edge": null,
-          "game": "Philadelphia Phillies vs Pittsburgh Pirates",
-          "game_start_time": "2026-07-02T16:35Z",
-          "matchup": "Philadelphia Phillies vs Pittsburgh Pirates",
-          "odds": -135,
-          "pick": "Philadelphia Phillies to Win (Philadelphia Phillies vs Pittsburgh Pirates)",
-          "pregame_snapshot": {
-            "date": "2026-07-02",
-            "decision": "BET",
-            "edge": null,
-            "game": "Philadelphia Phillies vs Pittsburgh Pirates",
-            "matchup": "Philadelphia Phillies vs Pittsburgh Pirates",
-            "odds": -135,
-            "pick": "Philadelphia Phillies to Win (Philadelphia Phillies vs Pittsburgh Pirates)",
-            "probability": null,
-            "source": "SportsGamblerMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "result": "loss",
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "start_time": "2026-07-02T16:35Z",
-          "units": 1
-        },
-        {
-          "date": "2026-07-02",
-          "decision": "BET",
-          "edge": null,
-          "game": "Milwaukee Brewers vs Cincinnati Reds",
-          "game_start_time": "2026-07-02T18:10Z",
-          "matchup": "Milwaukee Brewers vs Cincinnati Reds",
-          "odds": -204,
-          "pick": "Milwaukee Brewers to Win (Milwaukee Brewers vs Cincinnati Reds)",
-          "pregame_snapshot": {
-            "date": "2026-07-02",
-            "decision": "BET",
-            "edge": null,
-            "game": "Milwaukee Brewers vs Cincinnati Reds",
-            "matchup": "Milwaukee Brewers vs Cincinnati Reds",
-            "odds": -204,
-            "pick": "Milwaukee Brewers to Win (Milwaukee Brewers vs Cincinnati Reds)",
-            "probability": null,
-            "source": "SportsGamblerMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "result": "loss",
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "start_time": "2026-07-02T18:10Z",
-          "units": 1
-        },
-        {
-          "date": "2026-07-02",
-          "decision": "BET",
-          "edge": null,
-          "game": "Colorado Rockies vs Miami Marlins",
-          "game_start_time": "2026-07-02T19:10Z",
-          "matchup": "Colorado Rockies vs Miami Marlins",
-          "odds": -130,
-          "pick": "Miami Marlins to Win (Colorado Rockies vs Miami Marlins)",
-          "pregame_snapshot": {
-            "date": "2026-07-02",
-            "decision": "BET",
-            "edge": null,
-            "game": "Colorado Rockies vs Miami Marlins",
-            "matchup": "Colorado Rockies vs Miami Marlins",
-            "odds": -130,
-            "pick": "Miami Marlins to Win (Colorado Rockies vs Miami Marlins)",
-            "probability": null,
-            "source": "SportsGamblerMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "start_time": "2026-07-02T19:10Z",
-          "units": 1
-        },
         {
           "date": "2026-07-02",
           "decision": "BET",
@@ -42215,12 +42030,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-02T16:15:00.658414Z"
+      "updatedAt": "2026-07-02T21:22:10.352795Z"
     },
     "sportsgambler_nba": {
       "date": "2026-07-02",
       "errors": [],
-      "generatedAt": "2026-07-02T16:15:00.658414Z",
+      "generatedAt": "2026-07-02T21:22:10.352795Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-02",
@@ -42229,17 +42044,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-02T16:15:00.658414Z"
+        "updatedAt": "2026-07-02T21:22:10.352795Z"
       },
       "note": "Scheduled sportsgambler_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-07-02T16:15:00.658414Z"
+      "updatedAt": "2026-07-02T21:22:10.352795Z"
     },
     "sportsgambler_wnba": {
       "date": "2026-07-02",
       "errors": [],
-      "generatedAt": "2026-07-02T16:15:00.658414Z",
+      "generatedAt": "2026-07-02T21:22:10.352795Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-02",
@@ -42248,7 +42063,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 3,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-02T16:15:00.658414Z"
+        "updatedAt": "2026-07-02T21:22:10.352795Z"
       },
       "note": "Scheduled sportsgambler_wnba refresh returned 3 pick(s).",
       "ok": true,
@@ -42338,41 +42153,25 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-02T16:15:00.658414Z"
+      "updatedAt": "2026-07-02T21:22:10.352795Z"
     },
     "sportytrader_fifa_world_cup": {
       "date": "2026-07-02",
       "errors": [],
-      "generatedAt": "2026-07-02T16:15:00.658414Z",
+      "generatedAt": "2026-07-02T21:22:10.352795Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-02",
         "feed": "sportytrader_fifa_world_cup",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 3,
+        "pick_count": 2,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-02T16:15:00.658414Z"
+        "updatedAt": "2026-07-02T21:22:10.352795Z"
       },
-      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 3 pick(s).",
+      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 2 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "calibration_excluded": true,
-          "date": "2026-07-02",
-          "decision": "BET",
-          "edge": null,
-          "game": "Spain vs Austria",
-          "grade_supported": false,
-          "market_type": "soccer_specialty",
-          "matchup": "Spain vs Austria",
-          "odds": 255,
-          "pick": "Spain to Win & Both Teams to Score (Spain vs Austria)",
-          "probability": null,
-          "source": "SportyTraderFIFAWorldCup",
-          "sport": "FIFA WC",
-          "units": 1
-        },
         {
           "calibration_excluded": true,
           "date": "2026-07-02",
@@ -42408,83 +42207,25 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-02T16:15:00.658414Z"
+      "updatedAt": "2026-07-02T21:22:10.352795Z"
     },
     "sportytrader_mlb": {
       "date": "2026-07-02",
       "errors": [],
-      "generatedAt": "2026-07-02T16:15:00.658414Z",
+      "generatedAt": "2026-07-02T21:22:10.352795Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-02",
         "feed": "sportytrader_mlb",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 7,
+        "pick_count": 5,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-02T16:15:00.658414Z"
+        "updatedAt": "2026-07-02T21:22:10.352795Z"
       },
-      "note": "Scheduled sportytrader_mlb refresh returned 7 pick(s).",
+      "note": "Scheduled sportytrader_mlb refresh returned 5 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "date": "2026-07-02",
-          "decision": "BET",
-          "edge": null,
-          "game": "Philadelphia Phillies vs Pittsburgh Pirates",
-          "game_start_time": "2026-07-02T16:35Z",
-          "matchup": "Philadelphia Phillies vs Pittsburgh Pirates",
-          "odds": 125,
-          "pick": "Over 11 (Phillies vs Pirates)",
-          "pregame_snapshot": {
-            "date": "2026-07-02",
-            "decision": "BET",
-            "edge": null,
-            "game": "Philadelphia Phillies vs Pittsburgh Pirates",
-            "matchup": "Philadelphia Phillies vs Pittsburgh Pirates",
-            "odds": 125,
-            "pick": "Over 11 (Phillies vs Pirates)",
-            "probability": null,
-            "source": "SportyTraderMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "result": "loss",
-          "source": "SportyTraderMLB",
-          "sport": "MLB",
-          "start_time": "2026-07-02T16:35Z",
-          "units": 1
-        },
-        {
-          "date": "2026-07-02",
-          "decision": "BET",
-          "edge": null,
-          "game": "Milwaukee Brewers vs Cincinnati Reds",
-          "game_start_time": "2026-07-02T18:10Z",
-          "matchup": "Milwaukee Brewers vs Cincinnati Reds",
-          "odds": -128,
-          "pick": "Brewers ML (Brewers vs Reds)",
-          "pregame_snapshot": {
-            "date": "2026-07-02",
-            "decision": "BET",
-            "edge": null,
-            "game": "Milwaukee Brewers vs Cincinnati Reds",
-            "matchup": "Milwaukee Brewers vs Cincinnati Reds",
-            "odds": -128,
-            "pick": "Brewers ML (Brewers vs Reds)",
-            "probability": null,
-            "source": "SportyTraderMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "result": "loss",
-          "source": "SportyTraderMLB",
-          "sport": "MLB",
-          "start_time": "2026-07-02T18:10Z",
-          "units": 1
-        },
         {
           "date": "2026-07-02",
           "decision": "BET",
@@ -42626,12 +42367,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-02T16:15:00.658414Z"
+      "updatedAt": "2026-07-02T21:22:10.352795Z"
     },
     "sportytrader_nba": {
       "date": "2026-07-02",
       "errors": [],
-      "generatedAt": "2026-07-02T16:15:00.658414Z",
+      "generatedAt": "2026-07-02T21:22:10.352795Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-02",
@@ -42640,31 +42381,110 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-02T16:15:00.658414Z"
+        "updatedAt": "2026-07-02T21:22:10.352795Z"
       },
       "note": "Scheduled sportytrader_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-07-02T16:15:00.658414Z"
+      "updatedAt": "2026-07-02T21:22:10.352795Z"
     },
     "sportytrader_wnba": {
       "date": "2026-07-02",
       "errors": [],
-      "generatedAt": "2026-07-02T16:15:00.658414Z",
+      "generatedAt": "2026-07-02T21:22:10.352795Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-02",
         "feed": "sportytrader_wnba",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 0,
+        "pick_count": 3,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-02T16:15:00.658414Z"
+        "updatedAt": "2026-07-02T21:22:10.352795Z"
       },
-      "note": "Scheduled sportytrader_wnba refresh returned 0 pick(s).",
+      "note": "Scheduled sportytrader_wnba refresh returned 3 pick(s).",
       "ok": true,
-      "picks": [],
-      "updatedAt": "2026-07-02T16:15:00.658414Z"
+      "picks": [
+        {
+          "date": "2026-07-02",
+          "decision": "BET",
+          "edge": null,
+          "game": "Washington Mystics vs Atlanta Dream",
+          "matchup": "Washington Mystics vs Atlanta Dream",
+          "odds": -146,
+          "pick": "Under 170.5 (Mystics vs Dream)",
+          "pregame_snapshot": {
+            "date": "2026-07-02",
+            "decision": "BET",
+            "edge": null,
+            "game": "Washington Mystics vs Atlanta Dream",
+            "matchup": "Washington Mystics vs Atlanta Dream",
+            "odds": -146,
+            "pick": "Under 170.5 (Mystics vs Dream)",
+            "probability": null,
+            "source": "SportyTraderWNBA",
+            "sport": "WNBA",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderWNBA",
+          "sport": "WNBA",
+          "units": 1
+        },
+        {
+          "date": "2026-07-02",
+          "decision": "BET",
+          "edge": null,
+          "game": "Connecticut Sun vs Dallas Wings",
+          "matchup": "Connecticut Sun vs Dallas Wings",
+          "odds": -225,
+          "pick": "Connecticut Sun on the +11.5 spread (Sun vs Wings)",
+          "pregame_snapshot": {
+            "date": "2026-07-02",
+            "decision": "BET",
+            "edge": null,
+            "game": "Connecticut Sun vs Dallas Wings",
+            "matchup": "Connecticut Sun vs Dallas Wings",
+            "odds": -225,
+            "pick": "Connecticut Sun on the +11.5 spread (Sun vs Wings)",
+            "probability": null,
+            "source": "SportyTraderWNBA",
+            "sport": "WNBA",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderWNBA",
+          "sport": "WNBA",
+          "units": 1
+        },
+        {
+          "date": "2026-07-02",
+          "decision": "BET",
+          "edge": null,
+          "game": "Phoenix Mercury vs Seattle Storm",
+          "matchup": "Phoenix Mercury vs Seattle Storm",
+          "odds": -182,
+          "pick": "Over 162.5 (Mercury vs Storm)",
+          "pregame_snapshot": {
+            "date": "2026-07-02",
+            "decision": "BET",
+            "edge": null,
+            "game": "Phoenix Mercury vs Seattle Storm",
+            "matchup": "Phoenix Mercury vs Seattle Storm",
+            "odds": -182,
+            "pick": "Over 162.5 (Mercury vs Storm)",
+            "probability": null,
+            "source": "SportyTraderWNBA",
+            "sport": "WNBA",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderWNBA",
+          "sport": "WNBA",
+          "units": 1
+        }
+      ],
+      "updatedAt": "2026-07-02T21:22:10.352795Z"
     },
     "wnba": {
       "ok": true,
@@ -44366,36 +44186,20 @@
   "sportsgambler_fifa_world_cup": {
     "date": "2026-07-02",
     "errors": [],
-    "generatedAt": "2026-07-02T16:15:00.658414Z",
+    "generatedAt": "2026-07-02T21:22:10.352795Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-02",
       "feed": "sportsgambler_fifa_world_cup",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 3,
+      "pick_count": 2,
       "provider": "sportsgambler",
-      "updatedAt": "2026-07-02T16:15:00.658414Z"
+      "updatedAt": "2026-07-02T21:22:10.352795Z"
     },
-    "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 3 pick(s).",
+    "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 2 pick(s).",
     "ok": true,
     "picks": [
-      {
-        "calibration_excluded": true,
-        "date": "2026-07-02",
-        "decision": "BET",
-        "edge": null,
-        "game": "Spain vs Austria",
-        "grade_supported": false,
-        "market_type": "soccer_asian_handicap",
-        "matchup": "Spain vs Austria",
-        "odds": -105,
-        "pick": "Spain Asian Hcp -1.5 (Spain vs Austria)",
-        "probability": null,
-        "source": "SportsGamblerFIFAWorldCup",
-        "sport": "FIFA WC",
-        "units": 1
-      },
       {
         "calibration_excluded": true,
         "date": "2026-07-02",
@@ -44429,103 +44233,25 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-07-02T16:15:00.658414Z"
+    "updatedAt": "2026-07-02T21:22:10.352795Z"
   },
   "sportsgambler_mlb": {
     "date": "2026-07-02",
     "errors": [],
-    "generatedAt": "2026-07-02T16:15:00.658414Z",
+    "generatedAt": "2026-07-02T21:22:10.352795Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-02",
       "feed": "sportsgambler_mlb",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 9,
+      "pick_count": 6,
       "provider": "sportsgambler",
-      "updatedAt": "2026-07-02T16:15:00.658414Z"
+      "updatedAt": "2026-07-02T21:22:10.352795Z"
     },
-    "note": "Scheduled sportsgambler_mlb refresh returned 9 pick(s).",
+    "note": "Scheduled sportsgambler_mlb refresh returned 6 pick(s).",
     "ok": true,
     "picks": [
-      {
-        "date": "2026-07-02",
-        "decision": "BET",
-        "edge": null,
-        "game": "Philadelphia Phillies vs Pittsburgh Pirates",
-        "matchup": "Philadelphia Phillies vs Pittsburgh Pirates",
-        "odds": -135,
-        "pick": "Philadelphia Phillies to Win (Philadelphia Phillies vs Pittsburgh Pirates)",
-        "pregame_snapshot": {
-          "date": "2026-07-02",
-          "decision": "BET",
-          "edge": null,
-          "game": "Philadelphia Phillies vs Pittsburgh Pirates",
-          "matchup": "Philadelphia Phillies vs Pittsburgh Pirates",
-          "odds": -135,
-          "pick": "Philadelphia Phillies to Win (Philadelphia Phillies vs Pittsburgh Pirates)",
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        "probability": null,
-        "source": "SportsGamblerMLB",
-        "sport": "MLB",
-        "units": 1
-      },
-      {
-        "date": "2026-07-02",
-        "decision": "BET",
-        "edge": null,
-        "game": "Milwaukee Brewers vs Cincinnati Reds",
-        "matchup": "Milwaukee Brewers vs Cincinnati Reds",
-        "odds": -204,
-        "pick": "Milwaukee Brewers to Win (Milwaukee Brewers vs Cincinnati Reds)",
-        "pregame_snapshot": {
-          "date": "2026-07-02",
-          "decision": "BET",
-          "edge": null,
-          "game": "Milwaukee Brewers vs Cincinnati Reds",
-          "matchup": "Milwaukee Brewers vs Cincinnati Reds",
-          "odds": -204,
-          "pick": "Milwaukee Brewers to Win (Milwaukee Brewers vs Cincinnati Reds)",
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        "probability": null,
-        "source": "SportsGamblerMLB",
-        "sport": "MLB",
-        "units": 1
-      },
-      {
-        "date": "2026-07-02",
-        "decision": "BET",
-        "edge": null,
-        "game": "Colorado Rockies vs Miami Marlins",
-        "matchup": "Colorado Rockies vs Miami Marlins",
-        "odds": -130,
-        "pick": "Miami Marlins to Win (Colorado Rockies vs Miami Marlins)",
-        "pregame_snapshot": {
-          "date": "2026-07-02",
-          "decision": "BET",
-          "edge": null,
-          "game": "Colorado Rockies vs Miami Marlins",
-          "matchup": "Colorado Rockies vs Miami Marlins",
-          "odds": -130,
-          "pick": "Miami Marlins to Win (Colorado Rockies vs Miami Marlins)",
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        "probability": null,
-        "source": "SportsGamblerMLB",
-        "sport": "MLB",
-        "units": 1
-      },
       {
         "date": "2026-07-02",
         "decision": "BET",
@@ -44683,12 +44409,12 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-07-02T16:15:00.658414Z"
+    "updatedAt": "2026-07-02T21:22:10.352795Z"
   },
   "sportsgambler_nba": {
     "date": "2026-07-02",
     "errors": [],
-    "generatedAt": "2026-07-02T16:15:00.658414Z",
+    "generatedAt": "2026-07-02T21:22:10.352795Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-02",
@@ -44697,17 +44423,17 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 0,
       "provider": "sportsgambler",
-      "updatedAt": "2026-07-02T16:15:00.658414Z"
+      "updatedAt": "2026-07-02T21:22:10.352795Z"
     },
     "note": "Scheduled sportsgambler_nba refresh returned 0 pick(s).",
     "ok": true,
     "picks": [],
-    "updatedAt": "2026-07-02T16:15:00.658414Z"
+    "updatedAt": "2026-07-02T21:22:10.352795Z"
   },
   "sportsgambler_wnba": {
     "date": "2026-07-02",
     "errors": [],
-    "generatedAt": "2026-07-02T16:15:00.658414Z",
+    "generatedAt": "2026-07-02T21:22:10.352795Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-02",
@@ -44716,7 +44442,7 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 3,
       "provider": "sportsgambler",
-      "updatedAt": "2026-07-02T16:15:00.658414Z"
+      "updatedAt": "2026-07-02T21:22:10.352795Z"
     },
     "note": "Scheduled sportsgambler_wnba refresh returned 3 pick(s).",
     "ok": true,
@@ -44800,41 +44526,25 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-07-02T16:15:00.658414Z"
+    "updatedAt": "2026-07-02T21:22:10.352795Z"
   },
   "sportytrader_fifa_world_cup": {
     "date": "2026-07-02",
     "errors": [],
-    "generatedAt": "2026-07-02T16:15:00.658414Z",
+    "generatedAt": "2026-07-02T21:22:10.352795Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-02",
       "feed": "sportytrader_fifa_world_cup",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 3,
+      "pick_count": 2,
       "provider": "sportytrader",
-      "updatedAt": "2026-07-02T16:15:00.658414Z"
+      "updatedAt": "2026-07-02T21:22:10.352795Z"
     },
-    "note": "Scheduled sportytrader_fifa_world_cup refresh returned 3 pick(s).",
+    "note": "Scheduled sportytrader_fifa_world_cup refresh returned 2 pick(s).",
     "ok": true,
     "picks": [
-      {
-        "calibration_excluded": true,
-        "date": "2026-07-02",
-        "decision": "BET",
-        "edge": null,
-        "game": "Spain vs Austria",
-        "grade_supported": false,
-        "market_type": "soccer_specialty",
-        "matchup": "Spain vs Austria",
-        "odds": 255,
-        "pick": "Spain to Win & Both Teams to Score (Spain vs Austria)",
-        "probability": null,
-        "source": "SportyTraderFIFAWorldCup",
-        "sport": "FIFA WC",
-        "units": 1
-      },
       {
         "calibration_excluded": true,
         "date": "2026-07-02",
@@ -44868,77 +44578,25 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-07-02T16:15:00.658414Z"
+    "updatedAt": "2026-07-02T21:22:10.352795Z"
   },
   "sportytrader_mlb": {
     "date": "2026-07-02",
     "errors": [],
-    "generatedAt": "2026-07-02T16:15:00.658414Z",
+    "generatedAt": "2026-07-02T21:22:10.352795Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-02",
       "feed": "sportytrader_mlb",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 7,
+      "pick_count": 5,
       "provider": "sportytrader",
-      "updatedAt": "2026-07-02T16:15:00.658414Z"
+      "updatedAt": "2026-07-02T21:22:10.352795Z"
     },
-    "note": "Scheduled sportytrader_mlb refresh returned 7 pick(s).",
+    "note": "Scheduled sportytrader_mlb refresh returned 5 pick(s).",
     "ok": true,
     "picks": [
-      {
-        "date": "2026-07-02",
-        "decision": "BET",
-        "edge": null,
-        "game": "Philadelphia Phillies vs Pittsburgh Pirates",
-        "matchup": "Philadelphia Phillies vs Pittsburgh Pirates",
-        "odds": 125,
-        "pick": "Over 11 (Phillies vs Pirates)",
-        "pregame_snapshot": {
-          "date": "2026-07-02",
-          "decision": "BET",
-          "edge": null,
-          "game": "Philadelphia Phillies vs Pittsburgh Pirates",
-          "matchup": "Philadelphia Phillies vs Pittsburgh Pirates",
-          "odds": 125,
-          "pick": "Over 11 (Phillies vs Pirates)",
-          "probability": null,
-          "source": "SportyTraderMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        "probability": null,
-        "source": "SportyTraderMLB",
-        "sport": "MLB",
-        "units": 1
-      },
-      {
-        "date": "2026-07-02",
-        "decision": "BET",
-        "edge": null,
-        "game": "Milwaukee Brewers vs Cincinnati Reds",
-        "matchup": "Milwaukee Brewers vs Cincinnati Reds",
-        "odds": -128,
-        "pick": "Brewers ML (Brewers vs Reds)",
-        "pregame_snapshot": {
-          "date": "2026-07-02",
-          "decision": "BET",
-          "edge": null,
-          "game": "Milwaukee Brewers vs Cincinnati Reds",
-          "matchup": "Milwaukee Brewers vs Cincinnati Reds",
-          "odds": -128,
-          "pick": "Brewers ML (Brewers vs Reds)",
-          "probability": null,
-          "source": "SportyTraderMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        "probability": null,
-        "source": "SportyTraderMLB",
-        "sport": "MLB",
-        "units": 1
-      },
       {
         "date": "2026-07-02",
         "decision": "BET",
@@ -45070,12 +44728,12 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-07-02T16:15:00.658414Z"
+    "updatedAt": "2026-07-02T21:22:10.352795Z"
   },
   "sportytrader_nba": {
     "date": "2026-07-02",
     "errors": [],
-    "generatedAt": "2026-07-02T16:15:00.658414Z",
+    "generatedAt": "2026-07-02T21:22:10.352795Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-02",
@@ -45084,33 +44742,112 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 0,
       "provider": "sportytrader",
-      "updatedAt": "2026-07-02T16:15:00.658414Z"
+      "updatedAt": "2026-07-02T21:22:10.352795Z"
     },
     "note": "Scheduled sportytrader_nba refresh returned 0 pick(s).",
     "ok": true,
     "picks": [],
-    "updatedAt": "2026-07-02T16:15:00.658414Z"
+    "updatedAt": "2026-07-02T21:22:10.352795Z"
   },
   "sportytrader_wnba": {
     "date": "2026-07-02",
     "errors": [],
-    "generatedAt": "2026-07-02T16:15:00.658414Z",
+    "generatedAt": "2026-07-02T21:22:10.352795Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-02",
       "feed": "sportytrader_wnba",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 0,
+      "pick_count": 3,
       "provider": "sportytrader",
-      "updatedAt": "2026-07-02T16:15:00.658414Z"
+      "updatedAt": "2026-07-02T21:22:10.352795Z"
     },
-    "note": "Scheduled sportytrader_wnba refresh returned 0 pick(s).",
+    "note": "Scheduled sportytrader_wnba refresh returned 3 pick(s).",
     "ok": true,
-    "picks": [],
-    "updatedAt": "2026-07-02T16:15:00.658414Z"
+    "picks": [
+      {
+        "date": "2026-07-02",
+        "decision": "BET",
+        "edge": null,
+        "game": "Washington Mystics vs Atlanta Dream",
+        "matchup": "Washington Mystics vs Atlanta Dream",
+        "odds": -146,
+        "pick": "Under 170.5 (Mystics vs Dream)",
+        "pregame_snapshot": {
+          "date": "2026-07-02",
+          "decision": "BET",
+          "edge": null,
+          "game": "Washington Mystics vs Atlanta Dream",
+          "matchup": "Washington Mystics vs Atlanta Dream",
+          "odds": -146,
+          "pick": "Under 170.5 (Mystics vs Dream)",
+          "probability": null,
+          "source": "SportyTraderWNBA",
+          "sport": "WNBA",
+          "units": 1
+        },
+        "probability": null,
+        "source": "SportyTraderWNBA",
+        "sport": "WNBA",
+        "units": 1
+      },
+      {
+        "date": "2026-07-02",
+        "decision": "BET",
+        "edge": null,
+        "game": "Connecticut Sun vs Dallas Wings",
+        "matchup": "Connecticut Sun vs Dallas Wings",
+        "odds": -225,
+        "pick": "Connecticut Sun on the +11.5 spread (Sun vs Wings)",
+        "pregame_snapshot": {
+          "date": "2026-07-02",
+          "decision": "BET",
+          "edge": null,
+          "game": "Connecticut Sun vs Dallas Wings",
+          "matchup": "Connecticut Sun vs Dallas Wings",
+          "odds": -225,
+          "pick": "Connecticut Sun on the +11.5 spread (Sun vs Wings)",
+          "probability": null,
+          "source": "SportyTraderWNBA",
+          "sport": "WNBA",
+          "units": 1
+        },
+        "probability": null,
+        "source": "SportyTraderWNBA",
+        "sport": "WNBA",
+        "units": 1
+      },
+      {
+        "date": "2026-07-02",
+        "decision": "BET",
+        "edge": null,
+        "game": "Phoenix Mercury vs Seattle Storm",
+        "matchup": "Phoenix Mercury vs Seattle Storm",
+        "odds": -182,
+        "pick": "Over 162.5 (Mercury vs Storm)",
+        "pregame_snapshot": {
+          "date": "2026-07-02",
+          "decision": "BET",
+          "edge": null,
+          "game": "Phoenix Mercury vs Seattle Storm",
+          "matchup": "Phoenix Mercury vs Seattle Storm",
+          "odds": -182,
+          "pick": "Over 162.5 (Mercury vs Storm)",
+          "probability": null,
+          "source": "SportyTraderWNBA",
+          "sport": "WNBA",
+          "units": 1
+        },
+        "probability": null,
+        "source": "SportyTraderWNBA",
+        "sport": "WNBA",
+        "units": 1
+      }
+    ],
+    "updatedAt": "2026-07-02T21:22:10.352795Z"
   },
-  "updatedAt": "2026-07-02T17:13:05.523053Z",
+  "updatedAt": "2026-07-02T21:22:10.352795Z",
   "wnba": {
     "ok": true,
     "picks": [
