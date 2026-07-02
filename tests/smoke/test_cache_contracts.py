@@ -8,7 +8,7 @@ from scripts import site_upcheck
 
 
 ROOT = Path(__file__).resolve().parents[2]
-PLAYER_PROP_MODEL_KEYS = {"mlb_player_props", "wnba_player_props"}
+PLAYER_PROP_MODEL_KEYS = {"mlb_player_props", "wnba_player_props", "wnba_3pm"}
 
 
 def _read_json(path: Path) -> dict:
@@ -74,7 +74,12 @@ def test_latest_player_prop_records_use_one_bucket_per_sport():
             assert pick["scope"] == "player"
             assert pick["model_key"] == model_key
             rank_epoch = str(pick.get("ml_rank_epoch") or "")
-            assert rank_epoch.startswith(f"{pick['sport']}:player_props_consensus_v2.0.0:published:")
+            expected_prefix = (
+                "WNBA3PM:player_props_consensus_v2.0.0:published:"
+                if model_key == "wnba_3pm"
+                else f"{pick['sport']}:player_props_consensus_v2.0.0:published:"
+            )
+            assert rank_epoch.startswith(expected_prefix)
 
 
 def test_latest_player_prop_boards_stay_ranked_and_deduped():

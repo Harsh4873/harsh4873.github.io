@@ -61,6 +61,20 @@ def _number(value: Any) -> float | None:
     return number if math.isfinite(number) else None
 
 
+def _canonical_stat_name(value: Any) -> str:
+    return "".join(ch for ch in str(value or "").lower() if ch.isalnum())
+
+
+def _made_attempted(value: Any) -> tuple[float | None, float | None]:
+    text = str(value or "").strip()
+    if not text:
+        return None, None
+    if "-" not in text:
+        return _number(text), None
+    made_text, attempted_text = text.split("-", 1)
+    return _number(made_text), _number(attempted_text)
+
+
 def _outs(value: Any) -> float | None:
     text = str(value or "").strip()
     if not text:
@@ -125,7 +139,22 @@ def _event_rows(sport: str, athlete_id: str, season: int, payload: dict[str, Any
                 event = event_index.get(event_id) if isinstance(event_index.get(event_id), dict) else {}
                 if not event_id or event_id in seen or len(values) < len(names):
                     continue
-                stats = {name: _number(values[index]) for index, name in enumerate(names)}
+                stats: dict[str, float | None] = {}
+                for index, name in enumerate(names):
+                    value = values[index]
+                    stats[name] = _number(value)
+                    if _canonical_stat_name(name) in {
+                        "threepointfieldgoalsmadethreepointfieldgoalsattempted",
+                        "fg3mfg3a",
+                        "3pm3pa",
+                    }:
+                        made, attempted = _made_attempted(value)
+                        stats["three_pointers_made"] = made
+                        stats["three_pointers_attempted"] = attempted
+                    elif _canonical_stat_name(name) in {"threepointfieldgoalsmade", "fg3m", "3pm"}:
+                        stats["three_pointers_made"] = _number(value)
+                    elif _canonical_stat_name(name) in {"threepointfieldgoalsattempted", "fg3a", "3pa"}:
+                        stats["three_pointers_attempted"] = _number(value)
                 context = {
                     "minutes": stats.get("minutes"),
                     "usage": (
@@ -167,6 +196,7 @@ def _event_rows(sport: str, athlete_id: str, season: int, payload: dict[str, Any
                         "points": points,
                         "totalRebounds": rebounds,
                         "assists": assists,
+                        "three_pointers_made": stats.get("three_pointers_made"),
                         "points_rebounds": points + rebounds if points is not None and rebounds is not None else None,
                         "points_assists": points + assists if points is not None and assists is not None else None,
                         "points_rebounds_assists": (
@@ -198,6 +228,13 @@ def _event_rows(sport: str, athlete_id: str, season: int, payload: dict[str, Any
                         "actual": float(actual),
                         "source": "ESPN player gamelog",
                         **context,
+                        **(
+                            {
+                                "three_pointers_attempted": stats.get("three_pointers_attempted"),
+                            }
+                            if sport == "WNBA" and stat_key == "three_pointers_made"
+                            else {}
+                        ),
                     })
                 seen.add(event_id)
     return output

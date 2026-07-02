@@ -48,7 +48,7 @@ OUTCOME_MARKET_FEATURES = OUTCOME_FEATURES + ["line", "over_implied", "under_imp
 
 TARGET_STATS = {
     "MLB": {"hits_runs_rbis", "hits", "strikeouts", "pitcher_walks_allowed"},
-    "WNBA": {"points", "totalRebounds", "assists"},
+    "WNBA": {"points", "totalRebounds", "assists", "three_pointers_made"},
 }
 
 _BUNDLE: dict[str, Any] | None | bool = False

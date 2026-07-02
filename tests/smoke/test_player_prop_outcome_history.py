@@ -113,3 +113,48 @@ def test_outcome_history_fails_when_retry_failures_exceed_threshold(monkeypatch,
     stdout = capsys.readouterr().out
     assert "too many profile failures after retry" in stdout
     assert '"ok": false' in stdout
+
+
+def test_wnba_outcome_history_writes_three_pointers_made_and_attempts():
+    from scripts import build_player_prop_outcome_history as history
+
+    payload = {
+        "names": [
+            "minutes",
+            "points",
+            "totalRebounds",
+            "assists",
+            "threePointFieldGoalsMade-threePointFieldGoalsAttempted",
+        ],
+        "events": {
+            "game-1": {
+                "gameDate": "2026-06-12T23:30Z",
+                "opponent": {"id": "20"},
+                "team": {"id": "10"},
+                "atVs": "@",
+            }
+        },
+        "seasonTypes": [
+            {
+                "displayName": "2026 Regular Season",
+                "categories": [
+                    {
+                        "type": "event",
+                        "events": [{"eventId": "game-1", "stats": ["31", "17", "4", "6", "3-8"]}],
+                    }
+                ],
+            }
+        ],
+    }
+
+    rows = history._event_rows("WNBA", "athlete-1", 2026, payload)
+    threes = [row for row in rows if row["stat_key"] == "three_pointers_made"]
+
+    assert len(threes) == 1
+    assert threes[0]["actual"] == 3.0
+    assert threes[0]["three_pointers_attempted"] == 8.0
+    assert threes[0]["minutes"] == 31.0
+    assert threes[0]["usage"] == 31.0
+    assert threes[0]["opponent_id"] == "20"
+    assert threes[0]["team_id"] == "10"
+    assert threes[0]["home_away"] == "@"

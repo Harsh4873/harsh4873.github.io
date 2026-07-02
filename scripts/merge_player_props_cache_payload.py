@@ -101,6 +101,8 @@ def _market_key(pick: dict[str, Any]) -> tuple[str, ...]:
 
 def _sport_from_model_key(model_key: str) -> str:
     value = str(model_key or "").strip().lower()
+    if value == "wnba_3pm":
+        return "WNBA"
     if value.startswith("mlb_player_props"):
         return "MLB"
     if value.startswith("wnba_player_props"):
@@ -118,7 +120,18 @@ def _sport_source(sport: str) -> str:
     return f"{str(sport or '').strip().upper()}PlayerProps"
 
 
+def _model_source(model_key: str, sport: str) -> str:
+    if str(model_key or "").strip().lower() == "wnba_3pm":
+        return "WNBA3PM"
+    return _sport_source(sport)
+
+
 def _same_sport_model_bucket(model_key: str, bucket_key: str) -> bool:
+    if "wnba_3pm" in {
+        str(model_key or "").strip().lower(),
+        str(bucket_key or "").strip().lower(),
+    }:
+        return str(model_key or "").strip().lower() == str(bucket_key or "").strip().lower()
     sport = _sport_from_model_key(model_key)
     return bool(sport and _sport_from_model_key(bucket_key) == sport)
 
@@ -188,8 +201,10 @@ def _normalized_player_prop_id(pick: dict[str, Any]) -> str:
 
 
 def _normalize_carried_pick(pick: dict[str, Any], generated_bucket: dict[str, Any]) -> dict[str, Any]:
-    sport = str(pick.get("sport") or _sport_from_model_key(str(generated_bucket.get("model_key") or ""))).strip().upper()
-    model_key = _sport_model_key(sport)
+    generated_model_key = str(generated_bucket.get("model_key") or "").strip()
+    sport = str(pick.get("sport") or _sport_from_model_key(generated_model_key)).strip().upper()
+    model_key = generated_model_key or _sport_model_key(sport)
+    source = _model_source(model_key, sport)
     rank_epoch = str(generated_bucket.get("ranking_epoch") or pick.get("ml_rank_epoch") or pick.get("ranking_epoch") or "")
     normalized = _ensure_consensus_fields(dict(pick))
     if "supporting_variant" not in normalized and normalized.get("model_variant"):
@@ -199,10 +214,10 @@ def _normalize_carried_pick(pick: dict[str, Any], generated_bucket: dict[str, An
     normalized.update(
         {
             "id": _normalized_player_prop_id(normalized),
-            "source": _sport_source(sport),
+            "source": source,
             "model_key": model_key,
-            "ranking_model": _sport_source(sport),
-            "published_model": _sport_source(sport),
+            "ranking_model": source,
+            "published_model": source,
             "ml_rank_epoch": rank_epoch,
             "ranking_epoch": rank_epoch,
             "model_epoch": rank_epoch,

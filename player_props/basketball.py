@@ -53,13 +53,18 @@ BASKETBALL_GAMELOG_ALIASES = {
     "assists": "assists",
     "3pm": "three_pointers_made",
     "fg3m": "three_pointers_made",
+    "3pm3pa": "three_pointers_made_attempted",
+    "fg3mfg3a": "three_pointers_made_attempted",
     "threepointfieldgoalsmade": "three_pointers_made",
     "threepointfieldgoals": "three_pointers_made",
+    "threepointfieldgoalsmadethreepointfieldgoalsattempted": "three_pointers_made_attempted",
     "stl": "steals",
     "steals": "steals",
     "blk": "blocks",
     "blocks": "blocks",
 }
+
+BASKETBALL_CONTEXT_STATS = ("three_pointers_attempted",)
 
 BASKETBALL_MARKET_TYPES = {
     "points": ("points", "Points"),
@@ -173,6 +178,22 @@ def _target_value(row: dict[str, Any]) -> tuple[float, str]:
 
 def _canonical_market_name(value: str) -> str:
     return "".join(ch for ch in str(value or "").lower() if ch.isalnum())
+
+
+def _made_attempted(value: Any) -> tuple[float | None, float | None]:
+    text = str(value or "").strip()
+    if not text:
+        return None, None
+    if "-" not in text:
+        made = safe_float(text, float("nan"))
+        return (made, None) if math.isfinite(made) else (None, None)
+    made_text, attempted_text = text.split("-", 1)
+    made = safe_float(made_text, float("nan"))
+    attempted = safe_float(attempted_text, float("nan"))
+    return (
+        made if math.isfinite(made) else None,
+        attempted if math.isfinite(attempted) else None,
+    )
 
 
 def _is_milestone_market(type_name: str, display: str) -> bool:
@@ -317,7 +338,17 @@ def _parse_gamelog(payload: dict[str, Any]) -> dict[str, Any] | None:
                 values = event.get("stats") or []
                 if len(values) < len(names):
                     continue
-                row = {name: safe_float(values[index]) for index, name in enumerate(names)}
+                row: dict[str, float] = {}
+                for index, name in enumerate(names):
+                    raw_value = values[index]
+                    if name == "three_pointers_made_attempted":
+                        made, attempted = _made_attempted(raw_value)
+                        if made is not None:
+                            row["three_pointers_made"] = made
+                        if attempted is not None:
+                            row["three_pointers_attempted"] = attempted
+                        continue
+                    row[name] = safe_float(raw_value)
                 for stat_key, definition in BASKETBALL_STAT_DEFINITIONS.items():
                     components = tuple(definition["components"])
                     if stat_key in row:
@@ -333,13 +364,18 @@ def _parse_gamelog(payload: dict[str, Any]) -> dict[str, Any] | None:
         for stat_key in BASKETBALL_STAT_DEFINITIONS
         if all(stat_key in row for row in rows)
     ]
+    context_stats = [
+        stat_key
+        for stat_key in BASKETBALL_CONTEXT_STATS
+        if all(stat_key in row for row in rows)
+    ]
     averages = {
         stat: statistics.fmean(row[stat] for row in rows)
-        for stat in ("minutes", *available_stats)
+        for stat in ("minutes", *available_stats, *context_stats)
     }
     recent = {
         stat: statistics.fmean(row[stat] for row in rows[:5])
-        for stat in ("minutes", *available_stats)
+        for stat in ("minutes", *available_stats, *context_stats)
     }
     deviations = {
         stat: statistics.pstdev([row[stat] for row in rows]) if len(rows) > 1 else max(1.0, averages[stat] * 0.25)
@@ -414,7 +450,7 @@ def _position_matchup_context(
     notes: list[str] = [f"Position matchup group {group}"]
     if group == "Guard":
         guard_pressure = steals / 7.2 if steals else 1.0
-        if stat_key in {"points", "assists", "points_assists", "points_rebounds_assists"}:
+        if stat_key in {"points", "assists", "points_assists", "points_rebounds_assists", "three_pointers_made"}:
             factor *= max(0.94, min(1.06, 2.0 - guard_pressure))
         notes.append(f"Opponent guard-pressure proxy {steals:.1f} steals/game" if steals else "Opponent guard-pressure proxy unavailable")
     elif group in {"Forward", "Center"}:
@@ -472,6 +508,51 @@ def _player_profiles(
     return profiles
 
 
+def _three_point_projection(player: dict[str, Any]) -> tuple[float, list[str], dict[str, float]]:
+    season_made = safe_float((player.get("average") or {}).get("three_pointers_made"))
+    recent_made = safe_float((player.get("recent") or {}).get("three_pointers_made"), season_made)
+    season_attempts = safe_float((player.get("average") or {}).get("three_pointers_attempted"))
+    recent_attempts = safe_float((player.get("recent") or {}).get("three_pointers_attempted"), season_attempts)
+    games = max(1.0, safe_float(player.get("games"), 1.0))
+    league_rate = 0.34
+    if season_attempts <= 0:
+        season_attempts = season_made / league_rate if season_made > 0 else 0.0
+    if recent_attempts <= 0:
+        recent_attempts = recent_made / league_rate if recent_made > 0 else season_attempts
+    season_rate = season_made / season_attempts if season_attempts > 0 else league_rate
+    recent_rate = recent_made / recent_attempts if recent_attempts > 0 else season_rate
+    season_rate = max(0.05, min(0.58, season_rate))
+    recent_rate = max(0.05, min(0.62, recent_rate))
+    season_minutes = max(1.0, safe_float((player.get("average") or {}).get("minutes"), 1.0))
+    recent_minutes = max(1.0, safe_float((player.get("recent") or {}).get("minutes"), season_minutes))
+    minutes_factor = max(0.86, min(1.14, recent_minutes / season_minutes))
+    attempt_projection = ((season_attempts * 0.62) + (recent_attempts * 0.38)) * minutes_factor
+    season_total_makes = season_made * games
+    season_total_attempts = max(season_attempts * games, season_total_makes)
+    shrink_attempts = 32.0
+    make_rate = (
+        (season_total_makes + (league_rate * shrink_attempts))
+        / max(1.0, season_total_attempts + shrink_attempts)
+    )
+    make_rate = (make_rate * 0.75) + (recent_rate * 0.25)
+    make_rate = max(0.08, min(0.56, make_rate))
+    projection = max(0.0, attempt_projection * make_rate)
+    notes = [
+        f"Season 3PA {season_attempts:.1f} and 3P% {season_rate:.1%}",
+        f"Last-five 3PA {recent_attempts:.1f} and 3P% {recent_rate:.1%}",
+        f"Projected 3PA {attempt_projection:.1f} with shrinkage-adjusted 3P% {make_rate:.1%}",
+    ]
+    details = {
+        "three_point_attempt_projection": round(attempt_projection, 4),
+        "three_point_make_rate_projection": round(make_rate, 4),
+        "season_three_point_attempts": round(season_attempts, 4),
+        "recent_three_point_attempts": round(recent_attempts, 4),
+        "season_three_point_pct": round(season_rate, 4),
+        "recent_three_point_pct": round(recent_rate, 4),
+    }
+    return projection, notes, details
+
+
 def _game_props(
     *,
     client: Any,
@@ -484,6 +565,7 @@ def _game_props(
     max_workers: int,
     select: bool = True,
     apply_precision: bool = True,
+    stat_filter: set[str] | None = None,
 ) -> list[dict[str, Any]]:
     competition = (event.get("competitions") or [{}])[0]
     competitors = competition.get("competitors") or []
@@ -539,18 +621,25 @@ def _game_props(
         for player in healthy:
             available_stats = set(player.get("available_stats") or player["average"].keys())
             for stat_key, stat_label in STAT_LABELS.items():
+                if stat_filter is not None and stat_key not in stat_filter:
+                    continue
                 if stat_key not in available_stats:
                     continue
                 season_avg = player["average"][stat_key]
                 recent_avg = player["recent"][stat_key]
                 if season_avg <= 0:
                     continue
-                projection = (season_avg * 0.58) + (recent_avg * 0.42)
-                factors = [
-                    f"Season {stat_label.lower()} average {season_avg:.1f}",
-                    f"Last-five {stat_label.lower()} average {recent_avg:.1f}",
-                    *opponent_factors,
-                ]
+                three_point_details: dict[str, float] = {}
+                if stat_key == "three_pointers_made":
+                    projection, shooting_factors, three_point_details = _three_point_projection(player)
+                    factors = [*shooting_factors, *opponent_factors]
+                else:
+                    projection = (season_avg * 0.58) + (recent_avg * 0.42)
+                    factors = [
+                        f"Season {stat_label.lower()} average {season_avg:.1f}",
+                        f"Last-five {stat_label.lower()} average {recent_avg:.1f}",
+                        *opponent_factors,
+                    ]
                 matchup_factor, matchup_factors = _position_matchup_context(
                     stat_key=stat_key,
                     position=str(player.get("position") or ""),
@@ -621,7 +710,7 @@ def _game_props(
                         "market_threshold": market.get("display"),
                     }
                 else:
-                    line = nearest_half(season_avg)
+                    line = nearest_half(projection if stat_key == "three_pointers_made" else season_avg)
                     selection = "Over" if projection >= line else "Under"
                     probability = normal_probability(projection, line, sigma, selection)
                     odds = -110
@@ -632,10 +721,13 @@ def _game_props(
                     )
                     extra_pricing = {
                         "pricing_type": "synthetic",
-                        "line_source": "in_house_baseline",
+                        "line_source": "in_house_3pm_model" if stat_key == "three_pointers_made" else "in_house_baseline",
                         "odds_source": "default_assumed",
                         "market_priced": False,
                         "actionability": "research_signal",
+                        "market_over_odds": odds,
+                        "market_under_odds": odds,
+                        "market_format": "synthetic_total",
                     }
                 baseline_probability = probability
                 pick = build_pick(
@@ -676,6 +768,7 @@ def _game_props(
                         "sample_games": player["games"],
                         "injury_status": str(injury.get("status") or "Healthy"),
                         "redistribution_from": injured_stars,
+                        **three_point_details,
                         **extra_pricing,
                     },
                 )
@@ -695,6 +788,33 @@ def _game_props(
     return select_top_props(selection_pool)
 
 
+def _basketball_schedule(
+    client: Any,
+    league: str,
+    sport: str,
+    date_iso: str,
+) -> tuple[dict[str, Any] | None, list[dict[str, Any]], dict[str, dict[str, str]], int, list[str]]:
+    try:
+        scoreboard = client.basketball_scoreboard(league, date_iso)
+    except Exception as exc:
+        return None, [], {}, int(date_iso[:4]), [str(exc)]
+    events = scoreboard.get("events") or []
+    if not events:
+        return scoreboard, [], {}, int(((scoreboard.get("season") or {}).get("year")) or date_iso[:4]), []
+    try:
+        injuries = _injury_map(client.basketball_injuries(league))
+    except Exception:
+        injuries = {}
+    season = int(((scoreboard.get("season") or {}).get("year")) or date_iso[:4])
+    return scoreboard, events, injuries, season, []
+
+
+def _generic_stat_filter(sport: str) -> set[str] | None:
+    if str(sport or "").upper() == "WNBA":
+        return {key for key in STAT_LABELS if key != "three_pointers_made"}
+    return None
+
+
 def generate_basketball_model(
     client: Any,
     league: str,
@@ -703,12 +823,10 @@ def generate_basketball_model(
     max_workers: int = 6,
 ) -> dict[str, Any]:
     """Generate a healthy model result; an empty schedule is not an error."""
-    try:
-        scoreboard = client.basketball_scoreboard(league, date_iso)
-    except Exception as exc:
-        return {"ok": False, "sport": sport, "date": date_iso, "games": 0, "picks": [], "errors": [str(exc)]}
+    scoreboard, events, injuries, season, schedule_errors = _basketball_schedule(client, league, sport, date_iso)
+    if schedule_errors:
+        return {"ok": False, "sport": sport, "date": date_iso, "games": 0, "picks": [], "errors": schedule_errors}
 
-    events = scoreboard.get("events") or []
     if not events:
         return {
             "ok": True,
@@ -720,11 +838,6 @@ def generate_basketball_model(
             "note": f"No {sport} games scheduled; empty slate is healthy.",
         }
 
-    try:
-        injuries = _injury_map(client.basketball_injuries(league))
-    except Exception:
-        injuries = {}
-    season = int(((scoreboard.get("season") or {}).get("year")) or date_iso[:4])
     picks: list[dict[str, Any]] = []
     errors: list[str] = []
     for event in events:
@@ -739,6 +852,7 @@ def generate_basketball_model(
                     event=event,
                     injuries=injuries,
                     max_workers=max_workers,
+                    stat_filter=_generic_stat_filter(sport),
                 )
             )
         except Exception as exc:
@@ -762,12 +876,11 @@ def generate_basketball_candidate_model(
     max_workers: int = 6,
 ) -> dict[str, Any]:
     """Generate the full market-priced candidate pool for model variants."""
-    try:
-        scoreboard = client.basketball_scoreboard(league, date_iso)
-    except Exception as exc:
+    scoreboard, events, injuries, season, schedule_errors = _basketball_schedule(client, league, sport, date_iso)
+    if schedule_errors:
+        exc = schedule_errors[0]
         return {"ok": False, "sport": sport, "date": date_iso, "games": 0, "picks": [], "errors": [str(exc)]}
 
-    events = scoreboard.get("events") or []
     if not events:
         return {
             "ok": True,
@@ -779,11 +892,6 @@ def generate_basketball_candidate_model(
             "note": f"No {sport} games scheduled; empty slate is healthy.",
         }
 
-    try:
-        injuries = _injury_map(client.basketball_injuries(league))
-    except Exception:
-        injuries = {}
-    season = int(((scoreboard.get("season") or {}).get("year")) or date_iso[:4])
     picks: list[dict[str, Any]] = []
     errors: list[str] = []
     for event in events:
@@ -800,6 +908,7 @@ def generate_basketball_candidate_model(
                     max_workers=max_workers,
                     select=False,
                     apply_precision=False,
+                    stat_filter=_generic_stat_filter(sport),
                 )
             )
         except Exception as exc:
@@ -812,4 +921,61 @@ def generate_basketball_candidate_model(
         "picks": picks,
         "errors": errors,
         "method": "ESPN candidate pool with season, position, opponent, market, and injury context",
+    }
+
+
+def generate_wnba_3pm_candidate_model(
+    client: Any,
+    date_iso: str,
+    max_workers: int = 6,
+) -> dict[str, Any]:
+    """Generate WNBA 3PM candidates even when no posted 3PM market is available."""
+    sport = "WNBA"
+    league = "wnba"
+    scoreboard, events, injuries, season, schedule_errors = _basketball_schedule(client, league, sport, date_iso)
+    if schedule_errors:
+        exc = schedule_errors[0]
+        return {"ok": False, "sport": sport, "date": date_iso, "games": 0, "picks": [], "errors": [str(exc)]}
+    if not events:
+        return {
+            "ok": True,
+            "sport": sport,
+            "date": date_iso,
+            "games": 0,
+            "picks": [],
+            "errors": [],
+            "note": "No WNBA games scheduled; WNBA3PM empty slate is healthy.",
+        }
+    picks: list[dict[str, Any]] = []
+    errors: list[str] = []
+    for event in events:
+        try:
+            picks.extend(
+                _game_props(
+                    client=client,
+                    league=league,
+                    sport=sport,
+                    season=season,
+                    date_iso=date_iso,
+                    event=event,
+                    injuries=injuries,
+                    max_workers=max_workers,
+                    select=False,
+                    apply_precision=False,
+                    stat_filter={"three_pointers_made"},
+                )
+            )
+        except Exception as exc:
+            errors.append(f"{event.get('id')}: {exc}")
+    return {
+        "ok": True,
+        "sport": sport,
+        "date": date_iso,
+        "games": len(events),
+        "picks": picks,
+        "errors": errors,
+        "method": (
+            "ESPN WNBA schedule, rosters, gamelogs, injuries, 3PA volume, "
+            "3P% shrinkage, venue, opponent, and consensus-gated 3PM context"
+        ),
     }

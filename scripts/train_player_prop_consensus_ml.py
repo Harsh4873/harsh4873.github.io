@@ -7,6 +7,7 @@ import argparse
 import gzip
 import hashlib
 import json
+import math
 import sys
 from pathlib import Path
 from typing import Any
@@ -116,6 +117,13 @@ POLICIES: dict[str, dict[str, dict[str, Any]]] = {
             "history_only_publication": True,
         },
         "assists": {
+            "selection": "Over",
+            "minimum_implied": 0.0,
+            "meta_gate_threshold": 0.60,
+            "minimum_validation_samples": 5,
+            "minimum_holdout_samples": 3,
+        },
+        "three_pointers_made": {
             "selection": "Over",
             "minimum_implied": 0.0,
             "meta_gate_threshold": 0.60,
@@ -265,6 +273,53 @@ def _outcome_frame_for_markets(rows: Any, profiles: dict[str, list[dict[str, Any
         if built:
             output.append({**row, **built})
     return pd.DataFrame(output)
+
+
+def _synthetic_count_line(value: Any) -> float:
+    number = safe_float(value, 0.0)
+    if not math.isfinite(number):
+        number = 0.0
+    return max(0.5, math.floor(max(0.0, number)) + 0.5)
+
+
+def _synthetic_count_rows(outcome_frame: Any, sport: str, stat_key: str) -> Any:
+    rows = outcome_frame[
+        outcome_frame["sport"].eq(sport)
+        & outcome_frame["stat_key"].eq(stat_key)
+    ].copy()
+    if rows.empty:
+        return rows
+    rows["line"] = rows["season_mean"].map(_synthetic_count_line)
+    rows["over_odds"] = -110
+    rows["under_odds"] = -110
+    rows["over_implied"] = 0.5238
+    rows["under_implied"] = 0.5238
+    rows["market_format"] = "synthetic_total"
+    rows["over_outcome"] = (rows["actual"] > rows["line"]).astype(int)
+    rows["market_priced"] = False
+    rows["pricing_type"] = "synthetic"
+    rows["line_source"] = "in_house_3pm_model" if stat_key == "three_pointers_made" else "in_house_count_model"
+    return rows
+
+
+def _count_market_rows(
+    outcome_market: Any,
+    outcome_frame: Any,
+    sport: str,
+    stat_key: str,
+    *,
+    start: str | None = None,
+    end: str | None = None,
+) -> Any:
+    rows = outcome_market[
+        outcome_market["sport"].eq(sport)
+        & outcome_market["stat_key"].eq(stat_key)
+    ]
+    if rows.empty and sport == "WNBA" and stat_key == "three_pointers_made":
+        rows = _synthetic_count_rows(outcome_frame, sport, stat_key)
+    if start and end:
+        rows = rows[rows["date"].between(start, end)]
+    return rows
 
 
 def _one_per_event(rows: Any, *, score: str) -> Any:
@@ -480,16 +535,19 @@ def main() -> int:
     for sport, sport_policies in POLICIES.items():
         validation_window, holdout_window = _windows(sport)
         for stat_key, policy in sport_policies.items():
-            if sport == "WNBA" and stat_key == "assists":
+            if sport == "WNBA" and stat_key in {"assists", "three_pointers_made"}:
                 prediction_frames: list[Any] = []
                 for cutoff, start, end in (validation_window, holdout_window):
                     season_model = _fit_wnba_count(outcome_frame, stat_key, cutoff, season_only=True)
                     history_model = _fit_wnba_count(outcome_frame, stat_key, cutoff, season_only=False)
-                    rows = outcome_market[
-                        outcome_market["sport"].eq(sport)
-                        & outcome_market["stat_key"].eq(stat_key)
-                        & outcome_market["date"].between(start, end)
-                    ]
+                    rows = _count_market_rows(
+                        outcome_market,
+                        outcome_frame,
+                        sport,
+                        stat_key,
+                        start=start,
+                        end=end,
+                    )
                     prediction_frames.append(
                         _count_prediction_frame(
                             rows,
@@ -581,11 +639,14 @@ def main() -> int:
                 else:
                     season_model = _fit_wnba_count(outcome_frame, stat_key, cutoff, season_only=True)
                     history_model = _fit_wnba_count(outcome_frame, stat_key, cutoff, season_only=False)
-                    rows = outcome_market[
-                        outcome_market["sport"].eq(sport)
-                        & outcome_market["stat_key"].eq(stat_key)
-                        & outcome_market["date"].between(start, end)
-                    ]
+                    rows = _count_market_rows(
+                        outcome_market,
+                        outcome_frame,
+                        sport,
+                        stat_key,
+                        start=start,
+                        end=end,
+                    )
                     metrics = _evaluate_count_policy(
                         rows,
                         season_model=season_model,
@@ -616,7 +677,7 @@ def main() -> int:
         season_model_features: dict[str, list[str]] = {}
         history_model_features: dict[str, list[str]] = {}
         for stat_key in POLICIES[sport]:
-            if sport == "WNBA" and stat_key in {"totalRebounds", "assists"}:
+            if sport == "WNBA" and stat_key in {"totalRebounds", "assists", "three_pointers_made"}:
                 season_models[stat_key] = _fit_wnba_count(outcome_frame, stat_key, None, season_only=True)
                 history_models[stat_key] = _fit_wnba_count(outcome_frame, stat_key, None, season_only=False)
                 season_kinds[stat_key] = "regressor"
@@ -731,7 +792,7 @@ def main() -> int:
                 "strikeouts": 5,
                 "pitcher_walks_allowed": 5,
             },
-            "WNBA": {"points": 3, "totalRebounds": 3, "assists": 3},
+            "WNBA": {"points": 3, "totalRebounds": 3, "assists": 3, "three_pointers_made": 3},
         },
         "roster_aware": True,
         "roster_policy": "Current player IDs only; season features reset annually; recent 3/5/10-game workload dominates older priors.",

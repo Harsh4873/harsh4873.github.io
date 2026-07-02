@@ -24,6 +24,7 @@ def make_pick(
     decision: str = "BET",
     grade_supported: bool = True,
     consensus: bool = False,
+    market_priced: bool = True,
 ) -> dict:
     pick_payload = {
         "date": DATE,
@@ -39,6 +40,7 @@ def make_pick(
         "market_type": market,
         "decision": decision,
         "grade_supported": grade_supported,
+        "market_priced": market_priced,
     }
     if consensus:
         pick_payload["consensus_qualified"] = True
@@ -209,6 +211,49 @@ def test_team_and_player_legs_do_not_mix_in_one_slip():
         leg_types = {leg["sourceType"] for leg in card["legs"]}
         assert leg_types == {"model"} or leg_types == {"player_prop"}
         assert card["pickMode"] in {"team", "player"}
+
+
+def test_synthetic_player_props_are_excluded_from_parlay_legs():
+    prop_payload = make_payload(
+        {
+            "wnba_3pm": [
+                make_pick(
+                    sport="WNBA",
+                    source="WNBA3PM",
+                    pick="Shooter A Over 1.5 3-Point Field Goals",
+                    game="A @ B",
+                    player="Shooter A",
+                    market="3-Point Field Goals",
+                    consensus=True,
+                    market_priced=False,
+                ),
+                make_pick(
+                    sport="WNBA",
+                    source="WNBA3PM",
+                    pick="Shooter B Over 1.5 3-Point Field Goals",
+                    game="C @ D",
+                    player="Shooter B",
+                    market="3-Point Field Goals",
+                    consensus=True,
+                    market_priced=False,
+                ),
+                make_pick(
+                    sport="WNBA",
+                    source="WNBA3PM",
+                    pick="Shooter C Over 1.5 3-Point Field Goals",
+                    game="E @ F",
+                    player="Shooter C",
+                    market="3-Point Field Goals",
+                    consensus=True,
+                    market_priced=False,
+                ),
+            ]
+        }
+    )
+
+    legs = parlays.collect_legs(DATE, None, prop_payload, source_forms={}, historical_calibrations={})
+
+    assert legs == []
 
 
 def test_team_and_player_cards_are_selected_independently():

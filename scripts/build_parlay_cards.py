@@ -59,6 +59,7 @@ PLAYER_PROP_SOURCE_LABELS: dict[str, str] = {
     "nba_player_props": "NBAPlayerProps",
     "mlb_player_props": "MLBPlayerProps",
     "wnba_player_props": "WNBAPlayerProps",
+    "wnba_3pm": "WNBA3PM",
 }
 
 CATEGORY_DEFS: dict[str, dict[str, str]] = {
@@ -606,6 +607,8 @@ def build_source_forms(target_date: str, team_history: list[dict[str, Any]], pro
             decision = _clean_text(pick.get("decision")).upper()
             if decision not in TEAM_VISIBLE_DECISIONS:
                 continue
+            if player_props and pick.get("market_priced") is not True:
+                continue
             if _pick_date(pick, fallback_date) >= target_date:
                 continue
             result = _result(pick)
@@ -650,6 +653,8 @@ def collect_legs(
     for source_key, fallback_source, fallback_date, pick, player_props in records:
         decision = _clean_text(pick.get("decision")).upper()
         if decision not in TEAM_VISIBLE_DECISIONS:
+            continue
+        if player_props and pick.get("market_priced") is not True:
             continue
         if pick.get("grade_supported") is False:
             continue

@@ -37,6 +37,10 @@ VARIANT_LABELS = {
 
 VARIANT_ORDER = ("season", "all_time", "hot_l10", "matchup_h2h")
 HISTORY_WINDOWS = {"MLB": "2022-26", "WNBA": "2024-26"}
+WNBA_3PM_MODEL_KEY = "wnba_3pm"
+WNBA_3PM_SOURCE = "WNBA3PM"
+WNBA_3PM_VARIANT = "wnba_3pm"
+WNBA_3PM_VARIANT_LABEL = "WNBA 3PM"
 
 
 def player_prop_variant_keys(sport: str) -> dict[str, str]:
@@ -787,6 +791,152 @@ def _consensus_rejection_diagnostics(scored: list[dict[str, Any]]) -> tuple[dict
     return reason_counts, examples
 
 
+def _wnba_3pm_rank_epoch() -> str:
+    return f"WNBA3PM:player_props_consensus_v2.0.0:published:{_variant_fingerprint()}"
+
+
+def _wnba_3pm_pick(base: dict[str, Any]) -> dict[str, Any]:
+    pick = copy.deepcopy(base)
+    pick_id = str(pick.get("id") or "pp").strip()
+    player_name = str(pick.get("player_name") or "").strip()
+    line = safe_float(pick.get("line"))
+    stat_label = str(pick.get("stat_label") or "3-Point Field Goals")
+    selection = str(pick.get("selection") or "Over")
+    odds = _market_odds(pick, selection) or int(safe_float(pick.get("odds"), -110) or -110)
+    implied = american_implied_probability(odds) or american_implied_probability(-110) or 0.5238
+    pick.update(
+        {
+            "id": f"{pick_id}_wnba_3pm",
+            "source": WNBA_3PM_SOURCE,
+            "model_key": WNBA_3PM_MODEL_KEY,
+            "model_variant": WNBA_3PM_VARIANT,
+            "model_variant_label": WNBA_3PM_VARIANT_LABEL,
+            "scope": "player",
+            "stat_key": "three_pointers_made",
+            "stat_label": stat_label,
+            "selection": selection,
+            "pick": f"{player_name} {selection} {line:.1f} {stat_label}",
+            "odds": odds,
+            "market_implied_probability": round(implied, 4),
+            "market_athlete_id": str(pick.get("market_athlete_id") or pick.get("player_id") or ""),
+            "market_over_odds": _market_odds(pick, "Over") or -110,
+            "market_under_odds": _market_odds(pick, "Under") or -110,
+            "probability_source": ML_SOURCE,
+            "ranking_model": WNBA_3PM_SOURCE,
+            "published_model": WNBA_3PM_SOURCE,
+            "ml_market_family": "3pm",
+            "ml_calibration_excluded": True,
+            "result": str(pick.get("result") or "pending"),
+        }
+    )
+    pick = _apply_consensus_publication_gate(pick)
+    qualified = pick.get("consensus_qualified") is True
+    rank_epoch = _wnba_3pm_rank_epoch()
+    pick.update(
+        {
+            "source": WNBA_3PM_SOURCE,
+            "model_key": WNBA_3PM_MODEL_KEY,
+            "ranking_model": WNBA_3PM_SOURCE,
+            "published_model": WNBA_3PM_SOURCE,
+            "ml_rank_epoch": rank_epoch,
+            "ranking_epoch": rank_epoch,
+            "model_epoch": rank_epoch,
+            "supporting_variant": WNBA_3PM_VARIANT,
+            "supporting_variant_label": WNBA_3PM_VARIANT_LABEL,
+        }
+    )
+    if qualified:
+        return pick
+    pick.update(
+        {
+            "decision": "PASS",
+            "units": 0.0,
+            "full_kelly": 0.0,
+            "quarter_kelly": 0.0,
+            "confidence": "Low",
+            "actionability": "research_signal",
+            "ml_model_active": False,
+            "ml_probability_mode": "wnba_3pm_consensus_research_only",
+            "reason": (
+                f"{WNBA_3PM_SOURCE} is research-only until the active season/history consensus gate "
+                f"qualifies this 3PM signal ({pick.get('consensus_rejection_reason') or pick.get('precision_reason') or 'pending validation'})."
+            ),
+        }
+    )
+    pick.setdefault("key_factors", []).insert(0, "WNBA3PM consensus gate required before BET/LEAN publication")
+    return pick
+
+
+def _wnba_3pm_sort_key(pick: dict[str, Any]) -> tuple[int, int, float, float, float, str]:
+    decision_rank = {"BET": 0, "LEAN": 1, "PASS": 2}
+    return (
+        decision_rank.get(str(pick.get("decision") or ""), 3),
+        0 if pick.get("consensus_qualified") is True else 1,
+        -safe_float(pick.get("ml_expected_value"), -100.0),
+        -safe_float(pick.get("probability") or pick.get("ml_probability")),
+        -abs(safe_float(pick.get("projection")) - safe_float(pick.get("line"))),
+        str(pick.get("id") or ""),
+    )
+
+
+def build_wnba_3pm_bucket(
+    *,
+    date_iso: str,
+    base_model: dict[str, Any],
+) -> dict[str, dict[str, Any]]:
+    raw_candidates = [
+        pick for pick in (base_model.get("picks") or [])
+        if isinstance(pick, dict)
+        and str(pick.get("sport") or "").upper() == "WNBA"
+        and str(pick.get("stat_key") or "") == "three_pointers_made"
+    ]
+    scored = [_wnba_3pm_pick(candidate) for candidate in raw_candidates]
+    selected: list[dict[str, Any]] = []
+    per_player: dict[str, int] = {}
+    for pick in sorted(scored, key=_wnba_3pm_sort_key):
+        player_id = str(pick.get("player_id") or pick.get("player_name") or "")
+        if per_player.get(player_id, 0) >= MAX_PER_PLAYER:
+            continue
+        selected.append(pick)
+        per_player[player_id] = per_player.get(player_id, 0) + 1
+        if len(selected) >= MAX_VARIANT_PICKS:
+            break
+    for index, pick in enumerate(selected, start=1):
+        pick["ml_rank"] = index
+        pick["model_rank"] = index
+        pick["rank"] = index
+    rejection_reasons, rejection_examples = _consensus_rejection_diagnostics(scored)
+    rejected_count = sum(
+        pick.get("consensus_required") is True and pick.get("consensus_qualified") is not True
+        for pick in scored
+    )
+    bucket = {
+        "ok": bool(base_model.get("ok", True)),
+        "sport": "WNBA",
+        "date": date_iso,
+        "games": int(base_model.get("games") or 0),
+        "picks": selected,
+        "errors": list(base_model.get("errors") or []),
+        "model": WNBA_3PM_SOURCE,
+        "model_key": WNBA_3PM_MODEL_KEY,
+        "model_variants": [WNBA_3PM_VARIANT],
+        "ranking_epoch": _wnba_3pm_rank_epoch(),
+        "method": (
+            "WNBA 3PM props using 3PA volume, shrinkage-adjusted 3P%, season/history "
+            "profiles, L10 form, venue, opponent, injury, and consensus gates"
+        ),
+        "candidate_count": len(raw_candidates),
+        "scored_count": len(scored),
+        "consensus_required": any(pick.get("consensus_required") is True for pick in scored),
+        "consensus_rejected_count": rejected_count,
+        "consensus_rejection_reasons": rejection_reasons,
+        "consensus_rejections": rejection_examples[:12],
+        "abstained": bool(raw_candidates and not selected),
+        "note": "" if selected else "No WNBA 3PM candidate cleared the model input floor.",
+    }
+    return {WNBA_3PM_MODEL_KEY: bucket}
+
+
 def build_variant_buckets(
     *,
     sport: str,
@@ -798,6 +948,7 @@ def build_variant_buckets(
     raw_candidates = [
         pick for pick in (base_model.get("picks") or [])
         if isinstance(pick, dict) and str(pick.get("sport") or "").upper() == sport
+        and not (sport == "WNBA" and str(pick.get("stat_key") or "") == "three_pointers_made")
     ]
     market_candidates = [pick for pick in raw_candidates if pick.get("market_priced") is True]
     candidates = market_candidates or raw_candidates

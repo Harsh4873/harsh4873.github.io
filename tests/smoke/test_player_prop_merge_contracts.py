@@ -45,6 +45,21 @@ def _pick(
     }
 
 
+def _wnba_3pm_pick(pick_id: str, market_id: str, *, source: str = "WNBA3PM", model_key: str = "wnba_3pm") -> dict:
+    pick = _pick(pick_id, market_id, "Shooter Over 1.5 3-Point Field Goals")
+    pick.update(
+        {
+            "source": source,
+            "model_key": model_key,
+            "sport": "WNBA",
+            "stat_key": "three_pointers_made",
+            "line": 1.5,
+            "ml_rank_epoch": "WNBA3PM:player_props_consensus_v2.0.0:published:test",
+        }
+    )
+    return pick
+
+
 def test_merge_keeps_current_and_snapshot_same_day_markets_visible(tmp_path: Path):
     cache_dir = tmp_path / "data" / "player_props_cache"
     snapshot_dir = tmp_path / "data" / "player_props_snapshots"
@@ -139,3 +154,71 @@ def test_merge_does_not_force_rejected_variant_snapshots_into_latest_board(tmp_p
     picks = merged["models"]["mlb_player_props"]["picks"]
 
     assert [pick["id"] for pick in picks] == ["generated"]
+
+
+def test_merge_keeps_wnba_3pm_separate_from_generic_wnba_props(tmp_path: Path):
+    cache_dir = tmp_path / "data" / "player_props_cache"
+    snapshot_dir = tmp_path / "data" / "player_props_snapshots"
+    cache_dir.mkdir(parents=True)
+    (snapshot_dir / "2026-06-20").mkdir(parents=True)
+
+    current = {
+        "date": "2026-06-20",
+        "models": {
+            "wnba_player_props": {
+                "ok": True,
+                "picks": [
+                    {
+                        **_wnba_3pm_pick(
+                            "generic-wnba",
+                            "generic",
+                            source="WNBAPlayerProps",
+                            model_key="wnba_player_props",
+                        ),
+                        "stat_key": "points",
+                    }
+                ],
+            },
+            "wnba_3pm": {
+                "ok": True,
+                "picks": [_wnba_3pm_pick("current-3pm", "current")],
+            },
+        },
+    }
+    snapshot = {
+        "date": "2026-06-20",
+        "models": {
+            "wnba_player_props": {"ok": True, "picks": [current["models"]["wnba_player_props"]["picks"][0]]},
+            "wnba_3pm": {"ok": True, "picks": [_wnba_3pm_pick("snapshot-3pm", "snapshot")]},
+        },
+    }
+    generated = {
+        "date": "2026-06-20",
+        "models": {
+            "wnba_player_props": {
+                "ok": True,
+                "model_key": "wnba_player_props",
+                "ranking_epoch": "WNBA:player_props_consensus_v2.0.0:published:test",
+                "picks": [],
+            },
+            "wnba_3pm": {
+                "ok": True,
+                "model_key": "wnba_3pm",
+                "ranking_epoch": "WNBA3PM:player_props_consensus_v2.0.0:published:test",
+                "picks": [_wnba_3pm_pick("generated-3pm", "generated")],
+            },
+        },
+    }
+
+    (cache_dir / "2026-06-20.json").write_text(json.dumps(current), encoding="utf-8")
+    (snapshot_dir / "2026-06-20" / "snapshot.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    merged = merge_payload(generated, cache_dir, snapshot_dir)
+    generic_picks = merged["models"]["wnba_player_props"]["picks"]
+    three_pm_picks = merged["models"]["wnba_3pm"]["picks"]
+
+    assert {pick["id"] for pick in generic_picks} == {"generic-wnba"}
+    assert {pick["model_key"] for pick in generic_picks} == {"wnba_player_props"}
+    assert {pick["id"] for pick in three_pm_picks} == {"current-3pm", "snapshot-3pm", "generated-3pm"}
+    assert {pick["model_key"] for pick in three_pm_picks} == {"wnba_3pm"}
+    assert {pick["source"] for pick in three_pm_picks} == {"WNBA3PM"}

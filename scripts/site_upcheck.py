@@ -31,6 +31,7 @@ REQUIRED_MODEL_KEYS = {
 REQUIRED_PLAYER_PROP_KEYS = {
     "mlb_player_props",
     "wnba_player_props",
+    "wnba_3pm",
 }
 REQUIRED_SCORES24_FEED_KEYS = {
     "scores24_fifa_world_cup",

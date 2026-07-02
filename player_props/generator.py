@@ -6,10 +6,10 @@ from datetime import datetime, timezone
 from typing import Any
 
 from .api import DirectApiClient
-from .basketball import generate_basketball_candidate_model
+from .basketball import generate_basketball_candidate_model, generate_wnba_3pm_candidate_model
 from .ml import assign_ml_ranks
 from .mlb import generate_mlb_candidate_model
-from .variants import build_variant_buckets
+from .variants import build_variant_buckets, build_wnba_3pm_bucket
 
 
 def generate_payload(
@@ -21,9 +21,11 @@ def generate_payload(
     api = client or DirectApiClient()
     timestamp = generated_at or datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
     wnba_candidates = generate_basketball_candidate_model(api, "wnba", "WNBA", date_iso)
+    wnba_3pm_candidates = generate_wnba_3pm_candidate_model(api, date_iso)
     mlb_candidates = generate_mlb_candidate_model(api, date_iso)
     models = {
         **build_variant_buckets(sport="WNBA", date_iso=date_iso, base_model=wnba_candidates),
+        **build_wnba_3pm_bucket(date_iso=date_iso, base_model=wnba_3pm_candidates),
         **build_variant_buckets(sport="MLB", date_iso=date_iso, base_model=mlb_candidates),
     }
     payload = {

@@ -15,7 +15,7 @@ from player_props.schema import decision_and_stake
 ROOT = Path(__file__).resolve().parents[2]
 DATE = "2026-06-12"
 STAMP = "2026-06-12T12:00:00Z"
-PLAYER_PROP_MODEL_KEYS = {"wnba_player_props", "mlb_player_props"}
+PLAYER_PROP_MODEL_KEYS = {"wnba_player_props", "wnba_3pm", "mlb_player_props"}
 
 
 @pytest.fixture(autouse=True)
@@ -33,7 +33,8 @@ def _disable_live_precision_artifact(monkeypatch):
 
 
 def _gamelog(name: str, values: list[list[str]]) -> dict:
-    names = ["minutes", "points", "totalRebounds", "assists"]
+    names = ["minutes", "points", "totalRebounds", "assists", "threePointFieldGoalsMade-threePointFieldGoalsAttempted"]
+    rows = [row if len(row) >= len(names) else [*row, "2-5"] for row in values]
     return {
         "names": names,
         "seasonTypes": [
@@ -44,7 +45,7 @@ def _gamelog(name: str, values: list[list[str]]) -> dict:
                         "type": "event",
                         "events": [
                             {"eventId": f"{name}-{index}", "stats": row}
-                            for index, row in enumerate(values)
+                            for index, row in enumerate(rows)
                         ],
                     }
                 ],
@@ -551,6 +552,31 @@ def test_basketball_props_fall_back_to_synthetic_lines_when_markets_are_missing(
     assert all(pick["actionability"] == "research_signal" for pick in picks)
 
 
+def test_wnba_3pm_bucket_publishes_research_only_synthetic_rows_without_markets():
+    model = generate_payload(DATE, client=ScheduledWithoutBasketballMarketsClient(), generated_at=STAMP)[
+        "models"
+    ]["wnba_3pm"]
+    picks = model["picks"]
+
+    assert model["ok"] is True
+    assert model["model_key"] == "wnba_3pm"
+    assert model["model"] == "WNBA3PM"
+    assert picks
+    assert all(pick["source"] == "WNBA3PM" for pick in picks)
+    assert all(pick["model_key"] == "wnba_3pm" for pick in picks)
+    assert all(pick["stat_key"] == "three_pointers_made" for pick in picks)
+    assert all(pick["stat_label"] == "3-Point Field Goals" for pick in picks)
+    assert all(pick["pricing_type"] == "synthetic" for pick in picks)
+    assert all(pick["line_source"] == "in_house_3pm_model" for pick in picks)
+    assert all(pick["market_priced"] is False for pick in picks)
+    assert all(pick["actionability"] == "research_signal" for pick in picks)
+    assert all(pick["decision"] == "PASS" for pick in picks)
+    assert all(pick["ml_rank_epoch"].startswith("WNBA3PM:player_props_consensus_v2.0.0:published:") for pick in picks)
+    assert all(pick["three_point_attempt_projection"] > 0 for pick in picks)
+    assert all(pick["three_point_make_rate_projection"] > 0 for pick in picks)
+    assert all("WNBA3PM consensus gate required" in " ".join(pick["key_factors"]) for pick in picks)
+
+
 def test_mlb_props_use_actual_markets_and_reject_reliever_starter_lines():
     payload = generate_payload(DATE, client=MockClient(), generated_at=STAMP)
     model = payload["models"]["mlb_player_props"]
@@ -664,6 +690,10 @@ def test_four_model_consensus_clears_70_percent_on_validation_and_later_holdout(
             assert policy["validation"]["accuracy"] >= 0.70
             assert policy["holdout"]["accuracy"] >= 0.70
     assert metadata["sports"]["WNBA"]["failed_policies"]["totalRebounds"]["active"] is False
+    assert (
+        "three_pointers_made" in metadata["sports"]["WNBA"]["policies"]
+        or "three_pointers_made" in metadata["sports"]["WNBA"]["failed_policies"]
+    )
     for name in (
         "mlb_player_props_season.joblib",
         "mlb_player_props_history.joblib",
@@ -753,6 +783,31 @@ def test_variant_boards_abstain_when_consensus_policy_rejects_publication(
     assert bucket["consensus_rejected_count"] == 1
     assert bucket["consensus_rejection_reasons"] == {expected_reason: 1}
     assert bucket["consensus_rejections"][0]["reason"] == expected_reason
+
+
+def test_wnba_3pm_bucket_stays_pass_when_consensus_policy_rejects(monkeypatch):
+    import player_props.consensus as consensus
+    import player_props.variants as variants
+
+    monkeypatch.delenv("PICKLEDGER_DISABLE_PRECISION_MODEL", raising=False)
+    consensus._BUNDLE = {"metadata": _consensus_metadata_for_tests(), "artifacts": {}}
+    base_model = {
+        "ok": True,
+        "sport": "WNBA",
+        "date": DATE,
+        "games": 1,
+        "picks": [_variant_candidate("WNBA", "three_pointers_made", line=1.5)],
+    }
+
+    bucket = variants.build_wnba_3pm_bucket(date_iso=DATE, base_model=base_model)["wnba_3pm"]
+
+    assert bucket["picks"]
+    assert bucket["picks"][0]["decision"] == "PASS"
+    assert bucket["picks"][0]["model_key"] == "wnba_3pm"
+    assert bucket["picks"][0]["source"] == "WNBA3PM"
+    assert bucket["consensus_required"] is True
+    assert bucket["consensus_rejected_count"] == 1
+    assert bucket["consensus_rejection_reasons"] == {"three_pointers_made has not cleared 70%": 1}
 
 
 def test_variant_board_uses_consensus_probability_when_gate_qualifies(monkeypatch):
