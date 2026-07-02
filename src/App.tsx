@@ -252,11 +252,16 @@ function getSupersetExerciseCount(log: WorkoutLog): number {
 function normalizeExerciseName(name: string): string {
   return name
     .toLowerCase()
-    .replace(/&/g, ' and ')
-    .replace(/\+/g, ' and ')
-    .replace(/[^a-z0-9]+/g, ' ')
     .trim()
     .replace(/\s+/g, ' ');
+}
+
+function exerciseNamesMatch(leftName: string | undefined, rightName: string): boolean {
+  if (!leftName?.trim() || !rightName.trim()) {
+    return false;
+  }
+
+  return normalizeExerciseName(leftName) === normalizeExerciseName(rightName);
 }
 
 function isSetFilled(set: ExerciseSet): boolean {
@@ -365,23 +370,16 @@ function findPreviousExerciseDetail(
   exercise: Exercise,
   dateKey: string,
   logs: LogsByDate,
-  getExercises: GetExercisesForDate,
 ) {
-  const targetName = normalizeExerciseName(exercise.name);
   const previousDates = Object.keys(logs)
     .filter((logDate) => logDate < dateKey)
     .sort((a, b) => b.localeCompare(a));
 
   for (const previousDate of previousDates) {
     const previousLog = normalizeLog(previousDate, logs[previousDate]);
-    const previousExercise = getExercises(previousDate).find(
-      (candidate) => normalizeExerciseName(candidate.name) === targetName,
-    );
-    if (!previousExercise) {
-      continue;
-    }
-
-    const detail = previousLog.details[previousExercise.id];
+    const detail = Object.values(previousLog.details).find((candidate) => {
+      return exerciseNamesMatch(candidate.exerciseName, exercise.name) && !isExerciseDetailEmpty(candidate);
+    });
     if (detail && !isExerciseDetailEmpty(detail)) {
       return { dateKey: previousDate, detail };
     }
@@ -394,24 +392,17 @@ function getExercisePreviousBest(
   exercise: Exercise,
   dateKey: string,
   logs: LogsByDate,
-  getExercises: GetExercisesForDate,
 ): number {
-  const targetName = normalizeExerciseName(exercise.name);
   return Object.keys(logs).reduce((best, logDate) => {
     if (logDate >= dateKey) {
       return best;
     }
 
     const previousLog = normalizeLog(logDate, logs[logDate]);
-    const previousExercise = getExercises(logDate).find(
-      (candidate) => normalizeExerciseName(candidate.name) === targetName,
+    const matchingDetails = Object.values(previousLog.details).filter((detail) =>
+      exerciseNamesMatch(detail.exerciseName, exercise.name),
     );
-    const detail = previousExercise ? previousLog.details[previousExercise.id] : undefined;
-    if (!detail) {
-      return best;
-    }
-
-    return Math.max(best, ...detail.sets.map(getSetVolume));
+    return Math.max(best, ...matchingDetails.flatMap((detail) => detail.sets.map(getSetVolume)));
   }, 0);
 }
 
@@ -658,14 +649,14 @@ function WorkoutPanel({
   const groups = buildExerciseGroups(exercises, log.supersets);
   const previousByExerciseId = useMemo(() => {
     return new Map(
-      exercises.map((exercise) => [exercise.id, findPreviousExerciseDetail(exercise, dateKey, logs, getExercises)]),
+      exercises.map((exercise) => [exercise.id, findPreviousExerciseDetail(exercise, dateKey, logs)]),
     );
-  }, [dateKey, exerciseOrderSignature, logs, getExercises]);
+  }, [dateKey, exerciseOrderSignature, logs]);
   const previousBestByExerciseId = useMemo(() => {
     return new Map(
-      exercises.map((exercise) => [exercise.id, getExercisePreviousBest(exercise, dateKey, logs, getExercises)]),
+      exercises.map((exercise) => [exercise.id, getExercisePreviousBest(exercise, dateKey, logs)]),
     );
-  }, [dateKey, exerciseOrderSignature, logs, getExercises]);
+  }, [dateKey, exerciseOrderSignature, logs]);
 
   useEffect(() => {
     const available = exercises.filter((exercise) => !pairedIds.has(exercise.id));
@@ -692,6 +683,8 @@ function WorkoutPanel({
     !pairedIds.has(firstSupersetId) &&
     !pairedIds.has(secondSupersetId);
 
+  const getExerciseName = (exerciseId: string) => exercises.find((exercise) => exercise.id === exerciseId)?.name ?? '';
+
   const toggleComplete = (exerciseId: string) => {
     const wasCompleted = log.completed.includes(exerciseId);
     if (!wasCompleted) {
@@ -710,6 +703,7 @@ function WorkoutPanel({
             ...current.details,
             [exerciseId]: {
               ...currentDetail,
+              exerciseName: exercise?.name ?? currentDetail.exerciseName,
               cardioMinutes: completed.includes(exerciseId)
                 ? currentDetail.cardioMinutes || String(Math.max(getBasketballMinutes(exercise?.name ?? ''), 60))
                 : '0',
@@ -745,6 +739,7 @@ function WorkoutPanel({
           ...current.details,
           [exerciseId]: {
             ...currentDetail,
+            exerciseName: getExerciseName(exerciseId),
             cardioMinutes: previous.detail.cardioMinutes,
             sets: previous.detail.sets.map((set) => ({
               ...set,
@@ -771,6 +766,7 @@ function WorkoutPanel({
           ...current.details,
           [exerciseId]: {
             ...currentDetail,
+            exerciseName: getExerciseName(exerciseId),
             cardioMinutes: minutes,
           },
         },
@@ -819,6 +815,7 @@ function WorkoutPanel({
           ...current.details,
           [exerciseId]: {
             ...currentDetail,
+            exerciseName: getExerciseName(exerciseId),
             sets: nextSets,
           },
         },
@@ -843,6 +840,7 @@ function WorkoutPanel({
           ...current.details,
           [exerciseId]: {
             ...currentDetail,
+            exerciseName: getExerciseName(exerciseId),
             sets: [...currentDetail.sets, nextSet],
           },
         },
@@ -864,6 +862,7 @@ function WorkoutPanel({
           ...current.details,
           [exerciseId]: {
             ...currentDetail,
+            exerciseName: getExerciseName(exerciseId),
             sets: currentDetail.sets.filter((set) => set.id !== setId),
           },
         },

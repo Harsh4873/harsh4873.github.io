@@ -30,6 +30,7 @@ export function createEmptyExerciseSet(id = 'set-1'): ExerciseSet {
 
 export function createEmptyExerciseDetail(): ExerciseDetail {
   return {
+    exerciseName: '',
     sets: [createEmptyExerciseSet()],
     cardioMinutes: '',
   };
@@ -66,6 +67,7 @@ function normalizeLegacyDetail(value: Record<string, unknown>): ExerciseDetail {
   );
 
   return {
+    exerciseName: typeof value.exerciseName === 'string' ? value.exerciseName : '',
     sets: [set],
     cardioMinutes: typeof value.cardioMinutes === 'string' ? value.cardioMinutes : '',
     legacyNote: typeof value.legacyNote === 'string' ? value.legacyNote : undefined,
@@ -91,6 +93,7 @@ export function normalizeExerciseDetail(value: unknown): ExerciseDetail {
   const sets = value.sets.map((set, index) => normalizeExerciseSet(set, `set-${index + 1}`));
 
   return {
+    exerciseName: typeof value.exerciseName === 'string' ? value.exerciseName : '',
     sets: sets.length > 0 ? sets : [createEmptyExerciseSet()],
     cardioMinutes: typeof value.cardioMinutes === 'string' ? value.cardioMinutes : '',
     legacyNote: typeof value.legacyNote === 'string' ? value.legacyNote : undefined,
