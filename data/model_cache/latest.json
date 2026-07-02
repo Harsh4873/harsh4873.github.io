@@ -37571,6 +37571,7 @@
           "decision": "LEAN",
           "direction": "Over",
           "edge": -3.17,
+          "game_start_time": "2026-07-02T22:40Z",
           "home_team": "Cleveland Guardians",
           "kelly": 4.29,
           "line": 8.5,
@@ -37619,6 +37620,7 @@
           "selection": "Over",
           "source": "MLB Model",
           "sport": "MLB",
+          "start_time": "2026-07-02T22:40Z",
           "units": 0.25,
           "validation_lean": true,
           "validation_reason": "validation fallback: mlb_new had zero strict BET/LEAN publications; published top raw model signal as a small LEAN for tracking",
@@ -37845,6 +37847,7 @@
           "decision": "LEAN",
           "direction": "Over",
           "edge": -1.05,
+          "game_start_time": "2026-07-02T23:15Z",
           "home_team": "Atlanta Braves",
           "kelly": 6.27,
           "line": 9.0,
@@ -37893,6 +37896,7 @@
           "selection": "Over",
           "source": "MLB Model",
           "sport": "MLB",
+          "start_time": "2026-07-02T23:15Z",
           "units": 0.25,
           "validation_lean": true,
           "validation_reason": "validation fallback: mlb_new had zero strict BET/LEAN publications; published top raw model signal as a small LEAN for tracking",
@@ -38390,6 +38394,7 @@
           "decision": "LEAN",
           "direction": "Under",
           "edge": -3.65,
+          "game_start_time": "2026-07-03T00:05Z",
           "home_team": "Texas Rangers",
           "kelly": 3.83,
           "line": 7.5,
@@ -38438,6 +38443,7 @@
           "selection": "Under",
           "source": "MLB Model",
           "sport": "MLB",
+          "start_time": "2026-07-03T00:05Z",
           "units": 0.25,
           "validation_lean": true,
           "validation_reason": "validation fallback: mlb_new had zero strict BET/LEAN publications; published top raw model signal as a small LEAN for tracking",
@@ -41195,6 +41201,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-02-07-2026-colorado-rockies-miami-marlins-prediction",
           "sport": "MLB",
@@ -42175,6 +42182,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Washington Mystics vs Atlanta Dream",
+          "game_start_time": "2026-07-02T23:30Z",
           "matchup": "Washington Mystics vs Atlanta Dream",
           "odds": -146,
           "pick": "Under 170.5 (Mystics vs Dream)",
@@ -42194,6 +42202,7 @@
           "probability": null,
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
+          "start_time": "2026-07-02T23:30Z",
           "units": 1
         },
         {
@@ -42201,6 +42210,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Connecticut Sun vs Dallas Wings",
+          "game_start_time": "2026-07-03T00:00Z",
           "matchup": "Connecticut Sun vs Dallas Wings",
           "odds": -225,
           "pick": "Connecticut Sun on the +11.5 spread (Sun vs Wings)",
@@ -42220,6 +42230,7 @@
           "probability": null,
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
+          "start_time": "2026-07-03T00:00Z",
           "units": 1
         },
         {
@@ -42227,6 +42238,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Phoenix Mercury vs Seattle Storm",
+          "game_start_time": "2026-07-03T02:00Z",
           "matchup": "Phoenix Mercury vs Seattle Storm",
           "odds": -182,
           "pick": "Over 162.5 (Mercury vs Storm)",
@@ -42246,6 +42258,7 @@
           "probability": null,
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
+          "start_time": "2026-07-03T02:00Z",
           "units": 1
         }
       ],
