@@ -268,10 +268,22 @@ function isExerciseDetailEmpty(detail?: ReturnType<typeof createEmptyExerciseDet
     return true;
   }
 
-  return !detail.legacyNote?.trim() && detail.sets.every((set) => !isSetFilled(set));
+  return !detail.cardioMinutes?.trim() && !detail.legacyNote?.trim() && detail.sets.every((set) => !isSetFilled(set));
 }
 
-function formatSetSummary(sets: ExerciseSet[]): string {
+function getExerciseKind(exerciseName: string): 'cardio' | 'stretch' | 'strength' {
+  if (/basketball/i.test(exerciseName) || getBasketballMinutes(exerciseName) > 0) {
+    return 'cardio';
+  }
+
+  if (isStretchExercise(exerciseName)) {
+    return 'stretch';
+  }
+
+  return 'strength';
+}
+
+function formatSetSummary(sets: ExerciseSet[], kind: 'stretch' | 'strength' = 'strength'): string {
   const filledSets = sets.filter(isSetFilled);
   if (filledSets.length === 0) {
     return '';
@@ -279,6 +291,10 @@ function formatSetSummary(sets: ExerciseSet[]): string {
 
   const summary = filledSets.slice(0, 3).map((set) => {
     const reps = set.reps.trim();
+    if (kind === 'stretch') {
+      return reps ? `${reps} reps` : 'Done';
+    }
+
     if (set.weightMode === 'pounds' && set.pounds.trim()) {
       return reps ? `${set.pounds.trim()} x ${reps}` : `${set.pounds.trim()} lb`;
     }
@@ -313,6 +329,15 @@ function getLogSetCount(log: WorkoutLog): number {
   return Object.values(log.details).reduce((total, detail) => total + detail.sets.filter(isSetFilled).length, 0);
 }
 
+function getLoggedCardioMinutes(detail?: ReturnType<typeof createEmptyExerciseDetail>): number {
+  if (!detail?.cardioMinutes?.trim()) {
+    return 0;
+  }
+
+  const minutes = Number(detail.cardioMinutes);
+  return Number.isFinite(minutes) && minutes > 0 ? minutes : 0;
+}
+
 function getLogReps(log: WorkoutLog): number {
   return Object.values(log.details).reduce((total, detail) => {
     return total + detail.sets.reduce((setTotal, set) => setTotal + getSetReps(set), 0);
@@ -327,7 +352,12 @@ function getLogVolume(log: WorkoutLog): number {
 
 function getCompletedBasketballMinutes(exercises: Exercise[], log: WorkoutLog): number {
   return exercises.reduce((total, exercise) => {
-    return log.completed.includes(exercise.id) ? total + getBasketballMinutes(exercise.name) : total;
+    if (!log.completed.includes(exercise.id) || getExerciseKind(exercise.name) !== 'cardio') {
+      return total;
+    }
+
+    const loggedMinutes = getLoggedCardioMinutes(log.details[exercise.id]);
+    return total + (loggedMinutes || getBasketballMinutes(exercise.name));
   }, 0);
 }
 
@@ -669,14 +699,29 @@ function WorkoutPanel({
     }
 
     onUpdate((current) => {
+      const exercise = exercises.find((candidate) => candidate.id === exerciseId);
+      const isCardio = exercise ? getExerciseKind(exercise.name) === 'cardio' : false;
       const completed = current.completed.includes(exerciseId)
         ? current.completed.filter((id) => id !== exerciseId)
         : uniqueList([...current.completed, exerciseId]);
+      const currentDetail = current.details[exerciseId] ?? createEmptyExerciseDetail();
+      const nextDetails = isCardio
+        ? {
+            ...current.details,
+            [exerciseId]: {
+              ...currentDetail,
+              cardioMinutes: completed.includes(exerciseId)
+                ? currentDetail.cardioMinutes || String(Math.max(getBasketballMinutes(exercise?.name ?? ''), 60))
+                : '0',
+            },
+          }
+        : current.details;
 
       return touchLog({
         ...current,
         completed,
         skipped: current.skipped.filter((id) => id !== exerciseId),
+        details: nextDetails,
         daySkipped: false,
       });
     });
@@ -700,10 +745,33 @@ function WorkoutPanel({
           ...current.details,
           [exerciseId]: {
             ...currentDetail,
+            cardioMinutes: previous.detail.cardioMinutes,
             sets: previous.detail.sets.map((set) => ({
               ...set,
               id: createSetId(),
             })),
+          },
+        },
+        daySkipped: false,
+      });
+    });
+  };
+
+  const updateCardioMinutes = (exerciseId: string, minutes: string) => {
+    onUpdate((current) => {
+      const currentDetail = current.details[exerciseId] ?? createEmptyExerciseDetail();
+      const completed =
+        Number(minutes) > 0 ? uniqueList([...current.completed, exerciseId]) : current.completed.filter((id) => id !== exerciseId);
+
+      return touchLog({
+        ...current,
+        completed,
+        skipped: current.skipped.filter((id) => id !== exerciseId),
+        details: {
+          ...current.details,
+          [exerciseId]: {
+            ...currentDetail,
+            cardioMinutes: minutes,
           },
         },
         daySkipped: false,
@@ -1061,13 +1129,29 @@ function WorkoutPanel({
                     const completed = log.completed.includes(exercise.id);
                     const skipped = log.skipped.includes(exercise.id);
                     const detail = log.details[exercise.id] ?? createEmptyExerciseDetail();
+                    const exerciseKind = getExerciseKind(exercise.name);
+                    const isCardio = exerciseKind === 'cardio';
+                    const isStretch = exerciseKind === 'stretch';
                     const previous = previousByExerciseId.get(exercise.id);
-                    const lastSummary = previous ? formatSetSummary(previous.detail.sets) : '';
-                    const currentSummary = formatSetSummary(detail.sets);
+                    const previousMinutes = getLoggedCardioMinutes(previous?.detail);
+                    const lastSummary = isCardio
+                      ? previousMinutes > 0
+                        ? `${previousMinutes} min`
+                        : ''
+                      : previous
+                        ? formatSetSummary(previous.detail.sets, isStretch ? 'stretch' : 'strength')
+                        : '';
+                    const currentMinutes = getLoggedCardioMinutes(detail);
+                    const currentSummary = isCardio
+                      ? currentMinutes > 0
+                        ? `${currentMinutes} minutes`
+                        : ''
+                      : formatSetSummary(detail.sets, isStretch ? 'stretch' : 'strength');
                     const previousBest = previousBestByExerciseId.get(exercise.id) ?? 0;
                     const currentBest = Math.max(0, ...detail.sets.map(getSetVolume));
-                    const hasLocalPr = currentBest > 0 && currentBest > previousBest;
+                    const hasLocalPr = exerciseKind === 'strength' && currentBest > 0 && currentBest > previousBest;
                     const canUseLastSets = Boolean(previous && isExerciseDetailEmpty(detail));
+                    const cardioTarget = Math.max(getBasketballMinutes(exercise.name), 60);
 
                     return (
                       <div
@@ -1097,77 +1181,108 @@ function WorkoutPanel({
                             </button>
                           )}
                           {currentSummary && <div className="current-set-summary">{currentSummary}</div>}
-                          <div className="set-stack">
-                            {detail.sets.map((set, setIndex) => (
-                              <div
-                                key={set.id}
-                                className={`set-row ${set.weightMode === 'pounds' ? 'with-pounds' : ''} ${
-                                  detail.sets.length > 1 ? 'can-remove' : ''
-                                }`}
-                              >
-                                <span className="set-index">Set {setIndex + 1}</span>
-                                <label>
-                                  <span>Weight</span>
-                                  <select
-                                    value={set.weightMode}
-                                    onChange={(event) =>
-                                      updateExerciseSet(exercise.id, set.id, {
-                                        weightMode: event.target.value as WeightMode,
-                                      })
-                                    }
-                                  >
-                                    <option value="bodyweight">Body weight</option>
-                                    <option value="pounds">Pounds</option>
-                                  </select>
-                                </label>
-                                {set.weightMode === 'pounds' && (
-                                  <label>
-                                    <span>Pounds</span>
-                                    <input
-                                      type="number"
-                                      min="0"
-                                      step="0.5"
-                                      inputMode="decimal"
-                                      value={set.pounds}
-                                      onChange={(event) => updateExerciseSet(exercise.id, set.id, { pounds: event.target.value })}
-                                    />
-                                  </label>
-                                )}
-                                <label>
-                                  <span>Reps</span>
-                                  <select
-                                    value={set.reps}
-                                    onChange={(event) => updateExerciseSet(exercise.id, set.id, { reps: event.target.value })}
-                                  >
-                                    <option value="">-</option>
-                                    {REP_OPTIONS.map((rep) => (
-                                      <option key={rep} value={rep}>
-                                        {rep}
-                                      </option>
-                                    ))}
-                                  </select>
-                                </label>
-                                {detail.sets.length > 1 && (
-                                  <button
-                                    className="set-remove-button"
-                                    type="button"
-                                    aria-label={`Remove set ${setIndex + 1} from ${exercise.name}`}
-                                    onClick={() => removeExerciseSet(exercise.id, set.id)}
-                                  >
-                                    <X aria-hidden="true" />
-                                  </button>
-                                )}
+                          {isCardio ? (
+                            <div className="cardio-logger">
+                              <div className="cardio-slider-head">
+                                <span>Minutes</span>
+                                <strong>{currentMinutes}/{cardioTarget}</strong>
                               </div>
-                            ))}
-                            <button
-                              className="icon-text-button compact set-add-button"
-                              type="button"
-                              onClick={() => addExerciseSet(exercise.id)}
-                            >
-                              <Plus aria-hidden="true" />
-                              <span>Add Set</span>
-                            </button>
-                          </div>
+                              <input
+                                type="range"
+                                min="0"
+                                max={cardioTarget}
+                                step="5"
+                                value={detail.cardioMinutes || '0'}
+                                onChange={(event) => updateCardioMinutes(exercise.id, event.target.value)}
+                              />
+                              <div className="cardio-quick-row">
+                                {[0, 15, 30, cardioTarget].filter((value, index, list) => list.indexOf(value) === index).map((minutes) => (
+                                  <button
+                                    key={minutes}
+                                    type="button"
+                                    className={currentMinutes === minutes ? 'active' : ''}
+                                    onClick={() => updateCardioMinutes(exercise.id, String(minutes))}
+                                  >
+                                    {minutes === 0 ? 'No' : `${minutes} min`}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="set-stack">
+                              {detail.sets.map((set, setIndex) => (
+                                <div
+                                  key={set.id}
+                                  className={`set-row ${isStretch ? 'stretch-row' : ''} ${set.weightMode === 'pounds' ? 'with-pounds' : ''} ${
+                                    detail.sets.length > 1 ? 'can-remove' : ''
+                                  }`}
+                                >
+                                  <span className="set-index">{isStretch ? `Round ${setIndex + 1}` : `Set ${setIndex + 1}`}</span>
+                                  {!isStretch && (
+                                    <label>
+                                      <span>Weight</span>
+                                      <select
+                                        value={set.weightMode}
+                                        onChange={(event) =>
+                                          updateExerciseSet(exercise.id, set.id, {
+                                            weightMode: event.target.value as WeightMode,
+                                          })
+                                        }
+                                      >
+                                        <option value="bodyweight">Body weight</option>
+                                        <option value="pounds">Pounds</option>
+                                      </select>
+                                    </label>
+                                  )}
+                                  {!isStretch && set.weightMode === 'pounds' && (
+                                    <label>
+                                      <span>Pounds</span>
+                                      <input
+                                        type="number"
+                                        min="0"
+                                        step="0.5"
+                                        inputMode="decimal"
+                                        value={set.pounds}
+                                        onChange={(event) => updateExerciseSet(exercise.id, set.id, { pounds: event.target.value })}
+                                      />
+                                    </label>
+                                  )}
+                                  <label>
+                                    <span>{isStretch ? 'Reps / Hold' : 'Reps'}</span>
+                                    <select
+                                      value={set.reps}
+                                      onChange={(event) => updateExerciseSet(exercise.id, set.id, { reps: event.target.value })}
+                                    >
+                                      <option value="">-</option>
+                                      {REP_OPTIONS.map((rep) => (
+                                        <option key={rep} value={rep}>
+                                          {rep}
+                                        </option>
+                                      ))}
+                                    </select>
+                                  </label>
+                                  {detail.sets.length > 1 && (
+                                    <button
+                                      className="set-remove-button"
+                                      type="button"
+                                      aria-label={`Remove set ${setIndex + 1} from ${exercise.name}`}
+                                      onClick={() => removeExerciseSet(exercise.id, set.id)}
+                                    >
+                                      <X aria-hidden="true" />
+                                    </button>
+                                  )}
+                                </div>
+                              ))}
+                              <button
+                                className="icon-text-button compact set-add-button"
+                                type="button"
+                                onClick={() => addExerciseSet(exercise.id)}
+                              >
+                                <Plus aria-hidden="true" />
+                                <span>{isStretch ? 'Add Round' : 'Add Set'}</span>
+                              </button>
+                            </div>
+                          )}
                           {detail.legacyNote && <small className="legacy-detail">Previous detail: {detail.legacyNote}</small>}
                         </div>
                         <button

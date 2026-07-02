@@ -31,6 +31,7 @@ export function createEmptyExerciseSet(id = 'set-1'): ExerciseSet {
 export function createEmptyExerciseDetail(): ExerciseDetail {
   return {
     sets: [createEmptyExerciseSet()],
+    cardioMinutes: '',
   };
 }
 
@@ -66,6 +67,7 @@ function normalizeLegacyDetail(value: Record<string, unknown>): ExerciseDetail {
 
   return {
     sets: [set],
+    cardioMinutes: typeof value.cardioMinutes === 'string' ? value.cardioMinutes : '',
     legacyNote: typeof value.legacyNote === 'string' ? value.legacyNote : undefined,
   };
 }
@@ -90,6 +92,7 @@ export function normalizeExerciseDetail(value: unknown): ExerciseDetail {
 
   return {
     sets: sets.length > 0 ? sets : [createEmptyExerciseSet()],
+    cardioMinutes: typeof value.cardioMinutes === 'string' ? value.cardioMinutes : '',
     legacyNote: typeof value.legacyNote === 'string' ? value.legacyNote : undefined,
   };
 }

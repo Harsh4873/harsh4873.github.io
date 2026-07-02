@@ -35,6 +35,7 @@ export interface ExerciseSet {
 
 export interface ExerciseDetail {
   sets: ExerciseSet[];
+  cardioMinutes?: string;
   legacyNote?: string;
 }
 
