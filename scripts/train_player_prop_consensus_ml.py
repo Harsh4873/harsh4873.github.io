@@ -755,9 +755,26 @@ def main() -> int:
     ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
     for key, artifact in final_artifacts.items():
         joblib.dump(artifact, MODEL_PATHS[key], compress=3)
+    existing_metadata: dict[str, Any] | None = None
+    if CONSENSUS_METADATA_PATH.exists():
+        try:
+            existing_metadata = json.loads(CONSENSUS_METADATA_PATH.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            existing_metadata = None
+    if metadata.get("active") is not True:
+        if isinstance(existing_metadata, dict) and existing_metadata.get("active") is True:
+            print(
+                "[player-prop-consensus] activation gate failed; preserving existing active metadata",
+                file=sys.stderr,
+            )
+            print(json.dumps(existing_metadata, indent=2, sort_keys=True))
+            return 2
+        CONSENSUS_METADATA_PATH.write_text(json.dumps(metadata, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        print(json.dumps(metadata, indent=2, sort_keys=True))
+        return 2
     CONSENSUS_METADATA_PATH.write_text(json.dumps(metadata, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(json.dumps(metadata, indent=2, sort_keys=True))
-    return 0 if metadata["active"] else 2
+    return 0
 
 
 if __name__ == "__main__":
