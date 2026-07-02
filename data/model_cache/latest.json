@@ -43291,6 +43291,7 @@
           "decision": "LEAN",
           "edge": 4.97,
           "game": "Seattle Storm @ Phoenix Mercury",
+          "game_start_time": "2026-07-03T02:00Z",
           "guardrail_reasons": [
             "new totals market capped at LEAN while its live record is established"
           ],
@@ -43350,6 +43351,7 @@
           "selection": "Under",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-07-03T02:00Z",
           "units": 0.02,
           "vegas": 168.5
         },
