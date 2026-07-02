@@ -1,101 +1,101 @@
 {
-  "date": "2026-06-29",
-  "generated_at": "2026-06-29T13:09:10.103691Z",
+  "date": "2026-07-02",
+  "generated_at": "2026-07-02T13:05:52.062009Z",
   "model": "MLBFirstFive",
   "picks": [
     {
-      "game_id": "824822",
-      "game_start_time": "2026-06-29T22:35:00Z",
+      "game_id": "823442",
+      "game_start_time": "2026-07-02T16:35:00Z",
       "game_order": 0,
-      "matchup": "Chicago White Sox @ Baltimore Orioles",
-      "home_team": "Baltimore Orioles",
-      "away_team": "Chicago White Sox",
-      "venue_id": 2,
-      "venue_name": "Oriole Park at Camden Yards",
-      "home_pitcher": "Shane Baz",
-      "away_pitcher": "Sean Burke",
+      "matchup": "Pittsburgh Pirates @ Philadelphia Phillies",
+      "home_team": "Philadelphia Phillies",
+      "away_team": "Pittsburgh Pirates",
+      "venue_id": 2681,
+      "venue_name": "Citizens Bank Park",
+      "home_pitcher": "Alan Rangel",
+      "away_pitcher": "Jared Jones",
       "projected_first_five": {
-        "away_runs": 2.69,
-        "home_runs": 2.5,
-        "total_runs": 5.19,
-        "home_lead_probability": 0.4756,
-        "away_lead_probability": 0.5244
+        "away_runs": 2.46,
+        "home_runs": 3.01,
+        "total_runs": 5.47,
+        "home_lead_probability": 0.5704,
+        "away_lead_probability": 0.4296
       },
       "top_picks": [
         {
           "market": "f5_total",
           "pick": "Over 4.5 F5",
           "team": "",
-          "probability": 0.6454,
-          "edge_pct": 8.02,
+          "probability": 0.7,
+          "edge_pct": 13.48,
           "decision": "LEAN",
           "confidence": "Medium",
           "assumed_odds": -130,
           "vegas_line": 4.5,
-          "projection_gap": 0.69,
-          "model_prediction": "5.19 F5 total",
-          "guardrail": "model-generated F5 total line; capped at LEAN until real market line is available"
+          "projection_gap": 0.97,
+          "model_prediction": "5.47 F5 total",
+          "guardrail": "thin starter sample"
         },
         {
           "market": "f5_side",
-          "pick": "Chicago White Sox F5 ML",
-          "team": "Chicago White Sox",
-          "probability": 0.5244,
-          "edge_pct": 0.06,
-          "decision": "PASS",
-          "confidence": "Low",
+          "pick": "Philadelphia Phillies F5 ML",
+          "team": "Philadelphia Phillies",
+          "probability": 0.5704,
+          "edge_pct": 4.66,
+          "decision": "LEAN",
+          "confidence": "Medium",
           "assumed_odds": -110,
-          "projected_margin": 0.19,
-          "model_prediction": "Chicago White Sox +0.19 F5 runs",
-          "guardrail": "margin too small"
+          "projected_margin": 0.55,
+          "model_prediction": "Philadelphia Phillies +0.55 F5 runs",
+          "guardrail": "thin starter sample"
         }
       ],
       "features": {
         "away_offense": {
-          "projected_runs": 2.69,
-          "team_current_f5_runs": 3.077,
-          "team_recent_f5_runs": 2.792,
-          "team_prior_f5_runs": 2.324,
-          "team_venue_f5_runs": 1.675,
-          "pitcher_current_f5_allowed": 2.438,
-          "pitcher_recent_f5_allowed": 2.333,
-          "pitcher_current_vs_opponent": 2.336,
-          "pitcher_prior_vs_opponent": 4.602,
-          "pitcher_venue_f5_allowed": 2.833,
-          "pitcher_rest_days": 5,
+          "projected_runs": 2.46,
+          "team_current_f5_runs": 2.752,
+          "team_recent_f5_runs": 2.75,
+          "team_prior_f5_runs": 2.189,
+          "team_venue_f5_runs": 2.1,
+          "pitcher_current_f5_allowed": 2.21,
+          "pitcher_recent_f5_allowed": 2.21,
+          "pitcher_current_vs_opponent": 2.21,
+          "pitcher_prior_vs_opponent": 2.21,
+          "pitcher_venue_f5_allowed": 2.21,
+          "pitcher_rest_days": null,
           "pitcher_rest_runs_modifier": 0.0,
-          "pitcher_rest_label": "normal rest (5d)",
-          "lineup_delta": 0.08,
-          "venue_delta": 0.18,
-          "park_run_delta_per_team": 0.18,
+          "pitcher_rest_label": "rest unknown",
+          "lineup_delta": 0.05,
+          "venue_delta": 0.125,
+          "park_run_delta_per_team": 0.125,
           "wind_run_delta_per_team": 0.0,
           "wind_mph": 0.0,
           "wind_direction": "",
-          "travel_run_delta": -0.058,
-          "travel_fatigue_index": 0.36,
+          "travel_run_delta": -0.0,
+          "travel_fatigue_index": 0.0,
           "travel_days_since_previous_game": 1,
-          "travel_distance_miles": 603.8,
-          "travel_timezone_shift_hours": 1,
-          "travel_direction": "east",
-          "travel_label": "1d since previous game; 604 mi; 1h east"
+          "travel_distance_miles": 0.0,
+          "travel_timezone_shift_hours": 0,
+          "travel_direction": "same",
+          "travel_label": "1d since previous game; 0 mi"
         },
         "home_offense": {
-          "projected_runs": 2.5,
-          "team_current_f5_runs": 2.368,
-          "team_recent_f5_runs": 2.5,
-          "team_prior_f5_runs": 2.465,
-          "team_venue_f5_runs": 2.139,
-          "pitcher_current_f5_allowed": 2.583,
-          "pitcher_recent_f5_allowed": 2.333,
-          "pitcher_current_vs_opponent": 2.027,
-          "pitcher_prior_vs_opponent": 2.081,
-          "pitcher_venue_f5_allowed": 2.081,
-          "pitcher_rest_days": 5,
+          "projected_runs": 3.01,
+          "team_current_f5_runs": 2.542,
+          "team_recent_f5_runs": 3.667,
+          "team_prior_f5_runs": 2.489,
+          "team_venue_f5_runs": 2.917,
+          "pitcher_current_f5_allowed": 3.0,
+          "pitcher_recent_f5_allowed": 3.0,
+          "pitcher_current_vs_opponent": 2.74,
+          "pitcher_prior_vs_opponent": 2.044,
+          "pitcher_venue_f5_allowed": 2.305,
+          "pitcher_rest_days": 4,
           "pitcher_rest_runs_modifier": 0.0,
-          "pitcher_rest_label": "normal rest (5d)",
-          "lineup_delta": 0.019,
-          "venue_delta": 0.18,
-          "park_run_delta_per_team": 0.18,
+          "pitcher_rest_label": "normal rest (4d)",
+          "lineup_delta": 0.083,
+          "venue_delta": 0.125,
+          "park_run_delta_per_team": 0.125,
           "wind_run_delta_per_team": 0.0,
           "wind_mph": 0.0,
           "wind_direction": "",
@@ -108,304 +108,20 @@
           "travel_label": "1d since previous game; 0 mi"
         },
         "away_pitcher": {
-          "name": "Sean Burke",
-          "stat_expected": 2.081,
-          "current_f5_allowed": 2.583,
-          "recent_f5_allowed": 2.333,
-          "prior_f5_allowed": 2.63,
-          "current_vs_opponent": 2.027,
-          "prior_vs_opponent": 2.081,
-          "venue_f5_allowed": 2.081,
-          "current_starts": 12,
+          "name": "Jared Jones",
+          "stat_expected": 2.74,
+          "current_f5_allowed": 3.0,
+          "recent_f5_allowed": 3.0,
+          "prior_f5_allowed": 2.511,
+          "current_vs_opponent": 2.74,
+          "prior_vs_opponent": 2.044,
+          "venue_f5_allowed": 2.305,
+          "current_starts": 6,
           "recent_starts": 6,
-          "prior_starts": 25,
-          "current_vs_opponent_starts": 1,
-          "prior_vs_opponent_starts": 0,
-          "venue_starts": 0,
-          "rest_days": 5,
-          "rest_runs_modifier": 0.0,
-          "rest_label": "normal rest (5d)",
-          "team_bullpen": {
-            "lookback_games": 2,
-            "games_inspected": 2,
-            "recently_used_pitcher_ids": [
-              622554,
-              656794,
-              663542,
-              663855,
-              669684,
-              670950,
-              691799
-            ],
-            "back_to_back_arms": [],
-            "yesterday_used_pitcher_ids": [
-              622554,
-              663542,
-              663855,
-              669684,
-              670950
-            ],
-            "high_leverage_used_pitcher_ids": [
-              622554,
-              656794
-            ],
-            "light_use_pitcher_ids": [
-              663542,
-              663855,
-              669684,
-              670950,
-              691799
-            ],
-            "unavailable_today": [
-              622554,
-              656794
-            ],
-            "effective_unavailable_count": 3.94,
-            "fatigue_index": 0.492
-          }
-        },
-        "home_pitcher": {
-          "name": "Shane Baz",
-          "stat_expected": 2.336,
-          "current_f5_allowed": 2.438,
-          "recent_f5_allowed": 2.333,
-          "prior_f5_allowed": 2.805,
-          "current_vs_opponent": 2.336,
-          "prior_vs_opponent": 4.602,
-          "venue_f5_allowed": 2.833,
-          "current_starts": 16,
-          "recent_starts": 6,
-          "prior_starts": 30,
+          "prior_starts": 22,
           "current_vs_opponent_starts": 0,
           "prior_vs_opponent_starts": 1,
-          "venue_starts": 6,
-          "rest_days": 5,
-          "rest_runs_modifier": 0.0,
-          "rest_label": "normal rest (5d)",
-          "team_bullpen": {
-            "lookback_games": 2,
-            "games_inspected": 2,
-            "recently_used_pitcher_ids": [
-              544150,
-              552640,
-              664854,
-              664991,
-              669211,
-              669330,
-              670329
-            ],
-            "back_to_back_arms": [],
-            "yesterday_used_pitcher_ids": [
-              544150,
-              664991,
-              669330
-            ],
-            "high_leverage_used_pitcher_ids": [
-              544150,
-              669211
-            ],
-            "light_use_pitcher_ids": [
-              552640,
-              664854,
-              664991,
-              669330,
-              670329
-            ],
-            "unavailable_today": [
-              544150,
-              669211
-            ],
-            "effective_unavailable_count": 4.59,
-            "fatigue_index": 0.574
-          }
-        },
-        "venue": {
-          "f5_total": 4.933,
-          "run_delta_per_team": 0.18,
-          "games": 60,
-          "park_blend": {
-            "final_delta": 0.18,
-            "learned_delta": 0.18,
-            "static_delta": 0.07,
-            "blend_weight_learned": 1.0,
-            "park_factor": 1.07
-          },
-          "park_run_delta_per_team": 0.18,
-          "wind_run_delta_per_team": 0.0,
-          "wind_mph": 0.0,
-          "wind_direction": "",
-          "weather_raw": ""
-        },
-        "travel": {
-          "away": {
-            "available": true,
-            "previous_game_date": "2026-06-28",
-            "previous_venue_id": 4,
-            "previous_venue_name": "Rate Field",
-            "current_venue_id": 2,
-            "current_venue_name": "Oriole Park at Camden Yards",
-            "days_since_previous_game": 1,
-            "same_venue": false,
-            "distance_miles": 603.8,
-            "timezone_shift_hours": 1,
-            "travel_direction": "east",
-            "travel_fatigue_index": 0.36,
-            "travel_run_delta": -0.058,
-            "label": "1d since previous game; 604 mi; 1h east"
-          },
-          "home": {
-            "available": true,
-            "previous_game_date": "2026-06-28",
-            "previous_venue_id": 2,
-            "previous_venue_name": "Oriole Park at Camden Yards",
-            "current_venue_id": 2,
-            "current_venue_name": "Oriole Park at Camden Yards",
-            "days_since_previous_game": 1,
-            "same_venue": true,
-            "distance_miles": 0.0,
-            "timezone_shift_hours": 0,
-            "travel_direction": "same",
-            "travel_fatigue_index": 0.0,
-            "travel_run_delta": -0.0,
-            "label": "1d since previous game; 0 mi"
-          }
-        },
-        "away_lineup_matchup": {
-          "run_delta": 0.08,
-          "threat_score": 0.3834,
-          "current_bvp_pa": 0,
-          "older_bvp_pa": 13,
-          "sampled_batters": 9
-        },
-        "home_lineup_matchup": {
-          "run_delta": 0.019,
-          "threat_score": 0.3577,
-          "current_bvp_pa": 16,
-          "older_bvp_pa": 22,
-          "sampled_batters": 9
-        }
-      },
-      "notes": "F5 projection Chicago White Sox 2.69, Baltimore Orioles 2.5 (total 5.19). BvP PA away/home: 0+13/16+22; venue F5 total 4.93 over 60 games. Travel away/home: 1d since previous game; 604 mi; 1h east (fatigue 0.36) / 1d since previous game; 0 mi (fatigue 0.00)."
-    },
-    {
-      "game_id": "823444",
-      "game_start_time": "2026-06-29T22:40:00Z",
-      "game_order": 1,
-      "matchup": "Pittsburgh Pirates @ Philadelphia Phillies",
-      "home_team": "Philadelphia Phillies",
-      "away_team": "Pittsburgh Pirates",
-      "venue_id": 2681,
-      "venue_name": "Citizens Bank Park",
-      "home_pitcher": "Aaron Nola",
-      "away_pitcher": "Braxton Ashcraft",
-      "projected_first_five": {
-        "away_runs": 3.14,
-        "home_runs": 2.41,
-        "total_runs": 5.55,
-        "home_lead_probability": 0.4069,
-        "away_lead_probability": 0.5931
-      },
-      "top_picks": [
-        {
-          "market": "f5_side",
-          "pick": "Pittsburgh Pirates F5 ML",
-          "team": "Pittsburgh Pirates",
-          "probability": 0.5931,
-          "edge_pct": 6.93,
-          "decision": "LEAN",
-          "confidence": "Medium",
-          "assumed_odds": -110,
-          "projected_margin": 0.73,
-          "model_prediction": "Pittsburgh Pirates +0.73 F5 runs",
-          "guardrail": "margin below bet threshold"
-        },
-        {
-          "market": "f5_total",
-          "pick": "Over 5.5 F5",
-          "team": "",
-          "probability": 0.5108,
-          "edge_pct": -11.88,
-          "decision": "PASS",
-          "confidence": "Low",
-          "assumed_odds": -170,
-          "vegas_line": 5.5,
-          "projection_gap": 0.05,
-          "model_prediction": "5.55 F5 total",
-          "guardrail": "projection too close to F5 line"
-        }
-      ],
-      "features": {
-        "away_offense": {
-          "projected_runs": 3.14,
-          "team_current_f5_runs": 2.717,
-          "team_recent_f5_runs": 2.542,
-          "team_prior_f5_runs": 2.189,
-          "team_venue_f5_runs": 1.575,
-          "pitcher_current_f5_allowed": 3.062,
-          "pitcher_recent_f5_allowed": 2.833,
-          "pitcher_current_vs_opponent": 5.574,
-          "pitcher_prior_vs_opponent": 3.667,
-          "pitcher_venue_f5_allowed": 3.286,
-          "pitcher_rest_days": 4,
-          "pitcher_rest_runs_modifier": 0.0,
-          "pitcher_rest_label": "normal rest (4d)",
-          "lineup_delta": 0.085,
-          "venue_delta": 0.125,
-          "park_run_delta_per_team": 0.125,
-          "wind_run_delta_per_team": 0.0,
-          "wind_mph": 0.0,
-          "wind_direction": "",
-          "travel_run_delta": -0.032,
-          "travel_fatigue_index": 0.2,
-          "travel_days_since_previous_game": 1,
-          "travel_distance_miles": 258.2,
-          "travel_timezone_shift_hours": 0,
-          "travel_direction": "same_timezone",
-          "travel_label": "1d since previous game; 258 mi"
-        },
-        "home_offense": {
-          "projected_runs": 2.41,
-          "team_current_f5_runs": 2.471,
-          "team_recent_f5_runs": 3.458,
-          "team_prior_f5_runs": 2.489,
-          "team_venue_f5_runs": 2.917,
-          "pitcher_current_f5_allowed": 1.938,
-          "pitcher_recent_f5_allowed": 1.667,
-          "pitcher_current_vs_opponent": 2.602,
-          "pitcher_prior_vs_opponent": 1.806,
-          "pitcher_venue_f5_allowed": 1.806,
-          "pitcher_rest_days": 4,
-          "pitcher_rest_runs_modifier": 0.0,
-          "pitcher_rest_label": "normal rest (4d)",
-          "lineup_delta": 0.051,
-          "venue_delta": 0.125,
-          "park_run_delta_per_team": 0.125,
-          "wind_run_delta_per_team": 0.0,
-          "wind_mph": 0.0,
-          "wind_direction": "",
-          "travel_run_delta": -0.032,
-          "travel_fatigue_index": 0.2,
-          "travel_days_since_previous_game": 1,
-          "travel_distance_miles": 91.1,
-          "travel_timezone_shift_hours": 0,
-          "travel_direction": "same_timezone",
-          "travel_label": "1d since previous game; 91 mi"
-        },
-        "away_pitcher": {
-          "name": "Braxton Ashcraft",
-          "stat_expected": 1.806,
-          "current_f5_allowed": 1.938,
-          "recent_f5_allowed": 1.667,
-          "prior_f5_allowed": 1.396,
-          "current_vs_opponent": 2.602,
-          "prior_vs_opponent": 1.806,
-          "venue_f5_allowed": 1.806,
-          "current_starts": 16,
-          "recent_starts": 6,
-          "prior_starts": 8,
-          "current_vs_opponent_starts": 1,
-          "prior_vs_opponent_starts": 0,
-          "venue_starts": 0,
+          "venue_starts": 1,
           "rest_days": 4,
           "rest_runs_modifier": 0.0,
           "rest_label": "normal rest (4d)",
@@ -413,100 +129,90 @@
             "lookback_games": 2,
             "games_inspected": 2,
             "recently_used_pitcher_ids": [
-              642397,
               642701,
-              669387,
               670990,
+              676742,
               676755,
-              681895
+              682997,
+              684049
             ],
             "back_to_back_arms": [],
             "yesterday_used_pitcher_ids": [
               642701,
-              669387
+              670990,
+              676742
             ],
             "high_leverage_used_pitcher_ids": [
-              642397,
-              642701,
-              669387
+              670990,
+              676742,
+              684049
             ],
             "light_use_pitcher_ids": [
-              670990,
+              642701,
               676755,
-              681895
+              682997
             ],
             "unavailable_today": [
-              642397,
-              642701,
-              669387
+              670990,
+              676742,
+              684049
             ],
-            "effective_unavailable_count": 4.41,
-            "fatigue_index": 0.551
+            "effective_unavailable_count": 4.56,
+            "fatigue_index": 0.571
           }
         },
         "home_pitcher": {
-          "name": "Aaron Nola",
-          "stat_expected": 2.721,
-          "current_f5_allowed": 3.062,
-          "recent_f5_allowed": 2.833,
-          "prior_f5_allowed": 2.956,
-          "current_vs_opponent": 5.574,
-          "prior_vs_opponent": 3.667,
-          "venue_f5_allowed": 3.286,
-          "current_starts": 16,
-          "recent_starts": 6,
-          "prior_starts": 30,
-          "current_vs_opponent_starts": 1,
-          "prior_vs_opponent_starts": 3,
-          "venue_starts": 7,
-          "rest_days": 4,
+          "name": "Alan Rangel",
+          "stat_expected": 2.21,
+          "current_f5_allowed": 2.21,
+          "recent_f5_allowed": 2.21,
+          "prior_f5_allowed": 2.21,
+          "current_vs_opponent": 2.21,
+          "prior_vs_opponent": 2.21,
+          "venue_f5_allowed": 2.21,
+          "current_starts": 0,
+          "recent_starts": 0,
+          "prior_starts": 0,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 0,
+          "venue_starts": 0,
+          "rest_days": null,
           "rest_runs_modifier": 0.0,
-          "rest_label": "normal rest (4d)",
+          "rest_label": "rest unknown",
           "team_bullpen": {
             "lookback_games": 2,
             "games_inspected": 2,
             "recently_used_pitcher_ids": [
-              621237,
-              660604,
+              642152,
               661395,
-              663767,
               679775,
               680742,
               686751,
               689147
             ],
-            "back_to_back_arms": [
-              679775
-            ],
+            "back_to_back_arms": [],
             "yesterday_used_pitcher_ids": [
-              621237,
               661395,
-              663767,
               679775,
+              686751,
               689147
             ],
             "high_leverage_used_pitcher_ids": [
-              621237,
-              660604,
-              661395,
-              663767,
               679775,
-              689147
-            ],
-            "light_use_pitcher_ids": [
-              680742,
               686751
             ],
-            "unavailable_today": [
-              621237,
-              660604,
+            "light_use_pitcher_ids": [
+              642152,
               661395,
-              663767,
-              679775,
+              680742,
               689147
             ],
-            "effective_unavailable_count": 6.73,
-            "fatigue_index": 0.842
+            "unavailable_today": [
+              679775,
+              686751
+            ],
+            "effective_unavailable_count": 4.06,
+            "fatigue_index": 0.508
           }
         },
         "venue": {
@@ -529,1275 +235,145 @@
         "travel": {
           "away": {
             "available": true,
-            "previous_game_date": "2026-06-28",
-            "previous_venue_id": 31,
-            "previous_venue_name": "PNC Park",
+            "previous_game_date": "2026-07-01",
+            "previous_venue_id": 2681,
+            "previous_venue_name": "Citizens Bank Park",
             "current_venue_id": 2681,
             "current_venue_name": "Citizens Bank Park",
             "days_since_previous_game": 1,
-            "same_venue": false,
-            "distance_miles": 258.2,
+            "same_venue": true,
+            "distance_miles": 0.0,
             "timezone_shift_hours": 0,
-            "travel_direction": "same_timezone",
-            "travel_fatigue_index": 0.2,
-            "travel_run_delta": -0.032,
-            "label": "1d since previous game; 258 mi"
+            "travel_direction": "same",
+            "travel_fatigue_index": 0.0,
+            "travel_run_delta": -0.0,
+            "label": "1d since previous game; 0 mi"
           },
           "home": {
             "available": true,
-            "previous_game_date": "2026-06-28",
-            "previous_venue_id": 3289,
-            "previous_venue_name": "Citi Field",
+            "previous_game_date": "2026-07-01",
+            "previous_venue_id": 2681,
+            "previous_venue_name": "Citizens Bank Park",
             "current_venue_id": 2681,
             "current_venue_name": "Citizens Bank Park",
             "days_since_previous_game": 1,
-            "same_venue": false,
-            "distance_miles": 91.1,
+            "same_venue": true,
+            "distance_miles": 0.0,
             "timezone_shift_hours": 0,
-            "travel_direction": "same_timezone",
-            "travel_fatigue_index": 0.2,
-            "travel_run_delta": -0.032,
-            "label": "1d since previous game; 91 mi"
+            "travel_direction": "same",
+            "travel_fatigue_index": 0.0,
+            "travel_run_delta": -0.0,
+            "label": "1d since previous game; 0 mi"
           }
         },
         "away_lineup_matchup": {
-          "run_delta": 0.085,
-          "threat_score": 0.3856,
-          "current_bvp_pa": 10,
-          "older_bvp_pa": 35,
-          "sampled_batters": 9
-        },
-        "home_lineup_matchup": {
-          "run_delta": 0.051,
-          "threat_score": 0.371,
-          "current_bvp_pa": 22,
+          "run_delta": 0.05,
+          "threat_score": 0.3705,
+          "current_bvp_pa": 0,
           "older_bvp_pa": 5,
           "sampled_batters": 9
-        }
-      },
-      "notes": "F5 projection Pittsburgh Pirates 3.14, Philadelphia Phillies 2.41 (total 5.55). BvP PA away/home: 10+35/22+5; venue F5 total 4.75 over 60 games. Travel away/home: 1d since previous game; 258 mi (fatigue 0.20) / 1d since previous game; 91 mi (fatigue 0.20)."
-    },
-    {
-      "game_id": "823529",
-      "game_start_time": "2026-06-29T23:05:00Z",
-      "game_order": 2,
-      "matchup": "Detroit Tigers @ New York Yankees",
-      "home_team": "New York Yankees",
-      "away_team": "Detroit Tigers",
-      "venue_id": 3313,
-      "venue_name": "Yankee Stadium",
-      "home_pitcher": "Ryan Weathers",
-      "away_pitcher": "Casey Mize",
-      "projected_first_five": {
-        "away_runs": 2.5,
-        "home_runs": 2.1,
-        "total_runs": 4.6,
-        "home_lead_probability": 0.4487,
-        "away_lead_probability": 0.5513
-      },
-      "top_picks": [
-        {
-          "market": "f5_side",
-          "pick": "Detroit Tigers F5 ML",
-          "team": "Detroit Tigers",
-          "probability": 0.5513,
-          "edge_pct": 2.75,
-          "decision": "PASS",
-          "confidence": "Low",
-          "assumed_odds": -110,
-          "projected_margin": 0.4,
-          "model_prediction": "Detroit Tigers +0.40 F5 runs",
-          "guardrail": "margin too small"
-        },
-        {
-          "market": "f5_total",
-          "pick": "Over 4.5 F5",
-          "team": "",
-          "probability": 0.5216,
-          "edge_pct": -4.37,
-          "decision": "PASS",
-          "confidence": "Low",
-          "assumed_odds": -130,
-          "vegas_line": 4.5,
-          "projection_gap": 0.1,
-          "model_prediction": "4.60 F5 total",
-          "guardrail": "projection too close to F5 line"
-        }
-      ],
-      "features": {
-        "away_offense": {
-          "projected_runs": 2.5,
-          "team_current_f5_runs": 2.429,
-          "team_recent_f5_runs": 3.083,
-          "team_prior_f5_runs": 2.701,
-          "team_venue_f5_runs": 2.075,
-          "pitcher_current_f5_allowed": 2.133,
-          "pitcher_recent_f5_allowed": 2.833,
-          "pitcher_current_vs_opponent": 2.026,
-          "pitcher_prior_vs_opponent": 1.247,
-          "pitcher_venue_f5_allowed": 2.111,
-          "pitcher_rest_days": 4,
-          "pitcher_rest_runs_modifier": 0.0,
-          "pitcher_rest_label": "normal rest (4d)",
-          "lineup_delta": -0.008,
-          "venue_delta": 0.18,
-          "park_run_delta_per_team": 0.18,
-          "wind_run_delta_per_team": 0.0,
-          "wind_mph": 0.0,
-          "wind_direction": "",
-          "travel_run_delta": -0.032,
-          "travel_fatigue_index": 0.2,
-          "travel_days_since_previous_game": 1,
-          "travel_distance_miles": 482.6,
-          "travel_timezone_shift_hours": 0,
-          "travel_direction": "same_timezone",
-          "travel_label": "1d since previous game; 483 mi"
-        },
-        "home_offense": {
-          "projected_runs": 2.1,
-          "team_current_f5_runs": 2.49,
-          "team_recent_f5_runs": 2.5,
-          "team_prior_f5_runs": 3.211,
-          "team_venue_f5_runs": 3.389,
-          "pitcher_current_f5_allowed": 1.455,
-          "pitcher_recent_f5_allowed": 1.333,
-          "pitcher_current_vs_opponent": 1.259,
-          "pitcher_prior_vs_opponent": 2.667,
-          "pitcher_venue_f5_allowed": 1.833,
-          "pitcher_rest_days": 5,
-          "pitcher_rest_runs_modifier": 0.0,
-          "pitcher_rest_label": "normal rest (5d)",
-          "lineup_delta": -0.113,
-          "venue_delta": 0.18,
-          "park_run_delta_per_team": 0.18,
-          "wind_run_delta_per_team": 0.0,
-          "wind_mph": 0.0,
-          "wind_direction": "",
-          "travel_run_delta": -0.032,
-          "travel_fatigue_index": 0.2,
-          "travel_days_since_previous_game": 1,
-          "travel_distance_miles": 179.9,
-          "travel_timezone_shift_hours": 0,
-          "travel_direction": "same_timezone",
-          "travel_label": "1d since previous game; 180 mi"
-        },
-        "away_pitcher": {
-          "name": "Casey Mize",
-          "stat_expected": 1.777,
-          "current_f5_allowed": 1.455,
-          "recent_f5_allowed": 1.333,
-          "prior_f5_allowed": 2.22,
-          "current_vs_opponent": 1.259,
-          "prior_vs_opponent": 2.667,
-          "venue_f5_allowed": 1.833,
-          "current_starts": 11,
-          "recent_starts": 6,
-          "prior_starts": 30,
-          "current_vs_opponent_starts": 1,
-          "prior_vs_opponent_starts": 3,
-          "venue_starts": 1,
-          "rest_days": 5,
-          "rest_runs_modifier": 0.0,
-          "rest_label": "normal rest (5d)",
-          "team_bullpen": {
-            "lookback_games": 2,
-            "games_inspected": 2,
-            "recently_used_pitcher_ids": [
-              445276,
-              621097,
-              623454,
-              640448,
-              663947,
-              676684,
-              805427
-            ],
-            "back_to_back_arms": [
-              621097
-            ],
-            "yesterday_used_pitcher_ids": [
-              445276,
-              621097,
-              640448,
-              663947
-            ],
-            "high_leverage_used_pitcher_ids": [
-              445276,
-              640448,
-              663947
-            ],
-            "light_use_pitcher_ids": [
-              621097,
-              623454,
-              676684,
-              805427
-            ],
-            "unavailable_today": [
-              445276,
-              621097,
-              640448,
-              663947
-            ],
-            "effective_unavailable_count": 4.92,
-            "fatigue_index": 0.615
-          }
-        },
-        "home_pitcher": {
-          "name": "Ryan Weathers",
-          "stat_expected": 2.078,
-          "current_f5_allowed": 2.133,
-          "recent_f5_allowed": 2.833,
-          "prior_f5_allowed": 2.532,
-          "current_vs_opponent": 2.026,
-          "prior_vs_opponent": 1.247,
-          "venue_f5_allowed": 2.111,
-          "current_starts": 15,
-          "recent_starts": 6,
-          "prior_starts": 30,
-          "current_vs_opponent_starts": 1,
-          "prior_vs_opponent_starts": 1,
-          "venue_starts": 9,
-          "rest_days": 4,
-          "rest_runs_modifier": 0.0,
-          "rest_label": "normal rest (4d)",
-          "team_bullpen": {
-            "lookback_games": 2,
-            "games_inspected": 2,
-            "recently_used_pitcher_ids": [
-              518585,
-              621112,
-              666808,
-              670280,
-              687396
-            ],
-            "back_to_back_arms": [
-              621112
-            ],
-            "yesterday_used_pitcher_ids": [
-              518585,
-              621112,
-              670280
-            ],
-            "high_leverage_used_pitcher_ids": [
-              670280
-            ],
-            "light_use_pitcher_ids": [
-              518585,
-              621112,
-              666808,
-              687396
-            ],
-            "unavailable_today": [
-              621112,
-              670280
-            ],
-            "effective_unavailable_count": 3.0,
-            "fatigue_index": 0.375
-          }
-        },
-        "venue": {
-          "f5_total": 4.917,
-          "run_delta_per_team": 0.18,
-          "games": 60,
-          "park_blend": {
-            "final_delta": 0.18,
-            "learned_delta": 0.18,
-            "static_delta": 0.0,
-            "blend_weight_learned": 1.0,
-            "park_factor": 1.0
-          },
-          "park_run_delta_per_team": 0.18,
-          "wind_run_delta_per_team": 0.0,
-          "wind_mph": 0.0,
-          "wind_direction": "",
-          "weather_raw": ""
-        },
-        "travel": {
-          "away": {
-            "available": true,
-            "previous_game_date": "2026-06-28",
-            "previous_venue_id": 2394,
-            "previous_venue_name": "Comerica Park",
-            "current_venue_id": 3313,
-            "current_venue_name": "Yankee Stadium",
-            "days_since_previous_game": 1,
-            "same_venue": false,
-            "distance_miles": 482.6,
-            "timezone_shift_hours": 0,
-            "travel_direction": "same_timezone",
-            "travel_fatigue_index": 0.2,
-            "travel_run_delta": -0.032,
-            "label": "1d since previous game; 483 mi"
-          },
-          "home": {
-            "available": true,
-            "previous_game_date": "2026-06-28",
-            "previous_venue_id": 3,
-            "previous_venue_name": "Fenway Park",
-            "current_venue_id": 3313,
-            "current_venue_name": "Yankee Stadium",
-            "days_since_previous_game": 1,
-            "same_venue": false,
-            "distance_miles": 179.9,
-            "timezone_shift_hours": 0,
-            "travel_direction": "same_timezone",
-            "travel_fatigue_index": 0.2,
-            "travel_run_delta": -0.032,
-            "label": "1d since previous game; 180 mi"
-          }
-        },
-        "away_lineup_matchup": {
-          "run_delta": -0.008,
-          "threat_score": 0.3459,
-          "current_bvp_pa": 24,
-          "older_bvp_pa": 10,
-          "sampled_batters": 9
         },
         "home_lineup_matchup": {
-          "run_delta": -0.113,
-          "threat_score": 0.3013,
-          "current_bvp_pa": 13,
-          "older_bvp_pa": 30,
+          "run_delta": 0.083,
+          "threat_score": 0.3845,
+          "current_bvp_pa": 0,
+          "older_bvp_pa": 20,
           "sampled_batters": 9
         }
       },
-      "notes": "F5 projection Detroit Tigers 2.5, New York Yankees 2.1 (total 4.6). BvP PA away/home: 24+10/13+30; venue F5 total 4.92 over 60 games. Travel away/home: 1d since previous game; 483 mi (fatigue 0.20) / 1d since previous game; 180 mi (fatigue 0.20)."
+      "notes": "F5 projection Pittsburgh Pirates 2.46, Philadelphia Phillies 3.01 (total 5.47). BvP PA away/home: 0+5/0+20; venue F5 total 4.75 over 60 games. Travel away/home: 1d since previous game; 0 mi (fatigue 0.00) / 1d since previous game; 0 mi (fatigue 0.00)."
     },
     {
-      "game_id": "822792",
-      "game_start_time": "2026-06-29T23:07:00Z",
-      "game_order": 3,
-      "matchup": "New York Mets @ Toronto Blue Jays",
-      "home_team": "Toronto Blue Jays",
-      "away_team": "New York Mets",
-      "venue_id": 14,
-      "venue_name": "Rogers Centre",
-      "home_pitcher": "Trey Yesavage",
-      "away_pitcher": "Sean Manaea",
-      "projected_first_five": {
-        "away_runs": 1.93,
-        "home_runs": 2.71,
-        "total_runs": 4.64,
-        "home_lead_probability": 0.5993,
-        "away_lead_probability": 0.4007
-      },
-      "top_picks": [
-        {
-          "market": "f5_side",
-          "pick": "Toronto Blue Jays F5 ML",
-          "team": "Toronto Blue Jays",
-          "probability": 0.5993,
-          "edge_pct": 7.55,
-          "decision": "LEAN",
-          "confidence": "Medium",
-          "assumed_odds": -110,
-          "projected_margin": 0.78,
-          "model_prediction": "Toronto Blue Jays +0.78 F5 runs",
-          "guardrail": "thin starter sample"
-        },
-        {
-          "market": "f5_total",
-          "pick": "Over 4.5 F5",
-          "team": "",
-          "probability": 0.5302,
-          "edge_pct": -3.51,
-          "decision": "PASS",
-          "confidence": "Low",
-          "assumed_odds": -130,
-          "vegas_line": 4.5,
-          "projection_gap": 0.14,
-          "model_prediction": "4.64 F5 total",
-          "guardrail": "projection too close to F5 line"
-        }
-      ],
-      "features": {
-        "away_offense": {
-          "projected_runs": 1.93,
-          "team_current_f5_runs": 2.243,
-          "team_recent_f5_runs": 2.5,
-          "team_prior_f5_runs": 2.717,
-          "team_venue_f5_runs": 2.25,
-          "pitcher_current_f5_allowed": 1.182,
-          "pitcher_recent_f5_allowed": 1.333,
-          "pitcher_current_vs_opponent": 1.955,
-          "pitcher_prior_vs_opponent": 1.955,
-          "pitcher_venue_f5_allowed": 1.167,
-          "pitcher_rest_days": 4,
-          "pitcher_rest_runs_modifier": 0.0,
-          "pitcher_rest_label": "normal rest (4d)",
-          "lineup_delta": -0.04,
-          "venue_delta": 0.167,
-          "park_run_delta_per_team": 0.167,
-          "wind_run_delta_per_team": 0.0,
-          "wind_mph": 0.0,
-          "wind_direction": "",
-          "travel_run_delta": -0.032,
-          "travel_fatigue_index": 0.2,
-          "travel_days_since_previous_game": 1,
-          "travel_distance_miles": 346.6,
-          "travel_timezone_shift_hours": 0,
-          "travel_direction": "same_timezone",
-          "travel_label": "1d since previous game; 347 mi"
-        },
-        "home_offense": {
-          "projected_runs": 2.71,
-          "team_current_f5_runs": 2.208,
-          "team_recent_f5_runs": 1.917,
-          "team_prior_f5_runs": 2.672,
-          "team_venue_f5_runs": 2.833,
-          "pitcher_current_f5_allowed": 2.746,
-          "pitcher_recent_f5_allowed": 2.873,
-          "pitcher_current_vs_opponent": 2.492,
-          "pitcher_prior_vs_opponent": 1.895,
-          "pitcher_venue_f5_allowed": 2.119,
-          "pitcher_rest_days": 4,
-          "pitcher_rest_runs_modifier": 0.0,
-          "pitcher_rest_label": "normal rest (4d)",
-          "lineup_delta": 0.028,
-          "venue_delta": 0.167,
-          "park_run_delta_per_team": 0.167,
-          "wind_run_delta_per_team": 0.0,
-          "wind_mph": 0.0,
-          "wind_direction": "",
-          "travel_run_delta": -0.0,
-          "travel_fatigue_index": 0.0,
-          "travel_days_since_previous_game": 1,
-          "travel_distance_miles": 0.0,
-          "travel_timezone_shift_hours": 0,
-          "travel_direction": "same",
-          "travel_label": "1d since previous game; 0 mi"
-        },
-        "away_pitcher": {
-          "name": "Sean Manaea",
-          "stat_expected": 2.492,
-          "current_f5_allowed": 2.746,
-          "recent_f5_allowed": 2.873,
-          "prior_f5_allowed": 2.204,
-          "current_vs_opponent": 2.492,
-          "prior_vs_opponent": 1.895,
-          "venue_f5_allowed": 2.119,
-          "current_starts": 3,
-          "recent_starts": 3,
-          "prior_starts": 30,
-          "current_vs_opponent_starts": 0,
-          "prior_vs_opponent_starts": 1,
-          "venue_starts": 1,
-          "rest_days": 4,
-          "rest_runs_modifier": 0.0,
-          "rest_label": "normal rest (4d)",
-          "team_bullpen": {
-            "lookback_games": 2,
-            "games_inspected": 2,
-            "recently_used_pitcher_ids": [
-              596133,
-              621345,
-              623211,
-              642207,
-              668964,
-              673540
-            ],
-            "back_to_back_arms": [],
-            "yesterday_used_pitcher_ids": [
-              668964,
-              673540
-            ],
-            "high_leverage_used_pitcher_ids": [
-              668964,
-              673540
-            ],
-            "light_use_pitcher_ids": [
-              596133,
-              621345,
-              623211,
-              642207
-            ],
-            "unavailable_today": [
-              668964,
-              673540
-            ],
-            "effective_unavailable_count": 4.46,
-            "fatigue_index": 0.558
-          }
-        },
-        "home_pitcher": {
-          "name": "Trey Yesavage",
-          "stat_expected": 1.955,
-          "current_f5_allowed": 1.182,
-          "recent_f5_allowed": 1.333,
-          "prior_f5_allowed": 1.901,
-          "current_vs_opponent": 1.955,
-          "prior_vs_opponent": 1.955,
-          "venue_f5_allowed": 1.167,
-          "current_starts": 11,
-          "recent_starts": 6,
-          "prior_starts": 3,
-          "current_vs_opponent_starts": 0,
-          "prior_vs_opponent_starts": 0,
-          "venue_starts": 6,
-          "rest_days": 4,
-          "rest_runs_modifier": 0.0,
-          "rest_label": "normal rest (4d)",
-          "team_bullpen": {
-            "lookback_games": 2,
-            "games_inspected": 2,
-            "recently_used_pitcher_ids": [
-              643511,
-              656546,
-              667297,
-              671936,
-              680755,
-              686973,
-              689254
-            ],
-            "back_to_back_arms": [
-              656546
-            ],
-            "yesterday_used_pitcher_ids": [
-              656546,
-              671936,
-              686973
-            ],
-            "high_leverage_used_pitcher_ids": [
-              656546,
-              671936,
-              686973
-            ],
-            "light_use_pitcher_ids": [
-              643511,
-              667297,
-              680755,
-              689254
-            ],
-            "unavailable_today": [
-              656546,
-              671936,
-              686973
-            ],
-            "effective_unavailable_count": 4.78,
-            "fatigue_index": 0.597
-          }
-        },
-        "venue": {
-          "f5_total": 4.833,
-          "run_delta_per_team": 0.167,
-          "games": 60,
-          "park_blend": {
-            "final_delta": 0.167,
-            "learned_delta": 0.167,
-            "static_delta": 0.02,
-            "blend_weight_learned": 1.0,
-            "park_factor": 1.02
-          },
-          "park_run_delta_per_team": 0.167,
-          "wind_run_delta_per_team": 0.0,
-          "wind_mph": 0.0,
-          "wind_direction": "",
-          "weather_raw": ""
-        },
-        "travel": {
-          "away": {
-            "available": true,
-            "previous_game_date": "2026-06-28",
-            "previous_venue_id": 3289,
-            "previous_venue_name": "Citi Field",
-            "current_venue_id": 14,
-            "current_venue_name": "Rogers Centre",
-            "days_since_previous_game": 1,
-            "same_venue": false,
-            "distance_miles": 346.6,
-            "timezone_shift_hours": 0,
-            "travel_direction": "same_timezone",
-            "travel_fatigue_index": 0.2,
-            "travel_run_delta": -0.032,
-            "label": "1d since previous game; 347 mi"
-          },
-          "home": {
-            "available": true,
-            "previous_game_date": "2026-06-28",
-            "previous_venue_id": 14,
-            "previous_venue_name": "Rogers Centre",
-            "current_venue_id": 14,
-            "current_venue_name": "Rogers Centre",
-            "days_since_previous_game": 1,
-            "same_venue": true,
-            "distance_miles": 0.0,
-            "timezone_shift_hours": 0,
-            "travel_direction": "same",
-            "travel_fatigue_index": 0.0,
-            "travel_run_delta": -0.0,
-            "label": "1d since previous game; 0 mi"
-          }
-        },
-        "away_lineup_matchup": {
-          "run_delta": -0.04,
-          "threat_score": 0.3322,
-          "current_bvp_pa": 0,
-          "older_bvp_pa": 0,
-          "sampled_batters": 9
-        },
-        "home_lineup_matchup": {
-          "run_delta": 0.028,
-          "threat_score": 0.3615,
-          "current_bvp_pa": 0,
-          "older_bvp_pa": 67,
-          "sampled_batters": 9
-        }
-      },
-      "notes": "F5 projection New York Mets 1.93, Toronto Blue Jays 2.71 (total 4.64). BvP PA away/home: 0+0/0+67; venue F5 total 4.83 over 60 games. Travel away/home: 1d since previous game; 347 mi (fatigue 0.20) / 1d since previous game; 0 mi (fatigue 0.00)."
-    },
-    {
-      "game_id": "824741",
-      "game_start_time": "2026-06-29T23:10:00Z",
-      "game_order": 4,
-      "matchup": "Washington Nationals @ Boston Red Sox",
-      "home_team": "Boston Red Sox",
-      "away_team": "Washington Nationals",
-      "venue_id": 3,
-      "venue_name": "Fenway Park",
-      "home_pitcher": "Ranger Suarez",
-      "away_pitcher": "Miles Mikolas",
-      "projected_first_five": {
-        "away_runs": 2.36,
-        "home_runs": 3.42,
-        "total_runs": 5.78,
-        "home_lead_probability": 0.6338,
-        "away_lead_probability": 0.3662
-      },
-      "top_picks": [
-        {
-          "market": "f5_side",
-          "pick": "Boston Red Sox F5 ML",
-          "team": "Boston Red Sox",
-          "probability": 0.6338,
-          "edge_pct": 11.0,
-          "decision": "BET",
-          "confidence": "High",
-          "assumed_odds": -110,
-          "projected_margin": 1.06,
-          "model_prediction": "Boston Red Sox +1.06 F5 runs"
-        },
-        {
-          "market": "f5_total",
-          "pick": "Over 5.5 F5",
-          "team": "",
-          "probability": 0.5602,
-          "edge_pct": -6.95,
-          "decision": "PASS",
-          "confidence": "Low",
-          "assumed_odds": -170,
-          "vegas_line": 5.5,
-          "projection_gap": 0.28,
-          "model_prediction": "5.78 F5 total",
-          "guardrail": "projection too close to F5 line"
-        }
-      ],
-      "features": {
-        "away_offense": {
-          "projected_runs": 2.36,
-          "team_current_f5_runs": 2.667,
-          "team_recent_f5_runs": 2.792,
-          "team_prior_f5_runs": 2.33,
-          "team_venue_f5_runs": 2.25,
-          "pitcher_current_f5_allowed": 1.8,
-          "pitcher_recent_f5_allowed": 2.0,
-          "pitcher_current_vs_opponent": 1.76,
-          "pitcher_prior_vs_opponent": 2.794,
-          "pitcher_venue_f5_allowed": 2.0,
-          "pitcher_rest_days": 4,
-          "pitcher_rest_runs_modifier": 0.0,
-          "pitcher_rest_label": "normal rest (4d)",
-          "lineup_delta": 0.004,
-          "venue_delta": 0.18,
-          "park_run_delta_per_team": 0.18,
-          "wind_run_delta_per_team": 0.0,
-          "wind_mph": 0.0,
-          "wind_direction": "",
-          "travel_run_delta": -0.032,
-          "travel_fatigue_index": 0.2,
-          "travel_days_since_previous_game": 1,
-          "travel_distance_miles": 358.0,
-          "travel_timezone_shift_hours": 0,
-          "travel_direction": "same_timezone",
-          "travel_label": "1d since previous game; 358 mi"
-        },
-        "home_offense": {
-          "projected_runs": 3.42,
-          "team_current_f5_runs": 2.194,
-          "team_recent_f5_runs": 2.25,
-          "team_prior_f5_runs": 2.696,
-          "team_venue_f5_runs": 2.639,
-          "pitcher_current_f5_allowed": 4.167,
-          "pitcher_recent_f5_allowed": 4.167,
-          "pitcher_current_vs_opponent": 2.514,
-          "pitcher_prior_vs_opponent": 3.667,
-          "pitcher_venue_f5_allowed": 2.514,
-          "pitcher_rest_days": 47,
-          "pitcher_rest_runs_modifier": 0.15,
-          "pitcher_rest_label": "extended layoff (47d) +0.15",
-          "lineup_delta": -0.007,
-          "venue_delta": 0.18,
-          "park_run_delta_per_team": 0.18,
-          "wind_run_delta_per_team": 0.0,
-          "wind_mph": 0.0,
-          "wind_direction": "",
-          "travel_run_delta": -0.0,
-          "travel_fatigue_index": 0.0,
-          "travel_days_since_previous_game": 1,
-          "travel_distance_miles": 0.0,
-          "travel_timezone_shift_hours": 0,
-          "travel_direction": "same",
-          "travel_label": "1d since previous game; 0 mi"
-        },
-        "away_pitcher": {
-          "name": "Miles Mikolas",
-          "stat_expected": 2.514,
-          "current_f5_allowed": 4.167,
-          "recent_f5_allowed": 4.167,
-          "prior_f5_allowed": 2.687,
-          "current_vs_opponent": 2.514,
-          "prior_vs_opponent": 3.667,
-          "venue_f5_allowed": 2.514,
-          "current_starts": 6,
-          "recent_starts": 6,
-          "prior_starts": 30,
-          "current_vs_opponent_starts": 0,
-          "prior_vs_opponent_starts": 3,
-          "venue_starts": 0,
-          "rest_days": 47,
-          "rest_runs_modifier": 0.15,
-          "rest_label": "extended layoff (47d) +0.15",
-          "team_bullpen": {
-            "lookback_games": 2,
-            "games_inspected": 2,
-            "recently_used_pitcher_ids": [
-              663992,
-              664875,
-              676571,
-              680730,
-              687377,
-              690925
-            ],
-            "back_to_back_arms": [
-              676571
-            ],
-            "yesterday_used_pitcher_ids": [
-              663992,
-              676571,
-              680730
-            ],
-            "high_leverage_used_pitcher_ids": [
-              676571,
-              680730
-            ],
-            "light_use_pitcher_ids": [
-              663992,
-              664875,
-              687377,
-              690925
-            ],
-            "unavailable_today": [
-              676571,
-              680730
-            ],
-            "effective_unavailable_count": 3.79,
-            "fatigue_index": 0.474
-          }
-        },
-        "home_pitcher": {
-          "name": "Ranger Suarez",
-          "stat_expected": 1.76,
-          "current_f5_allowed": 1.8,
-          "recent_f5_allowed": 2.0,
-          "prior_f5_allowed": 2.164,
-          "current_vs_opponent": 1.76,
-          "prior_vs_opponent": 2.794,
-          "venue_f5_allowed": 2.0,
-          "current_starts": 15,
-          "recent_starts": 6,
-          "prior_starts": 30,
-          "current_vs_opponent_starts": 0,
-          "prior_vs_opponent_starts": 6,
-          "venue_starts": 7,
-          "rest_days": 4,
-          "rest_runs_modifier": 0.0,
-          "rest_label": "normal rest (4d)",
-          "team_bullpen": {
-            "lookback_games": 2,
-            "games_inspected": 2,
-            "recently_used_pitcher_ids": [
-              547973,
-              594027,
-              676477,
-              686580
-            ],
-            "back_to_back_arms": [
-              547973,
-              686580
-            ],
-            "yesterday_used_pitcher_ids": [
-              547973,
-              594027,
-              686580
-            ],
-            "high_leverage_used_pitcher_ids": [
-              547973,
-              686580
-            ],
-            "light_use_pitcher_ids": [
-              594027,
-              676477
-            ],
-            "unavailable_today": [
-              547973,
-              686580
-            ],
-            "effective_unavailable_count": 2.86,
-            "fatigue_index": 0.357
-          }
-        },
-        "venue": {
-          "f5_total": 4.933,
-          "run_delta_per_team": 0.18,
-          "games": 60,
-          "park_blend": {
-            "final_delta": 0.18,
-            "learned_delta": 0.18,
-            "static_delta": 0.0,
-            "blend_weight_learned": 1.0,
-            "park_factor": 1.0
-          },
-          "park_run_delta_per_team": 0.18,
-          "wind_run_delta_per_team": 0.0,
-          "wind_mph": 0.0,
-          "wind_direction": "",
-          "weather_raw": ""
-        },
-        "travel": {
-          "away": {
-            "available": true,
-            "previous_game_date": "2026-06-28",
-            "previous_venue_id": 2,
-            "previous_venue_name": "Oriole Park at Camden Yards",
-            "current_venue_id": 3,
-            "current_venue_name": "Fenway Park",
-            "days_since_previous_game": 1,
-            "same_venue": false,
-            "distance_miles": 358.0,
-            "timezone_shift_hours": 0,
-            "travel_direction": "same_timezone",
-            "travel_fatigue_index": 0.2,
-            "travel_run_delta": -0.032,
-            "label": "1d since previous game; 358 mi"
-          },
-          "home": {
-            "available": true,
-            "previous_game_date": "2026-06-28",
-            "previous_venue_id": 3,
-            "previous_venue_name": "Fenway Park",
-            "current_venue_id": 3,
-            "current_venue_name": "Fenway Park",
-            "days_since_previous_game": 1,
-            "same_venue": true,
-            "distance_miles": 0.0,
-            "timezone_shift_hours": 0,
-            "travel_direction": "same",
-            "travel_fatigue_index": 0.0,
-            "travel_run_delta": -0.0,
-            "label": "1d since previous game; 0 mi"
-          }
-        },
-        "away_lineup_matchup": {
-          "run_delta": 0.004,
-          "threat_score": 0.3512,
-          "current_bvp_pa": 0,
-          "older_bvp_pa": 43,
-          "sampled_batters": 9
-        },
-        "home_lineup_matchup": {
-          "run_delta": -0.007,
-          "threat_score": 0.3465,
-          "current_bvp_pa": 0,
-          "older_bvp_pa": 53,
-          "sampled_batters": 9
-        }
-      },
-      "notes": "F5 projection Washington Nationals 2.36, Boston Red Sox 3.42 (total 5.78). BvP PA away/home: 0+43/0+53; venue F5 total 4.93 over 60 games. Travel away/home: 1d since previous game; 358 mi (fatigue 0.20) / 1d since previous game; 0 mi (fatigue 0.00)."
-    },
-    {
-      "game_id": "824420",
-      "game_start_time": "2026-06-29T23:10:00Z",
-      "game_order": 5,
-      "matchup": "Texas Rangers @ Cleveland Guardians",
-      "home_team": "Cleveland Guardians",
-      "away_team": "Texas Rangers",
-      "venue_id": 5,
-      "venue_name": "Progressive Field",
-      "home_pitcher": "Parker Messick",
-      "away_pitcher": "Tyler Alexander",
-      "projected_first_five": {
-        "away_runs": 1.68,
-        "home_runs": 1.77,
-        "total_runs": 3.45,
-        "home_lead_probability": 0.5116,
-        "away_lead_probability": 0.4884
-      },
-      "top_picks": [
-        {
-          "market": "f5_side",
-          "pick": "Cleveland Guardians F5 ML",
-          "team": "Cleveland Guardians",
-          "probability": 0.5116,
-          "edge_pct": -1.22,
-          "decision": "PASS",
-          "confidence": "Low",
-          "assumed_odds": -110,
-          "projected_margin": 0.09,
-          "model_prediction": "Cleveland Guardians +0.09 F5 runs",
-          "guardrail": "thin starter sample, margin too small"
-        },
-        {
-          "market": "f5_total",
-          "pick": "Under 3.5 F5",
-          "team": "",
-          "probability": 0.5108,
-          "edge_pct": -11.88,
-          "decision": "PASS",
-          "confidence": "Low",
-          "assumed_odds": -170,
-          "vegas_line": 3.5,
-          "projection_gap": 0.05,
-          "model_prediction": "3.45 F5 total",
-          "guardrail": "projection too close to F5 line"
-        }
-      ],
-      "features": {
-        "away_offense": {
-          "projected_runs": 1.68,
-          "team_current_f5_runs": 2.817,
-          "team_recent_f5_runs": 2.625,
-          "team_prior_f5_runs": 2.575,
-          "team_venue_f5_runs": 2.575,
-          "pitcher_current_f5_allowed": 1.25,
-          "pitcher_recent_f5_allowed": 1.167,
-          "pitcher_current_vs_opponent": 0.561,
-          "pitcher_prior_vs_opponent": 1.684,
-          "pitcher_venue_f5_allowed": 1.25,
-          "pitcher_rest_days": 5,
-          "pitcher_rest_runs_modifier": 0.0,
-          "pitcher_rest_label": "normal rest (5d)",
-          "lineup_delta": -0.025,
-          "venue_delta": -0.025,
-          "park_run_delta_per_team": -0.025,
-          "wind_run_delta_per_team": 0.0,
-          "wind_mph": 0.0,
-          "wind_direction": "",
-          "travel_run_delta": -0.032,
-          "travel_fatigue_index": 0.2,
-          "travel_days_since_previous_game": 1,
-          "travel_distance_miles": 188.7,
-          "travel_timezone_shift_hours": 0,
-          "travel_direction": "same_timezone",
-          "travel_label": "1d since previous game; 189 mi"
-        },
-        "home_offense": {
-          "projected_runs": 1.77,
-          "team_current_f5_runs": 2.453,
-          "team_recent_f5_runs": 2.292,
-          "team_prior_f5_runs": 2.173,
-          "team_venue_f5_runs": 2.361,
-          "pitcher_current_f5_allowed": 1.417,
-          "pitcher_recent_f5_allowed": 1.188,
-          "pitcher_current_vs_opponent": 1.875,
-          "pitcher_prior_vs_opponent": 1.875,
-          "pitcher_venue_f5_allowed": 1.875,
-          "pitcher_rest_days": 6,
-          "pitcher_rest_runs_modifier": 0.0,
-          "pitcher_rest_label": "normal rest (6d)",
-          "lineup_delta": -0.025,
-          "venue_delta": -0.025,
-          "park_run_delta_per_team": -0.025,
-          "wind_run_delta_per_team": 0.0,
-          "wind_mph": 0.0,
-          "wind_direction": "",
-          "travel_run_delta": -0.0,
-          "travel_fatigue_index": 0.0,
-          "travel_days_since_previous_game": 1,
-          "travel_distance_miles": 0.0,
-          "travel_timezone_shift_hours": 0,
-          "travel_direction": "same",
-          "travel_label": "1d since previous game; 0 mi"
-        },
-        "away_pitcher": {
-          "name": "Tyler Alexander",
-          "stat_expected": 1.875,
-          "current_f5_allowed": 1.417,
-          "recent_f5_allowed": 1.188,
-          "prior_f5_allowed": 2.2,
-          "current_vs_opponent": 1.875,
-          "prior_vs_opponent": 1.875,
-          "venue_f5_allowed": 1.875,
-          "current_starts": 2,
-          "recent_starts": 2,
-          "prior_starts": 15,
-          "current_vs_opponent_starts": 0,
-          "prior_vs_opponent_starts": 0,
-          "venue_starts": 0,
-          "rest_days": 6,
-          "rest_runs_modifier": 0.0,
-          "rest_label": "normal rest (6d)",
-          "team_bullpen": {
-            "lookback_games": 2,
-            "games_inspected": 2,
-            "recently_used_pitcher_ids": [
-              605452,
-              641302,
-              668390,
-              682608,
-              695239
-            ],
-            "back_to_back_arms": [
-              641302
-            ],
-            "yesterday_used_pitcher_ids": [
-              641302,
-              668390
-            ],
-            "high_leverage_used_pitcher_ids": [
-              641302,
-              668390,
-              682608
-            ],
-            "light_use_pitcher_ids": [
-              605452,
-              695239
-            ],
-            "unavailable_today": [
-              641302,
-              668390,
-              682608
-            ],
-            "effective_unavailable_count": 3.8,
-            "fatigue_index": 0.475
-          }
-        },
-        "home_pitcher": {
-          "name": "Parker Messick",
-          "stat_expected": 1.684,
-          "current_f5_allowed": 1.25,
-          "recent_f5_allowed": 1.167,
-          "prior_f5_allowed": 1.653,
-          "current_vs_opponent": 0.561,
-          "prior_vs_opponent": 1.684,
-          "venue_f5_allowed": 1.25,
-          "current_starts": 16,
-          "recent_starts": 6,
-          "prior_starts": 7,
-          "current_vs_opponent_starts": 1,
-          "prior_vs_opponent_starts": 0,
-          "venue_starts": 8,
-          "rest_days": 5,
-          "rest_runs_modifier": 0.0,
-          "rest_label": "normal rest (5d)",
-          "team_bullpen": {
-            "lookback_games": 2,
-            "games_inspected": 2,
-            "recently_used_pitcher_ids": [
-              542888,
-              670036,
-              670059,
-              671922,
-              681870,
-              682120,
-              683769
-            ],
-            "back_to_back_arms": [
-              542888,
-              671922
-            ],
-            "yesterday_used_pitcher_ids": [
-              542888,
-              670036,
-              671922,
-              682120
-            ],
-            "high_leverage_used_pitcher_ids": [
-              542888,
-              670036,
-              671922
-            ],
-            "light_use_pitcher_ids": [
-              670059,
-              681870,
-              682120,
-              683769
-            ],
-            "unavailable_today": [
-              542888,
-              670036,
-              671922
-            ],
-            "effective_unavailable_count": 4.44,
-            "fatigue_index": 0.555
-          }
-        },
-        "venue": {
-          "f5_total": 4.45,
-          "run_delta_per_team": -0.025,
-          "games": 60,
-          "park_blend": {
-            "final_delta": -0.025,
-            "learned_delta": -0.025,
-            "static_delta": -0.01,
-            "blend_weight_learned": 1.0,
-            "park_factor": 0.99
-          },
-          "park_run_delta_per_team": -0.025,
-          "wind_run_delta_per_team": 0.0,
-          "wind_mph": 0.0,
-          "wind_direction": "",
-          "weather_raw": ""
-        },
-        "travel": {
-          "away": {
-            "available": true,
-            "previous_game_date": "2026-06-28",
-            "previous_venue_id": 14,
-            "previous_venue_name": "Rogers Centre",
-            "current_venue_id": 5,
-            "current_venue_name": "Progressive Field",
-            "days_since_previous_game": 1,
-            "same_venue": false,
-            "distance_miles": 188.7,
-            "timezone_shift_hours": 0,
-            "travel_direction": "same_timezone",
-            "travel_fatigue_index": 0.2,
-            "travel_run_delta": -0.032,
-            "label": "1d since previous game; 189 mi"
-          },
-          "home": {
-            "available": true,
-            "previous_game_date": "2026-06-28",
-            "previous_venue_id": 5,
-            "previous_venue_name": "Progressive Field",
-            "current_venue_id": 5,
-            "current_venue_name": "Progressive Field",
-            "days_since_previous_game": 1,
-            "same_venue": true,
-            "distance_miles": 0.0,
-            "timezone_shift_hours": 0,
-            "travel_direction": "same",
-            "travel_fatigue_index": 0.0,
-            "travel_run_delta": -0.0,
-            "label": "1d since previous game; 0 mi"
-          }
-        },
-        "away_lineup_matchup": {
-          "run_delta": -0.025,
-          "threat_score": 0.3386,
-          "current_bvp_pa": 11,
-          "older_bvp_pa": 0,
-          "sampled_batters": 9
-        },
-        "home_lineup_matchup": {
-          "run_delta": -0.025,
-          "threat_score": 0.3389,
-          "current_bvp_pa": 2,
-          "older_bvp_pa": 21,
-          "sampled_batters": 9
-        }
-      },
-      "notes": "F5 projection Texas Rangers 1.68, Cleveland Guardians 1.77 (total 3.45). BvP PA away/home: 11+0/2+21; venue F5 total 4.45 over 60 games. Travel away/home: 1d since previous game; 189 mi (fatigue 0.20) / 1d since previous game; 0 mi (fatigue 0.00)."
-    },
-    {
-      "game_id": "823771",
-      "game_start_time": "2026-06-29T23:40:00Z",
-      "game_order": 6,
+      "game_id": "823765",
+      "game_start_time": "2026-07-02T18:10:00Z",
+      "game_order": 1,
       "matchup": "Cincinnati Reds @ Milwaukee Brewers",
       "home_team": "Milwaukee Brewers",
       "away_team": "Cincinnati Reds",
       "venue_id": 32,
       "venue_name": "American Family Field",
-      "home_pitcher": "Robert Gasser",
-      "away_pitcher": "Nick Lodolo",
+      "home_pitcher": "Jacob Misiorowski",
+      "away_pitcher": "Chase Burns",
       "projected_first_five": {
-        "away_runs": 2.74,
-        "home_runs": 2.66,
-        "total_runs": 5.4,
-        "home_lead_probability": 0.4897,
-        "away_lead_probability": 0.5103
+        "away_runs": 1.57,
+        "home_runs": 2.06,
+        "total_runs": 3.63,
+        "home_lead_probability": 0.5628,
+        "away_lead_probability": 0.4372
       },
       "top_picks": [
         {
           "market": "f5_total",
-          "pick": "Over 4.5 F5",
+          "pick": "Under 4.5 F5",
           "team": "",
-          "probability": 0.6867,
-          "edge_pct": 12.15,
+          "probability": 0.6809,
+          "edge_pct": 11.57,
           "decision": "LEAN",
           "confidence": "Medium",
           "assumed_odds": -130,
           "vegas_line": 4.5,
-          "projection_gap": 0.9,
-          "model_prediction": "5.40 F5 total",
+          "projection_gap": 0.87,
+          "model_prediction": "3.63 F5 total",
           "guardrail": "model-generated F5 total line; capped at LEAN until real market line is available"
         },
         {
           "market": "f5_side",
-          "pick": "Cincinnati Reds F5 ML",
-          "team": "Cincinnati Reds",
-          "probability": 0.5103,
-          "edge_pct": -1.35,
+          "pick": "Milwaukee Brewers F5 ML",
+          "team": "Milwaukee Brewers",
+          "probability": 0.5628,
+          "edge_pct": 3.9,
           "decision": "PASS",
           "confidence": "Low",
           "assumed_odds": -110,
-          "projected_margin": 0.08,
-          "model_prediction": "Cincinnati Reds +0.08 F5 runs",
+          "projected_margin": 0.49,
+          "model_prediction": "Milwaukee Brewers +0.49 F5 runs",
           "guardrail": "margin too small"
         }
       ],
       "features": {
         "away_offense": {
-          "projected_runs": 2.74,
-          "team_current_f5_runs": 2.745,
-          "team_recent_f5_runs": 2.5,
+          "projected_runs": 1.57,
+          "team_current_f5_runs": 2.725,
+          "team_recent_f5_runs": 2.583,
           "team_prior_f5_runs": 2.537,
-          "team_venue_f5_runs": 2.025,
-          "pitcher_current_f5_allowed": 2.833,
-          "pitcher_recent_f5_allowed": 2.833,
-          "pitcher_current_vs_opponent": 2.337,
-          "pitcher_prior_vs_opponent": 3.802,
-          "pitcher_venue_f5_allowed": 1.875,
-          "pitcher_rest_days": 7,
-          "pitcher_rest_runs_modifier": 0.05,
-          "pitcher_rest_label": "long layoff (7d) +0.05",
-          "lineup_delta": 0.042,
+          "team_venue_f5_runs": 2.0,
+          "pitcher_current_f5_allowed": 0.688,
+          "pitcher_recent_f5_allowed": 0.333,
+          "pitcher_current_vs_opponent": 1.099,
+          "pitcher_prior_vs_opponent": 3.859,
+          "pitcher_venue_f5_allowed": 0.778,
+          "pitcher_rest_days": 5,
+          "pitcher_rest_runs_modifier": 0.0,
+          "pitcher_rest_label": "normal rest (5d)",
+          "lineup_delta": -0.11,
           "venue_delta": 0.18,
           "park_run_delta_per_team": 0.18,
           "wind_run_delta_per_team": 0.0,
           "wind_mph": 0.0,
           "wind_direction": "",
-          "travel_run_delta": -0.032,
-          "travel_fatigue_index": 0.2,
+          "travel_run_delta": -0.0,
+          "travel_fatigue_index": 0.0,
           "travel_days_since_previous_game": 1,
-          "travel_distance_miles": 447.5,
-          "travel_timezone_shift_hours": -1,
-          "travel_direction": "west",
-          "travel_label": "1d since previous game; 447 mi; 1h west"
+          "travel_distance_miles": 0.0,
+          "travel_timezone_shift_hours": 0,
+          "travel_direction": "same",
+          "travel_label": "1d since previous game; 0 mi"
         },
         "home_offense": {
-          "projected_runs": 2.66,
-          "team_current_f5_runs": 2.961,
-          "team_recent_f5_runs": 2.417,
+          "projected_runs": 2.06,
+          "team_current_f5_runs": 2.953,
+          "team_recent_f5_runs": 2.5,
           "team_prior_f5_runs": 3.031,
           "team_venue_f5_runs": 3.5,
-          "pitcher_current_f5_allowed": 2.667,
-          "pitcher_recent_f5_allowed": 2.333,
-          "pitcher_current_vs_opponent": 0.931,
-          "pitcher_prior_vs_opponent": 1.758,
-          "pitcher_venue_f5_allowed": 2.792,
-          "pitcher_rest_days": 5,
+          "pitcher_current_f5_allowed": 1.062,
+          "pitcher_recent_f5_allowed": 1.5,
+          "pitcher_current_vs_opponent": 1.645,
+          "pitcher_prior_vs_opponent": 1.645,
+          "pitcher_venue_f5_allowed": 1.645,
+          "pitcher_rest_days": 4,
           "pitcher_rest_runs_modifier": 0.0,
-          "pitcher_rest_label": "normal rest (5d)",
-          "lineup_delta": 0.102,
+          "pitcher_rest_label": "normal rest (4d)",
+          "lineup_delta": -0.014,
           "venue_delta": 0.18,
           "park_run_delta_per_team": 0.18,
           "wind_run_delta_per_team": 0.0,
@@ -1812,20 +388,71 @@
           "travel_label": "1d since previous game; 0 mi"
         },
         "away_pitcher": {
-          "name": "Nick Lodolo",
-          "stat_expected": 2.792,
-          "current_f5_allowed": 2.667,
-          "recent_f5_allowed": 2.333,
-          "prior_f5_allowed": 2.251,
-          "current_vs_opponent": 0.931,
-          "prior_vs_opponent": 1.758,
-          "venue_f5_allowed": 2.792,
-          "current_starts": 9,
+          "name": "Chase Burns",
+          "stat_expected": 1.645,
+          "current_f5_allowed": 1.062,
+          "recent_f5_allowed": 1.5,
+          "prior_f5_allowed": 2.163,
+          "current_vs_opponent": 1.645,
+          "prior_vs_opponent": 1.645,
+          "venue_f5_allowed": 1.645,
+          "current_starts": 16,
           "recent_starts": 6,
-          "prior_starts": 30,
-          "current_vs_opponent_starts": 1,
-          "prior_vs_opponent_starts": 2,
+          "prior_starts": 8,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 0,
           "venue_starts": 0,
+          "rest_days": 4,
+          "rest_runs_modifier": 0.0,
+          "rest_label": "normal rest (4d)",
+          "team_bullpen": {
+            "lookback_games": 2,
+            "games_inspected": 2,
+            "recently_used_pitcher_ids": [
+              594580,
+              622088,
+              657571,
+              670062,
+              695534
+            ],
+            "back_to_back_arms": [],
+            "yesterday_used_pitcher_ids": [
+              657571,
+              670062
+            ],
+            "high_leverage_used_pitcher_ids": [
+              657571,
+              670062,
+              695534
+            ],
+            "light_use_pitcher_ids": [
+              594580,
+              622088
+            ],
+            "unavailable_today": [
+              657571,
+              670062,
+              695534
+            ],
+            "effective_unavailable_count": 3.61,
+            "fatigue_index": 0.451
+          }
+        },
+        "home_pitcher": {
+          "name": "Jacob Misiorowski",
+          "stat_expected": 1.099,
+          "current_f5_allowed": 0.688,
+          "recent_f5_allowed": 0.333,
+          "prior_f5_allowed": 2.088,
+          "current_vs_opponent": 1.099,
+          "prior_vs_opponent": 3.859,
+          "venue_f5_allowed": 0.778,
+          "current_starts": 16,
+          "recent_starts": 6,
+          "prior_starts": 14,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 1,
+          "venue_starts": 9,
           "rest_days": 5,
           "rest_runs_modifier": 0.0,
           "rest_label": "normal rest (5d)",
@@ -1833,100 +460,34 @@
             "lookback_games": 2,
             "games_inspected": 2,
             "recently_used_pitcher_ids": [
-              572955,
-              594580,
-              622088,
-              656271,
-              657571,
-              670062,
-              685112,
-              695534
-            ],
-            "back_to_back_arms": [],
-            "yesterday_used_pitcher_ids": [
-              572955,
-              656271,
-              670062,
-              685112
-            ],
-            "high_leverage_used_pitcher_ids": [
-              572955,
-              670062
-            ],
-            "light_use_pitcher_ids": [
-              594580,
-              622088,
-              656271,
-              657571,
-              685112,
-              695534
-            ],
-            "unavailable_today": [
-              572955,
-              670062
-            ],
-            "effective_unavailable_count": 4.49,
-            "fatigue_index": 0.561
-          }
-        },
-        "home_pitcher": {
-          "name": "Robert Gasser",
-          "stat_expected": 2.337,
-          "current_f5_allowed": 2.833,
-          "recent_f5_allowed": 2.833,
-          "prior_f5_allowed": 2.2,
-          "current_vs_opponent": 2.337,
-          "prior_vs_opponent": 3.802,
-          "venue_f5_allowed": 1.875,
-          "current_starts": 6,
-          "recent_starts": 6,
-          "prior_starts": 7,
-          "current_vs_opponent_starts": 0,
-          "prior_vs_opponent_starts": 1,
-          "venue_starts": 8,
-          "rest_days": 7,
-          "rest_runs_modifier": 0.05,
-          "rest_label": "long layoff (7d) +0.05",
-          "team_bullpen": {
-            "lookback_games": 2,
-            "games_inspected": 2,
-            "recently_used_pitcher_ids": [
               656730,
               657649,
-              669270,
               676879,
               681982,
-              682842,
               694477
             ],
             "back_to_back_arms": [
-              669270
+              694477
             ],
             "yesterday_used_pitcher_ids": [
-              656730,
-              669270,
-              676879,
-              682842
+              657649,
+              681982,
+              694477
             ],
             "high_leverage_used_pitcher_ids": [
-              656730,
-              669270,
-              676879,
               694477
             ],
             "light_use_pitcher_ids": [
+              656730,
               657649,
-              681982,
-              682842
+              676879,
+              681982
             ],
             "unavailable_today": [
-              656730,
-              669270,
-              676879,
               694477
             ],
-            "effective_unavailable_count": 5.46,
-            "fatigue_index": 0.682
+            "effective_unavailable_count": 2.9,
+            "fatigue_index": 0.363
           }
         },
         "venue": {
@@ -1949,23 +510,23 @@
         "travel": {
           "away": {
             "available": true,
-            "previous_game_date": "2026-06-28",
-            "previous_venue_id": 31,
-            "previous_venue_name": "PNC Park",
+            "previous_game_date": "2026-07-01",
+            "previous_venue_id": 32,
+            "previous_venue_name": "American Family Field",
             "current_venue_id": 32,
             "current_venue_name": "American Family Field",
             "days_since_previous_game": 1,
-            "same_venue": false,
-            "distance_miles": 447.5,
-            "timezone_shift_hours": -1,
-            "travel_direction": "west",
-            "travel_fatigue_index": 0.2,
-            "travel_run_delta": -0.032,
-            "label": "1d since previous game; 447 mi; 1h west"
+            "same_venue": true,
+            "distance_miles": 0.0,
+            "timezone_shift_hours": 0,
+            "travel_direction": "same",
+            "travel_fatigue_index": 0.0,
+            "travel_run_delta": -0.0,
+            "label": "1d since previous game; 0 mi"
           },
           "home": {
             "available": true,
-            "previous_game_date": "2026-06-28",
+            "previous_game_date": "2026-07-01",
             "previous_venue_id": 32,
             "previous_venue_name": "American Family Field",
             "current_venue_id": 32,
@@ -1981,197 +542,141 @@
           }
         },
         "away_lineup_matchup": {
-          "run_delta": 0.042,
-          "threat_score": 0.3673,
+          "run_delta": -0.11,
+          "threat_score": 0.3025,
           "current_bvp_pa": 0,
-          "older_bvp_pa": 12,
+          "older_bvp_pa": 13,
           "sampled_batters": 9
         },
         "home_lineup_matchup": {
-          "run_delta": 0.102,
-          "threat_score": 0.3926,
-          "current_bvp_pa": 10,
-          "older_bvp_pa": 36,
+          "run_delta": -0.014,
+          "threat_score": 0.3436,
+          "current_bvp_pa": 0,
+          "older_bvp_pa": 3,
           "sampled_batters": 9
         }
       },
-      "notes": "F5 projection Cincinnati Reds 2.74, Milwaukee Brewers 2.66 (total 5.4). BvP PA away/home: 0+12/10+36; venue F5 total 5.12 over 60 games. Travel away/home: 1d since previous game; 447 mi; 1h west (fatigue 0.20) / 1d since previous game; 0 mi (fatigue 0.00)."
+      "notes": "F5 projection Cincinnati Reds 1.57, Milwaukee Brewers 2.06 (total 3.63). BvP PA away/home: 0+13/0+3; venue F5 total 5.12 over 60 games. Travel away/home: 1d since previous game; 0 mi (fatigue 0.00) / 1d since previous game; 0 mi (fatigue 0.00)."
     },
     {
-      "game_id": "824662",
-      "game_start_time": "2026-06-30T00:05:00Z",
-      "game_order": 7,
-      "matchup": "San Diego Padres @ Chicago Cubs",
-      "home_team": "Chicago Cubs",
-      "away_team": "San Diego Padres",
-      "venue_id": 17,
-      "venue_name": "Wrigley Field",
-      "home_pitcher": "Shota Imanaga",
-      "away_pitcher": "Michael King",
+      "game_id": "824335",
+      "game_start_time": "2026-07-02T19:10:00Z",
+      "game_order": 2,
+      "matchup": "Miami Marlins @ Colorado Rockies",
+      "home_team": "Colorado Rockies",
+      "away_team": "Miami Marlins",
+      "venue_id": 19,
+      "venue_name": "Coors Field",
+      "home_pitcher": "Michael Lorenzen",
+      "away_pitcher": "Ryan Gusto",
       "projected_first_five": {
-        "away_runs": 2.18,
-        "home_runs": 2.61,
-        "total_runs": 4.79,
-        "home_lead_probability": 0.5552,
-        "away_lead_probability": 0.4448
+        "away_runs": 3.26,
+        "home_runs": 2.55,
+        "total_runs": 5.81,
+        "home_lead_probability": 0.4094,
+        "away_lead_probability": 0.5906
       },
       "top_picks": [
         {
           "market": "f5_side",
-          "pick": "Chicago Cubs F5 ML",
-          "team": "Chicago Cubs",
-          "probability": 0.5552,
-          "edge_pct": 3.14,
-          "decision": "PASS",
-          "confidence": "Low",
+          "pick": "Miami Marlins F5 ML",
+          "team": "Miami Marlins",
+          "probability": 0.5906,
+          "edge_pct": 6.68,
+          "decision": "LEAN",
+          "confidence": "Medium",
           "assumed_odds": -110,
-          "projected_margin": 0.43,
-          "model_prediction": "Chicago Cubs +0.43 F5 runs",
-          "guardrail": "margin too small"
+          "projected_margin": 0.71,
+          "model_prediction": "Miami Marlins +0.71 F5 runs",
+          "guardrail": "margin below bet threshold"
         },
         {
           "market": "f5_total",
-          "pick": "Over 4.5 F5",
+          "pick": "Over 5.5 F5",
           "team": "",
-          "probability": 0.5623,
-          "edge_pct": -0.29,
+          "probability": 0.5665,
+          "edge_pct": -6.31,
           "decision": "PASS",
           "confidence": "Low",
-          "assumed_odds": -130,
-          "vegas_line": 4.5,
-          "projection_gap": 0.29,
-          "model_prediction": "4.79 F5 total",
+          "assumed_odds": -170,
+          "vegas_line": 5.5,
+          "projection_gap": 0.31,
+          "model_prediction": "5.81 F5 total",
           "guardrail": "projection too close to F5 line"
         }
       ],
       "features": {
         "away_offense": {
-          "projected_runs": 2.18,
-          "team_current_f5_runs": 2.143,
-          "team_recent_f5_runs": 2.042,
-          "team_prior_f5_runs": 2.624,
-          "team_venue_f5_runs": 2.0,
-          "pitcher_current_f5_allowed": 2.125,
-          "pitcher_recent_f5_allowed": 2.833,
-          "pitcher_current_vs_opponent": 2.145,
-          "pitcher_prior_vs_opponent": 0.667,
-          "pitcher_venue_f5_allowed": 2.111,
+          "projected_runs": 3.26,
+          "team_current_f5_runs": 2.352,
+          "team_recent_f5_runs": 2.625,
+          "team_prior_f5_runs": 2.432,
+          "team_venue_f5_runs": 3.2,
+          "pitcher_current_f5_allowed": 3.75,
+          "pitcher_recent_f5_allowed": 3.0,
+          "pitcher_current_vs_opponent": 3.251,
+          "pitcher_prior_vs_opponent": 1.05,
+          "pitcher_venue_f5_allowed": 3.875,
           "pitcher_rest_days": 4,
           "pitcher_rest_runs_modifier": 0.0,
           "pitcher_rest_label": "normal rest (4d)",
-          "lineup_delta": -0.013,
-          "venue_delta": 0.125,
-          "park_run_delta_per_team": 0.125,
+          "lineup_delta": 0.222,
+          "venue_delta": 0.18,
+          "park_run_delta_per_team": 0.18,
           "wind_run_delta_per_team": 0.0,
           "wind_mph": 0.0,
           "wind_direction": "",
-          "travel_run_delta": -0.09,
-          "travel_fatigue_index": 0.56,
+          "travel_run_delta": -0.0,
+          "travel_fatigue_index": 0.0,
           "travel_days_since_previous_game": 1,
-          "travel_distance_miles": 1731.4,
-          "travel_timezone_shift_hours": 2,
-          "travel_direction": "east",
-          "travel_label": "1d since previous game; 1731 mi; 2h east"
+          "travel_distance_miles": 0.0,
+          "travel_timezone_shift_hours": 0,
+          "travel_direction": "same",
+          "travel_label": "1d since previous game; 0 mi"
         },
         "home_offense": {
-          "projected_runs": 2.61,
-          "team_current_f5_runs": 2.748,
-          "team_recent_f5_runs": 2.625,
-          "team_prior_f5_runs": 2.893,
-          "team_venue_f5_runs": 2.611,
-          "pitcher_current_f5_allowed": 1.5,
-          "pitcher_recent_f5_allowed": 2.333,
-          "pitcher_current_vs_opponent": 1.973,
-          "pitcher_prior_vs_opponent": 1.973,
-          "pitcher_venue_f5_allowed": 1.973,
-          "pitcher_rest_days": 0,
-          "pitcher_rest_runs_modifier": 0.3,
-          "pitcher_rest_label": "emergency/opener (0d rest) +0.30",
-          "lineup_delta": 0.087,
-          "venue_delta": 0.125,
-          "park_run_delta_per_team": 0.125,
+          "projected_runs": 2.55,
+          "team_current_f5_runs": 2.734,
+          "team_recent_f5_runs": 2.75,
+          "team_prior_f5_runs": 2.048,
+          "team_venue_f5_runs": 2.75,
+          "pitcher_current_f5_allowed": 2.096,
+          "pitcher_recent_f5_allowed": 2.0,
+          "pitcher_current_vs_opponent": 2.576,
+          "pitcher_prior_vs_opponent": 2.576,
+          "pitcher_venue_f5_allowed": 2.576,
+          "pitcher_rest_days": 4,
+          "pitcher_rest_runs_modifier": 0.0,
+          "pitcher_rest_label": "normal rest (4d)",
+          "lineup_delta": 0.073,
+          "venue_delta": 0.18,
+          "park_run_delta_per_team": 0.18,
           "wind_run_delta_per_team": 0.0,
           "wind_mph": 0.0,
           "wind_direction": "",
-          "travel_run_delta": -0.032,
-          "travel_fatigue_index": 0.2,
+          "travel_run_delta": -0.0,
+          "travel_fatigue_index": 0.0,
           "travel_days_since_previous_game": 1,
-          "travel_distance_miles": 76.3,
+          "travel_distance_miles": 0.0,
           "travel_timezone_shift_hours": 0,
-          "travel_direction": "same_timezone",
-          "travel_label": "1d since previous game; 76 mi"
+          "travel_direction": "same",
+          "travel_label": "1d since previous game; 0 mi"
         },
         "away_pitcher": {
-          "name": "Michael King",
-          "stat_expected": 1.973,
-          "current_f5_allowed": 1.5,
-          "recent_f5_allowed": 2.333,
-          "prior_f5_allowed": 1.939,
-          "current_vs_opponent": 1.973,
-          "prior_vs_opponent": 1.973,
-          "venue_f5_allowed": 1.973,
-          "current_starts": 16,
-          "recent_starts": 6,
-          "prior_starts": 30,
+          "name": "Ryan Gusto",
+          "stat_expected": 2.576,
+          "current_f5_allowed": 2.096,
+          "recent_f5_allowed": 2.0,
+          "prior_f5_allowed": 3.121,
+          "current_vs_opponent": 2.576,
+          "prior_vs_opponent": 2.576,
+          "venue_f5_allowed": 2.576,
+          "current_starts": 5,
+          "recent_starts": 5,
+          "prior_starts": 17,
           "current_vs_opponent_starts": 0,
           "prior_vs_opponent_starts": 0,
           "venue_starts": 0,
-          "rest_days": 0,
-          "rest_runs_modifier": 0.3,
-          "rest_label": "emergency/opener (0d rest) +0.30",
-          "team_bullpen": {
-            "lookback_games": 2,
-            "games_inspected": 2,
-            "recently_used_pitcher_ids": [
-              592094,
-              593974,
-              660710,
-              673513,
-              676760,
-              681190,
-              688158
-            ],
-            "back_to_back_arms": [],
-            "yesterday_used_pitcher_ids": [
-              660710,
-              676760,
-              681190,
-              688158
-            ],
-            "high_leverage_used_pitcher_ids": [
-              676760,
-              681190
-            ],
-            "light_use_pitcher_ids": [
-              592094,
-              593974,
-              660710,
-              673513,
-              688158
-            ],
-            "unavailable_today": [
-              676760,
-              681190
-            ],
-            "effective_unavailable_count": 5.8,
-            "fatigue_index": 0.725
-          }
-        },
-        "home_pitcher": {
-          "name": "Shota Imanaga",
-          "stat_expected": 2.145,
-          "current_f5_allowed": 2.125,
-          "recent_f5_allowed": 2.833,
-          "prior_f5_allowed": 2.049,
-          "current_vs_opponent": 2.145,
-          "prior_vs_opponent": 0.667,
-          "venue_f5_allowed": 2.111,
-          "current_starts": 16,
-          "recent_starts": 6,
-          "prior_starts": 30,
-          "current_vs_opponent_starts": 0,
-          "prior_vs_opponent_starts": 3,
-          "venue_starts": 9,
           "rest_days": 4,
           "rest_runs_modifier": 0.0,
           "rest_label": "normal rest (4d)",
@@ -2179,602 +684,90 @@
             "lookback_games": 2,
             "games_inspected": 2,
             "recently_used_pitcher_ids": [
-              573204,
-              592826,
-              621053,
-              657097,
-              663423,
-              669060,
-              681799,
-              696136
-            ],
-            "back_to_back_arms": [
-              621053,
-              657097
-            ],
-            "yesterday_used_pitcher_ids": [
-              573204,
-              621053,
-              657097,
-              669060,
-              681799,
-              696136
-            ],
-            "high_leverage_used_pitcher_ids": [
-              657097,
-              669060
-            ],
-            "light_use_pitcher_ids": [
-              573204,
-              592826,
-              621053,
-              663423,
-              681799,
-              696136
-            ],
-            "unavailable_today": [
-              621053,
-              657097,
-              669060
-            ],
-            "effective_unavailable_count": 5.23,
-            "fatigue_index": 0.654
-          }
-        },
-        "venue": {
-          "f5_total": 4.75,
-          "run_delta_per_team": 0.125,
-          "games": 60,
-          "park_blend": {
-            "final_delta": 0.125,
-            "learned_delta": 0.125,
-            "static_delta": 0.04,
-            "blend_weight_learned": 1.0,
-            "park_factor": 1.04
-          },
-          "park_run_delta_per_team": 0.125,
-          "wind_run_delta_per_team": 0.0,
-          "wind_mph": 0.0,
-          "wind_direction": "",
-          "weather_raw": ""
-        },
-        "travel": {
-          "away": {
-            "available": true,
-            "previous_game_date": "2026-06-28",
-            "previous_venue_id": 2680,
-            "previous_venue_name": "Petco Park",
-            "current_venue_id": 17,
-            "current_venue_name": "Wrigley Field",
-            "days_since_previous_game": 1,
-            "same_venue": false,
-            "distance_miles": 1731.4,
-            "timezone_shift_hours": 2,
-            "travel_direction": "east",
-            "travel_fatigue_index": 0.56,
-            "travel_run_delta": -0.09,
-            "label": "1d since previous game; 1731 mi; 2h east"
-          },
-          "home": {
-            "available": true,
-            "previous_game_date": "2026-06-28",
-            "previous_venue_id": 32,
-            "previous_venue_name": "American Family Field",
-            "current_venue_id": 17,
-            "current_venue_name": "Wrigley Field",
-            "days_since_previous_game": 1,
-            "same_venue": false,
-            "distance_miles": 76.3,
-            "timezone_shift_hours": 0,
-            "travel_direction": "same_timezone",
-            "travel_fatigue_index": 0.2,
-            "travel_run_delta": -0.032,
-            "label": "1d since previous game; 76 mi"
-          }
-        },
-        "away_lineup_matchup": {
-          "run_delta": -0.013,
-          "threat_score": 0.344,
-          "current_bvp_pa": 0,
-          "older_bvp_pa": 41,
-          "sampled_batters": 9
-        },
-        "home_lineup_matchup": {
-          "run_delta": 0.087,
-          "threat_score": 0.3864,
-          "current_bvp_pa": 0,
-          "older_bvp_pa": 15,
-          "sampled_batters": 9
-        }
-      },
-      "notes": "F5 projection San Diego Padres 2.18, Chicago Cubs 2.61 (total 4.79). BvP PA away/home: 0+41/0+15; venue F5 total 4.75 over 60 games. Travel away/home: 1d since previous game; 1731 mi; 2h east (fatigue 0.56) / 1d since previous game; 76 mi (fatigue 0.20)."
-    },
-    {
-      "game_id": "824176",
-      "game_start_time": "2026-06-30T00:10:00Z",
-      "game_order": 8,
-      "matchup": "Minnesota Twins @ Houston Astros",
-      "home_team": "Houston Astros",
-      "away_team": "Minnesota Twins",
-      "venue_id": 2392,
-      "venue_name": "Daikin Park",
-      "home_pitcher": "Peter Lambert",
-      "away_pitcher": "Zebby Matthews",
-      "projected_first_five": {
-        "away_runs": 2.19,
-        "home_runs": 2.75,
-        "total_runs": 4.94,
-        "home_lead_probability": 0.5717,
-        "away_lead_probability": 0.4283
-      },
-      "top_picks": [
-        {
-          "market": "f5_side",
-          "pick": "Houston Astros F5 ML",
-          "team": "Houston Astros",
-          "probability": 0.5717,
-          "edge_pct": 4.79,
-          "decision": "LEAN",
-          "confidence": "Medium",
-          "assumed_odds": -110,
-          "projected_margin": 0.56,
-          "model_prediction": "Houston Astros +0.56 F5 runs",
-          "guardrail": "margin below bet threshold"
-        },
-        {
-          "market": "f5_total",
-          "pick": "Over 4.5 F5",
-          "team": "",
-          "probability": 0.594,
-          "edge_pct": 2.88,
-          "decision": "PASS",
-          "confidence": "Low",
-          "assumed_odds": -130,
-          "vegas_line": 4.5,
-          "projection_gap": 0.44,
-          "model_prediction": "4.94 F5 total",
-          "guardrail": "projection too close to F5 line"
-        }
-      ],
-      "features": {
-        "away_offense": {
-          "projected_runs": 2.19,
-          "team_current_f5_runs": 2.972,
-          "team_recent_f5_runs": 3.5,
-          "team_prior_f5_runs": 2.462,
-          "team_venue_f5_runs": 1.975,
-          "pitcher_current_f5_allowed": 1.917,
-          "pitcher_recent_f5_allowed": 1.5,
-          "pitcher_current_vs_opponent": 1.892,
-          "pitcher_prior_vs_opponent": 1.892,
-          "pitcher_venue_f5_allowed": 1.571,
-          "pitcher_rest_days": 5,
-          "pitcher_rest_runs_modifier": 0.0,
-          "pitcher_rest_label": "normal rest (5d)",
-          "lineup_delta": -0.055,
-          "venue_delta": 0.15,
-          "park_run_delta_per_team": 0.15,
-          "wind_run_delta_per_team": 0.0,
-          "wind_mph": 0.0,
-          "wind_direction": "",
-          "travel_run_delta": -0.045,
-          "travel_fatigue_index": 0.28,
-          "travel_days_since_previous_game": 1,
-          "travel_distance_miles": 1058.0,
-          "travel_timezone_shift_hours": 0,
-          "travel_direction": "same_timezone",
-          "travel_label": "1d since previous game; 1058 mi"
-        },
-        "home_offense": {
-          "projected_runs": 2.75,
-          "team_current_f5_runs": 2.537,
-          "team_recent_f5_runs": 2.375,
-          "team_prior_f5_runs": 2.378,
-          "team_venue_f5_runs": 1.806,
-          "pitcher_current_f5_allowed": 3.0,
-          "pitcher_recent_f5_allowed": 3.667,
-          "pitcher_current_vs_opponent": 2.1,
-          "pitcher_prior_vs_opponent": 2.3,
-          "pitcher_venue_f5_allowed": 2.3,
-          "pitcher_rest_days": 6,
-          "pitcher_rest_runs_modifier": 0.0,
-          "pitcher_rest_label": "normal rest (6d)",
-          "lineup_delta": 0.067,
-          "venue_delta": 0.15,
-          "park_run_delta_per_team": 0.15,
-          "wind_run_delta_per_team": 0.0,
-          "wind_mph": 0.0,
-          "wind_direction": "",
-          "travel_run_delta": -0.045,
-          "travel_fatigue_index": 0.28,
-          "travel_days_since_previous_game": 1,
-          "travel_distance_miles": 1105.8,
-          "travel_timezone_shift_hours": -1,
-          "travel_direction": "west",
-          "travel_label": "1d since previous game; 1106 mi; 1h west"
-        },
-        "away_pitcher": {
-          "name": "Zebby Matthews",
-          "stat_expected": 2.3,
-          "current_f5_allowed": 3.0,
-          "recent_f5_allowed": 3.667,
-          "prior_f5_allowed": 3.062,
-          "current_vs_opponent": 2.1,
-          "prior_vs_opponent": 2.3,
-          "venue_f5_allowed": 2.3,
-          "current_starts": 8,
-          "recent_starts": 6,
-          "prior_starts": 25,
-          "current_vs_opponent_starts": 1,
-          "prior_vs_opponent_starts": 0,
-          "venue_starts": 0,
-          "rest_days": 6,
-          "rest_runs_modifier": 0.0,
-          "rest_label": "normal rest (6d)",
-          "team_bullpen": {
-            "lookback_games": 2,
-            "games_inspected": 2,
-            "recently_used_pitcher_ids": [
-              607455,
-              672782,
-              679358,
-              681892,
-              702193
-            ],
-            "back_to_back_arms": [
-              607455,
-              702193
-            ],
-            "yesterday_used_pitcher_ids": [
-              607455,
-              672782,
-              702193
-            ],
-            "high_leverage_used_pitcher_ids": [
-              607455,
-              702193
-            ],
-            "light_use_pitcher_ids": [
-              672782,
-              679358,
-              681892
-            ],
-            "unavailable_today": [
-              607455,
-              702193
-            ],
-            "effective_unavailable_count": 2.54,
-            "fatigue_index": 0.318
-          }
-        },
-        "home_pitcher": {
-          "name": "Peter Lambert",
-          "stat_expected": 1.892,
-          "current_f5_allowed": 1.917,
-          "recent_f5_allowed": 1.5,
-          "prior_f5_allowed": 3.01,
-          "current_vs_opponent": 1.892,
-          "prior_vs_opponent": 1.892,
-          "venue_f5_allowed": 1.571,
-          "current_starts": 12,
-          "recent_starts": 6,
-          "prior_starts": 14,
-          "current_vs_opponent_starts": 0,
-          "prior_vs_opponent_starts": 0,
-          "venue_starts": 7,
-          "rest_days": 5,
-          "rest_runs_modifier": 0.0,
-          "rest_label": "normal rest (5d)",
-          "team_bullpen": {
-            "lookback_games": 2,
-            "games_inspected": 2,
-            "recently_used_pitcher_ids": [
-              595345,
-              623352,
-              650556,
-              660853,
-              687911,
-              805123
-            ],
-            "back_to_back_arms": [
-              595345,
-              623352,
-              687911
-            ],
-            "yesterday_used_pitcher_ids": [
-              595345,
-              623352,
-              650556,
-              660853,
-              687911
-            ],
-            "high_leverage_used_pitcher_ids": [
-              623352,
-              660853
-            ],
-            "light_use_pitcher_ids": [
-              595345,
-              650556,
-              687911,
-              805123
-            ],
-            "unavailable_today": [
-              595345,
-              623352,
-              660853,
-              687911
-            ],
-            "effective_unavailable_count": 4.76,
-            "fatigue_index": 0.595
-          }
-        },
-        "venue": {
-          "f5_total": 4.8,
-          "run_delta_per_team": 0.15,
-          "games": 60,
-          "park_blend": {
-            "final_delta": 0.15,
-            "learned_delta": 0.15,
-            "static_delta": 0.0,
-            "blend_weight_learned": 1.0,
-            "park_factor": 1.0
-          },
-          "park_run_delta_per_team": 0.15,
-          "wind_run_delta_per_team": 0.0,
-          "wind_mph": 0.0,
-          "wind_direction": "",
-          "weather_raw": ""
-        },
-        "travel": {
-          "away": {
-            "available": true,
-            "previous_game_date": "2026-06-28",
-            "previous_venue_id": 3312,
-            "previous_venue_name": "Target Field",
-            "current_venue_id": 2392,
-            "current_venue_name": "Daikin Park",
-            "days_since_previous_game": 1,
-            "same_venue": false,
-            "distance_miles": 1058.0,
-            "timezone_shift_hours": 0,
-            "travel_direction": "same_timezone",
-            "travel_fatigue_index": 0.28,
-            "travel_run_delta": -0.045,
-            "label": "1d since previous game; 1058 mi"
-          },
-          "home": {
-            "available": true,
-            "previous_game_date": "2026-06-28",
-            "previous_venue_id": 2394,
-            "previous_venue_name": "Comerica Park",
-            "current_venue_id": 2392,
-            "current_venue_name": "Daikin Park",
-            "days_since_previous_game": 1,
-            "same_venue": false,
-            "distance_miles": 1105.8,
-            "timezone_shift_hours": -1,
-            "travel_direction": "west",
-            "travel_fatigue_index": 0.28,
-            "travel_run_delta": -0.045,
-            "label": "1d since previous game; 1106 mi; 1h west"
-          }
-        },
-        "away_lineup_matchup": {
-          "run_delta": -0.055,
-          "threat_score": 0.326,
-          "current_bvp_pa": 0,
-          "older_bvp_pa": 1,
-          "sampled_batters": 9
-        },
-        "home_lineup_matchup": {
-          "run_delta": 0.067,
-          "threat_score": 0.378,
-          "current_bvp_pa": 14,
-          "older_bvp_pa": 0,
-          "sampled_batters": 9
-        }
-      },
-      "notes": "F5 projection Minnesota Twins 2.19, Houston Astros 2.75 (total 4.94). BvP PA away/home: 0+1/14+0; venue F5 total 4.80 over 60 games. Travel away/home: 1d since previous game; 1058 mi (fatigue 0.28) / 1d since previous game; 1106 mi; 1h west (fatigue 0.28)."
-    },
-    {
-      "game_id": "824339",
-      "game_start_time": "2026-06-30T00:40:00Z",
-      "game_order": 9,
-      "matchup": "Miami Marlins @ Colorado Rockies",
-      "home_team": "Colorado Rockies",
-      "away_team": "Miami Marlins",
-      "venue_id": 19,
-      "venue_name": "Coors Field",
-      "home_pitcher": "Ryan Feltner",
-      "away_pitcher": "Sandy Alcantara",
-      "projected_first_five": {
-        "away_runs": 2.69,
-        "home_runs": 2.46,
-        "total_runs": 5.15,
-        "home_lead_probability": 0.4704,
-        "away_lead_probability": 0.5296
-      },
-      "top_picks": [
-        {
-          "market": "f5_total",
-          "pick": "Over 4.5 F5",
-          "team": "",
-          "probability": 0.6373,
-          "edge_pct": 7.21,
-          "decision": "LEAN",
-          "confidence": "Medium",
-          "assumed_odds": -130,
-          "vegas_line": 4.5,
-          "projection_gap": 0.65,
-          "model_prediction": "5.15 F5 total",
-          "guardrail": "model-generated F5 total line; capped at LEAN until real market line is available"
-        },
-        {
-          "market": "f5_side",
-          "pick": "Miami Marlins F5 ML",
-          "team": "Miami Marlins",
-          "probability": 0.5296,
-          "edge_pct": 0.58,
-          "decision": "PASS",
-          "confidence": "Low",
-          "assumed_odds": -110,
-          "projected_margin": 0.23,
-          "model_prediction": "Miami Marlins +0.23 F5 runs",
-          "guardrail": "margin too small"
-        }
-      ],
-      "features": {
-        "away_offense": {
-          "projected_runs": 2.69,
-          "team_current_f5_runs": 2.294,
-          "team_recent_f5_runs": 2.333,
-          "team_prior_f5_runs": 2.432,
-          "team_venue_f5_runs": 2.575,
-          "pitcher_current_f5_allowed": 2.636,
-          "pitcher_recent_f5_allowed": 1.833,
-          "pitcher_current_vs_opponent": 2.278,
-          "pitcher_prior_vs_opponent": 1.256,
-          "pitcher_venue_f5_allowed": 2.429,
-          "pitcher_rest_days": 0,
-          "pitcher_rest_runs_modifier": 0.3,
-          "pitcher_rest_label": "emergency/opener (0d rest) +0.30",
-          "lineup_delta": 0.024,
-          "venue_delta": 0.18,
-          "park_run_delta_per_team": 0.18,
-          "wind_run_delta_per_team": 0.0,
-          "wind_mph": 0.0,
-          "wind_direction": "",
-          "travel_run_delta": -0.045,
-          "travel_fatigue_index": 0.28,
-          "travel_days_since_previous_game": 1,
-          "travel_distance_miles": 795.6,
-          "travel_timezone_shift_hours": -1,
-          "travel_direction": "west",
-          "travel_label": "1d since previous game; 796 mi; 1h west"
-        },
-        "home_offense": {
-          "projected_runs": 2.46,
-          "team_current_f5_runs": 2.708,
-          "team_recent_f5_runs": 2.875,
-          "team_prior_f5_runs": 2.048,
-          "team_venue_f5_runs": 2.75,
-          "pitcher_current_f5_allowed": 2.438,
-          "pitcher_recent_f5_allowed": 2.167,
-          "pitcher_current_vs_opponent": 2.147,
-          "pitcher_prior_vs_opponent": 1.667,
-          "pitcher_venue_f5_allowed": 2.11,
-          "pitcher_rest_days": 5,
-          "pitcher_rest_runs_modifier": 0.0,
-          "pitcher_rest_label": "normal rest (5d)",
-          "lineup_delta": 0.032,
-          "venue_delta": 0.18,
-          "park_run_delta_per_team": 0.18,
-          "wind_run_delta_per_team": 0.0,
-          "wind_mph": 0.0,
-          "wind_direction": "",
-          "travel_run_delta": -0.045,
-          "travel_fatigue_index": 0.28,
-          "travel_days_since_previous_game": 1,
-          "travel_distance_miles": 697.6,
-          "travel_timezone_shift_hours": -1,
-          "travel_direction": "west",
-          "travel_label": "1d since previous game; 698 mi; 1h west"
-        },
-        "away_pitcher": {
-          "name": "Sandy Alcantara",
-          "stat_expected": 2.147,
-          "current_f5_allowed": 2.438,
-          "recent_f5_allowed": 2.167,
-          "prior_f5_allowed": 3.118,
-          "current_vs_opponent": 2.147,
-          "prior_vs_opponent": 1.667,
-          "venue_f5_allowed": 2.11,
-          "current_starts": 16,
-          "recent_starts": 6,
-          "prior_starts": 30,
-          "current_vs_opponent_starts": 0,
-          "prior_vs_opponent_starts": 3,
-          "venue_starts": 1,
-          "rest_days": 5,
-          "rest_runs_modifier": 0.0,
-          "rest_label": "normal rest (5d)",
-          "team_bullpen": {
-            "lookback_games": 2,
-            "games_inspected": 2,
-            "recently_used_pitcher_ids": [
               656848,
+              664126,
+              669199,
               676534,
+              694350,
               806188
             ],
             "back_to_back_arms": [],
             "yesterday_used_pitcher_ids": [
+              669199,
+              694350,
               806188
             ],
-            "high_leverage_used_pitcher_ids": [],
+            "high_leverage_used_pitcher_ids": [
+              694350,
+              806188
+            ],
             "light_use_pitcher_ids": [
               656848,
-              676534,
+              664126,
+              669199,
+              676534
+            ],
+            "unavailable_today": [
+              694350,
               806188
             ],
-            "unavailable_today": [],
-            "effective_unavailable_count": 0.98,
-            "fatigue_index": 0.122
+            "effective_unavailable_count": 3.66,
+            "fatigue_index": 0.457
           }
         },
         "home_pitcher": {
-          "name": "Ryan Feltner",
-          "stat_expected": 2.278,
-          "current_f5_allowed": 2.636,
-          "recent_f5_allowed": 1.833,
-          "prior_f5_allowed": 2.788,
-          "current_vs_opponent": 2.278,
-          "prior_vs_opponent": 1.256,
-          "venue_f5_allowed": 2.429,
-          "current_starts": 11,
+          "name": "Michael Lorenzen",
+          "stat_expected": 3.251,
+          "current_f5_allowed": 3.75,
+          "recent_f5_allowed": 3.0,
+          "prior_f5_allowed": 2.397,
+          "current_vs_opponent": 3.251,
+          "prior_vs_opponent": 1.05,
+          "venue_f5_allowed": 3.875,
+          "current_starts": 16,
           "recent_starts": 6,
           "prior_starts": 30,
           "current_vs_opponent_starts": 0,
           "prior_vs_opponent_starts": 2,
-          "venue_starts": 7,
-          "rest_days": 0,
-          "rest_runs_modifier": 0.3,
-          "rest_label": "emergency/opener (0d rest) +0.30",
+          "venue_starts": 8,
+          "rest_days": 4,
+          "rest_runs_modifier": 0.0,
+          "rest_label": "normal rest (4d)",
           "team_bullpen": {
             "lookback_games": 2,
             "games_inspected": 2,
             "recently_used_pitcher_ids": [
               605154,
               622608,
-              623474,
-              657514,
-              675848,
-              678020
+              664954,
+              678020,
+              680767,
+              688642
             ],
-            "back_to_back_arms": [
-              675848,
-              678020
-            ],
+            "back_to_back_arms": [],
             "yesterday_used_pitcher_ids": [
-              657514,
-              675848,
+              605154,
+              664954,
               678020
             ],
             "high_leverage_used_pitcher_ids": [
-              675848,
-              678020
+              605154,
+              664954,
+              678020,
+              688642
             ],
             "light_use_pitcher_ids": [
-              605154,
               622608,
-              623474,
-              657514
+              680767
             ],
             "unavailable_today": [
-              675848,
-              678020
+              605154,
+              664954,
+              678020,
+              688642
             ],
-            "effective_unavailable_count": 2.99,
-            "fatigue_index": 0.374
+            "effective_unavailable_count": 5.04,
+            "fatigue_index": 0.63
           }
         },
         "venue": {
@@ -2797,231 +790,173 @@
         "travel": {
           "away": {
             "available": true,
-            "previous_game_date": "2026-06-28",
-            "previous_venue_id": 2889,
-            "previous_venue_name": "Busch Stadium",
+            "previous_game_date": "2026-07-01",
+            "previous_venue_id": 19,
+            "previous_venue_name": "Coors Field",
             "current_venue_id": 19,
             "current_venue_name": "Coors Field",
             "days_since_previous_game": 1,
-            "same_venue": false,
-            "distance_miles": 795.6,
-            "timezone_shift_hours": -1,
-            "travel_direction": "west",
-            "travel_fatigue_index": 0.28,
-            "travel_run_delta": -0.045,
-            "label": "1d since previous game; 796 mi; 1h west"
+            "same_venue": true,
+            "distance_miles": 0.0,
+            "timezone_shift_hours": 0,
+            "travel_direction": "same",
+            "travel_fatigue_index": 0.0,
+            "travel_run_delta": -0.0,
+            "label": "1d since previous game; 0 mi"
           },
           "home": {
             "available": true,
-            "previous_game_date": "2026-06-28",
-            "previous_venue_id": 3312,
-            "previous_venue_name": "Target Field",
+            "previous_game_date": "2026-07-01",
+            "previous_venue_id": 19,
+            "previous_venue_name": "Coors Field",
             "current_venue_id": 19,
             "current_venue_name": "Coors Field",
             "days_since_previous_game": 1,
-            "same_venue": false,
-            "distance_miles": 697.6,
-            "timezone_shift_hours": -1,
-            "travel_direction": "west",
-            "travel_fatigue_index": 0.28,
-            "travel_run_delta": -0.045,
-            "label": "1d since previous game; 698 mi; 1h west"
+            "same_venue": true,
+            "distance_miles": 0.0,
+            "timezone_shift_hours": 0,
+            "travel_direction": "same",
+            "travel_fatigue_index": 0.0,
+            "travel_run_delta": -0.0,
+            "label": "1d since previous game; 0 mi"
           }
         },
         "away_lineup_matchup": {
-          "run_delta": 0.024,
-          "threat_score": 0.3595,
-          "current_bvp_pa": 0,
-          "older_bvp_pa": 4,
+          "run_delta": 0.222,
+          "threat_score": 0.4438,
+          "current_bvp_pa": 12,
+          "older_bvp_pa": 6,
           "sampled_batters": 9
         },
         "home_lineup_matchup": {
-          "run_delta": 0.032,
-          "threat_score": 0.363,
-          "current_bvp_pa": 14,
-          "older_bvp_pa": 29,
+          "run_delta": 0.073,
+          "threat_score": 0.3804,
+          "current_bvp_pa": 0,
+          "older_bvp_pa": 1,
           "sampled_batters": 9
         }
       },
-      "notes": "F5 projection Miami Marlins 2.69, Colorado Rockies 2.46 (total 5.15). BvP PA away/home: 0+4/14+29; venue F5 total 6.80 over 60 games. Travel away/home: 1d since previous game; 796 mi; 1h west (fatigue 0.28) / 1d since previous game; 698 mi; 1h west (fatigue 0.28)."
+      "notes": "F5 projection Miami Marlins 3.26, Colorado Rockies 2.55 (total 5.81). BvP PA away/home: 12+6/0+1; venue F5 total 6.80 over 60 games. Travel away/home: 1d since previous game; 0 mi (fatigue 0.00) / 1d since previous game; 0 mi (fatigue 0.00)."
     },
     {
-      "game_id": "824986",
-      "game_start_time": "2026-06-30T01:40:00Z",
-      "game_order": 10,
-      "matchup": "Los Angeles Dodgers @ Athletics",
-      "home_team": "Athletics",
-      "away_team": "Los Angeles Dodgers",
-      "venue_id": 2529,
-      "venue_name": "Sutter Health Park",
-      "home_pitcher": "Gage Jump",
-      "away_pitcher": "Eric Lauer",
+      "game_id": "824416",
+      "game_start_time": "2026-07-02T22:40:00Z",
+      "game_order": 3,
+      "matchup": "Chicago White Sox @ Cleveland Guardians",
+      "home_team": "Cleveland Guardians",
+      "away_team": "Chicago White Sox",
+      "venue_id": 5,
+      "venue_name": "Progressive Field",
+      "home_pitcher": "Slade Cecconi",
+      "away_pitcher": "Davis Martin",
       "projected_first_five": {
-        "away_runs": 1.79,
-        "home_runs": 2.77,
-        "total_runs": 4.56,
-        "home_lead_probability": 0.624,
-        "away_lead_probability": 0.376
+        "away_runs": 2.13,
+        "home_runs": 2.19,
+        "total_runs": 4.32,
+        "home_lead_probability": 0.5077,
+        "away_lead_probability": 0.4923
       },
       "top_picks": [
         {
           "market": "f5_side",
-          "pick": "Athletics F5 ML",
-          "team": "Athletics",
-          "probability": 0.624,
-          "edge_pct": 10.02,
-          "decision": "BET",
-          "confidence": "High",
+          "pick": "Cleveland Guardians F5 ML",
+          "team": "Cleveland Guardians",
+          "probability": 0.5077,
+          "edge_pct": -1.61,
+          "decision": "PASS",
+          "confidence": "Low",
           "assumed_odds": -110,
-          "projected_margin": 0.98,
-          "model_prediction": "Athletics +0.98 F5 runs"
+          "projected_margin": 0.06,
+          "model_prediction": "Cleveland Guardians +0.06 F5 runs",
+          "guardrail": "margin too small"
         },
         {
           "market": "f5_total",
-          "pick": "Over 4.5 F5",
+          "pick": "Under 4.5 F5",
           "team": "",
-          "probability": 0.5129,
-          "edge_pct": -5.23,
+          "probability": 0.5388,
+          "edge_pct": -2.65,
           "decision": "PASS",
           "confidence": "Low",
           "assumed_odds": -130,
           "vegas_line": 4.5,
-          "projection_gap": 0.06,
-          "model_prediction": "4.56 F5 total",
+          "projection_gap": 0.18,
+          "model_prediction": "4.32 F5 total",
           "guardrail": "projection too close to F5 line"
         }
       ],
       "features": {
         "away_offense": {
-          "projected_runs": 1.79,
-          "team_current_f5_runs": 3.245,
-          "team_recent_f5_runs": 2.583,
-          "team_prior_f5_runs": 2.718,
-          "team_venue_f5_runs": 2.25,
-          "pitcher_current_f5_allowed": 0.833,
-          "pitcher_recent_f5_allowed": 0.833,
-          "pitcher_current_vs_opponent": 1.393,
-          "pitcher_prior_vs_opponent": 1.393,
-          "pitcher_venue_f5_allowed": 1.696,
+          "projected_runs": 2.13,
+          "team_current_f5_runs": 3.103,
+          "team_recent_f5_runs": 3.0,
+          "team_prior_f5_runs": 2.324,
+          "team_venue_f5_runs": 1.4,
+          "pitcher_current_f5_allowed": 1.75,
+          "pitcher_recent_f5_allowed": 1.5,
+          "pitcher_current_vs_opponent": 2.287,
+          "pitcher_prior_vs_opponent": 3.257,
+          "pitcher_venue_f5_allowed": 2.0,
           "pitcher_rest_days": 4,
           "pitcher_rest_runs_modifier": 0.0,
           "pitcher_rest_label": "normal rest (4d)",
-          "lineup_delta": -0.053,
-          "venue_delta": 0.18,
-          "park_run_delta_per_team": 0.18,
+          "lineup_delta": 0.032,
+          "venue_delta": -0.025,
+          "park_run_delta_per_team": -0.025,
           "wind_run_delta_per_team": 0.0,
           "wind_mph": 0.0,
           "wind_direction": "",
           "travel_run_delta": -0.032,
           "travel_fatigue_index": 0.2,
           "travel_days_since_previous_game": 1,
-          "travel_distance_miles": 473.7,
+          "travel_distance_miles": 307.1,
           "travel_timezone_shift_hours": 0,
           "travel_direction": "same_timezone",
-          "travel_label": "1d since previous game; 474 mi"
+          "travel_label": "1d since previous game; 307 mi"
         },
         "home_offense": {
-          "projected_runs": 2.77,
-          "team_current_f5_runs": 3.093,
-          "team_recent_f5_runs": 3.083,
-          "team_prior_f5_runs": 2.599,
-          "team_venue_f5_runs": 2.917,
-          "pitcher_current_f5_allowed": 2.7,
-          "pitcher_recent_f5_allowed": 2.0,
-          "pitcher_current_vs_opponent": 2.132,
-          "pitcher_prior_vs_opponent": 2.397,
-          "pitcher_venue_f5_allowed": 2.397,
-          "pitcher_rest_days": 13,
-          "pitcher_rest_runs_modifier": 0.15,
-          "pitcher_rest_label": "extended layoff (13d) +0.15",
-          "lineup_delta": 0.027,
-          "venue_delta": 0.18,
-          "park_run_delta_per_team": 0.18,
+          "projected_runs": 2.19,
+          "team_current_f5_runs": 2.468,
+          "team_recent_f5_runs": 2.167,
+          "team_prior_f5_runs": 2.173,
+          "team_venue_f5_runs": 2.361,
+          "pitcher_current_f5_allowed": 1.75,
+          "pitcher_recent_f5_allowed": 2.833,
+          "pitcher_current_vs_opponent": 1.872,
+          "pitcher_prior_vs_opponent": 2.667,
+          "pitcher_venue_f5_allowed": 1.904,
+          "pitcher_rest_days": 4,
+          "pitcher_rest_runs_modifier": 0.0,
+          "pitcher_rest_label": "normal rest (4d)",
+          "lineup_delta": -0.015,
+          "venue_delta": -0.025,
+          "park_run_delta_per_team": -0.025,
           "wind_run_delta_per_team": 0.0,
           "wind_mph": 0.0,
           "wind_direction": "",
-          "travel_run_delta": -0.032,
-          "travel_fatigue_index": 0.2,
+          "travel_run_delta": -0.0,
+          "travel_fatigue_index": 0.0,
           "travel_days_since_previous_game": 1,
-          "travel_distance_miles": 387.3,
+          "travel_distance_miles": 0.0,
           "travel_timezone_shift_hours": 0,
-          "travel_direction": "same_timezone",
-          "travel_label": "1d since previous game; 387 mi"
+          "travel_direction": "same",
+          "travel_label": "1d since previous game; 0 mi"
         },
         "away_pitcher": {
-          "name": "Eric Lauer",
-          "stat_expected": 2.397,
-          "current_f5_allowed": 2.7,
-          "recent_f5_allowed": 2.0,
-          "prior_f5_allowed": 2.823,
-          "current_vs_opponent": 2.132,
-          "prior_vs_opponent": 2.397,
-          "venue_f5_allowed": 2.397,
-          "current_starts": 10,
+          "name": "Davis Martin",
+          "stat_expected": 1.872,
+          "current_f5_allowed": 1.75,
+          "recent_f5_allowed": 2.833,
+          "prior_f5_allowed": 2.79,
+          "current_vs_opponent": 1.872,
+          "prior_vs_opponent": 2.667,
+          "venue_f5_allowed": 1.904,
+          "current_starts": 16,
           "recent_starts": 6,
-          "prior_starts": 24,
-          "current_vs_opponent_starts": 1,
-          "prior_vs_opponent_starts": 0,
-          "venue_starts": 0,
-          "rest_days": 13,
-          "rest_runs_modifier": 0.15,
-          "rest_label": "extended layoff (13d) +0.15",
-          "team_bullpen": {
-            "lookback_games": 2,
-            "games_inspected": 2,
-            "recently_used_pitcher_ids": [
-              500743,
-              656945,
-              669165,
-              676263,
-              681911,
-              683618,
-              694361
-            ],
-            "back_to_back_arms": [
-              681911
-            ],
-            "yesterday_used_pitcher_ids": [
-              500743,
-              669165,
-              676263,
-              681911
-            ],
-            "high_leverage_used_pitcher_ids": [
-              669165,
-              676263
-            ],
-            "light_use_pitcher_ids": [
-              500743,
-              656945,
-              681911,
-              683618,
-              694361
-            ],
-            "unavailable_today": [
-              669165,
-              676263,
-              681911
-            ],
-            "effective_unavailable_count": 3.93,
-            "fatigue_index": 0.491
-          }
-        },
-        "home_pitcher": {
-          "name": "Gage Jump",
-          "stat_expected": 1.393,
-          "current_f5_allowed": 0.833,
-          "recent_f5_allowed": 0.833,
-          "prior_f5_allowed": 1.393,
-          "current_vs_opponent": 1.393,
-          "prior_vs_opponent": 1.393,
-          "venue_f5_allowed": 1.696,
-          "current_starts": 6,
-          "recent_starts": 6,
-          "prior_starts": 0,
+          "prior_starts": 30,
           "current_vs_opponent_starts": 0,
-          "prior_vs_opponent_starts": 0,
-          "venue_starts": 2,
+          "prior_vs_opponent_starts": 3,
+          "venue_starts": 1,
           "rest_days": 4,
           "rest_runs_modifier": 0.0,
           "rest_label": "normal rest (4d)",
@@ -3029,36 +964,378 @@
             "lookback_games": 2,
             "games_inspected": 2,
             "recently_used_pitcher_ids": [
-              640454,
-              660761,
-              664129,
-              665660,
-              686930,
-              686993
+              663542,
+              663855,
+              670950,
+              685126,
+              805326
             ],
             "back_to_back_arms": [],
             "yesterday_used_pitcher_ids": [
-              640454,
-              664129,
-              686930,
-              686993
+              663542,
+              663855,
+              670950,
+              685126
             ],
-            "high_leverage_used_pitcher_ids": [],
+            "high_leverage_used_pitcher_ids": [
+              663855,
+              670950,
+              805326
+            ],
             "light_use_pitcher_ids": [
-              640454,
-              660761,
-              664129,
-              665660,
-              686930,
-              686993
+              663542,
+              685126
             ],
-            "unavailable_today": [],
-            "effective_unavailable_count": 2.54,
-            "fatigue_index": 0.318
+            "unavailable_today": [
+              663855,
+              670950,
+              805326
+            ],
+            "effective_unavailable_count": 4.26,
+            "fatigue_index": 0.533
+          }
+        },
+        "home_pitcher": {
+          "name": "Slade Cecconi",
+          "stat_expected": 2.287,
+          "current_f5_allowed": 1.75,
+          "recent_f5_allowed": 1.5,
+          "prior_f5_allowed": 2.711,
+          "current_vs_opponent": 2.287,
+          "prior_vs_opponent": 3.257,
+          "venue_f5_allowed": 2.0,
+          "current_starts": 16,
+          "recent_starts": 6,
+          "prior_starts": 30,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 2,
+          "venue_starts": 6,
+          "rest_days": 4,
+          "rest_runs_modifier": 0.0,
+          "rest_label": "normal rest (4d)",
+          "team_bullpen": {
+            "lookback_games": 2,
+            "games_inspected": 2,
+            "recently_used_pitcher_ids": [
+              542888,
+              670036,
+              670059,
+              681870,
+              682120,
+              682982,
+              683769
+            ],
+            "back_to_back_arms": [],
+            "yesterday_used_pitcher_ids": [
+              670036,
+              670059,
+              681870,
+              682120,
+              683769
+            ],
+            "high_leverage_used_pitcher_ids": [
+              670059
+            ],
+            "light_use_pitcher_ids": [
+              542888,
+              670036,
+              681870,
+              682120,
+              682982,
+              683769
+            ],
+            "unavailable_today": [
+              670059
+            ],
+            "effective_unavailable_count": 3.23,
+            "fatigue_index": 0.404
           }
         },
         "venue": {
-          "f5_total": 6.0,
+          "f5_total": 4.45,
+          "run_delta_per_team": -0.025,
+          "games": 60,
+          "park_blend": {
+            "final_delta": -0.025,
+            "learned_delta": -0.025,
+            "static_delta": -0.01,
+            "blend_weight_learned": 1.0,
+            "park_factor": 0.99
+          },
+          "park_run_delta_per_team": -0.025,
+          "wind_run_delta_per_team": 0.0,
+          "wind_mph": 0.0,
+          "wind_direction": "",
+          "weather_raw": ""
+        },
+        "travel": {
+          "away": {
+            "available": true,
+            "previous_game_date": "2026-07-01",
+            "previous_venue_id": 2,
+            "previous_venue_name": "Oriole Park at Camden Yards",
+            "current_venue_id": 5,
+            "current_venue_name": "Progressive Field",
+            "days_since_previous_game": 1,
+            "same_venue": false,
+            "distance_miles": 307.1,
+            "timezone_shift_hours": 0,
+            "travel_direction": "same_timezone",
+            "travel_fatigue_index": 0.2,
+            "travel_run_delta": -0.032,
+            "label": "1d since previous game; 307 mi"
+          },
+          "home": {
+            "available": true,
+            "previous_game_date": "2026-07-01",
+            "previous_venue_id": 5,
+            "previous_venue_name": "Progressive Field",
+            "current_venue_id": 5,
+            "current_venue_name": "Progressive Field",
+            "days_since_previous_game": 1,
+            "same_venue": true,
+            "distance_miles": 0.0,
+            "timezone_shift_hours": 0,
+            "travel_direction": "same",
+            "travel_fatigue_index": 0.0,
+            "travel_run_delta": -0.0,
+            "label": "1d since previous game; 0 mi"
+          }
+        },
+        "away_lineup_matchup": {
+          "run_delta": 0.032,
+          "threat_score": 0.3631,
+          "current_bvp_pa": 0,
+          "older_bvp_pa": 8,
+          "sampled_batters": 9
+        },
+        "home_lineup_matchup": {
+          "run_delta": -0.015,
+          "threat_score": 0.3432,
+          "current_bvp_pa": 0,
+          "older_bvp_pa": 39,
+          "sampled_batters": 9
+        }
+      },
+      "notes": "F5 projection Chicago White Sox 2.13, Cleveland Guardians 2.19 (total 4.32). BvP PA away/home: 0+8/0+39; venue F5 total 4.45 over 60 games. Travel away/home: 1d since previous game; 307 mi (fatigue 0.20) / 1d since previous game; 0 mi (fatigue 0.00)."
+    },
+    {
+      "game_id": "824906",
+      "game_start_time": "2026-07-02T23:15:00Z",
+      "game_order": 4,
+      "matchup": "St. Louis Cardinals @ Atlanta Braves",
+      "home_team": "Atlanta Braves",
+      "away_team": "St. Louis Cardinals",
+      "venue_id": 4705,
+      "venue_name": "Truist Park",
+      "home_pitcher": "Hurston Waldrep",
+      "away_pitcher": "Dustin May",
+      "projected_first_five": {
+        "away_runs": 2.65,
+        "home_runs": 2.58,
+        "total_runs": 5.23,
+        "home_lead_probability": 0.491,
+        "away_lead_probability": 0.509
+      },
+      "top_picks": [
+        {
+          "market": "f5_total",
+          "pick": "Over 4.5 F5",
+          "team": "",
+          "probability": 0.6534,
+          "edge_pct": 8.82,
+          "decision": "LEAN",
+          "confidence": "Medium",
+          "assumed_odds": -130,
+          "vegas_line": 4.5,
+          "projection_gap": 0.73,
+          "model_prediction": "5.23 F5 total",
+          "guardrail": "thin starter sample"
+        },
+        {
+          "market": "f5_side",
+          "pick": "St. Louis Cardinals F5 ML",
+          "team": "St. Louis Cardinals",
+          "probability": 0.509,
+          "edge_pct": -1.48,
+          "decision": "PASS",
+          "confidence": "Low",
+          "assumed_odds": -110,
+          "projected_margin": 0.07,
+          "model_prediction": "St. Louis Cardinals +0.07 F5 runs",
+          "guardrail": "thin starter sample, margin too small"
+        }
+      ],
+      "features": {
+        "away_offense": {
+          "projected_runs": 2.65,
+          "team_current_f5_runs": 2.356,
+          "team_recent_f5_runs": 3.25,
+          "team_prior_f5_runs": 2.296,
+          "team_venue_f5_runs": 2.125,
+          "pitcher_current_f5_allowed": 2.251,
+          "pitcher_recent_f5_allowed": 2.251,
+          "pitcher_current_vs_opponent": 2.251,
+          "pitcher_prior_vs_opponent": 2.251,
+          "pitcher_venue_f5_allowed": 3.139,
+          "pitcher_rest_days": null,
+          "pitcher_rest_runs_modifier": 0.0,
+          "pitcher_rest_label": "rest unknown",
+          "lineup_delta": 0.066,
+          "venue_delta": 0.18,
+          "park_run_delta_per_team": 0.18,
+          "wind_run_delta_per_team": 0.0,
+          "wind_mph": 0.0,
+          "wind_direction": "",
+          "travel_run_delta": -0.0,
+          "travel_fatigue_index": 0.0,
+          "travel_days_since_previous_game": 1,
+          "travel_distance_miles": 0.0,
+          "travel_timezone_shift_hours": 0,
+          "travel_direction": "same",
+          "travel_label": "1d since previous game; 0 mi"
+        },
+        "home_offense": {
+          "projected_runs": 2.58,
+          "team_current_f5_runs": 2.741,
+          "team_recent_f5_runs": 1.917,
+          "team_prior_f5_runs": 2.328,
+          "team_venue_f5_runs": 2.139,
+          "pitcher_current_f5_allowed": 2.6,
+          "pitcher_recent_f5_allowed": 1.833,
+          "pitcher_current_vs_opponent": 2.176,
+          "pitcher_prior_vs_opponent": 2.435,
+          "pitcher_venue_f5_allowed": 2.632,
+          "pitcher_rest_days": 10,
+          "pitcher_rest_runs_modifier": 0.15,
+          "pitcher_rest_label": "extended layoff (10d) +0.15",
+          "lineup_delta": 0.03,
+          "venue_delta": 0.18,
+          "park_run_delta_per_team": 0.18,
+          "wind_run_delta_per_team": 0.0,
+          "wind_mph": 0.0,
+          "wind_direction": "",
+          "travel_run_delta": -0.0,
+          "travel_fatigue_index": 0.0,
+          "travel_days_since_previous_game": 1,
+          "travel_distance_miles": 0.0,
+          "travel_timezone_shift_hours": 0,
+          "travel_direction": "same",
+          "travel_label": "1d since previous game; 0 mi"
+        },
+        "away_pitcher": {
+          "name": "Dustin May",
+          "stat_expected": 2.176,
+          "current_f5_allowed": 2.6,
+          "recent_f5_allowed": 1.833,
+          "prior_f5_allowed": 2.8,
+          "current_vs_opponent": 2.176,
+          "prior_vs_opponent": 2.435,
+          "venue_f5_allowed": 2.632,
+          "current_starts": 15,
+          "recent_starts": 6,
+          "prior_starts": 30,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 2,
+          "venue_starts": 1,
+          "rest_days": 10,
+          "rest_runs_modifier": 0.15,
+          "rest_label": "extended layoff (10d) +0.15",
+          "team_bullpen": {
+            "lookback_games": 2,
+            "games_inspected": 2,
+            "recently_used_pitcher_ids": [
+              666277,
+              668941,
+              676617,
+              677865,
+              681676,
+              691008,
+              700669
+            ],
+            "back_to_back_arms": [],
+            "yesterday_used_pitcher_ids": [
+              677865,
+              691008,
+              700669
+            ],
+            "high_leverage_used_pitcher_ids": [
+              691008
+            ],
+            "light_use_pitcher_ids": [
+              666277,
+              668941,
+              676617,
+              677865,
+              681676,
+              700669
+            ],
+            "unavailable_today": [
+              691008
+            ],
+            "effective_unavailable_count": 3.94,
+            "fatigue_index": 0.492
+          }
+        },
+        "home_pitcher": {
+          "name": "Hurston Waldrep",
+          "stat_expected": 2.251,
+          "current_f5_allowed": 2.251,
+          "recent_f5_allowed": 2.251,
+          "prior_f5_allowed": 2.546,
+          "current_vs_opponent": 2.251,
+          "prior_vs_opponent": 2.251,
+          "venue_f5_allowed": 3.139,
+          "current_starts": 0,
+          "recent_starts": 0,
+          "prior_starts": 11,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 0,
+          "venue_starts": 6,
+          "rest_days": null,
+          "rest_runs_modifier": 0.0,
+          "rest_label": "rest unknown",
+          "team_bullpen": {
+            "lookback_games": 2,
+            "games_inspected": 2,
+            "recently_used_pitcher_ids": [
+              628452,
+              641656,
+              669276,
+              675916,
+              689266,
+              800311
+            ],
+            "back_to_back_arms": [
+              628452,
+              689266
+            ],
+            "yesterday_used_pitcher_ids": [
+              628452,
+              669276,
+              689266,
+              800311
+            ],
+            "high_leverage_used_pitcher_ids": [
+              628452,
+              689266
+            ],
+            "light_use_pitcher_ids": [
+              641656,
+              669276,
+              675916,
+              800311
+            ],
+            "unavailable_today": [
+              628452,
+              689266
+            ],
+            "effective_unavailable_count": 3.57,
+            "fatigue_index": 0.446
+          }
+        },
+        "venue": {
+          "f5_total": 4.967,
           "run_delta_per_team": 0.18,
           "games": 60,
           "park_blend": {
@@ -3077,169 +1354,719 @@
         "travel": {
           "away": {
             "available": true,
-            "previous_game_date": "2026-06-28",
-            "previous_venue_id": 2680,
-            "previous_venue_name": "Petco Park",
-            "current_venue_id": 2529,
-            "current_venue_name": "Sutter Health Park",
+            "previous_game_date": "2026-07-01",
+            "previous_venue_id": 4705,
+            "previous_venue_name": "Truist Park",
+            "current_venue_id": 4705,
+            "current_venue_name": "Truist Park",
             "days_since_previous_game": 1,
-            "same_venue": false,
-            "distance_miles": 473.7,
+            "same_venue": true,
+            "distance_miles": 0.0,
             "timezone_shift_hours": 0,
-            "travel_direction": "same_timezone",
-            "travel_fatigue_index": 0.2,
-            "travel_run_delta": -0.032,
-            "label": "1d since previous game; 474 mi"
+            "travel_direction": "same",
+            "travel_fatigue_index": 0.0,
+            "travel_run_delta": -0.0,
+            "label": "1d since previous game; 0 mi"
           },
           "home": {
             "available": true,
-            "previous_game_date": "2026-06-28",
-            "previous_venue_id": 1,
-            "previous_venue_name": "Angel Stadium",
-            "current_venue_id": 2529,
-            "current_venue_name": "Sutter Health Park",
+            "previous_game_date": "2026-07-01",
+            "previous_venue_id": 4705,
+            "previous_venue_name": "Truist Park",
+            "current_venue_id": 4705,
+            "current_venue_name": "Truist Park",
             "days_since_previous_game": 1,
-            "same_venue": false,
-            "distance_miles": 387.3,
+            "same_venue": true,
+            "distance_miles": 0.0,
             "timezone_shift_hours": 0,
-            "travel_direction": "same_timezone",
-            "travel_fatigue_index": 0.2,
-            "travel_run_delta": -0.032,
-            "label": "1d since previous game; 387 mi"
+            "travel_direction": "same",
+            "travel_fatigue_index": 0.0,
+            "travel_run_delta": -0.0,
+            "label": "1d since previous game; 0 mi"
           }
         },
         "away_lineup_matchup": {
-          "run_delta": -0.053,
-          "threat_score": 0.3268,
+          "run_delta": 0.066,
+          "threat_score": 0.3773,
           "current_bvp_pa": 0,
           "older_bvp_pa": 0,
           "sampled_batters": 9
         },
         "home_lineup_matchup": {
-          "run_delta": 0.027,
-          "threat_score": 0.3609,
-          "current_bvp_pa": 5,
-          "older_bvp_pa": 5,
+          "run_delta": 0.03,
+          "threat_score": 0.3624,
+          "current_bvp_pa": 0,
+          "older_bvp_pa": 55,
           "sampled_batters": 9
         }
       },
-      "notes": "F5 projection Los Angeles Dodgers 1.79, Athletics 2.77 (total 4.56). BvP PA away/home: 0+0/5+5; venue F5 total 6.00 over 60 games. Travel away/home: 1d since previous game; 474 mi (fatigue 0.20) / 1d since previous game; 387 mi (fatigue 0.20)."
+      "notes": "F5 projection St. Louis Cardinals 2.65, Atlanta Braves 2.58 (total 5.23). BvP PA away/home: 0+0/0+55; venue F5 total 4.97 over 60 games. Travel away/home: 1d since previous game; 0 mi (fatigue 0.00) / 1d since previous game; 0 mi (fatigue 0.00)."
     },
     {
-      "game_id": "823121",
-      "game_start_time": "2026-06-30T01:40:00Z",
-      "game_order": 11,
-      "matchup": "Los Angeles Angels @ Seattle Mariners",
-      "home_team": "Seattle Mariners",
-      "away_team": "Los Angeles Angels",
-      "venue_id": 680,
-      "venue_name": "T-Mobile Park",
-      "home_pitcher": "George Kirby",
-      "away_pitcher": "Ryan Johnson",
+      "game_id": "824093",
+      "game_start_time": "2026-07-02T23:40:00Z",
+      "game_order": 5,
+      "matchup": "Tampa Bay Rays @ Kansas City Royals",
+      "home_team": "Kansas City Royals",
+      "away_team": "Tampa Bay Rays",
+      "venue_id": 7,
+      "venue_name": "Kauffman Stadium",
+      "home_pitcher": "Stephen Kolek",
+      "away_pitcher": "Ian Seymour",
       "projected_first_five": {
-        "away_runs": 2.3,
-        "home_runs": 3.17,
-        "total_runs": 5.47,
-        "home_lead_probability": 0.6105,
-        "away_lead_probability": 0.3895
+        "away_runs": 2.79,
+        "home_runs": 2.24,
+        "total_runs": 5.03,
+        "home_lead_probability": 0.4296,
+        "away_lead_probability": 0.5704
       },
       "top_picks": [
         {
           "market": "f5_total",
           "pick": "Over 4.5 F5",
           "team": "",
-          "probability": 0.7,
-          "edge_pct": 13.48,
+          "probability": 0.6127,
+          "edge_pct": 4.75,
           "decision": "LEAN",
           "confidence": "Medium",
           "assumed_odds": -130,
           "vegas_line": 4.5,
-          "projection_gap": 0.97,
-          "model_prediction": "5.47 F5 total",
+          "projection_gap": 0.53,
+          "model_prediction": "5.03 F5 total",
+          "guardrail": "line gap below bet threshold"
+        },
+        {
+          "market": "f5_side",
+          "pick": "Tampa Bay Rays F5 ML",
+          "team": "Tampa Bay Rays",
+          "probability": 0.5704,
+          "edge_pct": 4.66,
+          "decision": "LEAN",
+          "confidence": "Medium",
+          "assumed_odds": -110,
+          "projected_margin": 0.55,
+          "model_prediction": "Tampa Bay Rays +0.55 F5 runs",
+          "guardrail": "thin starter sample"
+        }
+      ],
+      "features": {
+        "away_offense": {
+          "projected_runs": 2.79,
+          "team_current_f5_runs": 2.25,
+          "team_recent_f5_runs": 2.792,
+          "team_prior_f5_runs": 2.714,
+          "team_venue_f5_runs": 3.025,
+          "pitcher_current_f5_allowed": 3.0,
+          "pitcher_recent_f5_allowed": 3.167,
+          "pitcher_current_vs_opponent": 2.187,
+          "pitcher_prior_vs_opponent": 2.187,
+          "pitcher_venue_f5_allowed": 2.8,
+          "pitcher_rest_days": 10,
+          "pitcher_rest_runs_modifier": 0.15,
+          "pitcher_rest_label": "extended layoff (10d) +0.15",
+          "lineup_delta": 0.036,
+          "venue_delta": -0.075,
+          "park_run_delta_per_team": -0.075,
+          "wind_run_delta_per_team": 0.0,
+          "wind_mph": 0.0,
+          "wind_direction": "",
+          "travel_run_delta": -0.0,
+          "travel_fatigue_index": 0.0,
+          "travel_days_since_previous_game": 1,
+          "travel_distance_miles": 0.0,
+          "travel_timezone_shift_hours": 0,
+          "travel_direction": "same",
+          "travel_label": "1d since previous game; 0 mi"
+        },
+        "home_offense": {
+          "projected_runs": 2.24,
+          "team_current_f5_runs": 2.218,
+          "team_recent_f5_runs": 3.167,
+          "team_prior_f5_runs": 2.396,
+          "team_venue_f5_runs": 2.611,
+          "pitcher_current_f5_allowed": 1.906,
+          "pitcher_recent_f5_allowed": 1.786,
+          "pitcher_current_vs_opponent": 2.145,
+          "pitcher_prior_vs_opponent": 2.145,
+          "pitcher_venue_f5_allowed": 2.145,
+          "pitcher_rest_days": 11,
+          "pitcher_rest_runs_modifier": 0.15,
+          "pitcher_rest_label": "extended layoff (11d) +0.15",
+          "lineup_delta": -0.031,
+          "venue_delta": -0.075,
+          "park_run_delta_per_team": -0.075,
+          "wind_run_delta_per_team": 0.0,
+          "wind_mph": 0.0,
+          "wind_direction": "",
+          "travel_run_delta": -0.0,
+          "travel_fatigue_index": 0.0,
+          "travel_days_since_previous_game": 1,
+          "travel_distance_miles": 0.0,
+          "travel_timezone_shift_hours": 0,
+          "travel_direction": "same",
+          "travel_label": "1d since previous game; 0 mi"
+        },
+        "away_pitcher": {
+          "name": "Ian Seymour",
+          "stat_expected": 2.145,
+          "current_f5_allowed": 1.906,
+          "recent_f5_allowed": 1.786,
+          "prior_f5_allowed": 2.32,
+          "current_vs_opponent": 2.145,
+          "prior_vs_opponent": 2.145,
+          "venue_f5_allowed": 2.145,
+          "current_starts": 3,
+          "recent_starts": 3,
+          "prior_starts": 5,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 0,
+          "venue_starts": 0,
+          "rest_days": 11,
+          "rest_runs_modifier": 0.15,
+          "rest_label": "extended layoff (11d) +0.15",
+          "team_bullpen": {
+            "lookback_games": 2,
+            "games_inspected": 2,
+            "recently_used_pitcher_ids": [
+              518886,
+              592155,
+              642121,
+              664076,
+              687330
+            ],
+            "back_to_back_arms": [
+              642121
+            ],
+            "yesterday_used_pitcher_ids": [
+              642121,
+              664076,
+              687330
+            ],
+            "high_leverage_used_pitcher_ids": [
+              642121,
+              664076
+            ],
+            "light_use_pitcher_ids": [
+              518886,
+              592155,
+              687330
+            ],
+            "unavailable_today": [
+              642121,
+              664076
+            ],
+            "effective_unavailable_count": 2.74,
+            "fatigue_index": 0.342
+          }
+        },
+        "home_pitcher": {
+          "name": "Stephen Kolek",
+          "stat_expected": 2.187,
+          "current_f5_allowed": 3.0,
+          "recent_f5_allowed": 3.167,
+          "prior_f5_allowed": 2.317,
+          "current_vs_opponent": 2.187,
+          "prior_vs_opponent": 2.187,
+          "venue_f5_allowed": 2.8,
+          "current_starts": 9,
+          "recent_starts": 6,
+          "prior_starts": 19,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 0,
+          "venue_starts": 5,
+          "rest_days": 10,
+          "rest_runs_modifier": 0.15,
+          "rest_label": "extended layoff (10d) +0.15",
+          "team_bullpen": {
+            "lookback_games": 2,
+            "games_inspected": 2,
+            "recently_used_pitcher_ids": [
+              621016,
+              621381,
+              657756,
+              668674,
+              672021,
+              674444,
+              694360
+            ],
+            "back_to_back_arms": [],
+            "yesterday_used_pitcher_ids": [
+              621016,
+              621381
+            ],
+            "high_leverage_used_pitcher_ids": [
+              621016,
+              672021
+            ],
+            "light_use_pitcher_ids": [
+              621381,
+              657756,
+              668674,
+              674444,
+              694360
+            ],
+            "unavailable_today": [
+              621016,
+              672021
+            ],
+            "effective_unavailable_count": 4.14,
+            "fatigue_index": 0.517
+          }
+        },
+        "venue": {
+          "f5_total": 4.35,
+          "run_delta_per_team": -0.075,
+          "games": 60,
+          "park_blend": {
+            "final_delta": -0.075,
+            "learned_delta": -0.075,
+            "static_delta": 0.03,
+            "blend_weight_learned": 1.0,
+            "park_factor": 1.03
+          },
+          "park_run_delta_per_team": -0.075,
+          "wind_run_delta_per_team": 0.0,
+          "wind_mph": 0.0,
+          "wind_direction": "",
+          "weather_raw": ""
+        },
+        "travel": {
+          "away": {
+            "available": true,
+            "previous_game_date": "2026-07-01",
+            "previous_venue_id": 7,
+            "previous_venue_name": "Kauffman Stadium",
+            "current_venue_id": 7,
+            "current_venue_name": "Kauffman Stadium",
+            "days_since_previous_game": 1,
+            "same_venue": true,
+            "distance_miles": 0.0,
+            "timezone_shift_hours": 0,
+            "travel_direction": "same",
+            "travel_fatigue_index": 0.0,
+            "travel_run_delta": -0.0,
+            "label": "1d since previous game; 0 mi"
+          },
+          "home": {
+            "available": true,
+            "previous_game_date": "2026-07-01",
+            "previous_venue_id": 7,
+            "previous_venue_name": "Kauffman Stadium",
+            "current_venue_id": 7,
+            "current_venue_name": "Kauffman Stadium",
+            "days_since_previous_game": 1,
+            "same_venue": true,
+            "distance_miles": 0.0,
+            "timezone_shift_hours": 0,
+            "travel_direction": "same",
+            "travel_fatigue_index": 0.0,
+            "travel_run_delta": -0.0,
+            "label": "1d since previous game; 0 mi"
+          }
+        },
+        "away_lineup_matchup": {
+          "run_delta": 0.036,
+          "threat_score": 0.3648,
+          "current_bvp_pa": 0,
+          "older_bvp_pa": 4,
+          "sampled_batters": 9
+        },
+        "home_lineup_matchup": {
+          "run_delta": -0.031,
+          "threat_score": 0.3361,
+          "current_bvp_pa": 13,
+          "older_bvp_pa": 0,
+          "sampled_batters": 9
+        }
+      },
+      "notes": "F5 projection Tampa Bay Rays 2.79, Kansas City Royals 2.24 (total 5.03). BvP PA away/home: 0+4/13+0; venue F5 total 4.35 over 60 games. Travel away/home: 1d since previous game; 0 mi (fatigue 0.00) / 1d since previous game; 0 mi (fatigue 0.00)."
+    },
+    {
+      "game_id": "822884",
+      "game_start_time": "2026-07-03T00:05:00Z",
+      "game_order": 6,
+      "matchup": "Detroit Tigers @ Texas Rangers",
+      "home_team": "Texas Rangers",
+      "away_team": "Detroit Tigers",
+      "venue_id": 5325,
+      "venue_name": "Globe Life Field",
+      "home_pitcher": "Nathan Eovaldi",
+      "away_pitcher": "Framber Valdez",
+      "projected_first_five": {
+        "away_runs": 1.98,
+        "home_runs": 2.16,
+        "total_runs": 4.14,
+        "home_lead_probability": 0.5232,
+        "away_lead_probability": 0.4768
+      },
+      "top_picks": [
+        {
+          "market": "f5_total",
+          "pick": "Under 4.5 F5",
+          "team": "",
+          "probability": 0.5771,
+          "edge_pct": 1.19,
+          "decision": "PASS",
+          "confidence": "Low",
+          "assumed_odds": -130,
+          "vegas_line": 4.5,
+          "projection_gap": 0.36,
+          "model_prediction": "4.14 F5 total",
+          "guardrail": "projection too close to F5 line"
+        },
+        {
+          "market": "f5_side",
+          "pick": "Texas Rangers F5 ML",
+          "team": "Texas Rangers",
+          "probability": 0.5232,
+          "edge_pct": -0.06,
+          "decision": "PASS",
+          "confidence": "Low",
+          "assumed_odds": -110,
+          "projected_margin": 0.18,
+          "model_prediction": "Texas Rangers +0.18 F5 runs",
+          "guardrail": "margin too small"
+        }
+      ],
+      "features": {
+        "away_offense": {
+          "projected_runs": 1.98,
+          "team_current_f5_runs": 2.491,
+          "team_recent_f5_runs": 2.917,
+          "team_prior_f5_runs": 2.701,
+          "team_venue_f5_runs": 1.675,
+          "pitcher_current_f5_allowed": 2.438,
+          "pitcher_recent_f5_allowed": 2.167,
+          "pitcher_current_vs_opponent": 2.11,
+          "pitcher_prior_vs_opponent": 0.333,
+          "pitcher_venue_f5_allowed": 3.2,
+          "pitcher_rest_days": 5,
+          "pitcher_rest_runs_modifier": 0.0,
+          "pitcher_rest_label": "normal rest (5d)",
+          "lineup_delta": -0.01,
+          "venue_delta": -0.18,
+          "park_run_delta_per_team": -0.18,
+          "wind_run_delta_per_team": 0.0,
+          "wind_mph": 0.0,
+          "wind_direction": "",
+          "travel_run_delta": -0.058,
+          "travel_fatigue_index": 0.36,
+          "travel_days_since_previous_game": 1,
+          "travel_distance_miles": 1392.3,
+          "travel_timezone_shift_hours": -1,
+          "travel_direction": "west",
+          "travel_label": "1d since previous game; 1392 mi; 1h west"
+        },
+        "home_offense": {
+          "projected_runs": 2.16,
+          "team_current_f5_runs": 2.776,
+          "team_recent_f5_runs": 2.667,
+          "team_prior_f5_runs": 2.575,
+          "team_venue_f5_runs": 2.722,
+          "pitcher_current_f5_allowed": 2.5,
+          "pitcher_recent_f5_allowed": 2.167,
+          "pitcher_current_vs_opponent": 2.217,
+          "pitcher_prior_vs_opponent": 2.143,
+          "pitcher_venue_f5_allowed": 2.109,
+          "pitcher_rest_days": 4,
+          "pitcher_rest_runs_modifier": 0.0,
+          "pitcher_rest_label": "normal rest (4d)",
+          "lineup_delta": 0.025,
+          "venue_delta": -0.18,
+          "park_run_delta_per_team": -0.18,
+          "wind_run_delta_per_team": 0.0,
+          "wind_mph": 0.0,
+          "wind_direction": "",
+          "travel_run_delta": -0.045,
+          "travel_fatigue_index": 0.28,
+          "travel_days_since_previous_game": 1,
+          "travel_distance_miles": 1039.1,
+          "travel_timezone_shift_hours": -1,
+          "travel_direction": "west",
+          "travel_label": "1d since previous game; 1039 mi; 1h west"
+        },
+        "away_pitcher": {
+          "name": "Framber Valdez",
+          "stat_expected": 2.217,
+          "current_f5_allowed": 2.5,
+          "recent_f5_allowed": 2.167,
+          "prior_f5_allowed": 2.423,
+          "current_vs_opponent": 2.217,
+          "prior_vs_opponent": 2.143,
+          "venue_f5_allowed": 2.109,
+          "current_starts": 16,
+          "recent_starts": 6,
+          "prior_starts": 30,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 7,
+          "venue_starts": 2,
+          "rest_days": 4,
+          "rest_runs_modifier": 0.0,
+          "rest_label": "normal rest (4d)",
+          "team_bullpen": {
+            "lookback_games": 2,
+            "games_inspected": 2,
+            "recently_used_pitcher_ids": [
+              621097,
+              623454,
+              663947,
+              672456,
+              805427
+            ],
+            "back_to_back_arms": [],
+            "yesterday_used_pitcher_ids": [
+              623454,
+              672456,
+              805427
+            ],
+            "high_leverage_used_pitcher_ids": [
+              621097,
+              623454,
+              672456
+            ],
+            "light_use_pitcher_ids": [
+              663947,
+              805427
+            ],
+            "unavailable_today": [
+              621097,
+              623454,
+              672456
+            ],
+            "effective_unavailable_count": 4.0,
+            "fatigue_index": 0.5
+          }
+        },
+        "home_pitcher": {
+          "name": "Nathan Eovaldi",
+          "stat_expected": 2.11,
+          "current_f5_allowed": 2.438,
+          "recent_f5_allowed": 2.167,
+          "prior_f5_allowed": 1.522,
+          "current_vs_opponent": 2.11,
+          "prior_vs_opponent": 0.333,
+          "venue_f5_allowed": 3.2,
+          "current_starts": 16,
+          "recent_starts": 6,
+          "prior_starts": 30,
+          "current_vs_opponent_starts": 0,
+          "prior_vs_opponent_starts": 3,
+          "venue_starts": 5,
+          "rest_days": 5,
+          "rest_runs_modifier": 0.0,
+          "rest_label": "normal rest (5d)",
+          "team_bullpen": {
+            "lookback_games": 2,
+            "games_inspected": 2,
+            "recently_used_pitcher_ids": [
+              656641,
+              668390,
+              682608,
+              692437
+            ],
+            "back_to_back_arms": [],
+            "yesterday_used_pitcher_ids": [
+              668390,
+              692437
+            ],
+            "high_leverage_used_pitcher_ids": [
+              692437
+            ],
+            "light_use_pitcher_ids": [
+              656641,
+              668390,
+              682608
+            ],
+            "unavailable_today": [
+              692437
+            ],
+            "effective_unavailable_count": 2.35,
+            "fatigue_index": 0.294
+          }
+        },
+        "venue": {
+          "f5_total": 3.817,
+          "run_delta_per_team": -0.18,
+          "games": 60,
+          "park_blend": {
+            "final_delta": -0.18,
+            "learned_delta": -0.18,
+            "static_delta": 0.0,
+            "blend_weight_learned": 1.0,
+            "park_factor": 1.0
+          },
+          "park_run_delta_per_team": -0.18,
+          "wind_run_delta_per_team": 0.0,
+          "wind_mph": 0.0,
+          "wind_direction": "",
+          "weather_raw": ""
+        },
+        "travel": {
+          "away": {
+            "available": true,
+            "previous_game_date": "2026-07-01",
+            "previous_venue_id": 3313,
+            "previous_venue_name": "Yankee Stadium",
+            "current_venue_id": 5325,
+            "current_venue_name": "Globe Life Field",
+            "days_since_previous_game": 1,
+            "same_venue": false,
+            "distance_miles": 1392.3,
+            "timezone_shift_hours": -1,
+            "travel_direction": "west",
+            "travel_fatigue_index": 0.36,
+            "travel_run_delta": -0.058,
+            "label": "1d since previous game; 1392 mi; 1h west"
+          },
+          "home": {
+            "available": true,
+            "previous_game_date": "2026-07-01",
+            "previous_venue_id": 5,
+            "previous_venue_name": "Progressive Field",
+            "current_venue_id": 5325,
+            "current_venue_name": "Globe Life Field",
+            "days_since_previous_game": 1,
+            "same_venue": false,
+            "distance_miles": 1039.1,
+            "timezone_shift_hours": -1,
+            "travel_direction": "west",
+            "travel_fatigue_index": 0.28,
+            "travel_run_delta": -0.045,
+            "label": "1d since previous game; 1039 mi; 1h west"
+          }
+        },
+        "away_lineup_matchup": {
+          "run_delta": -0.01,
+          "threat_score": 0.3453,
+          "current_bvp_pa": 0,
+          "older_bvp_pa": 26,
+          "sampled_batters": 9
+        },
+        "home_lineup_matchup": {
+          "run_delta": 0.025,
+          "threat_score": 0.36,
+          "current_bvp_pa": 0,
+          "older_bvp_pa": 85,
+          "sampled_batters": 9
+        }
+      },
+      "notes": "F5 projection Detroit Tigers 1.98, Texas Rangers 2.16 (total 4.14). BvP PA away/home: 0+26/0+85; venue F5 total 3.82 over 60 games. Travel away/home: 1d since previous game; 1392 mi; 1h west (fatigue 0.36) / 1d since previous game; 1039 mi; 1h west (fatigue 0.28)."
+    },
+    {
+      "game_id": "823119",
+      "game_start_time": "2026-07-03T01:40:00Z",
+      "game_order": 7,
+      "matchup": "Los Angeles Angels @ Seattle Mariners",
+      "home_team": "Seattle Mariners",
+      "away_team": "Los Angeles Angels",
+      "venue_id": 680,
+      "venue_name": "T-Mobile Park",
+      "home_pitcher": "Bryce Miller",
+      "away_pitcher": "Walbert Ure\u00f1a",
+      "projected_first_five": {
+        "away_runs": 1.63,
+        "home_runs": 2.08,
+        "total_runs": 3.71,
+        "home_lead_probability": 0.5577,
+        "away_lead_probability": 0.4423
+      },
+      "top_picks": [
+        {
+          "market": "f5_total",
+          "pick": "Under 4.5 F5",
+          "team": "",
+          "probability": 0.6653,
+          "edge_pct": 10.01,
+          "decision": "LEAN",
+          "confidence": "Medium",
+          "assumed_odds": -130,
+          "vegas_line": 4.5,
+          "projection_gap": 0.79,
+          "model_prediction": "3.71 F5 total",
           "guardrail": "model-generated F5 total line; capped at LEAN until real market line is available"
         },
         {
           "market": "f5_side",
           "pick": "Seattle Mariners F5 ML",
           "team": "Seattle Mariners",
-          "probability": 0.6105,
-          "edge_pct": 8.67,
-          "decision": "LEAN",
-          "confidence": "Medium",
+          "probability": 0.5577,
+          "edge_pct": 3.39,
+          "decision": "PASS",
+          "confidence": "Low",
           "assumed_odds": -110,
-          "projected_margin": 0.87,
-          "model_prediction": "Seattle Mariners +0.87 F5 runs",
-          "guardrail": "thin starter sample"
+          "projected_margin": 0.45,
+          "model_prediction": "Seattle Mariners +0.45 F5 runs",
+          "guardrail": "margin too small"
         }
       ],
       "features": {
         "away_offense": {
-          "projected_runs": 2.3,
-          "team_current_f5_runs": 2.682,
-          "team_recent_f5_runs": 3.25,
+          "projected_runs": 1.63,
+          "team_current_f5_runs": 2.652,
+          "team_recent_f5_runs": 2.875,
           "team_prior_f5_runs": 2.326,
-          "team_venue_f5_runs": 1.9,
-          "pitcher_current_f5_allowed": 1.938,
-          "pitcher_recent_f5_allowed": 2.5,
-          "pitcher_current_vs_opponent": 2.218,
-          "pitcher_prior_vs_opponent": 2.286,
-          "pitcher_venue_f5_allowed": 1.889,
-          "pitcher_rest_days": 5,
+          "team_venue_f5_runs": 1.65,
+          "pitcher_current_f5_allowed": 0.714,
+          "pitcher_recent_f5_allowed": 0.833,
+          "pitcher_current_vs_opponent": 1.303,
+          "pitcher_prior_vs_opponent": 1.857,
+          "pitcher_venue_f5_allowed": 2.125,
+          "pitcher_rest_days": 6,
           "pitcher_rest_runs_modifier": 0.0,
-          "pitcher_rest_label": "normal rest (5d)",
-          "lineup_delta": 0.007,
+          "pitcher_rest_label": "normal rest (6d)",
+          "lineup_delta": -0.066,
           "venue_delta": 0.0,
           "park_run_delta_per_team": 0.0,
           "wind_run_delta_per_team": 0.0,
           "wind_mph": 0.0,
           "wind_direction": "",
-          "travel_run_delta": -0.032,
-          "travel_fatigue_index": 0.2,
-          "travel_days_since_previous_game": 1,
-          "travel_distance_miles": null,
-          "travel_timezone_shift_hours": null,
-          "travel_direction": "unknown",
-          "travel_label": "1d since previous game"
+          "travel_run_delta": -0.0,
+          "travel_fatigue_index": 0.0,
+          "travel_days_since_previous_game": 2,
+          "travel_distance_miles": 0.0,
+          "travel_timezone_shift_hours": 0,
+          "travel_direction": "same",
+          "travel_label": "2d since previous game; 0 mi"
         },
         "home_offense": {
-          "projected_runs": 3.17,
-          "team_current_f5_runs": 2.579,
-          "team_recent_f5_runs": 2.25,
+          "projected_runs": 2.08,
+          "team_current_f5_runs": 2.56,
+          "team_recent_f5_runs": 2.042,
           "team_prior_f5_runs": 2.619,
           "team_venue_f5_runs": 3.25,
-          "pitcher_current_f5_allowed": 3.641,
-          "pitcher_recent_f5_allowed": 3.654,
-          "pitcher_current_vs_opponent": 3.615,
-          "pitcher_prior_vs_opponent": 3.615,
-          "pitcher_venue_f5_allowed": 3.615,
+          "pitcher_current_f5_allowed": 1.692,
+          "pitcher_recent_f5_allowed": 2.167,
+          "pitcher_current_vs_opponent": 1.963,
+          "pitcher_prior_vs_opponent": 1.963,
+          "pitcher_venue_f5_allowed": 1.963,
           "pitcher_rest_days": 5,
           "pitcher_rest_runs_modifier": 0.0,
           "pitcher_rest_label": "normal rest (5d)",
-          "lineup_delta": 0.084,
+          "lineup_delta": -0.04,
           "venue_delta": 0.0,
           "park_run_delta_per_team": 0.0,
           "wind_run_delta_per_team": 0.0,
           "wind_mph": 0.0,
           "wind_direction": "",
-          "travel_run_delta": -0.032,
-          "travel_fatigue_index": 0.2,
-          "travel_days_since_previous_game": 1,
-          "travel_distance_miles": null,
-          "travel_timezone_shift_hours": null,
-          "travel_direction": "unknown",
-          "travel_label": "1d since previous game"
+          "travel_run_delta": -0.0,
+          "travel_fatigue_index": 0.0,
+          "travel_days_since_previous_game": 2,
+          "travel_distance_miles": 0.0,
+          "travel_timezone_shift_hours": 0,
+          "travel_direction": "same",
+          "travel_label": "2d since previous game; 0 mi"
         },
         "away_pitcher": {
-          "name": "Ryan Johnson",
-          "stat_expected": 3.615,
-          "current_f5_allowed": 3.641,
-          "recent_f5_allowed": 3.654,
-          "prior_f5_allowed": 3.615,
-          "current_vs_opponent": 3.615,
-          "prior_vs_opponent": 3.615,
-          "venue_f5_allowed": 3.615,
-          "current_starts": 3,
-          "recent_starts": 3,
+          "name": "Walbert Ure\u00f1a",
+          "stat_expected": 1.963,
+          "current_f5_allowed": 1.692,
+          "recent_f5_allowed": 2.167,
+          "prior_f5_allowed": 1.963,
+          "current_vs_opponent": 1.963,
+          "prior_vs_opponent": 1.963,
+          "venue_f5_allowed": 1.963,
+          "current_starts": 13,
+          "recent_starts": 6,
           "prior_starts": 0,
           "current_vs_opponent_starts": 0,
           "prior_vs_opponent_starts": 0,
@@ -3251,90 +2078,80 @@
             "lookback_games": 2,
             "games_inspected": 2,
             "recently_used_pitcher_ids": [
-              489446,
+              608718,
               666171,
               681217,
-              696147,
-              696519,
-              820862
+              815083
             ],
-            "back_to_back_arms": [
-              666171
-            ],
+            "back_to_back_arms": [],
             "yesterday_used_pitcher_ids": [
-              489446,
+              608718,
               666171,
-              681217,
-              696147
+              681217
             ],
             "high_leverage_used_pitcher_ids": [
-              666171,
-              696147
+              608718,
+              681217,
+              815083
             ],
             "light_use_pitcher_ids": [
-              489446,
-              681217,
-              696519,
-              820862
+              666171
             ],
             "unavailable_today": [
-              666171,
-              696147
+              608718,
+              681217,
+              815083
             ],
-            "effective_unavailable_count": 4.06,
-            "fatigue_index": 0.507
+            "effective_unavailable_count": 4.34,
+            "fatigue_index": 0.543
           }
         },
         "home_pitcher": {
-          "name": "George Kirby",
-          "stat_expected": 2.218,
-          "current_f5_allowed": 1.938,
-          "recent_f5_allowed": 2.5,
-          "prior_f5_allowed": 2.439,
-          "current_vs_opponent": 2.218,
-          "prior_vs_opponent": 2.286,
-          "venue_f5_allowed": 1.889,
-          "current_starts": 16,
+          "name": "Bryce Miller",
+          "stat_expected": 1.303,
+          "current_f5_allowed": 0.714,
+          "recent_f5_allowed": 0.833,
+          "prior_f5_allowed": 2.295,
+          "current_vs_opponent": 1.303,
+          "prior_vs_opponent": 1.857,
+          "venue_f5_allowed": 2.125,
+          "current_starts": 7,
           "recent_starts": 6,
           "prior_starts": 30,
           "current_vs_opponent_starts": 0,
           "prior_vs_opponent_starts": 7,
-          "venue_starts": 9,
-          "rest_days": 5,
+          "venue_starts": 8,
+          "rest_days": 6,
           "rest_runs_modifier": 0.0,
-          "rest_label": "normal rest (5d)",
+          "rest_label": "normal rest (6d)",
           "team_bullpen": {
             "lookback_games": 2,
             "games_inspected": 2,
             "recently_used_pitcher_ids": [
               621074,
-              642100,
               660825,
-              678606,
-              681006
+              662253,
+              678606
             ],
             "back_to_back_arms": [],
             "yesterday_used_pitcher_ids": [
               621074,
-              642100,
               660825,
-              681006
+              662253
             ],
             "high_leverage_used_pitcher_ids": [
-              621074,
-              681006
+              660825
             ],
             "light_use_pitcher_ids": [
-              642100,
-              660825,
+              621074,
+              662253,
               678606
             ],
             "unavailable_today": [
-              621074,
-              681006
+              660825
             ],
-            "effective_unavailable_count": 2.72,
-            "fatigue_index": 0.34
+            "effective_unavailable_count": 2.06,
+            "fatigue_index": 0.257
           }
         },
         "venue": {
@@ -3357,217 +2174,222 @@
         "travel": {
           "away": {
             "available": true,
-            "previous_game_date": "2026-06-28",
-            "previous_venue_id": 1,
-            "previous_venue_name": "Angel Stadium",
+            "previous_game_date": "2026-06-30",
+            "previous_venue_id": 680,
+            "previous_venue_name": "T-Mobile Park",
             "current_venue_id": 680,
             "current_venue_name": "T-Mobile Park",
-            "days_since_previous_game": 1,
-            "same_venue": false,
-            "distance_miles": null,
-            "timezone_shift_hours": null,
-            "travel_direction": "unknown",
-            "travel_fatigue_index": 0.2,
-            "travel_run_delta": -0.032,
-            "label": "1d since previous game"
+            "days_since_previous_game": 2,
+            "same_venue": true,
+            "distance_miles": 0.0,
+            "timezone_shift_hours": 0,
+            "travel_direction": "same",
+            "travel_fatigue_index": 0.0,
+            "travel_run_delta": -0.0,
+            "label": "2d since previous game; 0 mi"
           },
           "home": {
             "available": true,
-            "previous_game_date": "2026-06-28",
-            "previous_venue_id": 5,
-            "previous_venue_name": "Progressive Field",
+            "previous_game_date": "2026-06-30",
+            "previous_venue_id": 680,
+            "previous_venue_name": "T-Mobile Park",
             "current_venue_id": 680,
             "current_venue_name": "T-Mobile Park",
-            "days_since_previous_game": 1,
-            "same_venue": false,
-            "distance_miles": null,
-            "timezone_shift_hours": null,
-            "travel_direction": "unknown",
-            "travel_fatigue_index": 0.2,
-            "travel_run_delta": -0.032,
-            "label": "1d since previous game"
+            "days_since_previous_game": 2,
+            "same_venue": true,
+            "distance_miles": 0.0,
+            "timezone_shift_hours": 0,
+            "travel_direction": "same",
+            "travel_fatigue_index": 0.0,
+            "travel_run_delta": -0.0,
+            "label": "2d since previous game; 0 mi"
           }
         },
         "away_lineup_matchup": {
-          "run_delta": 0.007,
-          "threat_score": 0.3525,
+          "run_delta": -0.066,
+          "threat_score": 0.3212,
           "current_bvp_pa": 0,
-          "older_bvp_pa": 51,
+          "older_bvp_pa": 59,
           "sampled_batters": 9
         },
         "home_lineup_matchup": {
-          "run_delta": 0.084,
-          "threat_score": 0.3852,
+          "run_delta": -0.04,
+          "threat_score": 0.3323,
           "current_bvp_pa": 0,
-          "older_bvp_pa": 2,
+          "older_bvp_pa": 0,
           "sampled_batters": 9
         }
       },
-      "notes": "F5 projection Los Angeles Angels 2.3, Seattle Mariners 3.17 (total 5.47). BvP PA away/home: 0+51/0+2; venue F5 total 4.50 over 60 games. Travel away/home: 1d since previous game (fatigue 0.20) / 1d since previous game (fatigue 0.20)."
+      "notes": "F5 projection Los Angeles Angels 1.63, Seattle Mariners 2.08 (total 3.71). BvP PA away/home: 0+59/0+0; venue F5 total 4.50 over 60 games. Travel away/home: 2d since previous game; 0 mi (fatigue 0.00) / 2d since previous game; 0 mi (fatigue 0.00)."
     },
     {
-      "game_id": "825065",
-      "game_start_time": "2026-06-30T01:40:00Z",
-      "game_order": 12,
-      "matchup": "San Francisco Giants @ Arizona Diamondbacks",
-      "home_team": "Arizona Diamondbacks",
-      "away_team": "San Francisco Giants",
-      "venue_id": 15,
-      "venue_name": "Chase Field",
-      "home_pitcher": "Eduardo Rodriguez",
-      "away_pitcher": "Tyler Mahle",
+      "game_id": "823935",
+      "game_start_time": "2026-07-03T02:10:00Z",
+      "game_order": 8,
+      "matchup": "San Diego Padres @ Los Angeles Dodgers",
+      "home_team": "Los Angeles Dodgers",
+      "away_team": "San Diego Padres",
+      "venue_id": 22,
+      "venue_name": "UNIQLO Field at Dodger Stadium",
+      "home_pitcher": "Roki Sasaki",
+      "away_pitcher": "Randy V\u00e1squez",
       "projected_first_five": {
-        "away_runs": 2.2,
-        "home_runs": 3.16,
-        "total_runs": 5.36,
-        "home_lead_probability": 0.6216,
-        "away_lead_probability": 0.3784
+        "away_runs": 2.29,
+        "home_runs": 2.96,
+        "total_runs": 5.25,
+        "home_lead_probability": 0.5856,
+        "away_lead_probability": 0.4144
       },
       "top_picks": [
-        {
-          "market": "f5_side",
-          "pick": "Arizona Diamondbacks F5 ML",
-          "team": "Arizona Diamondbacks",
-          "probability": 0.6216,
-          "edge_pct": 9.78,
-          "decision": "BET",
-          "confidence": "High",
-          "assumed_odds": -110,
-          "projected_margin": 0.96,
-          "model_prediction": "Arizona Diamondbacks +0.96 F5 runs"
-        },
         {
           "market": "f5_total",
           "pick": "Over 4.5 F5",
           "team": "",
-          "probability": 0.679,
-          "edge_pct": 11.38,
+          "probability": 0.6574,
+          "edge_pct": 9.22,
           "decision": "LEAN",
           "confidence": "Medium",
           "assumed_odds": -130,
           "vegas_line": 4.5,
-          "projection_gap": 0.86,
-          "model_prediction": "5.36 F5 total",
+          "projection_gap": 0.75,
+          "model_prediction": "5.25 F5 total",
           "guardrail": "model-generated F5 total line; capped at LEAN until real market line is available"
+        },
+        {
+          "market": "f5_side",
+          "pick": "Los Angeles Dodgers F5 ML",
+          "team": "Los Angeles Dodgers",
+          "probability": 0.5856,
+          "edge_pct": 6.18,
+          "decision": "LEAN",
+          "confidence": "Medium",
+          "assumed_odds": -110,
+          "projected_margin": 0.67,
+          "model_prediction": "Los Angeles Dodgers +0.67 F5 runs",
+          "guardrail": "margin below bet threshold"
         }
       ],
       "features": {
         "away_offense": {
-          "projected_runs": 2.2,
-          "team_current_f5_runs": 2.435,
-          "team_recent_f5_runs": 2.125,
-          "team_prior_f5_runs": 2.568,
-          "team_venue_f5_runs": 2.3,
-          "pitcher_current_f5_allowed": 1.375,
-          "pitcher_recent_f5_allowed": 1.333,
-          "pitcher_current_vs_opponent": 1.908,
-          "pitcher_prior_vs_opponent": 3.5,
-          "pitcher_venue_f5_allowed": 1.0,
+          "projected_runs": 2.29,
+          "team_current_f5_runs": 2.148,
+          "team_recent_f5_runs": 2.25,
+          "team_prior_f5_runs": 2.624,
+          "team_venue_f5_runs": 1.775,
+          "pitcher_current_f5_allowed": 2.571,
+          "pitcher_recent_f5_allowed": 2.5,
+          "pitcher_current_vs_opponent": 2.818,
+          "pitcher_prior_vs_opponent": 2.455,
+          "pitcher_venue_f5_allowed": 1.286,
           "pitcher_rest_days": 5,
           "pitcher_rest_runs_modifier": 0.0,
           "pitcher_rest_label": "normal rest (5d)",
-          "lineup_delta": 0.065,
-          "venue_delta": 0.18,
-          "park_run_delta_per_team": 0.18,
+          "lineup_delta": 0.024,
+          "venue_delta": -0.009,
+          "park_run_delta_per_team": -0.009,
           "wind_run_delta_per_team": 0.0,
           "wind_mph": 0.0,
           "wind_direction": "",
           "travel_run_delta": -0.058,
           "travel_fatigue_index": 0.36,
           "travel_days_since_previous_game": 1,
-          "travel_distance_miles": 652.0,
-          "travel_timezone_shift_hours": 1,
-          "travel_direction": "east",
-          "travel_label": "1d since previous game; 652 mi; 1h east"
-        },
-        "home_offense": {
-          "projected_runs": 3.16,
-          "team_current_f5_runs": 2.566,
-          "team_recent_f5_runs": 1.667,
-          "team_prior_f5_runs": 2.984,
-          "team_venue_f5_runs": 3.222,
-          "pitcher_current_f5_allowed": 2.833,
-          "pitcher_recent_f5_allowed": 2.833,
-          "pitcher_current_vs_opponent": 4.5,
-          "pitcher_prior_vs_opponent": 2.68,
-          "pitcher_venue_f5_allowed": 3.51,
-          "pitcher_rest_days": 4,
-          "pitcher_rest_runs_modifier": 0.0,
-          "pitcher_rest_label": "normal rest (4d)",
-          "lineup_delta": 0.087,
-          "venue_delta": 0.18,
-          "park_run_delta_per_team": 0.18,
-          "wind_run_delta_per_team": 0.0,
-          "wind_mph": 0.0,
-          "wind_direction": "",
-          "travel_run_delta": -0.058,
-          "travel_fatigue_index": 0.36,
-          "travel_days_since_previous_game": 1,
-          "travel_distance_miles": 1786.2,
+          "travel_distance_miles": 1740.8,
           "travel_timezone_shift_hours": -2,
           "travel_direction": "west",
-          "travel_label": "1d since previous game; 1786 mi; 2h west"
+          "travel_label": "1d since previous game; 1741 mi; 2h west"
+        },
+        "home_offense": {
+          "projected_runs": 2.96,
+          "team_current_f5_runs": 3.257,
+          "team_recent_f5_runs": 2.583,
+          "team_prior_f5_runs": 2.718,
+          "team_venue_f5_runs": 2.667,
+          "pitcher_current_f5_allowed": 2.533,
+          "pitcher_recent_f5_allowed": 3.667,
+          "pitcher_current_vs_opponent": 2.828,
+          "pitcher_prior_vs_opponent": 2.097,
+          "pitcher_venue_f5_allowed": 2.613,
+          "pitcher_rest_days": 12,
+          "pitcher_rest_runs_modifier": 0.15,
+          "pitcher_rest_label": "extended layoff (12d) +0.15",
+          "lineup_delta": 0.167,
+          "venue_delta": -0.009,
+          "park_run_delta_per_team": -0.009,
+          "wind_run_delta_per_team": 0.0,
+          "wind_mph": 0.0,
+          "wind_direction": "",
+          "travel_run_delta": -0.032,
+          "travel_fatigue_index": 0.2,
+          "travel_days_since_previous_game": 1,
+          "travel_distance_miles": 360.7,
+          "travel_timezone_shift_hours": 0,
+          "travel_direction": "same_timezone",
+          "travel_label": "1d since previous game; 361 mi"
         },
         "away_pitcher": {
-          "name": "Tyler Mahle",
-          "stat_expected": 2.68,
-          "current_f5_allowed": 2.833,
-          "recent_f5_allowed": 2.833,
-          "prior_f5_allowed": 1.524,
-          "current_vs_opponent": 4.5,
-          "prior_vs_opponent": 2.68,
-          "venue_f5_allowed": 3.51,
-          "current_starts": 12,
+          "name": "Randy V\u00e1squez",
+          "stat_expected": 2.484,
+          "current_f5_allowed": 2.533,
+          "recent_f5_allowed": 3.667,
+          "prior_f5_allowed": 2.159,
+          "current_vs_opponent": 2.828,
+          "prior_vs_opponent": 2.097,
+          "venue_f5_allowed": 2.613,
+          "current_starts": 15,
           "recent_starts": 6,
-          "prior_starts": 24,
-          "current_vs_opponent_starts": 2,
-          "prior_vs_opponent_starts": 0,
+          "prior_starts": 30,
+          "current_vs_opponent_starts": 1,
+          "prior_vs_opponent_starts": 2,
           "venue_starts": 1,
-          "rest_days": 4,
-          "rest_runs_modifier": 0.0,
-          "rest_label": "normal rest (4d)",
+          "rest_days": 12,
+          "rest_runs_modifier": 0.15,
+          "rest_label": "extended layoff (12d) +0.15",
           "team_bullpen": {
             "lookback_games": 2,
             "games_inspected": 2,
             "recently_used_pitcher_ids": [
-              656529,
-              668873,
-              676254
+              593974,
+              606996,
+              660710,
+              676760
             ],
             "back_to_back_arms": [],
             "yesterday_used_pitcher_ids": [
-              656529,
-              676254
+              593974,
+              676760
             ],
             "high_leverage_used_pitcher_ids": [
-              676254
+              593974,
+              606996,
+              660710,
+              676760
             ],
-            "light_use_pitcher_ids": [
-              656529,
-              668873
-            ],
+            "light_use_pitcher_ids": [],
             "unavailable_today": [
-              676254
+              593974,
+              606996,
+              660710,
+              676760
             ],
-            "effective_unavailable_count": 1.79,
-            "fatigue_index": 0.224
+            "effective_unavailable_count": 4.41,
+            "fatigue_index": 0.551
           }
         },
         "home_pitcher": {
-          "name": "Eduardo Rodriguez",
-          "stat_expected": 1.724,
-          "current_f5_allowed": 1.375,
-          "recent_f5_allowed": 1.333,
-          "prior_f5_allowed": 2.894,
-          "current_vs_opponent": 1.908,
-          "prior_vs_opponent": 3.5,
-          "venue_f5_allowed": 1.0,
-          "current_starts": 16,
+          "name": "Roki Sasaki",
+          "stat_expected": 2.455,
+          "current_f5_allowed": 2.571,
+          "recent_f5_allowed": 2.5,
+          "prior_f5_allowed": 2.31,
+          "current_vs_opponent": 2.818,
+          "prior_vs_opponent": 2.455,
+          "venue_f5_allowed": 1.286,
+          "current_starts": 14,
           "recent_starts": 6,
-          "prior_starts": 30,
+          "prior_starts": 8,
           "current_vs_opponent_starts": 1,
-          "prior_vs_opponent_starts": 4,
-          "venue_starts": 8,
+          "prior_vs_opponent_starts": 0,
+          "venue_starts": 7,
           "rest_days": 5,
           "rest_runs_modifier": 0.0,
           "rest_label": "normal rest (5d)",
@@ -3575,42 +2397,45 @@
             "lookback_games": 2,
             "games_inspected": 2,
             "recently_used_pitcher_ids": [
-              642528,
-              656464,
-              664199,
-              666661,
-              686753
+              592779,
+              642546,
+              669165,
+              670090,
+              676263
             ],
             "back_to_back_arms": [],
             "yesterday_used_pitcher_ids": [
-              642528,
-              686753
+              592779,
+              670090
             ],
-            "high_leverage_used_pitcher_ids": [],
+            "high_leverage_used_pitcher_ids": [
+              642546
+            ],
             "light_use_pitcher_ids": [
-              642528,
-              656464,
-              664199,
-              666661,
-              686753
+              592779,
+              669165,
+              670090,
+              676263
             ],
-            "unavailable_today": [],
-            "effective_unavailable_count": 2.05,
-            "fatigue_index": 0.256
+            "unavailable_today": [
+              642546
+            ],
+            "effective_unavailable_count": 2.57,
+            "fatigue_index": 0.321
           }
         },
         "venue": {
-          "f5_total": 5.333,
-          "run_delta_per_team": 0.18,
+          "f5_total": 4.483,
+          "run_delta_per_team": -0.009,
           "games": 60,
           "park_blend": {
-            "final_delta": 0.18,
-            "learned_delta": 0.18,
-            "static_delta": -0.03,
+            "final_delta": -0.009,
+            "learned_delta": -0.009,
+            "static_delta": -0.02,
             "blend_weight_learned": 1.0,
-            "park_factor": 0.97
+            "park_factor": 0.98
           },
-          "park_run_delta_per_team": 0.18,
+          "park_run_delta_per_team": -0.009,
           "wind_run_delta_per_team": 0.0,
           "wind_mph": 0.0,
           "wind_direction": "",
@@ -3619,53 +2444,53 @@
         "travel": {
           "away": {
             "available": true,
-            "previous_game_date": "2026-06-28",
-            "previous_venue_id": 2395,
-            "previous_venue_name": "Oracle Park",
-            "current_venue_id": 15,
-            "current_venue_name": "Chase Field",
+            "previous_game_date": "2026-07-01",
+            "previous_venue_id": 17,
+            "previous_venue_name": "Wrigley Field",
+            "current_venue_id": 22,
+            "current_venue_name": "UNIQLO Field at Dodger Stadium",
             "days_since_previous_game": 1,
             "same_venue": false,
-            "distance_miles": 652.0,
-            "timezone_shift_hours": 1,
-            "travel_direction": "east",
-            "travel_fatigue_index": 0.36,
-            "travel_run_delta": -0.058,
-            "label": "1d since previous game; 652 mi; 1h east"
-          },
-          "home": {
-            "available": true,
-            "previous_game_date": "2026-06-28",
-            "previous_venue_id": 12,
-            "previous_venue_name": "Tropicana Field",
-            "current_venue_id": 15,
-            "current_venue_name": "Chase Field",
-            "days_since_previous_game": 1,
-            "same_venue": false,
-            "distance_miles": 1786.2,
+            "distance_miles": 1740.8,
             "timezone_shift_hours": -2,
             "travel_direction": "west",
             "travel_fatigue_index": 0.36,
             "travel_run_delta": -0.058,
-            "label": "1d since previous game; 1786 mi; 2h west"
+            "label": "1d since previous game; 1741 mi; 2h west"
+          },
+          "home": {
+            "available": true,
+            "previous_game_date": "2026-07-01",
+            "previous_venue_id": 2529,
+            "previous_venue_name": "Sutter Health Park",
+            "current_venue_id": 22,
+            "current_venue_name": "UNIQLO Field at Dodger Stadium",
+            "days_since_previous_game": 1,
+            "same_venue": false,
+            "distance_miles": 360.7,
+            "timezone_shift_hours": 0,
+            "travel_direction": "same_timezone",
+            "travel_fatigue_index": 0.2,
+            "travel_run_delta": -0.032,
+            "label": "1d since previous game; 361 mi"
           }
         },
         "away_lineup_matchup": {
-          "run_delta": 0.065,
-          "threat_score": 0.377,
-          "current_bvp_pa": 13,
-          "older_bvp_pa": 72,
+          "run_delta": 0.024,
+          "threat_score": 0.3597,
+          "current_bvp_pa": 9,
+          "older_bvp_pa": 0,
           "sampled_batters": 9
         },
         "home_lineup_matchup": {
-          "run_delta": 0.087,
-          "threat_score": 0.3866,
-          "current_bvp_pa": 28,
-          "older_bvp_pa": 50,
+          "run_delta": 0.167,
+          "threat_score": 0.4203,
+          "current_bvp_pa": 24,
+          "older_bvp_pa": 28,
           "sampled_batters": 9
         }
       },
-      "notes": "F5 projection San Francisco Giants 2.2, Arizona Diamondbacks 3.16 (total 5.36). BvP PA away/home: 13+72/28+50; venue F5 total 5.33 over 60 games. Travel away/home: 1d since previous game; 652 mi; 1h east (fatigue 0.36) / 1d since previous game; 1786 mi; 2h west (fatigue 0.36)."
+      "notes": "F5 projection San Diego Padres 2.29, Los Angeles Dodgers 2.96 (total 5.25). BvP PA away/home: 9+0/24+28; venue F5 total 4.48 over 60 games. Travel away/home: 1d since previous game; 1741 mi; 2h west (fatigue 0.36) / 1d since previous game; 361 mi (fatigue 0.20)."
     }
   ],
   "method": {
