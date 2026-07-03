@@ -198,7 +198,7 @@
   ],
   "date": "2026-07-03",
   "engineVersion": "parlay_cards_v3_calibrated_portfolio",
-  "generatedAt": "2026-07-03T14:38:33.302484Z",
+  "generatedAt": "2026-07-03T14:51:06.802633Z",
   "notices": [
     "No same-game legs, same-player duplicates, or duplicate markets are allowed in a slip.",
     "Every leg must clear at least +1.5 percentage points of calibrated edge over the market price.",
@@ -274,7 +274,7 @@
   "summary": {
     "averageOdds": 274.0,
     "displayedCards": 1,
-    "eligibleLegs": 3,
+    "eligibleLegs": 4,
     "generatedThreeLegCandidates": 0,
     "modes": {
       "player": {
