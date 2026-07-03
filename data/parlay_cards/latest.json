@@ -92,6 +92,100 @@
       "title": "Compact Edge",
       "utility": 0.002442,
       "whyQualified": "Selective 2-leg card. A 2-leg slip admitted only because the slate is thin or its utility beats the next viable 3-leg."
+    },
+    {
+      "activeLegCount": 2,
+      "averageSourceForm": 55.44,
+      "category": "compact_edge",
+      "categoryLabel": "Compact Edge",
+      "categoryScore": 25.6476,
+      "categoryShortLabel": "Compact",
+      "comboKey": "leg-51ceb265fcaf1891|leg-a05a631402d8acee",
+      "consensusLegs": 0,
+      "date": "2026-07-03",
+      "decimalOdds": 4.0692,
+      "estimatedProbability": 0.2949,
+      "fairOdds": 239,
+      "fallback": true,
+      "geomeanProbability": 0.5431,
+      "hasPlayerProp": false,
+      "id": "parlay-86abe789e1d38e13-compact_edge",
+      "legCount": 2,
+      "legs": [
+        {
+          "calibratedEdge": 0.0277,
+          "calibrationSamples": 24,
+          "consensusSources": [],
+          "decimalOdds": 1.7692,
+          "decision": "LEAN",
+          "estimatedProbability": 0.5704,
+          "game": "Minnesota Lynx @ New York Liberty",
+          "gameKey": "2026-07-03:WNBA:minnesota lynx new york liberty",
+          "historicalProbability": 0.7308,
+          "legId": "leg-51ceb265fcaf1891",
+          "market": "h2h",
+          "marketKey": "2026-07-03:WNBA:minnesota lynx new york liberty::h2h::minnesota lynx ml",
+          "marketProbability": 0.5427,
+          "modelRank": null,
+          "oddsAmerican": -130,
+          "pick": "Minnesota Lynx ML (Minnesota Lynx @ New York Liberty)",
+          "pickId": "leg-51ceb265fcaf1891",
+          "player": "",
+          "probabilitySource": "calibrated_probability",
+          "rawProbability": 0.5784,
+          "result": "pending",
+          "source": "WNBA Model",
+          "sourceKey": "wnba",
+          "sourceType": "model",
+          "sport": "WNBA",
+          "startTime": ""
+        },
+        {
+          "calibratedEdge": 0.0823,
+          "calibrationSamples": 241,
+          "consensusSources": [],
+          "decimalOdds": 2.3,
+          "decision": "LEAN",
+          "estimatedProbability": 0.5171,
+          "game": "Cape Verde @ Argentina",
+          "gameKey": "2026-07-03:fifa wc:game:760500",
+          "historicalProbability": 0.6049,
+          "legId": "leg-a05a631402d8acee",
+          "market": "soccer_total",
+          "marketKey": "2026-07-03:fifa wc:game:760500::soccer total::under 2 5::2.5",
+          "marketProbability": 0.4348,
+          "modelRank": null,
+          "oddsAmerican": 130,
+          "pick": "Under 2.5 (Cape Verde @ Argentina)",
+          "pickId": "leg-a05a631402d8acee",
+          "player": "",
+          "probabilitySource": "probability",
+          "rawProbability": 0.5336,
+          "result": "pending",
+          "source": "FIFA Model",
+          "sourceKey": "fifa_world_cup",
+          "sourceType": "model",
+          "sport": "FIFA WC",
+          "startTime": "2026-07-03T22:00Z"
+        }
+      ],
+      "oddsAmerican": 307,
+      "parlayEv": 0.2002,
+      "payoutQuality": 1.0,
+      "pickMode": "team",
+      "profitUnits": 0.0,
+      "result": "pending",
+      "score": 23.6456,
+      "sportMix": "WNBA + FIFA WC",
+      "sportPattern": "2-leg-mixed",
+      "sports": [
+        "FIFA WC",
+        "WNBA"
+      ],
+      "stakeUnits": 1.0,
+      "title": "Compact Edge",
+      "utility": 0.00183,
+      "whyQualified": "Selective 2-leg card. A 2-leg slip admitted only because the slate is thin or its utility beats the next viable 3-leg."
     }
   ],
   "categories": [
@@ -171,9 +265,9 @@
       "threeLegCount": 0
     },
     {
-      "count": 1,
+      "count": 2,
       "description": "Selective 2-leg slips used only when they beat the available 3-leg utility or the slate is thin.",
-      "fallbackCount": 1,
+      "fallbackCount": 2,
       "key": "compact_edge",
       "label": "Compact Edge",
       "record": {
@@ -181,7 +275,7 @@
         "hitRate": null,
         "losses": 0,
         "netUnits": 0.0,
-        "pending": 1,
+        "pending": 2,
         "pushes": 0,
         "recentForm": "",
         "roi": null,
@@ -198,7 +292,7 @@
   ],
   "date": "2026-07-03",
   "engineVersion": "parlay_cards_v3_calibrated_portfolio",
-  "generatedAt": "2026-07-03T15:27:20.615766Z",
+  "generatedAt": "2026-07-03T16:01:31.657265Z",
   "notices": [
     "No same-game legs, same-player duplicates, or duplicate markets are allowed in a slip.",
     "Every leg must clear at least +1.5 percentage points of calibrated edge over the market price.",
@@ -214,7 +308,7 @@
       "label": "Compact",
       "losses": 10,
       "netUnits": 7.57,
-      "pending": 1,
+      "pending": 2,
       "pushes": 0,
       "recentForm": "LWWLL",
       "roi": 0.4731,
@@ -272,10 +366,10 @@
     }
   ],
   "summary": {
-    "averageOdds": 274.0,
-    "displayedCards": 1,
-    "eligibleLegs": 4,
-    "generatedThreeLegCandidates": 0,
+    "averageOdds": 290.5,
+    "displayedCards": 2,
+    "eligibleLegs": 5,
+    "generatedThreeLegCandidates": 2,
     "modes": {
       "player": {
         "averageOdds": null,
@@ -296,14 +390,14 @@
         "twoLegFallbackCards": 0
       },
       "team": {
-        "averageOdds": 274.0,
-        "displayedCards": 1,
+        "averageOdds": 290.5,
+        "displayedCards": 2,
         "record": {
           "averageOdds": null,
           "hitRate": null,
           "losses": 0,
           "netUnits": 0.0,
-          "pending": 1,
+          "pending": 2,
           "pushes": 0,
           "recentForm": "",
           "roi": null,
@@ -311,7 +405,7 @@
           "wins": 0
         },
         "threeLegCards": 0,
-        "twoLegFallbackCards": 1
+        "twoLegFallbackCards": 2
       }
     },
     "record": {
@@ -319,7 +413,7 @@
       "hitRate": null,
       "losses": 0,
       "netUnits": 0.0,
-      "pending": 1,
+      "pending": 2,
       "pushes": 0,
       "recentForm": "",
       "roi": null,
@@ -327,6 +421,6 @@
       "wins": 0
     },
     "threeLegCards": 0,
-    "twoLegFallbackCards": 1
+    "twoLegFallbackCards": 2
   }
 }
