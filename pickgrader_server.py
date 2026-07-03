@@ -48,16 +48,31 @@ except Exception:
 
 RUN_WNBA = _env_bool("PICKLEDGER_RUN_WNBA", bool(_CONFIG_RUN_WNBA))
 
-try:
-    import firebase_admin
-    from firebase_admin import auth as firebase_auth, credentials, firestore
+firebase_admin = None  # type: ignore[assignment]
+firebase_auth = None  # type: ignore[assignment]
+credentials = None  # type: ignore[assignment]
+firestore = None  # type: ignore[assignment]
+_FIREBASE_ADMIN_AVAILABLE: bool | None = None
+
+
+def _ensure_firebase_admin_imported() -> bool:
+    global _FIREBASE_ADMIN_AVAILABLE, credentials, firebase_admin, firebase_auth, firestore
+    if _FIREBASE_ADMIN_AVAILABLE is not None:
+        return _FIREBASE_ADMIN_AVAILABLE
+    try:
+        import firebase_admin as firebase_admin_module
+        from firebase_admin import auth as firebase_auth_module
+        from firebase_admin import credentials as credentials_module
+        from firebase_admin import firestore as firestore_module
+    except Exception:
+        _FIREBASE_ADMIN_AVAILABLE = False
+        return False
+    firebase_admin = firebase_admin_module
+    firebase_auth = firebase_auth_module
+    credentials = credentials_module
+    firestore = firestore_module
     _FIREBASE_ADMIN_AVAILABLE = True
-except Exception:
-    firebase_admin = None  # type: ignore[assignment]
-    firebase_auth = None  # type: ignore[assignment]
-    credentials = None  # type: ignore[assignment]
-    firestore = None  # type: ignore[assignment]
-    _FIREBASE_ADMIN_AVAILABLE = False
+    return True
 
 
 def _sl_get_total(home, away, league='MLB'):
@@ -238,9 +253,6 @@ def _env_credential_value(name: str, default: str = "") -> str:
 
 def _init_admin_firestore():
     global _firebase_db
-    if not _FIREBASE_ADMIN_AVAILABLE:
-        return None
-
     if _firebase_db is not None:
         return _firebase_db
 
@@ -252,10 +264,13 @@ def _init_admin_firestore():
     if any(not _env_credential_value(name) for name in required):
         return None
 
+    if not _ensure_firebase_admin_imported():
+        return None
+
     with _firebase_init_lock:
         if _firebase_db is not None:
             return _firebase_db
-        if not _FIREBASE_ADMIN_AVAILABLE:
+        if not _ensure_firebase_admin_imported():
             return None
         try:
             if firebase_admin._apps:
@@ -6031,7 +6046,7 @@ def _extract_bearer_token(header_value: str | None) -> str:
 
 
 def _ensure_firebase_auth_ready() -> tuple[bool, str]:
-    if not _FIREBASE_ADMIN_AVAILABLE or firebase_admin is None or firebase_auth is None:
+    if not _ensure_firebase_admin_imported() or firebase_admin is None or firebase_auth is None:
         return False, "firebase-admin is not installed"
     try:
         if firebase_admin._apps:
