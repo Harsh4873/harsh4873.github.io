@@ -161,7 +161,7 @@
           "player": "",
           "probabilitySource": "market_implied",
           "rawProbability": 0.4926,
-          "result": "pending",
+          "result": "win",
           "source": "Scores24MLB",
           "sourceKey": "scores24_mlb",
           "sourceType": "external",
@@ -292,7 +292,7 @@
   ],
   "date": "2026-07-02",
   "engineVersion": "parlay_cards_v3_calibrated_portfolio",
-  "generatedAt": "2026-07-02T23:48:33.306368Z",
+  "generatedAt": "2026-07-03T03:40:05.076347Z",
   "notices": [
     "No same-game legs, same-player duplicates, or duplicate markets are allowed in a slip.",
     "Every leg must clear at least +1.5 percentage points of calibrated edge over the market price.",
