@@ -48271,7 +48271,7 @@
           "game": "Atlanta Braves vs New York Mets",
           "game_id": "824903",
           "game_order": 4,
-          "game_start_time": "2026-07-05T00:08:00Z",
+          "game_start_time": "2026-07-05T00:08Z",
           "home_team": "Atlanta Braves",
           "inning": 4,
           "league": "MLB",
@@ -48333,7 +48333,7 @@
           "selected_side_implied_probability": 0.545455,
           "source": "MLB Inning",
           "sport": "MLB",
-          "start_time": "2026-07-05T00:08:00Z",
+          "start_time": "2026-07-05T00:08Z",
           "team": "",
           "units": 0.25,
           "validation_lean": true,
@@ -58142,6 +58142,7 @@
           "decision": "LEAN",
           "edge": 9.67,
           "game": "Portland Fire @ Seattle Storm",
+          "game_start_time": "2026-07-05T01:00Z",
           "guardrail_reasons": [
             "new totals market capped at LEAN while its live record is established"
           ],
@@ -58201,6 +58202,7 @@
           "selection": "Under",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-07-05T01:00Z",
           "units": 0.03,
           "vegas": 172.5
         },
