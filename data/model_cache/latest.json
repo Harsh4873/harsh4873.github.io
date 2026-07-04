@@ -1191,7 +1191,7 @@
         "date": "2026-07-04",
         "decision": "PASS",
         "draw_probability": 0.2657,
-        "edge": -12.52,
+        "edge": -9.71,
         "game": "Morocco @ Canada",
         "game_id": "760502",
         "game_start_time": "2026-07-04T17:00Z",
@@ -1221,12 +1221,12 @@
         ],
         "league": "FIFA World Cup",
         "market": "moneyline",
-        "market_probability": 0.5529,
+        "market_probability": 0.5248,
         "market_total_line": 2.5,
         "market_type": "soccer_moneyline",
         "matchup": "Morocco @ Canada",
         "model_basis": "current squad player power, tournament form, venue scoring, and market context; no head-to-head input",
-        "odds": -140,
+        "odds": -125,
         "pick": "Morocco ML (Morocco @ Canada)",
         "probability": 0.4277,
         "projected_away_goals": 1.391,
@@ -1278,7 +1278,7 @@
         "calibration_excluded": true,
         "date": "2026-07-04",
         "decision": "PASS",
-        "edge": -5.57,
+        "edge": -7.17,
         "game": "Morocco @ Canada",
         "game_id": "760502",
         "game_start_time": "2026-07-04T17:00Z",
@@ -1309,12 +1309,12 @@
         "league": "FIFA World Cup",
         "line": 2.5,
         "market": "total",
-        "market_probability": 0.5918,
+        "market_probability": 0.6078,
         "market_total_line": 2.5,
         "market_type": "soccer_total",
         "matchup": "Morocco @ Canada",
         "model_basis": "current squad player power, tournament form, venue scoring, and market context; no head-to-head input",
-        "odds": -145,
+        "odds": -155,
         "pick": "Under 2.5 (Morocco @ Canada)",
         "probability": 0.5361,
         "projected_away_goals": 1.391,
@@ -1366,7 +1366,7 @@
         "calibration_excluded": true,
         "date": "2026-07-04",
         "decision": "BET",
-        "edge": 10.72,
+        "edge": 7.23,
         "game": "Morocco @ Canada",
         "game_id": "760502",
         "game_start_time": "2026-07-04T17:00Z",
@@ -1395,12 +1395,12 @@
         "league": "FIFA World Cup",
         "line": 0.5,
         "market": "spread",
-        "market_probability": 0.4651,
+        "market_probability": 0.5,
         "market_total_line": 2.5,
         "market_type": "soccer_handicap",
         "matchup": "Morocco @ Canada",
         "model_basis": "current squad player power, tournament form, venue scoring, and market context; no head-to-head input",
-        "odds": 115,
+        "odds": 100,
         "pick": "Canada +0.5 (Morocco @ Canada)",
         "probability": 0.5723,
         "projected_away_goals": 1.391,
@@ -1415,7 +1415,7 @@
         "start_time": "2026-07-04T17:00Z",
         "team": "Canada",
         "total_market_blend": 0.18,
-        "units": 0.64,
+        "units": 0.55,
         "venue": "NRG Stadium",
         "venue_city": "Houston, Texas",
         "venue_id": "6262",
@@ -1628,7 +1628,7 @@
         "calibration_excluded": true,
         "date": "2026-07-04",
         "decision": "BET",
-        "edge": 25.17,
+        "edge": 24.21,
         "game": "France @ Paraguay",
         "game_id": "760503",
         "game_start_time": "2026-07-04T21:00Z",
@@ -1657,12 +1657,12 @@
         "league": "FIFA World Cup",
         "line": 1.5,
         "market": "spread",
-        "market_probability": 0.4348,
+        "market_probability": 0.4444,
         "market_total_line": 2.5,
         "market_type": "soccer_handicap",
         "matchup": "France @ Paraguay",
         "model_basis": "current squad player power, tournament form, venue scoring, and market context; no head-to-head input",
-        "odds": 130,
+        "odds": 125,
         "pick": "Paraguay +1.5 (France @ Paraguay)",
         "probability": 0.6865,
         "projected_away_goals": 1.727,
@@ -3225,7 +3225,7 @@
       "venue_count": 16
     }
   },
-  "generatedAt": "2026-07-04T15:38:41.571303Z",
+  "generatedAt": "2026-07-04T16:36:34.599830Z",
   "generatedBy": "github-actions:model-cache-refresh",
   "ipl": {},
   "mlb": {},
@@ -3236,7 +3236,7 @@
       "edge_signal_threshold_not_met(edge=0.5, probability=0.528838, signals=18)": 1,
       "edge_signal_threshold_not_met(edge=0.5, probability=0.528838, signals=19)": 1,
       "edge_signal_threshold_not_met(edge=1.77, probability=0.54155, signals=18)": 1,
-      "edge_signal_threshold_not_met(edge=2.22, probability=0.546019, signals=20)": 1,
+      "edge_signal_threshold_not_met(edge=2.52, probability=0.549035, signals=20)": 1,
       "non_positive_calibrated_edge": 7,
       "raw_model_abstained": 15
     },
@@ -3530,24 +3530,24 @@
         "away_team": "Detroit Tigers",
         "features": {
           "away_lineup_matchup": {
-            "current_bvp_pa": 6,
-            "older_bvp_pa": 8,
-            "run_delta": 0.054,
+            "current_bvp_pa": 9,
+            "older_bvp_pa": 38,
+            "run_delta": 0.018,
             "sampled_batters": 9,
-            "threat_score": 0.3724
+            "threat_score": 0.3569
           },
           "away_offense": {
-            "lineup_delta": 0.054,
+            "lineup_delta": 0.018,
             "park_run_delta_per_team": -0.18,
-            "pitcher_current_f5_allowed": 2.5,
-            "pitcher_current_vs_opponent": 4.053,
-            "pitcher_prior_vs_opponent": 1.295,
-            "pitcher_recent_f5_allowed": 2.833,
-            "pitcher_rest_days": 5,
-            "pitcher_rest_label": "normal rest (5d)",
+            "pitcher_current_f5_allowed": 2.649,
+            "pitcher_current_vs_opponent": 1.974,
+            "pitcher_prior_vs_opponent": 1.995,
+            "pitcher_recent_f5_allowed": 2.987,
+            "pitcher_rest_days": 6,
+            "pitcher_rest_label": "normal rest (6d)",
             "pitcher_rest_runs_modifier": 0.0,
-            "pitcher_venue_f5_allowed": 2.556,
-            "projected_runs": 2.48,
+            "pitcher_venue_f5_allowed": 1.974,
+            "projected_runs": 2.32,
             "team_current_f5_runs": 2.495,
             "team_prior_f5_runs": 2.701,
             "team_recent_f5_runs": 2.917,
@@ -3623,14 +3623,14 @@
             "venue_starts": 0
           },
           "home_lineup_matchup": {
-            "current_bvp_pa": 10,
-            "older_bvp_pa": 34,
-            "run_delta": 0.087,
+            "current_bvp_pa": 13,
+            "older_bvp_pa": 52,
+            "run_delta": 0.125,
             "sampled_batters": 9,
-            "threat_score": 0.3865
+            "threat_score": 0.4025
           },
           "home_offense": {
-            "lineup_delta": 0.087,
+            "lineup_delta": 0.125,
             "park_run_delta_per_team": -0.18,
             "pitcher_current_f5_allowed": 2.875,
             "pitcher_current_vs_opponent": 3.527,
@@ -3640,7 +3640,7 @@
             "pitcher_rest_label": "normal rest (5d)",
             "pitcher_rest_runs_modifier": 0.0,
             "pitcher_venue_f5_allowed": 2.582,
-            "projected_runs": 2.47,
+            "projected_runs": 2.5,
             "team_current_f5_runs": 2.796,
             "team_prior_f5_runs": 2.575,
             "team_recent_f5_runs": 2.875,
@@ -3658,21 +3658,21 @@
             "wind_run_delta_per_team": 0.0
           },
           "home_pitcher": {
-            "current_f5_allowed": 2.5,
-            "current_starts": 14,
-            "current_vs_opponent": 4.053,
-            "current_vs_opponent_starts": 1,
-            "name": "Kumar Rocker",
-            "prior_f5_allowed": 2.739,
-            "prior_starts": 17,
-            "prior_vs_opponent": 1.295,
-            "prior_vs_opponent_starts": 1,
-            "recent_f5_allowed": 2.833,
-            "recent_starts": 6,
-            "rest_days": 5,
-            "rest_label": "normal rest (5d)",
+            "current_f5_allowed": 2.649,
+            "current_starts": 2,
+            "current_vs_opponent": 1.974,
+            "current_vs_opponent_starts": 0,
+            "name": "Cal Quantrill",
+            "prior_f5_allowed": 3.135,
+            "prior_starts": 30,
+            "prior_vs_opponent": 1.995,
+            "prior_vs_opponent_starts": 2,
+            "recent_f5_allowed": 2.987,
+            "recent_starts": 2,
+            "rest_days": 6,
+            "rest_label": "normal rest (6d)",
             "rest_runs_modifier": 0.0,
-            "stat_expected": 2.158,
+            "stat_expected": 1.974,
             "team_bullpen": {
               "back_to_back_arms": [
                 668390
@@ -3712,8 +3712,8 @@
                 695239
               ]
             },
-            "venue_f5_allowed": 2.556,
-            "venue_starts": 9
+            "venue_f5_allowed": 1.974,
+            "venue_starts": 0
           },
           "travel": {
             "away": {
@@ -3761,7 +3761,7 @@
             },
             "park_run_delta_per_team": -0.18,
             "run_delta_per_team": -0.18,
-            "weather_raw": "",
+            "weather_raw": "0 mph, None",
             "wind_direction": "",
             "wind_mph": 0.0,
             "wind_run_delta_per_team": 0.0
@@ -3770,29 +3770,29 @@
         "game_id": "822882",
         "game_order": 1,
         "game_start_time": "2026-07-04T20:05:00Z",
-        "home_pitcher": "Kumar Rocker",
+        "home_pitcher": "Cal Quantrill",
         "home_team": "Texas Rangers",
         "matchup": "Detroit Tigers @ Texas Rangers",
-        "notes": "F5 projection Detroit Tigers 2.48, Texas Rangers 2.47 (total 4.95). BvP PA away/home: 6+8/10+34; venue F5 total 3.82 over 60 games. Travel away/home: 2d since previous game; 0 mi (fatigue 0.00) / 2d since previous game; 0 mi (fatigue 0.00).",
+        "notes": "F5 projection Detroit Tigers 2.32, Texas Rangers 2.5 (total 4.82). BvP PA away/home: 9+38/13+52; venue F5 total 3.82 over 60 games. Travel away/home: 2d since previous game; 0 mi (fatigue 0.00) / 2d since previous game; 0 mi (fatigue 0.00).",
         "projected_first_five": {
-          "away_lead_probability": 0.5013,
-          "away_runs": 2.48,
-          "home_lead_probability": 0.4987,
-          "home_runs": 2.47,
-          "total_runs": 4.95
+          "away_lead_probability": 0.4768,
+          "away_runs": 2.32,
+          "home_lead_probability": 0.5232,
+          "home_runs": 2.5,
+          "total_runs": 4.82
         },
         "top_picks": [
           {
             "assumed_odds": -130,
             "confidence": "Low",
             "decision": "PASS",
-            "edge_pct": 3.09,
+            "edge_pct": 0.34,
             "guardrail": "projection too close to F5 line",
             "market": "f5_total",
-            "model_prediction": "4.95 F5 total",
+            "model_prediction": "4.82 F5 total",
             "pick": "Over 4.5 F5",
-            "probability": 0.5961,
-            "projection_gap": 0.45,
+            "probability": 0.5687,
+            "projection_gap": 0.32,
             "team": "",
             "vegas_line": 4.5
           },
@@ -3800,14 +3800,14 @@
             "assumed_odds": -110,
             "confidence": "Low",
             "decision": "PASS",
-            "edge_pct": -2.25,
-            "guardrail": "margin too small",
+            "edge_pct": -0.06,
+            "guardrail": "thin starter sample, margin too small",
             "market": "f5_side",
-            "model_prediction": "Detroit Tigers +0.01 F5 runs",
-            "pick": "Detroit Tigers F5 ML",
-            "probability": 0.5013,
-            "projected_margin": 0.01,
-            "team": "Detroit Tigers"
+            "model_prediction": "Texas Rangers +0.18 F5 runs",
+            "pick": "Texas Rangers F5 ML",
+            "probability": 0.5232,
+            "projected_margin": 0.18,
+            "team": "Texas Rangers"
           }
         ],
         "venue_id": 5325,
@@ -6907,7 +6907,7 @@
         "venue_name": "Chase Field"
       },
       {
-        "away_pitcher": "Griffin Canning",
+        "away_pitcher": "Wandy Peralta",
         "away_team": "San Diego Padres",
         "features": {
           "away_lineup_matchup": {
@@ -6946,21 +6946,21 @@
             "wind_run_delta_per_team": 0.0
           },
           "away_pitcher": {
-            "current_f5_allowed": 3.444,
-            "current_starts": 9,
-            "current_vs_opponent": 3.054,
-            "current_vs_opponent_starts": 1,
-            "name": "Griffin Canning",
-            "prior_f5_allowed": 2.714,
-            "prior_starts": 30,
-            "prior_vs_opponent": 2.5,
-            "prior_vs_opponent_starts": 4,
-            "recent_f5_allowed": 2.833,
-            "recent_starts": 6,
-            "rest_days": 4,
-            "rest_label": "normal rest (4d)",
-            "rest_runs_modifier": 0.0,
-            "stat_expected": 3.161,
+            "current_f5_allowed": 3.079,
+            "current_starts": 3,
+            "current_vs_opponent": 1.825,
+            "current_vs_opponent_starts": 0,
+            "name": "Wandy Peralta",
+            "prior_f5_allowed": 1.711,
+            "prior_starts": 1,
+            "prior_vs_opponent": 1.895,
+            "prior_vs_opponent_starts": 1,
+            "recent_f5_allowed": 3.706,
+            "recent_starts": 3,
+            "rest_days": 10,
+            "rest_label": "extended layoff (10d) +0.15",
+            "rest_runs_modifier": 0.15,
+            "stat_expected": 1.825,
             "team_bullpen": {
               "back_to_back_arms": [
                 593974
@@ -6994,28 +6994,28 @@
                 673513
               ]
             },
-            "venue_f5_allowed": 2.371,
+            "venue_f5_allowed": 1.869,
             "venue_starts": 1
           },
           "home_lineup_matchup": {
-            "current_bvp_pa": 13,
-            "older_bvp_pa": 85,
-            "run_delta": 0.182,
+            "current_bvp_pa": 18,
+            "older_bvp_pa": 59,
+            "run_delta": 0.136,
             "sampled_batters": 9,
-            "threat_score": 0.4269
+            "threat_score": 0.4074
           },
           "home_offense": {
-            "lineup_delta": 0.182,
+            "lineup_delta": 0.136,
             "park_run_delta_per_team": -0.009,
-            "pitcher_current_f5_allowed": 3.444,
-            "pitcher_current_vs_opponent": 3.054,
-            "pitcher_prior_vs_opponent": 2.5,
-            "pitcher_recent_f5_allowed": 2.833,
-            "pitcher_rest_days": 4,
-            "pitcher_rest_label": "normal rest (4d)",
-            "pitcher_rest_runs_modifier": 0.0,
-            "pitcher_venue_f5_allowed": 2.371,
-            "projected_runs": 2.93,
+            "pitcher_current_f5_allowed": 3.079,
+            "pitcher_current_vs_opponent": 1.825,
+            "pitcher_prior_vs_opponent": 1.895,
+            "pitcher_recent_f5_allowed": 3.706,
+            "pitcher_rest_days": 10,
+            "pitcher_rest_label": "extended layoff (10d) +0.15",
+            "pitcher_rest_runs_modifier": 0.15,
+            "pitcher_venue_f5_allowed": 1.869,
+            "projected_runs": 2.97,
             "team_current_f5_runs": 3.288,
             "team_prior_f5_runs": 2.718,
             "team_recent_f5_runs": 2.625,
@@ -7150,38 +7150,39 @@
         "home_pitcher": "Yoshinobu Yamamoto",
         "home_team": "Los Angeles Dodgers",
         "matchup": "San Diego Padres @ Los Angeles Dodgers",
-        "notes": "F5 projection San Diego Padres 1.91, Los Angeles Dodgers 2.93 (total 4.84). BvP PA away/home: 38+49/13+85; venue F5 total 4.48 over 60 games. Travel away/home: 1d since previous game; 0 mi (fatigue 0.00) / 1d since previous game; 0 mi (fatigue 0.00).",
+        "notes": "F5 projection San Diego Padres 1.91, Los Angeles Dodgers 2.97 (total 4.88). BvP PA away/home: 38+49/18+59; venue F5 total 4.48 over 60 games. Travel away/home: 1d since previous game; 0 mi (fatigue 0.00) / 1d since previous game; 0 mi (fatigue 0.00).",
         "projected_first_five": {
-          "away_lead_probability": 0.3711,
+          "away_lead_probability": 0.3662,
           "away_runs": 1.91,
-          "home_lead_probability": 0.6289,
-          "home_runs": 2.93,
-          "total_runs": 4.84
+          "home_lead_probability": 0.6338,
+          "home_runs": 2.97,
+          "total_runs": 4.88
         },
         "top_picks": [
           {
             "assumed_odds": -110,
-            "confidence": "High",
-            "decision": "BET",
-            "edge_pct": 10.51,
+            "confidence": "Medium",
+            "decision": "LEAN",
+            "edge_pct": 11.0,
+            "guardrail": "thin starter sample",
             "market": "f5_side",
-            "model_prediction": "Los Angeles Dodgers +1.02 F5 runs",
+            "model_prediction": "Los Angeles Dodgers +1.06 F5 runs",
             "pick": "Los Angeles Dodgers F5 ML",
-            "probability": 0.6289,
-            "projected_margin": 1.02,
+            "probability": 0.6338,
+            "projected_margin": 1.06,
             "team": "Los Angeles Dodgers"
           },
           {
             "assumed_odds": -130,
             "confidence": "Low",
             "decision": "PASS",
-            "edge_pct": 0.77,
+            "edge_pct": 1.62,
             "guardrail": "projection too close to F5 line",
             "market": "f5_total",
-            "model_prediction": "4.84 F5 total",
+            "model_prediction": "4.88 F5 total",
             "pick": "Over 4.5 F5",
-            "probability": 0.5729,
-            "projection_gap": 0.34,
+            "probability": 0.5814,
+            "projection_gap": 0.38,
             "team": "",
             "vegas_line": 4.5
           }
@@ -7860,13 +7861,13 @@
         "actionability": "research_signal",
         "assumed_odds": -130,
         "away_team": "Detroit Tigers",
-        "calibrated_edge": -7.38,
-        "calibrated_model_probability": 0.491399,
-        "calibrated_probability": 0.491399,
+        "calibrated_edge": -8.85,
+        "calibrated_model_probability": 0.47668,
+        "calibrated_probability": 0.47668,
         "calibration": {
           "applied": true,
           "key": "model:mlb_first_five|source:mlb first five|sport:mlb|bet:f5_total",
-          "probability_delta": -0.104701,
+          "probability_delta": -0.09202,
           "samples": 107,
           "version": "cal-1752-2026-06-25"
         },
@@ -7914,13 +7915,14 @@
             ]
           },
           "starting_pitcher": {
-            "missing": [],
+            "missing": [
+              "starter_sample_missing"
+            ],
             "risk": [],
             "support": [
-              "starting_pitcher",
-              "starter_recent_form",
               "starter_vs_opponent_history",
-              "starter_venue_history"
+              "starting_pitcher",
+              "starter_recent_form"
             ]
           },
           "team_form": {
@@ -7951,8 +7953,8 @@
         "consensus_qualified": false,
         "consensus_rejection_reason": "raw_model_abstained; non_positive_calibrated_edge; failed_walk_forward_validation",
         "consensus_required": true,
-        "consensus_score": 42.5,
-        "consensus_signal_count": 17,
+        "consensus_score": 40.0,
+        "consensus_signal_count": 16,
         "consensus_signals": [
           {
             "category": "calibration",
@@ -7963,17 +7965,10 @@
           },
           {
             "category": "starting_pitcher",
-            "detail": "away offense: opposing starter sample available",
-            "impact": "support",
-            "name": "starting_pitcher",
-            "strength": 1.0
-          },
-          {
-            "category": "starting_pitcher",
-            "detail": "away offense: recent starter form included",
-            "impact": "support",
-            "name": "starter_recent_form",
-            "strength": 0.8
+            "detail": "away offense: thin or missing starter sample",
+            "impact": "missing",
+            "name": "starter_sample_missing",
+            "strength": 0.0
           },
           {
             "category": "starting_pitcher",
@@ -7981,13 +7976,6 @@
             "impact": "support",
             "name": "starter_vs_opponent_history",
             "strength": 0.7
-          },
-          {
-            "category": "starting_pitcher",
-            "detail": "away offense: starter venue history included",
-            "impact": "support",
-            "name": "starter_venue_history",
-            "strength": 0.6
           },
           {
             "category": "bullpen",
@@ -8012,7 +8000,7 @@
           },
           {
             "category": "lineup_matchup",
-            "detail": "away offense: 14 batter-vs-pitcher PA included",
+            "detail": "away offense: 47 batter-vs-pitcher PA included",
             "impact": "support",
             "name": "batter_pitcher_history",
             "strength": 0.7
@@ -8096,7 +8084,7 @@
           },
           {
             "category": "lineup_matchup",
-            "detail": "home offense: 44 batter-vs-pitcher PA included",
+            "detail": "home offense: 65 batter-vs-pitcher PA included",
             "impact": "support",
             "name": "batter_pitcher_history",
             "strength": 0.7
@@ -8167,7 +8155,7 @@
         ],
         "date": "2026-07-04",
         "decision": "PASS",
-        "edge": -7.38,
+        "edge": -8.85,
         "game": "Detroit Tigers @ Texas Rangers",
         "game_id": "822882",
         "game_order": 1,
@@ -8184,8 +8172,8 @@
         "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_first_five",
         "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
         "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_first_five",
-        "model_prediction": "4.95 F5 total",
-        "notes": "F5 projection Detroit Tigers 2.48, Texas Rangers 2.47 (total 4.95). BvP PA away/home: 6+8/10+34; venue F5 total 3.82 over 60 games. Travel away/home: 2d since previous game; 0 mi (fatigue 0.00) / 2d since previous game; 0 mi (fatigue 0.00). Projection: Detroit Tigers 2.48, Texas Rangers 2.47; total 4.95.",
+        "model_prediction": "4.82 F5 total",
+        "notes": "F5 projection Detroit Tigers 2.32, Texas Rangers 2.5 (total 4.82). BvP PA away/home: 9+38/13+52; venue F5 total 3.82 over 60 games. Travel away/home: 2d since previous game; 0 mi (fatigue 0.00) / 2d since previous game; 0 mi (fatigue 0.00). Projection: Detroit Tigers 2.32, Texas Rangers 2.5; total 4.82.",
         "odds": -130,
         "odds_source": "user_assumed_f5_total_4.5",
         "pick": "Over 4.5 F5",
@@ -8223,11 +8211,11 @@
         },
         "pricing_type": "user_assumed",
         "primary_consensus_passed": false,
-        "probability": 0.4914,
+        "probability": 0.4767,
         "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_first_five",
-        "raw_edge": 3.09,
-        "raw_model_probability": 0.5961,
-        "raw_probability": 0.5961,
+        "raw_edge": 0.35,
+        "raw_model_probability": 0.5687,
+        "raw_probability": 0.5687,
         "selected_side_implied_probability": 0.565217,
         "source": "MLB First Five",
         "sport": "MLB",
@@ -8241,13 +8229,13 @@
         "actionability": "research_signal",
         "assumed_odds": -110,
         "away_team": "Detroit Tigers",
-        "calibrated_edge": -5.31,
-        "calibrated_model_probability": 0.470681,
-        "calibrated_probability": 0.470681,
+        "calibrated_edge": -4.05,
+        "calibrated_model_probability": 0.483326,
+        "calibrated_probability": 0.483326,
         "calibration": {
           "applied": true,
           "key": "model:mlb_first_five|source:mlb first five|sport:mlb|bet:f5_side",
-          "probability_delta": -0.030619,
+          "probability_delta": -0.039874,
           "samples": 92,
           "version": "cal-1752-2026-06-25"
         },
@@ -8300,8 +8288,7 @@
             "support": [
               "starting_pitcher",
               "starter_recent_form",
-              "starter_vs_opponent_history",
-              "starter_venue_history"
+              "starter_vs_opponent_history"
             ]
           },
           "team_form": {
@@ -8338,8 +8325,8 @@
         "consensus_qualified": false,
         "consensus_rejection_reason": "raw_model_abstained; non_positive_calibrated_edge",
         "consensus_required": true,
-        "consensus_score": 45.0,
-        "consensus_signal_count": 18,
+        "consensus_score": 42.5,
+        "consensus_signal_count": 17,
         "consensus_signals": [
           {
             "category": "calibration",
@@ -8357,91 +8344,84 @@
           },
           {
             "category": "starting_pitcher",
-            "detail": "away offense: opposing starter sample available",
+            "detail": "home offense: opposing starter sample available",
             "impact": "support",
             "name": "starting_pitcher",
             "strength": 1.0
           },
           {
             "category": "starting_pitcher",
-            "detail": "away offense: recent starter form included",
+            "detail": "home offense: recent starter form included",
             "impact": "support",
             "name": "starter_recent_form",
             "strength": 0.8
           },
           {
             "category": "starting_pitcher",
-            "detail": "away offense: starter matchup history included",
+            "detail": "home offense: starter matchup history included",
             "impact": "support",
             "name": "starter_vs_opponent_history",
             "strength": 0.7
           },
           {
-            "category": "starting_pitcher",
-            "detail": "away offense: starter venue history included",
-            "impact": "support",
-            "name": "starter_venue_history",
-            "strength": 0.6
-          },
-          {
             "category": "bullpen",
-            "detail": "away offense: bullpen workload checked over 2 game(s)",
+            "detail": "home offense: bullpen workload checked over 2 game(s)",
             "impact": "support",
             "name": "bullpen_workload",
             "strength": 1.0
           },
           {
             "category": "bullpen",
-            "detail": "away offense: fatigue index 0.49, unavailable arms 3",
+            "detail": "home offense: fatigue index 0.58, unavailable arms 4",
             "impact": "risk",
             "name": "bullpen_fatigue_risk",
-            "strength": -0.495
+            "strength": -0.577
           },
           {
             "category": "lineup_matchup",
-            "detail": "away offense: lineup matchup covers expected hitters",
+            "detail": "home offense: lineup matchup covers expected hitters",
             "impact": "support",
             "name": "lineup_offense",
             "strength": 1.0
           },
           {
             "category": "lineup_matchup",
-            "detail": "away offense: 14 batter-vs-pitcher PA included",
+            "detail": "home offense: 65 batter-vs-pitcher PA included",
             "impact": "support",
             "name": "batter_pitcher_history",
             "strength": 0.7
           },
           {
             "category": "lineup_matchup",
-            "detail": "away offense: lineup threat score included",
+            "detail": "home offense: lineup threat score included",
             "impact": "support",
             "name": "lineup_threat_quality",
             "strength": 0.6
           },
           {
             "category": "team_form",
-            "detail": "away offense: current/recent F5 offense included",
+            "detail": "home offense: current/recent F5 offense included",
             "impact": "support",
             "name": "team_offense_form",
             "strength": 0.8
           },
           {
             "category": "team_form",
-            "detail": "away offense: venue-specific team offense included",
+            "detail": "home offense: venue-specific team offense included",
             "impact": "support",
             "name": "team_venue_form",
             "strength": 0.5
           },
           {
             "category": "travel_rest",
-            "detail": "away offense: starter rest context present",
+            "detail": "home offense: starter rest context present",
             "impact": "support",
             "name": "travel_rest_schedule",
             "strength": 1.0
           },
           {
             "category": "travel_rest",
-            "detail": "away offense: 2d since previous game; 0 mi",
+            "detail": "home offense: 2d since previous game; 0 mi",
             "impact": "support",
             "name": "travel_rest_context",
             "strength": 1.0
@@ -8477,7 +8457,7 @@
         ],
         "date": "2026-07-04",
         "decision": "PASS",
-        "edge": -5.31,
+        "edge": -4.05,
         "game": "Detroit Tigers @ Texas Rangers",
         "game_id": "822882",
         "game_order": 1,
@@ -8494,11 +8474,11 @@
         "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_first_five",
         "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
         "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_first_five",
-        "model_prediction": "Detroit Tigers +0.01 F5 runs",
-        "notes": "F5 projection Detroit Tigers 2.48, Texas Rangers 2.47 (total 4.95). BvP PA away/home: 6+8/10+34; venue F5 total 3.82 over 60 games. Travel away/home: 2d since previous game; 0 mi (fatigue 0.00) / 2d since previous game; 0 mi (fatigue 0.00). Projection: Detroit Tigers 2.48, Texas Rangers 2.47; total 4.95.",
+        "model_prediction": "Texas Rangers +0.18 F5 runs",
+        "notes": "F5 projection Detroit Tigers 2.32, Texas Rangers 2.5 (total 4.82). BvP PA away/home: 9+38/13+52; venue F5 total 3.82 over 60 games. Travel away/home: 2d since previous game; 0 mi (fatigue 0.00) / 2d since previous game; 0 mi (fatigue 0.00). Projection: Detroit Tigers 2.32, Texas Rangers 2.5; total 4.82.",
         "odds": -110,
         "odds_source": "user_assumed_f5_moneyline_fallback",
-        "pick": "Detroit Tigers F5 ML",
+        "pick": "Texas Rangers F5 ML",
         "pregame_snapshot": {
           "actionability": "research_signal",
           "assumed_odds": -110,
@@ -8506,10 +8486,10 @@
           "confidence": "Low",
           "date": "2026-07-04",
           "decision": "PASS",
-          "edge": -2.25,
+          "edge": -0.06,
           "game": "Detroit Tigers @ Texas Rangers",
           "game_id": "822882",
-          "game_order": 2,
+          "game_order": 1,
           "game_start_time": "2026-07-04T20:05:00Z",
           "home_team": "Texas Rangers",
           "league": "MLB",
@@ -8519,30 +8499,30 @@
           "market_implied_probability": 0.52381,
           "market_priced": true,
           "matchup": "Detroit Tigers @ Texas Rangers",
-          "model_prediction": "Detroit Tigers +0.01 F5 runs",
-          "notes": "F5 projection Detroit Tigers 2.48, Texas Rangers 2.47 (total 4.95). BvP PA away/home: 6+8/10+34; venue F5 total 3.82 over 60 games. Travel away/home: 2d since previous game; 0 mi (fatigue 0.00) / 2d since previous game; 0 mi (fatigue 0.00). Projection: Detroit Tigers 2.48, Texas Rangers 2.47; total 4.95.",
+          "model_prediction": "Texas Rangers +0.18 F5 runs",
+          "notes": "F5 projection Detroit Tigers 2.32, Texas Rangers 2.5 (total 4.82). BvP PA away/home: 9+38/13+52; venue F5 total 3.82 over 60 games. Travel away/home: 2d since previous game; 0 mi (fatigue 0.00) / 2d since previous game; 0 mi (fatigue 0.00). Projection: Detroit Tigers 2.32, Texas Rangers 2.5; total 4.82.",
           "odds": -110,
           "odds_source": "user_assumed_f5_moneyline_fallback",
-          "pick": "Detroit Tigers F5 ML",
+          "pick": "Texas Rangers F5 ML",
           "pricing_type": "user_assumed",
-          "probability": 0.5013,
+          "probability": 0.5232,
           "source": "MLB First Five",
           "sport": "MLB",
           "start_time": "2026-07-04T20:05:00Z",
-          "team": "Detroit Tigers"
+          "team": "Texas Rangers"
         },
         "pricing_type": "user_assumed",
         "primary_consensus_passed": false,
-        "probability": 0.4707,
+        "probability": 0.4833,
         "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_first_five",
-        "raw_edge": -2.25,
-        "raw_model_probability": 0.5013,
-        "raw_probability": 0.5013,
+        "raw_edge": -0.06,
+        "raw_model_probability": 0.5232,
+        "raw_probability": 0.5232,
         "selected_side_implied_probability": 0.52381,
         "source": "MLB First Five",
         "sport": "MLB",
         "start_time": "2026-07-04T20:05:00Z",
-        "team": "Detroit Tigers",
+        "team": "Texas Rangers",
         "units": 0.0,
         "walk_forward_roi": 0.0047728977333606065,
         "walk_forward_samples": 99
@@ -16338,17 +16318,17 @@
         "actionability": "research_signal",
         "assumed_odds": -110,
         "away_team": "San Diego Padres",
-        "calibrated_edge": 2.22,
-        "calibrated_model_probability": 0.546019,
-        "calibrated_probability": 0.546019,
+        "calibrated_edge": 2.52,
+        "calibrated_model_probability": 0.549035,
+        "calibrated_probability": 0.549035,
         "calibration": {
           "applied": true,
           "key": "model:mlb_first_five|source:mlb first five|sport:mlb|bet:f5_side",
-          "probability_delta": -0.082881,
+          "probability_delta": -0.084765,
           "samples": 92,
           "version": "cal-1752-2026-06-25"
         },
-        "confidence": "High",
+        "confidence": "Medium",
         "consensus_factor_categories": {
           "bullpen": {
             "missing": [],
@@ -16438,9 +16418,9 @@
         "consensus_passed": false,
         "consensus_publication_mode": "research",
         "consensus_qualified": false,
-        "consensus_rejection_reason": "edge_signal_threshold_not_met(edge=2.22, probability=0.546019, signals=20)",
+        "consensus_rejection_reason": "edge_signal_threshold_not_met(edge=2.52, probability=0.549035, signals=20)",
         "consensus_required": true,
-        "consensus_score": 56.822,
+        "consensus_score": 57.424,
         "consensus_signal_count": 20,
         "consensus_signals": [
           {
@@ -16448,7 +16428,7 @@
             "detail": "calibrated probability beats selected-side market price",
             "impact": "support",
             "name": "market_price",
-            "strength": 0.222
+            "strength": 0.252
           },
           {
             "category": "calibration",
@@ -16515,7 +16495,7 @@
           },
           {
             "category": "lineup_matchup",
-            "detail": "home offense: 98 batter-vs-pitcher PA included",
+            "detail": "home offense: 77 batter-vs-pitcher PA included",
             "impact": "support",
             "name": "batter_pitcher_history",
             "strength": 0.7
@@ -16593,7 +16573,7 @@
         ],
         "date": "2026-07-04",
         "decision": "PASS",
-        "edge": 2.22,
+        "edge": 2.52,
         "game": "San Diego Padres @ Los Angeles Dodgers",
         "game_id": "823932",
         "game_order": 13,
@@ -16610,8 +16590,8 @@
         "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_first_five",
         "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
         "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_first_five",
-        "model_prediction": "Los Angeles Dodgers +1.02 F5 runs",
-        "notes": "F5 projection San Diego Padres 1.91, Los Angeles Dodgers 2.93 (total 4.84). BvP PA away/home: 38+49/13+85; venue F5 total 4.48 over 60 games. Travel away/home: 1d since previous game; 0 mi (fatigue 0.00) / 1d since previous game; 0 mi (fatigue 0.00). Projection: San Diego Padres 1.91, Los Angeles Dodgers 2.93; total 4.84.",
+        "model_prediction": "Los Angeles Dodgers +1.06 F5 runs",
+        "notes": "F5 projection San Diego Padres 1.91, Los Angeles Dodgers 2.97 (total 4.88). BvP PA away/home: 38+49/18+59; venue F5 total 4.48 over 60 games. Travel away/home: 1d since previous game; 0 mi (fatigue 0.00) / 1d since previous game; 0 mi (fatigue 0.00). Projection: San Diego Padres 1.91, Los Angeles Dodgers 2.97; total 4.88.",
         "odds": -110,
         "odds_source": "user_assumed_f5_moneyline_fallback",
         "pick": "Los Angeles Dodgers F5 ML",
@@ -16649,11 +16629,11 @@
         },
         "pricing_type": "user_assumed",
         "primary_consensus_passed": false,
-        "probability": 0.546,
+        "probability": 0.549,
         "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_first_five",
-        "raw_edge": 10.51,
-        "raw_model_probability": 0.6289,
-        "raw_probability": 0.6289,
+        "raw_edge": 11.0,
+        "raw_model_probability": 0.6338,
+        "raw_probability": 0.6338,
         "selected_side_implied_probability": 0.52381,
         "source": "MLB First Five",
         "sport": "MLB",
@@ -16667,13 +16647,13 @@
         "actionability": "research_signal",
         "assumed_odds": -130,
         "away_team": "San Diego Padres",
-        "calibrated_edge": -8.63,
-        "calibrated_model_probability": 0.478918,
-        "calibrated_probability": 0.478918,
+        "calibrated_edge": -8.18,
+        "calibrated_model_probability": 0.483465,
+        "calibrated_probability": 0.483465,
         "calibration": {
           "applied": true,
           "key": "model:mlb_first_five|source:mlb first five|sport:mlb|bet:f5_total",
-          "probability_delta": -0.093982,
+          "probability_delta": -0.097935,
           "samples": 107,
           "version": "cal-1752-2026-06-25"
         },
@@ -16918,7 +16898,7 @@
           },
           {
             "category": "lineup_matchup",
-            "detail": "home offense: 98 batter-vs-pitcher PA included",
+            "detail": "home offense: 77 batter-vs-pitcher PA included",
             "impact": "support",
             "name": "batter_pitcher_history",
             "strength": 0.7
@@ -16996,7 +16976,7 @@
         ],
         "date": "2026-07-04",
         "decision": "PASS",
-        "edge": -8.63,
+        "edge": -8.18,
         "game": "San Diego Padres @ Los Angeles Dodgers",
         "game_id": "823932",
         "game_order": 13,
@@ -17013,8 +16993,8 @@
         "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_first_five",
         "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
         "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_first_five",
-        "model_prediction": "4.84 F5 total",
-        "notes": "F5 projection San Diego Padres 1.91, Los Angeles Dodgers 2.93 (total 4.84). BvP PA away/home: 38+49/13+85; venue F5 total 4.48 over 60 games. Travel away/home: 1d since previous game; 0 mi (fatigue 0.00) / 1d since previous game; 0 mi (fatigue 0.00). Projection: San Diego Padres 1.91, Los Angeles Dodgers 2.93; total 4.84.",
+        "model_prediction": "4.88 F5 total",
+        "notes": "F5 projection San Diego Padres 1.91, Los Angeles Dodgers 2.97 (total 4.88). BvP PA away/home: 38+49/18+59; venue F5 total 4.48 over 60 games. Travel away/home: 1d since previous game; 0 mi (fatigue 0.00) / 1d since previous game; 0 mi (fatigue 0.00). Projection: San Diego Padres 1.91, Los Angeles Dodgers 2.97; total 4.88.",
         "odds": -130,
         "odds_source": "user_assumed_f5_total_4.5",
         "pick": "Over 4.5 F5",
@@ -17052,11 +17032,11 @@
         },
         "pricing_type": "user_assumed",
         "primary_consensus_passed": false,
-        "probability": 0.4789,
+        "probability": 0.4835,
         "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_first_five",
-        "raw_edge": 0.77,
-        "raw_model_probability": 0.5729,
-        "raw_probability": 0.5729,
+        "raw_edge": 1.62,
+        "raw_model_probability": 0.5814,
+        "raw_probability": 0.5814,
         "selected_side_implied_probability": 0.565217,
         "source": "MLB First Five",
         "sport": "MLB",
@@ -17761,7 +17741,7 @@
   "mlb_inning": {
     "consensus_gate_version": "mlb_team_consensus_v1.1.0",
     "consensus_rejection_reasons": {
-      "non_positive_calibrated_edge": 23
+      "non_positive_calibrated_edge": 24
     },
     "consensus_required": true,
     "date": "2026-07-04",
@@ -17936,12 +17916,12 @@
         "game_id": "822882",
         "game_order": 1,
         "game_start_time": "2026-07-04T20:05:00Z",
-        "home_pitcher": "Kumar Rocker",
+        "home_pitcher": "Cal Quantrill",
         "home_pitcher_context": {
-          "era": 3.83,
-          "name": "Kumar Rocker",
-          "opponent_obp": 0.317,
-          "opponent_slg": 0.377,
+          "era": 3.31,
+          "name": "Cal Quantrill",
+          "opponent_obp": 0.315,
+          "opponent_slg": 0.368,
           "team_bullpen": {
             "back_to_back_arms_count": 1,
             "effective_unavailable_count": 3.96,
@@ -17951,7 +17931,7 @@
             "lookback_games": 2,
             "unavailable_today_count": 3
           },
-          "whip": 1.34
+          "whip": 1.22
         },
         "home_team": "Texas Rangers",
         "matchup": "Texas Rangers vs Detroit Tigers",
@@ -18016,9 +17996,9 @@
         },
         "venue_factor": 1.0,
         "weather": {
-          "condition": "",
-          "temp": "",
-          "wind": ""
+          "condition": "Roof Closed",
+          "temp": "72",
+          "wind": "0 mph, None"
         }
       },
       {
@@ -19510,12 +19490,12 @@
         }
       },
       {
-        "away_pitcher": "Griffin Canning",
+        "away_pitcher": "Wandy Peralta",
         "away_pitcher_context": {
-          "era": 7.09,
-          "name": "Griffin Canning",
-          "opponent_obp": 0.379,
-          "opponent_slg": 0.464,
+          "era": 2.38,
+          "name": "Wandy Peralta",
+          "opponent_obp": 0.33,
+          "opponent_slg": 0.351,
           "team_bullpen": {
             "back_to_back_arms_count": 1,
             "effective_unavailable_count": 5.36,
@@ -19525,7 +19505,7 @@
             "lookback_games": 2,
             "unavailable_today_count": 4
           },
-          "whip": 1.66
+          "whip": 1.32
         },
         "away_team": "San Diego Padres",
         "baseline_table": {
@@ -19539,22 +19519,22 @@
           "8": 0.5625
         },
         "edge_table": {
-          "1": 0.1064,
-          "2": -0.0529,
-          "3": -0.0436,
-          "4": -0.0151,
-          "5": -0.0005,
-          "6": -0.0462,
+          "1": 0.148,
+          "2": -0.0104,
+          "3": -0.0028,
+          "4": 0.0256,
+          "5": 0.0385,
+          "6": -0.002,
           "7": -0.1612,
           "8": -0.161
         },
         "full_inning_table": {
-          "1": 0.491,
-          "2": 0.465,
-          "3": 0.446,
-          "4": 0.503,
-          "5": 0.504,
-          "6": 0.472,
+          "1": 0.532,
+          "2": 0.508,
+          "3": 0.487,
+          "4": 0.544,
+          "5": 0.543,
+          "6": 0.516,
           "7": 0.386,
           "8": 0.402
         },
@@ -19584,11 +19564,20 @@
           {
             "baseline": 0.3844,
             "confidence": "Medium",
-            "decision": "LEAN",
-            "edge_pp": 10.64,
+            "decision": "BET",
+            "edge_pp": 14.8,
             "inning": 1,
-            "label": "Inning 1 - No Run Scored (49.1%, edge +10.6pp)",
-            "probability_scoreless": 0.491
+            "label": "Inning 1 - No Run Scored (53.2%, edge +14.8pp)",
+            "probability_scoreless": 0.532
+          },
+          {
+            "baseline": 0.5041,
+            "confidence": "Medium",
+            "decision": "LEAN",
+            "edge_pp": 3.85,
+            "inning": 5,
+            "label": "Inning 5 - No Run Scored (54.3%, edge +3.9pp)",
+            "probability_scoreless": 0.543
           }
         ],
         "travel": {
@@ -19639,7 +19628,7 @@
       }
     ],
     "model": "MLBInning",
-    "note": "MLB Inning processed 14 game(s), returned 23 top inning pick(s).",
+    "note": "MLB Inning processed 14 game(s), returned 24 top inning pick(s).",
     "ok": true,
     "picks": [
       {
@@ -19680,7 +19669,8 @@
             "support": [
               "park_weather",
               "park_factor",
-              "venue_context"
+              "venue_context",
+              "wind_weather"
             ]
           },
           "starting_pitcher": {
@@ -19715,8 +19705,8 @@
         "consensus_qualified": false,
         "consensus_rejection_reason": "non_positive_calibrated_edge",
         "consensus_required": true,
-        "consensus_score": 25.0,
-        "consensus_signal_count": 10,
+        "consensus_score": 27.5,
+        "consensus_signal_count": 11,
         "consensus_signals": [
           {
             "category": "calibration",
@@ -19780,6 +19770,13 @@
             "impact": "support",
             "name": "venue_context",
             "strength": 0.5
+          },
+          {
+            "category": "park_weather",
+            "detail": "weather context included for inning run environment",
+            "impact": "support",
+            "name": "wind_weather",
+            "strength": 0.6
           },
           {
             "category": "inning_baseline",
@@ -19916,7 +19913,8 @@
             "support": [
               "park_weather",
               "park_factor",
-              "venue_context"
+              "venue_context",
+              "wind_weather"
             ]
           },
           "starting_pitcher": {
@@ -19951,8 +19949,8 @@
         "consensus_qualified": false,
         "consensus_rejection_reason": "non_positive_calibrated_edge",
         "consensus_required": true,
-        "consensus_score": 25.0,
-        "consensus_signal_count": 10,
+        "consensus_score": 27.5,
+        "consensus_signal_count": 11,
         "consensus_signals": [
           {
             "category": "calibration",
@@ -20016,6 +20014,13 @@
             "impact": "support",
             "name": "venue_context",
             "strength": 0.5
+          },
+          {
+            "category": "park_weather",
+            "detail": "weather context included for inning run environment",
+            "impact": "support",
+            "name": "wind_weather",
+            "strength": 0.6
           },
           {
             "category": "inning_baseline",
@@ -21552,7 +21557,7 @@
         "game": "Houston Astros vs Tampa Bay Rays",
         "game_id": "824171",
         "game_order": 4,
-        "game_start_time": "2026-07-04T23:10:00Z",
+        "game_start_time": "2026-07-04T23:10Z",
         "home_team": "Houston Astros",
         "inning": 2,
         "league": "MLB",
@@ -21614,7 +21619,7 @@
         "selected_side_implied_probability": 0.545455,
         "source": "MLB Inning",
         "sport": "MLB",
-        "start_time": "2026-07-04T23:10:00Z",
+        "start_time": "2026-07-04T23:10Z",
         "team": "",
         "units": 0.25,
         "validation_lean": true,
@@ -22057,7 +22062,7 @@
         "game": "Cleveland Guardians vs Chicago White Sox",
         "game_id": "824415",
         "game_order": 5,
-        "game_start_time": "2026-07-04T23:10:00Z",
+        "game_start_time": "2026-07-04T23:10Z",
         "home_team": "Cleveland Guardians",
         "inning": 2,
         "league": "MLB",
@@ -22119,7 +22124,7 @@
         "selected_side_implied_probability": 0.545455,
         "source": "MLB Inning",
         "sport": "MLB",
-        "start_time": "2026-07-04T23:10:00Z",
+        "start_time": "2026-07-04T23:10Z",
         "team": "",
         "units": 0.25,
         "validation_lean": true,
@@ -25042,7 +25047,7 @@
         "game": "Arizona Diamondbacks vs Milwaukee Brewers",
         "game_id": "825063",
         "game_order": 12,
-        "game_start_time": "2026-07-05T01:40:00Z",
+        "game_start_time": "2026-07-05T01:40Z",
         "home_team": "Arizona Diamondbacks",
         "inning": 3,
         "league": "MLB",
@@ -25104,7 +25109,7 @@
         "selected_side_implied_probability": 0.545455,
         "source": "MLB Inning",
         "sport": "MLB",
-        "start_time": "2026-07-05T01:40:00Z",
+        "start_time": "2026-07-05T01:40Z",
         "team": "",
         "units": 0.25,
         "validation_lean": true,
@@ -25118,13 +25123,13 @@
         "assumed_odds": -120,
         "away_team": "San Diego Padres",
         "baseline_probability": 0.3844,
-        "calibrated_edge": -10.81,
-        "calibrated_model_probability": 0.43735,
-        "calibrated_probability": 0.43735,
+        "calibrated_edge": -8.63,
+        "calibrated_model_probability": 0.459183,
+        "calibrated_probability": 0.459183,
         "calibration": {
           "applied": true,
           "key": "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning",
-          "probability_delta": -0.05365,
+          "probability_delta": -0.072817,
           "samples": 173,
           "version": "cal-1752-2026-06-25"
         },
@@ -25291,8 +25296,8 @@
         ],
         "date": "2026-07-04",
         "decision": "PASS",
-        "edge": -10.81,
-        "edge_pp": 10.64,
+        "edge": -8.63,
+        "edge_pp": 14.8,
         "game": "Los Angeles Dodgers vs San Diego Padres",
         "game_id": "823932",
         "game_order": 13,
@@ -25309,8 +25314,8 @@
         "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
         "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
         "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
-        "model_prediction": "49.1%",
-        "notes": "Top no-run inning candidate (edge +10.6pp vs baseline). Full table: {\"1\": 0.491, \"2\": 0.465, \"3\": 0.446, \"4\": 0.503, \"5\": 0.504, \"6\": 0.472, \"7\": 0.386, \"8\": 0.402}",
+        "model_prediction": "53.2%",
+        "notes": "Top no-run inning candidate (edge +14.8pp vs baseline). Full table: {\"1\": 0.532, \"2\": 0.508, \"3\": 0.487, \"4\": 0.544, \"5\": 0.543, \"6\": 0.516, \"7\": 0.386, \"8\": 0.402}",
         "odds": -120,
         "odds_source": "user_assumed_no_run_inning_-120",
         "pick": "Inning 1 - No Run Scored",
@@ -25350,11 +25355,262 @@
         },
         "pricing_type": "user_assumed",
         "primary_consensus_passed": false,
-        "probability": 0.4374,
+        "probability": 0.4592,
         "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
-        "raw_edge": 10.64,
-        "raw_model_probability": 0.491,
-        "raw_probability": 0.491,
+        "raw_edge": 14.8,
+        "raw_model_probability": 0.532,
+        "raw_probability": 0.532,
+        "selected_side_implied_probability": 0.545455,
+        "source": "MLB Inning",
+        "sport": "MLB",
+        "start_time": "2026-07-05T02:10:00Z",
+        "team": "",
+        "units": 0.0,
+        "walk_forward_roi": 0.0049645390070922,
+        "walk_forward_samples": 186
+      },
+      {
+        "actionability": "research_signal",
+        "assumed_odds": -120,
+        "away_team": "San Diego Padres",
+        "baseline_probability": 0.5041,
+        "calibrated_edge": -8.04,
+        "calibrated_model_probability": 0.465099,
+        "calibrated_probability": 0.465099,
+        "calibration": {
+          "applied": true,
+          "key": "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning",
+          "probability_delta": -0.077901,
+          "samples": 173,
+          "version": "cal-1752-2026-06-25"
+        },
+        "confidence": "Medium",
+        "consensus_factor_categories": {
+          "calibration": {
+            "missing": [],
+            "risk": [],
+            "support": [
+              "probability_calibration"
+            ]
+          },
+          "inning_baseline": {
+            "missing": [],
+            "risk": [],
+            "support": [
+              "inning_baseline_edge",
+              "matchup_structure"
+            ]
+          },
+          "park_weather": {
+            "missing": [],
+            "risk": [],
+            "support": [
+              "park_weather",
+              "park_factor",
+              "venue_context"
+            ]
+          },
+          "starting_pitcher": {
+            "missing": [],
+            "risk": [],
+            "support": [
+              "starting_pitcher",
+              "starter_run_prevention"
+            ]
+          },
+          "travel_rest": {
+            "missing": [],
+            "risk": [],
+            "support": [
+              "travel_rest_context",
+              "short_rest_schedule"
+            ]
+          },
+          "walk_forward": {
+            "missing": [],
+            "risk": [],
+            "support": [
+              "walk_forward_validation"
+            ]
+          }
+        },
+        "consensus_gate_version": "mlb_team_consensus_v1.1.0",
+        "consensus_hard_blockers": [
+          "non_positive_calibrated_edge"
+        ],
+        "consensus_passed": false,
+        "consensus_publication_mode": "research",
+        "consensus_qualified": false,
+        "consensus_rejection_reason": "non_positive_calibrated_edge",
+        "consensus_required": true,
+        "consensus_score": 27.5,
+        "consensus_signal_count": 11,
+        "consensus_signals": [
+          {
+            "category": "calibration",
+            "detail": "active calibration group has enough samples",
+            "impact": "support",
+            "name": "probability_calibration",
+            "strength": 1.0
+          },
+          {
+            "category": "walk_forward",
+            "detail": "model family has positive decided history in the gated era input",
+            "impact": "support",
+            "name": "walk_forward_validation",
+            "strength": 1.0
+          },
+          {
+            "category": "inning_baseline",
+            "detail": "scoreless probability beats inning baseline",
+            "impact": "support",
+            "name": "inning_baseline_edge",
+            "strength": 1.0
+          },
+          {
+            "category": "starting_pitcher",
+            "detail": "starter inning profile is applicable",
+            "impact": "support",
+            "name": "starting_pitcher",
+            "strength": 1.0
+          },
+          {
+            "category": "starting_pitcher",
+            "detail": "home: ERA/WHIP run-prevention context included",
+            "impact": "support",
+            "name": "starter_run_prevention",
+            "strength": 0.7
+          },
+          {
+            "category": "starting_pitcher",
+            "detail": "away: ERA/WHIP run-prevention context included",
+            "impact": "support",
+            "name": "starter_run_prevention",
+            "strength": 0.7
+          },
+          {
+            "category": "park_weather",
+            "detail": "venue factor included in inning projection",
+            "impact": "support",
+            "name": "park_weather",
+            "strength": 1.0
+          },
+          {
+            "category": "park_weather",
+            "detail": "park run factor included",
+            "impact": "support",
+            "name": "park_factor",
+            "strength": 0.8
+          },
+          {
+            "category": "park_weather",
+            "detail": "venue context included: UNIQLO Field at Dodger Stadium",
+            "impact": "support",
+            "name": "venue_context",
+            "strength": 0.5
+          },
+          {
+            "category": "inning_baseline",
+            "detail": "full inning table available for matchup shape",
+            "impact": "support",
+            "name": "matchup_structure",
+            "strength": 1.0
+          },
+          {
+            "category": "travel_rest",
+            "detail": "away team: 1d since previous game; 0 mi",
+            "impact": "support",
+            "name": "travel_rest_context",
+            "strength": 1.0
+          },
+          {
+            "category": "travel_rest",
+            "detail": "away team: 1 day(s) since previous game",
+            "impact": "support",
+            "name": "short_rest_schedule",
+            "strength": 0.6
+          },
+          {
+            "category": "travel_rest",
+            "detail": "home team: 1d since previous game; 0 mi",
+            "impact": "support",
+            "name": "travel_rest_context",
+            "strength": 1.0
+          },
+          {
+            "category": "travel_rest",
+            "detail": "home team: 1 day(s) since previous game",
+            "impact": "support",
+            "name": "short_rest_schedule",
+            "strength": 0.6
+          }
+        ],
+        "date": "2026-07-04",
+        "decision": "PASS",
+        "edge": -8.04,
+        "edge_pp": 3.85,
+        "game": "Los Angeles Dodgers vs San Diego Padres",
+        "game_id": "823932",
+        "game_order": 13,
+        "game_start_time": "2026-07-05T02:10:00Z",
+        "home_team": "Los Angeles Dodgers",
+        "inning": 5,
+        "league": "MLB",
+        "line_source": "user_assumed_no_run_inning_price",
+        "market": "no_run_inning",
+        "market_implied_probability": 0.545455,
+        "market_no_vig_probability": 0.545455,
+        "market_priced": true,
+        "matchup": "Los Angeles Dodgers vs San Diego Padres",
+        "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
+        "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
+        "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
+        "model_prediction": "54.3%",
+        "notes": "Top no-run inning candidate (edge +3.9pp vs baseline). Full table: {\"1\": 0.532, \"2\": 0.508, \"3\": 0.487, \"4\": 0.544, \"5\": 0.543, \"6\": 0.516, \"7\": 0.386, \"8\": 0.402}",
+        "odds": -120,
+        "odds_source": "user_assumed_no_run_inning_-120",
+        "pick": "Inning 5 - No Run Scored",
+        "pregame_snapshot": {
+          "actionability": "research_signal",
+          "assumed_odds": -120,
+          "away_team": "San Diego Padres",
+          "baseline_probability": 0.5041,
+          "confidence": "Medium",
+          "date": "2026-07-04",
+          "decision": "LEAN",
+          "edge": 3.85,
+          "edge_pp": 3.85,
+          "game": "Los Angeles Dodgers vs San Diego Padres",
+          "game_id": "823932",
+          "game_order": 13,
+          "game_start_time": "2026-07-05T02:10:00Z",
+          "home_team": "Los Angeles Dodgers",
+          "inning": 5,
+          "league": "MLB",
+          "line_source": "user_assumed_no_run_inning_price",
+          "market": "no_run_inning",
+          "market_implied_probability": 0.545455,
+          "market_priced": true,
+          "matchup": "Los Angeles Dodgers vs San Diego Padres",
+          "model_prediction": "54.3%",
+          "notes": "Top no-run inning candidate (edge +3.9pp vs baseline). Full table: {\"1\": 0.532, \"2\": 0.508, \"3\": 0.487, \"4\": 0.544, \"5\": 0.543, \"6\": 0.516, \"7\": 0.386, \"8\": 0.402}",
+          "odds": -120,
+          "odds_source": "user_assumed_no_run_inning_-120",
+          "pick": "Inning 5 - No Run Scored",
+          "pricing_type": "user_assumed",
+          "probability": 0.543,
+          "source": "MLB Inning",
+          "sport": "MLB",
+          "start_time": "2026-07-05T02:10:00Z",
+          "team": ""
+        },
+        "pricing_type": "user_assumed",
+        "primary_consensus_passed": false,
+        "probability": 0.4651,
+        "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
+        "raw_edge": 3.85,
+        "raw_model_probability": 0.543,
+        "raw_probability": 0.543,
         "selected_side_implied_probability": 0.545455,
         "source": "MLB Inning",
         "sport": "MLB",
@@ -25404,9 +25660,9 @@
     },
     "consensus_gate_version": "mlb_team_consensus_v1.1.0",
     "consensus_rejection_reasons": {
-      "missing_reliable_market_price": 7,
+      "missing_reliable_market_price": 6,
       "non_positive_calibrated_edge": 8,
-      "raw_model_abstained": 15
+      "raw_model_abstained": 16
     },
     "consensus_required": true,
     "model_stack": "v2",
@@ -25962,13 +26218,13 @@
       {
         "actionability": "research_signal",
         "away_team": "Detroit Tigers",
-        "calibrated_edge": -2.49,
-        "calibrated_model_probability": 0.475069,
-        "calibrated_probability": 0.475069,
+        "calibrated_edge": -5.72,
+        "calibrated_model_probability": 0.442808,
+        "calibrated_probability": 0.442808,
         "calibration": {
           "applied": true,
           "key": "global",
-          "probability_delta": -0.099131,
+          "probability_delta": -0.070292,
           "samples": 1197,
           "version": "cal-1752-2026-06-25"
         },
@@ -26004,6 +26260,7 @@
         },
         "consensus_gate_version": "mlb_team_consensus_v1.1.0",
         "consensus_hard_blockers": [
+          "raw_model_abstained",
           "missing_reliable_market_price",
           "missing_selected_side_implied_probability",
           "non_positive_calibrated_edge"
@@ -26011,7 +26268,7 @@
         "consensus_passed": false,
         "consensus_publication_mode": "research",
         "consensus_qualified": false,
-        "consensus_rejection_reason": "missing_reliable_market_price; missing_selected_side_implied_probability; non_positive_calibrated_edge",
+        "consensus_rejection_reason": "raw_model_abstained; missing_reliable_market_price; missing_selected_side_implied_probability; non_positive_calibrated_edge",
         "consensus_required": true,
         "consensus_score": 10.0,
         "consensus_signal_count": 4,
@@ -26046,7 +26303,7 @@
           }
         ],
         "decision": "PASS",
-        "edge": -2.49,
+        "edge": -5.72,
         "home_team": "Texas Rangers",
         "market_no_vig_probability": null,
         "market_pick_prob": null,
@@ -26054,36 +26311,36 @@
         "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
         "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
         "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
-        "model_odds": -135,
+        "model_odds": -105,
         "odds": null,
-        "pick": "Rangers ML (Tigers vs Rangers)",
+        "pick": "Tigers ML (Tigers vs Rangers)",
         "pregame_snapshot": {
           "away_team": "Detroit Tigers",
-          "decision": "LEAN",
-          "edge": 7.42,
+          "decision": "PASS",
+          "edge": 1.31,
           "home_team": "Texas Rangers",
           "market_pick_prob": null,
           "market_type": "h2h",
-          "model_odds": -135,
+          "model_odds": -105,
           "odds": null,
-          "pick": "Rangers ML (Tigers vs Rangers)",
-          "probability": 0.5742,
+          "pick": "Tigers ML (Tigers vs Rangers)",
+          "probability": 0.5131,
           "source": "MLB Model",
           "sport": "MLB",
-          "team": "Rangers",
-          "units": 0.4
+          "team": "Tigers",
+          "units": 0.0
         },
         "primary_consensus_passed": false,
-        "probability": 0.4751,
+        "probability": 0.4428,
         "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
-        "raw_edge": 7.42,
-        "raw_model_probability": 0.5742,
-        "raw_probability": 0.5742,
-        "raw_units": 0.4,
+        "raw_edge": 1.31,
+        "raw_model_probability": 0.5131,
+        "raw_probability": 0.5131,
+        "raw_units": 0.0,
         "selected_side_implied_probability": null,
         "source": "MLB Model",
         "sport": "MLB",
-        "team": "Rangers",
+        "team": "Tigers",
         "units": 0.0,
         "walk_forward_roi": 0.05033671955256251,
         "walk_forward_samples": 108
@@ -26092,13 +26349,13 @@
         "actionability": "research_signal",
         "assumed_odds": -110,
         "away_team": "Detroit Tigers",
-        "calibrated_edge": -5.26,
-        "calibrated_model_probability": 0.471208,
-        "calibrated_probability": 0.471208,
+        "calibrated_edge": -5.07,
+        "calibrated_model_probability": 0.473136,
+        "calibrated_probability": 0.473136,
         "calibration": {
           "applied": true,
           "key": "global",
-          "probability_delta": -0.095792,
+          "probability_delta": -0.097464,
           "samples": 1197,
           "version": "cal-1752-2026-06-25"
         },
@@ -26175,9 +26432,9 @@
         ],
         "decision": "PASS",
         "direction": "Under",
-        "edge": -5.26,
+        "edge": -5.07,
         "home_team": "Texas Rangers",
-        "kelly": 2.27,
+        "kelly": 2.46,
         "line": 8.0,
         "market_line": 8.0,
         "market_no_vig_probability": 0.5238095238095238,
@@ -26186,7 +26443,7 @@
         "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
         "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
         "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
-        "model_prediction": 7.3,
+        "model_prediction": 7.2,
         "odds": -110,
         "pick": "Under 8.0 (Detroit Tigers vs Texas Rangers)",
         "pregame_snapshot": {
@@ -26213,12 +26470,12 @@
           "vegas": 8.0
         },
         "primary_consensus_passed": false,
-        "prob": 0.567,
-        "probability": 0.4712,
+        "prob": 0.5706,
+        "probability": 0.4731,
         "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
-        "raw_edge": 4.32,
-        "raw_model_probability": 0.567,
-        "raw_probability": 0.567,
+        "raw_edge": 4.68,
+        "raw_model_probability": 0.5706,
+        "raw_probability": 0.5706,
         "raw_units": 0.01,
         "selected_side_implied_probability": 0.5238095238095238,
         "selection": "Under",
@@ -29354,13 +29611,13 @@
         "actionability": "research_signal",
         "assumed_odds": -110,
         "away_team": "San Diego Padres",
-        "calibrated_edge": -8.06,
-        "calibrated_model_probability": 0.443173,
-        "calibrated_probability": 0.443173,
+        "calibrated_edge": -8.2,
+        "calibrated_model_probability": 0.441768,
+        "calibrated_probability": 0.441768,
         "calibration": {
           "applied": true,
           "key": "global",
-          "probability_delta": -0.070627,
+          "probability_delta": -0.069332,
           "samples": 1197,
           "version": "cal-1752-2026-06-25"
         },
@@ -29438,7 +29695,7 @@
         ],
         "decision": "PASS",
         "direction": "Under",
-        "edge": -8.06,
+        "edge": -8.2,
         "home_team": "Los Angeles Dodgers",
         "kelly": 0.0,
         "line": 8.5,
@@ -29449,7 +29706,7 @@
         "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
         "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
         "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
-        "model_prediction": 8.3,
+        "model_prediction": 8.4,
         "odds": -110,
         "pick": "Under 8.5 (San Diego Padres vs Los Angeles Dodgers)",
         "pregame_snapshot": {
@@ -29476,12 +29733,12 @@
           "vegas": 8.5
         },
         "primary_consensus_passed": false,
-        "prob": 0.5138,
-        "probability": 0.4432,
+        "prob": 0.5111,
+        "probability": 0.4418,
         "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
-        "raw_edge": -1.0,
-        "raw_model_probability": 0.5138,
-        "raw_probability": 0.5138,
+        "raw_edge": -1.27,
+        "raw_model_probability": 0.5111,
+        "raw_probability": 0.5111,
         "raw_units": 0.0,
         "selected_side_implied_probability": 0.5238095238095238,
         "selection": "PASS",
@@ -29491,6 +29748,135 @@
         "vegas": 8.5,
         "walk_forward_roi": 0.03442827990257392,
         "walk_forward_samples": 128
+      },
+      {
+        "actionability": "research_signal",
+        "away_team": "Detroit Tigers",
+        "calibrated_edge": -2.49,
+        "calibrated_model_probability": 0.475069,
+        "calibrated_probability": 0.475069,
+        "calibration": {
+          "applied": true,
+          "key": "global",
+          "probability_delta": -0.099131,
+          "samples": 1197,
+          "version": "cal-1752-2026-06-25"
+        },
+        "consensus_factor_categories": {
+          "calibration": {
+            "missing": [],
+            "risk": [],
+            "support": [
+              "probability_calibration"
+            ]
+          },
+          "model_stack": {
+            "missing": [],
+            "risk": [],
+            "support": [
+              "model_stack_ready"
+            ]
+          },
+          "team_form": {
+            "missing": [],
+            "risk": [],
+            "support": [
+              "team_identity_context"
+            ]
+          },
+          "walk_forward": {
+            "missing": [],
+            "risk": [],
+            "support": [
+              "walk_forward_validation"
+            ]
+          }
+        },
+        "consensus_gate_version": "mlb_team_consensus_v1.1.0",
+        "consensus_hard_blockers": [
+          "missing_reliable_market_price",
+          "missing_selected_side_implied_probability",
+          "non_positive_calibrated_edge"
+        ],
+        "consensus_passed": false,
+        "consensus_publication_mode": "research",
+        "consensus_qualified": false,
+        "consensus_rejection_reason": "missing_reliable_market_price; missing_selected_side_implied_probability; non_positive_calibrated_edge",
+        "consensus_required": true,
+        "consensus_score": 10.0,
+        "consensus_signal_count": 4,
+        "consensus_signals": [
+          {
+            "category": "calibration",
+            "detail": "active calibration group has enough samples",
+            "impact": "support",
+            "name": "probability_calibration",
+            "strength": 1.0
+          },
+          {
+            "category": "walk_forward",
+            "detail": "model family has positive decided history in the gated era input",
+            "impact": "support",
+            "name": "walk_forward_validation",
+            "strength": 1.0
+          },
+          {
+            "category": "model_stack",
+            "detail": "MLB full-game v2 artifacts are ready",
+            "impact": "support",
+            "name": "model_stack_ready",
+            "strength": 1.0
+          },
+          {
+            "category": "team_form",
+            "detail": "selected MLB team context present",
+            "impact": "support",
+            "name": "team_identity_context",
+            "strength": 0.4
+          }
+        ],
+        "decision": "PASS",
+        "edge": -2.49,
+        "home_team": "Texas Rangers",
+        "market_no_vig_probability": null,
+        "market_pick_prob": null,
+        "market_type": "h2h",
+        "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
+        "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
+        "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
+        "model_odds": -135,
+        "odds": null,
+        "pick": "Rangers ML (Tigers vs Rangers)",
+        "pregame_snapshot": {
+          "away_team": "Detroit Tigers",
+          "decision": "LEAN",
+          "edge": 7.42,
+          "home_team": "Texas Rangers",
+          "market_pick_prob": null,
+          "market_type": "h2h",
+          "model_odds": -135,
+          "odds": null,
+          "pick": "Rangers ML (Tigers vs Rangers)",
+          "probability": 0.5742,
+          "source": "MLB Model",
+          "sport": "MLB",
+          "team": "Rangers",
+          "units": 0.4
+        },
+        "primary_consensus_passed": false,
+        "probability": 0.4751,
+        "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
+        "raw_edge": 7.42,
+        "raw_model_probability": 0.5742,
+        "raw_probability": 0.5742,
+        "raw_units": 0.4,
+        "selected_side_implied_probability": null,
+        "source": "MLB Model",
+        "sport": "MLB",
+        "team": "Rangers",
+        "units": 0.0,
+        "walk_forward_roi": 0.05033671955256251,
+        "walk_forward_samples": 108
       },
       {
         "actionability": "research_signal",
@@ -29986,7 +30372,7 @@
           "date": "2026-07-04",
           "decision": "PASS",
           "draw_probability": 0.2657,
-          "edge": -12.52,
+          "edge": -9.71,
           "game": "Morocco @ Canada",
           "game_id": "760502",
           "game_start_time": "2026-07-04T17:00Z",
@@ -30016,12 +30402,12 @@
           ],
           "league": "FIFA World Cup",
           "market": "moneyline",
-          "market_probability": 0.5529,
+          "market_probability": 0.5248,
           "market_total_line": 2.5,
           "market_type": "soccer_moneyline",
           "matchup": "Morocco @ Canada",
           "model_basis": "current squad player power, tournament form, venue scoring, and market context; no head-to-head input",
-          "odds": -140,
+          "odds": -125,
           "pick": "Morocco ML (Morocco @ Canada)",
           "probability": 0.4277,
           "projected_away_goals": 1.391,
@@ -30073,7 +30459,7 @@
           "calibration_excluded": true,
           "date": "2026-07-04",
           "decision": "PASS",
-          "edge": -5.57,
+          "edge": -7.17,
           "game": "Morocco @ Canada",
           "game_id": "760502",
           "game_start_time": "2026-07-04T17:00Z",
@@ -30104,12 +30490,12 @@
           "league": "FIFA World Cup",
           "line": 2.5,
           "market": "total",
-          "market_probability": 0.5918,
+          "market_probability": 0.6078,
           "market_total_line": 2.5,
           "market_type": "soccer_total",
           "matchup": "Morocco @ Canada",
           "model_basis": "current squad player power, tournament form, venue scoring, and market context; no head-to-head input",
-          "odds": -145,
+          "odds": -155,
           "pick": "Under 2.5 (Morocco @ Canada)",
           "probability": 0.5361,
           "projected_away_goals": 1.391,
@@ -30161,7 +30547,7 @@
           "calibration_excluded": true,
           "date": "2026-07-04",
           "decision": "BET",
-          "edge": 10.72,
+          "edge": 7.23,
           "game": "Morocco @ Canada",
           "game_id": "760502",
           "game_start_time": "2026-07-04T17:00Z",
@@ -30190,12 +30576,12 @@
           "league": "FIFA World Cup",
           "line": 0.5,
           "market": "spread",
-          "market_probability": 0.4651,
+          "market_probability": 0.5,
           "market_total_line": 2.5,
           "market_type": "soccer_handicap",
           "matchup": "Morocco @ Canada",
           "model_basis": "current squad player power, tournament form, venue scoring, and market context; no head-to-head input",
-          "odds": 115,
+          "odds": 100,
           "pick": "Canada +0.5 (Morocco @ Canada)",
           "probability": 0.5723,
           "projected_away_goals": 1.391,
@@ -30210,7 +30596,7 @@
           "start_time": "2026-07-04T17:00Z",
           "team": "Canada",
           "total_market_blend": 0.18,
-          "units": 0.64,
+          "units": 0.55,
           "venue": "NRG Stadium",
           "venue_city": "Houston, Texas",
           "venue_id": "6262",
@@ -30423,7 +30809,7 @@
           "calibration_excluded": true,
           "date": "2026-07-04",
           "decision": "BET",
-          "edge": 25.17,
+          "edge": 24.21,
           "game": "France @ Paraguay",
           "game_id": "760503",
           "game_start_time": "2026-07-04T21:00Z",
@@ -30452,12 +30838,12 @@
           "league": "FIFA World Cup",
           "line": 1.5,
           "market": "spread",
-          "market_probability": 0.4348,
+          "market_probability": 0.4444,
           "market_total_line": 2.5,
           "market_type": "soccer_handicap",
           "matchup": "France @ Paraguay",
           "model_basis": "current squad player power, tournament form, venue scoring, and market context; no head-to-head input",
-          "odds": 130,
+          "odds": 125,
           "pick": "Paraguay +1.5 (France @ Paraguay)",
           "probability": 0.6865,
           "projected_away_goals": 1.727,
@@ -32027,7 +32413,7 @@
         "edge_signal_threshold_not_met(edge=0.5, probability=0.528838, signals=18)": 1,
         "edge_signal_threshold_not_met(edge=0.5, probability=0.528838, signals=19)": 1,
         "edge_signal_threshold_not_met(edge=1.77, probability=0.54155, signals=18)": 1,
-        "edge_signal_threshold_not_met(edge=2.22, probability=0.546019, signals=20)": 1,
+        "edge_signal_threshold_not_met(edge=2.52, probability=0.549035, signals=20)": 1,
         "non_positive_calibrated_edge": 7,
         "raw_model_abstained": 15
       },
@@ -32321,24 +32707,24 @@
           "away_team": "Detroit Tigers",
           "features": {
             "away_lineup_matchup": {
-              "current_bvp_pa": 6,
-              "older_bvp_pa": 8,
-              "run_delta": 0.054,
+              "current_bvp_pa": 9,
+              "older_bvp_pa": 38,
+              "run_delta": 0.018,
               "sampled_batters": 9,
-              "threat_score": 0.3724
+              "threat_score": 0.3569
             },
             "away_offense": {
-              "lineup_delta": 0.054,
+              "lineup_delta": 0.018,
               "park_run_delta_per_team": -0.18,
-              "pitcher_current_f5_allowed": 2.5,
-              "pitcher_current_vs_opponent": 4.053,
-              "pitcher_prior_vs_opponent": 1.295,
-              "pitcher_recent_f5_allowed": 2.833,
-              "pitcher_rest_days": 5,
-              "pitcher_rest_label": "normal rest (5d)",
+              "pitcher_current_f5_allowed": 2.649,
+              "pitcher_current_vs_opponent": 1.974,
+              "pitcher_prior_vs_opponent": 1.995,
+              "pitcher_recent_f5_allowed": 2.987,
+              "pitcher_rest_days": 6,
+              "pitcher_rest_label": "normal rest (6d)",
               "pitcher_rest_runs_modifier": 0.0,
-              "pitcher_venue_f5_allowed": 2.556,
-              "projected_runs": 2.48,
+              "pitcher_venue_f5_allowed": 1.974,
+              "projected_runs": 2.32,
               "team_current_f5_runs": 2.495,
               "team_prior_f5_runs": 2.701,
               "team_recent_f5_runs": 2.917,
@@ -32414,14 +32800,14 @@
               "venue_starts": 0
             },
             "home_lineup_matchup": {
-              "current_bvp_pa": 10,
-              "older_bvp_pa": 34,
-              "run_delta": 0.087,
+              "current_bvp_pa": 13,
+              "older_bvp_pa": 52,
+              "run_delta": 0.125,
               "sampled_batters": 9,
-              "threat_score": 0.3865
+              "threat_score": 0.4025
             },
             "home_offense": {
-              "lineup_delta": 0.087,
+              "lineup_delta": 0.125,
               "park_run_delta_per_team": -0.18,
               "pitcher_current_f5_allowed": 2.875,
               "pitcher_current_vs_opponent": 3.527,
@@ -32431,7 +32817,7 @@
               "pitcher_rest_label": "normal rest (5d)",
               "pitcher_rest_runs_modifier": 0.0,
               "pitcher_venue_f5_allowed": 2.582,
-              "projected_runs": 2.47,
+              "projected_runs": 2.5,
               "team_current_f5_runs": 2.796,
               "team_prior_f5_runs": 2.575,
               "team_recent_f5_runs": 2.875,
@@ -32449,21 +32835,21 @@
               "wind_run_delta_per_team": 0.0
             },
             "home_pitcher": {
-              "current_f5_allowed": 2.5,
-              "current_starts": 14,
-              "current_vs_opponent": 4.053,
-              "current_vs_opponent_starts": 1,
-              "name": "Kumar Rocker",
-              "prior_f5_allowed": 2.739,
-              "prior_starts": 17,
-              "prior_vs_opponent": 1.295,
-              "prior_vs_opponent_starts": 1,
-              "recent_f5_allowed": 2.833,
-              "recent_starts": 6,
-              "rest_days": 5,
-              "rest_label": "normal rest (5d)",
+              "current_f5_allowed": 2.649,
+              "current_starts": 2,
+              "current_vs_opponent": 1.974,
+              "current_vs_opponent_starts": 0,
+              "name": "Cal Quantrill",
+              "prior_f5_allowed": 3.135,
+              "prior_starts": 30,
+              "prior_vs_opponent": 1.995,
+              "prior_vs_opponent_starts": 2,
+              "recent_f5_allowed": 2.987,
+              "recent_starts": 2,
+              "rest_days": 6,
+              "rest_label": "normal rest (6d)",
               "rest_runs_modifier": 0.0,
-              "stat_expected": 2.158,
+              "stat_expected": 1.974,
               "team_bullpen": {
                 "back_to_back_arms": [
                   668390
@@ -32503,8 +32889,8 @@
                   695239
                 ]
               },
-              "venue_f5_allowed": 2.556,
-              "venue_starts": 9
+              "venue_f5_allowed": 1.974,
+              "venue_starts": 0
             },
             "travel": {
               "away": {
@@ -32552,7 +32938,7 @@
               },
               "park_run_delta_per_team": -0.18,
               "run_delta_per_team": -0.18,
-              "weather_raw": "",
+              "weather_raw": "0 mph, None",
               "wind_direction": "",
               "wind_mph": 0.0,
               "wind_run_delta_per_team": 0.0
@@ -32561,29 +32947,29 @@
           "game_id": "822882",
           "game_order": 1,
           "game_start_time": "2026-07-04T20:05:00Z",
-          "home_pitcher": "Kumar Rocker",
+          "home_pitcher": "Cal Quantrill",
           "home_team": "Texas Rangers",
           "matchup": "Detroit Tigers @ Texas Rangers",
-          "notes": "F5 projection Detroit Tigers 2.48, Texas Rangers 2.47 (total 4.95). BvP PA away/home: 6+8/10+34; venue F5 total 3.82 over 60 games. Travel away/home: 2d since previous game; 0 mi (fatigue 0.00) / 2d since previous game; 0 mi (fatigue 0.00).",
+          "notes": "F5 projection Detroit Tigers 2.32, Texas Rangers 2.5 (total 4.82). BvP PA away/home: 9+38/13+52; venue F5 total 3.82 over 60 games. Travel away/home: 2d since previous game; 0 mi (fatigue 0.00) / 2d since previous game; 0 mi (fatigue 0.00).",
           "projected_first_five": {
-            "away_lead_probability": 0.5013,
-            "away_runs": 2.48,
-            "home_lead_probability": 0.4987,
-            "home_runs": 2.47,
-            "total_runs": 4.95
+            "away_lead_probability": 0.4768,
+            "away_runs": 2.32,
+            "home_lead_probability": 0.5232,
+            "home_runs": 2.5,
+            "total_runs": 4.82
           },
           "top_picks": [
             {
               "assumed_odds": -130,
               "confidence": "Low",
               "decision": "PASS",
-              "edge_pct": 3.09,
+              "edge_pct": 0.34,
               "guardrail": "projection too close to F5 line",
               "market": "f5_total",
-              "model_prediction": "4.95 F5 total",
+              "model_prediction": "4.82 F5 total",
               "pick": "Over 4.5 F5",
-              "probability": 0.5961,
-              "projection_gap": 0.45,
+              "probability": 0.5687,
+              "projection_gap": 0.32,
               "team": "",
               "vegas_line": 4.5
             },
@@ -32591,14 +32977,14 @@
               "assumed_odds": -110,
               "confidence": "Low",
               "decision": "PASS",
-              "edge_pct": -2.25,
-              "guardrail": "margin too small",
+              "edge_pct": -0.06,
+              "guardrail": "thin starter sample, margin too small",
               "market": "f5_side",
-              "model_prediction": "Detroit Tigers +0.01 F5 runs",
-              "pick": "Detroit Tigers F5 ML",
-              "probability": 0.5013,
-              "projected_margin": 0.01,
-              "team": "Detroit Tigers"
+              "model_prediction": "Texas Rangers +0.18 F5 runs",
+              "pick": "Texas Rangers F5 ML",
+              "probability": 0.5232,
+              "projected_margin": 0.18,
+              "team": "Texas Rangers"
             }
           ],
           "venue_id": 5325,
@@ -35698,7 +36084,7 @@
           "venue_name": "Chase Field"
         },
         {
-          "away_pitcher": "Griffin Canning",
+          "away_pitcher": "Wandy Peralta",
           "away_team": "San Diego Padres",
           "features": {
             "away_lineup_matchup": {
@@ -35737,21 +36123,21 @@
               "wind_run_delta_per_team": 0.0
             },
             "away_pitcher": {
-              "current_f5_allowed": 3.444,
-              "current_starts": 9,
-              "current_vs_opponent": 3.054,
-              "current_vs_opponent_starts": 1,
-              "name": "Griffin Canning",
-              "prior_f5_allowed": 2.714,
-              "prior_starts": 30,
-              "prior_vs_opponent": 2.5,
-              "prior_vs_opponent_starts": 4,
-              "recent_f5_allowed": 2.833,
-              "recent_starts": 6,
-              "rest_days": 4,
-              "rest_label": "normal rest (4d)",
-              "rest_runs_modifier": 0.0,
-              "stat_expected": 3.161,
+              "current_f5_allowed": 3.079,
+              "current_starts": 3,
+              "current_vs_opponent": 1.825,
+              "current_vs_opponent_starts": 0,
+              "name": "Wandy Peralta",
+              "prior_f5_allowed": 1.711,
+              "prior_starts": 1,
+              "prior_vs_opponent": 1.895,
+              "prior_vs_opponent_starts": 1,
+              "recent_f5_allowed": 3.706,
+              "recent_starts": 3,
+              "rest_days": 10,
+              "rest_label": "extended layoff (10d) +0.15",
+              "rest_runs_modifier": 0.15,
+              "stat_expected": 1.825,
               "team_bullpen": {
                 "back_to_back_arms": [
                   593974
@@ -35785,28 +36171,28 @@
                   673513
                 ]
               },
-              "venue_f5_allowed": 2.371,
+              "venue_f5_allowed": 1.869,
               "venue_starts": 1
             },
             "home_lineup_matchup": {
-              "current_bvp_pa": 13,
-              "older_bvp_pa": 85,
-              "run_delta": 0.182,
+              "current_bvp_pa": 18,
+              "older_bvp_pa": 59,
+              "run_delta": 0.136,
               "sampled_batters": 9,
-              "threat_score": 0.4269
+              "threat_score": 0.4074
             },
             "home_offense": {
-              "lineup_delta": 0.182,
+              "lineup_delta": 0.136,
               "park_run_delta_per_team": -0.009,
-              "pitcher_current_f5_allowed": 3.444,
-              "pitcher_current_vs_opponent": 3.054,
-              "pitcher_prior_vs_opponent": 2.5,
-              "pitcher_recent_f5_allowed": 2.833,
-              "pitcher_rest_days": 4,
-              "pitcher_rest_label": "normal rest (4d)",
-              "pitcher_rest_runs_modifier": 0.0,
-              "pitcher_venue_f5_allowed": 2.371,
-              "projected_runs": 2.93,
+              "pitcher_current_f5_allowed": 3.079,
+              "pitcher_current_vs_opponent": 1.825,
+              "pitcher_prior_vs_opponent": 1.895,
+              "pitcher_recent_f5_allowed": 3.706,
+              "pitcher_rest_days": 10,
+              "pitcher_rest_label": "extended layoff (10d) +0.15",
+              "pitcher_rest_runs_modifier": 0.15,
+              "pitcher_venue_f5_allowed": 1.869,
+              "projected_runs": 2.97,
               "team_current_f5_runs": 3.288,
               "team_prior_f5_runs": 2.718,
               "team_recent_f5_runs": 2.625,
@@ -35941,38 +36327,39 @@
           "home_pitcher": "Yoshinobu Yamamoto",
           "home_team": "Los Angeles Dodgers",
           "matchup": "San Diego Padres @ Los Angeles Dodgers",
-          "notes": "F5 projection San Diego Padres 1.91, Los Angeles Dodgers 2.93 (total 4.84). BvP PA away/home: 38+49/13+85; venue F5 total 4.48 over 60 games. Travel away/home: 1d since previous game; 0 mi (fatigue 0.00) / 1d since previous game; 0 mi (fatigue 0.00).",
+          "notes": "F5 projection San Diego Padres 1.91, Los Angeles Dodgers 2.97 (total 4.88). BvP PA away/home: 38+49/18+59; venue F5 total 4.48 over 60 games. Travel away/home: 1d since previous game; 0 mi (fatigue 0.00) / 1d since previous game; 0 mi (fatigue 0.00).",
           "projected_first_five": {
-            "away_lead_probability": 0.3711,
+            "away_lead_probability": 0.3662,
             "away_runs": 1.91,
-            "home_lead_probability": 0.6289,
-            "home_runs": 2.93,
-            "total_runs": 4.84
+            "home_lead_probability": 0.6338,
+            "home_runs": 2.97,
+            "total_runs": 4.88
           },
           "top_picks": [
             {
               "assumed_odds": -110,
-              "confidence": "High",
-              "decision": "BET",
-              "edge_pct": 10.51,
+              "confidence": "Medium",
+              "decision": "LEAN",
+              "edge_pct": 11.0,
+              "guardrail": "thin starter sample",
               "market": "f5_side",
-              "model_prediction": "Los Angeles Dodgers +1.02 F5 runs",
+              "model_prediction": "Los Angeles Dodgers +1.06 F5 runs",
               "pick": "Los Angeles Dodgers F5 ML",
-              "probability": 0.6289,
-              "projected_margin": 1.02,
+              "probability": 0.6338,
+              "projected_margin": 1.06,
               "team": "Los Angeles Dodgers"
             },
             {
               "assumed_odds": -130,
               "confidence": "Low",
               "decision": "PASS",
-              "edge_pct": 0.77,
+              "edge_pct": 1.62,
               "guardrail": "projection too close to F5 line",
               "market": "f5_total",
-              "model_prediction": "4.84 F5 total",
+              "model_prediction": "4.88 F5 total",
               "pick": "Over 4.5 F5",
-              "probability": 0.5729,
-              "projection_gap": 0.34,
+              "probability": 0.5814,
+              "projection_gap": 0.38,
               "team": "",
               "vegas_line": 4.5
             }
@@ -36651,13 +37038,13 @@
           "actionability": "research_signal",
           "assumed_odds": -130,
           "away_team": "Detroit Tigers",
-          "calibrated_edge": -7.38,
-          "calibrated_model_probability": 0.491399,
-          "calibrated_probability": 0.491399,
+          "calibrated_edge": -8.85,
+          "calibrated_model_probability": 0.47668,
+          "calibrated_probability": 0.47668,
           "calibration": {
             "applied": true,
             "key": "model:mlb_first_five|source:mlb first five|sport:mlb|bet:f5_total",
-            "probability_delta": -0.104701,
+            "probability_delta": -0.09202,
             "samples": 107,
             "version": "cal-1752-2026-06-25"
           },
@@ -36705,13 +37092,14 @@
               ]
             },
             "starting_pitcher": {
-              "missing": [],
+              "missing": [
+                "starter_sample_missing"
+              ],
               "risk": [],
               "support": [
-                "starting_pitcher",
-                "starter_recent_form",
                 "starter_vs_opponent_history",
-                "starter_venue_history"
+                "starting_pitcher",
+                "starter_recent_form"
               ]
             },
             "team_form": {
@@ -36742,8 +37130,8 @@
           "consensus_qualified": false,
           "consensus_rejection_reason": "raw_model_abstained; non_positive_calibrated_edge; failed_walk_forward_validation",
           "consensus_required": true,
-          "consensus_score": 42.5,
-          "consensus_signal_count": 17,
+          "consensus_score": 40.0,
+          "consensus_signal_count": 16,
           "consensus_signals": [
             {
               "category": "calibration",
@@ -36754,17 +37142,10 @@
             },
             {
               "category": "starting_pitcher",
-              "detail": "away offense: opposing starter sample available",
-              "impact": "support",
-              "name": "starting_pitcher",
-              "strength": 1.0
-            },
-            {
-              "category": "starting_pitcher",
-              "detail": "away offense: recent starter form included",
-              "impact": "support",
-              "name": "starter_recent_form",
-              "strength": 0.8
+              "detail": "away offense: thin or missing starter sample",
+              "impact": "missing",
+              "name": "starter_sample_missing",
+              "strength": 0.0
             },
             {
               "category": "starting_pitcher",
@@ -36772,13 +37153,6 @@
               "impact": "support",
               "name": "starter_vs_opponent_history",
               "strength": 0.7
-            },
-            {
-              "category": "starting_pitcher",
-              "detail": "away offense: starter venue history included",
-              "impact": "support",
-              "name": "starter_venue_history",
-              "strength": 0.6
             },
             {
               "category": "bullpen",
@@ -36803,7 +37177,7 @@
             },
             {
               "category": "lineup_matchup",
-              "detail": "away offense: 14 batter-vs-pitcher PA included",
+              "detail": "away offense: 47 batter-vs-pitcher PA included",
               "impact": "support",
               "name": "batter_pitcher_history",
               "strength": 0.7
@@ -36887,7 +37261,7 @@
             },
             {
               "category": "lineup_matchup",
-              "detail": "home offense: 44 batter-vs-pitcher PA included",
+              "detail": "home offense: 65 batter-vs-pitcher PA included",
               "impact": "support",
               "name": "batter_pitcher_history",
               "strength": 0.7
@@ -36958,7 +37332,7 @@
           ],
           "date": "2026-07-04",
           "decision": "PASS",
-          "edge": -7.38,
+          "edge": -8.85,
           "game": "Detroit Tigers @ Texas Rangers",
           "game_id": "822882",
           "game_order": 1,
@@ -36975,8 +37349,8 @@
           "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_first_five",
           "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
           "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_first_five",
-          "model_prediction": "4.95 F5 total",
-          "notes": "F5 projection Detroit Tigers 2.48, Texas Rangers 2.47 (total 4.95). BvP PA away/home: 6+8/10+34; venue F5 total 3.82 over 60 games. Travel away/home: 2d since previous game; 0 mi (fatigue 0.00) / 2d since previous game; 0 mi (fatigue 0.00). Projection: Detroit Tigers 2.48, Texas Rangers 2.47; total 4.95.",
+          "model_prediction": "4.82 F5 total",
+          "notes": "F5 projection Detroit Tigers 2.32, Texas Rangers 2.5 (total 4.82). BvP PA away/home: 9+38/13+52; venue F5 total 3.82 over 60 games. Travel away/home: 2d since previous game; 0 mi (fatigue 0.00) / 2d since previous game; 0 mi (fatigue 0.00). Projection: Detroit Tigers 2.32, Texas Rangers 2.5; total 4.82.",
           "odds": -130,
           "odds_source": "user_assumed_f5_total_4.5",
           "pick": "Over 4.5 F5",
@@ -37014,11 +37388,11 @@
           },
           "pricing_type": "user_assumed",
           "primary_consensus_passed": false,
-          "probability": 0.4914,
+          "probability": 0.4767,
           "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_first_five",
-          "raw_edge": 3.09,
-          "raw_model_probability": 0.5961,
-          "raw_probability": 0.5961,
+          "raw_edge": 0.35,
+          "raw_model_probability": 0.5687,
+          "raw_probability": 0.5687,
           "selected_side_implied_probability": 0.565217,
           "source": "MLB First Five",
           "sport": "MLB",
@@ -37032,13 +37406,13 @@
           "actionability": "research_signal",
           "assumed_odds": -110,
           "away_team": "Detroit Tigers",
-          "calibrated_edge": -5.31,
-          "calibrated_model_probability": 0.470681,
-          "calibrated_probability": 0.470681,
+          "calibrated_edge": -4.05,
+          "calibrated_model_probability": 0.483326,
+          "calibrated_probability": 0.483326,
           "calibration": {
             "applied": true,
             "key": "model:mlb_first_five|source:mlb first five|sport:mlb|bet:f5_side",
-            "probability_delta": -0.030619,
+            "probability_delta": -0.039874,
             "samples": 92,
             "version": "cal-1752-2026-06-25"
           },
@@ -37091,8 +37465,7 @@
               "support": [
                 "starting_pitcher",
                 "starter_recent_form",
-                "starter_vs_opponent_history",
-                "starter_venue_history"
+                "starter_vs_opponent_history"
               ]
             },
             "team_form": {
@@ -37129,8 +37502,8 @@
           "consensus_qualified": false,
           "consensus_rejection_reason": "raw_model_abstained; non_positive_calibrated_edge",
           "consensus_required": true,
-          "consensus_score": 45.0,
-          "consensus_signal_count": 18,
+          "consensus_score": 42.5,
+          "consensus_signal_count": 17,
           "consensus_signals": [
             {
               "category": "calibration",
@@ -37148,91 +37521,84 @@
             },
             {
               "category": "starting_pitcher",
-              "detail": "away offense: opposing starter sample available",
+              "detail": "home offense: opposing starter sample available",
               "impact": "support",
               "name": "starting_pitcher",
               "strength": 1.0
             },
             {
               "category": "starting_pitcher",
-              "detail": "away offense: recent starter form included",
+              "detail": "home offense: recent starter form included",
               "impact": "support",
               "name": "starter_recent_form",
               "strength": 0.8
             },
             {
               "category": "starting_pitcher",
-              "detail": "away offense: starter matchup history included",
+              "detail": "home offense: starter matchup history included",
               "impact": "support",
               "name": "starter_vs_opponent_history",
               "strength": 0.7
             },
             {
-              "category": "starting_pitcher",
-              "detail": "away offense: starter venue history included",
-              "impact": "support",
-              "name": "starter_venue_history",
-              "strength": 0.6
-            },
-            {
               "category": "bullpen",
-              "detail": "away offense: bullpen workload checked over 2 game(s)",
+              "detail": "home offense: bullpen workload checked over 2 game(s)",
               "impact": "support",
               "name": "bullpen_workload",
               "strength": 1.0
             },
             {
               "category": "bullpen",
-              "detail": "away offense: fatigue index 0.49, unavailable arms 3",
+              "detail": "home offense: fatigue index 0.58, unavailable arms 4",
               "impact": "risk",
               "name": "bullpen_fatigue_risk",
-              "strength": -0.495
+              "strength": -0.577
             },
             {
               "category": "lineup_matchup",
-              "detail": "away offense: lineup matchup covers expected hitters",
+              "detail": "home offense: lineup matchup covers expected hitters",
               "impact": "support",
               "name": "lineup_offense",
               "strength": 1.0
             },
             {
               "category": "lineup_matchup",
-              "detail": "away offense: 14 batter-vs-pitcher PA included",
+              "detail": "home offense: 65 batter-vs-pitcher PA included",
               "impact": "support",
               "name": "batter_pitcher_history",
               "strength": 0.7
             },
             {
               "category": "lineup_matchup",
-              "detail": "away offense: lineup threat score included",
+              "detail": "home offense: lineup threat score included",
               "impact": "support",
               "name": "lineup_threat_quality",
               "strength": 0.6
             },
             {
               "category": "team_form",
-              "detail": "away offense: current/recent F5 offense included",
+              "detail": "home offense: current/recent F5 offense included",
               "impact": "support",
               "name": "team_offense_form",
               "strength": 0.8
             },
             {
               "category": "team_form",
-              "detail": "away offense: venue-specific team offense included",
+              "detail": "home offense: venue-specific team offense included",
               "impact": "support",
               "name": "team_venue_form",
               "strength": 0.5
             },
             {
               "category": "travel_rest",
-              "detail": "away offense: starter rest context present",
+              "detail": "home offense: starter rest context present",
               "impact": "support",
               "name": "travel_rest_schedule",
               "strength": 1.0
             },
             {
               "category": "travel_rest",
-              "detail": "away offense: 2d since previous game; 0 mi",
+              "detail": "home offense: 2d since previous game; 0 mi",
               "impact": "support",
               "name": "travel_rest_context",
               "strength": 1.0
@@ -37268,7 +37634,7 @@
           ],
           "date": "2026-07-04",
           "decision": "PASS",
-          "edge": -5.31,
+          "edge": -4.05,
           "game": "Detroit Tigers @ Texas Rangers",
           "game_id": "822882",
           "game_order": 1,
@@ -37285,11 +37651,11 @@
           "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_first_five",
           "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
           "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_first_five",
-          "model_prediction": "Detroit Tigers +0.01 F5 runs",
-          "notes": "F5 projection Detroit Tigers 2.48, Texas Rangers 2.47 (total 4.95). BvP PA away/home: 6+8/10+34; venue F5 total 3.82 over 60 games. Travel away/home: 2d since previous game; 0 mi (fatigue 0.00) / 2d since previous game; 0 mi (fatigue 0.00). Projection: Detroit Tigers 2.48, Texas Rangers 2.47; total 4.95.",
+          "model_prediction": "Texas Rangers +0.18 F5 runs",
+          "notes": "F5 projection Detroit Tigers 2.32, Texas Rangers 2.5 (total 4.82). BvP PA away/home: 9+38/13+52; venue F5 total 3.82 over 60 games. Travel away/home: 2d since previous game; 0 mi (fatigue 0.00) / 2d since previous game; 0 mi (fatigue 0.00). Projection: Detroit Tigers 2.32, Texas Rangers 2.5; total 4.82.",
           "odds": -110,
           "odds_source": "user_assumed_f5_moneyline_fallback",
-          "pick": "Detroit Tigers F5 ML",
+          "pick": "Texas Rangers F5 ML",
           "pregame_snapshot": {
             "actionability": "research_signal",
             "assumed_odds": -110,
@@ -37297,10 +37663,10 @@
             "confidence": "Low",
             "date": "2026-07-04",
             "decision": "PASS",
-            "edge": -2.25,
+            "edge": -0.06,
             "game": "Detroit Tigers @ Texas Rangers",
             "game_id": "822882",
-            "game_order": 2,
+            "game_order": 1,
             "game_start_time": "2026-07-04T20:05:00Z",
             "home_team": "Texas Rangers",
             "league": "MLB",
@@ -37310,30 +37676,30 @@
             "market_implied_probability": 0.52381,
             "market_priced": true,
             "matchup": "Detroit Tigers @ Texas Rangers",
-            "model_prediction": "Detroit Tigers +0.01 F5 runs",
-            "notes": "F5 projection Detroit Tigers 2.48, Texas Rangers 2.47 (total 4.95). BvP PA away/home: 6+8/10+34; venue F5 total 3.82 over 60 games. Travel away/home: 2d since previous game; 0 mi (fatigue 0.00) / 2d since previous game; 0 mi (fatigue 0.00). Projection: Detroit Tigers 2.48, Texas Rangers 2.47; total 4.95.",
+            "model_prediction": "Texas Rangers +0.18 F5 runs",
+            "notes": "F5 projection Detroit Tigers 2.32, Texas Rangers 2.5 (total 4.82). BvP PA away/home: 9+38/13+52; venue F5 total 3.82 over 60 games. Travel away/home: 2d since previous game; 0 mi (fatigue 0.00) / 2d since previous game; 0 mi (fatigue 0.00). Projection: Detroit Tigers 2.32, Texas Rangers 2.5; total 4.82.",
             "odds": -110,
             "odds_source": "user_assumed_f5_moneyline_fallback",
-            "pick": "Detroit Tigers F5 ML",
+            "pick": "Texas Rangers F5 ML",
             "pricing_type": "user_assumed",
-            "probability": 0.5013,
+            "probability": 0.5232,
             "source": "MLB First Five",
             "sport": "MLB",
             "start_time": "2026-07-04T20:05:00Z",
-            "team": "Detroit Tigers"
+            "team": "Texas Rangers"
           },
           "pricing_type": "user_assumed",
           "primary_consensus_passed": false,
-          "probability": 0.4707,
+          "probability": 0.4833,
           "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_first_five",
-          "raw_edge": -2.25,
-          "raw_model_probability": 0.5013,
-          "raw_probability": 0.5013,
+          "raw_edge": -0.06,
+          "raw_model_probability": 0.5232,
+          "raw_probability": 0.5232,
           "selected_side_implied_probability": 0.52381,
           "source": "MLB First Five",
           "sport": "MLB",
           "start_time": "2026-07-04T20:05:00Z",
-          "team": "Detroit Tigers",
+          "team": "Texas Rangers",
           "units": 0.0,
           "walk_forward_roi": 0.0047728977333606065,
           "walk_forward_samples": 99
@@ -45129,17 +45495,17 @@
           "actionability": "research_signal",
           "assumed_odds": -110,
           "away_team": "San Diego Padres",
-          "calibrated_edge": 2.22,
-          "calibrated_model_probability": 0.546019,
-          "calibrated_probability": 0.546019,
+          "calibrated_edge": 2.52,
+          "calibrated_model_probability": 0.549035,
+          "calibrated_probability": 0.549035,
           "calibration": {
             "applied": true,
             "key": "model:mlb_first_five|source:mlb first five|sport:mlb|bet:f5_side",
-            "probability_delta": -0.082881,
+            "probability_delta": -0.084765,
             "samples": 92,
             "version": "cal-1752-2026-06-25"
           },
-          "confidence": "High",
+          "confidence": "Medium",
           "consensus_factor_categories": {
             "bullpen": {
               "missing": [],
@@ -45229,9 +45595,9 @@
           "consensus_passed": false,
           "consensus_publication_mode": "research",
           "consensus_qualified": false,
-          "consensus_rejection_reason": "edge_signal_threshold_not_met(edge=2.22, probability=0.546019, signals=20)",
+          "consensus_rejection_reason": "edge_signal_threshold_not_met(edge=2.52, probability=0.549035, signals=20)",
           "consensus_required": true,
-          "consensus_score": 56.822,
+          "consensus_score": 57.424,
           "consensus_signal_count": 20,
           "consensus_signals": [
             {
@@ -45239,7 +45605,7 @@
               "detail": "calibrated probability beats selected-side market price",
               "impact": "support",
               "name": "market_price",
-              "strength": 0.222
+              "strength": 0.252
             },
             {
               "category": "calibration",
@@ -45306,7 +45672,7 @@
             },
             {
               "category": "lineup_matchup",
-              "detail": "home offense: 98 batter-vs-pitcher PA included",
+              "detail": "home offense: 77 batter-vs-pitcher PA included",
               "impact": "support",
               "name": "batter_pitcher_history",
               "strength": 0.7
@@ -45384,7 +45750,7 @@
           ],
           "date": "2026-07-04",
           "decision": "PASS",
-          "edge": 2.22,
+          "edge": 2.52,
           "game": "San Diego Padres @ Los Angeles Dodgers",
           "game_id": "823932",
           "game_order": 13,
@@ -45401,8 +45767,8 @@
           "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_first_five",
           "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
           "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_first_five",
-          "model_prediction": "Los Angeles Dodgers +1.02 F5 runs",
-          "notes": "F5 projection San Diego Padres 1.91, Los Angeles Dodgers 2.93 (total 4.84). BvP PA away/home: 38+49/13+85; venue F5 total 4.48 over 60 games. Travel away/home: 1d since previous game; 0 mi (fatigue 0.00) / 1d since previous game; 0 mi (fatigue 0.00). Projection: San Diego Padres 1.91, Los Angeles Dodgers 2.93; total 4.84.",
+          "model_prediction": "Los Angeles Dodgers +1.06 F5 runs",
+          "notes": "F5 projection San Diego Padres 1.91, Los Angeles Dodgers 2.97 (total 4.88). BvP PA away/home: 38+49/18+59; venue F5 total 4.48 over 60 games. Travel away/home: 1d since previous game; 0 mi (fatigue 0.00) / 1d since previous game; 0 mi (fatigue 0.00). Projection: San Diego Padres 1.91, Los Angeles Dodgers 2.97; total 4.88.",
           "odds": -110,
           "odds_source": "user_assumed_f5_moneyline_fallback",
           "pick": "Los Angeles Dodgers F5 ML",
@@ -45440,11 +45806,11 @@
           },
           "pricing_type": "user_assumed",
           "primary_consensus_passed": false,
-          "probability": 0.546,
+          "probability": 0.549,
           "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_first_five",
-          "raw_edge": 10.51,
-          "raw_model_probability": 0.6289,
-          "raw_probability": 0.6289,
+          "raw_edge": 11.0,
+          "raw_model_probability": 0.6338,
+          "raw_probability": 0.6338,
           "selected_side_implied_probability": 0.52381,
           "source": "MLB First Five",
           "sport": "MLB",
@@ -45458,13 +45824,13 @@
           "actionability": "research_signal",
           "assumed_odds": -130,
           "away_team": "San Diego Padres",
-          "calibrated_edge": -8.63,
-          "calibrated_model_probability": 0.478918,
-          "calibrated_probability": 0.478918,
+          "calibrated_edge": -8.18,
+          "calibrated_model_probability": 0.483465,
+          "calibrated_probability": 0.483465,
           "calibration": {
             "applied": true,
             "key": "model:mlb_first_five|source:mlb first five|sport:mlb|bet:f5_total",
-            "probability_delta": -0.093982,
+            "probability_delta": -0.097935,
             "samples": 107,
             "version": "cal-1752-2026-06-25"
           },
@@ -45709,7 +46075,7 @@
             },
             {
               "category": "lineup_matchup",
-              "detail": "home offense: 98 batter-vs-pitcher PA included",
+              "detail": "home offense: 77 batter-vs-pitcher PA included",
               "impact": "support",
               "name": "batter_pitcher_history",
               "strength": 0.7
@@ -45787,7 +46153,7 @@
           ],
           "date": "2026-07-04",
           "decision": "PASS",
-          "edge": -8.63,
+          "edge": -8.18,
           "game": "San Diego Padres @ Los Angeles Dodgers",
           "game_id": "823932",
           "game_order": 13,
@@ -45804,8 +46170,8 @@
           "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_first_five",
           "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
           "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_first_five",
-          "model_prediction": "4.84 F5 total",
-          "notes": "F5 projection San Diego Padres 1.91, Los Angeles Dodgers 2.93 (total 4.84). BvP PA away/home: 38+49/13+85; venue F5 total 4.48 over 60 games. Travel away/home: 1d since previous game; 0 mi (fatigue 0.00) / 1d since previous game; 0 mi (fatigue 0.00). Projection: San Diego Padres 1.91, Los Angeles Dodgers 2.93; total 4.84.",
+          "model_prediction": "4.88 F5 total",
+          "notes": "F5 projection San Diego Padres 1.91, Los Angeles Dodgers 2.97 (total 4.88). BvP PA away/home: 38+49/18+59; venue F5 total 4.48 over 60 games. Travel away/home: 1d since previous game; 0 mi (fatigue 0.00) / 1d since previous game; 0 mi (fatigue 0.00). Projection: San Diego Padres 1.91, Los Angeles Dodgers 2.97; total 4.88.",
           "odds": -130,
           "odds_source": "user_assumed_f5_total_4.5",
           "pick": "Over 4.5 F5",
@@ -45843,11 +46209,11 @@
           },
           "pricing_type": "user_assumed",
           "primary_consensus_passed": false,
-          "probability": 0.4789,
+          "probability": 0.4835,
           "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_first_five",
-          "raw_edge": 0.77,
-          "raw_model_probability": 0.5729,
-          "raw_probability": 0.5729,
+          "raw_edge": 1.62,
+          "raw_model_probability": 0.5814,
+          "raw_probability": 0.5814,
           "selected_side_implied_probability": 0.565217,
           "source": "MLB First Five",
           "sport": "MLB",
@@ -46552,7 +46918,7 @@
     "mlb_inning": {
       "consensus_gate_version": "mlb_team_consensus_v1.1.0",
       "consensus_rejection_reasons": {
-        "non_positive_calibrated_edge": 23
+        "non_positive_calibrated_edge": 24
       },
       "consensus_required": true,
       "date": "2026-07-04",
@@ -46727,12 +47093,12 @@
           "game_id": "822882",
           "game_order": 1,
           "game_start_time": "2026-07-04T20:05:00Z",
-          "home_pitcher": "Kumar Rocker",
+          "home_pitcher": "Cal Quantrill",
           "home_pitcher_context": {
-            "era": 3.83,
-            "name": "Kumar Rocker",
-            "opponent_obp": 0.317,
-            "opponent_slg": 0.377,
+            "era": 3.31,
+            "name": "Cal Quantrill",
+            "opponent_obp": 0.315,
+            "opponent_slg": 0.368,
             "team_bullpen": {
               "back_to_back_arms_count": 1,
               "effective_unavailable_count": 3.96,
@@ -46742,7 +47108,7 @@
               "lookback_games": 2,
               "unavailable_today_count": 3
             },
-            "whip": 1.34
+            "whip": 1.22
           },
           "home_team": "Texas Rangers",
           "matchup": "Texas Rangers vs Detroit Tigers",
@@ -46807,9 +47173,9 @@
           },
           "venue_factor": 1.0,
           "weather": {
-            "condition": "",
-            "temp": "",
-            "wind": ""
+            "condition": "Roof Closed",
+            "temp": "72",
+            "wind": "0 mph, None"
           }
         },
         {
@@ -48301,12 +48667,12 @@
           }
         },
         {
-          "away_pitcher": "Griffin Canning",
+          "away_pitcher": "Wandy Peralta",
           "away_pitcher_context": {
-            "era": 7.09,
-            "name": "Griffin Canning",
-            "opponent_obp": 0.379,
-            "opponent_slg": 0.464,
+            "era": 2.38,
+            "name": "Wandy Peralta",
+            "opponent_obp": 0.33,
+            "opponent_slg": 0.351,
             "team_bullpen": {
               "back_to_back_arms_count": 1,
               "effective_unavailable_count": 5.36,
@@ -48316,7 +48682,7 @@
               "lookback_games": 2,
               "unavailable_today_count": 4
             },
-            "whip": 1.66
+            "whip": 1.32
           },
           "away_team": "San Diego Padres",
           "baseline_table": {
@@ -48330,22 +48696,22 @@
             "8": 0.5625
           },
           "edge_table": {
-            "1": 0.1064,
-            "2": -0.0529,
-            "3": -0.0436,
-            "4": -0.0151,
-            "5": -0.0005,
-            "6": -0.0462,
+            "1": 0.148,
+            "2": -0.0104,
+            "3": -0.0028,
+            "4": 0.0256,
+            "5": 0.0385,
+            "6": -0.002,
             "7": -0.1612,
             "8": -0.161
           },
           "full_inning_table": {
-            "1": 0.491,
-            "2": 0.465,
-            "3": 0.446,
-            "4": 0.503,
-            "5": 0.504,
-            "6": 0.472,
+            "1": 0.532,
+            "2": 0.508,
+            "3": 0.487,
+            "4": 0.544,
+            "5": 0.543,
+            "6": 0.516,
             "7": 0.386,
             "8": 0.402
           },
@@ -48375,11 +48741,20 @@
             {
               "baseline": 0.3844,
               "confidence": "Medium",
-              "decision": "LEAN",
-              "edge_pp": 10.64,
+              "decision": "BET",
+              "edge_pp": 14.8,
               "inning": 1,
-              "label": "Inning 1 - No Run Scored (49.1%, edge +10.6pp)",
-              "probability_scoreless": 0.491
+              "label": "Inning 1 - No Run Scored (53.2%, edge +14.8pp)",
+              "probability_scoreless": 0.532
+            },
+            {
+              "baseline": 0.5041,
+              "confidence": "Medium",
+              "decision": "LEAN",
+              "edge_pp": 3.85,
+              "inning": 5,
+              "label": "Inning 5 - No Run Scored (54.3%, edge +3.9pp)",
+              "probability_scoreless": 0.543
             }
           ],
           "travel": {
@@ -48430,7 +48805,7 @@
         }
       ],
       "model": "MLBInning",
-      "note": "MLB Inning processed 14 game(s), returned 23 top inning pick(s).",
+      "note": "MLB Inning processed 14 game(s), returned 24 top inning pick(s).",
       "ok": true,
       "picks": [
         {
@@ -48471,7 +48846,8 @@
               "support": [
                 "park_weather",
                 "park_factor",
-                "venue_context"
+                "venue_context",
+                "wind_weather"
               ]
             },
             "starting_pitcher": {
@@ -48506,8 +48882,8 @@
           "consensus_qualified": false,
           "consensus_rejection_reason": "non_positive_calibrated_edge",
           "consensus_required": true,
-          "consensus_score": 25.0,
-          "consensus_signal_count": 10,
+          "consensus_score": 27.5,
+          "consensus_signal_count": 11,
           "consensus_signals": [
             {
               "category": "calibration",
@@ -48571,6 +48947,13 @@
               "impact": "support",
               "name": "venue_context",
               "strength": 0.5
+            },
+            {
+              "category": "park_weather",
+              "detail": "weather context included for inning run environment",
+              "impact": "support",
+              "name": "wind_weather",
+              "strength": 0.6
             },
             {
               "category": "inning_baseline",
@@ -48707,7 +49090,8 @@
               "support": [
                 "park_weather",
                 "park_factor",
-                "venue_context"
+                "venue_context",
+                "wind_weather"
               ]
             },
             "starting_pitcher": {
@@ -48742,8 +49126,8 @@
           "consensus_qualified": false,
           "consensus_rejection_reason": "non_positive_calibrated_edge",
           "consensus_required": true,
-          "consensus_score": 25.0,
-          "consensus_signal_count": 10,
+          "consensus_score": 27.5,
+          "consensus_signal_count": 11,
           "consensus_signals": [
             {
               "category": "calibration",
@@ -48807,6 +49191,13 @@
               "impact": "support",
               "name": "venue_context",
               "strength": 0.5
+            },
+            {
+              "category": "park_weather",
+              "detail": "weather context included for inning run environment",
+              "impact": "support",
+              "name": "wind_weather",
+              "strength": 0.6
             },
             {
               "category": "inning_baseline",
@@ -53909,13 +54300,13 @@
           "assumed_odds": -120,
           "away_team": "San Diego Padres",
           "baseline_probability": 0.3844,
-          "calibrated_edge": -10.81,
-          "calibrated_model_probability": 0.43735,
-          "calibrated_probability": 0.43735,
+          "calibrated_edge": -8.63,
+          "calibrated_model_probability": 0.459183,
+          "calibrated_probability": 0.459183,
           "calibration": {
             "applied": true,
             "key": "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning",
-            "probability_delta": -0.05365,
+            "probability_delta": -0.072817,
             "samples": 173,
             "version": "cal-1752-2026-06-25"
           },
@@ -54082,8 +54473,8 @@
           ],
           "date": "2026-07-04",
           "decision": "PASS",
-          "edge": -10.81,
-          "edge_pp": 10.64,
+          "edge": -8.63,
+          "edge_pp": 14.8,
           "game": "Los Angeles Dodgers vs San Diego Padres",
           "game_id": "823932",
           "game_order": 13,
@@ -54100,8 +54491,8 @@
           "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
           "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
           "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
-          "model_prediction": "49.1%",
-          "notes": "Top no-run inning candidate (edge +10.6pp vs baseline). Full table: {\"1\": 0.491, \"2\": 0.465, \"3\": 0.446, \"4\": 0.503, \"5\": 0.504, \"6\": 0.472, \"7\": 0.386, \"8\": 0.402}",
+          "model_prediction": "53.2%",
+          "notes": "Top no-run inning candidate (edge +14.8pp vs baseline). Full table: {\"1\": 0.532, \"2\": 0.508, \"3\": 0.487, \"4\": 0.544, \"5\": 0.543, \"6\": 0.516, \"7\": 0.386, \"8\": 0.402}",
           "odds": -120,
           "odds_source": "user_assumed_no_run_inning_-120",
           "pick": "Inning 1 - No Run Scored",
@@ -54141,11 +54532,262 @@
           },
           "pricing_type": "user_assumed",
           "primary_consensus_passed": false,
-          "probability": 0.4374,
+          "probability": 0.4592,
           "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
-          "raw_edge": 10.64,
-          "raw_model_probability": 0.491,
-          "raw_probability": 0.491,
+          "raw_edge": 14.8,
+          "raw_model_probability": 0.532,
+          "raw_probability": 0.532,
+          "selected_side_implied_probability": 0.545455,
+          "source": "MLB Inning",
+          "sport": "MLB",
+          "start_time": "2026-07-05T02:10:00Z",
+          "team": "",
+          "units": 0.0,
+          "walk_forward_roi": 0.0049645390070922,
+          "walk_forward_samples": 186
+        },
+        {
+          "actionability": "research_signal",
+          "assumed_odds": -120,
+          "away_team": "San Diego Padres",
+          "baseline_probability": 0.5041,
+          "calibrated_edge": -8.04,
+          "calibrated_model_probability": 0.465099,
+          "calibrated_probability": 0.465099,
+          "calibration": {
+            "applied": true,
+            "key": "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning",
+            "probability_delta": -0.077901,
+            "samples": 173,
+            "version": "cal-1752-2026-06-25"
+          },
+          "confidence": "Medium",
+          "consensus_factor_categories": {
+            "calibration": {
+              "missing": [],
+              "risk": [],
+              "support": [
+                "probability_calibration"
+              ]
+            },
+            "inning_baseline": {
+              "missing": [],
+              "risk": [],
+              "support": [
+                "inning_baseline_edge",
+                "matchup_structure"
+              ]
+            },
+            "park_weather": {
+              "missing": [],
+              "risk": [],
+              "support": [
+                "park_weather",
+                "park_factor",
+                "venue_context"
+              ]
+            },
+            "starting_pitcher": {
+              "missing": [],
+              "risk": [],
+              "support": [
+                "starting_pitcher",
+                "starter_run_prevention"
+              ]
+            },
+            "travel_rest": {
+              "missing": [],
+              "risk": [],
+              "support": [
+                "travel_rest_context",
+                "short_rest_schedule"
+              ]
+            },
+            "walk_forward": {
+              "missing": [],
+              "risk": [],
+              "support": [
+                "walk_forward_validation"
+              ]
+            }
+          },
+          "consensus_gate_version": "mlb_team_consensus_v1.1.0",
+          "consensus_hard_blockers": [
+            "non_positive_calibrated_edge"
+          ],
+          "consensus_passed": false,
+          "consensus_publication_mode": "research",
+          "consensus_qualified": false,
+          "consensus_rejection_reason": "non_positive_calibrated_edge",
+          "consensus_required": true,
+          "consensus_score": 27.5,
+          "consensus_signal_count": 11,
+          "consensus_signals": [
+            {
+              "category": "calibration",
+              "detail": "active calibration group has enough samples",
+              "impact": "support",
+              "name": "probability_calibration",
+              "strength": 1.0
+            },
+            {
+              "category": "walk_forward",
+              "detail": "model family has positive decided history in the gated era input",
+              "impact": "support",
+              "name": "walk_forward_validation",
+              "strength": 1.0
+            },
+            {
+              "category": "inning_baseline",
+              "detail": "scoreless probability beats inning baseline",
+              "impact": "support",
+              "name": "inning_baseline_edge",
+              "strength": 1.0
+            },
+            {
+              "category": "starting_pitcher",
+              "detail": "starter inning profile is applicable",
+              "impact": "support",
+              "name": "starting_pitcher",
+              "strength": 1.0
+            },
+            {
+              "category": "starting_pitcher",
+              "detail": "home: ERA/WHIP run-prevention context included",
+              "impact": "support",
+              "name": "starter_run_prevention",
+              "strength": 0.7
+            },
+            {
+              "category": "starting_pitcher",
+              "detail": "away: ERA/WHIP run-prevention context included",
+              "impact": "support",
+              "name": "starter_run_prevention",
+              "strength": 0.7
+            },
+            {
+              "category": "park_weather",
+              "detail": "venue factor included in inning projection",
+              "impact": "support",
+              "name": "park_weather",
+              "strength": 1.0
+            },
+            {
+              "category": "park_weather",
+              "detail": "park run factor included",
+              "impact": "support",
+              "name": "park_factor",
+              "strength": 0.8
+            },
+            {
+              "category": "park_weather",
+              "detail": "venue context included: UNIQLO Field at Dodger Stadium",
+              "impact": "support",
+              "name": "venue_context",
+              "strength": 0.5
+            },
+            {
+              "category": "inning_baseline",
+              "detail": "full inning table available for matchup shape",
+              "impact": "support",
+              "name": "matchup_structure",
+              "strength": 1.0
+            },
+            {
+              "category": "travel_rest",
+              "detail": "away team: 1d since previous game; 0 mi",
+              "impact": "support",
+              "name": "travel_rest_context",
+              "strength": 1.0
+            },
+            {
+              "category": "travel_rest",
+              "detail": "away team: 1 day(s) since previous game",
+              "impact": "support",
+              "name": "short_rest_schedule",
+              "strength": 0.6
+            },
+            {
+              "category": "travel_rest",
+              "detail": "home team: 1d since previous game; 0 mi",
+              "impact": "support",
+              "name": "travel_rest_context",
+              "strength": 1.0
+            },
+            {
+              "category": "travel_rest",
+              "detail": "home team: 1 day(s) since previous game",
+              "impact": "support",
+              "name": "short_rest_schedule",
+              "strength": 0.6
+            }
+          ],
+          "date": "2026-07-04",
+          "decision": "PASS",
+          "edge": -8.04,
+          "edge_pp": 3.85,
+          "game": "Los Angeles Dodgers vs San Diego Padres",
+          "game_id": "823932",
+          "game_order": 13,
+          "game_start_time": "2026-07-05T02:10:00Z",
+          "home_team": "Los Angeles Dodgers",
+          "inning": 5,
+          "league": "MLB",
+          "line_source": "user_assumed_no_run_inning_price",
+          "market": "no_run_inning",
+          "market_implied_probability": 0.545455,
+          "market_no_vig_probability": 0.545455,
+          "market_priced": true,
+          "matchup": "Los Angeles Dodgers vs San Diego Padres",
+          "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
+          "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
+          "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
+          "model_prediction": "54.3%",
+          "notes": "Top no-run inning candidate (edge +3.9pp vs baseline). Full table: {\"1\": 0.532, \"2\": 0.508, \"3\": 0.487, \"4\": 0.544, \"5\": 0.543, \"6\": 0.516, \"7\": 0.386, \"8\": 0.402}",
+          "odds": -120,
+          "odds_source": "user_assumed_no_run_inning_-120",
+          "pick": "Inning 5 - No Run Scored",
+          "pregame_snapshot": {
+            "actionability": "research_signal",
+            "assumed_odds": -120,
+            "away_team": "San Diego Padres",
+            "baseline_probability": 0.5041,
+            "confidence": "Medium",
+            "date": "2026-07-04",
+            "decision": "LEAN",
+            "edge": 3.85,
+            "edge_pp": 3.85,
+            "game": "Los Angeles Dodgers vs San Diego Padres",
+            "game_id": "823932",
+            "game_order": 13,
+            "game_start_time": "2026-07-05T02:10:00Z",
+            "home_team": "Los Angeles Dodgers",
+            "inning": 5,
+            "league": "MLB",
+            "line_source": "user_assumed_no_run_inning_price",
+            "market": "no_run_inning",
+            "market_implied_probability": 0.545455,
+            "market_priced": true,
+            "matchup": "Los Angeles Dodgers vs San Diego Padres",
+            "model_prediction": "54.3%",
+            "notes": "Top no-run inning candidate (edge +3.9pp vs baseline). Full table: {\"1\": 0.532, \"2\": 0.508, \"3\": 0.487, \"4\": 0.544, \"5\": 0.543, \"6\": 0.516, \"7\": 0.386, \"8\": 0.402}",
+            "odds": -120,
+            "odds_source": "user_assumed_no_run_inning_-120",
+            "pick": "Inning 5 - No Run Scored",
+            "pricing_type": "user_assumed",
+            "probability": 0.543,
+            "source": "MLB Inning",
+            "sport": "MLB",
+            "start_time": "2026-07-05T02:10:00Z",
+            "team": ""
+          },
+          "pricing_type": "user_assumed",
+          "primary_consensus_passed": false,
+          "probability": 0.4651,
+          "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
+          "raw_edge": 3.85,
+          "raw_model_probability": 0.543,
+          "raw_probability": 0.543,
           "selected_side_implied_probability": 0.545455,
           "source": "MLB Inning",
           "sport": "MLB",
@@ -54195,9 +54837,9 @@
       },
       "consensus_gate_version": "mlb_team_consensus_v1.1.0",
       "consensus_rejection_reasons": {
-        "missing_reliable_market_price": 7,
+        "missing_reliable_market_price": 6,
         "non_positive_calibrated_edge": 8,
-        "raw_model_abstained": 15
+        "raw_model_abstained": 16
       },
       "consensus_required": true,
       "model_stack": "v2",
@@ -54753,13 +55395,13 @@
         {
           "actionability": "research_signal",
           "away_team": "Detroit Tigers",
-          "calibrated_edge": -2.49,
-          "calibrated_model_probability": 0.475069,
-          "calibrated_probability": 0.475069,
+          "calibrated_edge": -5.72,
+          "calibrated_model_probability": 0.442808,
+          "calibrated_probability": 0.442808,
           "calibration": {
             "applied": true,
             "key": "global",
-            "probability_delta": -0.099131,
+            "probability_delta": -0.070292,
             "samples": 1197,
             "version": "cal-1752-2026-06-25"
           },
@@ -54795,6 +55437,7 @@
           },
           "consensus_gate_version": "mlb_team_consensus_v1.1.0",
           "consensus_hard_blockers": [
+            "raw_model_abstained",
             "missing_reliable_market_price",
             "missing_selected_side_implied_probability",
             "non_positive_calibrated_edge"
@@ -54802,7 +55445,7 @@
           "consensus_passed": false,
           "consensus_publication_mode": "research",
           "consensus_qualified": false,
-          "consensus_rejection_reason": "missing_reliable_market_price; missing_selected_side_implied_probability; non_positive_calibrated_edge",
+          "consensus_rejection_reason": "raw_model_abstained; missing_reliable_market_price; missing_selected_side_implied_probability; non_positive_calibrated_edge",
           "consensus_required": true,
           "consensus_score": 10.0,
           "consensus_signal_count": 4,
@@ -54837,7 +55480,7 @@
             }
           ],
           "decision": "PASS",
-          "edge": -2.49,
+          "edge": -5.72,
           "home_team": "Texas Rangers",
           "market_no_vig_probability": null,
           "market_pick_prob": null,
@@ -54845,36 +55488,36 @@
           "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
           "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
           "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
-          "model_odds": -135,
+          "model_odds": -105,
           "odds": null,
-          "pick": "Rangers ML (Tigers vs Rangers)",
+          "pick": "Tigers ML (Tigers vs Rangers)",
           "pregame_snapshot": {
             "away_team": "Detroit Tigers",
-            "decision": "LEAN",
-            "edge": 7.42,
+            "decision": "PASS",
+            "edge": 1.31,
             "home_team": "Texas Rangers",
             "market_pick_prob": null,
             "market_type": "h2h",
-            "model_odds": -135,
+            "model_odds": -105,
             "odds": null,
-            "pick": "Rangers ML (Tigers vs Rangers)",
-            "probability": 0.5742,
+            "pick": "Tigers ML (Tigers vs Rangers)",
+            "probability": 0.5131,
             "source": "MLB Model",
             "sport": "MLB",
-            "team": "Rangers",
-            "units": 0.4
+            "team": "Tigers",
+            "units": 0.0
           },
           "primary_consensus_passed": false,
-          "probability": 0.4751,
+          "probability": 0.4428,
           "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
-          "raw_edge": 7.42,
-          "raw_model_probability": 0.5742,
-          "raw_probability": 0.5742,
-          "raw_units": 0.4,
+          "raw_edge": 1.31,
+          "raw_model_probability": 0.5131,
+          "raw_probability": 0.5131,
+          "raw_units": 0.0,
           "selected_side_implied_probability": null,
           "source": "MLB Model",
           "sport": "MLB",
-          "team": "Rangers",
+          "team": "Tigers",
           "units": 0.0,
           "walk_forward_roi": 0.05033671955256251,
           "walk_forward_samples": 108
@@ -54883,13 +55526,13 @@
           "actionability": "research_signal",
           "assumed_odds": -110,
           "away_team": "Detroit Tigers",
-          "calibrated_edge": -5.26,
-          "calibrated_model_probability": 0.471208,
-          "calibrated_probability": 0.471208,
+          "calibrated_edge": -5.07,
+          "calibrated_model_probability": 0.473136,
+          "calibrated_probability": 0.473136,
           "calibration": {
             "applied": true,
             "key": "global",
-            "probability_delta": -0.095792,
+            "probability_delta": -0.097464,
             "samples": 1197,
             "version": "cal-1752-2026-06-25"
           },
@@ -54966,9 +55609,9 @@
           ],
           "decision": "PASS",
           "direction": "Under",
-          "edge": -5.26,
+          "edge": -5.07,
           "home_team": "Texas Rangers",
-          "kelly": 2.27,
+          "kelly": 2.46,
           "line": 8.0,
           "market_line": 8.0,
           "market_no_vig_probability": 0.5238095238095238,
@@ -54977,7 +55620,7 @@
           "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
           "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
           "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
-          "model_prediction": 7.3,
+          "model_prediction": 7.2,
           "odds": -110,
           "pick": "Under 8.0 (Detroit Tigers vs Texas Rangers)",
           "pregame_snapshot": {
@@ -55004,12 +55647,12 @@
             "vegas": 8.0
           },
           "primary_consensus_passed": false,
-          "prob": 0.567,
-          "probability": 0.4712,
+          "prob": 0.5706,
+          "probability": 0.4731,
           "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
-          "raw_edge": 4.32,
-          "raw_model_probability": 0.567,
-          "raw_probability": 0.567,
+          "raw_edge": 4.68,
+          "raw_model_probability": 0.5706,
+          "raw_probability": 0.5706,
           "raw_units": 0.01,
           "selected_side_implied_probability": 0.5238095238095238,
           "selection": "Under",
@@ -58145,13 +58788,13 @@
           "actionability": "research_signal",
           "assumed_odds": -110,
           "away_team": "San Diego Padres",
-          "calibrated_edge": -8.06,
-          "calibrated_model_probability": 0.443173,
-          "calibrated_probability": 0.443173,
+          "calibrated_edge": -8.2,
+          "calibrated_model_probability": 0.441768,
+          "calibrated_probability": 0.441768,
           "calibration": {
             "applied": true,
             "key": "global",
-            "probability_delta": -0.070627,
+            "probability_delta": -0.069332,
             "samples": 1197,
             "version": "cal-1752-2026-06-25"
           },
@@ -58229,7 +58872,7 @@
           ],
           "decision": "PASS",
           "direction": "Under",
-          "edge": -8.06,
+          "edge": -8.2,
           "home_team": "Los Angeles Dodgers",
           "kelly": 0.0,
           "line": 8.5,
@@ -58240,7 +58883,7 @@
           "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
           "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
           "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
-          "model_prediction": 8.3,
+          "model_prediction": 8.4,
           "odds": -110,
           "pick": "Under 8.5 (San Diego Padres vs Los Angeles Dodgers)",
           "pregame_snapshot": {
@@ -58267,12 +58910,12 @@
             "vegas": 8.5
           },
           "primary_consensus_passed": false,
-          "prob": 0.5138,
-          "probability": 0.4432,
+          "prob": 0.5111,
+          "probability": 0.4418,
           "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
-          "raw_edge": -1.0,
-          "raw_model_probability": 0.5138,
-          "raw_probability": 0.5138,
+          "raw_edge": -1.27,
+          "raw_model_probability": 0.5111,
+          "raw_probability": 0.5111,
           "raw_units": 0.0,
           "selected_side_implied_probability": 0.5238095238095238,
           "selection": "PASS",
@@ -58282,6 +58925,135 @@
           "vegas": 8.5,
           "walk_forward_roi": 0.03442827990257392,
           "walk_forward_samples": 128
+        },
+        {
+          "actionability": "research_signal",
+          "away_team": "Detroit Tigers",
+          "calibrated_edge": -2.49,
+          "calibrated_model_probability": 0.475069,
+          "calibrated_probability": 0.475069,
+          "calibration": {
+            "applied": true,
+            "key": "global",
+            "probability_delta": -0.099131,
+            "samples": 1197,
+            "version": "cal-1752-2026-06-25"
+          },
+          "consensus_factor_categories": {
+            "calibration": {
+              "missing": [],
+              "risk": [],
+              "support": [
+                "probability_calibration"
+              ]
+            },
+            "model_stack": {
+              "missing": [],
+              "risk": [],
+              "support": [
+                "model_stack_ready"
+              ]
+            },
+            "team_form": {
+              "missing": [],
+              "risk": [],
+              "support": [
+                "team_identity_context"
+              ]
+            },
+            "walk_forward": {
+              "missing": [],
+              "risk": [],
+              "support": [
+                "walk_forward_validation"
+              ]
+            }
+          },
+          "consensus_gate_version": "mlb_team_consensus_v1.1.0",
+          "consensus_hard_blockers": [
+            "missing_reliable_market_price",
+            "missing_selected_side_implied_probability",
+            "non_positive_calibrated_edge"
+          ],
+          "consensus_passed": false,
+          "consensus_publication_mode": "research",
+          "consensus_qualified": false,
+          "consensus_rejection_reason": "missing_reliable_market_price; missing_selected_side_implied_probability; non_positive_calibrated_edge",
+          "consensus_required": true,
+          "consensus_score": 10.0,
+          "consensus_signal_count": 4,
+          "consensus_signals": [
+            {
+              "category": "calibration",
+              "detail": "active calibration group has enough samples",
+              "impact": "support",
+              "name": "probability_calibration",
+              "strength": 1.0
+            },
+            {
+              "category": "walk_forward",
+              "detail": "model family has positive decided history in the gated era input",
+              "impact": "support",
+              "name": "walk_forward_validation",
+              "strength": 1.0
+            },
+            {
+              "category": "model_stack",
+              "detail": "MLB full-game v2 artifacts are ready",
+              "impact": "support",
+              "name": "model_stack_ready",
+              "strength": 1.0
+            },
+            {
+              "category": "team_form",
+              "detail": "selected MLB team context present",
+              "impact": "support",
+              "name": "team_identity_context",
+              "strength": 0.4
+            }
+          ],
+          "decision": "PASS",
+          "edge": -2.49,
+          "home_team": "Texas Rangers",
+          "market_no_vig_probability": null,
+          "market_pick_prob": null,
+          "market_type": "h2h",
+          "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
+          "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
+          "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
+          "model_odds": -135,
+          "odds": null,
+          "pick": "Rangers ML (Tigers vs Rangers)",
+          "pregame_snapshot": {
+            "away_team": "Detroit Tigers",
+            "decision": "LEAN",
+            "edge": 7.42,
+            "home_team": "Texas Rangers",
+            "market_pick_prob": null,
+            "market_type": "h2h",
+            "model_odds": -135,
+            "odds": null,
+            "pick": "Rangers ML (Tigers vs Rangers)",
+            "probability": 0.5742,
+            "source": "MLB Model",
+            "sport": "MLB",
+            "team": "Rangers",
+            "units": 0.4
+          },
+          "primary_consensus_passed": false,
+          "probability": 0.4751,
+          "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
+          "raw_edge": 7.42,
+          "raw_model_probability": 0.5742,
+          "raw_probability": 0.5742,
+          "raw_units": 0.4,
+          "selected_side_implied_probability": null,
+          "source": "MLB Model",
+          "sport": "MLB",
+          "team": "Rangers",
+          "units": 0.0,
+          "walk_forward_roi": 0.05033671955256251,
+          "walk_forward_samples": 108
         },
         {
           "actionability": "research_signal",
@@ -59647,7 +60419,7 @@
           "confidence": 56.2,
           "confidence_label": "Medium",
           "decision": "LEAN",
-          "edge": 9.1,
+          "edge": 9.94,
           "game": "Golden State Valkyries @ Atlanta Dream",
           "game_start_time": "2026-07-04T17:00Z",
           "guardrail_reasons": [],
@@ -59655,15 +60427,15 @@
           "has_market_price": true,
           "home_team": "Atlanta Dream",
           "league": "WNBA",
-          "market_edge": 0.1841,
-          "market_pick_odds": 154,
-          "market_pick_prob": 0.3775,
+          "market_edge": 0.1925,
+          "market_pick_odds": 160,
+          "market_pick_prob": 0.3691,
           "market_source": "DraftKings via ESPN",
           "market_type": "h2h",
           "matchup": "Golden State Valkyries @ Atlanta Dream",
           "model_prediction": -1.5,
           "notes": "Proj Margin: Golden State Valkyries +1.5 | Total: 168.9 | Conf: Medium",
-          "odds": 154,
+          "odds": 160,
           "pick": "Golden State Valkyries ML (Golden State Valkyries @ Atlanta Dream)",
           "pregame_snapshot": {
             "away_team": "Golden State Valkyries",
@@ -59938,28 +60710,30 @@
         },
         {
           "away_team": "Portland Fire",
-          "calibrated_probability": 0.465717,
+          "calibrated_probability": 0.44677,
           "calibration": {
             "applied": true,
             "key": "global",
-            "probability_delta": -0.090983,
+            "probability_delta": -0.07393,
             "samples": 1197,
             "version": "cal-1752-2026-06-25"
           },
-          "confidence": 55.7,
-          "confidence_label": "Medium",
-          "cover_margin": 1.57,
+          "confidence": 52.1,
+          "confidence_label": "Low",
+          "cover_margin": 0.57,
           "decision": "PASS",
-          "edge": -5.81,
+          "edge": -7.7,
           "game": "Portland Fire @ Seattle Storm",
-          "guardrail_reasons": [],
+          "guardrail_reasons": [
+            "model-to-line cover margin below 1.5 points"
+          ],
           "h2h_games": 0,
           "has_market_price": true,
           "home_team": "Seattle Storm",
           "league": "WNBA",
-          "line": 4.5,
-          "market_edge": 0.0329,
-          "market_line": 4.5,
+          "line": 3.5,
+          "market_edge": -0.0031,
+          "market_line": 3.5,
           "market_pick_odds": -110,
           "market_pick_prob": 0.5238,
           "market_source": "DraftKings via ESPN",
@@ -59967,23 +60741,25 @@
           "matchup": "Portland Fire @ Seattle Storm",
           "model_prediction": -2.93,
           "odds": -110,
-          "pick": "Portland Fire +4.5 (Portland Fire @ Seattle Storm)",
+          "pick": "Portland Fire +3.5 (Portland Fire @ Seattle Storm)",
           "pregame_snapshot": {
             "away_team": "Portland Fire",
-            "confidence": 55.7,
-            "confidence_label": "Medium",
-            "cover_margin": 1.57,
-            "decision": "LEAN",
-            "edge": 3.29,
+            "confidence": 52.1,
+            "confidence_label": "Low",
+            "cover_margin": 0.57,
+            "decision": "PASS",
+            "edge": -0.31,
             "game": "Portland Fire @ Seattle Storm",
-            "guardrail_reasons": [],
+            "guardrail_reasons": [
+              "model-to-line cover margin below 1.5 points"
+            ],
             "h2h_games": 0,
             "has_market_price": true,
             "home_team": "Seattle Storm",
             "league": "WNBA",
-            "line": 4.5,
-            "market_edge": 0.0329,
-            "market_line": 4.5,
+            "line": 3.5,
+            "market_edge": -0.0031,
+            "market_line": 3.5,
             "market_pick_odds": -110,
             "market_pick_prob": 0.5238,
             "market_source": "DraftKings via ESPN",
@@ -59991,8 +60767,8 @@
             "matchup": "Portland Fire @ Seattle Storm",
             "model_prediction": -2.93,
             "odds": -110,
-            "pick": "Portland Fire +4.5 (Portland Fire @ Seattle Storm)",
-            "probability": 0.5567,
+            "pick": "Portland Fire +3.5 (Portland Fire @ Seattle Storm)",
+            "probability": 0.5207,
             "projected_total": 161.3,
             "selection": "Portland Fire",
             "source": "WNBA Model",
@@ -60000,14 +60776,14 @@
             "starters_out": [],
             "starters_questionable": [],
             "team": "Portland Fire",
-            "units": 0.01,
-            "vegas": 4.5
+            "units": 0.0,
+            "vegas": 3.5
           },
-          "probability": 0.4657,
+          "probability": 0.4468,
           "projected_total": 161.3,
-          "raw_edge": 3.29,
-          "raw_probability": 0.5567,
-          "raw_units": 0.01,
+          "raw_edge": -0.31,
+          "raw_probability": 0.5207,
+          "raw_units": 0.0,
           "selection": "Portland Fire",
           "source": "WNBA Model",
           "sport": "WNBA",
@@ -60015,7 +60791,7 @@
           "starters_questionable": [],
           "team": "Portland Fire",
           "units": 0,
-          "vegas": 4.5
+          "vegas": 3.5
         },
         {
           "away_team": "Portland Fire",
@@ -60095,6 +60871,87 @@
           "start_time": "2026-07-05T01:00Z",
           "units": 0.02,
           "vegas": 171.5
+        },
+        {
+          "away_team": "Portland Fire",
+          "calibrated_probability": 0.465717,
+          "calibration": {
+            "applied": true,
+            "key": "global",
+            "probability_delta": -0.090983,
+            "samples": 1197,
+            "version": "cal-1752-2026-06-25"
+          },
+          "confidence": 55.7,
+          "confidence_label": "Medium",
+          "cover_margin": 1.57,
+          "decision": "PASS",
+          "edge": -5.81,
+          "game": "Portland Fire @ Seattle Storm",
+          "guardrail_reasons": [],
+          "h2h_games": 0,
+          "has_market_price": true,
+          "home_team": "Seattle Storm",
+          "league": "WNBA",
+          "line": 4.5,
+          "market_edge": 0.0329,
+          "market_line": 4.5,
+          "market_pick_odds": -110,
+          "market_pick_prob": 0.5238,
+          "market_source": "DraftKings via ESPN",
+          "market_type": "spread",
+          "matchup": "Portland Fire @ Seattle Storm",
+          "model_prediction": -2.93,
+          "odds": -110,
+          "pick": "Portland Fire +4.5 (Portland Fire @ Seattle Storm)",
+          "pregame_snapshot": {
+            "away_team": "Portland Fire",
+            "confidence": 55.7,
+            "confidence_label": "Medium",
+            "cover_margin": 1.57,
+            "decision": "LEAN",
+            "edge": 3.29,
+            "game": "Portland Fire @ Seattle Storm",
+            "guardrail_reasons": [],
+            "h2h_games": 0,
+            "has_market_price": true,
+            "home_team": "Seattle Storm",
+            "league": "WNBA",
+            "line": 4.5,
+            "market_edge": 0.0329,
+            "market_line": 4.5,
+            "market_pick_odds": -110,
+            "market_pick_prob": 0.5238,
+            "market_source": "DraftKings via ESPN",
+            "market_type": "spread",
+            "matchup": "Portland Fire @ Seattle Storm",
+            "model_prediction": -2.93,
+            "odds": -110,
+            "pick": "Portland Fire +4.5 (Portland Fire @ Seattle Storm)",
+            "probability": 0.5567,
+            "projected_total": 161.3,
+            "selection": "Portland Fire",
+            "source": "WNBA Model",
+            "sport": "WNBA",
+            "starters_out": [],
+            "starters_questionable": [],
+            "team": "Portland Fire",
+            "units": 0.01,
+            "vegas": 4.5
+          },
+          "probability": 0.4657,
+          "projected_total": 161.3,
+          "raw_edge": 3.29,
+          "raw_probability": 0.5567,
+          "raw_units": 0.01,
+          "selection": "Portland Fire",
+          "source": "WNBA Model",
+          "sport": "WNBA",
+          "starters_out": [],
+          "starters_questionable": [],
+          "team": "Portland Fire",
+          "units": 0,
+          "vegas": 4.5
         },
         {
           "away_team": "Golden State Valkyries",
@@ -61417,7 +62274,7 @@
     ],
     "updatedAt": "2026-07-04T15:20:56.403883Z"
   },
-  "updatedAt": "2026-07-04T15:38:41.571303Z",
+  "updatedAt": "2026-07-04T16:36:34.599830Z",
   "wnba": {
     "ok": true,
     "picks": [
@@ -61434,7 +62291,7 @@
         "confidence": 56.2,
         "confidence_label": "Medium",
         "decision": "LEAN",
-        "edge": 9.1,
+        "edge": 9.94,
         "game": "Golden State Valkyries @ Atlanta Dream",
         "game_start_time": "2026-07-04T17:00Z",
         "guardrail_reasons": [],
@@ -61442,15 +62299,15 @@
         "has_market_price": true,
         "home_team": "Atlanta Dream",
         "league": "WNBA",
-        "market_edge": 0.1841,
-        "market_pick_odds": 154,
-        "market_pick_prob": 0.3775,
+        "market_edge": 0.1925,
+        "market_pick_odds": 160,
+        "market_pick_prob": 0.3691,
         "market_source": "DraftKings via ESPN",
         "market_type": "h2h",
         "matchup": "Golden State Valkyries @ Atlanta Dream",
         "model_prediction": -1.5,
         "notes": "Proj Margin: Golden State Valkyries +1.5 | Total: 168.9 | Conf: Medium",
-        "odds": 154,
+        "odds": 160,
         "pick": "Golden State Valkyries ML (Golden State Valkyries @ Atlanta Dream)",
         "pregame_snapshot": {
           "away_team": "Golden State Valkyries",
@@ -61725,6 +62582,170 @@
       },
       {
         "away_team": "Portland Fire",
+        "calibrated_probability": 0.44677,
+        "calibration": {
+          "applied": true,
+          "key": "global",
+          "probability_delta": -0.07393,
+          "samples": 1197,
+          "version": "cal-1752-2026-06-25"
+        },
+        "confidence": 52.1,
+        "confidence_label": "Low",
+        "cover_margin": 0.57,
+        "decision": "PASS",
+        "edge": -7.7,
+        "game": "Portland Fire @ Seattle Storm",
+        "guardrail_reasons": [
+          "model-to-line cover margin below 1.5 points"
+        ],
+        "h2h_games": 0,
+        "has_market_price": true,
+        "home_team": "Seattle Storm",
+        "league": "WNBA",
+        "line": 3.5,
+        "market_edge": -0.0031,
+        "market_line": 3.5,
+        "market_pick_odds": -110,
+        "market_pick_prob": 0.5238,
+        "market_source": "DraftKings via ESPN",
+        "market_type": "spread",
+        "matchup": "Portland Fire @ Seattle Storm",
+        "model_prediction": -2.93,
+        "odds": -110,
+        "pick": "Portland Fire +3.5 (Portland Fire @ Seattle Storm)",
+        "pregame_snapshot": {
+          "away_team": "Portland Fire",
+          "confidence": 52.1,
+          "confidence_label": "Low",
+          "cover_margin": 0.57,
+          "decision": "PASS",
+          "edge": -0.31,
+          "game": "Portland Fire @ Seattle Storm",
+          "guardrail_reasons": [
+            "model-to-line cover margin below 1.5 points"
+          ],
+          "h2h_games": 0,
+          "has_market_price": true,
+          "home_team": "Seattle Storm",
+          "league": "WNBA",
+          "line": 3.5,
+          "market_edge": -0.0031,
+          "market_line": 3.5,
+          "market_pick_odds": -110,
+          "market_pick_prob": 0.5238,
+          "market_source": "DraftKings via ESPN",
+          "market_type": "spread",
+          "matchup": "Portland Fire @ Seattle Storm",
+          "model_prediction": -2.93,
+          "odds": -110,
+          "pick": "Portland Fire +3.5 (Portland Fire @ Seattle Storm)",
+          "probability": 0.5207,
+          "projected_total": 161.3,
+          "selection": "Portland Fire",
+          "source": "WNBA Model",
+          "sport": "WNBA",
+          "starters_out": [],
+          "starters_questionable": [],
+          "team": "Portland Fire",
+          "units": 0.0,
+          "vegas": 3.5
+        },
+        "probability": 0.4468,
+        "projected_total": 161.3,
+        "raw_edge": -0.31,
+        "raw_probability": 0.5207,
+        "raw_units": 0.0,
+        "selection": "Portland Fire",
+        "source": "WNBA Model",
+        "sport": "WNBA",
+        "starters_out": [],
+        "starters_questionable": [],
+        "team": "Portland Fire",
+        "units": 0,
+        "vegas": 3.5
+      },
+      {
+        "away_team": "Portland Fire",
+        "calibrated_probability": 0.603745,
+        "calibration": {
+          "applied": true,
+          "key": "global",
+          "probability_delta": -0.179955,
+          "samples": 1197,
+          "version": "cal-1752-2026-06-25"
+        },
+        "confidence": 78.4,
+        "confidence_label": "Medium",
+        "decision": "LEAN",
+        "edge": 7.99,
+        "game": "Portland Fire @ Seattle Storm",
+        "game_start_time": "2026-07-05T01:00Z",
+        "guardrail_reasons": [
+          "new totals market capped at LEAN while its live record is established"
+        ],
+        "h2h_games": 0,
+        "has_market_price": true,
+        "home_team": "Seattle Storm",
+        "league": "WNBA",
+        "line": 171.5,
+        "market_edge": 0.2599,
+        "market_line": 171.5,
+        "market_pick_odds": -110,
+        "market_pick_prob": 0.5238,
+        "market_source": "DraftKings via ESPN",
+        "market_type": "totals",
+        "matchup": "Portland Fire @ Seattle Storm",
+        "model_prediction": 161.3,
+        "odds": -110,
+        "pick": "Under 171.5 (Portland Fire vs Seattle Storm)",
+        "pregame_snapshot": {
+          "away_team": "Portland Fire",
+          "confidence": 78.4,
+          "confidence_label": "Medium",
+          "decision": "LEAN",
+          "edge": 25.99,
+          "game": "Portland Fire @ Seattle Storm",
+          "guardrail_reasons": [
+            "new totals market capped at LEAN while its live record is established"
+          ],
+          "h2h_games": 0,
+          "has_market_price": true,
+          "home_team": "Seattle Storm",
+          "league": "WNBA",
+          "line": 171.5,
+          "market_edge": 0.2599,
+          "market_line": 171.5,
+          "market_pick_odds": -110,
+          "market_pick_prob": 0.5238,
+          "market_source": "DraftKings via ESPN",
+          "market_type": "totals",
+          "matchup": "Portland Fire @ Seattle Storm",
+          "model_prediction": 161.3,
+          "odds": -110,
+          "pick": "Under 171.5 (Portland Fire vs Seattle Storm)",
+          "probability": 0.7837,
+          "projected_total": 161.3,
+          "selection": "Under",
+          "source": "WNBA Model",
+          "sport": "WNBA",
+          "units": 0.04,
+          "vegas": 171.5
+        },
+        "probability": 0.6037,
+        "projected_total": 161.3,
+        "raw_edge": 25.99,
+        "raw_probability": 0.7837,
+        "raw_units": 0.04,
+        "selection": "Under",
+        "source": "WNBA Model",
+        "sport": "WNBA",
+        "start_time": "2026-07-05T01:00Z",
+        "units": 0.02,
+        "vegas": 171.5
+      },
+      {
+        "away_team": "Portland Fire",
         "calibrated_probability": 0.465717,
         "calibration": {
           "applied": true,
@@ -61803,83 +62824,6 @@
         "team": "Portland Fire",
         "units": 0,
         "vegas": 4.5
-      },
-      {
-        "away_team": "Portland Fire",
-        "calibrated_probability": 0.603745,
-        "calibration": {
-          "applied": true,
-          "key": "global",
-          "probability_delta": -0.179955,
-          "samples": 1197,
-          "version": "cal-1752-2026-06-25"
-        },
-        "confidence": 78.4,
-        "confidence_label": "Medium",
-        "decision": "LEAN",
-        "edge": 7.99,
-        "game": "Portland Fire @ Seattle Storm",
-        "guardrail_reasons": [
-          "new totals market capped at LEAN while its live record is established"
-        ],
-        "h2h_games": 0,
-        "has_market_price": true,
-        "home_team": "Seattle Storm",
-        "league": "WNBA",
-        "line": 171.5,
-        "market_edge": 0.2599,
-        "market_line": 171.5,
-        "market_pick_odds": -110,
-        "market_pick_prob": 0.5238,
-        "market_source": "DraftKings via ESPN",
-        "market_type": "totals",
-        "matchup": "Portland Fire @ Seattle Storm",
-        "model_prediction": 161.3,
-        "odds": -110,
-        "pick": "Under 171.5 (Portland Fire vs Seattle Storm)",
-        "pregame_snapshot": {
-          "away_team": "Portland Fire",
-          "confidence": 78.4,
-          "confidence_label": "Medium",
-          "decision": "LEAN",
-          "edge": 25.99,
-          "game": "Portland Fire @ Seattle Storm",
-          "guardrail_reasons": [
-            "new totals market capped at LEAN while its live record is established"
-          ],
-          "h2h_games": 0,
-          "has_market_price": true,
-          "home_team": "Seattle Storm",
-          "league": "WNBA",
-          "line": 171.5,
-          "market_edge": 0.2599,
-          "market_line": 171.5,
-          "market_pick_odds": -110,
-          "market_pick_prob": 0.5238,
-          "market_source": "DraftKings via ESPN",
-          "market_type": "totals",
-          "matchup": "Portland Fire @ Seattle Storm",
-          "model_prediction": 161.3,
-          "odds": -110,
-          "pick": "Under 171.5 (Portland Fire vs Seattle Storm)",
-          "probability": 0.7837,
-          "projected_total": 161.3,
-          "selection": "Under",
-          "source": "WNBA Model",
-          "sport": "WNBA",
-          "units": 0.04,
-          "vegas": 171.5
-        },
-        "probability": 0.6037,
-        "projected_total": 161.3,
-        "raw_edge": 25.99,
-        "raw_probability": 0.7837,
-        "raw_units": 0.04,
-        "selection": "Under",
-        "source": "WNBA Model",
-        "sport": "WNBA",
-        "units": 0.02,
-        "vegas": 171.5
       },
       {
         "away_team": "Golden State Valkyries",
