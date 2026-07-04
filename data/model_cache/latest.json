@@ -50343,7 +50343,7 @@
           "game": "Houston Astros vs Tampa Bay Rays",
           "game_id": "824171",
           "game_order": 4,
-          "game_start_time": "2026-07-04T23:10:00Z",
+          "game_start_time": "2026-07-04T23:10Z",
           "home_team": "Houston Astros",
           "inning": 2,
           "league": "MLB",
@@ -50405,7 +50405,7 @@
           "selected_side_implied_probability": 0.545455,
           "source": "MLB Inning",
           "sport": "MLB",
-          "start_time": "2026-07-04T23:10:00Z",
+          "start_time": "2026-07-04T23:10Z",
           "team": "",
           "units": 0.25,
           "validation_lean": true,
@@ -50848,7 +50848,7 @@
           "game": "Cleveland Guardians vs Chicago White Sox",
           "game_id": "824415",
           "game_order": 5,
-          "game_start_time": "2026-07-04T23:10:00Z",
+          "game_start_time": "2026-07-04T23:10Z",
           "home_team": "Cleveland Guardians",
           "inning": 2,
           "league": "MLB",
@@ -50910,7 +50910,7 @@
           "selected_side_implied_probability": 0.545455,
           "source": "MLB Inning",
           "sport": "MLB",
-          "start_time": "2026-07-04T23:10:00Z",
+          "start_time": "2026-07-04T23:10Z",
           "team": "",
           "units": 0.25,
           "validation_lean": true,
@@ -53833,7 +53833,7 @@
           "game": "Arizona Diamondbacks vs Milwaukee Brewers",
           "game_id": "825063",
           "game_order": 12,
-          "game_start_time": "2026-07-05T01:40:00Z",
+          "game_start_time": "2026-07-05T01:40Z",
           "home_team": "Arizona Diamondbacks",
           "inning": 3,
           "league": "MLB",
@@ -53895,7 +53895,7 @@
           "selected_side_implied_probability": 0.545455,
           "source": "MLB Inning",
           "sport": "MLB",
-          "start_time": "2026-07-05T01:40:00Z",
+          "start_time": "2026-07-05T01:40Z",
           "team": "",
           "units": 0.25,
           "validation_lean": true,
@@ -58614,6 +58614,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Canada vs Morocco",
+          "game_start_time": "2026-07-04T17:00Z",
           "grade_supported": true,
           "market_type": "soccer_moneyline",
           "matchup": "Canada vs Morocco",
@@ -58622,6 +58623,7 @@
           "probability": null,
           "source": "SportsGamblerFIFAWorldCup",
           "sport": "FIFA WC",
+          "start_time": "2026-07-04T17:00Z",
           "units": 1
         },
         {
@@ -58665,6 +58667,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Washington Nationals vs Pittsburgh Pirates",
+          "game_start_time": "2026-07-04T15:05Z",
           "matchup": "Washington Nationals vs Pittsburgh Pirates",
           "odds": -161,
           "pick": "Pittsburgh Pirates to Win (Washington Nationals vs Pittsburgh Pirates)",
@@ -58684,6 +58687,7 @@
           "probability": null,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-07-04T15:05Z",
           "units": 1
         },
         {
@@ -58691,6 +58695,7 @@
           "decision": "BET",
           "edge": null,
           "game": "New York Yankees vs Minnesota Twins",
+          "game_start_time": "2026-07-04T17:35Z",
           "matchup": "New York Yankees vs Minnesota Twins",
           "odds": -172,
           "pick": "New York Yankees to Win (New York Yankees vs Minnesota Twins)",
@@ -58710,6 +58715,7 @@
           "probability": null,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-07-04T17:35Z",
           "units": 1
         },
         {
@@ -58717,6 +58723,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Texas Rangers vs Detroit Tigers",
+          "game_start_time": "2026-07-04T20:05Z",
           "matchup": "Texas Rangers vs Detroit Tigers",
           "odds": -102,
           "pick": "Texas Rangers to Win (Texas Rangers vs Detroit Tigers)",
@@ -58736,6 +58743,7 @@
           "probability": null,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-07-04T20:05Z",
           "units": 1
         },
         {
@@ -58743,6 +58751,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Seattle Mariners vs Toronto Blue Jays",
+          "game_start_time": "2026-07-04T20:10Z",
           "matchup": "Seattle Mariners vs Toronto Blue Jays",
           "odds": 128,
           "pick": "Toronto Blue Jays to Win (Seattle Mariners vs Toronto Blue Jays)",
@@ -58762,6 +58771,7 @@
           "probability": null,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-07-04T20:10Z",
           "units": 1
         },
         {
@@ -58769,6 +58779,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Houston Astros vs Tampa Bay Rays",
+          "game_start_time": "2026-07-04T23:10Z",
           "matchup": "Houston Astros vs Tampa Bay Rays",
           "odds": -106,
           "pick": "Tampa Bay Rays to Win (Houston Astros vs Tampa Bay Rays)",
@@ -58788,6 +58799,7 @@
           "probability": null,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-07-04T23:10Z",
           "units": 1
         },
         {
@@ -58795,6 +58807,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Cleveland Guardians vs Chicago White Sox",
+          "game_start_time": "2026-07-04T23:10Z",
           "matchup": "Cleveland Guardians vs Chicago White Sox",
           "odds": -159,
           "pick": "Cleveland Guardians to Win (Cleveland Guardians vs Chicago White Sox)",
@@ -58814,6 +58827,7 @@
           "probability": null,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-07-04T23:10Z",
           "units": 1
         },
         {
@@ -58821,6 +58835,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Cincinnati Reds vs Baltimore Orioles",
+          "game_start_time": "2026-07-04T23:10Z",
           "matchup": "Cincinnati Reds vs Baltimore Orioles",
           "odds": -100,
           "pick": "Baltimore Orioles to Win (Cincinnati Reds vs Baltimore Orioles)",
@@ -58840,6 +58855,7 @@
           "probability": null,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-07-04T23:10Z",
           "units": 1
         },
         {
@@ -58847,6 +58863,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Atlanta Braves vs New York Mets",
+          "game_start_time": "2026-07-05T00:08Z",
           "matchup": "Atlanta Braves vs New York Mets",
           "odds": -172,
           "pick": "Atlanta Braves to Win (Atlanta Braves vs New York Mets)",
@@ -58866,6 +58883,7 @@
           "probability": null,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-07-05T00:08Z",
           "units": 1
         },
         {
@@ -58873,6 +58891,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Chicago Cubs vs St. Louis Cardinals",
+          "game_start_time": "2026-07-05T00:08Z",
           "matchup": "Chicago Cubs vs St. Louis Cardinals",
           "odds": -164,
           "pick": "Chicago Cubs to Win (Chicago Cubs vs St. Louis Cardinals)",
@@ -58892,6 +58911,7 @@
           "probability": null,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-07-05T00:08Z",
           "units": 1
         },
         {
@@ -58899,6 +58919,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Kansas City Royals vs Philadelphia Phillies",
+          "game_start_time": "2026-07-05T00:10Z",
           "matchup": "Kansas City Royals vs Philadelphia Phillies",
           "odds": -152,
           "pick": "Philadelphia Phillies to Win (Kansas City Royals vs Philadelphia Phillies)",
@@ -58918,6 +58939,7 @@
           "probability": null,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-07-05T00:10Z",
           "units": 1
         },
         {
@@ -58925,6 +58947,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Colorado Rockies vs San Francisco Giants",
+          "game_start_time": "2026-07-05T00:10Z",
           "matchup": "Colorado Rockies vs San Francisco Giants",
           "odds": -137,
           "pick": "San Francisco Giants to Win (Colorado Rockies vs San Francisco Giants)",
@@ -58944,6 +58967,7 @@
           "probability": null,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-07-05T00:10Z",
           "units": 1
         },
         {
@@ -58951,6 +58975,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Los Angeles Angels vs Boston Red Sox",
+          "game_start_time": "2026-07-05T01:38Z",
           "matchup": "Los Angeles Angels vs Boston Red Sox",
           "odds": 135,
           "pick": "Los Angeles Angels to Win (Los Angeles Angels vs Boston Red Sox)",
@@ -58970,6 +58995,7 @@
           "probability": null,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-07-05T01:38Z",
           "units": 1
         },
         {
@@ -58977,6 +59003,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Arizona Diamondbacks vs Milwaukee Brewers",
+          "game_start_time": "2026-07-05T01:40Z",
           "matchup": "Arizona Diamondbacks vs Milwaukee Brewers",
           "odds": 123,
           "pick": "Arizona Diamondbacks to Win (Arizona Diamondbacks vs Milwaukee Brewers)",
@@ -58996,6 +59023,7 @@
           "probability": null,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-07-05T01:40Z",
           "units": 1
         },
         {
@@ -59003,6 +59031,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Athletics vs Miami Marlins",
+          "game_start_time": "2026-07-05T01:40Z",
           "matchup": "Athletics vs Miami Marlins",
           "odds": 102,
           "pick": "Athletics to Win (Athletics vs Miami Marlins)",
@@ -59022,6 +59051,7 @@
           "probability": null,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-07-05T01:40Z",
           "units": 1
         },
         {
@@ -59029,6 +59059,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Los Angeles Dodgers vs San Diego Padres",
+          "game_start_time": "2026-07-05T02:10Z",
           "matchup": "Los Angeles Dodgers vs San Diego Padres",
           "odds": 195,
           "pick": "San Diego Padres to Win (Los Angeles Dodgers vs San Diego Padres)",
@@ -59048,6 +59079,7 @@
           "probability": null,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-07-05T02:10Z",
           "units": 1
         }
       ],
@@ -59094,6 +59126,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Atlanta Dream vs Golden State Valkyries",
+          "game_start_time": "2026-07-04T17:00Z",
           "matchup": "Atlanta Dream vs Golden State Valkyries",
           "odds": -110,
           "pick": "Over 161.5 Points (Atlanta Dream vs Golden State Valkyries)",
@@ -59113,6 +59146,7 @@
           "probability": null,
           "source": "SportsGamblerWNBA",
           "sport": "WNBA",
+          "start_time": "2026-07-04T17:00Z",
           "units": 1
         },
         {
@@ -59120,6 +59154,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Seattle Storm vs Portland Fire",
+          "game_start_time": "2026-07-05T01:00Z",
           "matchup": "Seattle Storm vs Portland Fire",
           "odds": -108,
           "pick": "Over 168.5 Points (Seattle Storm vs Portland Fire)",
@@ -59139,6 +59174,7 @@
           "probability": null,
           "source": "SportsGamblerWNBA",
           "sport": "WNBA",
+          "start_time": "2026-07-05T01:00Z",
           "units": 1
         }
       ],
@@ -59218,6 +59254,7 @@
           "decision": "BET",
           "edge": null,
           "game": "New York Yankees vs Minnesota Twins",
+          "game_start_time": "2026-07-04T17:35Z",
           "matchup": "New York Yankees vs Minnesota Twins",
           "odds": -115,
           "pick": "Under 10 (Yankees vs Twins)",
@@ -59237,6 +59274,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-07-04T17:35Z",
           "units": 1
         },
         {
@@ -59244,6 +59282,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Texas Rangers vs Detroit Tigers",
+          "game_start_time": "2026-07-04T20:05Z",
           "matchup": "Texas Rangers vs Detroit Tigers",
           "odds": -102,
           "pick": "Texas Rangers win the match (Rangers vs Tigers)",
@@ -59263,6 +59302,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-07-04T20:05Z",
           "units": 1
         },
         {
@@ -59270,6 +59310,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Houston Astros vs Tampa Bay Rays",
+          "game_start_time": "2026-07-04T23:10Z",
           "matchup": "Houston Astros vs Tampa Bay Rays",
           "odds": -109,
           "pick": "Tampa Bay Rays on the moneyline (Astros vs Rays)",
@@ -59289,6 +59330,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-07-04T23:10Z",
           "units": 1
         },
         {
@@ -59296,6 +59338,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Cleveland Guardians vs Chicago White Sox",
+          "game_start_time": "2026-07-04T23:10Z",
           "matchup": "Cleveland Guardians vs Chicago White Sox",
           "odds": -143,
           "pick": "Guardians ML (Guardians vs White Sox)",
@@ -59315,6 +59358,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-07-04T23:10Z",
           "units": 1
         },
         {
@@ -59322,6 +59366,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Chicago Cubs vs St. Louis Cardinals",
+          "game_start_time": "2026-07-05T00:08Z",
           "matchup": "Chicago Cubs vs St. Louis Cardinals",
           "odds": -154,
           "pick": "Over 7.5 (Cubs vs Cardinals)",
@@ -59341,6 +59386,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-07-05T00:08Z",
           "units": 1
         },
         {
@@ -59378,6 +59424,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Kansas City Royals vs Philadelphia Phillies",
+          "game_start_time": "2026-07-05T00:10Z",
           "matchup": "Kansas City Royals vs Philadelphia Phillies",
           "odds": -130,
           "pick": "Phillies ML (Royals vs Phillies)",
@@ -59397,6 +59444,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-07-05T00:10Z",
           "units": 1
         },
         {
@@ -59434,6 +59482,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Athletics vs Miami Marlins",
+          "game_start_time": "2026-07-05T01:40Z",
           "matchup": "Athletics vs Miami Marlins",
           "odds": -101,
           "pick": "Over 11 Total Runs (Athletics vs Marlins)",
@@ -59453,6 +59502,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-07-05T01:40Z",
           "units": 1
         },
         {
@@ -59460,6 +59510,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Los Angeles Dodgers vs San Diego Padres",
+          "game_start_time": "2026-07-05T02:10Z",
           "matchup": "Los Angeles Dodgers vs San Diego Padres",
           "odds": -120,
           "pick": "Over 8.5 Total Runs (Dodgers vs Padres)",
@@ -59479,6 +59530,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-07-05T02:10Z",
           "units": 1
         }
       ],
@@ -59525,6 +59577,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Atlanta Dream vs Golden State Valkyries",
+          "game_start_time": "2026-07-04T17:00Z",
           "matchup": "Atlanta Dream vs Golden State Valkyries",
           "odds": -176,
           "pick": "Under 167.5 (Dream vs Valkyries)",
@@ -59544,6 +59597,7 @@
           "probability": null,
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
+          "start_time": "2026-07-04T17:00Z",
           "units": 1
         },
         {
@@ -59551,6 +59605,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Seattle Storm vs Portland Fire",
+          "game_start_time": "2026-07-05T01:00Z",
           "matchup": "Seattle Storm vs Portland Fire",
           "odds": -164,
           "pick": "Seattle Storm for the win (Storm vs Fire)",
@@ -59570,6 +59625,7 @@
           "probability": null,
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
+          "start_time": "2026-07-05T01:00Z",
           "units": 1
         }
       ],
@@ -59976,6 +60032,7 @@
           "decision": "LEAN",
           "edge": 7.99,
           "game": "Portland Fire @ Seattle Storm",
+          "game_start_time": "2026-07-05T01:00Z",
           "guardrail_reasons": [
             "new totals market capped at LEAN while its live record is established"
           ],
@@ -60035,6 +60092,7 @@
           "selection": "Under",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-07-05T01:00Z",
           "units": 0.02,
           "vegas": 171.5
         },
