@@ -45,7 +45,7 @@
           "sourceKey": "mlb_first_five",
           "sourceType": "model",
           "sport": "MLB",
-          "startTime": "2026-07-05T01:40:00Z"
+          "startTime": "2026-07-05T01:40Z"
         },
         {
           "calibratedEdge": 0.0781,
@@ -199,7 +199,7 @@
   ],
   "date": "2026-07-04",
   "engineVersion": "parlay_cards_v3_calibrated_portfolio",
-  "generatedAt": "2026-07-04T14:50:54.963153Z",
+  "generatedAt": "2026-07-04T14:55:39.614299Z",
   "notices": [
     "No same-game legs, same-player duplicates, or duplicate markets are allowed in a slip.",
     "Every leg must clear at least +1.5 percentage points of calibrated edge over the market price.",
