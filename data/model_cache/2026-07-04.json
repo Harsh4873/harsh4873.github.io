@@ -40365,6 +40365,7 @@
           "raw_edge": 13.28,
           "raw_model_probability": 0.6566,
           "raw_probability": 0.6566,
+          "result": "loss",
           "selected_side_implied_probability": 0.52381,
           "source": "MLB First Five",
           "sport": "MLB",
@@ -46774,6 +46775,7 @@
           "raw_edge": 10.92,
           "raw_model_probability": 0.628,
           "raw_probability": 0.628,
+          "result": "loss",
           "selected_side_implied_probability": 0.545455,
           "source": "MLB Inning",
           "sport": "MLB",
@@ -48331,6 +48333,7 @@
           "raw_edge": 12.69,
           "raw_model_probability": 0.645,
           "raw_probability": 0.645,
+          "result": "loss",
           "selected_side_implied_probability": 0.545455,
           "source": "MLB Inning",
           "sport": "MLB",
@@ -50376,6 +50379,7 @@
           "raw_edge": 13.68,
           "raw_model_probability": 0.627,
           "raw_probability": 0.627,
+          "result": "win",
           "selected_side_implied_probability": 0.545455,
           "source": "MLB Inning",
           "sport": "MLB",
@@ -54093,6 +54097,7 @@
           "raw_model_probability": 0.5976,
           "raw_probability": 0.5976,
           "raw_units": 0.04,
+          "result": "win",
           "selected_side_implied_probability": 0.5238095238095238,
           "selection": "Under",
           "source": "MLB Model",
@@ -57205,6 +57210,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-04T23:10Z",
@@ -57233,6 +57239,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-04T23:10Z",
@@ -57261,6 +57268,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-04T23:10Z",
@@ -57289,6 +57297,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-05T00:08Z",
@@ -57317,6 +57326,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-05T00:08Z",
@@ -57345,6 +57355,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-05T00:10Z",
@@ -57373,6 +57384,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-05T00:10Z",
@@ -57401,6 +57413,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-05T01:38Z",
@@ -57429,6 +57442,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-05T01:40Z",
@@ -57457,6 +57471,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-05T01:40Z",
@@ -57485,6 +57500,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-05T02:10Z",
@@ -57552,6 +57568,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerWNBA",
           "sport": "WNBA",
           "start_time": "2026-07-05T01:00Z",
@@ -57619,6 +57636,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-07-04T23:10Z",
@@ -57647,6 +57665,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-07-04T23:10Z",
@@ -57675,6 +57694,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-07-05T00:08Z",
@@ -57733,6 +57753,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-07-05T00:10Z",
@@ -57791,6 +57812,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-07-05T01:40Z",
@@ -57819,6 +57841,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-07-05T02:10Z",
@@ -57886,6 +57909,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
           "start_time": "2026-07-05T01:00Z",
@@ -58200,6 +58224,7 @@
           "raw_edge": 28.17,
           "raw_probability": 0.8055,
           "raw_units": 0.05,
+          "result": "win",
           "selection": "Under",
           "source": "WNBA Model",
           "sport": "WNBA",
@@ -58518,6 +58543,7 @@
           "raw_edge": 25.99,
           "raw_probability": 0.7837,
           "raw_units": 0.04,
+          "result": "win",
           "selection": "Under",
           "source": "WNBA Model",
           "sport": "WNBA",
@@ -58751,6 +58777,7 @@
           "raw_edge": 23.66,
           "raw_probability": 0.7604,
           "raw_units": 0.04,
+          "result": "win",
           "selection": "Under",
           "source": "WNBA Model",
           "sport": "WNBA",
@@ -58830,6 +58857,7 @@
           "raw_edge": 21.21,
           "raw_probability": 0.7359,
           "raw_units": 0.04,
+          "result": "win",
           "selection": "Under",
           "source": "WNBA Model",
           "sport": "WNBA",
