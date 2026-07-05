@@ -1,11 +1,11 @@
 {
   "date": "2026-07-05",
   "errors": [],
-  "externalFeedsUpdatedAt": "2026-07-05T17:24:33.249396Z",
+  "externalFeedsUpdatedAt": "2026-07-05T19:45:39.002168Z",
   "external_feeds": {
     "scores24_fifa_world_cup": {
       "date": "2026-07-05",
-      "generatedAt": "2026-07-05T17:24:33.249396Z",
+      "generatedAt": "2026-07-05T19:45:39.002168Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "attemptedUrls": 2,
@@ -21,7 +21,7 @@
         "missingMatchups": [],
         "officialMatchups": 2,
         "unpublishedMatchups": [],
-        "updatedAt": "2026-07-05T17:24:33.249396Z"
+        "updatedAt": "2026-07-05T19:45:39.002168Z"
       },
       "note": "Scores24FIFAWorldCup matched 2 published editorial choice(s) against 2 official 2026-07-05 matchup(s).",
       "ok": true,
@@ -69,11 +69,11 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-05T17:24:33.249396Z"
+      "updatedAt": "2026-07-05T19:45:39.002168Z"
     },
     "scores24_mlb": {
       "date": "2026-07-05",
-      "generatedAt": "2026-07-05T17:24:33.249396Z",
+      "generatedAt": "2026-07-05T19:45:39.002168Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "attemptedUrls": 15,
@@ -89,7 +89,7 @@
         "missingMatchups": [],
         "officialMatchups": 15,
         "unpublishedMatchups": [],
-        "updatedAt": "2026-07-05T17:24:33.249396Z"
+        "updatedAt": "2026-07-05T19:45:39.002168Z"
       },
       "note": "Scores24MLB matched 15 published editorial choice(s) against 15 official 2026-07-05 matchup(s).",
       "ok": true,
@@ -318,8 +318,8 @@
           "game": "Philadelphia Phillies @ Kansas City Royals",
           "home_team": "Kansas City Royals",
           "matchup": "Philadelphia Phillies @ Kansas City Royals",
-          "odds": -175,
-          "pick": "Total Over (8,5) (Philadelphia Phillies @ Kansas City Royals)",
+          "odds": 110,
+          "pick": "Total Under (8,5) (Philadelphia Phillies @ Kansas City Royals)",
           "pregame_snapshot": {
             "away_team": "Philadelphia Phillies",
             "date": "2026-07-05",
@@ -328,22 +328,22 @@
             "game": "Philadelphia Phillies @ Kansas City Royals",
             "home_team": "Kansas City Royals",
             "matchup": "Philadelphia Phillies @ Kansas City Royals",
-            "odds": -175,
-            "pick": "Total Over (8,5) (Philadelphia Phillies @ Kansas City Royals)",
+            "odds": 110,
+            "pick": "Total Under (8,5) (Philadelphia Phillies @ Kansas City Royals)",
             "probability": null,
             "source": "Scores24MLB",
-            "source_url": "https://scores24.live/en/baseball/m-05-07-2026-kansas-city-royals-philadelphia-phillies-prediction",
+            "source_url": "https://scores24.live/en/baseball/m-04-07-2026-kansas-city-royals-philadelphia-phillies-prediction",
             "sport": "MLB",
             "start_time": "2026-07-05T19:00Z",
-            "tip": "Total Over (8,5)",
+            "tip": "Total Under (8,5)",
             "units": 1
           },
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-05-07-2026-kansas-city-royals-philadelphia-phillies-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-04-07-2026-kansas-city-royals-philadelphia-phillies-prediction",
           "sport": "MLB",
           "start_time": "2026-07-05T19:00Z",
-          "tip": "Total Over (8,5)",
+          "tip": "Total Under (8,5)",
           "units": 1
         },
         {
@@ -426,8 +426,8 @@
           "game": "San Francisco Giants @ Colorado Rockies",
           "home_team": "Colorado Rockies",
           "matchup": "San Francisco Giants @ Colorado Rockies",
-          "odds": -128,
-          "pick": "San Francisco Giants ML (San Francisco Giants @ Colorado Rockies)",
+          "odds": -130,
+          "pick": "Total Over (12,5) (San Francisco Giants @ Colorado Rockies)",
           "pregame_snapshot": {
             "away_team": "San Francisco Giants",
             "date": "2026-07-05",
@@ -436,22 +436,22 @@
             "game": "San Francisco Giants @ Colorado Rockies",
             "home_team": "Colorado Rockies",
             "matchup": "San Francisco Giants @ Colorado Rockies",
-            "odds": -128,
-            "pick": "San Francisco Giants ML (San Francisco Giants @ Colorado Rockies)",
+            "odds": -130,
+            "pick": "Total Over (12,5) (San Francisco Giants @ Colorado Rockies)",
             "probability": null,
             "source": "Scores24MLB",
-            "source_url": "https://scores24.live/en/baseball/m-04-07-2026-colorado-rockies-san-francisco-giants-prediction",
+            "source_url": "https://scores24.live/en/baseball/m-05-07-2026-colorado-rockies-san-francisco-giants-prediction",
             "sport": "MLB",
             "start_time": "2026-07-05T20:00Z",
-            "tip": "San Francisco Giants Win",
+            "tip": "Total Over (12,5)",
             "units": 1
           },
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-04-07-2026-colorado-rockies-san-francisco-giants-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-05-07-2026-colorado-rockies-san-francisco-giants-prediction",
           "sport": "MLB",
           "start_time": "2026-07-05T20:00Z",
-          "tip": "San Francisco Giants Win",
+          "tip": "Total Over (12,5)",
           "units": 1
         },
         {
@@ -462,7 +462,7 @@
           "game": "Milwaukee Brewers @ Arizona Diamondbacks",
           "home_team": "Arizona Diamondbacks",
           "matchup": "Milwaukee Brewers @ Arizona Diamondbacks",
-          "odds": -149,
+          "odds": -123,
           "pick": "Milwaukee Brewers ML (Milwaukee Brewers @ Arizona Diamondbacks)",
           "pregame_snapshot": {
             "away_team": "Milwaukee Brewers",
@@ -484,7 +484,7 @@
           },
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-04-07-2026-arizona-diamondbacks-milwaukee-brewers-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-05-07-2026-arizona-diamondbacks-milwaukee-brewers-prediction",
           "sport": "MLB",
           "start_time": "2026-07-05T20:00Z",
           "tip": "Milwaukee Brewers Win",
@@ -498,8 +498,8 @@
           "game": "Miami Marlins @ Athletics",
           "home_team": "Athletics",
           "matchup": "Miami Marlins @ Athletics",
-          "odds": -133,
-          "pick": "Total Over (10,5) (Miami Marlins @ Athletics)",
+          "odds": -120,
+          "pick": "Oakland Athletics ML (Miami Marlins @ Athletics)",
           "pregame_snapshot": {
             "away_team": "Miami Marlins",
             "date": "2026-07-05",
@@ -508,22 +508,22 @@
             "game": "Miami Marlins @ Athletics",
             "home_team": "Athletics",
             "matchup": "Miami Marlins @ Athletics",
-            "odds": -133,
-            "pick": "Total Over (10,5) (Miami Marlins @ Athletics)",
+            "odds": -120,
+            "pick": "Oakland Athletics ML (Miami Marlins @ Athletics)",
             "probability": null,
             "source": "Scores24MLB",
-            "source_url": "https://scores24.live/en/baseball/m-04-07-2026-athletics-miami-marlins-prediction",
+            "source_url": "https://scores24.live/en/baseball/m-05-07-2026-athletics-miami-marlins-prediction",
             "sport": "MLB",
             "start_time": "2026-07-05T20:30Z",
-            "tip": "Total Over (10,5)",
+            "tip": "Oakland Athletics Win",
             "units": 1
           },
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-04-07-2026-athletics-miami-marlins-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-05-07-2026-athletics-miami-marlins-prediction",
           "sport": "MLB",
           "start_time": "2026-07-05T20:30Z",
-          "tip": "Total Over (10,5)",
+          "tip": "Oakland Athletics Win",
           "units": 1
         },
         {
@@ -635,11 +635,11 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-05T17:24:33.249396Z"
+      "updatedAt": "2026-07-05T19:45:39.002168Z"
     },
     "scores24_wnba": {
       "date": "2026-07-05",
-      "generatedAt": "2026-07-05T17:24:33.249396Z",
+      "generatedAt": "2026-07-05T19:45:39.002168Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "attemptedUrls": 2,
@@ -655,7 +655,7 @@
         "missingMatchups": [],
         "officialMatchups": 2,
         "unpublishedMatchups": [],
-        "updatedAt": "2026-07-05T17:24:33.249396Z"
+        "updatedAt": "2026-07-05T19:45:39.002168Z"
       },
       "note": "Scores24WNBA matched 2 published editorial choice(s) against 2 official 2026-07-05 matchup(s).",
       "ok": true,
@@ -733,7 +733,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-05T17:24:33.249396Z"
+      "updatedAt": "2026-07-05T19:45:39.002168Z"
     },
     "sportsgambler_fifa_world_cup": {
       "date": "2026-07-05",
@@ -61303,7 +61303,7 @@
     },
     "scores24_fifa_world_cup": {
       "date": "2026-07-05",
-      "generatedAt": "2026-07-05T17:24:33.249396Z",
+      "generatedAt": "2026-07-05T19:45:39.002168Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "attemptedUrls": 2,
@@ -61319,7 +61319,7 @@
         "missingMatchups": [],
         "officialMatchups": 2,
         "unpublishedMatchups": [],
-        "updatedAt": "2026-07-05T17:24:33.249396Z"
+        "updatedAt": "2026-07-05T19:45:39.002168Z"
       },
       "note": "Scores24FIFAWorldCup matched 2 published editorial choice(s) against 2 official 2026-07-05 matchup(s).",
       "ok": true,
@@ -61367,11 +61367,11 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-05T17:24:33.249396Z"
+      "updatedAt": "2026-07-05T19:45:39.002168Z"
     },
     "scores24_mlb": {
       "date": "2026-07-05",
-      "generatedAt": "2026-07-05T17:24:33.249396Z",
+      "generatedAt": "2026-07-05T19:45:39.002168Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "attemptedUrls": 15,
@@ -61387,7 +61387,7 @@
         "missingMatchups": [],
         "officialMatchups": 15,
         "unpublishedMatchups": [],
-        "updatedAt": "2026-07-05T17:24:33.249396Z"
+        "updatedAt": "2026-07-05T19:45:39.002168Z"
       },
       "note": "Scores24MLB matched 15 published editorial choice(s) against 15 official 2026-07-05 matchup(s).",
       "ok": true,
@@ -61616,8 +61616,8 @@
           "game": "Philadelphia Phillies @ Kansas City Royals",
           "home_team": "Kansas City Royals",
           "matchup": "Philadelphia Phillies @ Kansas City Royals",
-          "odds": -175,
-          "pick": "Total Over (8,5) (Philadelphia Phillies @ Kansas City Royals)",
+          "odds": 110,
+          "pick": "Total Under (8,5) (Philadelphia Phillies @ Kansas City Royals)",
           "pregame_snapshot": {
             "away_team": "Philadelphia Phillies",
             "date": "2026-07-05",
@@ -61626,22 +61626,22 @@
             "game": "Philadelphia Phillies @ Kansas City Royals",
             "home_team": "Kansas City Royals",
             "matchup": "Philadelphia Phillies @ Kansas City Royals",
-            "odds": -175,
-            "pick": "Total Over (8,5) (Philadelphia Phillies @ Kansas City Royals)",
+            "odds": 110,
+            "pick": "Total Under (8,5) (Philadelphia Phillies @ Kansas City Royals)",
             "probability": null,
             "source": "Scores24MLB",
-            "source_url": "https://scores24.live/en/baseball/m-05-07-2026-kansas-city-royals-philadelphia-phillies-prediction",
+            "source_url": "https://scores24.live/en/baseball/m-04-07-2026-kansas-city-royals-philadelphia-phillies-prediction",
             "sport": "MLB",
             "start_time": "2026-07-05T19:00Z",
-            "tip": "Total Over (8,5)",
+            "tip": "Total Under (8,5)",
             "units": 1
           },
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-05-07-2026-kansas-city-royals-philadelphia-phillies-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-04-07-2026-kansas-city-royals-philadelphia-phillies-prediction",
           "sport": "MLB",
           "start_time": "2026-07-05T19:00Z",
-          "tip": "Total Over (8,5)",
+          "tip": "Total Under (8,5)",
           "units": 1
         },
         {
@@ -61724,8 +61724,8 @@
           "game": "San Francisco Giants @ Colorado Rockies",
           "home_team": "Colorado Rockies",
           "matchup": "San Francisco Giants @ Colorado Rockies",
-          "odds": -128,
-          "pick": "San Francisco Giants ML (San Francisco Giants @ Colorado Rockies)",
+          "odds": -130,
+          "pick": "Total Over (12,5) (San Francisco Giants @ Colorado Rockies)",
           "pregame_snapshot": {
             "away_team": "San Francisco Giants",
             "date": "2026-07-05",
@@ -61734,22 +61734,22 @@
             "game": "San Francisco Giants @ Colorado Rockies",
             "home_team": "Colorado Rockies",
             "matchup": "San Francisco Giants @ Colorado Rockies",
-            "odds": -128,
-            "pick": "San Francisco Giants ML (San Francisco Giants @ Colorado Rockies)",
+            "odds": -130,
+            "pick": "Total Over (12,5) (San Francisco Giants @ Colorado Rockies)",
             "probability": null,
             "source": "Scores24MLB",
-            "source_url": "https://scores24.live/en/baseball/m-04-07-2026-colorado-rockies-san-francisco-giants-prediction",
+            "source_url": "https://scores24.live/en/baseball/m-05-07-2026-colorado-rockies-san-francisco-giants-prediction",
             "sport": "MLB",
             "start_time": "2026-07-05T20:00Z",
-            "tip": "San Francisco Giants Win",
+            "tip": "Total Over (12,5)",
             "units": 1
           },
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-04-07-2026-colorado-rockies-san-francisco-giants-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-05-07-2026-colorado-rockies-san-francisco-giants-prediction",
           "sport": "MLB",
           "start_time": "2026-07-05T20:00Z",
-          "tip": "San Francisco Giants Win",
+          "tip": "Total Over (12,5)",
           "units": 1
         },
         {
@@ -61760,7 +61760,7 @@
           "game": "Milwaukee Brewers @ Arizona Diamondbacks",
           "home_team": "Arizona Diamondbacks",
           "matchup": "Milwaukee Brewers @ Arizona Diamondbacks",
-          "odds": -149,
+          "odds": -123,
           "pick": "Milwaukee Brewers ML (Milwaukee Brewers @ Arizona Diamondbacks)",
           "pregame_snapshot": {
             "away_team": "Milwaukee Brewers",
@@ -61782,7 +61782,7 @@
           },
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-04-07-2026-arizona-diamondbacks-milwaukee-brewers-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-05-07-2026-arizona-diamondbacks-milwaukee-brewers-prediction",
           "sport": "MLB",
           "start_time": "2026-07-05T20:00Z",
           "tip": "Milwaukee Brewers Win",
@@ -61796,8 +61796,8 @@
           "game": "Miami Marlins @ Athletics",
           "home_team": "Athletics",
           "matchup": "Miami Marlins @ Athletics",
-          "odds": -133,
-          "pick": "Total Over (10,5) (Miami Marlins @ Athletics)",
+          "odds": -120,
+          "pick": "Oakland Athletics ML (Miami Marlins @ Athletics)",
           "pregame_snapshot": {
             "away_team": "Miami Marlins",
             "date": "2026-07-05",
@@ -61806,22 +61806,22 @@
             "game": "Miami Marlins @ Athletics",
             "home_team": "Athletics",
             "matchup": "Miami Marlins @ Athletics",
-            "odds": -133,
-            "pick": "Total Over (10,5) (Miami Marlins @ Athletics)",
+            "odds": -120,
+            "pick": "Oakland Athletics ML (Miami Marlins @ Athletics)",
             "probability": null,
             "source": "Scores24MLB",
-            "source_url": "https://scores24.live/en/baseball/m-04-07-2026-athletics-miami-marlins-prediction",
+            "source_url": "https://scores24.live/en/baseball/m-05-07-2026-athletics-miami-marlins-prediction",
             "sport": "MLB",
             "start_time": "2026-07-05T20:30Z",
-            "tip": "Total Over (10,5)",
+            "tip": "Oakland Athletics Win",
             "units": 1
           },
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-04-07-2026-athletics-miami-marlins-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-05-07-2026-athletics-miami-marlins-prediction",
           "sport": "MLB",
           "start_time": "2026-07-05T20:30Z",
-          "tip": "Total Over (10,5)",
+          "tip": "Oakland Athletics Win",
           "units": 1
         },
         {
@@ -61933,11 +61933,11 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-05T17:24:33.249396Z"
+      "updatedAt": "2026-07-05T19:45:39.002168Z"
     },
     "scores24_wnba": {
       "date": "2026-07-05",
-      "generatedAt": "2026-07-05T17:24:33.249396Z",
+      "generatedAt": "2026-07-05T19:45:39.002168Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "attemptedUrls": 2,
@@ -61953,7 +61953,7 @@
         "missingMatchups": [],
         "officialMatchups": 2,
         "unpublishedMatchups": [],
-        "updatedAt": "2026-07-05T17:24:33.249396Z"
+        "updatedAt": "2026-07-05T19:45:39.002168Z"
       },
       "note": "Scores24WNBA matched 2 published editorial choice(s) against 2 official 2026-07-05 matchup(s).",
       "ok": true,
@@ -62031,7 +62031,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-05T17:24:33.249396Z"
+      "updatedAt": "2026-07-05T19:45:39.002168Z"
     },
     "sportsgambler_fifa_world_cup": {
       "date": "2026-07-05",
@@ -63899,7 +63899,7 @@
   "nba_props": {},
   "scores24_fifa_world_cup": {
     "date": "2026-07-05",
-    "generatedAt": "2026-07-05T17:24:33.249396Z",
+    "generatedAt": "2026-07-05T19:45:39.002168Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "attemptedUrls": 2,
@@ -63915,7 +63915,7 @@
       "missingMatchups": [],
       "officialMatchups": 2,
       "unpublishedMatchups": [],
-      "updatedAt": "2026-07-05T17:24:33.249396Z"
+      "updatedAt": "2026-07-05T19:45:39.002168Z"
     },
     "note": "Scores24FIFAWorldCup matched 2 published editorial choice(s) against 2 official 2026-07-05 matchup(s).",
     "ok": true,
@@ -63963,11 +63963,11 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-07-05T17:24:33.249396Z"
+    "updatedAt": "2026-07-05T19:45:39.002168Z"
   },
   "scores24_mlb": {
     "date": "2026-07-05",
-    "generatedAt": "2026-07-05T17:24:33.249396Z",
+    "generatedAt": "2026-07-05T19:45:39.002168Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "attemptedUrls": 15,
@@ -63983,7 +63983,7 @@
       "missingMatchups": [],
       "officialMatchups": 15,
       "unpublishedMatchups": [],
-      "updatedAt": "2026-07-05T17:24:33.249396Z"
+      "updatedAt": "2026-07-05T19:45:39.002168Z"
     },
     "note": "Scores24MLB matched 15 published editorial choice(s) against 15 official 2026-07-05 matchup(s).",
     "ok": true,
@@ -64212,8 +64212,8 @@
         "game": "Philadelphia Phillies @ Kansas City Royals",
         "home_team": "Kansas City Royals",
         "matchup": "Philadelphia Phillies @ Kansas City Royals",
-        "odds": -175,
-        "pick": "Total Over (8,5) (Philadelphia Phillies @ Kansas City Royals)",
+        "odds": 110,
+        "pick": "Total Under (8,5) (Philadelphia Phillies @ Kansas City Royals)",
         "pregame_snapshot": {
           "away_team": "Philadelphia Phillies",
           "date": "2026-07-05",
@@ -64222,22 +64222,22 @@
           "game": "Philadelphia Phillies @ Kansas City Royals",
           "home_team": "Kansas City Royals",
           "matchup": "Philadelphia Phillies @ Kansas City Royals",
-          "odds": -175,
-          "pick": "Total Over (8,5) (Philadelphia Phillies @ Kansas City Royals)",
+          "odds": 110,
+          "pick": "Total Under (8,5) (Philadelphia Phillies @ Kansas City Royals)",
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-05-07-2026-kansas-city-royals-philadelphia-phillies-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-04-07-2026-kansas-city-royals-philadelphia-phillies-prediction",
           "sport": "MLB",
           "start_time": "2026-07-05T19:00Z",
-          "tip": "Total Over (8,5)",
+          "tip": "Total Under (8,5)",
           "units": 1
         },
         "probability": null,
         "source": "Scores24MLB",
-        "source_url": "https://scores24.live/en/baseball/m-05-07-2026-kansas-city-royals-philadelphia-phillies-prediction",
+        "source_url": "https://scores24.live/en/baseball/m-04-07-2026-kansas-city-royals-philadelphia-phillies-prediction",
         "sport": "MLB",
         "start_time": "2026-07-05T19:00Z",
-        "tip": "Total Over (8,5)",
+        "tip": "Total Under (8,5)",
         "units": 1
       },
       {
@@ -64320,8 +64320,8 @@
         "game": "San Francisco Giants @ Colorado Rockies",
         "home_team": "Colorado Rockies",
         "matchup": "San Francisco Giants @ Colorado Rockies",
-        "odds": -128,
-        "pick": "San Francisco Giants ML (San Francisco Giants @ Colorado Rockies)",
+        "odds": -130,
+        "pick": "Total Over (12,5) (San Francisco Giants @ Colorado Rockies)",
         "pregame_snapshot": {
           "away_team": "San Francisco Giants",
           "date": "2026-07-05",
@@ -64330,22 +64330,22 @@
           "game": "San Francisco Giants @ Colorado Rockies",
           "home_team": "Colorado Rockies",
           "matchup": "San Francisco Giants @ Colorado Rockies",
-          "odds": -128,
-          "pick": "San Francisco Giants ML (San Francisco Giants @ Colorado Rockies)",
+          "odds": -130,
+          "pick": "Total Over (12,5) (San Francisco Giants @ Colorado Rockies)",
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-04-07-2026-colorado-rockies-san-francisco-giants-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-05-07-2026-colorado-rockies-san-francisco-giants-prediction",
           "sport": "MLB",
           "start_time": "2026-07-05T20:00Z",
-          "tip": "San Francisco Giants Win",
+          "tip": "Total Over (12,5)",
           "units": 1
         },
         "probability": null,
         "source": "Scores24MLB",
-        "source_url": "https://scores24.live/en/baseball/m-04-07-2026-colorado-rockies-san-francisco-giants-prediction",
+        "source_url": "https://scores24.live/en/baseball/m-05-07-2026-colorado-rockies-san-francisco-giants-prediction",
         "sport": "MLB",
         "start_time": "2026-07-05T20:00Z",
-        "tip": "San Francisco Giants Win",
+        "tip": "Total Over (12,5)",
         "units": 1
       },
       {
@@ -64356,7 +64356,7 @@
         "game": "Milwaukee Brewers @ Arizona Diamondbacks",
         "home_team": "Arizona Diamondbacks",
         "matchup": "Milwaukee Brewers @ Arizona Diamondbacks",
-        "odds": -149,
+        "odds": -123,
         "pick": "Milwaukee Brewers ML (Milwaukee Brewers @ Arizona Diamondbacks)",
         "pregame_snapshot": {
           "away_team": "Milwaukee Brewers",
@@ -64378,7 +64378,7 @@
         },
         "probability": null,
         "source": "Scores24MLB",
-        "source_url": "https://scores24.live/en/baseball/m-04-07-2026-arizona-diamondbacks-milwaukee-brewers-prediction",
+        "source_url": "https://scores24.live/en/baseball/m-05-07-2026-arizona-diamondbacks-milwaukee-brewers-prediction",
         "sport": "MLB",
         "start_time": "2026-07-05T20:00Z",
         "tip": "Milwaukee Brewers Win",
@@ -64392,8 +64392,8 @@
         "game": "Miami Marlins @ Athletics",
         "home_team": "Athletics",
         "matchup": "Miami Marlins @ Athletics",
-        "odds": -133,
-        "pick": "Total Over (10,5) (Miami Marlins @ Athletics)",
+        "odds": -120,
+        "pick": "Oakland Athletics ML (Miami Marlins @ Athletics)",
         "pregame_snapshot": {
           "away_team": "Miami Marlins",
           "date": "2026-07-05",
@@ -64402,22 +64402,22 @@
           "game": "Miami Marlins @ Athletics",
           "home_team": "Athletics",
           "matchup": "Miami Marlins @ Athletics",
-          "odds": -133,
-          "pick": "Total Over (10,5) (Miami Marlins @ Athletics)",
+          "odds": -120,
+          "pick": "Oakland Athletics ML (Miami Marlins @ Athletics)",
           "probability": null,
           "source": "Scores24MLB",
-          "source_url": "https://scores24.live/en/baseball/m-04-07-2026-athletics-miami-marlins-prediction",
+          "source_url": "https://scores24.live/en/baseball/m-05-07-2026-athletics-miami-marlins-prediction",
           "sport": "MLB",
           "start_time": "2026-07-05T20:30Z",
-          "tip": "Total Over (10,5)",
+          "tip": "Oakland Athletics Win",
           "units": 1
         },
         "probability": null,
         "source": "Scores24MLB",
-        "source_url": "https://scores24.live/en/baseball/m-04-07-2026-athletics-miami-marlins-prediction",
+        "source_url": "https://scores24.live/en/baseball/m-05-07-2026-athletics-miami-marlins-prediction",
         "sport": "MLB",
         "start_time": "2026-07-05T20:30Z",
-        "tip": "Total Over (10,5)",
+        "tip": "Oakland Athletics Win",
         "units": 1
       },
       {
@@ -64529,11 +64529,11 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-07-05T17:24:33.249396Z"
+    "updatedAt": "2026-07-05T19:45:39.002168Z"
   },
   "scores24_wnba": {
     "date": "2026-07-05",
-    "generatedAt": "2026-07-05T17:24:33.249396Z",
+    "generatedAt": "2026-07-05T19:45:39.002168Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "attemptedUrls": 2,
@@ -64549,7 +64549,7 @@
       "missingMatchups": [],
       "officialMatchups": 2,
       "unpublishedMatchups": [],
-      "updatedAt": "2026-07-05T17:24:33.249396Z"
+      "updatedAt": "2026-07-05T19:45:39.002168Z"
     },
     "note": "Scores24WNBA matched 2 published editorial choice(s) against 2 official 2026-07-05 matchup(s).",
     "ok": true,
@@ -64627,7 +64627,7 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-07-05T17:24:33.249396Z"
+    "updatedAt": "2026-07-05T19:45:39.002168Z"
   },
   "sportsgambler_fifa_world_cup": {
     "date": "2026-07-05",
@@ -65609,7 +65609,7 @@
     ],
     "updatedAt": "2026-07-05T15:33:30.451431Z"
   },
-  "updatedAt": "2026-07-05T17:24:33.249396Z",
+  "updatedAt": "2026-07-05T19:45:39.002168Z",
   "wnba": {
     "ok": true,
     "picks": [
