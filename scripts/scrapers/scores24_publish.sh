@@ -85,6 +85,13 @@ for attempt in 1 2 3; do
     echo "Scores24 cache already current for ${DATE_ISO}."
     exit 0
   fi
+  if [[ "${DEPLOYABLE}" == "true" ]]; then
+    (
+      cd "${TEMP_REPO}"
+      "${PYTHON_BIN}" scripts/build_parlay_cards.py --date "${DATE_ISO}"
+    )
+    git -C "${TEMP_REPO}" add data/parlay_cards
+  fi
   git -C "${TEMP_REPO}" commit -m "chore(feeds): refresh Scores24 feeds for ${DATE_ISO}"
   if git -C "${TEMP_REPO}" push origin HEAD:main; then
     if [[ "${DEPLOYABLE}" == "true" ]]; then

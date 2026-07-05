@@ -20,6 +20,7 @@ MODEL_KEYS = {
     "fifa_world_cup",
 }
 PLAYER_PROP_KEYS = {
+    "nba_player_props",
     "mlb_player_props",
     "wnba_player_props",
     "wnba_3pm",
@@ -132,6 +133,49 @@ def test_data_only_readiness_rejects_incomplete_scores24_bucket(tmp_path: Path):
 
     assert result.returncode == 1
     assert "scores24_fifa_world_cup failed" in result.stdout
+
+
+def test_data_only_readiness_allows_weak_parlay_slate_without_team_cards(tmp_path: Path):
+    today = datetime.now(ZoneInfo("America/Chicago")).strftime("%Y-%m-%d")
+    script = _upcheck_repo(tmp_path, today)
+    model_payload_path = tmp_path / "data" / "model_cache" / "latest.json"
+    model_payload = json.loads(model_payload_path.read_text(encoding="utf-8"))
+    model_payload["models"]["mlb_new"]["picks"] = [
+        {"date": today, "sport": "MLB", "pick": "Visible bet A", "decision": "BET", "grade_supported": True},
+        {"date": today, "sport": "MLB", "pick": "Visible bet B", "decision": "BET", "grade_supported": True},
+        {"date": today, "sport": "MLB", "pick": "Visible lean C", "decision": "LEAN", "grade_supported": True},
+    ]
+    _write_json(model_payload_path, model_payload)
+    _write_json(tmp_path / "data" / "model_cache" / f"{today}.json", model_payload)
+
+    parlay_payload = {
+        "date": today,
+        "engineVersion": "parlay_cards_v3_calibrated_portfolio",
+        "summary": {
+            "eligibleLegs": 3,
+            "generatedThreeLegCandidates": 0,
+            "displayedCards": 0,
+            "threeLegCards": 0,
+            "modes": {
+                "team": {"displayedCards": 0},
+                "player": {"displayedCards": 0},
+            },
+        },
+        "cards": [],
+    }
+    _write_json(tmp_path / "data" / "parlay_cards" / "latest.json", parlay_payload)
+    _write_json(tmp_path / "data" / "parlay_cards" / f"{today}.json", parlay_payload)
+
+    result = subprocess.run(
+        [sys.executable, str(script), "--data-only"],
+        cwd=tmp_path,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0
+    assert "daily data is ready" in result.stdout
 
 
 def test_upcheck_reports_raw_and_visible_pick_counts(tmp_path: Path):

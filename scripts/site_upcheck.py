@@ -29,6 +29,7 @@ REQUIRED_MODEL_KEYS = {
     "fifa_world_cup",
 }
 REQUIRED_PLAYER_PROP_KEYS = {
+    "nba_player_props",
     "mlb_player_props",
     "wnba_player_props",
     "wnba_3pm",
@@ -376,9 +377,10 @@ def main() -> int:
             and str(pick.get("pick") or "").strip()
             and pick.get("grade_supported") is not False
         )
-        if team_visible_leg_count >= 3 and not mode_cards["team"]:
-            failures.append("latest parlay board has eligible team legs but zero team-mode cards")
         summary = parlay_latest.get("summary") if isinstance(parlay_latest.get("summary"), dict) else {}
+        generated_three_leg_candidates = int(summary.get("generatedThreeLegCandidates") or 0)
+        if team_visible_leg_count >= 3 and not mode_cards["team"] and generated_three_leg_candidates > 0:
+            failures.append("latest parlay board has eligible team parlay candidates but zero team-mode cards")
         if int(summary.get("displayedCards") or 0) != len(parlay_cards):
             failures.append("latest parlay summary displayedCards does not match cards length")
         mode_summary = summary.get("modes") if isinstance(summary.get("modes"), dict) else {}
