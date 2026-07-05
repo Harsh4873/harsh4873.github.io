@@ -24,14 +24,14 @@
       "totalRebounds": 3
     }
   },
-  "market_rows": 113477,
+  "market_rows": 115071,
   "models": {
     "mlb_history": "2022-26 five-year roster-aware outcome-history classifiers",
     "mlb_season": "2026 market classifier",
     "wnba_history": "2024-26 workload-aware market/count models",
     "wnba_season": "2026 market/count models"
   },
-  "outcome_rows": 412056,
+  "outcome_rows": 412978,
   "roster_aware": true,
   "roster_policy": "Current player IDs only; season features reset annually; recent 3/5/10-game workload dominates older priors.",
   "seasons": {
@@ -171,9 +171,9 @@
         "assists": {
           "active": false,
           "holdout": {
-            "accuracy": 0.6,
-            "losses": 2,
-            "samples": 5,
+            "accuracy": 0.5,
+            "losses": 3,
+            "samples": 6,
             "wins": 3
           },
           "meta_gate_threshold": 0.6,
@@ -182,10 +182,10 @@
           "minimum_validation_samples": 5,
           "selection": "Over",
           "validation": {
-            "accuracy": 0.9565217391304348,
-            "losses": 1,
-            "samples": 23,
-            "wins": 22
+            "accuracy": 0.9090909090909091,
+            "losses": 2,
+            "samples": 22,
+            "wins": 20
           }
         },
         "three_pointers_made": {
@@ -202,9 +202,9 @@
           "minimum_validation_samples": 5,
           "selection": "Over",
           "validation": {
-            "accuracy": 0.8043478260869565,
-            "losses": 9,
-            "samples": 46,
+            "accuracy": 0.7872340425531915,
+            "losses": 10,
+            "samples": 47,
             "wins": 37
           }
         },
@@ -266,6 +266,6 @@
     }
   },
   "target_accuracy": 0.7,
-  "training_fingerprint": "bacd17ca7a036ba7114fd2a827eafdf402af963a10af4ab828e21ae68271c348",
+  "training_fingerprint": "50edb8788221dee54fbed0bf41f710766618a933ad7e5df12753ea92d49fa0cd",
   "version": "player_props_consensus_v2.0.0"
 }
