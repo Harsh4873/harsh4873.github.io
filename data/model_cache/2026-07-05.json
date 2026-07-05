@@ -28096,7 +28096,7 @@
           "edge": 22.47,
           "game": "England @ Mexico",
           "game_id": "760505",
-          "game_start_time": "2026-07-06T00:00Z",
+          "game_start_time": "2026-07-06T01:00Z",
           "home_team": "Mexico",
           "home_tournament_form": {
             "games": 2,
@@ -28140,7 +28140,7 @@
           "reason": "England owns the stronger current-squad projection. Attack 93.3, midfield 92.8, defense 93.9, goalkeeper 93.3. Top player ranks: Jordan Pickford 93.5, Dean Henderson 93.5, Reece James 93.5. England form 2-1-0 (2.33 pts/g, 1.33-0.33 goals/g).",
           "source": "FIFA Model",
           "sport": "FIFA WC",
-          "start_time": "2026-07-06T00:00Z",
+          "start_time": "2026-07-06T01:00Z",
           "team": "England",
           "total_market_blend": 0.18,
           "units": 1.0,
@@ -28271,7 +28271,7 @@
           "edge": 19.07,
           "game": "England @ Mexico",
           "game_id": "760505",
-          "game_start_time": "2026-07-06T00:00Z",
+          "game_start_time": "2026-07-06T01:00Z",
           "home_team": "Mexico",
           "home_tournament_form": {
             "games": 2,
@@ -28314,7 +28314,7 @@
           "reason": "England has the best spread-cover edge at -0.5 from the venue-adjusted Poisson score grid.",
           "source": "FIFA Model",
           "sport": "FIFA WC",
-          "start_time": "2026-07-06T00:00Z",
+          "start_time": "2026-07-06T01:00Z",
           "team": "England",
           "total_market_blend": 0.18,
           "units": 0.92,
@@ -47340,6 +47340,7 @@
           "raw_edge": 13.29,
           "raw_model_probability": 0.651,
           "raw_probability": 0.651,
+          "result": "win",
           "selected_side_implied_probability": 0.545455,
           "source": "MLB Inning",
           "sport": "MLB",
@@ -51437,6 +51438,7 @@
           "raw_model_probability": 0.5886,
           "raw_probability": 0.5886,
           "raw_units": 0.03,
+          "result": "win",
           "selected_side_implied_probability": 0.5238095238095238,
           "selection": "Under",
           "source": "MLB Model",
@@ -54551,6 +54553,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-05-07-2026-colorado-rockies-san-francisco-giants-prediction",
           "sport": "MLB",
@@ -54587,6 +54590,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-05-07-2026-arizona-diamondbacks-milwaukee-brewers-prediction",
           "sport": "MLB",
@@ -54659,6 +54663,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-05-07-2026-seattle-mariners-toronto-blue-jays-prediction",
           "sport": "MLB",
@@ -54879,7 +54884,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Mexico vs England",
-          "game_start_time": "2026-07-06T00:00Z",
+          "game_start_time": "2026-07-06T01:00Z",
           "grade_supported": true,
           "market_type": "soccer_moneyline",
           "matchup": "Mexico vs England",
@@ -54888,7 +54893,7 @@
           "probability": null,
           "source": "SportsGamblerFIFAWorldCup",
           "sport": "FIFA WC",
-          "start_time": "2026-07-06T00:00Z",
+          "start_time": "2026-07-06T01:00Z",
           "units": 1
         }
       ],
@@ -54962,6 +54967,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-05T21:00Z",
@@ -55197,6 +55203,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-07-05T21:00Z",
