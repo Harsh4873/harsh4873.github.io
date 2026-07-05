@@ -376,9 +376,14 @@ def main() -> int:
             and str(pick.get("pick") or "").strip()
             and pick.get("grade_supported") is not False
         )
-        if team_visible_leg_count >= 3 and not mode_cards["team"]:
-            failures.append("latest parlay board has eligible team legs but zero team-mode cards")
         summary = parlay_latest.get("summary") if isinstance(parlay_latest.get("summary"), dict) else {}
+        eligible_parlay_legs = int(summary.get("eligibleLegs") or 0)
+        thin_slate_notice = any(
+            isinstance(notice, str) and "No qualified parlay cards met" in notice
+            for notice in (parlay_latest.get("notices") or [])
+        )
+        if eligible_parlay_legs >= 3 and not mode_cards["team"] and not thin_slate_notice:
+            failures.append("latest parlay board has eligible team legs but zero team-mode cards")
         if int(summary.get("displayedCards") or 0) != len(parlay_cards):
             failures.append("latest parlay summary displayedCards does not match cards length")
         mode_summary = summary.get("modes") if isinstance(summary.get("modes"), dict) else {}
