@@ -1,87 +1,44 @@
 {
   "date": "2026-07-06",
   "errors": [],
-  "externalFeedsUpdatedAt": "2026-07-06T17:13:11.842742Z",
+  "externalFeedsUpdatedAt": "2026-07-06T21:45:55.147180Z",
   "external_feeds": {
     "sportsgambler_fifa_world_cup": {
       "date": "2026-07-06",
       "errors": [],
-      "generatedAt": "2026-07-06T17:13:11.842742Z",
+      "generatedAt": "2026-07-06T21:45:55.147180Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-06",
         "feed": "sportsgambler_fifa_world_cup",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 1,
+        "pick_count": 0,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-06T17:13:11.842742Z"
+        "updatedAt": "2026-07-06T21:45:55.147180Z"
       },
-      "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 1 pick(s).",
+      "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 0 pick(s).",
       "ok": true,
-      "picks": [
-        {
-          "calibration_excluded": true,
-          "date": "2026-07-06",
-          "decision": "BET",
-          "edge": null,
-          "game": "Portugal vs Spain",
-          "grade_supported": true,
-          "market_type": "soccer_total",
-          "matchup": "Portugal vs Spain",
-          "odds": -110,
-          "pick": "Under 2.5 Goals (Portugal vs Spain)",
-          "probability": null,
-          "source": "SportsGamblerFIFAWorldCup",
-          "sport": "FIFA WC",
-          "units": 1
-        }
-      ],
-      "updatedAt": "2026-07-06T17:13:11.842742Z"
+      "picks": [],
+      "updatedAt": "2026-07-06T21:45:55.147180Z"
     },
     "sportsgambler_mlb": {
       "date": "2026-07-06",
       "errors": [],
-      "generatedAt": "2026-07-06T17:13:11.842742Z",
+      "generatedAt": "2026-07-06T21:45:55.147180Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-06",
         "feed": "sportsgambler_mlb",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 8,
+        "pick_count": 7,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-06T17:13:11.842742Z"
+        "updatedAt": "2026-07-06T21:45:55.147180Z"
       },
-      "note": "Scheduled sportsgambler_mlb refresh returned 8 pick(s).",
+      "note": "Scheduled sportsgambler_mlb refresh returned 7 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "date": "2026-07-06",
-          "decision": "BET",
-          "edge": null,
-          "game": "Kansas City Royals vs Philadelphia Phillies",
-          "matchup": "Kansas City Royals vs Philadelphia Phillies",
-          "odds": -227,
-          "pick": "Philadelphia Phillies to Win (Kansas City Royals vs Philadelphia Phillies)",
-          "pregame_snapshot": {
-            "date": "2026-07-06",
-            "decision": "BET",
-            "edge": null,
-            "game": "Kansas City Royals vs Philadelphia Phillies",
-            "matchup": "Kansas City Royals vs Philadelphia Phillies",
-            "odds": -213,
-            "pick": "Philadelphia Phillies to Win (Kansas City Royals vs Philadelphia Phillies)",
-            "probability": null,
-            "source": "SportsGamblerMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "units": 1
-        },
         {
           "date": "2026-07-06",
           "decision": "BET",
@@ -265,12 +222,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-06T17:13:11.842742Z"
+      "updatedAt": "2026-07-06T21:45:55.147180Z"
     },
     "sportsgambler_nba": {
       "date": "2026-07-06",
       "errors": [],
-      "generatedAt": "2026-07-06T17:13:11.842742Z",
+      "generatedAt": "2026-07-06T21:45:55.147180Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-06",
@@ -279,17 +236,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-06T17:13:11.842742Z"
+        "updatedAt": "2026-07-06T21:45:55.147180Z"
       },
       "note": "Scheduled sportsgambler_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-07-06T17:13:11.842742Z"
+      "updatedAt": "2026-07-06T21:45:55.147180Z"
     },
     "sportsgambler_wnba": {
       "date": "2026-07-06",
       "errors": [],
-      "generatedAt": "2026-07-06T17:13:11.842742Z",
+      "generatedAt": "2026-07-06T21:45:55.147180Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-06",
@@ -298,7 +255,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 3,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-06T17:13:11.842742Z"
+        "updatedAt": "2026-07-06T21:45:55.147180Z"
       },
       "note": "Scheduled sportsgambler_wnba refresh returned 3 pick(s).",
       "ok": true,
@@ -382,48 +339,31 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-06T17:13:11.842742Z"
+      "updatedAt": "2026-07-06T21:45:55.147180Z"
     },
     "sportytrader_fifa_world_cup": {
       "date": "2026-07-06",
       "errors": [],
-      "generatedAt": "2026-07-06T17:13:11.842742Z",
+      "generatedAt": "2026-07-06T21:45:55.147180Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-06",
         "feed": "sportytrader_fifa_world_cup",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 1,
+        "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-06T17:13:11.842742Z"
+        "updatedAt": "2026-07-06T21:45:55.147180Z"
       },
-      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 1 pick(s).",
+      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 0 pick(s).",
       "ok": true,
-      "picks": [
-        {
-          "calibration_excluded": true,
-          "date": "2026-07-06",
-          "decision": "BET",
-          "edge": null,
-          "game": "Portugal vs Spain",
-          "grade_supported": true,
-          "market_type": "soccer_moneyline",
-          "matchup": "Portugal vs Spain",
-          "odds": -105,
-          "pick": "Spain to Win (Portugal vs Spain)",
-          "probability": null,
-          "source": "SportyTraderFIFAWorldCup",
-          "sport": "FIFA WC",
-          "units": 1
-        }
-      ],
-      "updatedAt": "2026-07-06T17:13:11.842742Z"
+      "picks": [],
+      "updatedAt": "2026-07-06T21:45:55.147180Z"
     },
     "sportytrader_mlb": {
       "date": "2026-07-06",
       "errors": [],
-      "generatedAt": "2026-07-06T17:13:11.842742Z",
+      "generatedAt": "2026-07-06T21:45:55.147180Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-06",
@@ -432,37 +372,11 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 5,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-06T17:13:11.842742Z"
+        "updatedAt": "2026-07-06T21:45:55.147180Z"
       },
       "note": "Scheduled sportytrader_mlb refresh returned 5 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "date": "2026-07-06",
-          "decision": "BET",
-          "edge": null,
-          "game": "Kansas City Royals vs Philadelphia Phillies",
-          "matchup": "Kansas City Royals vs Philadelphia Phillies",
-          "odds": -128,
-          "pick": "Phillies ML (Royals vs Phillies)",
-          "pregame_snapshot": {
-            "date": "2026-07-06",
-            "decision": "BET",
-            "edge": null,
-            "game": "Kansas City Royals vs Philadelphia Phillies",
-            "matchup": "Kansas City Royals vs Philadelphia Phillies",
-            "odds": -128,
-            "pick": "Phillies ML (Royals vs Phillies)",
-            "probability": null,
-            "source": "SportyTraderMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportyTraderMLB",
-          "sport": "MLB",
-          "units": 1
-        },
         {
           "date": "2026-07-06",
           "decision": "BET",
@@ -545,6 +459,32 @@
           "date": "2026-07-06",
           "decision": "BET",
           "edge": null,
+          "game": "San Diego Padres vs Arizona Diamondbacks",
+          "matchup": "San Diego Padres vs Arizona Diamondbacks",
+          "odds": 170,
+          "pick": "Padres -1.5 (Padres vs Diamondbacks)",
+          "pregame_snapshot": {
+            "date": "2026-07-06",
+            "decision": "BET",
+            "edge": null,
+            "game": "San Diego Padres vs Arizona Diamondbacks",
+            "matchup": "San Diego Padres vs Arizona Diamondbacks",
+            "odds": 170,
+            "pick": "Padres -1.5 (Padres vs Diamondbacks)",
+            "probability": null,
+            "source": "SportyTraderMLB",
+            "sport": "MLB",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "date": "2026-07-06",
+          "decision": "BET",
+          "edge": null,
           "game": "Los Angeles Dodgers vs Colorado Rockies",
           "matchup": "Los Angeles Dodgers vs Colorado Rockies",
           "odds": -116,
@@ -568,12 +508,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-06T17:13:11.842742Z"
+      "updatedAt": "2026-07-06T21:45:55.147180Z"
     },
     "sportytrader_nba": {
       "date": "2026-07-06",
       "errors": [],
-      "generatedAt": "2026-07-06T17:13:11.842742Z",
+      "generatedAt": "2026-07-06T21:45:55.147180Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-06",
@@ -582,17 +522,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-06T17:13:11.842742Z"
+        "updatedAt": "2026-07-06T21:45:55.147180Z"
       },
       "note": "Scheduled sportytrader_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-07-06T17:13:11.842742Z"
+      "updatedAt": "2026-07-06T21:45:55.147180Z"
     },
     "sportytrader_wnba": {
       "date": "2026-07-06",
       "errors": [],
-      "generatedAt": "2026-07-06T17:13:11.842742Z",
+      "generatedAt": "2026-07-06T21:45:55.147180Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-06",
@@ -601,7 +541,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 2,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-06T17:13:11.842742Z"
+        "updatedAt": "2026-07-06T21:45:55.147180Z"
       },
       "note": "Scheduled sportytrader_wnba refresh returned 2 pick(s).",
       "ok": true,
@@ -659,7 +599,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-06T17:13:11.842742Z"
+      "updatedAt": "2026-07-06T21:45:55.147180Z"
     }
   },
   "fifa_world_cup": {
@@ -35794,86 +35734,39 @@
     "sportsgambler_fifa_world_cup": {
       "date": "2026-07-06",
       "errors": [],
-      "generatedAt": "2026-07-06T17:13:11.842742Z",
+      "generatedAt": "2026-07-06T21:45:55.147180Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-06",
         "feed": "sportsgambler_fifa_world_cup",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 1,
+        "pick_count": 0,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-06T17:13:11.842742Z"
+        "updatedAt": "2026-07-06T21:45:55.147180Z"
       },
-      "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 1 pick(s).",
+      "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 0 pick(s).",
       "ok": true,
-      "picks": [
-        {
-          "calibration_excluded": true,
-          "date": "2026-07-06",
-          "decision": "BET",
-          "edge": null,
-          "game": "Portugal vs Spain",
-          "game_start_time": "2026-07-06T19:00Z",
-          "grade_supported": true,
-          "market_type": "soccer_total",
-          "matchup": "Portugal vs Spain",
-          "odds": -110,
-          "pick": "Under 2.5 Goals (Portugal vs Spain)",
-          "probability": null,
-          "source": "SportsGamblerFIFAWorldCup",
-          "sport": "FIFA WC",
-          "start_time": "2026-07-06T19:00Z",
-          "units": 1
-        }
-      ],
-      "updatedAt": "2026-07-06T17:13:11.842742Z"
+      "picks": [],
+      "updatedAt": "2026-07-06T21:45:55.147180Z"
     },
     "sportsgambler_mlb": {
       "date": "2026-07-06",
       "errors": [],
-      "generatedAt": "2026-07-06T17:13:11.842742Z",
+      "generatedAt": "2026-07-06T21:45:55.147180Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-06",
         "feed": "sportsgambler_mlb",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 8,
+        "pick_count": 7,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-06T17:13:11.842742Z"
+        "updatedAt": "2026-07-06T21:45:55.147180Z"
       },
-      "note": "Scheduled sportsgambler_mlb refresh returned 8 pick(s).",
+      "note": "Scheduled sportsgambler_mlb refresh returned 7 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "date": "2026-07-06",
-          "decision": "BET",
-          "edge": null,
-          "game": "Kansas City Royals vs Philadelphia Phillies",
-          "game_start_time": "2026-07-06T18:10Z",
-          "matchup": "Kansas City Royals vs Philadelphia Phillies",
-          "odds": -227,
-          "pick": "Philadelphia Phillies to Win (Kansas City Royals vs Philadelphia Phillies)",
-          "pregame_snapshot": {
-            "date": "2026-07-06",
-            "decision": "BET",
-            "edge": null,
-            "game": "Kansas City Royals vs Philadelphia Phillies",
-            "matchup": "Kansas City Royals vs Philadelphia Phillies",
-            "odds": -213,
-            "pick": "Philadelphia Phillies to Win (Kansas City Royals vs Philadelphia Phillies)",
-            "probability": null,
-            "source": "SportsGamblerMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "start_time": "2026-07-06T18:10Z",
-          "units": 1
-        },
         {
           "date": "2026-07-06",
           "decision": "BET",
@@ -36071,12 +35964,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-06T17:13:11.842742Z"
+      "updatedAt": "2026-07-06T21:45:55.147180Z"
     },
     "sportsgambler_nba": {
       "date": "2026-07-06",
       "errors": [],
-      "generatedAt": "2026-07-06T17:13:11.842742Z",
+      "generatedAt": "2026-07-06T21:45:55.147180Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-06",
@@ -36085,17 +35978,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-06T17:13:11.842742Z"
+        "updatedAt": "2026-07-06T21:45:55.147180Z"
       },
       "note": "Scheduled sportsgambler_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-07-06T17:13:11.842742Z"
+      "updatedAt": "2026-07-06T21:45:55.147180Z"
     },
     "sportsgambler_wnba": {
       "date": "2026-07-06",
       "errors": [],
-      "generatedAt": "2026-07-06T17:13:11.842742Z",
+      "generatedAt": "2026-07-06T21:45:55.147180Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-06",
@@ -36104,7 +35997,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 3,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-06T17:13:11.842742Z"
+        "updatedAt": "2026-07-06T21:45:55.147180Z"
       },
       "note": "Scheduled sportsgambler_wnba refresh returned 3 pick(s).",
       "ok": true,
@@ -36194,50 +36087,31 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-06T17:13:11.842742Z"
+      "updatedAt": "2026-07-06T21:45:55.147180Z"
     },
     "sportytrader_fifa_world_cup": {
       "date": "2026-07-06",
       "errors": [],
-      "generatedAt": "2026-07-06T17:13:11.842742Z",
+      "generatedAt": "2026-07-06T21:45:55.147180Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-06",
         "feed": "sportytrader_fifa_world_cup",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 1,
+        "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-06T17:13:11.842742Z"
+        "updatedAt": "2026-07-06T21:45:55.147180Z"
       },
-      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 1 pick(s).",
+      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 0 pick(s).",
       "ok": true,
-      "picks": [
-        {
-          "calibration_excluded": true,
-          "date": "2026-07-06",
-          "decision": "BET",
-          "edge": null,
-          "game": "Portugal vs Spain",
-          "game_start_time": "2026-07-06T19:00Z",
-          "grade_supported": true,
-          "market_type": "soccer_moneyline",
-          "matchup": "Portugal vs Spain",
-          "odds": -105,
-          "pick": "Spain to Win (Portugal vs Spain)",
-          "probability": null,
-          "source": "SportyTraderFIFAWorldCup",
-          "sport": "FIFA WC",
-          "start_time": "2026-07-06T19:00Z",
-          "units": 1
-        }
-      ],
-      "updatedAt": "2026-07-06T17:13:11.842742Z"
+      "picks": [],
+      "updatedAt": "2026-07-06T21:45:55.147180Z"
     },
     "sportytrader_mlb": {
       "date": "2026-07-06",
       "errors": [],
-      "generatedAt": "2026-07-06T17:13:11.842742Z",
+      "generatedAt": "2026-07-06T21:45:55.147180Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-06",
@@ -36246,39 +36120,11 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 5,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-06T17:13:11.842742Z"
+        "updatedAt": "2026-07-06T21:45:55.147180Z"
       },
       "note": "Scheduled sportytrader_mlb refresh returned 5 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "date": "2026-07-06",
-          "decision": "BET",
-          "edge": null,
-          "game": "Kansas City Royals vs Philadelphia Phillies",
-          "game_start_time": "2026-07-06T18:10Z",
-          "matchup": "Kansas City Royals vs Philadelphia Phillies",
-          "odds": -128,
-          "pick": "Phillies ML (Royals vs Phillies)",
-          "pregame_snapshot": {
-            "date": "2026-07-06",
-            "decision": "BET",
-            "edge": null,
-            "game": "Kansas City Royals vs Philadelphia Phillies",
-            "matchup": "Kansas City Royals vs Philadelphia Phillies",
-            "odds": -128,
-            "pick": "Phillies ML (Royals vs Phillies)",
-            "probability": null,
-            "source": "SportyTraderMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportyTraderMLB",
-          "sport": "MLB",
-          "start_time": "2026-07-06T18:10Z",
-          "units": 1
-        },
         {
           "date": "2026-07-06",
           "decision": "BET",
@@ -36367,6 +36213,32 @@
           "date": "2026-07-06",
           "decision": "BET",
           "edge": null,
+          "game": "San Diego Padres vs Arizona Diamondbacks",
+          "matchup": "San Diego Padres vs Arizona Diamondbacks",
+          "odds": 170,
+          "pick": "Padres -1.5 (Padres vs Diamondbacks)",
+          "pregame_snapshot": {
+            "date": "2026-07-06",
+            "decision": "BET",
+            "edge": null,
+            "game": "San Diego Padres vs Arizona Diamondbacks",
+            "matchup": "San Diego Padres vs Arizona Diamondbacks",
+            "odds": 170,
+            "pick": "Padres -1.5 (Padres vs Diamondbacks)",
+            "probability": null,
+            "source": "SportyTraderMLB",
+            "sport": "MLB",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "date": "2026-07-06",
+          "decision": "BET",
+          "edge": null,
           "game": "Los Angeles Dodgers vs Colorado Rockies",
           "game_start_time": "2026-07-07T02:10Z",
           "matchup": "Los Angeles Dodgers vs Colorado Rockies",
@@ -36392,12 +36264,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-06T17:13:11.842742Z"
+      "updatedAt": "2026-07-06T21:45:55.147180Z"
     },
     "sportytrader_nba": {
       "date": "2026-07-06",
       "errors": [],
-      "generatedAt": "2026-07-06T17:13:11.842742Z",
+      "generatedAt": "2026-07-06T21:45:55.147180Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-06",
@@ -36406,17 +36278,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-06T17:13:11.842742Z"
+        "updatedAt": "2026-07-06T21:45:55.147180Z"
       },
       "note": "Scheduled sportytrader_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-07-06T17:13:11.842742Z"
+      "updatedAt": "2026-07-06T21:45:55.147180Z"
     },
     "sportytrader_wnba": {
       "date": "2026-07-06",
       "errors": [],
-      "generatedAt": "2026-07-06T17:13:11.842742Z",
+      "generatedAt": "2026-07-06T21:45:55.147180Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-06",
@@ -36425,7 +36297,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 2,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-06T17:13:11.842742Z"
+        "updatedAt": "2026-07-06T21:45:55.147180Z"
       },
       "note": "Scheduled sportytrader_wnba refresh returned 2 pick(s).",
       "ok": true,
@@ -36487,7 +36359,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-06T17:13:11.842742Z"
+      "updatedAt": "2026-07-06T21:45:55.147180Z"
     },
     "wnba": {
       "ok": true,
@@ -37725,82 +37597,39 @@
   "sportsgambler_fifa_world_cup": {
     "date": "2026-07-06",
     "errors": [],
-    "generatedAt": "2026-07-06T17:13:11.842742Z",
+    "generatedAt": "2026-07-06T21:45:55.147180Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-06",
       "feed": "sportsgambler_fifa_world_cup",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 1,
+      "pick_count": 0,
       "provider": "sportsgambler",
-      "updatedAt": "2026-07-06T17:13:11.842742Z"
+      "updatedAt": "2026-07-06T21:45:55.147180Z"
     },
-    "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 1 pick(s).",
+    "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 0 pick(s).",
     "ok": true,
-    "picks": [
-      {
-        "calibration_excluded": true,
-        "date": "2026-07-06",
-        "decision": "BET",
-        "edge": null,
-        "game": "Portugal vs Spain",
-        "grade_supported": true,
-        "market_type": "soccer_total",
-        "matchup": "Portugal vs Spain",
-        "odds": -110,
-        "pick": "Under 2.5 Goals (Portugal vs Spain)",
-        "probability": null,
-        "source": "SportsGamblerFIFAWorldCup",
-        "sport": "FIFA WC",
-        "units": 1
-      }
-    ],
-    "updatedAt": "2026-07-06T17:13:11.842742Z"
+    "picks": [],
+    "updatedAt": "2026-07-06T21:45:55.147180Z"
   },
   "sportsgambler_mlb": {
     "date": "2026-07-06",
     "errors": [],
-    "generatedAt": "2026-07-06T17:13:11.842742Z",
+    "generatedAt": "2026-07-06T21:45:55.147180Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-06",
       "feed": "sportsgambler_mlb",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 8,
+      "pick_count": 7,
       "provider": "sportsgambler",
-      "updatedAt": "2026-07-06T17:13:11.842742Z"
+      "updatedAt": "2026-07-06T21:45:55.147180Z"
     },
-    "note": "Scheduled sportsgambler_mlb refresh returned 8 pick(s).",
+    "note": "Scheduled sportsgambler_mlb refresh returned 7 pick(s).",
     "ok": true,
     "picks": [
-      {
-        "date": "2026-07-06",
-        "decision": "BET",
-        "edge": null,
-        "game": "Kansas City Royals vs Philadelphia Phillies",
-        "matchup": "Kansas City Royals vs Philadelphia Phillies",
-        "odds": -227,
-        "pick": "Philadelphia Phillies to Win (Kansas City Royals vs Philadelphia Phillies)",
-        "pregame_snapshot": {
-          "date": "2026-07-06",
-          "decision": "BET",
-          "edge": null,
-          "game": "Kansas City Royals vs Philadelphia Phillies",
-          "matchup": "Kansas City Royals vs Philadelphia Phillies",
-          "odds": -213,
-          "pick": "Philadelphia Phillies to Win (Kansas City Royals vs Philadelphia Phillies)",
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        "probability": null,
-        "source": "SportsGamblerMLB",
-        "sport": "MLB",
-        "units": 1
-      },
       {
         "date": "2026-07-06",
         "decision": "BET",
@@ -37984,12 +37813,12 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-07-06T17:13:11.842742Z"
+    "updatedAt": "2026-07-06T21:45:55.147180Z"
   },
   "sportsgambler_nba": {
     "date": "2026-07-06",
     "errors": [],
-    "generatedAt": "2026-07-06T17:13:11.842742Z",
+    "generatedAt": "2026-07-06T21:45:55.147180Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-06",
@@ -37998,17 +37827,17 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 0,
       "provider": "sportsgambler",
-      "updatedAt": "2026-07-06T17:13:11.842742Z"
+      "updatedAt": "2026-07-06T21:45:55.147180Z"
     },
     "note": "Scheduled sportsgambler_nba refresh returned 0 pick(s).",
     "ok": true,
     "picks": [],
-    "updatedAt": "2026-07-06T17:13:11.842742Z"
+    "updatedAt": "2026-07-06T21:45:55.147180Z"
   },
   "sportsgambler_wnba": {
     "date": "2026-07-06",
     "errors": [],
-    "generatedAt": "2026-07-06T17:13:11.842742Z",
+    "generatedAt": "2026-07-06T21:45:55.147180Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-06",
@@ -38017,7 +37846,7 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 3,
       "provider": "sportsgambler",
-      "updatedAt": "2026-07-06T17:13:11.842742Z"
+      "updatedAt": "2026-07-06T21:45:55.147180Z"
     },
     "note": "Scheduled sportsgambler_wnba refresh returned 3 pick(s).",
     "ok": true,
@@ -38101,48 +37930,31 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-07-06T17:13:11.842742Z"
+    "updatedAt": "2026-07-06T21:45:55.147180Z"
   },
   "sportytrader_fifa_world_cup": {
     "date": "2026-07-06",
     "errors": [],
-    "generatedAt": "2026-07-06T17:13:11.842742Z",
+    "generatedAt": "2026-07-06T21:45:55.147180Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-06",
       "feed": "sportytrader_fifa_world_cup",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 1,
+      "pick_count": 0,
       "provider": "sportytrader",
-      "updatedAt": "2026-07-06T17:13:11.842742Z"
+      "updatedAt": "2026-07-06T21:45:55.147180Z"
     },
-    "note": "Scheduled sportytrader_fifa_world_cup refresh returned 1 pick(s).",
+    "note": "Scheduled sportytrader_fifa_world_cup refresh returned 0 pick(s).",
     "ok": true,
-    "picks": [
-      {
-        "calibration_excluded": true,
-        "date": "2026-07-06",
-        "decision": "BET",
-        "edge": null,
-        "game": "Portugal vs Spain",
-        "grade_supported": true,
-        "market_type": "soccer_moneyline",
-        "matchup": "Portugal vs Spain",
-        "odds": -105,
-        "pick": "Spain to Win (Portugal vs Spain)",
-        "probability": null,
-        "source": "SportyTraderFIFAWorldCup",
-        "sport": "FIFA WC",
-        "units": 1
-      }
-    ],
-    "updatedAt": "2026-07-06T17:13:11.842742Z"
+    "picks": [],
+    "updatedAt": "2026-07-06T21:45:55.147180Z"
   },
   "sportytrader_mlb": {
     "date": "2026-07-06",
     "errors": [],
-    "generatedAt": "2026-07-06T17:13:11.842742Z",
+    "generatedAt": "2026-07-06T21:45:55.147180Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-06",
@@ -38151,37 +37963,11 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 5,
       "provider": "sportytrader",
-      "updatedAt": "2026-07-06T17:13:11.842742Z"
+      "updatedAt": "2026-07-06T21:45:55.147180Z"
     },
     "note": "Scheduled sportytrader_mlb refresh returned 5 pick(s).",
     "ok": true,
     "picks": [
-      {
-        "date": "2026-07-06",
-        "decision": "BET",
-        "edge": null,
-        "game": "Kansas City Royals vs Philadelphia Phillies",
-        "matchup": "Kansas City Royals vs Philadelphia Phillies",
-        "odds": -128,
-        "pick": "Phillies ML (Royals vs Phillies)",
-        "pregame_snapshot": {
-          "date": "2026-07-06",
-          "decision": "BET",
-          "edge": null,
-          "game": "Kansas City Royals vs Philadelphia Phillies",
-          "matchup": "Kansas City Royals vs Philadelphia Phillies",
-          "odds": -128,
-          "pick": "Phillies ML (Royals vs Phillies)",
-          "probability": null,
-          "source": "SportyTraderMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        "probability": null,
-        "source": "SportyTraderMLB",
-        "sport": "MLB",
-        "units": 1
-      },
       {
         "date": "2026-07-06",
         "decision": "BET",
@@ -38264,6 +38050,32 @@
         "date": "2026-07-06",
         "decision": "BET",
         "edge": null,
+        "game": "San Diego Padres vs Arizona Diamondbacks",
+        "matchup": "San Diego Padres vs Arizona Diamondbacks",
+        "odds": 170,
+        "pick": "Padres -1.5 (Padres vs Diamondbacks)",
+        "pregame_snapshot": {
+          "date": "2026-07-06",
+          "decision": "BET",
+          "edge": null,
+          "game": "San Diego Padres vs Arizona Diamondbacks",
+          "matchup": "San Diego Padres vs Arizona Diamondbacks",
+          "odds": 170,
+          "pick": "Padres -1.5 (Padres vs Diamondbacks)",
+          "probability": null,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
+        },
+        "probability": null,
+        "source": "SportyTraderMLB",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "date": "2026-07-06",
+        "decision": "BET",
+        "edge": null,
         "game": "Los Angeles Dodgers vs Colorado Rockies",
         "matchup": "Los Angeles Dodgers vs Colorado Rockies",
         "odds": -116,
@@ -38287,12 +38099,12 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-07-06T17:13:11.842742Z"
+    "updatedAt": "2026-07-06T21:45:55.147180Z"
   },
   "sportytrader_nba": {
     "date": "2026-07-06",
     "errors": [],
-    "generatedAt": "2026-07-06T17:13:11.842742Z",
+    "generatedAt": "2026-07-06T21:45:55.147180Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-06",
@@ -38301,17 +38113,17 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 0,
       "provider": "sportytrader",
-      "updatedAt": "2026-07-06T17:13:11.842742Z"
+      "updatedAt": "2026-07-06T21:45:55.147180Z"
     },
     "note": "Scheduled sportytrader_nba refresh returned 0 pick(s).",
     "ok": true,
     "picks": [],
-    "updatedAt": "2026-07-06T17:13:11.842742Z"
+    "updatedAt": "2026-07-06T21:45:55.147180Z"
   },
   "sportytrader_wnba": {
     "date": "2026-07-06",
     "errors": [],
-    "generatedAt": "2026-07-06T17:13:11.842742Z",
+    "generatedAt": "2026-07-06T21:45:55.147180Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-06",
@@ -38320,7 +38132,7 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 2,
       "provider": "sportytrader",
-      "updatedAt": "2026-07-06T17:13:11.842742Z"
+      "updatedAt": "2026-07-06T21:45:55.147180Z"
     },
     "note": "Scheduled sportytrader_wnba refresh returned 2 pick(s).",
     "ok": true,
@@ -38378,9 +38190,9 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-07-06T17:13:11.842742Z"
+    "updatedAt": "2026-07-06T21:45:55.147180Z"
   },
-  "updatedAt": "2026-07-06T18:03:15.624423Z",
+  "updatedAt": "2026-07-06T21:45:55.147180Z",
   "wnba": {
     "ok": true,
     "picks": [
