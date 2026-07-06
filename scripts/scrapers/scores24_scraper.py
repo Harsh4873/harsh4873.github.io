@@ -274,7 +274,7 @@ class Scores24Client:
         self._camoufox_manager = None
         self._camoufox_context = None
         self._camoufox_failed = False
-        self._prefer_camoufox = False
+        self._prefer_camoufox = _env_flag("SCORES24_CAMOUFOX_FALLBACK", True)
         self._browser_failed = False
         self._blocked_until = 0.0
 
@@ -340,7 +340,7 @@ class Scores24Client:
                     user_agent=HEADERS["User-Agent"],
                     locale="en-US",
                     timezone_id="America/Chicago",
-                    viewport={"width": 1365, "height": 900},
+                    no_viewport=True,
                 )
                 self._context.add_init_script(
                     "Object.defineProperty(navigator, 'webdriver', { get: () => undefined });"
@@ -377,20 +377,22 @@ class Scores24Client:
                 self._camoufox_context = browser.new_context(
                     locale="en-US",
                     timezone_id="America/Chicago",
-                    viewport={"width": 1365, "height": 900},
+                    no_viewport=True,
                 )
             page = self._camoufox_context.new_page()
             try:
-                response = page.goto(url, timeout=60000, wait_until="domcontentloaded")
+                response = page.goto(url, timeout=90000, wait_until="domcontentloaded")
                 status = response.status if response else 0
                 html = ""
-                for attempt in range(4):
+                challenge_waits = int(_env_float("SCORES24_CAMOUFOX_CHALLENGE_WAITS", 24, 1))
+                for attempt in range(challenge_waits):
                     page.wait_for_timeout(5000)
                     html = page.content()
-                    if status == 200 and not _looks_blocked(status, html):
+                    title = _norm_space(page.title()).lower()
+                    if status == 200 and not _looks_blocked(status, html) and "just a moment" not in title:
                         return html, status
-                    if attempt < 3:
-                        response = page.reload(timeout=60000, wait_until="domcontentloaded")
+                    if attempt < challenge_waits - 1 and attempt % 4 == 3:
+                        response = page.reload(timeout=90000, wait_until="domcontentloaded")
                         status = response.status if response else status
                 return html, status
             finally:
