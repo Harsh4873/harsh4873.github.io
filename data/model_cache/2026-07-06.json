@@ -29966,7 +29966,7 @@
           "game": "Kansas City Royals vs Philadelphia Phillies",
           "game_id": "824089",
           "game_order": 0,
-          "game_start_time": "2026-07-06T18:10:00Z",
+          "game_start_time": "2026-07-06T18:10Z",
           "home_team": "Kansas City Royals",
           "inning": 6,
           "league": "MLB",
@@ -30028,7 +30028,7 @@
           "selected_side_implied_probability": 0.545455,
           "source": "MLB Inning",
           "sport": "MLB",
-          "start_time": "2026-07-06T18:10:00Z",
+          "start_time": "2026-07-06T18:10Z",
           "team": "",
           "units": 0.25,
           "validation_lean": true,
@@ -32252,7 +32252,7 @@
           "game": "San Diego Padres vs Arizona Diamondbacks",
           "game_id": "823282",
           "game_order": 5,
-          "game_start_time": "2026-07-07T01:40:00Z",
+          "game_start_time": "2026-07-07T01:40Z",
           "home_team": "San Diego Padres",
           "inning": 2,
           "league": "MLB",
@@ -32314,7 +32314,7 @@
           "selected_side_implied_probability": 0.545455,
           "source": "MLB Inning",
           "sport": "MLB",
-          "start_time": "2026-07-07T01:40:00Z",
+          "start_time": "2026-07-07T01:40Z",
           "team": "",
           "units": 0.25,
           "validation_lean": true,
@@ -36312,6 +36312,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Atlanta Braves vs New York Mets",
+          "game_start_time": "2026-07-06T23:15Z",
           "matchup": "Atlanta Braves vs New York Mets",
           "odds": 152,
           "pick": "Braves -1.5 (Braves vs Mets)",
@@ -36331,6 +36332,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-07-06T23:15Z",
           "units": 1
         },
         {
@@ -36338,6 +36340,7 @@
           "decision": "BET",
           "edge": null,
           "game": "St. Louis Cardinals vs Milwaukee Brewers",
+          "game_start_time": "2026-07-06T23:45Z",
           "matchup": "St. Louis Cardinals vs Milwaukee Brewers",
           "odds": 150,
           "pick": "Brewers -1.5 (Cardinals vs Brewers)",
@@ -36357,6 +36360,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-07-06T23:45Z",
           "units": 1
         },
         {
@@ -36459,6 +36463,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Minnesota Lynx vs Connecticut Sun",
+          "game_start_time": "2026-07-07T00:00Z",
           "matchup": "Minnesota Lynx vs Connecticut Sun",
           "odds": -164,
           "pick": "Minnesota Lynx on the -10.5 line (Lynx vs Sun)",
@@ -36478,6 +36483,7 @@
           "probability": null,
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
+          "start_time": "2026-07-07T00:00Z",
           "units": 1
         }
       ],
@@ -37546,6 +37552,7 @@
           "decision": "LEAN",
           "edge": 5.65,
           "game": "Seattle Storm @ Los Angeles Sparks",
+          "game_start_time": "2026-07-07T02:00Z",
           "guardrail_reasons": [
             "new totals market capped at LEAN while its live record is established"
           ],
@@ -37605,6 +37612,7 @@
           "selection": "Under",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-07-07T02:00Z",
           "units": 0.02,
           "vegas": 173.5
         },
