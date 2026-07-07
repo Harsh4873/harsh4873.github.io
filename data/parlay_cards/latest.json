@@ -73,7 +73,7 @@
           "sourceKey": "mlb_first_five",
           "sourceType": "model",
           "sport": "MLB",
-          "startTime": "2026-07-08T02:10:00Z"
+          "startTime": "2026-07-08T02:10Z"
         },
         {
           "calibratedEdge": 0.017,
@@ -101,7 +101,7 @@
           "sourceKey": "wnba",
           "sourceType": "model",
           "sport": "WNBA",
-          "startTime": ""
+          "startTime": "2026-07-08T02:00Z"
         }
       ],
       "oddsAmerican": 647,
@@ -168,7 +168,7 @@
           "sourceKey": "mlb_first_five",
           "sourceType": "model",
           "sport": "MLB",
-          "startTime": "2026-07-08T02:10:00Z"
+          "startTime": "2026-07-08T02:10Z"
         },
         {
           "calibratedEdge": 0.017,
@@ -196,7 +196,7 @@
           "sourceKey": "wnba",
           "sourceType": "model",
           "sport": "WNBA",
-          "startTime": ""
+          "startTime": "2026-07-08T02:00Z"
         },
         {
           "calibratedEdge": 0.0262,
@@ -351,7 +351,7 @@
   ],
   "date": "2026-07-07",
   "engineVersion": "parlay_cards_v3_calibrated_portfolio",
-  "generatedAt": "2026-07-07T15:58:32.571196Z",
+  "generatedAt": "2026-07-07T16:36:21.847811Z",
   "notices": [
     "No same-game legs, same-player duplicates, or duplicate markets are allowed in a slip.",
     "Every leg must clear at least +1.5 percentage points of calibrated edge over the market price.",
