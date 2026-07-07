@@ -19,6 +19,7 @@ PLAYER_PROPS_SNAPSHOT_DIR = Path("data/player_props_snapshots")
 CONSENSUS_METADATA_PATH = Path("player_props/artifacts/player_props_consensus_metadata.json")
 PUBLIC_PLAYER_PROP_MODEL_KEYS = {
     "mlb_player_props",
+    "wnba_3pm",
     "wnba_player_props",
 }
 PICK_METADATA_FIELDS = {"result", "start_time", "game_start_time", "pregame_snapshot"}

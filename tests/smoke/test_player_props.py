@@ -785,7 +785,7 @@ def test_variant_boards_abstain_when_consensus_policy_rejects_publication(
     assert bucket["consensus_rejections"][0]["reason"] == expected_reason
 
 
-def test_wnba_3pm_bucket_stays_pass_when_consensus_policy_rejects(monkeypatch):
+def test_wnba_3pm_bucket_uses_relaxed_gate_when_consensus_policy_rejects(monkeypatch):
     import player_props.consensus as consensus
     import player_props.variants as variants
 
@@ -802,11 +802,48 @@ def test_wnba_3pm_bucket_stays_pass_when_consensus_policy_rejects(monkeypatch):
     bucket = variants.build_wnba_3pm_bucket(date_iso=DATE, base_model=base_model)["wnba_3pm"]
 
     assert bucket["picks"]
-    assert bucket["picks"][0]["decision"] == "PASS"
+    assert bucket["picks"][0]["decision"] == "BET"
     assert bucket["picks"][0]["model_key"] == "wnba_3pm"
     assert bucket["picks"][0]["source"] == "WNBA3PM"
+    assert bucket["picks"][0]["actionability"] == "relaxed_consensus_gate"
+    assert bucket["picks"][0]["ml_probability_mode"] == "wnba_3pm_relaxed_consensus_gate"
+    assert bucket["picks"][0]["wnba_3pm_relaxed_consensus_floor"] == 0.55
+    assert bucket["picks"][0]["wnba_3pm_consensus_gate_drop"] == 0.15
+    assert bucket["picks"][0]["consensus_qualified"] is False
     assert bucket["consensus_required"] is True
     assert bucket["consensus_rejected_count"] == 1
+    assert bucket["consensus_rejection_reasons"] == {"three_pointers_made has not cleared 70%": 1}
+
+
+def test_wnba_3pm_bucket_keeps_weak_relaxed_gate_candidates_research_only(monkeypatch):
+    import player_props.consensus as consensus
+    import player_props.variants as variants
+
+    monkeypatch.delenv("PICKLEDGER_DISABLE_PRECISION_MODEL", raising=False)
+    consensus._BUNDLE = {"metadata": _consensus_metadata_for_tests(), "artifacts": {}}
+    candidate = _variant_candidate("WNBA", "three_pointers_made", line=1.5)
+    candidate.update(
+        {
+            "probability": 0.54,
+            "ml_probability": 0.54,
+            "ml_edge": 0.0162,
+            "ml_expected_value": 0.0309,
+        }
+    )
+    base_model = {
+        "ok": True,
+        "sport": "WNBA",
+        "date": DATE,
+        "games": 1,
+        "picks": [candidate],
+    }
+
+    bucket = variants.build_wnba_3pm_bucket(date_iso=DATE, base_model=base_model)["wnba_3pm"]
+
+    assert bucket["picks"]
+    assert bucket["picks"][0]["decision"] == "PASS"
+    assert bucket["picks"][0]["actionability"] == "research_signal"
+    assert "wnba_3pm_relaxed_consensus_gate" not in bucket["picks"][0]
     assert bucket["consensus_rejection_reasons"] == {"three_pointers_made has not cleared 70%": 1}
 
 

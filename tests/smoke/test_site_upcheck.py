@@ -21,6 +21,7 @@ MODEL_KEYS = {
 }
 PLAYER_PROP_KEYS = {
     "mlb_player_props",
+    "wnba_3pm",
     "wnba_player_props",
 }
 SCORES24_KEYS = {"scores24_fifa_world_cup", "scores24_mlb", "scores24_wnba"}

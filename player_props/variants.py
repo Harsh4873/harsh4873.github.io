@@ -41,6 +41,8 @@ WNBA_3PM_MODEL_KEY = "wnba_3pm"
 WNBA_3PM_SOURCE = "WNBA3PM"
 WNBA_3PM_VARIANT = "wnba_3pm"
 WNBA_3PM_VARIANT_LABEL = "WNBA 3PM"
+WNBA_3PM_RELAXED_CONSENSUS_FLOOR = 0.55
+WNBA_3PM_RELAXED_CONSENSUS_GATE_DROP = 0.15
 
 
 def player_prop_variant_keys(sport: str) -> dict[str, str]:
@@ -847,6 +849,10 @@ def _wnba_3pm_pick(base: dict[str, Any]) -> dict[str, Any]:
     )
     if qualified:
         return pick
+    if pick.get("consensus_required") is True:
+        pick = _restore_wnba_3pm_relaxed_publication(pick)
+        if pick.get("wnba_3pm_relaxed_consensus_gate") is True:
+            return pick
     pick.update(
         {
             "decision": "PASS",
@@ -864,6 +870,68 @@ def _wnba_3pm_pick(base: dict[str, Any]) -> dict[str, Any]:
         }
     )
     pick.setdefault("key_factors", []).insert(0, "WNBA3PM consensus gate required before BET/LEAN publication")
+    return pick
+
+
+def _restore_wnba_3pm_relaxed_publication(pick: dict[str, Any]) -> dict[str, Any]:
+    probability = _clamp(
+        safe_float(pick.get("variant_signal_probability") or pick.get("probability") or pick.get("ml_probability"), 0.5)
+    )
+    if probability < WNBA_3PM_RELAXED_CONSENSUS_FLOOR:
+        return pick
+    try:
+        odds = int(safe_float(pick.get("variant_signal_odds") or pick.get("odds") or -110))
+    except (TypeError, ValueError):
+        odds = -110
+    if odds > MAX_PUBLISHED_POSITIVE_ODDS:
+        return pick
+    decision, edge_pp, full_kelly, quarter_kelly, units = decision_and_stake(probability, odds)
+    if decision not in {"BET", "LEAN"}:
+        return pick
+    selection = str(pick.get("variant_signal_selection") or pick.get("selection") or "Over")
+    implied = american_implied_probability(odds) or safe_float(pick.get("market_implied_probability"), 0.5)
+    line = safe_float(pick.get("line"))
+    stat_label = str(pick.get("stat_label") or "3-Point Field Goals")
+    player_name = str(pick.get("player_name") or pick.get("player") or "").strip()
+    pick.update(
+        {
+            "selection": selection,
+            "pick": f"{player_name} {selection} {line:.1f} {stat_label}",
+            "odds": odds,
+            "market_implied_probability": round(implied, 4),
+            "probability": round(probability, 4),
+            "ml_probability": round(probability, 4),
+            "ml_raw_probability": round(probability, 4),
+            "ml_edge": round(probability - implied, 6),
+            "ml_expected_value": round(expected_value(probability, odds), 6),
+            "ml_model_active": True,
+            "ml_probability_mode": "wnba_3pm_relaxed_consensus_gate",
+            "decision": decision,
+            "confidence": "High" if probability >= 0.62 else "Medium",
+            "edge": edge_pp,
+            "full_kelly": full_kelly,
+            "quarter_kelly": quarter_kelly,
+            "units": 0.0 if decision == "PASS" else min(units, 1.0),
+            "actionability": "relaxed_consensus_gate",
+            "precision_qualified": False,
+            "wnba_3pm_relaxed_consensus_gate": True,
+            "wnba_3pm_relaxed_consensus_floor": WNBA_3PM_RELAXED_CONSENSUS_FLOOR,
+            "wnba_3pm_consensus_gate_drop": WNBA_3PM_RELAXED_CONSENSUS_GATE_DROP,
+            "reason": (
+                f"{WNBA_3PM_SOURCE} publishes this in-house 3PM signal at {probability:.1%} after lowering "
+                f"the WNBA3PM publication floor to {WNBA_3PM_RELAXED_CONSENSUS_FLOOR:.0%}; "
+                f"full consensus remains unqualified ({pick.get('consensus_rejection_reason') or 'pending validation'})."
+            ),
+        }
+    )
+    pick.update(_market_probability_context(pick, selection))
+    pick.setdefault("key_factors", []).insert(
+        0,
+        (
+            f"WNBA3PM relaxed consensus floor active at "
+            f"{WNBA_3PM_RELAXED_CONSENSUS_FLOOR:.0%} ({WNBA_3PM_RELAXED_CONSENSUS_GATE_DROP:.0%} lower)."
+        ),
+    )
     return pick
 
 
