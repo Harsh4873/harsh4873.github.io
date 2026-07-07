@@ -895,6 +895,8 @@ def test_local_scores24_publisher_registers_separate_models():
     assert "SCORES24_BROWSER_FALLBACK=true" in publisher
     assert "SCORES24_CAMOUFOX_FALLBACK=true" in publisher
     assert "SCORES24_REQUEST_INTERVAL_SECONDS=8" in publisher
+    assert "--date YYYY-MM-DD" in publisher
+    assert "SCORES24_DATE" in publisher
     assert "Scores24 refresh incomplete; refusing to publish" in publisher
     assert 'expected != matched' in publisher
     assert "workflow run deploy-pages.yml" in publisher

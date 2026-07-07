@@ -14,6 +14,7 @@ For Codex upkeep in both tracks: never open the deployed website or a browser, r
 
 ```
 Run scripts/scrapers/scores24_publish.sh from the repo root on PickLedgerPro.
+Use `scripts/scrapers/scores24_publish.sh --date YYYY-MM-DD` when backfilling a missed slate.
 
 Never open the deployed website or a browser to verify output.
 

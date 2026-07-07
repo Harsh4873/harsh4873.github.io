@@ -20,7 +20,36 @@ if [[ -z "${GH_BIN}" ]]; then
   exit 1
 fi
 
-DATE_ISO="$(date +%F)"
+DATE_ISO="${SCORES24_DATE:-$(date +%F)}"
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --date)
+      if [[ $# -lt 2 ]]; then
+        echo "--date requires a YYYY-MM-DD value" >&2
+        exit 2
+      fi
+      DATE_ISO="$2"
+      shift 2
+      ;;
+    --date=*)
+      DATE_ISO="${1#--date=}"
+      shift
+      ;;
+    -h|--help)
+      echo "Usage: $0 [--date YYYY-MM-DD]"
+      exit 0
+      ;;
+    *)
+      echo "Unknown argument: $1" >&2
+      echo "Usage: $0 [--date YYYY-MM-DD]" >&2
+      exit 2
+      ;;
+  esac
+done
+if [[ ! "${DATE_ISO}" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
+  echo "Scores24 publish date must be YYYY-MM-DD; got ${DATE_ISO}" >&2
+  exit 2
+fi
 TEMP_ROOT="$(mktemp -d "${TMPDIR:-/tmp}/pickledger-scores24.XXXXXX")"
 TEMP_REPO="${TEMP_ROOT}/repo"
 GENERATED_CACHE="${TEMP_ROOT}/scores24-latest.json"
