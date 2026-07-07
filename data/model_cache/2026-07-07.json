@@ -1,7 +1,7 @@
 {
   "date": "2026-07-07",
   "errors": [],
-  "externalFeedsUpdatedAt": "2026-07-07T18:02:26.694640Z",
+  "externalFeedsUpdatedAt": "2026-07-07T21:39:13.041231Z",
   "external_feeds": {
     "scores24_fifa_world_cup": {
       "date": "2026-07-07",
@@ -738,36 +738,20 @@
     "sportsgambler_fifa_world_cup": {
       "date": "2026-07-07",
       "errors": [],
-      "generatedAt": "2026-07-07T16:43:08.616768Z",
+      "generatedAt": "2026-07-07T21:39:13.041231Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-07",
         "feed": "sportsgambler_fifa_world_cup",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 2,
+        "pick_count": 1,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-07T16:43:08.616768Z"
+        "updatedAt": "2026-07-07T21:39:13.041231Z"
       },
-      "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 2 pick(s).",
+      "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 1 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "calibration_excluded": true,
-          "date": "2026-07-07",
-          "decision": "BET",
-          "edge": null,
-          "game": "Argentina vs Egypt",
-          "grade_supported": true,
-          "market_type": "soccer_total",
-          "matchup": "Argentina vs Egypt",
-          "odds": -130,
-          "pick": "Under 2.5 Goals (Argentina vs Egypt)",
-          "probability": null,
-          "source": "SportsGamblerFIFAWorldCup",
-          "sport": "FIFA WC",
-          "units": 1
-        },
         {
           "calibration_excluded": true,
           "date": "2026-07-07",
@@ -785,51 +769,25 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-07T16:43:08.616768Z"
+      "updatedAt": "2026-07-07T21:39:13.041231Z"
     },
     "sportsgambler_mlb": {
       "date": "2026-07-07",
       "errors": [],
-      "generatedAt": "2026-07-07T16:43:08.616768Z",
+      "generatedAt": "2026-07-07T21:39:13.041231Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-07",
         "feed": "sportsgambler_mlb",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 15,
+        "pick_count": 14,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-07T16:43:08.616768Z"
+        "updatedAt": "2026-07-07T21:39:13.041231Z"
       },
-      "note": "Scheduled sportsgambler_mlb refresh returned 15 pick(s).",
+      "note": "Scheduled sportsgambler_mlb refresh returned 14 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "date": "2026-07-07",
-          "decision": "BET",
-          "edge": null,
-          "game": "St. Louis Cardinals vs Milwaukee Brewers",
-          "matchup": "St. Louis Cardinals vs Milwaukee Brewers",
-          "odds": -208,
-          "pick": "Milwaukee Brewers to Win (St. Louis Cardinals vs Milwaukee Brewers)",
-          "pregame_snapshot": {
-            "date": "2026-07-07",
-            "decision": "BET",
-            "edge": null,
-            "game": "St. Louis Cardinals vs Milwaukee Brewers",
-            "matchup": "St. Louis Cardinals vs Milwaukee Brewers",
-            "odds": -208,
-            "pick": "Milwaukee Brewers to Win (St. Louis Cardinals vs Milwaukee Brewers)",
-            "probability": null,
-            "source": "SportsGamblerMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "units": 1
-        },
         {
           "date": "2026-07-07",
           "decision": "BET",
@@ -1195,12 +1153,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-07T16:43:08.616768Z"
+      "updatedAt": "2026-07-07T21:39:13.041231Z"
     },
     "sportsgambler_nba": {
       "date": "2026-07-07",
       "errors": [],
-      "generatedAt": "2026-07-07T16:43:08.616768Z",
+      "generatedAt": "2026-07-07T21:39:13.041231Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-07",
@@ -1209,17 +1167,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-07T16:43:08.616768Z"
+        "updatedAt": "2026-07-07T21:39:13.041231Z"
       },
       "note": "Scheduled sportsgambler_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-07-07T16:43:08.616768Z"
+      "updatedAt": "2026-07-07T21:39:13.041231Z"
     },
     "sportsgambler_wnba": {
       "date": "2026-07-07",
       "errors": [],
-      "generatedAt": "2026-07-07T16:43:08.616768Z",
+      "generatedAt": "2026-07-07T21:39:13.041231Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-07",
@@ -1228,7 +1186,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 2,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-07T16:43:08.616768Z"
+        "updatedAt": "2026-07-07T21:39:13.041231Z"
       },
       "note": "Scheduled sportsgambler_wnba refresh returned 2 pick(s).",
       "ok": true,
@@ -1286,87 +1244,44 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-07T16:43:08.616768Z"
+      "updatedAt": "2026-07-07T21:39:13.041231Z"
     },
     "sportytrader_fifa_world_cup": {
       "date": "2026-07-07",
       "errors": [],
-      "generatedAt": "2026-07-07T16:43:08.616768Z",
+      "generatedAt": "2026-07-07T21:39:13.041231Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-07",
         "feed": "sportytrader_fifa_world_cup",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 1,
+        "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-07T16:43:08.616768Z"
+        "updatedAt": "2026-07-07T21:39:13.041231Z"
       },
-      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 1 pick(s).",
+      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 0 pick(s).",
       "ok": true,
-      "picks": [
-        {
-          "calibration_excluded": true,
-          "date": "2026-07-07",
-          "decision": "BET",
-          "edge": null,
-          "game": "Switzerland vs Colombia",
-          "grade_supported": false,
-          "market_type": "soccer_specialty",
-          "matchup": "Switzerland vs Colombia",
-          "odds": 10400,
-          "pick": "Both Teams to Score (Switzerland vs Colombia)",
-          "probability": null,
-          "source": "SportyTraderFIFAWorldCup",
-          "sport": "FIFA WC",
-          "units": 1
-        }
-      ],
-      "updatedAt": "2026-07-07T16:43:08.616768Z"
+      "picks": [],
+      "updatedAt": "2026-07-07T21:39:13.041231Z"
     },
     "sportytrader_mlb": {
       "date": "2026-07-07",
       "errors": [],
-      "generatedAt": "2026-07-07T16:43:08.616768Z",
+      "generatedAt": "2026-07-07T21:39:13.041231Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-07",
         "feed": "sportytrader_mlb",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 10,
+        "pick_count": 11,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-07T16:43:08.616768Z"
+        "updatedAt": "2026-07-07T21:39:13.041231Z"
       },
-      "note": "Scheduled sportytrader_mlb refresh returned 10 pick(s).",
+      "note": "Scheduled sportytrader_mlb refresh returned 11 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "date": "2026-07-07",
-          "decision": "BET",
-          "edge": null,
-          "game": "St. Louis Cardinals vs Milwaukee Brewers",
-          "matchup": "St. Louis Cardinals vs Milwaukee Brewers",
-          "odds": -105,
-          "pick": "Brewers -1.5 (Cardinals vs Brewers)",
-          "pregame_snapshot": {
-            "date": "2026-07-07",
-            "decision": "BET",
-            "edge": null,
-            "game": "St. Louis Cardinals vs Milwaukee Brewers",
-            "matchup": "St. Louis Cardinals vs Milwaukee Brewers",
-            "odds": -105,
-            "pick": "Brewers -1.5 (Cardinals vs Brewers)",
-            "probability": null,
-            "source": "SportyTraderMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportyTraderMLB",
-          "sport": "MLB",
-          "units": 1
-        },
         {
           "date": "2026-07-07",
           "decision": "BET",
@@ -1501,6 +1416,58 @@
           "date": "2026-07-07",
           "decision": "BET",
           "edge": null,
+          "game": "New York Mets vs Kansas City Royals",
+          "matchup": "New York Mets vs Kansas City Royals",
+          "odds": -105,
+          "pick": "Over 8.5 (Mets vs Royals)",
+          "pregame_snapshot": {
+            "date": "2026-07-07",
+            "decision": "BET",
+            "edge": null,
+            "game": "New York Mets vs Kansas City Royals",
+            "matchup": "New York Mets vs Kansas City Royals",
+            "odds": -105,
+            "pick": "Over 8.5 (Mets vs Royals)",
+            "probability": null,
+            "source": "SportyTraderMLB",
+            "sport": "MLB",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "date": "2026-07-07",
+          "decision": "BET",
+          "edge": null,
+          "game": "Minnesota Twins vs Cleveland Guardians",
+          "matchup": "Minnesota Twins vs Cleveland Guardians",
+          "odds": -105,
+          "pick": "Under 8.5 (Twins vs Guardians)",
+          "pregame_snapshot": {
+            "date": "2026-07-07",
+            "decision": "BET",
+            "edge": null,
+            "game": "Minnesota Twins vs Cleveland Guardians",
+            "matchup": "Minnesota Twins vs Cleveland Guardians",
+            "odds": -105,
+            "pick": "Under 8.5 (Twins vs Guardians)",
+            "probability": null,
+            "source": "SportyTraderMLB",
+            "sport": "MLB",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "date": "2026-07-07",
+          "decision": "BET",
+          "edge": null,
           "game": "St. Louis Cardinals vs Milwaukee Brewers",
           "matchup": "St. Louis Cardinals vs Milwaukee Brewers",
           "odds": -101,
@@ -1602,12 +1569,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-07T16:43:08.616768Z"
+      "updatedAt": "2026-07-07T21:39:13.041231Z"
     },
     "sportytrader_nba": {
       "date": "2026-07-07",
       "errors": [],
-      "generatedAt": "2026-07-07T16:43:08.616768Z",
+      "generatedAt": "2026-07-07T21:39:13.041231Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-07",
@@ -1616,17 +1583,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-07T16:43:08.616768Z"
+        "updatedAt": "2026-07-07T21:39:13.041231Z"
       },
       "note": "Scheduled sportytrader_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-07-07T16:43:08.616768Z"
+      "updatedAt": "2026-07-07T21:39:13.041231Z"
     },
     "sportytrader_wnba": {
       "date": "2026-07-07",
       "errors": [],
-      "generatedAt": "2026-07-07T16:43:08.616768Z",
+      "generatedAt": "2026-07-07T21:39:13.041231Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-07",
@@ -1635,7 +1602,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 1,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-07T16:43:08.616768Z"
+        "updatedAt": "2026-07-07T21:39:13.041231Z"
       },
       "note": "Scheduled sportytrader_wnba refresh returned 1 pick(s).",
       "ok": true,
@@ -1667,7 +1634,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-07T16:43:08.616768Z"
+      "updatedAt": "2026-07-07T21:39:13.041231Z"
     }
   },
   "fifa_world_cup": {
@@ -66402,39 +66369,20 @@
     "sportsgambler_fifa_world_cup": {
       "date": "2026-07-07",
       "errors": [],
-      "generatedAt": "2026-07-07T16:43:08.616768Z",
+      "generatedAt": "2026-07-07T21:39:13.041231Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-07",
         "feed": "sportsgambler_fifa_world_cup",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 2,
+        "pick_count": 1,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-07T16:43:08.616768Z"
+        "updatedAt": "2026-07-07T21:39:13.041231Z"
       },
-      "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 2 pick(s).",
+      "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 1 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "calibration_excluded": true,
-          "date": "2026-07-07",
-          "decision": "BET",
-          "edge": null,
-          "game": "Argentina vs Egypt",
-          "game_start_time": "2026-07-07T16:00Z",
-          "grade_supported": true,
-          "market_type": "soccer_total",
-          "matchup": "Argentina vs Egypt",
-          "odds": -130,
-          "pick": "Under 2.5 Goals (Argentina vs Egypt)",
-          "probability": null,
-          "result": "loss",
-          "source": "SportsGamblerFIFAWorldCup",
-          "sport": "FIFA WC",
-          "start_time": "2026-07-07T16:00Z",
-          "units": 1
-        },
         {
           "calibration_excluded": true,
           "date": "2026-07-07",
@@ -66454,53 +66402,25 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-07T16:43:08.616768Z"
+      "updatedAt": "2026-07-07T21:39:13.041231Z"
     },
     "sportsgambler_mlb": {
       "date": "2026-07-07",
       "errors": [],
-      "generatedAt": "2026-07-07T16:43:08.616768Z",
+      "generatedAt": "2026-07-07T21:39:13.041231Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-07",
         "feed": "sportsgambler_mlb",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 15,
+        "pick_count": 14,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-07T16:43:08.616768Z"
+        "updatedAt": "2026-07-07T21:39:13.041231Z"
       },
-      "note": "Scheduled sportsgambler_mlb refresh returned 15 pick(s).",
+      "note": "Scheduled sportsgambler_mlb refresh returned 14 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "date": "2026-07-07",
-          "decision": "BET",
-          "edge": null,
-          "game": "St. Louis Cardinals vs Milwaukee Brewers",
-          "game_start_time": "2026-07-07T18:15Z",
-          "matchup": "St. Louis Cardinals vs Milwaukee Brewers",
-          "odds": -208,
-          "pick": "Milwaukee Brewers to Win (St. Louis Cardinals vs Milwaukee Brewers)",
-          "pregame_snapshot": {
-            "date": "2026-07-07",
-            "decision": "BET",
-            "edge": null,
-            "game": "St. Louis Cardinals vs Milwaukee Brewers",
-            "matchup": "St. Louis Cardinals vs Milwaukee Brewers",
-            "odds": -208,
-            "pick": "Milwaukee Brewers to Win (St. Louis Cardinals vs Milwaukee Brewers)",
-            "probability": null,
-            "source": "SportsGamblerMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "start_time": "2026-07-07T18:15Z",
-          "units": 1
-        },
         {
           "date": "2026-07-07",
           "decision": "BET",
@@ -66894,12 +66814,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-07T16:43:08.616768Z"
+      "updatedAt": "2026-07-07T21:39:13.041231Z"
     },
     "sportsgambler_nba": {
       "date": "2026-07-07",
       "errors": [],
-      "generatedAt": "2026-07-07T16:43:08.616768Z",
+      "generatedAt": "2026-07-07T21:39:13.041231Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-07",
@@ -66908,17 +66828,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-07T16:43:08.616768Z"
+        "updatedAt": "2026-07-07T21:39:13.041231Z"
       },
       "note": "Scheduled sportsgambler_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-07-07T16:43:08.616768Z"
+      "updatedAt": "2026-07-07T21:39:13.041231Z"
     },
     "sportsgambler_wnba": {
       "date": "2026-07-07",
       "errors": [],
-      "generatedAt": "2026-07-07T16:43:08.616768Z",
+      "generatedAt": "2026-07-07T21:39:13.041231Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-07",
@@ -66927,7 +66847,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 2,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-07T16:43:08.616768Z"
+        "updatedAt": "2026-07-07T21:39:13.041231Z"
       },
       "note": "Scheduled sportsgambler_wnba refresh returned 2 pick(s).",
       "ok": true,
@@ -66989,89 +66909,44 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-07T16:43:08.616768Z"
+      "updatedAt": "2026-07-07T21:39:13.041231Z"
     },
     "sportytrader_fifa_world_cup": {
       "date": "2026-07-07",
       "errors": [],
-      "generatedAt": "2026-07-07T16:43:08.616768Z",
+      "generatedAt": "2026-07-07T21:39:13.041231Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-07",
         "feed": "sportytrader_fifa_world_cup",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 1,
+        "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-07T16:43:08.616768Z"
+        "updatedAt": "2026-07-07T21:39:13.041231Z"
       },
-      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 1 pick(s).",
+      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 0 pick(s).",
       "ok": true,
-      "picks": [
-        {
-          "calibration_excluded": true,
-          "date": "2026-07-07",
-          "decision": "BET",
-          "edge": null,
-          "game": "Switzerland vs Colombia",
-          "grade_supported": false,
-          "market_type": "soccer_specialty",
-          "matchup": "Switzerland vs Colombia",
-          "odds": 10400,
-          "pick": "Both Teams to Score (Switzerland vs Colombia)",
-          "probability": null,
-          "source": "SportyTraderFIFAWorldCup",
-          "sport": "FIFA WC",
-          "units": 1
-        }
-      ],
-      "updatedAt": "2026-07-07T16:43:08.616768Z"
+      "picks": [],
+      "updatedAt": "2026-07-07T21:39:13.041231Z"
     },
     "sportytrader_mlb": {
       "date": "2026-07-07",
       "errors": [],
-      "generatedAt": "2026-07-07T16:43:08.616768Z",
+      "generatedAt": "2026-07-07T21:39:13.041231Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-07",
         "feed": "sportytrader_mlb",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 10,
+        "pick_count": 11,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-07T16:43:08.616768Z"
+        "updatedAt": "2026-07-07T21:39:13.041231Z"
       },
-      "note": "Scheduled sportytrader_mlb refresh returned 10 pick(s).",
+      "note": "Scheduled sportytrader_mlb refresh returned 11 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "date": "2026-07-07",
-          "decision": "BET",
-          "edge": null,
-          "game": "St. Louis Cardinals vs Milwaukee Brewers",
-          "game_start_time": "2026-07-07T18:15Z",
-          "matchup": "St. Louis Cardinals vs Milwaukee Brewers",
-          "odds": -105,
-          "pick": "Brewers -1.5 (Cardinals vs Brewers)",
-          "pregame_snapshot": {
-            "date": "2026-07-07",
-            "decision": "BET",
-            "edge": null,
-            "game": "St. Louis Cardinals vs Milwaukee Brewers",
-            "matchup": "St. Louis Cardinals vs Milwaukee Brewers",
-            "odds": -105,
-            "pick": "Brewers -1.5 (Cardinals vs Brewers)",
-            "probability": null,
-            "source": "SportyTraderMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportyTraderMLB",
-          "sport": "MLB",
-          "start_time": "2026-07-07T18:15Z",
-          "units": 1
-        },
         {
           "date": "2026-07-07",
           "decision": "BET",
@@ -67216,6 +67091,58 @@
           "date": "2026-07-07",
           "decision": "BET",
           "edge": null,
+          "game": "New York Mets vs Kansas City Royals",
+          "matchup": "New York Mets vs Kansas City Royals",
+          "odds": -105,
+          "pick": "Over 8.5 (Mets vs Royals)",
+          "pregame_snapshot": {
+            "date": "2026-07-07",
+            "decision": "BET",
+            "edge": null,
+            "game": "New York Mets vs Kansas City Royals",
+            "matchup": "New York Mets vs Kansas City Royals",
+            "odds": -105,
+            "pick": "Over 8.5 (Mets vs Royals)",
+            "probability": null,
+            "source": "SportyTraderMLB",
+            "sport": "MLB",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "date": "2026-07-07",
+          "decision": "BET",
+          "edge": null,
+          "game": "Minnesota Twins vs Cleveland Guardians",
+          "matchup": "Minnesota Twins vs Cleveland Guardians",
+          "odds": -105,
+          "pick": "Under 8.5 (Twins vs Guardians)",
+          "pregame_snapshot": {
+            "date": "2026-07-07",
+            "decision": "BET",
+            "edge": null,
+            "game": "Minnesota Twins vs Cleveland Guardians",
+            "matchup": "Minnesota Twins vs Cleveland Guardians",
+            "odds": -105,
+            "pick": "Under 8.5 (Twins vs Guardians)",
+            "probability": null,
+            "source": "SportyTraderMLB",
+            "sport": "MLB",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "date": "2026-07-07",
+          "decision": "BET",
+          "edge": null,
           "game": "St. Louis Cardinals vs Milwaukee Brewers",
           "game_start_time": "2026-07-07T18:15Z",
           "matchup": "St. Louis Cardinals vs Milwaukee Brewers",
@@ -67325,12 +67252,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-07T16:43:08.616768Z"
+      "updatedAt": "2026-07-07T21:39:13.041231Z"
     },
     "sportytrader_nba": {
       "date": "2026-07-07",
       "errors": [],
-      "generatedAt": "2026-07-07T16:43:08.616768Z",
+      "generatedAt": "2026-07-07T21:39:13.041231Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-07",
@@ -67339,17 +67266,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-07T16:43:08.616768Z"
+        "updatedAt": "2026-07-07T21:39:13.041231Z"
       },
       "note": "Scheduled sportytrader_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-07-07T16:43:08.616768Z"
+      "updatedAt": "2026-07-07T21:39:13.041231Z"
     },
     "sportytrader_wnba": {
       "date": "2026-07-07",
       "errors": [],
-      "generatedAt": "2026-07-07T16:43:08.616768Z",
+      "generatedAt": "2026-07-07T21:39:13.041231Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-07",
@@ -67358,7 +67285,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 1,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-07T16:43:08.616768Z"
+        "updatedAt": "2026-07-07T21:39:13.041231Z"
       },
       "note": "Scheduled sportytrader_wnba refresh returned 1 pick(s).",
       "ok": true,
@@ -67392,7 +67319,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-07T16:43:08.616768Z"
+      "updatedAt": "2026-07-07T21:39:13.041231Z"
     },
     "wnba": {
       "ok": true,
@@ -68868,36 +68795,20 @@
   "sportsgambler_fifa_world_cup": {
     "date": "2026-07-07",
     "errors": [],
-    "generatedAt": "2026-07-07T16:43:08.616768Z",
+    "generatedAt": "2026-07-07T21:39:13.041231Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-07",
       "feed": "sportsgambler_fifa_world_cup",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 2,
+      "pick_count": 1,
       "provider": "sportsgambler",
-      "updatedAt": "2026-07-07T16:43:08.616768Z"
+      "updatedAt": "2026-07-07T21:39:13.041231Z"
     },
-    "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 2 pick(s).",
+    "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 1 pick(s).",
     "ok": true,
     "picks": [
-      {
-        "calibration_excluded": true,
-        "date": "2026-07-07",
-        "decision": "BET",
-        "edge": null,
-        "game": "Argentina vs Egypt",
-        "grade_supported": true,
-        "market_type": "soccer_total",
-        "matchup": "Argentina vs Egypt",
-        "odds": -130,
-        "pick": "Under 2.5 Goals (Argentina vs Egypt)",
-        "probability": null,
-        "source": "SportsGamblerFIFAWorldCup",
-        "sport": "FIFA WC",
-        "units": 1
-      },
       {
         "calibration_excluded": true,
         "date": "2026-07-07",
@@ -68915,51 +68826,25 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-07-07T16:43:08.616768Z"
+    "updatedAt": "2026-07-07T21:39:13.041231Z"
   },
   "sportsgambler_mlb": {
     "date": "2026-07-07",
     "errors": [],
-    "generatedAt": "2026-07-07T16:43:08.616768Z",
+    "generatedAt": "2026-07-07T21:39:13.041231Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-07",
       "feed": "sportsgambler_mlb",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 15,
+      "pick_count": 14,
       "provider": "sportsgambler",
-      "updatedAt": "2026-07-07T16:43:08.616768Z"
+      "updatedAt": "2026-07-07T21:39:13.041231Z"
     },
-    "note": "Scheduled sportsgambler_mlb refresh returned 15 pick(s).",
+    "note": "Scheduled sportsgambler_mlb refresh returned 14 pick(s).",
     "ok": true,
     "picks": [
-      {
-        "date": "2026-07-07",
-        "decision": "BET",
-        "edge": null,
-        "game": "St. Louis Cardinals vs Milwaukee Brewers",
-        "matchup": "St. Louis Cardinals vs Milwaukee Brewers",
-        "odds": -208,
-        "pick": "Milwaukee Brewers to Win (St. Louis Cardinals vs Milwaukee Brewers)",
-        "pregame_snapshot": {
-          "date": "2026-07-07",
-          "decision": "BET",
-          "edge": null,
-          "game": "St. Louis Cardinals vs Milwaukee Brewers",
-          "matchup": "St. Louis Cardinals vs Milwaukee Brewers",
-          "odds": -208,
-          "pick": "Milwaukee Brewers to Win (St. Louis Cardinals vs Milwaukee Brewers)",
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        "probability": null,
-        "source": "SportsGamblerMLB",
-        "sport": "MLB",
-        "units": 1
-      },
       {
         "date": "2026-07-07",
         "decision": "BET",
@@ -69325,12 +69210,12 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-07-07T16:43:08.616768Z"
+    "updatedAt": "2026-07-07T21:39:13.041231Z"
   },
   "sportsgambler_nba": {
     "date": "2026-07-07",
     "errors": [],
-    "generatedAt": "2026-07-07T16:43:08.616768Z",
+    "generatedAt": "2026-07-07T21:39:13.041231Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-07",
@@ -69339,17 +69224,17 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 0,
       "provider": "sportsgambler",
-      "updatedAt": "2026-07-07T16:43:08.616768Z"
+      "updatedAt": "2026-07-07T21:39:13.041231Z"
     },
     "note": "Scheduled sportsgambler_nba refresh returned 0 pick(s).",
     "ok": true,
     "picks": [],
-    "updatedAt": "2026-07-07T16:43:08.616768Z"
+    "updatedAt": "2026-07-07T21:39:13.041231Z"
   },
   "sportsgambler_wnba": {
     "date": "2026-07-07",
     "errors": [],
-    "generatedAt": "2026-07-07T16:43:08.616768Z",
+    "generatedAt": "2026-07-07T21:39:13.041231Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-07",
@@ -69358,7 +69243,7 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 2,
       "provider": "sportsgambler",
-      "updatedAt": "2026-07-07T16:43:08.616768Z"
+      "updatedAt": "2026-07-07T21:39:13.041231Z"
     },
     "note": "Scheduled sportsgambler_wnba refresh returned 2 pick(s).",
     "ok": true,
@@ -69416,87 +69301,44 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-07-07T16:43:08.616768Z"
+    "updatedAt": "2026-07-07T21:39:13.041231Z"
   },
   "sportytrader_fifa_world_cup": {
     "date": "2026-07-07",
     "errors": [],
-    "generatedAt": "2026-07-07T16:43:08.616768Z",
+    "generatedAt": "2026-07-07T21:39:13.041231Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-07",
       "feed": "sportytrader_fifa_world_cup",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 1,
+      "pick_count": 0,
       "provider": "sportytrader",
-      "updatedAt": "2026-07-07T16:43:08.616768Z"
+      "updatedAt": "2026-07-07T21:39:13.041231Z"
     },
-    "note": "Scheduled sportytrader_fifa_world_cup refresh returned 1 pick(s).",
+    "note": "Scheduled sportytrader_fifa_world_cup refresh returned 0 pick(s).",
     "ok": true,
-    "picks": [
-      {
-        "calibration_excluded": true,
-        "date": "2026-07-07",
-        "decision": "BET",
-        "edge": null,
-        "game": "Switzerland vs Colombia",
-        "grade_supported": false,
-        "market_type": "soccer_specialty",
-        "matchup": "Switzerland vs Colombia",
-        "odds": 10400,
-        "pick": "Both Teams to Score (Switzerland vs Colombia)",
-        "probability": null,
-        "source": "SportyTraderFIFAWorldCup",
-        "sport": "FIFA WC",
-        "units": 1
-      }
-    ],
-    "updatedAt": "2026-07-07T16:43:08.616768Z"
+    "picks": [],
+    "updatedAt": "2026-07-07T21:39:13.041231Z"
   },
   "sportytrader_mlb": {
     "date": "2026-07-07",
     "errors": [],
-    "generatedAt": "2026-07-07T16:43:08.616768Z",
+    "generatedAt": "2026-07-07T21:39:13.041231Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-07",
       "feed": "sportytrader_mlb",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 10,
+      "pick_count": 11,
       "provider": "sportytrader",
-      "updatedAt": "2026-07-07T16:43:08.616768Z"
+      "updatedAt": "2026-07-07T21:39:13.041231Z"
     },
-    "note": "Scheduled sportytrader_mlb refresh returned 10 pick(s).",
+    "note": "Scheduled sportytrader_mlb refresh returned 11 pick(s).",
     "ok": true,
     "picks": [
-      {
-        "date": "2026-07-07",
-        "decision": "BET",
-        "edge": null,
-        "game": "St. Louis Cardinals vs Milwaukee Brewers",
-        "matchup": "St. Louis Cardinals vs Milwaukee Brewers",
-        "odds": -105,
-        "pick": "Brewers -1.5 (Cardinals vs Brewers)",
-        "pregame_snapshot": {
-          "date": "2026-07-07",
-          "decision": "BET",
-          "edge": null,
-          "game": "St. Louis Cardinals vs Milwaukee Brewers",
-          "matchup": "St. Louis Cardinals vs Milwaukee Brewers",
-          "odds": -105,
-          "pick": "Brewers -1.5 (Cardinals vs Brewers)",
-          "probability": null,
-          "source": "SportyTraderMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        "probability": null,
-        "source": "SportyTraderMLB",
-        "sport": "MLB",
-        "units": 1
-      },
       {
         "date": "2026-07-07",
         "decision": "BET",
@@ -69631,6 +69473,58 @@
         "date": "2026-07-07",
         "decision": "BET",
         "edge": null,
+        "game": "New York Mets vs Kansas City Royals",
+        "matchup": "New York Mets vs Kansas City Royals",
+        "odds": -105,
+        "pick": "Over 8.5 (Mets vs Royals)",
+        "pregame_snapshot": {
+          "date": "2026-07-07",
+          "decision": "BET",
+          "edge": null,
+          "game": "New York Mets vs Kansas City Royals",
+          "matchup": "New York Mets vs Kansas City Royals",
+          "odds": -105,
+          "pick": "Over 8.5 (Mets vs Royals)",
+          "probability": null,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
+        },
+        "probability": null,
+        "source": "SportyTraderMLB",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "date": "2026-07-07",
+        "decision": "BET",
+        "edge": null,
+        "game": "Minnesota Twins vs Cleveland Guardians",
+        "matchup": "Minnesota Twins vs Cleveland Guardians",
+        "odds": -105,
+        "pick": "Under 8.5 (Twins vs Guardians)",
+        "pregame_snapshot": {
+          "date": "2026-07-07",
+          "decision": "BET",
+          "edge": null,
+          "game": "Minnesota Twins vs Cleveland Guardians",
+          "matchup": "Minnesota Twins vs Cleveland Guardians",
+          "odds": -105,
+          "pick": "Under 8.5 (Twins vs Guardians)",
+          "probability": null,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
+        },
+        "probability": null,
+        "source": "SportyTraderMLB",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "date": "2026-07-07",
+        "decision": "BET",
+        "edge": null,
         "game": "St. Louis Cardinals vs Milwaukee Brewers",
         "matchup": "St. Louis Cardinals vs Milwaukee Brewers",
         "odds": -101,
@@ -69732,12 +69626,12 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-07-07T16:43:08.616768Z"
+    "updatedAt": "2026-07-07T21:39:13.041231Z"
   },
   "sportytrader_nba": {
     "date": "2026-07-07",
     "errors": [],
-    "generatedAt": "2026-07-07T16:43:08.616768Z",
+    "generatedAt": "2026-07-07T21:39:13.041231Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-07",
@@ -69746,17 +69640,17 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 0,
       "provider": "sportytrader",
-      "updatedAt": "2026-07-07T16:43:08.616768Z"
+      "updatedAt": "2026-07-07T21:39:13.041231Z"
     },
     "note": "Scheduled sportytrader_nba refresh returned 0 pick(s).",
     "ok": true,
     "picks": [],
-    "updatedAt": "2026-07-07T16:43:08.616768Z"
+    "updatedAt": "2026-07-07T21:39:13.041231Z"
   },
   "sportytrader_wnba": {
     "date": "2026-07-07",
     "errors": [],
-    "generatedAt": "2026-07-07T16:43:08.616768Z",
+    "generatedAt": "2026-07-07T21:39:13.041231Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-07",
@@ -69765,7 +69659,7 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 1,
       "provider": "sportytrader",
-      "updatedAt": "2026-07-07T16:43:08.616768Z"
+      "updatedAt": "2026-07-07T21:39:13.041231Z"
     },
     "note": "Scheduled sportytrader_wnba refresh returned 1 pick(s).",
     "ok": true,
@@ -69797,9 +69691,9 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-07-07T16:43:08.616768Z"
+    "updatedAt": "2026-07-07T21:39:13.041231Z"
   },
-  "updatedAt": "2026-07-07T18:02:26.694640Z",
+  "updatedAt": "2026-07-07T21:39:13.041231Z",
   "wnba": {
     "ok": true,
     "picks": [
