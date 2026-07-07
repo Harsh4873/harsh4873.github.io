@@ -17817,6 +17817,7 @@
           "raw_projected_home_goals": 1.393,
           "raw_projected_total": 3.0,
           "reason": "Belgium owns the stronger current-squad projection. Attack 91.8, midfield 89.4, defense 90.8, goalkeeper 91.5. Top player ranks: Timothy Castagne 93.5, Maxim De Cuyper 93.5, Youri Tielemans 93.5. Belgium form 2-0-0 (3.00 pts/g, 4.00-1.50 goals/g).",
+          "result": "win",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-07-07T00:00Z",
@@ -17991,6 +17992,7 @@
           "raw_projected_home_goals": 1.393,
           "raw_projected_total": 3.0,
           "reason": "Belgium has the best spread-cover edge at +0.5 from the venue-adjusted Poisson score grid.",
+          "result": "win",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-07-07T00:00Z",
@@ -30275,6 +30277,7 @@
           "raw_edge": 9.89,
           "raw_model_probability": 0.617,
           "raw_probability": 0.617,
+          "result": "win",
           "selected_side_implied_probability": 0.545455,
           "source": "MLB Inning",
           "sport": "MLB",
@@ -30780,6 +30783,7 @@
           "raw_edge": 10.55,
           "raw_model_probability": 0.624,
           "raw_probability": 0.624,
+          "result": "loss",
           "selected_side_implied_probability": 0.545455,
           "source": "MLB Inning",
           "sport": "MLB",
@@ -31902,6 +31906,7 @@
           "raw_model_probability": 0.594,
           "raw_probability": 0.594,
           "raw_units": 0.04,
+          "result": "win",
           "selected_side_implied_probability": 0.5238095238095238,
           "selection": "Under",
           "source": "MLB Model",
@@ -34752,6 +34757,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-06T22:40Z",
@@ -34780,6 +34786,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-06T22:45Z",
@@ -34808,6 +34815,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-06T23:15Z",
@@ -34836,6 +34844,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-06T23:45Z",
@@ -34864,6 +34873,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-07T01:40Z",
@@ -34892,6 +34902,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-07T01:45Z",
@@ -34987,6 +34998,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerWNBA",
           "sport": "WNBA",
           "start_time": "2026-07-06T23:30Z",
@@ -35015,6 +35027,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerWNBA",
           "sport": "WNBA",
           "start_time": "2026-07-07T00:00Z",
@@ -35043,6 +35056,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerWNBA",
           "sport": "WNBA",
           "start_time": "2026-07-07T02:00Z",
@@ -35110,6 +35124,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-07-06T22:40Z",
@@ -35138,6 +35153,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-07-06T23:15Z",
@@ -35166,6 +35182,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-07-06T23:45Z",
@@ -35194,6 +35211,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-07-07T01:40Z",
@@ -35289,6 +35307,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
           "start_time": "2026-07-06T23:30Z",
@@ -35317,6 +35336,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
           "start_time": "2026-07-07T00:00Z",
@@ -36030,6 +36050,7 @@
           "raw_edge": 25.07,
           "raw_probability": 0.7745,
           "raw_units": 0.04,
+          "result": "win",
           "selection": "Under",
           "source": "WNBA Model",
           "sport": "WNBA",
@@ -36522,6 +36543,7 @@
           "raw_edge": 22.7,
           "raw_probability": 0.7508,
           "raw_units": 0.04,
+          "result": "win",
           "selection": "Under",
           "source": "WNBA Model",
           "sport": "WNBA",
