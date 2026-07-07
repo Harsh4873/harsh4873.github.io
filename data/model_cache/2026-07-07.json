@@ -55025,7 +55025,7 @@
           "game": "Cincinnati Reds vs Philadelphia Phillies",
           "game_id": "824495",
           "game_order": 8,
-          "game_start_time": "2026-07-07T23:10:00Z",
+          "game_start_time": "2026-07-07T23:10Z",
           "home_team": "Cincinnati Reds",
           "inning": 6,
           "league": "MLB",
@@ -55087,7 +55087,7 @@
           "selected_side_implied_probability": 0.545455,
           "source": "MLB Inning",
           "sport": "MLB",
-          "start_time": "2026-07-07T23:10:00Z",
+          "start_time": "2026-07-07T23:10Z",
           "team": "",
           "units": 0.25,
           "validation_lean": true,
@@ -64395,6 +64395,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-05-05-2026-st-louis-cardinals-milwaukee-brewers-prediction",
           "sport": "MLB",
@@ -65337,6 +65338,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-07T18:15Z",
@@ -65733,6 +65735,7 @@
           "decision": "BET",
           "edge": null,
           "game": "New York Mets vs Kansas City Royals",
+          "game_start_time": "2026-07-07T23:10Z",
           "matchup": "New York Mets vs Kansas City Royals",
           "odds": -105,
           "pick": "Over 8.5 (Mets vs Royals)",
@@ -65752,6 +65755,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-07-07T23:10Z",
           "units": 1
         },
         {
@@ -65759,6 +65763,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Minnesota Twins vs Cleveland Guardians",
+          "game_start_time": "2026-07-07T23:40Z",
           "matchup": "Minnesota Twins vs Cleveland Guardians",
           "odds": -105,
           "pick": "Under 8.5 (Twins vs Guardians)",
@@ -65778,6 +65783,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-07-07T23:40Z",
           "units": 1
         },
         {
@@ -65803,6 +65809,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-07-07T18:15Z",
