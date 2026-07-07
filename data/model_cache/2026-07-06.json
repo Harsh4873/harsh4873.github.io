@@ -25845,6 +25845,7 @@
           "raw_edge": 13.52,
           "raw_model_probability": 0.659,
           "raw_probability": 0.659,
+          "result": "win",
           "selected_side_implied_probability": 0.52381,
           "source": "MLB First Five",
           "sport": "MLB",
@@ -34931,6 +34932,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-07T02:10Z",
@@ -35240,6 +35242,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-07-07T02:10Z",
