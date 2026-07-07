@@ -207,6 +207,7 @@ const SOURCE_LABELS: Record<string, string> = {
   wnba: 'WNBA Model',
   nba: 'NBA New',
   nba_playoffs: 'NBA Playoffs',
+  nba_summer: 'NBA Summer League',
   fifa_world_cup: 'FIFA Model',
   sportytrader: 'SportyTrader',
   sportytrader_nba: 'SportyTraderNBA',

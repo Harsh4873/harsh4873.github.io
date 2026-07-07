@@ -4,7 +4,7 @@ Use **two scheduled cloud automations** on repo `Harsh4873/PickLedgerPro` / bran
 
 Delete or replace draft automations named `Harsh's Automation` if they have zero runs.
 
-For Codex upkeep in both tracks: never open the deployed website or a browser, run source/tests/upcheck checks only, and verify Player Props rankings stay split by the eight published model buckets: Season, All Time, Hot (L10), and Matchup (H2H) for both MLB and WNBA.
+For Codex upkeep in both tracks: never open the deployed website or a browser, run source/tests/upcheck checks only, verify NBA Summer League appears as the `nba_summer` in-house cache bucket during Summer League dates, and verify Player Props rankings stay split by the eight published model buckets: Season, All Time, Hot (L10), and Matchup (H2H) for both MLB and WNBA.
 
 ## 1. Scores24 publish (required — GitHub Actions cannot scrape Scores24)
 
@@ -42,7 +42,7 @@ Sync main, run npm run upcheck, and python3 -m pytest tests/smoke/test_player_pr
 
 Run the Codex upkeep guard above and confirm Player Props rankings are model-bucketed with applicable-sport records, not duplicated whole-slate consensus records.
 
-Inspect latest GitHub Actions runs for model-cache-refresh, player-props-refresh, external-feed-refresh, auto-grade, and deploy-pages.
+Inspect latest GitHub Actions runs for model-cache-refresh, player-props-refresh, external-feed-refresh, auto-grade, and deploy-pages. The model-cache refresh should include `nba_summer` alongside NBA, NBA Playoffs, WNBA, MLB, and FIFA.
 
 If today's model cache or player-props cache is missing or unhealthy, dispatch the matching workflow with gh and wait.
 

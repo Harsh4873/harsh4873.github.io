@@ -91,6 +91,7 @@ type UserBet = {
 const ESPN_ENDPOINTS: Record<string, [string, string]> = {
   MLB: ['baseball', 'mlb'],
   NBA: ['basketball', 'nba'],
+  'NBA SUMMER': ['basketball', 'nba-summer'],
   WNBA: ['basketball', 'wnba'],
   'FIFA WC': ['soccer', 'fifa.world'],
   NHL: ['hockey', 'nhl'],
@@ -125,7 +126,7 @@ const PLAYER_PROP_RANKING_START_DATE = '2026-06-23';
 const YOUR_BETS_STORAGE_KEY = 'pickledger_your_bets_v1';
 const MLB_TEAM_CONSENSUS_EPOCH_PREFIX = 'MLB:mlb_team_consensus_v1';
 const MLB_TEAM_CONSENSUS_SOURCES = new Set(['MLB Model', 'MLB First Five', 'MLB Inning']);
-const PRIMARY_FILTERS = ['ALL', 'MLB', 'WNBA', 'FIFA WC'];
+const PRIMARY_FILTERS = ['ALL', 'MLB', 'WNBA', 'NBA SUMMER', 'FIFA WC'];
 let lastCentralDate = '';
 
 function escapeHtml(value: unknown): string {
@@ -696,6 +697,7 @@ function compareHomePickRows(left: Pick, right: Pick): number {
 }
 
 function filterLabel(filter: string): string {
+  if (filter === 'NBA SUMMER') return 'SUMMER';
   return filter === 'FIFA WC' ? 'FIFA' : filter;
 }
 

@@ -1814,6 +1814,7 @@
         "raw_projected_home_goals": 1.602,
         "raw_projected_total": 2.73,
         "reason": "Switzerland owns the stronger current-squad projection. Attack 91.1, midfield 91.8, defense 91.2, goalkeeper 88.5. Top player ranks: Manuel Akanji 93.5, Noah Okafor 93.5, Dan Ndoye 93.5. Switzerland form 2-0-0 (3.00 pts/g, 2.00-0.50 goals/g).",
+        "result": "loss",
         "source": "FIFA Model",
         "sport": "FIFA WC",
         "start_time": "2026-07-07T20:00Z",
@@ -1988,6 +1989,7 @@
         "raw_projected_home_goals": 1.602,
         "raw_projected_total": 2.73,
         "reason": "Switzerland has the best spread-cover edge at +0.5 from the venue-adjusted Poisson score grid.",
+        "result": "win",
         "source": "FIFA Model",
         "sport": "FIFA WC",
         "start_time": "2026-07-07T20:00Z",
@@ -3280,8 +3282,8 @@
       "venue_count": 16
     }
   },
-  "generatedAt": "2026-07-07T21:59:24.800831Z",
-  "generatedBy": "github-actions:model-cache-refresh",
+  "generatedAt": "2026-07-07T23:44:54.816483Z",
+  "generatedBy": "local:nba-summer-refresh",
   "ipl": {},
   "mlb": {},
   "mlb_first_five": {
@@ -23717,7 +23719,7 @@
         "game": "Cincinnati Reds vs Philadelphia Phillies",
         "game_id": "824495",
         "game_order": 8,
-        "game_start_time": "2026-07-07T23:10:00Z",
+        "game_start_time": "2026-07-07T23:10Z",
         "home_team": "Cincinnati Reds",
         "inning": 6,
         "league": "MLB",
@@ -23779,7 +23781,7 @@
         "selected_side_implied_probability": 0.545455,
         "source": "MLB Inning",
         "sport": "MLB",
-        "start_time": "2026-07-07T23:10:00Z",
+        "start_time": "2026-07-07T23:10Z",
         "team": "",
         "units": 0.25,
         "validation_lean": true,
@@ -64276,6 +64278,125 @@
       "picks": [],
       "raw_lines": 8
     },
+    "nba_summer": {
+      "eligible_games": 1,
+      "games": [
+        {
+          "away_team": "Atlanta Hawks",
+          "date": "2026-07-07",
+          "game": "Atlanta Hawks @ Memphis Grizzlies",
+          "game_id": "401879924",
+          "game_start_time": "2026-07-07T23:00:00Z",
+          "home_team": "Memphis Grizzlies",
+          "matchup": "Atlanta Hawks @ Memphis Grizzlies",
+          "neutral_site": true,
+          "skipped_reason": "game already started",
+          "start_time": "2026-07-07T23:00:00Z",
+          "status_detail": "3:25 - 2nd",
+          "status_state": "in",
+          "tournament": "NBA Summer League - Utah",
+          "venue": "Jon M. Huntsman Center"
+        },
+        {
+          "away_team": "Oklahoma City Thunder",
+          "date": "2026-07-07",
+          "game": "Oklahoma City Thunder @ Utah Jazz",
+          "game_id": "401879925",
+          "game_start_time": "2026-07-08T01:00:00Z",
+          "home_team": "Utah Jazz",
+          "matchup": "Oklahoma City Thunder @ Utah Jazz",
+          "neutral_site": true,
+          "projection": {
+            "away_profile": {
+              "games": 2,
+              "net_margin": -21.0,
+              "points_against": 96.5,
+              "points_for": 75.5,
+              "recent_margin": -15.67,
+              "win_pct": 0.0
+            },
+            "away_rest_days": 1,
+            "components": {
+              "form_edge": 13.2,
+              "home_edge": 0.1,
+              "record_edge": 4.5,
+              "rest_edge": 0.0
+            },
+            "home_probability": 0.82,
+            "home_profile": {
+              "games": 2,
+              "net_margin": 5.0,
+              "points_against": 101.0,
+              "points_for": 106.0,
+              "recent_margin": 6.33,
+              "win_pct": 1.0
+            },
+            "home_rest_days": 1,
+            "min_sample": 2,
+            "projected_margin": 13.0,
+            "projected_total": 189.5,
+            "sample_weight": 0.667
+          },
+          "start_time": "2026-07-08T01:00:00Z",
+          "status_detail": "7/7 - 9:00 PM EDT",
+          "status_state": "pre",
+          "tournament": "NBA Summer League - Utah",
+          "venue": "Jon M. Huntsman Center"
+        }
+      ],
+      "model_version": "nba_summer_v1.0.0",
+      "note": "NBA Summer League model evaluated 1 pregame matchup(s); skipped 1 started game(s).",
+      "ok": true,
+      "picks": [
+        {
+          "away_team": "Oklahoma City Thunder",
+          "confidence": 82.0,
+          "confidence_label": "High",
+          "date": "2026-07-07",
+          "decision": "BET",
+          "game": "Oklahoma City Thunder @ Utah Jazz",
+          "game_id": "401879925",
+          "game_start_time": "2026-07-08T01:00:00Z",
+          "guardrail_reasons": [],
+          "has_market_price": false,
+          "home_team": "Utah Jazz",
+          "key_factors": [
+            "Summer form margin +13.2",
+            "Record edge +4.5",
+            "Rest edge +0.0",
+            "Projected total 189.5"
+          ],
+          "league": "NBA Summer League",
+          "market_edge": null,
+          "market_pick_odds": null,
+          "market_pick_prob": null,
+          "market_source": null,
+          "market_type": "h2h",
+          "matchup": "Oklahoma City Thunder @ Utah Jazz",
+          "model_prediction": 13.0,
+          "neutral_site": true,
+          "notes": "Summer form margin +13.2 | Record edge +4.5 | Rest edge +0.0 | Projected total 189.5",
+          "odds": null,
+          "pick": "Utah Jazz ML (Oklahoma City Thunder @ Utah Jazz)",
+          "probability": 0.82,
+          "projected_margin": 13.0,
+          "projected_total": 189.5,
+          "sample_games": 2,
+          "selection": "Utah Jazz",
+          "source": "NBA Summer League",
+          "sport": "NBA SUMMER",
+          "start_time": "2026-07-08T01:00:00Z",
+          "team": "Utah Jazz",
+          "tournament": "NBA Summer League - Utah",
+          "units": 1.25,
+          "venue": "Jon M. Huntsman Center"
+        }
+      ],
+      "schedule_source": "ESPN nba-summer scoreboard",
+      "skipped_started_games": 1,
+      "slate_games": 2,
+      "visible_picks": 1
+    },
     "scores24_fifa_world_cup": {
       "date": "2026-07-07",
       "generatedAt": "2026-07-07T18:02:26.694640Z",
@@ -66711,6 +66832,125 @@
     "raw_lines": 8
   },
   "nba_props": {},
+  "nba_summer": {
+    "eligible_games": 1,
+    "games": [
+      {
+        "away_team": "Atlanta Hawks",
+        "date": "2026-07-07",
+        "game": "Atlanta Hawks @ Memphis Grizzlies",
+        "game_id": "401879924",
+        "game_start_time": "2026-07-07T23:00:00Z",
+        "home_team": "Memphis Grizzlies",
+        "matchup": "Atlanta Hawks @ Memphis Grizzlies",
+        "neutral_site": true,
+        "skipped_reason": "game already started",
+        "start_time": "2026-07-07T23:00:00Z",
+        "status_detail": "3:25 - 2nd",
+        "status_state": "in",
+        "tournament": "NBA Summer League - Utah",
+        "venue": "Jon M. Huntsman Center"
+      },
+      {
+        "away_team": "Oklahoma City Thunder",
+        "date": "2026-07-07",
+        "game": "Oklahoma City Thunder @ Utah Jazz",
+        "game_id": "401879925",
+        "game_start_time": "2026-07-08T01:00:00Z",
+        "home_team": "Utah Jazz",
+        "matchup": "Oklahoma City Thunder @ Utah Jazz",
+        "neutral_site": true,
+        "projection": {
+          "away_profile": {
+            "games": 2,
+            "net_margin": -21.0,
+            "points_against": 96.5,
+            "points_for": 75.5,
+            "recent_margin": -15.67,
+            "win_pct": 0.0
+          },
+          "away_rest_days": 1,
+          "components": {
+            "form_edge": 13.2,
+            "home_edge": 0.1,
+            "record_edge": 4.5,
+            "rest_edge": 0.0
+          },
+          "home_probability": 0.82,
+          "home_profile": {
+            "games": 2,
+            "net_margin": 5.0,
+            "points_against": 101.0,
+            "points_for": 106.0,
+            "recent_margin": 6.33,
+            "win_pct": 1.0
+          },
+          "home_rest_days": 1,
+          "min_sample": 2,
+          "projected_margin": 13.0,
+          "projected_total": 189.5,
+          "sample_weight": 0.667
+        },
+        "start_time": "2026-07-08T01:00:00Z",
+        "status_detail": "7/7 - 9:00 PM EDT",
+        "status_state": "pre",
+        "tournament": "NBA Summer League - Utah",
+        "venue": "Jon M. Huntsman Center"
+      }
+    ],
+    "model_version": "nba_summer_v1.0.0",
+    "note": "NBA Summer League model evaluated 1 pregame matchup(s); skipped 1 started game(s).",
+    "ok": true,
+    "picks": [
+      {
+        "away_team": "Oklahoma City Thunder",
+        "confidence": 82.0,
+        "confidence_label": "High",
+        "date": "2026-07-07",
+        "decision": "BET",
+        "game": "Oklahoma City Thunder @ Utah Jazz",
+        "game_id": "401879925",
+        "game_start_time": "2026-07-08T01:00:00Z",
+        "guardrail_reasons": [],
+        "has_market_price": false,
+        "home_team": "Utah Jazz",
+        "key_factors": [
+          "Summer form margin +13.2",
+          "Record edge +4.5",
+          "Rest edge +0.0",
+          "Projected total 189.5"
+        ],
+        "league": "NBA Summer League",
+        "market_edge": null,
+        "market_pick_odds": null,
+        "market_pick_prob": null,
+        "market_source": null,
+        "market_type": "h2h",
+        "matchup": "Oklahoma City Thunder @ Utah Jazz",
+        "model_prediction": 13.0,
+        "neutral_site": true,
+        "notes": "Summer form margin +13.2 | Record edge +4.5 | Rest edge +0.0 | Projected total 189.5",
+        "odds": null,
+        "pick": "Utah Jazz ML (Oklahoma City Thunder @ Utah Jazz)",
+        "probability": 0.82,
+        "projected_margin": 13.0,
+        "projected_total": 189.5,
+        "sample_games": 2,
+        "selection": "Utah Jazz",
+        "source": "NBA Summer League",
+        "sport": "NBA SUMMER",
+        "start_time": "2026-07-08T01:00:00Z",
+        "team": "Utah Jazz",
+        "tournament": "NBA Summer League - Utah",
+        "units": 1.25,
+        "venue": "Jon M. Huntsman Center"
+      }
+    ],
+    "schedule_source": "ESPN nba-summer scoreboard",
+    "skipped_started_games": 1,
+    "slate_games": 2,
+    "visible_picks": 1
+  },
   "scores24_fifa_world_cup": {
     "date": "2026-07-07",
     "generatedAt": "2026-07-07T18:02:26.694640Z",
@@ -68344,7 +68584,7 @@
     ],
     "updatedAt": "2026-07-07T21:39:13.041231Z"
   },
-  "updatedAt": "2026-07-07T21:59:24.800831Z",
+  "updatedAt": "2026-07-07T23:44:54.816483Z",
   "wnba": {
     "ok": true,
     "picks": [

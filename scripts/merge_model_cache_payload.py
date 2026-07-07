@@ -38,6 +38,7 @@ DEPLOYED_MODEL_KEYS = {
     "wnba",
     "nba",
     "nba_playoffs",
+    "nba_summer",
     "fifa_world_cup",
     *EXTERNAL_FEED_MODEL_KEYS,
 }
@@ -45,6 +46,7 @@ MODEL_ALIAS_KEYS = {
     "nba",
     "nba_old",
     "nba_playoffs",
+    "nba_summer",
     "wnba",
     "nba_props",
     "mlb",

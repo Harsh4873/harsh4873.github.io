@@ -336,11 +336,12 @@ def test_home_filters_prioritize_primary_sports_and_use_more_menu():
     data = (ROOT / "src" / "data.ts").read_text(encoding="utf-8")
     css = (ROOT / "src" / "styles" / "pickledger.css").read_text(encoding="utf-8")
 
-    assert "const PRIMARY_FILTERS = ['ALL', 'MLB', 'WNBA', 'FIFA WC']" in main
+    assert "const PRIMARY_FILTERS = ['ALL', 'MLB', 'WNBA', 'NBA SUMMER', 'FIFA WC']" in main
     assert "const ARCHIVED_SPORTS = new Set(['NBA'])" in data
     assert "!ARCHIVED_SPORTS.has(pick.sport)" in data
     assert "'MLB NEW': 'MLB Model'" in data
     assert "'FIFA WC In-House': 'FIFA Model'" in data
+    assert "if (filter === 'NBA SUMMER') return 'SUMMER'" in main
     assert "filter === 'FIFA WC' ? 'FIFA' : filter" in main
     assert "function toggleHomeFilter(" in main
     assert "activeFilters.has(pick.sport)" in main

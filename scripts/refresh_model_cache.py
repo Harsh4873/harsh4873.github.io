@@ -28,7 +28,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--date", default="", help="Target date in YYYY-MM-DD or MM/DD/YYYY format.")
     parser.add_argument(
         "--models",
-        default="mlb_new,mlb_inning,mlb_first_five,wnba,nba,nba_playoffs,fifa_world_cup",
+        default="mlb_new,mlb_inning,mlb_first_five,wnba,nba,nba_playoffs,nba_summer,fifa_world_cup",
         help="Comma-separated model keys to refresh, or 'all'.",
     )
     parser.add_argument("--max-workers", type=int, default=3, help="Maximum parallel model jobs.")
@@ -41,6 +41,7 @@ def _model_jobs(date_iso: str) -> dict[str, Callable[[], dict[str, Any]]]:
         "nba": lambda: server.run_nba_model(date_iso, "new"),
         "nba_old": lambda: server.run_nba_model(date_iso, "old"),
         "nba_playoffs": lambda: server.run_nba_playoffs_model(date_iso),
+        "nba_summer": lambda: server.run_nba_summer_model(date_iso),
         "wnba": lambda: server.run_wnba_model(date_iso),
         "nba_props": lambda: server.run_nba_props_model(date_iso),
         "mlb_old": lambda: server.run_mlb_model(date_iso, "old"),
@@ -83,6 +84,7 @@ def _build_payload(date_iso: str, models: dict[str, Any], errors: list[str]) -> 
         "nba": models.get("nba", {}),
         "nba_old": models.get("nba_old", {}),
         "nba_playoffs": models.get("nba_playoffs", {}),
+        "nba_summer": models.get("nba_summer", {}),
         "wnba": models.get("wnba", {}),
         "nba_props": models.get("nba_props", {}),
         "mlb": models.get("mlb_old", {}),

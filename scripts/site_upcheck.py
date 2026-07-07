@@ -26,6 +26,7 @@ REQUIRED_MODEL_KEYS = {
     "wnba",
     "nba",
     "nba_playoffs",
+    "nba_summer",
     "fifa_world_cup",
 }
 REQUIRED_PLAYER_PROP_KEYS = {

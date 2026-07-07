@@ -1354,6 +1354,7 @@ def run_daily_model_caches_to_firestore(date_str: str | None = None) -> dict[str
         "nba": (run_nba_model, (date_iso, "new")),
         "nba_old": (run_nba_model, (date_iso, "old")),
         "nba_playoffs": (run_nba_playoffs_model, (date_iso,)),
+        "nba_summer": (run_nba_summer_model, (date_iso,)),
         "wnba": (run_wnba_model, (date_iso,)),
         "nba_props": (run_nba_props_model, (date_iso,)),
         "mlb_old": (run_mlb_model, (date_iso, "old")),
@@ -1393,6 +1394,7 @@ def run_daily_model_caches_to_firestore(date_str: str | None = None) -> dict[str
         "nba": results.get("nba", {}),
         "nba_old": results.get("nba_old", {}),
         "nba_playoffs": results.get("nba_playoffs", {}),
+        "nba_summer": results.get("nba_summer", {}),
         "wnba": results.get("wnba", {}),
         "nba_props": results.get("nba_props", {}),
         "mlb": results.get("mlb_old", {}),
@@ -2816,6 +2818,7 @@ def run_background_grade_all_users() -> dict[str, Any]:
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 NBA_MODEL_DIR = os.path.join(BASE_DIR, "NBAPredictionModel")
 NBA_PLAYOFFS_MODEL_DIR = os.path.join(BASE_DIR, "NBAPlayoffsPredictionModel")
+NBA_SUMMER_MODEL_DIR = os.path.join(BASE_DIR, "NBASummerPredictionModel")
 WNBA_MODEL_DIR = os.path.join(BASE_DIR, "WNBAPredictionModel")
 MLB_MODEL_DIR = os.path.join(BASE_DIR, "MLBPredictionModel")
 MLB_INNING_MODEL_DIR = os.path.join(BASE_DIR, "models", "mlb_inning")
@@ -2947,6 +2950,7 @@ _MODEL_CACHE_KEY_ALIASES: dict[str, tuple[str, ...]] = {
     "nba_new": ("nba_new", "nba"),
     "nba_old": ("nba_old",),
     "nba_playoffs": ("nba_playoffs",),
+    "nba_summer": ("nba_summer",),
     "nba_props": ("nba_props", "props"),
     "props": ("props", "nba_props"),
     "wnba": ("wnba",),
@@ -4665,6 +4669,26 @@ def run_nba_playoffs_model(date_str: str | None = None) -> dict[str, Any]:
         return {"ok": False, "error": "NBA Playoffs timed out (8 min limit)"}
     except Exception as e:
         return {"ok": False, "error": str(e)}
+
+
+def run_nba_summer_model(date_str: str | None = None) -> dict[str, Any]:
+    """Execute the NBA Summer League model and return parsed picks."""
+    target_iso, _ = _parse_model_date_arg(date_str)
+    if not os.path.exists(NBA_SUMMER_MODEL_DIR):
+        return {"ok": False, "error": "NBA Summer model directory not found"}
+
+    try:
+        from NBASummerPredictionModel import generate_nba_summer_picks
+
+        result = generate_nba_summer_picks(target_iso)
+        if not isinstance(result, dict):
+            return {"ok": False, "error": "NBA Summer model returned an invalid payload"}
+        result.setdefault("ok", True)
+        result.setdefault("picks", [])
+        _save_admin_picks_doc("nba_summer", result, target_iso)
+        return result
+    except Exception as exc:
+        return {"ok": False, "error": str(exc)}
 
 
 def run_nba_props_model(
