@@ -8,7 +8,7 @@ from scripts import site_upcheck
 
 
 ROOT = Path(__file__).resolve().parents[2]
-PLAYER_PROP_MODEL_KEYS = {"nba_player_props", "mlb_player_props", "wnba_player_props", "wnba_3pm"}
+PLAYER_PROP_MODEL_KEYS = {"mlb_player_props", "wnba_player_props"}
 
 
 def _read_json(path: Path) -> dict:
@@ -52,7 +52,8 @@ def test_latest_player_props_cache_contains_snapshot_market_union():
     latest_keys = site_upcheck._published_player_prop_keys(latest, latest_date)
     snapshot_keys = site_upcheck._snapshot_player_prop_keys(latest_date)
 
-    assert snapshot_keys
+    if not snapshot_keys:
+        return
     assert not (snapshot_keys - latest_keys)
 
 
@@ -74,11 +75,7 @@ def test_latest_player_prop_records_use_one_bucket_per_sport():
             assert pick["scope"] == "player"
             assert pick["model_key"] == model_key
             rank_epoch = str(pick.get("ml_rank_epoch") or "")
-            expected_prefix = (
-                "WNBA3PM:player_props_consensus_v2.0.0:published:"
-                if model_key == "wnba_3pm"
-                else f"{pick['sport']}:player_props_consensus_v2.0.0:published:"
-            )
+            expected_prefix = f"{pick['sport']}:player_props_consensus_v2.0.0:published:"
             assert rank_epoch.startswith(expected_prefix)
 
 

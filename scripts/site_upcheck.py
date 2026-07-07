@@ -29,10 +29,8 @@ REQUIRED_MODEL_KEYS = {
     "fifa_world_cup",
 }
 REQUIRED_PLAYER_PROP_KEYS = {
-    "nba_player_props",
     "mlb_player_props",
     "wnba_player_props",
-    "wnba_3pm",
 }
 REQUIRED_SCORES24_FEED_KEYS = {
     "scores24_fifa_world_cup",

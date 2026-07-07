@@ -73,7 +73,6 @@ jobs:
           required = {
               "mlb_player_props",
               "wnba_player_props",
-              "wnba_3pm",
           }
           try:
               payload = json.loads(Path("data/player_props_cache/latest.json").read_text(encoding="utf-8"))

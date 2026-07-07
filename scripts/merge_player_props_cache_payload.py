@@ -17,6 +17,10 @@ except ModuleNotFoundError:  # pragma: no cover - exercised when tests import by
 PLAYER_PROPS_CACHE_DIR = Path("data/player_props_cache")
 PLAYER_PROPS_SNAPSHOT_DIR = Path("data/player_props_snapshots")
 CONSENSUS_METADATA_PATH = Path("player_props/artifacts/player_props_consensus_metadata.json")
+PUBLIC_PLAYER_PROP_MODEL_KEYS = {
+    "mlb_player_props",
+    "wnba_player_props",
+}
 PICK_METADATA_FIELDS = {"result", "start_time", "game_start_time", "pregame_snapshot"}
 MARKET_METADATA_FIELDS = {"start_time", "game_start_time", "pregame_snapshot"}
 _CONSENSUS_MODELS: list[str] | None = None
@@ -366,6 +370,11 @@ def merge_payload(
     current = _read_json(cache_dir / f"{date_iso}.json") or {}
     current_models = current.get("models") if isinstance(current.get("models"), dict) else {}
     generated_models = generated.get("models") if isinstance(generated.get("models"), dict) else {}
+    public_generated_models = {
+        key: bucket
+        for key, bucket in generated_models.items()
+        if key in PUBLIC_PLAYER_PROP_MODEL_KEYS
+    }
 
     merged = dict(generated)
     merged["models"] = {
@@ -375,7 +384,7 @@ def merge_payload(
             date_iso,
             snapshot_dir=snapshot_dir,
         )
-        for key, bucket in generated_models.items()
+        for key, bucket in public_generated_models.items()
     }
     return merged
 
