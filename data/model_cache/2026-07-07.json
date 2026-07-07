@@ -33908,6 +33908,7 @@
           "raw_projected_home_goals": 3.131,
           "raw_projected_total": 3.92,
           "reason": "Argentina owns the stronger current-squad projection. Attack 92.6, midfield 92.7, defense 91.2, goalkeeper 92.9. Top player ranks: Jos\u00e9 Manuel L\u00f3pez 93.5, Emiliano Mart\u00ednez 93.5, Cristian Romero 93.5. Argentina form 2-0-0 (3.00 pts/g, 3.00-1.50 goals/g).",
+          "result": "win",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-07-07T16:00Z",
@@ -33996,6 +33997,7 @@
           "raw_projected_home_goals": 3.131,
           "raw_projected_total": 3.92,
           "reason": "Projected goals Egypt 0.73, Argentina 2.93 after tournament-form, venue, and market-total blending.",
+          "result": "win",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-07-07T16:00Z",
@@ -34082,6 +34084,7 @@
           "raw_projected_home_goals": 3.131,
           "raw_projected_total": 3.92,
           "reason": "Argentina has the best spread-cover edge at -1.5 from the venue-adjusted Poisson score grid.",
+          "result": "loss",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-07-07T16:00Z",
@@ -57848,7 +57851,7 @@
           "game": "Cincinnati Reds vs Philadelphia Phillies",
           "game_id": "824495",
           "game_order": 9,
-          "game_start_time": "2026-07-07T23:10:00Z",
+          "game_start_time": "2026-07-07T23:10Z",
           "home_team": "Cincinnati Reds",
           "inning": 5,
           "league": "MLB",
@@ -57910,7 +57913,7 @@
           "selected_side_implied_probability": 0.545455,
           "source": "MLB Inning",
           "sport": "MLB",
-          "start_time": "2026-07-07T23:10:00Z",
+          "start_time": "2026-07-07T23:10Z",
           "team": "",
           "units": 0.25,
           "validation_lean": true,
@@ -65760,6 +65763,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Milwaukee Brewers @ St. Louis Cardinals",
+          "game_start_time": "2026-07-07T18:15Z",
           "home_team": "St. Louis Cardinals",
           "matchup": "Milwaukee Brewers @ St. Louis Cardinals",
           "odds": -120,
@@ -65786,7 +65790,7 @@
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-05-05-2026-st-louis-cardinals-milwaukee-brewers-prediction",
           "sport": "MLB",
-          "start_time": "2026-07-07T23:45Z",
+          "start_time": "2026-07-07T18:15Z",
           "tip": "Total Over (7,5)",
           "units": 1
         },
@@ -66425,6 +66429,7 @@
           "odds": -130,
           "pick": "Under 2.5 Goals (Argentina vs Egypt)",
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerFIFAWorldCup",
           "sport": "FIFA WC",
           "start_time": "2026-07-07T16:00Z",
@@ -66753,6 +66758,7 @@
           "decision": "BET",
           "edge": null,
           "game": "St. Louis Cardinals vs Milwaukee Brewers",
+          "game_start_time": "2026-07-07T18:15Z",
           "matchup": "St. Louis Cardinals vs Milwaukee Brewers",
           "odds": 110,
           "pick": "St. Louis Cardinals to Win (St. Louis Cardinals vs Milwaukee Brewers)",
@@ -66772,6 +66778,7 @@
           "probability": null,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-07-07T18:15Z",
           "units": 1
         },
         {
@@ -67098,6 +67105,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Miami Marlins vs Seattle Mariners",
+          "game_start_time": "2026-07-07T22:40Z",
           "matchup": "Miami Marlins vs Seattle Mariners",
           "odds": 175,
           "pick": "Marlins -1.5 (Marlins vs Mariners)",
@@ -67117,6 +67125,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-07-07T22:40Z",
           "units": 1
         },
         {
@@ -67124,6 +67133,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Pittsburgh Pirates vs Atlanta Braves",
+          "game_start_time": "2026-07-07T22:40Z",
           "matchup": "Pittsburgh Pirates vs Atlanta Braves",
           "odds": 135,
           "pick": "Pirates -1.5 (Pirates vs Braves)",
@@ -67143,6 +67153,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-07-07T22:40Z",
           "units": 1
         },
         {
@@ -67150,6 +67161,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Tampa Bay Rays vs New York Yankees",
+          "game_start_time": "2026-07-07T22:40Z",
           "matchup": "Tampa Bay Rays vs New York Yankees",
           "odds": 100,
           "pick": "Yankees ML (Rays vs Yankees)",
@@ -67169,6 +67181,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-07-07T22:40Z",
           "units": 1
         },
         {
@@ -67176,6 +67189,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Cincinnati Reds vs Philadelphia Phillies",
+          "game_start_time": "2026-07-07T23:10Z",
           "matchup": "Cincinnati Reds vs Philadelphia Phillies",
           "odds": -115,
           "pick": "Under 9 (Reds vs Phillies)",
@@ -67195,6 +67209,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-07-07T23:10Z",
           "units": 1
         },
         {
@@ -67202,6 +67217,7 @@
           "decision": "BET",
           "edge": null,
           "game": "St. Louis Cardinals vs Milwaukee Brewers",
+          "game_start_time": "2026-07-07T18:15Z",
           "matchup": "St. Louis Cardinals vs Milwaukee Brewers",
           "odds": -101,
           "pick": "Over 8.5 (Cardinals vs Brewers)",
@@ -67221,6 +67237,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-07-07T18:15Z",
           "units": 1
         },
         {
@@ -67256,6 +67273,7 @@
           "decision": "BET",
           "edge": null,
           "game": "San Diego Padres vs Arizona Diamondbacks",
+          "game_start_time": "2026-07-08T01:40Z",
           "matchup": "San Diego Padres vs Arizona Diamondbacks",
           "odds": -101,
           "pick": "Over 9 (Padres vs Diamondbacks)",
@@ -67275,6 +67293,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-07-08T01:40Z",
           "units": 1
         },
         {
