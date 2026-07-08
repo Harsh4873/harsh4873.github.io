@@ -48806,6 +48806,7 @@
           "raw_edge": 13.87,
           "raw_model_probability": 0.6625,
           "raw_probability": 0.6625,
+          "result": "win",
           "selected_side_implied_probability": 0.52381,
           "source": "MLB First Five",
           "sport": "MLB",
@@ -65039,6 +65040,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-06-07-2026-los-angeles-dodgers-colorado-rockies-prediction",
           "sport": "MLB",
@@ -65605,6 +65607,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-08T02:10Z",
@@ -66059,6 +66062,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-07-08T02:10Z",
