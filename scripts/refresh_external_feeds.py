@@ -17,6 +17,7 @@ sys.path.insert(0, str(REPO_ROOT))
 
 import pickgrader_server as server  # noqa: E402
 from scripts.cache_manifest import write_cache_manifest  # noqa: E402
+from scripts.merge_external_feed_cache_payload import merge_payload  # noqa: E402
 from scripts.pick_calibration import apply_calibration_to_payload  # noqa: E402
 from scripts.scrapers.scores24_scraper import (  # noqa: E402
     run_scores24_fifa_world_cup,
@@ -208,9 +209,10 @@ def _split_provider_result(
 
 def _write_json_cache(date_iso: str, payload: dict[str, Any]) -> None:
     MODEL_CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    merged = merge_payload(payload, MODEL_CACHE_DIR)
     for target in (MODEL_CACHE_DIR / f"{date_iso}.json", MODEL_CACHE_DIR / "latest.json"):
         with target.open("w", encoding="utf-8") as handle:
-            json.dump(payload, handle, indent=2, sort_keys=True, default=str)
+            json.dump(merged, handle, indent=2, sort_keys=True, default=str)
             handle.write("\n")
     write_cache_manifest(MODEL_CACHE_DIR)
 

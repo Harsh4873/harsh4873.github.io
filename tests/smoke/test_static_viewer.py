@@ -634,6 +634,32 @@ def test_refresh_workflows_commit_as_triggering_actor():
         assert "github-actions[bot]" not in workflow
 
 
+def test_model_cache_merge_seeds_external_feeds_on_new_slate_day(tmp_path):
+    module = _load_module("merge_model_cache_payload_new_day", ROOT / "scripts" / "merge_model_cache_payload.py")
+    cache_dir = tmp_path / "data" / "model_cache"
+    cache_dir.mkdir(parents=True)
+    previous = {
+        "date": "2026-07-07",
+        "models": {
+            "wnba": {"ok": True, "picks": [{"pick": "Old"}]},
+            "scores24_wnba": {"ok": True, "picks": [{"pick": "S24"}]},
+        },
+        "external_feeds": {
+            "scores24_wnba": {"ok": True, "picks": [{"pick": "S24"}]},
+        },
+    }
+    generated = {
+        "date": "2026-07-08",
+        "models": {
+            "wnba": {"ok": True, "picks": [{"pick": "New"}]},
+        },
+    }
+    (cache_dir / "latest.json").write_text(json.dumps(previous), encoding="utf-8")
+    merged = module.merge_payload(generated, cache_dir)
+    assert merged["models"]["wnba"]["picks"][0]["pick"] == "New"
+    assert merged["external_feeds"]["scores24_wnba"]["picks"][0]["pick"] == "S24"
+
+
 def test_model_cache_merge_preserves_other_deployed_buckets(tmp_path):
     module = _load_module("merge_model_cache_payload", ROOT / "scripts" / "merge_model_cache_payload.py")
     cache_dir = tmp_path / "data" / "model_cache"

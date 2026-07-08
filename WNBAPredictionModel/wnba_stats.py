@@ -352,6 +352,9 @@ def scrape_bball_ref_four_factors(season: int = 2026) -> dict:
             raise ValueError("team or opponent stats table not found")
 
         def parse_table(table) -> dict:
+            # The opponent per-game table prefixes every stat column with
+            # "opp_" (opp_fg, opp_fga, ...), so each field checks both the
+            # plain and prefixed data-stat names.
             parsed = {}
             tbody = table.find("tbody") or table
             for row in tbody.find_all("tr"):
@@ -364,16 +367,16 @@ def scrape_bball_ref_four_factors(season: int = 2026) -> dict:
                     continue
 
                 parsed[team_abbr] = {
-                    "fg": _safe_float(_extract_stat_text(row, "fg")),
-                    "fga": _safe_float(_extract_stat_text(row, "fga")),
-                    "fg3": _safe_float(_extract_stat_text(row, "fg3")),
-                    "fg3a": _safe_float(_extract_stat_text(row, "fg3a")),
-                    "ft": _safe_float(_extract_stat_text(row, "ft")),
-                    "fta": _safe_float(_extract_stat_text(row, "fta")),
-                    "orb": _safe_float(_extract_stat_text(row, "orb")),
-                    "drb": _safe_float(_extract_stat_text(row, "drb")),
-                    "tov": _safe_float(_extract_stat_text(row, "tov")),
-                    "pts": _safe_float(_extract_stat_text(row, "pts")),
+                    "fg": _safe_float(_extract_stat_text(row, "fg", "opp_fg")),
+                    "fga": _safe_float(_extract_stat_text(row, "fga", "opp_fga")),
+                    "fg3": _safe_float(_extract_stat_text(row, "fg3", "opp_fg3")),
+                    "fg3a": _safe_float(_extract_stat_text(row, "fg3a", "opp_fg3a")),
+                    "ft": _safe_float(_extract_stat_text(row, "ft", "opp_ft")),
+                    "fta": _safe_float(_extract_stat_text(row, "fta", "opp_fta")),
+                    "orb": _safe_float(_extract_stat_text(row, "orb", "opp_orb")),
+                    "drb": _safe_float(_extract_stat_text(row, "drb", "opp_drb")),
+                    "tov": _safe_float(_extract_stat_text(row, "tov", "opp_tov")),
+                    "pts": _safe_float(_extract_stat_text(row, "pts", "opp_pts")),
                 }
 
             return parsed

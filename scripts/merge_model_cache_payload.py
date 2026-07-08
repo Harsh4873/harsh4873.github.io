@@ -86,6 +86,23 @@ def _write_json(path: Path, payload: dict[str, Any]) -> None:
         handle.write("\n")
 
 
+def _seed_external_feeds_from_latest(latest_payload: dict[str, Any]) -> dict[str, Any]:
+    """Carry feed buckets across slate rollovers so a new-day model refresh does not wipe them."""
+    seeded: dict[str, Any] = {}
+    external_feeds = latest_payload.get("external_feeds")
+    if isinstance(external_feeds, dict):
+        seeded.update(external_feeds)
+    models = latest_payload.get("models")
+    if isinstance(models, dict):
+        for key in EXTERNAL_FEED_MODEL_KEYS:
+            if key in models and key not in seeded:
+                seeded[key] = models[key]
+    for key in EXTERNAL_FEED_MODEL_KEYS:
+        if key in latest_payload and key not in seeded:
+            seeded[key] = latest_payload[key]
+    return seeded
+
+
 def _current_payload(cache_dir: Path, date_iso: str) -> dict[str, Any]:
     date_payload = _read_json(cache_dir / f"{date_iso}.json")
     if date_payload and str(date_payload.get("date") or "") == date_iso:
@@ -93,6 +110,10 @@ def _current_payload(cache_dir: Path, date_iso: str) -> dict[str, Any]:
     latest_payload = _read_json(cache_dir / "latest.json")
     if latest_payload and str(latest_payload.get("date") or "") == date_iso:
         return latest_payload
+    if latest_payload:
+        seeded_feeds = _seed_external_feeds_from_latest(latest_payload)
+        if seeded_feeds:
+            return {"date": date_iso, "models": {}, "external_feeds": seeded_feeds}
     return {"date": date_iso, "models": {}}
 
 

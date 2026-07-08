@@ -301,8 +301,10 @@ def _team_full_name(team_abbr: str) -> str:
 
 MARKET_EDGE_BET_THRESHOLD = 0.030   # 3% vig-removed edge required for BET
 MARKET_EDGE_LEAN_THRESHOLD = 0.015  # 1.5% edge qualifies for LEAN
-WNBA_SPREAD_RMSE = 11.0
-WNBA_TOTAL_RMSE = 13.0
+# Measured on the 2024-26 backtest (650 games): spread RMSE 13.3, totals
+# RMSE 18.2. Understating these inflates every cover/total probability.
+WNBA_SPREAD_RMSE = 13.3
+WNBA_TOTAL_RMSE = 18.0
 WNBA_SPREAD_BET_EDGE = 0.050
 WNBA_SPREAD_LEAN_EDGE = 0.030
 WNBA_TOTAL_BET_EDGE = 0.050

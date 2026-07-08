@@ -25,11 +25,18 @@ import math
 # Section 1 — Constants
 # ---------------------------------------------------------------------------
 
-WNBA_LEAGUE_AVG_PACE = 70.0        # possessions per 40 min, league average
+WNBA_LEAGUE_AVG_PACE = 80.0        # possessions per 40 min, league average (BBRef 2024-26: ~79-81)
+WNBA_LEAGUE_AVG_ORTG = 105.0       # league average offensive rating (pts per 100 poss)
 WNBA_LEAGUE_AVG_PPG  = 82.0        # league average points per game
 WNBA_MARGIN_CAP      = 18.0        # max absolute projected margin (points)
-WNBA_LOGISTIC_K      = 0.165       # logistic scaling constant
-WNBA_HOME_ADVANTAGE  = 1.4         # home court points added to home margin
+# Calibrated 2026-07 on 650 games (2024-25 train, 2026 validation), see
+# wnba_backtest.py. K=0.13 corresponds to a ~13-pt margin sigma, matching
+# the observed 13.3-pt spread RMSE. HCA=2.0 sits between the model's old
+# 1.4 and the 3.25-pt historical betting-market value — recent seasons
+# show a smaller home edge than the 1997-2019 average.
+WNBA_LOGISTIC_K      = 0.13        # logistic scaling constant
+WNBA_HOME_ADVANTAGE  = 2.0         # home court points added to home margin
+WNBA_SHRINKAGE_K     = 10.0        # empirical-Bayes prior strength (games) for rating shrinkage
 WNBA_B2B_PENALTY     = 1.25        # points deducted for road B2B team
 WNBA_REST_BONUS      = 0.6         # points per 2+ extra rest days advantage
 WNBA_FORM_WEIGHT     = 0.06        # weight on last-5 NRtg delta
@@ -116,10 +123,80 @@ def blend_pace(home_pace, away_pace) -> float:
 # Section 4 — Base Margin from Net Rating
 # ---------------------------------------------------------------------------
 
-def compute_base_margin(home_NRtg, away_NRtg, home_pace, away_pace) -> float:
+def shrink_rating(value, games, prior: float = 0.0, k: float | None = None) -> float | None:
+    """Empirical-Bayes shrinkage of a team rating toward a league prior.
+
+    A rating observed over ``games`` games is weighted n/(n+k) against the
+    prior — the standard regression-to-the-mean estimator for noisy team
+    strength (see e.g. empirical Bayes shrinkage for pairwise comparison
+    models). With k=10, a 3-game sample keeps only ~23% of its raw rating,
+    a 20-game sample keeps ~67%, and a full 44-game season keeps ~81%.
+
+    ``games`` None or invalid means the sample size is unknown — we return
+    the value unshrunk rather than guessing.
+    """
+    if value is None:
+        return None
+    try:
+        v = float(value)
+    except (TypeError, ValueError):
+        return None
+    try:
+        n = float(games)
+    except (TypeError, ValueError):
+        return v
+    if n <= 0:
+        return prior
+    # k=None resolves to the module constant at call time so calibration
+    # runs can tune WNBA_SHRINKAGE_K without re-importing.
+    k_value = float(WNBA_SHRINKAGE_K if k is None else k)
+    weight = n / (n + k_value)
+    return prior + (v - prior) * weight
+
+
+def games_played(stats: dict | None) -> float | None:
+    """Best-effort completed-game count from a team stats profile."""
+    stats = stats or {}
+    try:
+        wins = stats.get("W")
+        losses = stats.get("L")
+        if wins is not None and losses is not None:
+            return float(wins) + float(losses)
+    except (TypeError, ValueError):
+        pass
+    for key in ("games_used", "rolling_games_used"):
+        value = stats.get(key)
+        if value is None:
+            continue
+        try:
+            return float(value)
+        except (TypeError, ValueError):
+            continue
+    return None
+
+
+def compute_base_margin(
+    home_NRtg,
+    away_NRtg,
+    home_pace,
+    away_pace,
+    home_games=None,
+    away_games=None,
+) -> float:
     """
     Project a base point margin (home − away) from net ratings, scaled by
     the expected game pace.
+
+    NRtg is points per 100 possessions, so the per-game margin is
+    NRtg_diff × possessions / 100 — a 40-minute WNBA game at ~80
+    possessions converts a +5 NRtg edge into ~4 points. (The pre-patch
+    code divided by a 70-possession "league average", which both used a
+    stale pace constant and mis-scaled the units, inflating every margin
+    by ~40% and pinning early-season projections at the ±18 cap.)
+
+    Each team's rating is shrunk toward 0 by its games played before the
+    difference is taken, so a 3-game hot streak can't out-vote a full
+    season of evidence.
 
     If either net rating is missing we have no model — return 0.0 and let
     the contextual layer carry whatever signal we do have.
@@ -127,8 +204,13 @@ def compute_base_margin(home_NRtg, away_NRtg, home_pace, away_pace) -> float:
     if home_NRtg is None or away_NRtg is None:
         return 0.0
 
-    pace_factor = blend_pace(home_pace, away_pace) / WNBA_LEAGUE_AVG_PACE
-    raw_margin = (float(home_NRtg) - float(away_NRtg)) * pace_factor
+    home_shrunk = shrink_rating(home_NRtg, home_games)
+    away_shrunk = shrink_rating(away_NRtg, away_games)
+    if home_shrunk is None or away_shrunk is None:
+        return 0.0
+
+    pace_factor = blend_pace(home_pace, away_pace) / 100.0
+    raw_margin = (home_shrunk - away_shrunk) * pace_factor
 
     if raw_margin > WNBA_MARGIN_CAP:
         raw_margin = WNBA_MARGIN_CAP
@@ -141,43 +223,83 @@ def compute_base_margin(home_NRtg, away_NRtg, home_pace, away_pace) -> float:
 # Section 5 — Four Factors Adjustment
 # ---------------------------------------------------------------------------
 
-def _diff_or_zero(a, b) -> float:
-    """Return a − b if both are numeric, else 0.0 (missing factor contributes 0)."""
-    if a is None or b is None:
+def _matchup_expectation(off_value, def_value) -> float | None:
+    """Expected value of a factor when an offense meets a defense.
+
+    Averages the offense's own rate with the rate the defense allows —
+    the simple symmetric estimator. If only one side is known, use it
+    alone; if neither, return None so the component contributes 0.
+    """
+    values = []
+    for raw in (off_value, def_value):
+        if raw is None:
+            continue
+        try:
+            values.append(float(raw))
+        except (TypeError, ValueError):
+            continue
+    if not values:
+        return None
+    return sum(values) / len(values)
+
+
+def _component_diff(home_expected, away_expected) -> float:
+    if home_expected is None or away_expected is None:
         return 0.0
-    try:
-        return float(a) - float(b)
-    except (TypeError, ValueError):
-        return 0.0
+    return home_expected - away_expected
 
 
 def compute_four_factors_adjustment(home_stats: dict, away_stats: dict) -> float:
     """
     Compute a Four Factors point adjustment for the home team.
 
-    Pairs each home offensive factor against the away team's matching
-    defensive factor:
+    Each factor is evaluated symmetrically: the home offense against the
+    away defense AND the away offense against the home defense, each as
+    the average of the offense's own rate and the rate the defense allows
+    (all rates are decimals, e.g. eFG 0.51):
 
-        eFG_diff = home eFG%  − away opp eFG    (shooting vs. defense)
-        TOV_diff = away TOV%  − home TOV%       (turnovers; higher = worse)
-        REB_diff = home ORB%  − away DRB%       (offensive rebound edge)
-        FTR_diff = home FTR   − away opp FTR    (free throw rate edge)
+        eFG:  higher expected shooting for home  → home points
+        TOV:  higher expected turnovers for away → home points
+        REB:  home expected ORB% vs away expected ORB%. A defense's
+              allowed ORB% is (1 − its DRB%) — the pre-patch code
+              compared home ORB% (~0.28) directly against away DRB%
+              (~0.72), which would have charged every home team ~1.3
+              phantom points had the opponent scrape been populated.
+        FTR:  higher expected free-throw rate for home → home points
 
     Weights follow the canonical Dean Oliver Four Factors ratio
     (0.40 / 0.25 / 0.20 / 0.15) with magnitude scalars (25 / 20 / 15 / 10)
-    tuned for WNBA point units. Any None field contributes 0 — we degrade
-    gracefully rather than raising.
+    tuned for WNBA point units. Any None field degrades gracefully.
 
-    Clamped to ±5.0: Four Factors refine the NRtg margin, they should not
-    dominate it.
+    Clamped to ±3.0: the Four Factors are already largely embedded in
+    NRtg, so this term is a small matchup tilt, not a second rating.
     """
     home_stats = home_stats or {}
     away_stats = away_stats or {}
 
-    eFG_diff = _diff_or_zero(home_stats.get("eFG_pct"), away_stats.get("opp_eFG"))
-    TOV_diff = _diff_or_zero(away_stats.get("TOV_pct"), home_stats.get("TOV_pct"))
-    REB_diff = _diff_or_zero(home_stats.get("ORB_pct"), away_stats.get("DRB_pct"))
-    FTR_diff = _diff_or_zero(home_stats.get("FTR"),     away_stats.get("opp_FTR"))
+    def _inverse(value) -> float | None:
+        if value is None:
+            return None
+        try:
+            return 1.0 - float(value)
+        except (TypeError, ValueError):
+            return None
+
+    home_eFG = _matchup_expectation(home_stats.get("eFG_pct"), away_stats.get("opp_eFG"))
+    away_eFG = _matchup_expectation(away_stats.get("eFG_pct"), home_stats.get("opp_eFG"))
+    eFG_diff = _component_diff(home_eFG, away_eFG)
+
+    home_TOV = _matchup_expectation(home_stats.get("TOV_pct"), away_stats.get("opp_TOV"))
+    away_TOV = _matchup_expectation(away_stats.get("TOV_pct"), home_stats.get("opp_TOV"))
+    TOV_diff = _component_diff(away_TOV, home_TOV)  # away turnovers help home
+
+    home_ORB = _matchup_expectation(home_stats.get("ORB_pct"), _inverse(away_stats.get("DRB_pct")))
+    away_ORB = _matchup_expectation(away_stats.get("ORB_pct"), _inverse(home_stats.get("DRB_pct")))
+    REB_diff = _component_diff(home_ORB, away_ORB)
+
+    home_FTR = _matchup_expectation(home_stats.get("FTR"), away_stats.get("opp_FTR"))
+    away_FTR = _matchup_expectation(away_stats.get("FTR"), home_stats.get("opp_FTR"))
+    FTR_diff = _component_diff(home_FTR, away_FTR)
 
     adj = (
         (eFG_diff * 0.40 * 25)
@@ -186,10 +308,10 @@ def compute_four_factors_adjustment(home_stats: dict, away_stats: dict) -> float
         + (FTR_diff * 0.15 * 10)
     )
 
-    if adj > 5.0:
-        adj = 5.0
-    elif adj < -5.0:
-        adj = -5.0
+    if adj > 3.0:
+        adj = 3.0
+    elif adj < -3.0:
+        adj = -3.0
     return adj
 
 
@@ -251,7 +373,8 @@ def compute_h2h_signal(
     # Evidence weight scales with sqrt(games) but stays modest because the
     # WNBA season is short — never let H2H dominate the season-stats prior.
     evidence_weight = min(0.40, 0.14 * math.sqrt(games_n))
-    margin_shift = avg_margin * WNBA_H2H_MARGIN_COEF
+    # Sample discount n/(n+1): one game keeps half its signal, three keep 75%.
+    margin_shift = avg_margin * WNBA_H2H_MARGIN_COEF * (games_n / (games_n + 1.0))
     if margin_shift > WNBA_H2H_ADJ_CAP:
         margin_shift = WNBA_H2H_ADJ_CAP
     elif margin_shift < -WNBA_H2H_ADJ_CAP:
@@ -403,13 +526,17 @@ def compute_projected_total(
     """
     Project total points scored in the game.
 
-    Preferred formula:
-        projected = (home_ORtg + away_ORtg) * blended_pace / 100
+    Preferred formula (offense meets defense, symmetric):
+        home_pts_per100 = (home_ORtg + away_DRtg) / 2
+        away_pts_per100 = (away_ORtg + home_DRtg) / 2
+        projected = (home_pts_per100 + away_pts_per100) * blended_pace / 100
         projected -= bounded combined injury adjustment
 
-    When either ORtg is missing, fall back to direct points-per-game
-    averages so we always emit a usable total (was previously returning
-    None which made the picks UI render "Total: N/A").
+    When DRtg is missing on either side we fall back to the ORtg-sum
+    formula (equivalent to assuming league-average defenses), and when
+    either ORtg is missing, to direct points-per-game averages so we
+    always emit a usable total. Ratings are shrunk toward the league
+    average by games played, mirroring the margin model.
 
     Clamped to [130.0, 185.0]. Anything outside this range indicates a
     data problem upstream — we refuse to emit an obviously broken total.
@@ -417,24 +544,24 @@ def compute_projected_total(
     home_stats = home_stats or {}
     away_stats = away_stats or {}
 
-    home_ortg_raw = home_stats.get("ORtg")
-    away_ortg_raw = away_stats.get("ORtg")
-    home_ortg: float | None = None
-    away_ortg: float | None = None
-    if home_ortg_raw is not None:
-        try:
-            home_ortg = float(home_ortg_raw)
-        except (TypeError, ValueError):
-            home_ortg = None
-    if away_ortg_raw is not None:
-        try:
-            away_ortg = float(away_ortg_raw)
-        except (TypeError, ValueError):
-            away_ortg = None
+    home_games = games_played(home_stats)
+    away_games = games_played(away_stats)
+
+    def _rating(stats: dict, key: str, games) -> float | None:
+        return shrink_rating(stats.get(key), games, prior=WNBA_LEAGUE_AVG_ORTG)
+
+    home_ortg = _rating(home_stats, "ORtg", home_games)
+    away_ortg = _rating(away_stats, "ORtg", away_games)
+    home_drtg = _rating(home_stats, "DRtg", home_games)
+    away_drtg = _rating(away_stats, "DRtg", away_games)
 
     blended_pace = blend_pace(home_stats.get("Pace"), away_stats.get("Pace"))
 
-    if home_ortg is not None and away_ortg is not None:
+    if None not in (home_ortg, away_ortg, home_drtg, away_drtg):
+        home_pts_per100 = (home_ortg + away_drtg) / 2.0
+        away_pts_per100 = (away_ortg + home_drtg) / 2.0
+        projected = (home_pts_per100 + away_pts_per100) * blended_pace / 100.0
+    elif home_ortg is not None and away_ortg is not None:
         projected = (home_ortg + away_ortg) * blended_pace / 100.0
     else:
         # PPG fallback path — keeps a usable total when ORtg is missing
@@ -498,6 +625,8 @@ def calculate_wnba_matchup(
         away_stats.get("NRtg"),
         home_stats.get("Pace"),
         away_stats.get("Pace"),
+        home_games=games_played(home_stats),
+        away_games=games_played(away_stats),
     )
 
     ff_adj = compute_four_factors_adjustment(home_stats, away_stats)
