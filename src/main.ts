@@ -1936,12 +1936,12 @@ function renderParlays(): void {
   const activeView = viewOptions.find(option => option.key === parlayView) || viewOptions[0];
   if (!viewOptions.some(option => option.key === parlayView)) parlayView = 'all';
   const record = parlayRecordForCards(modeCards);
-  const threeLegCards = visibleCards.filter(card => card.legCount === 3).length;
+  const twoLegCards = visibleCards.filter(card => card.legCount === 2).length;
   const averageOdds = formatAmericanOddsValue(parlayAverageOdds(visibleCards));
   const boardLabel = activePickMode === 'player' ? 'Player Prop' : 'Team';
   const boardDescription = activePickMode === 'player'
-    ? '3-leg slips are built only from strict published BET/LEAN player props.'
-    : '3-leg slips are built only from published BET/LEAN team picks.';
+    ? 'Disciplined 2-leg slips from consensus-qualified, market-priced player props.'
+    : 'Disciplined 2-leg slips from sources with proven trailing edge over market prices.';
   const generatedAt = payload?.generatedAt ? formatStart(payload.generatedAt) : 'TBD';
   const resultOptions: Array<{ key: ResultMode; label: string; description: string }> = [
     { key: 'pending', label: 'Open', description: 'Unsettled slips' },
@@ -1967,7 +1967,7 @@ function renderParlays(): void {
 
   container.innerHTML = `<div class="daily-hero"><div class="daily-hero-row"><div><div class="daily-eyebrow">PARLAY BOARD</div><div class="daily-title">${escapeHtml(boardLabel)} Parlays</div><div class="daily-sub">${escapeHtml(dateLabel(key, true))} | ${escapeHtml(boardDescription)}</div></div><div class="daily-clock-wrap"><div class="daily-clock-label">SLATE</div><div class="daily-clock">${escapeHtml(key)}</div><div class="daily-countdown">Updated ${escapeHtml(generatedAt)}</div></div></div></div>
     <div class="daily-stats-strip">
-      <div class="daily-stat"><div class="daily-stat-val accent">${threeLegCards}</div><div class="daily-stat-label">Shown 3-Leg Slips</div></div>
+      <div class="daily-stat"><div class="daily-stat-val accent">${twoLegCards}</div><div class="daily-stat-label">Shown 2-Leg Slips</div></div>
       <div class="daily-stat"><div class="daily-stat-val">${visibleCards.length}</div><div class="daily-stat-label">Shown Slips</div></div>
       <div class="daily-stat"><div class="daily-stat-val accent3">${escapeHtml(averageOdds)}</div><div class="daily-stat-label">Shown Avg Odds</div></div>
       <div class="daily-stat"><div class="daily-stat-val neutral">${escapeHtml(parlayRecordText(record))}</div><div class="daily-stat-label">Card Record</div></div>
@@ -1983,7 +1983,7 @@ function renderParlays(): void {
       </div>
     </div>
     <div class="daily-active-content">${activeBody}${rankingsPanel}</div>
-    <div class="daily-disclaimer"><strong>Parlay tracking, not a forced ticket.</strong> Odds are multiplied from individual American prices, hit probability is estimated from published model or market-implied leg probabilities, and every generated slip is tracked at 1u as one card for rankings.</div>`;
+    <div class="daily-disclaimer"><strong>Parlay tracking, not a forced ticket.</strong> Odds are multiplied from individual American prices, hit probability is anchored to market-implied leg probabilities plus each source's proven trailing edge, and every generated slip is tracked at 1u as one card for rankings.</div>`;
   bindInlineDatePicker('parlay');
 }
 

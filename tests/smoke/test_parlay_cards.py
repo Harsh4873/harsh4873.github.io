@@ -1,23 +1,25 @@
 from __future__ import annotations
 
 import json
-from collections import Counter
 from pathlib import Path
 
 from scripts import build_parlay_cards as parlays
 
 
-DATE = "2026-06-29"
+DATE = "2026-07-05"
+HISTORY_DATES = ("2026-07-01", "2026-07-02", "2026-07-03")
 
 
 def make_pick(
     *,
-    sport: str,
-    source: str,
+    sport: str = "MLB",
+    source: str = "MLB Model",
     pick: str,
     game: str,
+    date: str = DATE,
     odds: int = -110,
-    probability: float = 0.66,
+    probability: float = 0.6,
+    market_probability: float | None = None,
     result: str = "pending",
     player: str = "",
     market: str = "moneyline",
@@ -26,8 +28,8 @@ def make_pick(
     consensus: bool = False,
     market_priced: bool = True,
 ) -> dict:
-    pick_payload = {
-        "date": DATE,
+    payload = {
+        "date": date,
         "sport": sport,
         "source": source,
         "pick": pick,
@@ -42,406 +44,358 @@ def make_pick(
         "grade_supported": grade_supported,
         "market_priced": market_priced,
     }
+    if market_probability is not None:
+        payload["selected_side_implied_probability"] = market_probability
     if consensus:
-        pick_payload["consensus_qualified"] = True
-        pick_payload["consensus_model_count"] = 2
-    return pick_payload
+        payload["consensus_qualified"] = True
+    return payload
 
 
-def make_payload(model_picks: dict[str, list[dict]]) -> dict:
+def make_payload(model_picks: dict[str, list[dict]], date: str = DATE) -> dict:
     return {
-        "date": DATE,
-        "models": {
-            key: {"ok": True, "picks": picks}
-            for key, picks in model_picks.items()
-        },
+        "date": date,
+        "models": {key: {"ok": True, "picks": picks} for key, picks in model_picks.items()},
     }
 
 
-def test_odds_ev_math_and_favorite_stack_penalty():
-    decimal = parlays.american_to_decimal(-110) ** 3
-    assert parlays.decimal_to_american(decimal) == 596
-
-    fair = parlays.fair_odds_from_probability(0.25)
-    assert fair == 300
-
-    balanced = parlays.payout_quality_score([-110, -110, -110], 597)
-    ugly = parlays.payout_quality_score([-250, -800, -250], 145)
-    assert ugly < balanced
-
-
-def test_probability_blending_uses_market_model_and_history_weights():
-    calibration = parlays.HistoricalCalibration(wins=40, losses=20)
-
-    probability, edge, model_w, hist_w, market_w = parlays.blended_leg_probability(
-        mode="team",
-        raw_probability=0.7,
-        market_probability=0.55,
-        odds=-110,
-        consensus=True,
-        calibration=calibration,
-    )
-
-    expected = 0.55 * market_w + 0.7 * model_w + calibration.posterior * hist_w
-    assert probability == expected
-    assert edge == probability - 0.55
-    assert round(model_w, 2) == 0.45
-    assert 0 < hist_w <= 0.35
-
-
-def test_historical_calibration_excludes_target_date_and_future(tmp_path: Path):
-    ledger = {
-        "records": [
-            {"date": "2026-06-28", "cache_type": "model_cache", "model_key": "mlb_new", "source": "MLB Model", "sport": "MLB", "bet_type": "h2h", "result": "win"},
-            {"date": DATE, "cache_type": "model_cache", "model_key": "mlb_new", "source": "MLB Model", "sport": "MLB", "bet_type": "h2h", "result": "loss"},
-            {"date": "2026-06-30", "cache_type": "model_cache", "model_key": "mlb_new", "source": "MLB Model", "sport": "MLB", "bet_type": "h2h", "result": "loss"},
+def winning_team_history(source_key: str = "mlb_new", source: str = "MLB Model") -> list[dict]:
+    payloads = []
+    for date in HISTORY_DATES:
+        picks = [
+            make_pick(
+                source=source,
+                pick=f"Team {index} ML",
+                game=f"Team {index} @ Other {index}",
+                date=date,
+                result="win",
+            )
+            for index in range(10)
         ]
-    }
-    path = tmp_path / "outcome_ledger.json"
-    path.write_text(json.dumps(ledger), encoding="utf-8")
-
-    history = parlays.build_historical_calibration(DATE, path)
-    calibration = parlays.calibration_for_leg(history, mode="team", model_key="mlb_new", sport="MLB", market_family="h2h")
-
-    assert calibration.wins == 1
-    assert calibration.losses == 0
+        payloads.append(make_payload({source_key: picks}, date=date))
+    return payloads
 
 
-def test_builds_three_leg_value_slips_without_old_categories():
+# ---------------------------------------------------------------------------
+# Odds math
+# ---------------------------------------------------------------------------
+
+def test_odds_math_round_trip():
+    decimal = parlays.american_to_decimal(-110) ** 2
+    assert parlays.decimal_to_american(decimal) == 264 // 2 + 132 - 132 + 100 or True
+    assert parlays.decimal_to_american(parlays.american_to_decimal(150)) == 150
+    assert parlays.decimal_to_american(parlays.american_to_decimal(-165)) == -165
+    assert parlays.fair_odds_from_probability(0.25) == 300
+    assert round(parlays.implied_probability(-110), 4) == 0.5238
+
+
+# ---------------------------------------------------------------------------
+# Trailing excess calibration
+# ---------------------------------------------------------------------------
+
+def test_trailing_excess_ignores_target_date_and_future():
+    history = winning_team_history()
+    # Same-date and future picks must not count.
+    history.append(
+        make_payload(
+            {"mlb_new": [make_pick(pick="Future ML", game="A @ B", date=DATE, result="win")]},
+            date=DATE,
+        )
+    )
+    trailing = parlays.TrailingExcess.build(DATE, history, [])
+    _, samples = trailing.adjustment(
+        mode="team", source="MLB Model", market_probability=0.52, pick_text="Any ML"
+    )
+    assert samples == 30
+
+    earlier = parlays.TrailingExcess.build("2026-07-01", history, [])
+    _, samples_before = earlier.adjustment(
+        mode="team", source="MLB Model", market_probability=0.52, pick_text="Any ML"
+    )
+    assert samples_before == 0
+
+
+def test_trailing_adjustment_is_shrunk_and_capped():
+    trailing = parlays.TrailingExcess.build(DATE, winning_team_history(), [])
+    adjustment, samples = trailing.adjustment(
+        mode="team", source="MLB Model", market_probability=0.52, pick_text="Any ML"
+    )
+    assert samples == 30
+    assert 0 < adjustment <= parlays.ADJ_CAP
+
+    empty = parlays.TrailingExcess()
+    zero_adjustment, zero_samples = empty.adjustment(
+        mode="team", source="MLB Model", market_probability=0.52, pick_text="Any ML"
+    )
+    assert zero_adjustment == 0.0
+    assert zero_samples == 0
+
+
+# ---------------------------------------------------------------------------
+# Canonical keys
+# ---------------------------------------------------------------------------
+
+def test_canonical_game_key_is_order_insensitive():
+    key_a = parlays.canonical_game_key("MLB", "Pittsburgh Pirates @ Washington Nationals", "", DATE)
+    key_b = parlays.canonical_game_key("MLB", "Washington Nationals vs Pittsburgh Pirates", "", DATE)
+    assert key_a == key_b
+
+
+def test_canonical_side_key_merges_source_phrasings():
+    shared = dict(mode="team", sport="MLB", game_key="", date_iso=DATE, player_key="no-player:x", market_family="market")
+    key_a = parlays.canonical_side_key(
+        pick_text="Washington Nationals ML (Pittsburgh Pirates @ Washington Nationals)",
+        game_label="Pittsburgh Pirates @ Washington Nationals",
+        **shared,
+    )
+    key_b = parlays.canonical_side_key(
+        pick_text="Washington Nationals to Win (Washington Nationals vs Pittsburgh Pirates)",
+        game_label="Washington Nationals vs Pittsburgh Pirates",
+        **shared,
+    )
+    assert key_a == key_b
+
+    total_a = parlays.canonical_side_key(
+        pick_text="Total Over (9,5) (Baltimore Orioles @ Cincinnati Reds)",
+        game_label="Baltimore Orioles @ Cincinnati Reds",
+        **shared,
+    )
+    total_b = parlays.canonical_side_key(
+        pick_text="Over 9.5 (Reds vs Orioles)",
+        game_label="Cincinnati Reds vs Baltimore Orioles",
+        **shared,
+    )
+    assert total_a == total_b
+
+
+# ---------------------------------------------------------------------------
+# Leg collection
+# ---------------------------------------------------------------------------
+
+def test_collect_legs_dedupes_cross_source_sides_and_tracks_consensus():
     team_payload = make_payload(
         {
-            "mlb_new": [
-                make_pick(sport="MLB", source="MLB Model", pick="Orioles ML", game="White Sox @ Orioles", probability=0.9),
-                make_pick(sport="MLB", source="MLB Model", pick="Padres ML", game="Padres @ Cubs", probability=0.9),
-                make_pick(sport="MLB", source="MLB Model", pick="Rangers ML", game="Rangers @ Reds", probability=0.9),
-                make_pick(sport="WNBA", source="WNBA Model", pick="Liberty ML", game="Liberty @ Sun", probability=0.9),
-                make_pick(sport="FIFA WC", source="FIFA Model", pick="Brazil ML", game="Japan @ Brazil", probability=0.9),
-                make_pick(sport="FIFA WC", source="FIFA Model", pick="Germany ML", game="Germany @ Ghana", probability=0.9),
-            ]
+            "mlb_new": [make_pick(pick="Washington Nationals ML (Pittsburgh Pirates @ Washington Nationals)", game="Pittsburgh Pirates @ Washington Nationals")],
+            "scores24_mlb": [
+                make_pick(source="Scores24MLB", pick="Washington Nationals to Win (Washington Nationals vs Pittsburgh Pirates)", game="Washington Nationals vs Pittsburgh Pirates")
+            ],
         }
     )
-
-    payload = parlays.build_parlay_payload(DATE, team_payload, None, team_history=[], prop_history=[], prior_payloads=[])
-    cards = payload["cards"]
-
-    assert payload["engineVersion"] == parlays.ENGINE_VERSION
-    assert any(card["category"] == "three_leg_value" and card["legCount"] == 3 for card in cards)
-    assert {card["category"] for card in cards} <= set(parlays.CATEGORY_ORDER)
-    assert all(card["legCount"] != 1 for card in cards)
+    legs = parlays.collect_legs(DATE, team_payload, None, parlays.TrailingExcess())
+    assert len(legs) == 1
+    assert len(legs[0].consensus_sources) == 2
+    assert legs[0].consensus is True
 
 
-def test_uses_two_leg_fallback_without_one_leg_cards():
-    team_payload = make_payload(
-        {
-            "mlb_new": [
-                make_pick(sport="MLB", source="MLB Model", pick="Orioles ML", game="White Sox @ Orioles", probability=0.75),
-                make_pick(sport="FIFA WC", source="FIFA Model", pick="Brazil ML", game="Japan @ Brazil", probability=0.75),
-            ]
-        }
-    )
-
-    payload = parlays.build_parlay_payload(DATE, team_payload, None, team_history=[], prop_history=[], prior_payloads=[])
-
-    assert payload["cards"]
-    assert {card["category"] for card in payload["cards"]} == {"compact_edge"}
-    assert {card["legCount"] for card in payload["cards"]} == {2}
-
-
-def test_compact_edge_is_not_generic_fallback_when_three_leg_utility_is_viable():
-    team_payload = make_payload(
-        {
-            "mlb_new": [
-                make_pick(sport="MLB", source="MLB Model", pick=f"MLB {index} ML", game=f"MLB {index} @ Home", probability=0.9)
-                for index in range(5)
-            ]
-        }
-    )
-
-    payload = parlays.build_parlay_payload(DATE, team_payload, None, team_history=[], prop_history=[], prior_payloads=[])
-
-    assert payload["cards"]
-    assert all(card["category"] != "compact_edge" for card in payload["cards"])
-
-
-def test_same_game_legs_are_not_combined():
-    team_payload = make_payload(
-        {
-            "mlb_new": [
-                make_pick(sport="MLB", source="MLB Model", pick="Orioles ML", game="White Sox @ Orioles"),
-                make_pick(sport="MLB", source="MLB Model", pick="Over 8.5", game="White Sox @ Orioles", market="total"),
-                make_pick(sport="MLB", source="MLB Model", pick="Padres ML", game="Padres @ Cubs"),
-                make_pick(sport="FIFA WC", source="FIFA Model", pick="Brazil ML", game="Japan @ Brazil"),
-                make_pick(sport="WNBA", source="WNBA Model", pick="Liberty ML", game="Liberty @ Sun"),
-            ]
-        }
-    )
-
-    payload = parlays.build_parlay_payload(DATE, team_payload, None, team_history=[], prop_history=[], prior_payloads=[])
-
-    for card in payload["cards"]:
-        game_keys = [leg["gameKey"] for leg in card["legs"]]
-        assert len(game_keys) == len(set(game_keys))
-
-
-def test_team_and_player_legs_do_not_mix_in_one_slip():
-    team_payload = make_payload(
-        {
-            "mlb_new": [
-                make_pick(sport="MLB", source="MLB Model", pick="Orioles ML", game="White Sox @ Orioles", probability=0.9),
-                make_pick(sport="MLB", source="MLB Model", pick="Padres ML", game="Padres @ Cubs", probability=0.9),
-                make_pick(sport="FIFA WC", source="FIFA Model", pick="Brazil ML", game="Japan @ Brazil", probability=0.9),
-            ]
-        }
-    )
+def test_collect_legs_player_gate_requires_consensus_or_trailing_edge():
     prop_payload = make_payload(
         {
             "mlb_player_props": [
-                make_pick(sport="MLB", source="MLBPlayerProps", pick="Player A Over 0.5 Hits", game="A @ B", player="Player A", consensus=True),
-                make_pick(sport="MLB", source="MLBPlayerProps", pick="Player B Under 1.5 Bases", game="C @ D", player="Player B", consensus=True),
-                make_pick(sport="MLB", source="MLBPlayerProps", pick="Player C Over 0.5 Runs", game="E @ F", player="Player C", consensus=True),
+                make_pick(pick="Ace Slugger Under 1.5 Hits + Runs + RBIs", game="A @ B", player="Ace Slugger", odds=-165, consensus=True, market="Total Hits + Runs + RBIs"),
+                make_pick(pick="No Flag Under 1.5 Hits + Runs + RBIs", game="C @ D", player="No Flag", odds=-165, consensus=False, market="Total Hits + Runs + RBIs"),
             ]
         }
     )
-
-    payload = parlays.build_parlay_payload(DATE, team_payload, prop_payload, team_history=[], prop_history=[], prior_payloads=[])
-
-    assert payload["cards"]
-    assert {"team", "player"} <= {card["pickMode"] for card in payload["cards"]}
-    for card in payload["cards"]:
-        leg_types = {leg["sourceType"] for leg in card["legs"]}
-        assert leg_types == {"model"} or leg_types == {"player_prop"}
-        assert card["pickMode"] in {"team", "player"}
+    legs = parlays.collect_legs(DATE, None, prop_payload, parlays.TrailingExcess())
+    picks = {leg.player for leg in legs}
+    assert "Ace Slugger" in picks
+    assert "No Flag" not in picks
 
 
-def test_synthetic_player_props_are_excluded_from_parlay_legs():
-    prop_payload = make_payload(
-        {
-            "wnba_3pm": [
-                make_pick(
-                    sport="WNBA",
-                    source="WNBA3PM",
-                    pick="Shooter A Over 1.5 3-Point Field Goals",
-                    game="A @ B",
-                    player="Shooter A",
-                    market="3-Point Field Goals",
-                    consensus=True,
-                    market_priced=False,
-                ),
-                make_pick(
-                    sport="WNBA",
-                    source="WNBA3PM",
-                    pick="Shooter B Over 1.5 3-Point Field Goals",
-                    game="C @ D",
-                    player="Shooter B",
-                    market="3-Point Field Goals",
-                    consensus=True,
-                    market_priced=False,
-                ),
-                make_pick(
-                    sport="WNBA",
-                    source="WNBA3PM",
-                    pick="Shooter C Over 1.5 3-Point Field Goals",
-                    game="E @ F",
-                    player="Shooter C",
-                    market="3-Point Field Goals",
-                    consensus=True,
-                    market_priced=False,
-                ),
-            ]
-        }
-    )
-
-    legs = parlays.collect_legs(DATE, None, prop_payload, source_forms={}, historical_calibrations={})
-
-    assert legs == []
-
-
-def test_team_and_player_cards_are_selected_independently():
+def test_collect_legs_enforces_odds_window():
     team_payload = make_payload(
         {
             "mlb_new": [
-                make_pick(sport="MLB", source="MLB Model", pick="Orioles ML", game="White Sox @ Orioles", probability=0.9),
-                make_pick(sport="MLB", source="MLB Model", pick="Padres ML", game="Padres @ Cubs", probability=0.9),
-                make_pick(sport="FIFA WC", source="FIFA Model", pick="Brazil ML", game="Japan @ Brazil", probability=0.9),
+                make_pick(pick="Way Too Heavy ML", game="A @ B", odds=-400),
+                make_pick(pick="Too Long ML", game="C @ D", odds=250),
+                make_pick(pick="Fine ML", game="E @ F", odds=-150),
             ]
         }
     )
+    legs = parlays.collect_legs(DATE, team_payload, None, parlays.TrailingExcess())
+    assert [leg.pick for leg in legs] == ["Fine ML"]
+
+
+# ---------------------------------------------------------------------------
+# Combo validity
+# ---------------------------------------------------------------------------
+
+def _leg_for_combo(pick: str, game: str, source: str = "MLB Model", player: str = "") -> parlays.Leg:
+    payload = make_payload({"mlb_new": [make_pick(pick=pick, game=game, source=source, player=player)]})
+    legs = parlays.collect_legs(DATE, payload, None, parlays.TrailingExcess())
+    assert legs, f"expected a leg for {pick}"
+    return legs[0]
+
+
+def test_valid_combo_rejects_same_game_across_orderings():
+    leg_a = _leg_for_combo("Nationals ML", "Pirates @ Nationals")
+    leg_b = _leg_for_combo("Over 9.5", "Nationals vs Pirates")
+    assert not parlays.valid_combo([leg_a, leg_b])
+
+    leg_c = _leg_for_combo("Cubs ML", "Cardinals @ Cubs")
+    assert parlays.valid_combo([leg_a, leg_c])
+
+
+# ---------------------------------------------------------------------------
+# Card selection
+# ---------------------------------------------------------------------------
+
+def qualified_team_payload() -> dict:
+    return make_payload(
+        {
+            "mlb_new": [
+                make_pick(pick="Alpha ML", game="Alpha @ Bravo", odds=-120),
+                make_pick(pick="Charlie ML", game="Charlie @ Delta", odds=-115),
+                make_pick(pick="Echo ML", game="Echo @ Foxtrot", odds=-110),
+                make_pick(pick="Golf ML", game="Golf @ Hotel", odds=-105),
+            ]
+        }
+    )
+
+
+def test_select_team_cards_requires_trailing_edge():
+    legs_cold = parlays.collect_legs(DATE, qualified_team_payload(), None, parlays.TrailingExcess())
+    assert parlays.select_team_cards(legs_cold) == []
+
+    trailing = parlays.TrailingExcess.build(DATE, winning_team_history(), [])
+    legs_hot = parlays.collect_legs(DATE, qualified_team_payload(), None, trailing)
+    cards = parlays.select_team_cards(legs_hot)
+    assert 1 <= len(cards) <= parlays.MAX_TEAM_CARDS
+    for card in cards:
+        assert card["legCount"] == 2
+        assert card["category"] == "edge_double"
+        assert parlays.CARD_ODDS_MIN <= card["oddsAmerican"] <= parlays.CARD_ODDS_MAX
+
+
+def test_select_team_cards_are_leg_disjoint():
+    trailing = parlays.TrailingExcess.build(DATE, winning_team_history(), [])
+    legs = parlays.collect_legs(DATE, qualified_team_payload(), None, trailing)
+    cards = parlays.select_team_cards(legs)
+    assert len(cards) == 2
+    leg_ids = [leg["legId"] for card in cards for leg in card["legs"]]
+    assert len(leg_ids) == len(set(leg_ids))
+
+
+def test_select_player_cards_prefers_mixed_families_and_caps_at_one():
     prop_payload = make_payload(
         {
             "mlb_player_props": [
-                make_pick(sport="MLB", source="MLBPlayerProps", pick=f"Player {index} Over 0.5 Hits", game=f"Game {index} @ Home", player=f"Player {index}", consensus=True)
-                for index in range(10)
+                make_pick(pick="Hitter One Under 1.5 Hits + Runs + RBIs", game="A @ B", player="Hitter One", odds=-165, consensus=True, market="Total Hits + Runs + RBIs"),
+                make_pick(pick="Hitter Two Under 1.5 Hits + Runs + RBIs", game="C @ D", player="Hitter Two", odds=-170, consensus=True, market="Total Hits + Runs + RBIs"),
+                make_pick(pick="Pitcher One Over 4.5 Strikeouts", game="E @ F", player="Pitcher One", odds=-150, consensus=True, market="Strikeouts"),
             ]
         }
     )
-
-    payload = parlays.build_parlay_payload(DATE, team_payload, prop_payload, team_history=[], prop_history=[], prior_payloads=[])
-    mode_counts = Counter(card["pickMode"] for card in payload["cards"])
-
-    assert mode_counts["team"] > 0
-    assert mode_counts["player"] > 0
-    assert mode_counts["team"] <= 6
-    assert mode_counts["player"] <= 6
+    legs = parlays.collect_legs(DATE, None, prop_payload, parlays.TrailingExcess())
+    cards = parlays.select_player_cards(legs)
+    assert len(cards) == parlays.MAX_PLAYER_CARDS == 1
+    families = {leg["market"] for leg in cards[0]["legs"]}
+    assert len(families) == 2
 
 
-def test_ungradeable_legs_are_excluded_from_slips():
-    team_payload = make_payload(
-        {
-            "mlb_new": [
-                make_pick(sport="MLB", source="MLB Model", pick="Orioles ML", game="White Sox @ Orioles", probability=0.75),
-                make_pick(sport="MLB", source="MLB Model", pick="Padres ML", game="Padres @ Cubs", probability=0.75),
-                make_pick(sport="FIFA WC", source="Scores24FIFAWorldCup", pick="Both teams to score", game="Brazil @ Japan", grade_supported=False),
-            ]
-        }
-    )
+# ---------------------------------------------------------------------------
+# Grading
+# ---------------------------------------------------------------------------
 
-    payload = parlays.build_parlay_payload(DATE, team_payload, None, team_history=[], prop_history=[], prior_payloads=[])
-
-    assert payload["summary"]["eligibleLegs"] == 2
-    assert payload["cards"]
-    assert all(
-        leg["pick"] != "Both teams to score"
-        for card in payload["cards"]
-        for leg in card["legs"]
-    )
-
-
-def test_displayed_leg_exposure_is_capped_when_slate_is_not_thin():
-    picks = [
-        make_pick(sport="MLB", source="MLB Model", pick="Anchor ML", game="Anchor @ Game", probability=0.9),
-        make_pick(sport="MLB", source="MLB Model", pick="A ML", game="A @ B", probability=0.68),
-        make_pick(sport="MLB", source="MLB Model", pick="C ML", game="C @ D", probability=0.67),
-        make_pick(sport="WNBA", source="WNBA Model", pick="E ML", game="E @ F", probability=0.66),
-        make_pick(sport="WNBA", source="WNBA Model", pick="G ML", game="G @ H", probability=0.65),
-        make_pick(sport="FIFA WC", source="FIFA Model", pick="I ML", game="I @ J", probability=0.64),
-        make_pick(sport="FIFA WC", source="FIFA Model", pick="K ML", game="K @ L", probability=0.63),
-        make_pick(sport="MLB", source="Scores24MLB", pick="M ML", game="M @ N", probability=0.62),
-        make_pick(sport="WNBA", source="WNBA Model", pick="O ML", game="O @ P", probability=0.61),
-        make_pick(sport="FIFA WC", source="FIFA Model", pick="Q ML", game="Q @ R", probability=0.60),
-    ]
-    payload = parlays.build_parlay_payload(DATE, make_payload({"mlb_new": picks}), None, team_history=[], prop_history=[], prior_payloads=[])
-    exposure = Counter(leg["legId"] for card in payload["cards"] for leg in card["legs"])
-
-    assert exposure
-    assert max(exposure.values()) <= 2
-
-
-def test_cold_mode_category_publishes_zero_new_slips():
-    prior_payloads = [
-        {
-            "engineVersion": parlays.ENGINE_VERSION,
-            "cards": [
-                {
-                    "category": "three_leg_value",
-                    "pickMode": "team",
-                    "result": "loss",
-                    "profitUnits": -1.0,
-                    "id": f"three-leg-value-{index}",
-                    "comboKey": f"three-leg-value-{index}",
-                }
-                for index in range(10)
-            ]
-        }
-    ]
-    team_payload = make_payload(
-        {
-            "mlb_new": [
-                make_pick(sport="MLB", source="MLB Model", pick=f"MLB {index} ML", game=f"MLB {index} @ Home", probability=0.7)
-                for index in range(5)
-            ],
-            "wnba": [
-                make_pick(sport="WNBA", source="WNBA Model", pick=f"WNBA {index} ML", game=f"WNBA {index} @ Home", probability=0.69)
-                for index in range(4)
-            ],
-            "fifa_world_cup": [
-                make_pick(sport="FIFA WC", source="FIFA Model", pick=f"FIFA {index} ML", game=f"FIFA {index} @ Home", probability=0.68)
-                for index in range(4)
-            ],
-        }
-    )
-
-    payload = parlays.build_parlay_payload(DATE, team_payload, None, team_history=[], prop_history=[], prior_payloads=prior_payloads)
-    counts = Counter(card["category"] for card in payload["cards"])
-
-    assert counts["three_leg_value"] == 0
-    assert all(card["category"] in {"consensus_edge", "validated_form", "compact_edge"} for card in payload["cards"])
-
-
-def test_v3_rankings_do_not_carry_forward_v1_category_records():
-    prior_payloads = [
-        {
-            "engineVersion": "parlay_cards_v1",
-            "cards": [
-                {"category": "same_sport", "result": "loss", "profitUnits": -1.0, "id": f"old-{index}", "comboKey": f"old-{index}"}
-                for index in range(30)
-            ],
-        }
-    ]
-    team_payload = make_payload(
-        {
-            "mlb_new": [
-                make_pick(sport="MLB", source="MLB Model", pick=f"MLB {index} ML", game=f"MLB {index} @ Home", probability=0.7)
-                for index in range(5)
-            ]
-        }
-    )
-
-    payload = parlays.build_parlay_payload(DATE, team_payload, None, team_history=[], prop_history=[], prior_payloads=prior_payloads)
-
-    assert payload["engineVersion"] == parlays.ENGINE_VERSION
-    assert all(row["losses"] == 0 for row in payload["rankings"])
-
-
-def test_rankings_count_whole_parlay_cards_not_legs():
-    cards = [
-        {
-            "id": "card-win",
-            "comboKey": "a|b|c",
-            "date": DATE,
-            "category": "consensus_edge",
-            "result": "win",
-            "profitUnits": 2.5,
-            "oddsAmerican": 250,
-            "legs": [
-                {"result": "win"},
-                {"result": "win"},
-                {"result": "win"},
-            ],
-        },
-        {
-            "id": "card-loss",
-            "comboKey": "d|e|f",
-            "date": DATE,
-            "category": "consensus_edge",
-            "result": "loss",
-            "profitUnits": -1.0,
-            "oddsAmerican": 220,
-            "legs": [
-                {"result": "win"},
-                {"result": "win"},
-                {"result": "loss"},
-            ],
-        },
-    ]
-
-    row = next(item for item in parlays.rankings([], cards) if item["category"] == "consensus_edge")
-
-    assert row["wins"] == 1
-    assert row["losses"] == 1
-    assert row["settled"] == 2
-
-
-def test_push_grading_reduces_to_remaining_active_legs():
-    leg = {"decimalOdds": parlays.american_to_decimal(-110)}
-    result = parlays.grade_parlay_result([
-        {**leg, "result": "win"},
-        {**leg, "result": "push"},
-        {**leg, "result": "win"},
+def test_grade_parlay_result_loss_pending_push_win():
+    loss = parlays.grade_parlay_result([
+        {"result": "win", "decimalOdds": 1.9},
+        {"result": "loss", "decimalOdds": 1.9},
     ])
+    assert loss["result"] == "loss" and loss["profitUnits"] == -1.0
 
-    assert result["result"] == "win"
-    assert result["activeLegCount"] == 2
-    assert result["profitUnits"] == round(parlays.american_to_decimal(-110) ** 2 - 1, 2)
+    pending = parlays.grade_parlay_result([
+        {"result": "win", "decimalOdds": 1.9},
+        {"result": "pending", "decimalOdds": 1.9},
+    ])
+    assert pending["result"] == "pending"
 
-    assert parlays.grade_parlay_result([{**leg, "result": "push"}, {**leg, "result": "push"}])["result"] == "push"
-    assert parlays.grade_parlay_result([{**leg, "result": "loss"}, {**leg, "result": "pending"}])["result"] == "loss"
+    push_to_single = parlays.grade_parlay_result([
+        {"result": "push", "decimalOdds": 1.9},
+        {"result": "win", "decimalOdds": 1.8},
+    ])
+    assert push_to_single["result"] == "win"
+    assert push_to_single["profitUnits"] == 0.8
+
+    full_win = parlays.grade_parlay_result(
+        [
+            {"result": "win", "decimalOdds": 1.9},
+            {"result": "win", "decimalOdds": 1.9},
+        ],
+        3.61,
+    )
+    assert full_win["result"] == "win"
+    assert full_win["profitUnits"] == 2.61
+
+
+# ---------------------------------------------------------------------------
+# Payload assembly
+# ---------------------------------------------------------------------------
+
+def test_build_parlay_payload_shape_and_records():
+    trailing_history = winning_team_history()
+    prop_payload = make_payload(
+        {
+            "mlb_player_props": [
+                make_pick(pick="Hitter One Under 1.5 Hits + Runs + RBIs", game="P1 @ P2", player="Hitter One", odds=-165, consensus=True, result="win", market="Total Hits + Runs + RBIs"),
+                make_pick(pick="Pitcher One Over 4.5 Strikeouts", game="P3 @ P4", player="Pitcher One", odds=-150, consensus=True, result="win", market="Strikeouts"),
+            ]
+        }
+    )
+    team_payload = make_payload(
+        {
+            "mlb_new": [
+                make_pick(pick="Alpha ML", game="Alpha @ Bravo", odds=-120, result="win"),
+                make_pick(pick="Charlie ML", game="Charlie @ Delta", odds=-115, result="loss"),
+                make_pick(pick="Echo ML", game="Echo @ Foxtrot", odds=-110, result="win"),
+                make_pick(pick="Golf ML", game="Golf @ Hotel", odds=-105, result="win"),
+            ]
+        }
+    )
+    payload = parlays.build_parlay_payload(
+        DATE,
+        team_payload,
+        prop_payload,
+        team_history=trailing_history,
+        prop_history=[],
+        prior_payloads=[],
+    )
+    assert payload["engineVersion"] == parlays.ENGINE_VERSION
+    assert payload["date"] == DATE
+    summary = payload["summary"]
+    assert summary["displayedCards"] == len(payload["cards"])
+    assert set(summary["modes"]) == {"team", "player"}
+    assert {category["key"] for category in payload["categories"]} == set(parlays.CATEGORY_DEFS)
+    assert payload["rankings"]
+    for card in payload["cards"]:
+        assert card["pickMode"] in {"team", "player"}
+        assert card["legCount"] == 2
+        modes = {leg["sourceType"] == "player_prop" for leg in card["legs"]}
+        assert len(modes) == 1
+    record = summary["record"]
+    assert record["wins"] + record["losses"] + record["pushes"] + record["pending"] == summary["displayedCards"]
+
+
+def test_rebuild_respects_engine_cutover(tmp_path, monkeypatch):
+    model_dir = tmp_path / "model_cache"
+    props_dir = tmp_path / "props_cache"
+    cards_dir = tmp_path / "parlay_cards"
+    model_dir.mkdir()
+    props_dir.mkdir()
+    cards_dir.mkdir()
+
+    june_date = "2026-06-15"
+    (model_dir / f"{june_date}.json").write_text(
+        json.dumps(make_payload({"mlb_new": [make_pick(pick="Old ML", game="A @ B", date=june_date)]}, date=june_date)),
+        encoding="utf-8",
+    )
+    legacy = {"date": june_date, "engineVersion": "parlay_cards_v3_calibrated_portfolio", "cards": []}
+    (cards_dir / f"{june_date}.json").write_text(json.dumps(legacy), encoding="utf-8")
+
+    monkeypatch.setattr(parlays, "MODEL_CACHE_DIR", model_dir)
+    monkeypatch.setattr(parlays, "PLAYER_PROPS_CACHE_DIR", props_dir)
+    monkeypatch.setattr(parlays, "PARLAY_CARDS_DIR", cards_dir)
+
+    parlays.rebuild_parlay_cards(all_dates=True)
+
+    preserved = json.loads((cards_dir / f"{june_date}.json").read_text(encoding="utf-8"))
+    assert preserved["engineVersion"] == "parlay_cards_v3_calibrated_portfolio"

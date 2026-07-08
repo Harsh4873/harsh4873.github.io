@@ -245,7 +245,7 @@ def test_parlays_tab_renders_card_level_filters_and_rankings():
     css = (ROOT / "src" / "styles" / "pickledger.css").read_text(encoding="utf-8")
     builder = (ROOT / "scripts" / "build_parlay_cards.py").read_text(encoding="utf-8")
 
-    for section in ("Consensus Edge", "3-Leg Value", "Validated Form", "Compact Edge"):
+    for section in ("Edge Double", "Prop Double"):
         assert section in builder
     assert "type ParlayView = string" in main
     assert "let parlayView: ParlayView = 'all'" in main
@@ -264,14 +264,14 @@ def test_parlays_tab_renders_card_level_filters_and_rankings():
     assert "Whole-card records" in main
     assert "Team / Player" in main
     assert "Switch to ${otherMode === 'team' ? 'Team' : 'Player'} mode for this slate" in main
-    assert "ENGINE_VERSION = \"parlay_cards_v3_calibrated_portfolio\"" in builder
-    assert "COLD_CATEGORY_ROI = -0.15" in builder
+    assert "ENGINE_VERSION = \"parlay_cards_v5_market_excess\"" in builder
+    assert "ENGINE_CUTOVER_DATE = \"2026-07-01\"" in builder
     assert "Records count each whole parlay slip once" in main
     assert "No same-game legs, same-player duplicates, or duplicate markets are allowed" in main
     assert "function parlayCardsForMode(" in main
     assert "function parlayCardPickMode(" in main
-    assert "3-leg slips are built only from published BET/LEAN team picks." in main
-    assert "3-leg slips are built only from strict published BET/LEAN player props." in main
+    assert "Disciplined 2-leg slips from sources with proven trailing edge over market prices." in main
+    assert "Disciplined 2-leg slips from consensus-qualified, market-priced player props." in main
     assert "Parlay Date" in main
     assert "role=\"tablist\" aria-label=\"Parlay board filters\"" in main
     assert ".daily-view-nav" in css

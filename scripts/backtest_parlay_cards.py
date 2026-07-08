@@ -210,7 +210,7 @@ def main() -> int:
             "v2": "parlay_cards_v2_quality_guard",
         }.get(engine, engine)
         engine_payloads.extend(_committed_payloads(args.start, args.end, committed_filter))
-    if engine in {"all", "v3", builder.ENGINE_VERSION}:
+    if engine in {"all", "v3", "v5", builder.ENGINE_VERSION}:
         engine_payloads.extend(_candidate_v3_payloads(args.start, args.end))
     rows = summarize(engine_payloads, settled_only=args.settled_only)
     _write_output(Path(args.output), rows)

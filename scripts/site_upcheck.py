@@ -18,7 +18,7 @@ MODEL_CACHE_DIR = REPO_ROOT / "data" / "model_cache"
 PLAYER_PROPS_CACHE_DIR = REPO_ROOT / "data" / "player_props_cache"
 PLAYER_PROPS_SNAPSHOT_DIR = REPO_ROOT / "data" / "player_props_snapshots"
 PARLAY_CARDS_DIR = REPO_ROOT / "data" / "parlay_cards"
-PARLAY_ENGINE_VERSION = "parlay_cards_v3_calibrated_portfolio"
+PARLAY_ENGINE_VERSION = "parlay_cards_v5_market_excess"
 REQUIRED_MODEL_KEYS = {
     "mlb_new",
     "mlb_inning",

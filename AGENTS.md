@@ -30,3 +30,10 @@ For any coding or production-maintenance task in this repository:
 
 - Scores24 must run off GitHub Actions IPs. Scheduled cloud automations should call `scripts/scrapers/scores24_publish.sh` — see `docs/cursor-automations.md` for schedules and prompts.
 - Optional daily sanity automation prompt is also in that doc. Never open the deployed site to verify; use `npm run upcheck` and Actions logs.
+
+## Parlay engine (v5, "market excess")
+
+- `scripts/build_parlay_cards.py` anchors leg probabilities to market no-vig prices and adjusts only by each source's trailing excess over market (per source, market-probability band, and Over/Under direction for props), with shrinkage. Raw model probabilities are never trusted directly.
+- Cards: up to 2 disjoint team "Edge Double" slips + 1 player "Prop Double" per slate, 2 legs each, leg odds −320..+160, card odds −160..+320. No same-game / same-player / same-side legs — game and side keys are canonicalized across sources so reworded duplicates collide.
+- `ENGINE_CUTOVER_DATE = 2026-07-01`: dated parlay files before it are never rebuilt (published v3 history stays); the UI separates records by `engineVersion`.
+- Weak slates may show fewer or zero cards. Do not loosen gates to force daily action.
