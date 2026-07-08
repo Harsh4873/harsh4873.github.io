@@ -2151,8 +2151,12 @@ def _summary_stat_value_to_float(value: Any) -> float | None:
         return None
     if "/" in text:
         text = text.split("/", 1)[0].strip()
+    if re.fullmatch(r"\d+-\d+", text):
+        text = text.split("-", 1)[0].strip()
     if ":" in text:
         return None
+    if text.startswith("+"):
+        text = text[1:].strip()
     try:
         return float(text)
     except (TypeError, ValueError):
@@ -2173,6 +2177,21 @@ def _summary_innings_to_outs(value: Any) -> float | None:
         return (float(whole) * 3.0) + min(2.0, max(0.0, float(partial[:1] or 0)))
     except (TypeError, ValueError):
         return None
+
+
+def _player_listed_in_summary(summary: dict[str, Any], player_name: str) -> bool:
+    boxscore = summary.get("boxscore", {}) if isinstance(summary, dict) else {}
+    players = boxscore.get("players", []) if isinstance(boxscore, dict) else []
+    for team_block in players if isinstance(players, list) else []:
+        stat_sections = team_block.get("statistics", []) if isinstance(team_block, dict) else []
+        for section in stat_sections if isinstance(stat_sections, list) else []:
+            athletes = section.get("athletes", []) if isinstance(section, dict) else []
+            for athlete in athletes if isinstance(athletes, list) else []:
+                athlete_info = athlete.get("athlete", {}) if isinstance(athlete, dict) else {}
+                display_name = str(athlete_info.get("displayName", "")).strip()
+                if _person_names_match_loose(player_name, display_name):
+                    return True
+    return False
 
 
 def _extract_player_label_values(summary: dict[str, Any], player_name: str) -> dict[str, float]:
@@ -2220,6 +2239,16 @@ def _extract_nba_player_stat(summary: dict[str, Any], player_name: str, stat_key
 
     labels = _extract_player_label_values(summary, player_name)
     if not labels:
+        zero_when_listed = {
+            "points",
+            "rebounds",
+            "assists",
+            "three_pointers_made",
+            "steals",
+            "blocks",
+        }
+        if stat_key in zero_when_listed and _player_listed_in_summary(summary, player_name):
+            return 0.0
         return None
     if stat_key == "singles":
         required = [labels.get("H"), labels.get("2B"), labels.get("3B"), labels.get("HR")]

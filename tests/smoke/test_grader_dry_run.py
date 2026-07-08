@@ -507,6 +507,89 @@ def test_grade_expanded_wnba_combo_props_from_boxscore():
     ) == "win"
 
 
+def test_grade_wnba_three_point_made_from_espn_made_attempted_format():
+    import pickgrader_server
+
+    summary = {
+        "boxscore": {
+            "players": [{
+                "statistics": [{
+                    "labels": ["MIN", "PTS", "FG", "3PT", "FT", "REB", "AST"],
+                    "athletes": [
+                        {
+                            "athlete": {"displayName": "Breanna Stewart"},
+                            "stats": ["33", "29", "10-16", "0-3", "9-11", "9", "4"],
+                        },
+                        {
+                            "athlete": {"displayName": "Paige Bueckers"},
+                            "stats": ["33", "15", "5-15", "1-5", "4-4", "7", "6"],
+                        },
+                    ],
+                }],
+            }],
+        },
+    }
+    assert pickgrader_server.grade_player_prop_pick(
+        {
+            "scope": "player",
+            "sport": "WNBA",
+            "player_name": "Breanna Stewart",
+            "stat_key": "three_pointers_made",
+            "selection": "Over",
+            "line": 0.5,
+            "pick": "Breanna Stewart Over 0.5 3-Point Field Goals",
+        },
+        {},
+        summary,
+    ) == "loss"
+    assert pickgrader_server.grade_player_prop_pick(
+        {
+            "scope": "player",
+            "sport": "WNBA",
+            "player_name": "Paige Bueckers",
+            "stat_key": "three_pointers_made",
+            "selection": "Over",
+            "line": 1.5,
+            "pick": "Paige Bueckers Over 1.5 3-Point Field Goals",
+        },
+        {},
+        summary,
+    ) == "loss"
+
+
+def test_grade_wnba_three_point_dnp_counts_as_zero():
+    import pickgrader_server
+
+    summary = {
+        "boxscore": {
+            "players": [{
+                "statistics": [{
+                    "labels": ["MIN", "PTS", "FG", "3PT", "FT", "REB", "AST"],
+                    "athletes": [
+                        {
+                            "athlete": {"displayName": "Skylar Diggins"},
+                            "stats": [],
+                        },
+                    ],
+                }],
+            }],
+        },
+    }
+    assert pickgrader_server.grade_player_prop_pick(
+        {
+            "scope": "player",
+            "sport": "WNBA",
+            "player_name": "Skylar Diggins",
+            "stat_key": "three_pointers_made",
+            "selection": "Under",
+            "line": 1.5,
+            "pick": "Skylar Diggins Under 1.5 3-Point Field Goals",
+        },
+        {},
+        summary,
+    ) == "win"
+
+
 def test_grade_external_threshold_player_prop():
     import pickgrader_server
 
