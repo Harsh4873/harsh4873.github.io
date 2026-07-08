@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-07-07T13:20:58.655610",
+  "last_updated": "2026-07-08T13:28:39.766434",
   "report": {
     "jaylyn sherrod": {
       "player_name": "Jaylyn Sherrod",
@@ -37,6 +37,33 @@
       ],
       "comment": "The Dream expect Jones (knee) to resume team activities in the coming weeks, per Myles Ehrlich of Winsidr.com."
     },
+    "chloe bibby": {
+      "player_name": "Chloe Bibby",
+      "team_abbr": "CHI",
+      "status": "Out",
+      "sources": [
+        "espn"
+      ],
+      "comment": "Bibby (coach's decision) has been ruled out for Tuesday's game against Phoenix, WNBA reporter Kareem Copeland reports."
+    },
+    "maddy westbeld": {
+      "player_name": "Maddy Westbeld",
+      "team_abbr": "CHI",
+      "status": "Out",
+      "sources": [
+        "espn"
+      ],
+      "comment": "Westbeld (coach's decision) has been ruled out for Tuesday's game against the Mercury, Kareem Copeland of ESPN reports."
+    },
+    "skylar diggins": {
+      "player_name": "Skylar Diggins",
+      "team_abbr": "CHI",
+      "status": "Out",
+      "sources": [
+        "espn"
+      ],
+      "comment": "Diggins (knee) has been ruled out for Tuesday's game against Phoenix."
+    },
     "dijonai carrington": {
       "player_name": "DiJonai Carrington",
       "team_abbr": "CHI",
@@ -55,24 +82,6 @@
       ],
       "comment": "The Sky announced Tuesday that Jackson will miss the remainder of the season after suffering a torn ACL in her left knee during Sunday's 86-79 win over the Lynx."
     },
-    "hailey van lith": {
-      "player_name": "Hailey Van Lith",
-      "team_abbr": "CON",
-      "status": "Out",
-      "sources": [
-        "espn"
-      ],
-      "comment": "Van Lith (coach's decision) is out for Monday's game against the Lynx."
-    },
-    "ashlon jackson": {
-      "player_name": "Ashlon Jackson",
-      "team_abbr": "CON",
-      "status": "Out",
-      "sources": [
-        "espn"
-      ],
-      "comment": "Jackson (coach's decision) has been ruled out for Monday's game in Minnesota."
-    },
     "aneesah morrow": {
       "player_name": "Aneesah Morrow",
       "team_abbr": "CON",
@@ -80,7 +89,7 @@
       "sources": [
         "espn"
       ],
-      "comment": "Morrow is out for Monday's game against the Lynx due to personal reasons."
+      "comment": "Morrow is out for Wednesday's game against the Lynx due to personal reasons."
     },
     "iliana rupert": {
       "player_name": "Iliana Rupert",
@@ -91,6 +100,15 @@
       ],
       "comment": "Rupert is pregnant, and the Valkyries have filed for a replacement contract ahead of the 2026 season, Alexa Philippou of ESPN.com reports Thursday."
     },
+    "aliyah boston": {
+      "player_name": "Aliyah Boston",
+      "team_abbr": "IND",
+      "status": "Day-To-Day",
+      "sources": [
+        "espn"
+      ],
+      "comment": "Boston (leg) is questionable for Wednesday's game against Los Angeles."
+    },
     "caitlin clark": {
       "player_name": "Caitlin Clark",
       "team_abbr": "IND",
@@ -98,16 +116,7 @@
       "sources": [
         "espn"
       ],
-      "comment": "Clark (back) confirmed she won't play Sunday against the Aces, Tony East of The Next reports."
-    },
-    "alissa pili": {
-      "player_name": "Alissa Pili",
-      "team_abbr": "LA",
-      "status": "Out",
-      "sources": [
-        "espn"
-      ],
-      "comment": "Pili (coach's decision) is out for Monday's game against the Storm."
+      "comment": "Clark (back) is listed as probable for Wednesday's game against the Sparks."
     },
     "cameron brink": {
       "player_name": "Cameron Brink",
@@ -157,11 +166,11 @@
     "olivia miles": {
       "player_name": "Olivia Miles",
       "team_abbr": "MIN",
-      "status": "Out",
+      "status": "Day-To-Day",
       "sources": [
         "espn"
       ],
-      "comment": "Miles (calf) is out for Monday's game against the Sun."
+      "comment": "Miles (calf) is doubtful for Wednesday's game against the Sun."
     },
     "napheesa collier": {
       "player_name": "Napheesa Collier",
@@ -190,23 +199,32 @@
       ],
       "comment": "out"
     },
-    "leonie fiebich": {
-      "player_name": "Leonie Fiebich",
+    "rebecca allen": {
+      "player_name": "Rebecca Allen",
       "team_abbr": "NY",
-      "status": "Day-To-Day",
+      "status": "Out",
       "sources": [
         "espn"
       ],
-      "comment": "Fiebich is questionable for Tuesday's game against the Wings with foot soreness, Jackie Powell of The IX Sports reports."
+      "comment": "Allen sustained an apparent nasal injury in the fourth quarter of Tuesday's 88-77 loss to the Wings and did not return, finishing with one block in four minutes."
     },
-    "noemie brochant": {
-      "player_name": "Noemie Brochant",
+    "leonie fiebich": {
+      "player_name": "Leonie Fiebich",
+      "team_abbr": "NY",
+      "status": "Out",
+      "sources": [
+        "espn"
+      ],
+      "comment": "Fiebich (foot) has been ruled out for Tuesday's game against Dallas."
+    },
+    "shay ciezki": {
+      "player_name": "Shay Ciezki",
       "team_abbr": "PHX",
       "status": "Out",
       "sources": [
         "espn"
       ],
-      "comment": "Brochant (ankle) is probable for Tuesday's game against the Sky."
+      "comment": "Ciezki (coach's decision) has been ruled out for Tuesday's game against the Sky."
     },
     "natasha mack": {
       "player_name": "Natasha Mack",
@@ -253,15 +271,6 @@
       ],
       "comment": "Mair (coach's decision) is out for Monday's game against the Sparks."
     },
-    "julie allemand": {
-      "player_name": "Julie Allemand",
-      "team_abbr": "TOR",
-      "status": "Out",
-      "sources": [
-        "espn"
-      ],
-      "comment": "Allemand (ankle) is listed as out for Sunday's game against Dallas."
-    },
     "temi fagbenle": {
       "player_name": "Temi Fagbenle",
       "team_abbr": "TOR",
@@ -269,7 +278,7 @@
       "sources": [
         "espn"
       ],
-      "comment": "Fagbenle (eye) is listed as out for Sunday's game versus the Wings."
+      "comment": "Fagbenle (eye) is out for Wednesday's game against the Valkyries, Chelsea Leite of TSN reports."
     },
     "brittney sykes": {
       "player_name": "Brittney Sykes",
