@@ -67,6 +67,22 @@ git clone --quiet --depth 1 "${REMOTE_URL}" "${TEMP_REPO}"
 git -C "${TEMP_REPO}" config user.name "${GIT_NAME}"
 git -C "${TEMP_REPO}" config user.email "${GIT_EMAIL}"
 
+"${PYTHON_BIN}" - <<'PY'
+import os
+os.environ.setdefault("SCORES24_CAMOUFOX_FALLBACK", "true")
+if os.environ.get("SCORES24_CAMOUFOX_FALLBACK", "true").lower() in {"1", "true", "yes", "on"}:
+    try:
+        from camoufox.sync_api import Camoufox
+
+        with Camoufox(headless=True, humanize=True) as browser:
+            page = browser.new_page()
+            page.goto("about:blank", timeout=15000)
+            page.close()
+        print("Scores24 Camoufox warmup complete.")
+    except Exception as exc:
+        print(f"Scores24 Camoufox warmup skipped: {exc}")
+PY
+
 SCORES24_BROWSER_FALLBACK=true \
 SCORES24_CAMOUFOX_FALLBACK=true \
 SCORES24_REQUEST_INTERVAL_SECONDS=8 \
