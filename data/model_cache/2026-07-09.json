@@ -2898,7 +2898,7 @@
       "venue_count": 16
     }
   },
-  "generatedAt": "2026-07-09T15:53:16.298835Z",
+  "generatedAt": "2026-07-09T16:37:18.811389Z",
   "generatedBy": "github-actions:model-cache-refresh",
   "mlb_first_five": {
     "consensus_gate_version": "mlb_team_consensus_v1.1.0",
@@ -3774,7 +3774,7 @@
             "pitcher_rest_label": "normal rest (5d)",
             "pitcher_rest_runs_modifier": 0.0,
             "pitcher_venue_f5_allowed": 2.9,
-            "projected_runs": 2.67,
+            "projected_runs": 2.65,
             "team_current_f5_runs": 2.835,
             "team_prior_f5_runs": 2.893,
             "team_recent_f5_runs": 3.625,
@@ -3787,9 +3787,9 @@
             "travel_run_delta": -0.0,
             "travel_timezone_shift_hours": 0,
             "venue_delta": 0.18,
-            "wind_direction": "out",
-            "wind_mph": 6.0,
-            "wind_run_delta_per_team": 0.025
+            "wind_direction": "in",
+            "wind_mph": 4.0,
+            "wind_run_delta_per_team": 0.0
           },
           "away_pitcher": {
             "current_f5_allowed": 4.7,
@@ -3868,7 +3868,7 @@
             "pitcher_rest_label": "normal rest (5d)",
             "pitcher_rest_runs_modifier": 0.0,
             "pitcher_venue_f5_allowed": 2.303,
-            "projected_runs": 3.49,
+            "projected_runs": 3.47,
             "team_current_f5_runs": 2.404,
             "team_prior_f5_runs": 2.465,
             "team_recent_f5_runs": 2.792,
@@ -3881,9 +3881,9 @@
             "travel_run_delta": -0.0,
             "travel_timezone_shift_hours": 0,
             "venue_delta": 0.18,
-            "wind_direction": "out",
-            "wind_mph": 6.0,
-            "wind_run_delta_per_team": 0.025
+            "wind_direction": "in",
+            "wind_mph": 4.0,
+            "wind_run_delta_per_team": 0.0
           },
           "home_pitcher": {
             "current_f5_allowed": 2.875,
@@ -3986,10 +3986,10 @@
             },
             "park_run_delta_per_team": 0.18,
             "run_delta_per_team": 0.18,
-            "weather_raw": "6 mph, Out To LF",
-            "wind_direction": "out",
-            "wind_mph": 6.0,
-            "wind_run_delta_per_team": 0.025
+            "weather_raw": "4 mph, In From CF",
+            "wind_direction": "in",
+            "wind_mph": 4.0,
+            "wind_run_delta_per_team": 0.0
           }
         },
         "game_id": "824816",
@@ -3998,13 +3998,13 @@
         "home_pitcher": "Trevor Rogers",
         "home_team": "Baltimore Orioles",
         "matchup": "Chicago Cubs @ Baltimore Orioles",
-        "notes": "F5 projection Chicago Cubs 2.67, Baltimore Orioles 3.49 (total 6.16). BvP PA away/home: 0+48/0+25; venue F5 total 4.93 over 60 games. Travel away/home: 1d since previous game; 0 mi (fatigue 0.00) / 1d since previous game; 0 mi (fatigue 0.00).",
+        "notes": "F5 projection Chicago Cubs 2.65, Baltimore Orioles 3.47 (total 6.12). BvP PA away/home: 0+48/0+25; venue F5 total 4.93 over 60 games. Travel away/home: 1d since previous game; 0 mi (fatigue 0.00) / 1d since previous game; 0 mi (fatigue 0.00).",
         "projected_first_five": {
           "away_lead_probability": 0.3957,
-          "away_runs": 2.67,
+          "away_runs": 2.65,
           "home_lead_probability": 0.6043,
-          "home_runs": 3.49,
-          "total_runs": 6.16
+          "home_runs": 3.47,
+          "total_runs": 6.12
         },
         "top_picks": [
           {
@@ -4024,12 +4024,13 @@
             "assumed_odds": -170,
             "confidence": "Low",
             "decision": "PASS",
-            "edge_pct": 0.97,
+            "edge_pct": 0.16,
+            "guardrail": "line gap below bet threshold",
             "market": "f5_total",
-            "model_prediction": "6.16 F5 total",
+            "model_prediction": "6.12 F5 total",
             "pick": "Over 5.5 F5",
-            "probability": 0.6394,
-            "projection_gap": 0.66,
+            "probability": 0.6312,
+            "projection_gap": 0.62,
             "team": "",
             "vegas_line": 5.5
           }
@@ -8999,7 +9000,7 @@
         "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
         "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_first_five",
         "model_prediction": "Baltimore Orioles +0.82 F5 runs",
-        "notes": "F5 projection Chicago Cubs 2.67, Baltimore Orioles 3.49 (total 6.16). BvP PA away/home: 0+48/0+25; venue F5 total 4.93 over 60 games. Travel away/home: 1d since previous game; 0 mi (fatigue 0.00) / 1d since previous game; 0 mi (fatigue 0.00). Projection: Chicago Cubs 2.67, Baltimore Orioles 3.49; total 6.16.",
+        "notes": "F5 projection Chicago Cubs 2.65, Baltimore Orioles 3.47 (total 6.12). BvP PA away/home: 0+48/0+25; venue F5 total 4.93 over 60 games. Travel away/home: 1d since previous game; 0 mi (fatigue 0.00) / 1d since previous game; 0 mi (fatigue 0.00). Projection: Chicago Cubs 2.65, Baltimore Orioles 3.47; total 6.12.",
         "odds": -110,
         "odds_source": "user_assumed_f5_moneyline_fallback",
         "pick": "Baltimore Orioles F5 ML",
@@ -9055,13 +9056,13 @@
         "actionability": "research_signal",
         "assumed_odds": -170,
         "away_team": "Chicago Cubs",
-        "calibrated_edge": -10.93,
-        "calibrated_model_probability": 0.520363,
-        "calibrated_probability": 0.520363,
+        "calibrated_edge": -11.38,
+        "calibrated_model_probability": 0.515849,
+        "calibrated_probability": 0.515849,
         "calibration": {
           "applied": true,
           "key": "model:mlb_first_five|source:mlb first five|sport:mlb|bet:f5_total",
-          "probability_delta": -0.119037,
+          "probability_delta": -0.115351,
           "samples": 107,
           "version": "cal-2406-2026-07-09"
         },
@@ -9147,7 +9148,7 @@
         "consensus_qualified": false,
         "consensus_rejection_reason": "raw_model_abstained; non_positive_calibrated_edge; failed_walk_forward_validation",
         "consensus_required": true,
-        "consensus_score": 47.036,
+        "consensus_score": 46.585,
         "consensus_signal_count": 18,
         "consensus_signals": [
           {
@@ -9384,7 +9385,7 @@
         ],
         "date": "2026-07-09",
         "decision": "PASS",
-        "edge": -10.93,
+        "edge": -11.38,
         "game": "Chicago Cubs @ Baltimore Orioles",
         "game_id": "824816",
         "game_order": 3,
@@ -9401,8 +9402,8 @@
         "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_first_five",
         "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
         "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_first_five",
-        "model_prediction": "6.16 F5 total",
-        "notes": "F5 projection Chicago Cubs 2.67, Baltimore Orioles 3.49 (total 6.16). BvP PA away/home: 0+48/0+25; venue F5 total 4.93 over 60 games. Travel away/home: 1d since previous game; 0 mi (fatigue 0.00) / 1d since previous game; 0 mi (fatigue 0.00). Projection: Chicago Cubs 2.67, Baltimore Orioles 3.49; total 6.16.",
+        "model_prediction": "6.12 F5 total",
+        "notes": "F5 projection Chicago Cubs 2.65, Baltimore Orioles 3.47 (total 6.12). BvP PA away/home: 0+48/0+25; venue F5 total 4.93 over 60 games. Travel away/home: 1d since previous game; 0 mi (fatigue 0.00) / 1d since previous game; 0 mi (fatigue 0.00). Projection: Chicago Cubs 2.65, Baltimore Orioles 3.47; total 6.12.",
         "odds": -170,
         "odds_source": "user_assumed_f5_total_5.5",
         "pick": "Over 5.5 F5",
@@ -9440,11 +9441,11 @@
         },
         "pricing_type": "user_assumed",
         "primary_consensus_passed": false,
-        "probability": 0.5204,
+        "probability": 0.5158,
         "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_first_five",
-        "raw_edge": 0.98,
-        "raw_model_probability": 0.6394,
-        "raw_probability": 0.6394,
+        "raw_edge": 0.16,
+        "raw_model_probability": 0.6312,
+        "raw_probability": 0.6312,
         "selected_side_implied_probability": 0.62963,
         "source": "MLB First Five",
         "sport": "MLB",
@@ -15813,8 +15814,7 @@
   "mlb_inning": {
     "consensus_gate_version": "mlb_team_consensus_v1.1.0",
     "consensus_rejection_reasons": {
-      "edge_signal_threshold_not_met(edge=0.01, probability=0.545575, signals=12)": 1,
-      "non_positive_calibrated_edge": 21
+      "non_positive_calibrated_edge": 23
     },
     "consensus_required": true,
     "date": "2026-07-09",
@@ -16123,23 +16123,23 @@
           "8": 0.5625
         },
         "edge_table": {
-          "1": 0.21,
+          "1": 0.1255,
           "2": 0.0605,
           "3": 0.0308,
-          "4": 0.1473,
+          "4": 0.0489,
           "5": -0.0169,
           "6": 0.037,
-          "7": 0.0263,
+          "7": -0.0733,
           "8": -0.1507
         },
         "full_inning_table": {
-          "1": 0.594,
+          "1": 0.51,
           "2": 0.579,
           "3": 0.521,
-          "4": 0.666,
+          "4": 0.567,
           "5": 0.487,
           "6": 0.555,
-          "7": 0.574,
+          "7": 0.474,
           "8": 0.412
         },
         "game_id": "822954",
@@ -16167,21 +16167,21 @@
         "top_2_picks": [
           {
             "baseline": 0.3844,
-            "confidence": "High",
+            "confidence": "Medium",
             "decision": "BET",
-            "edge_pp": 21.0,
+            "edge_pp": 12.55,
             "inning": 1,
-            "label": "Inning 1 - No Run Scored (59.4%, edge +21.0pp)",
-            "probability_scoreless": 0.594
+            "label": "Inning 1 - No Run Scored (51.0%, edge +12.6pp)",
+            "probability_scoreless": 0.51
           },
           {
             "baseline": 0.5184,
-            "confidence": "High",
-            "decision": "BET",
-            "edge_pp": 14.73,
-            "inning": 4,
-            "label": "Inning 4 - No Run Scored (66.6%, edge +14.7pp)",
-            "probability_scoreless": 0.666
+            "confidence": "Medium",
+            "decision": "LEAN",
+            "edge_pp": 6.05,
+            "inning": 2,
+            "label": "Inning 2 - No Run Scored (57.9%, edge +6.0pp)",
+            "probability_scoreless": 0.579
           }
         ],
         "travel": {
@@ -16354,8 +16354,8 @@
         "venue_factor": 1.0,
         "weather": {
           "condition": "Overcast",
-          "temp": "86",
-          "wind": "6 mph, Out To LF"
+          "temp": "80",
+          "wind": "4 mph, In From CF"
         }
       },
       {
@@ -16388,23 +16388,23 @@
           "8": 0.5625
         },
         "edge_table": {
-          "1": 0.1366,
+          "1": 0.0848,
           "2": 0.0192,
-          "3": 0.0614,
-          "4": 0.0217,
+          "3": 0.1535,
+          "4": -0.0358,
           "5": -0.0198,
-          "6": 0.0446,
-          "7": -0.0937,
+          "6": 0.1449,
+          "7": -0.1593,
           "8": -0.104
         },
         "full_inning_table": {
-          "1": 0.521,
+          "1": 0.469,
           "2": 0.538,
-          "3": 0.551,
-          "4": 0.54,
+          "3": 0.644,
+          "4": 0.483,
           "5": 0.484,
-          "6": 0.563,
-          "7": 0.454,
+          "6": 0.663,
+          "7": 0.388,
           "8": 0.458
         },
         "game_id": "823683",
@@ -16431,22 +16431,22 @@
         "matchup": "Minnesota Twins vs Cleveland Guardians",
         "top_2_picks": [
           {
-            "baseline": 0.3844,
-            "confidence": "Medium",
+            "baseline": 0.49,
+            "confidence": "High",
             "decision": "BET",
-            "edge_pp": 13.66,
-            "inning": 1,
-            "label": "Inning 1 - No Run Scored (52.1%, edge +13.7pp)",
-            "probability_scoreless": 0.521
+            "edge_pp": 15.35,
+            "inning": 3,
+            "label": "Inning 3 - No Run Scored (64.4%, edge +15.3pp)",
+            "probability_scoreless": 0.644
           },
           {
-            "baseline": 0.49,
-            "confidence": "Medium",
-            "decision": "LEAN",
-            "edge_pp": 6.14,
-            "inning": 3,
-            "label": "Inning 3 - No Run Scored (55.1%, edge +6.1pp)",
-            "probability_scoreless": 0.551
+            "baseline": 0.5184,
+            "confidence": "High",
+            "decision": "BET",
+            "edge_pp": 14.49,
+            "inning": 6,
+            "label": "Inning 6 - No Run Scored (66.3%, edge +14.5pp)",
+            "probability_scoreless": 0.663
           }
         ],
         "travel": {
@@ -16919,23 +16919,23 @@
         },
         "edge_table": {
           "1": 0.0934,
-          "2": 0.0246,
+          "2": -0.0093,
           "3": -0.0335,
           "4": 0.0263,
-          "5": 0.0766,
+          "5": 0.0411,
           "6": 0.05,
           "7": -0.1402,
-          "8": -0.1162
+          "8": -0.149
         },
         "full_inning_table": {
           "1": 0.478,
-          "2": 0.543,
+          "2": 0.509,
           "3": 0.457,
           "4": 0.545,
-          "5": 0.581,
+          "5": 0.545,
           "6": 0.568,
           "7": 0.407,
-          "8": 0.446
+          "8": 0.413
         },
         "game_id": "824494",
         "game_order": 8,
@@ -16970,13 +16970,13 @@
             "probability_scoreless": 0.478
           },
           {
-            "baseline": 0.5041,
+            "baseline": 0.5184,
             "confidence": "Medium",
             "decision": "LEAN",
-            "edge_pp": 7.66,
-            "inning": 5,
-            "label": "Inning 5 - No Run Scored (58.1%, edge +7.7pp)",
-            "probability_scoreless": 0.581
+            "edge_pp": 5.0,
+            "inning": 6,
+            "label": "Inning 6 - No Run Scored (56.8%, edge +5.0pp)",
+            "probability_scoreless": 0.568
           }
         ],
         "travel": {
@@ -17193,23 +17193,23 @@
         },
         "edge_table": {
           "1": 0.1035,
-          "2": 0.0916,
+          "2": 0.0014,
           "3": 0.0617,
           "4": -0.0208,
-          "5": 0.164,
+          "5": 0.0603,
           "6": 0.012,
           "7": -0.1255,
-          "8": -0.0936
+          "8": -0.1689
         },
         "full_inning_table": {
           "1": 0.488,
-          "2": 0.61,
+          "2": 0.52,
           "3": 0.552,
           "4": 0.498,
-          "5": 0.668,
+          "5": 0.564,
           "6": 0.53,
           "7": 0.422,
-          "8": 0.469
+          "8": 0.394
         },
         "game_id": "822877",
         "game_order": 10,
@@ -17235,15 +17235,6 @@
         "matchup": "Texas Rangers vs Los Angeles Angels",
         "top_2_picks": [
           {
-            "baseline": 0.5041,
-            "confidence": "High",
-            "decision": "BET",
-            "edge_pp": 16.4,
-            "inning": 5,
-            "label": "Inning 5 - No Run Scored (66.8%, edge +16.4pp)",
-            "probability_scoreless": 0.668
-          },
-          {
             "baseline": 0.3844,
             "confidence": "Medium",
             "decision": "LEAN",
@@ -17251,6 +17242,15 @@
             "inning": 1,
             "label": "Inning 1 - No Run Scored (48.8%, edge +10.3pp)",
             "probability_scoreless": 0.488
+          },
+          {
+            "baseline": 0.49,
+            "confidence": "Medium",
+            "decision": "LEAN",
+            "edge_pp": 6.17,
+            "inning": 3,
+            "label": "Inning 3 - No Run Scored (55.2%, edge +6.2pp)",
+            "probability_scoreless": 0.552
           }
         ],
         "travel": {
@@ -17331,20 +17331,20 @@
         "edge_table": {
           "1": 0.0407,
           "2": 0.062,
-          "3": -0.0008,
+          "3": 0.0263,
           "4": -0.0184,
           "5": -0.0148,
-          "6": 0.0037,
+          "6": 0.0333,
           "7": -0.1007,
           "8": -0.1665
         },
         "full_inning_table": {
           "1": 0.425,
           "2": 0.58,
-          "3": 0.489,
+          "3": 0.516,
           "4": 0.5,
           "5": 0.489,
-          "6": 0.522,
+          "6": 0.552,
           "7": 0.447,
           "8": 0.396
         },
@@ -17379,6 +17379,15 @@
             "inning": 2,
             "label": "Inning 2 - No Run Scored (58.0%, edge +6.2pp)",
             "probability_scoreless": 0.58
+          },
+          {
+            "baseline": 0.5184,
+            "confidence": "Medium",
+            "decision": "LEAN",
+            "edge_pp": 3.33,
+            "inning": 6,
+            "label": "Inning 6 - No Run Scored (55.2%, edge +3.3pp)",
+            "probability_scoreless": 0.552
           }
         ],
         "travel": {
@@ -17458,23 +17467,23 @@
         },
         "edge_table": {
           "1": 0.0914,
-          "2": -0.0194,
+          "2": 0.0107,
           "3": 0.0061,
           "4": 0.0489,
-          "5": -0.0159,
+          "5": 0.0134,
           "6": -0.0104,
           "7": -0.0582,
-          "8": -0.1919
+          "8": -0.1633
         },
         "full_inning_table": {
           "1": 0.476,
-          "2": 0.499,
+          "2": 0.529,
           "3": 0.496,
           "4": 0.567,
-          "5": 0.488,
+          "5": 0.518,
           "6": 0.508,
           "7": 0.489,
-          "8": 0.371
+          "8": 0.399
         },
         "game_id": "823201",
         "game_order": 12,
@@ -17566,7 +17575,7 @@
       }
     ],
     "model": "MLBInning",
-    "note": "MLB Inning processed 13 game(s), returned 22 top inning pick(s).",
+    "note": "MLB Inning processed 13 game(s), returned 23 top inning pick(s).",
     "ok": true,
     "picks": [
       {
@@ -18613,17 +18622,17 @@
         "assumed_odds": -120,
         "away_team": "New York Yankees",
         "baseline_probability": 0.3844,
-        "calibrated_edge": -4.23,
-        "calibrated_model_probability": 0.503163,
-        "calibrated_probability": 0.503163,
+        "calibrated_edge": -8.77,
+        "calibrated_model_probability": 0.457802,
+        "calibrated_probability": 0.457802,
         "calibration": {
           "applied": true,
           "key": "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning",
-          "probability_delta": -0.090837,
+          "probability_delta": -0.052198,
           "samples": 201,
           "version": "cal-2406-2026-07-09"
         },
-        "confidence": "High",
+        "confidence": "Medium",
         "consensus_factor_categories": {
           "calibration": {
             "missing": [],
@@ -18683,7 +18692,7 @@
         "consensus_qualified": false,
         "consensus_rejection_reason": "non_positive_calibrated_edge",
         "consensus_required": true,
-        "consensus_score": 30.316,
+        "consensus_score": 30.0,
         "consensus_signal_count": 12,
         "consensus_signals": [
           {
@@ -18794,8 +18803,8 @@
         ],
         "date": "2026-07-09",
         "decision": "PASS",
-        "edge": -4.23,
-        "edge_pp": 21.0,
+        "edge": -8.77,
+        "edge_pp": 12.55,
         "game": "Tampa Bay Rays vs New York Yankees",
         "game_id": "822954",
         "game_order": 2,
@@ -18812,8 +18821,8 @@
         "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
         "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
         "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
-        "model_prediction": "59.4%",
-        "notes": "Top no-run inning candidate (edge +21.0pp vs baseline). Full table: {\"1\": 0.594, \"2\": 0.579, \"3\": 0.521, \"4\": 0.666, \"5\": 0.487, \"6\": 0.555, \"7\": 0.574, \"8\": 0.412}",
+        "model_prediction": "51.0%",
+        "notes": "Top no-run inning candidate (edge +12.6pp vs baseline). Full table: {\"1\": 0.51, \"2\": 0.579, \"3\": 0.521, \"4\": 0.567, \"5\": 0.487, \"6\": 0.555, \"7\": 0.474, \"8\": 0.412}",
         "odds": -120,
         "odds_source": "user_assumed_no_run_inning_-120",
         "pick": "Inning 1 - No Run Scored",
@@ -18853,11 +18862,11 @@
         },
         "pricing_type": "user_assumed",
         "primary_consensus_passed": false,
-        "probability": 0.5032,
+        "probability": 0.4578,
         "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
-        "raw_edge": 21.0,
-        "raw_model_probability": 0.594,
-        "raw_probability": 0.594,
+        "raw_edge": 12.55,
+        "raw_model_probability": 0.51,
+        "raw_probability": 0.51,
         "selected_side_implied_probability": 0.545455,
         "source": "MLB Inning",
         "sport": "MLB",
@@ -18868,21 +18877,21 @@
         "walk_forward_samples": 201
       },
       {
-        "actionability": "validation_lean",
+        "actionability": "research_signal",
         "assumed_odds": -120,
         "away_team": "New York Yankees",
         "baseline_probability": 0.5184,
-        "calibrated_edge": -0.11,
-        "calibrated_model_probability": 0.544382,
-        "calibrated_probability": 0.544382,
+        "calibrated_edge": -5.05,
+        "calibrated_model_probability": 0.494905,
+        "calibrated_probability": 0.494905,
         "calibration": {
           "applied": true,
           "key": "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning",
-          "probability_delta": -0.121618,
+          "probability_delta": -0.084095,
           "samples": 201,
           "version": "cal-2406-2026-07-09"
         },
-        "confidence": "High",
+        "confidence": "Medium",
         "consensus_factor_categories": {
           "calibration": {
             "missing": [],
@@ -18937,12 +18946,12 @@
         "consensus_hard_blockers": [
           "non_positive_calibrated_edge"
         ],
-        "consensus_passed": true,
-        "consensus_publication_mode": "validation_fallback",
+        "consensus_passed": false,
+        "consensus_publication_mode": "research",
         "consensus_qualified": false,
         "consensus_rejection_reason": "non_positive_calibrated_edge",
         "consensus_required": true,
-        "consensus_score": 34.438,
+        "consensus_score": 30.0,
         "consensus_signal_count": 12,
         "consensus_signals": [
           {
@@ -19052,15 +19061,15 @@
           }
         ],
         "date": "2026-07-09",
-        "decision": "LEAN",
-        "edge": -0.11,
-        "edge_pp": 14.73,
+        "decision": "PASS",
+        "edge": -5.05,
+        "edge_pp": 6.05,
         "game": "Tampa Bay Rays vs New York Yankees",
         "game_id": "822954",
         "game_order": 2,
         "game_start_time": "2026-07-09T17:10:00Z",
         "home_team": "Tampa Bay Rays",
-        "inning": 4,
+        "inning": 2,
         "league": "MLB",
         "line_source": "user_assumed_no_run_inning_price",
         "market": "no_run_inning",
@@ -19071,40 +19080,40 @@
         "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
         "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
         "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
-        "model_prediction": "66.6%",
-        "notes": "Top no-run inning candidate (edge +14.7pp vs baseline). Full table: {\"1\": 0.594, \"2\": 0.579, \"3\": 0.521, \"4\": 0.666, \"5\": 0.487, \"6\": 0.555, \"7\": 0.574, \"8\": 0.412}",
+        "model_prediction": "57.9%",
+        "notes": "Top no-run inning candidate (edge +6.0pp vs baseline). Full table: {\"1\": 0.51, \"2\": 0.579, \"3\": 0.521, \"4\": 0.567, \"5\": 0.487, \"6\": 0.555, \"7\": 0.474, \"8\": 0.412}",
         "odds": -120,
         "odds_source": "user_assumed_no_run_inning_-120",
-        "pick": "Inning 4 - No Run Scored",
+        "pick": "Inning 2 - No Run Scored",
         "pregame_snapshot": {
           "actionability": "research_signal",
           "assumed_odds": -120,
           "away_team": "New York Yankees",
           "baseline_probability": 0.5184,
-          "confidence": "High",
+          "confidence": "Medium",
           "date": "2026-07-09",
-          "decision": "BET",
-          "edge": 14.73,
-          "edge_pp": 14.73,
+          "decision": "LEAN",
+          "edge": 6.05,
+          "edge_pp": 6.05,
           "game": "Tampa Bay Rays vs New York Yankees",
           "game_id": "822954",
           "game_order": 2,
           "game_start_time": "2026-07-09T17:10:00Z",
           "home_team": "Tampa Bay Rays",
-          "inning": 4,
+          "inning": 2,
           "league": "MLB",
           "line_source": "user_assumed_no_run_inning_price",
           "market": "no_run_inning",
           "market_implied_probability": 0.545455,
           "market_priced": true,
           "matchup": "Tampa Bay Rays vs New York Yankees",
-          "model_prediction": "66.6%",
-          "notes": "Top no-run inning candidate (edge +14.7pp vs baseline). Full table: {\"1\": 0.594, \"2\": 0.579, \"3\": 0.521, \"4\": 0.666, \"5\": 0.487, \"6\": 0.555, \"7\": 0.574, \"8\": 0.412}",
+          "model_prediction": "57.9%",
+          "notes": "Top no-run inning candidate (edge +6.0pp vs baseline). Full table: {\"1\": 0.51, \"2\": 0.579, \"3\": 0.521, \"4\": 0.567, \"5\": 0.487, \"6\": 0.555, \"7\": 0.474, \"8\": 0.412}",
           "odds": -120,
           "odds_source": "user_assumed_no_run_inning_-120",
-          "pick": "Inning 4 - No Run Scored",
+          "pick": "Inning 2 - No Run Scored",
           "pricing_type": "user_assumed",
-          "probability": 0.666,
+          "probability": 0.579,
           "source": "MLB Inning",
           "sport": "MLB",
           "start_time": "2026-07-09T17:10:00Z",
@@ -19112,20 +19121,17 @@
         },
         "pricing_type": "user_assumed",
         "primary_consensus_passed": false,
-        "probability": 0.5444,
+        "probability": 0.4949,
         "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
-        "raw_edge": 14.73,
-        "raw_model_probability": 0.666,
-        "raw_probability": 0.666,
+        "raw_edge": 6.05,
+        "raw_model_probability": 0.579,
+        "raw_probability": 0.579,
         "selected_side_implied_probability": 0.545455,
         "source": "MLB Inning",
         "sport": "MLB",
         "start_time": "2026-07-09T17:10:00Z",
         "team": "",
-        "units": 0.25,
-        "validation_lean": true,
-        "validation_reason": "validation fallback: mlb_inning had zero strict BET/LEAN publications; published top raw model signal as a small LEAN for tracking",
-        "validation_score": 61.33,
+        "units": 0.0,
         "walk_forward_roi": 0.00439814814814815,
         "walk_forward_samples": 201
       },
@@ -19392,277 +19398,18 @@
         "actionability": "research_signal",
         "assumed_odds": -120,
         "away_team": "Cleveland Guardians",
-        "baseline_probability": 0.3844,
-        "calibrated_edge": -8.18,
-        "calibrated_model_probability": 0.463646,
-        "calibrated_probability": 0.463646,
-        "calibration": {
-          "applied": true,
-          "key": "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning",
-          "probability_delta": -0.057354,
-          "samples": 201,
-          "version": "cal-2406-2026-07-09"
-        },
-        "confidence": "Medium",
-        "consensus_factor_categories": {
-          "calibration": {
-            "missing": [],
-            "risk": [],
-            "support": [
-              "probability_calibration"
-            ]
-          },
-          "inning_baseline": {
-            "missing": [],
-            "risk": [],
-            "support": [
-              "inning_baseline_edge",
-              "matchup_structure"
-            ]
-          },
-          "park_weather": {
-            "missing": [],
-            "risk": [],
-            "support": [
-              "park_weather",
-              "park_factor",
-              "venue_context",
-              "wind_weather"
-            ]
-          },
-          "starting_pitcher": {
-            "missing": [],
-            "risk": [],
-            "support": [
-              "starting_pitcher",
-              "starter_run_prevention"
-            ]
-          },
-          "travel_rest": {
-            "missing": [],
-            "risk": [],
-            "support": [
-              "travel_rest_context",
-              "short_rest_schedule"
-            ]
-          },
-          "walk_forward": {
-            "missing": [],
-            "risk": [],
-            "support": [
-              "walk_forward_validation"
-            ]
-          }
-        },
-        "consensus_gate_version": "mlb_team_consensus_v1.1.0",
-        "consensus_hard_blockers": [
-          "non_positive_calibrated_edge"
-        ],
-        "consensus_passed": false,
-        "consensus_publication_mode": "research",
-        "consensus_qualified": false,
-        "consensus_rejection_reason": "non_positive_calibrated_edge",
-        "consensus_required": true,
-        "consensus_score": 30.0,
-        "consensus_signal_count": 12,
-        "consensus_signals": [
-          {
-            "category": "calibration",
-            "detail": "active calibration group has enough samples",
-            "impact": "support",
-            "name": "probability_calibration",
-            "strength": 1.0
-          },
-          {
-            "category": "walk_forward",
-            "detail": "model family has positive decided history in the gated era input",
-            "impact": "support",
-            "name": "walk_forward_validation",
-            "strength": 1.0
-          },
-          {
-            "category": "inning_baseline",
-            "detail": "scoreless probability beats inning baseline",
-            "impact": "support",
-            "name": "inning_baseline_edge",
-            "strength": 1.0
-          },
-          {
-            "category": "starting_pitcher",
-            "detail": "starter inning profile is applicable",
-            "impact": "support",
-            "name": "starting_pitcher",
-            "strength": 1.0
-          },
-          {
-            "category": "starting_pitcher",
-            "detail": "home: ERA/WHIP run-prevention context included",
-            "impact": "support",
-            "name": "starter_run_prevention",
-            "strength": 0.7
-          },
-          {
-            "category": "starting_pitcher",
-            "detail": "away: ERA/WHIP run-prevention context included",
-            "impact": "support",
-            "name": "starter_run_prevention",
-            "strength": 0.7
-          },
-          {
-            "category": "park_weather",
-            "detail": "venue factor included in inning projection",
-            "impact": "support",
-            "name": "park_weather",
-            "strength": 1.0
-          },
-          {
-            "category": "park_weather",
-            "detail": "park run factor included",
-            "impact": "support",
-            "name": "park_factor",
-            "strength": 0.8
-          },
-          {
-            "category": "park_weather",
-            "detail": "venue context included: Target Field",
-            "impact": "support",
-            "name": "venue_context",
-            "strength": 0.5
-          },
-          {
-            "category": "park_weather",
-            "detail": "weather context included for inning run environment",
-            "impact": "support",
-            "name": "wind_weather",
-            "strength": 0.6
-          },
-          {
-            "category": "inning_baseline",
-            "detail": "full inning table available for matchup shape",
-            "impact": "support",
-            "name": "matchup_structure",
-            "strength": 1.0
-          },
-          {
-            "category": "travel_rest",
-            "detail": "away team: 1d since previous game; 0 mi",
-            "impact": "support",
-            "name": "travel_rest_context",
-            "strength": 1.0
-          },
-          {
-            "category": "travel_rest",
-            "detail": "away team: 1 day(s) since previous game",
-            "impact": "support",
-            "name": "short_rest_schedule",
-            "strength": 0.6
-          },
-          {
-            "category": "travel_rest",
-            "detail": "home team: 1d since previous game; 0 mi",
-            "impact": "support",
-            "name": "travel_rest_context",
-            "strength": 1.0
-          },
-          {
-            "category": "travel_rest",
-            "detail": "home team: 1 day(s) since previous game",
-            "impact": "support",
-            "name": "short_rest_schedule",
-            "strength": 0.6
-          }
-        ],
-        "date": "2026-07-09",
-        "decision": "PASS",
-        "edge": -8.18,
-        "edge_pp": 13.66,
-        "game": "Minnesota Twins vs Cleveland Guardians",
-        "game_id": "823683",
-        "game_order": 4,
-        "game_start_time": "2026-07-09T17:40:00Z",
-        "home_team": "Minnesota Twins",
-        "inning": 1,
-        "league": "MLB",
-        "line_source": "user_assumed_no_run_inning_price",
-        "market": "no_run_inning",
-        "market_implied_probability": 0.545455,
-        "market_no_vig_probability": 0.545455,
-        "market_priced": true,
-        "matchup": "Minnesota Twins vs Cleveland Guardians",
-        "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
-        "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
-        "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
-        "model_prediction": "52.1%",
-        "notes": "Top no-run inning candidate (edge +13.7pp vs baseline). Full table: {\"1\": 0.521, \"2\": 0.538, \"3\": 0.551, \"4\": 0.54, \"5\": 0.484, \"6\": 0.563, \"7\": 0.454, \"8\": 0.458}",
-        "odds": -120,
-        "odds_source": "user_assumed_no_run_inning_-120",
-        "pick": "Inning 1 - No Run Scored",
-        "pregame_snapshot": {
-          "actionability": "research_signal",
-          "assumed_odds": -120,
-          "away_team": "Cleveland Guardians",
-          "baseline_probability": 0.3844,
-          "confidence": "Medium",
-          "date": "2026-07-09",
-          "decision": "LEAN",
-          "edge": 8.48,
-          "edge_pp": 8.48,
-          "game": "Minnesota Twins vs Cleveland Guardians",
-          "game_id": "823683",
-          "game_order": 4,
-          "game_start_time": "2026-07-09T17:40:00Z",
-          "home_team": "Minnesota Twins",
-          "inning": 1,
-          "league": "MLB",
-          "line_source": "user_assumed_no_run_inning_price",
-          "market": "no_run_inning",
-          "market_implied_probability": 0.545455,
-          "market_priced": true,
-          "matchup": "Minnesota Twins vs Cleveland Guardians",
-          "model_prediction": "46.9%",
-          "notes": "Top no-run inning candidate (edge +8.5pp vs baseline). Full table: {\"1\": 0.469, \"2\": 0.538, \"3\": 0.551, \"4\": 0.483, \"5\": 0.484, \"6\": 0.563, \"7\": 0.388, \"8\": 0.458}",
-          "odds": -120,
-          "odds_source": "user_assumed_no_run_inning_-120",
-          "pick": "Inning 1 - No Run Scored",
-          "pricing_type": "user_assumed",
-          "probability": 0.469,
-          "source": "MLB Inning",
-          "sport": "MLB",
-          "start_time": "2026-07-09T17:40:00Z",
-          "team": ""
-        },
-        "pricing_type": "user_assumed",
-        "primary_consensus_passed": false,
-        "probability": 0.4636,
-        "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
-        "raw_edge": 13.66,
-        "raw_model_probability": 0.521,
-        "raw_probability": 0.521,
-        "selected_side_implied_probability": 0.545455,
-        "source": "MLB Inning",
-        "sport": "MLB",
-        "start_time": "2026-07-09T17:40:00Z",
-        "team": "",
-        "units": 0.0,
-        "walk_forward_roi": 0.00439814814814815,
-        "walk_forward_samples": 201
-      },
-      {
-        "actionability": "research_signal",
-        "assumed_odds": -120,
-        "away_team": "Cleveland Guardians",
         "baseline_probability": 0.49,
-        "calibrated_edge": -6.58,
-        "calibrated_model_probability": 0.479702,
-        "calibrated_probability": 0.479702,
+        "calibrated_edge": -1.4,
+        "calibrated_model_probability": 0.531457,
+        "calibrated_probability": 0.531457,
         "calibration": {
           "applied": true,
           "key": "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning",
-          "probability_delta": -0.071298,
+          "probability_delta": -0.112543,
           "samples": 201,
           "version": "cal-2406-2026-07-09"
         },
-        "confidence": "Medium",
+        "confidence": "High",
         "consensus_factor_categories": {
           "calibration": {
             "missing": [],
@@ -19722,7 +19469,7 @@
         "consensus_qualified": false,
         "consensus_rejection_reason": "non_positive_calibrated_edge",
         "consensus_required": true,
-        "consensus_score": 30.0,
+        "consensus_score": 33.146,
         "consensus_signal_count": 12,
         "consensus_signals": [
           {
@@ -19833,8 +19580,8 @@
         ],
         "date": "2026-07-09",
         "decision": "PASS",
-        "edge": -6.58,
-        "edge_pp": 6.14,
+        "edge": -1.4,
+        "edge_pp": 15.35,
         "game": "Minnesota Twins vs Cleveland Guardians",
         "game_id": "823683",
         "game_order": 4,
@@ -19851,8 +19598,8 @@
         "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
         "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
         "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
-        "model_prediction": "55.1%",
-        "notes": "Top no-run inning candidate (edge +6.1pp vs baseline). Full table: {\"1\": 0.521, \"2\": 0.538, \"3\": 0.551, \"4\": 0.54, \"5\": 0.484, \"6\": 0.563, \"7\": 0.454, \"8\": 0.458}",
+        "model_prediction": "64.4%",
+        "notes": "Top no-run inning candidate (edge +15.3pp vs baseline). Full table: {\"1\": 0.469, \"2\": 0.538, \"3\": 0.644, \"4\": 0.483, \"5\": 0.484, \"6\": 0.663, \"7\": 0.388, \"8\": 0.458}",
         "odds": -120,
         "odds_source": "user_assumed_no_run_inning_-120",
         "pick": "Inning 3 - No Run Scored",
@@ -19892,17 +19639,279 @@
         },
         "pricing_type": "user_assumed",
         "primary_consensus_passed": false,
-        "probability": 0.4797,
+        "probability": 0.5315,
         "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
-        "raw_edge": 6.14,
-        "raw_model_probability": 0.551,
-        "raw_probability": 0.551,
+        "raw_edge": 15.35,
+        "raw_model_probability": 0.644,
+        "raw_probability": 0.644,
         "selected_side_implied_probability": 0.545455,
         "source": "MLB Inning",
         "sport": "MLB",
         "start_time": "2026-07-09T17:40:00Z",
         "team": "",
         "units": 0.0,
+        "walk_forward_roi": 0.00439814814814815,
+        "walk_forward_samples": 201
+      },
+      {
+        "actionability": "validation_lean",
+        "assumed_odds": -120,
+        "away_team": "Cleveland Guardians",
+        "baseline_probability": 0.5184,
+        "calibrated_edge": -0.29,
+        "calibrated_model_probability": 0.5426,
+        "calibrated_probability": 0.5426,
+        "calibration": {
+          "applied": true,
+          "key": "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning",
+          "probability_delta": -0.1204,
+          "samples": 201,
+          "version": "cal-2406-2026-07-09"
+        },
+        "confidence": "High",
+        "consensus_factor_categories": {
+          "calibration": {
+            "missing": [],
+            "risk": [],
+            "support": [
+              "probability_calibration"
+            ]
+          },
+          "inning_baseline": {
+            "missing": [],
+            "risk": [],
+            "support": [
+              "inning_baseline_edge",
+              "matchup_structure"
+            ]
+          },
+          "park_weather": {
+            "missing": [],
+            "risk": [],
+            "support": [
+              "park_weather",
+              "park_factor",
+              "venue_context",
+              "wind_weather"
+            ]
+          },
+          "starting_pitcher": {
+            "missing": [],
+            "risk": [],
+            "support": [
+              "starting_pitcher",
+              "starter_run_prevention"
+            ]
+          },
+          "travel_rest": {
+            "missing": [],
+            "risk": [],
+            "support": [
+              "travel_rest_context",
+              "short_rest_schedule"
+            ]
+          },
+          "walk_forward": {
+            "missing": [],
+            "risk": [],
+            "support": [
+              "walk_forward_validation"
+            ]
+          }
+        },
+        "consensus_gate_version": "mlb_team_consensus_v1.1.0",
+        "consensus_hard_blockers": [
+          "non_positive_calibrated_edge"
+        ],
+        "consensus_passed": true,
+        "consensus_publication_mode": "validation_fallback",
+        "consensus_qualified": false,
+        "consensus_rejection_reason": "non_positive_calibrated_edge",
+        "consensus_required": true,
+        "consensus_score": 34.26,
+        "consensus_signal_count": 12,
+        "consensus_signals": [
+          {
+            "category": "calibration",
+            "detail": "active calibration group has enough samples",
+            "impact": "support",
+            "name": "probability_calibration",
+            "strength": 1.0
+          },
+          {
+            "category": "walk_forward",
+            "detail": "model family has positive decided history in the gated era input",
+            "impact": "support",
+            "name": "walk_forward_validation",
+            "strength": 1.0
+          },
+          {
+            "category": "inning_baseline",
+            "detail": "scoreless probability beats inning baseline",
+            "impact": "support",
+            "name": "inning_baseline_edge",
+            "strength": 1.0
+          },
+          {
+            "category": "starting_pitcher",
+            "detail": "starter inning profile is applicable",
+            "impact": "support",
+            "name": "starting_pitcher",
+            "strength": 1.0
+          },
+          {
+            "category": "starting_pitcher",
+            "detail": "home: ERA/WHIP run-prevention context included",
+            "impact": "support",
+            "name": "starter_run_prevention",
+            "strength": 0.7
+          },
+          {
+            "category": "starting_pitcher",
+            "detail": "away: ERA/WHIP run-prevention context included",
+            "impact": "support",
+            "name": "starter_run_prevention",
+            "strength": 0.7
+          },
+          {
+            "category": "park_weather",
+            "detail": "venue factor included in inning projection",
+            "impact": "support",
+            "name": "park_weather",
+            "strength": 1.0
+          },
+          {
+            "category": "park_weather",
+            "detail": "park run factor included",
+            "impact": "support",
+            "name": "park_factor",
+            "strength": 0.8
+          },
+          {
+            "category": "park_weather",
+            "detail": "venue context included: Target Field",
+            "impact": "support",
+            "name": "venue_context",
+            "strength": 0.5
+          },
+          {
+            "category": "park_weather",
+            "detail": "weather context included for inning run environment",
+            "impact": "support",
+            "name": "wind_weather",
+            "strength": 0.6
+          },
+          {
+            "category": "inning_baseline",
+            "detail": "full inning table available for matchup shape",
+            "impact": "support",
+            "name": "matchup_structure",
+            "strength": 1.0
+          },
+          {
+            "category": "travel_rest",
+            "detail": "away team: 1d since previous game; 0 mi",
+            "impact": "support",
+            "name": "travel_rest_context",
+            "strength": 1.0
+          },
+          {
+            "category": "travel_rest",
+            "detail": "away team: 1 day(s) since previous game",
+            "impact": "support",
+            "name": "short_rest_schedule",
+            "strength": 0.6
+          },
+          {
+            "category": "travel_rest",
+            "detail": "home team: 1d since previous game; 0 mi",
+            "impact": "support",
+            "name": "travel_rest_context",
+            "strength": 1.0
+          },
+          {
+            "category": "travel_rest",
+            "detail": "home team: 1 day(s) since previous game",
+            "impact": "support",
+            "name": "short_rest_schedule",
+            "strength": 0.6
+          }
+        ],
+        "date": "2026-07-09",
+        "decision": "LEAN",
+        "edge": -0.29,
+        "edge_pp": 14.49,
+        "game": "Minnesota Twins vs Cleveland Guardians",
+        "game_id": "823683",
+        "game_order": 4,
+        "game_start_time": "2026-07-09T17:40:00Z",
+        "home_team": "Minnesota Twins",
+        "inning": 6,
+        "league": "MLB",
+        "line_source": "user_assumed_no_run_inning_price",
+        "market": "no_run_inning",
+        "market_implied_probability": 0.545455,
+        "market_no_vig_probability": 0.545455,
+        "market_priced": true,
+        "matchup": "Minnesota Twins vs Cleveland Guardians",
+        "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
+        "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
+        "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
+        "model_prediction": "66.3%",
+        "notes": "Top no-run inning candidate (edge +14.5pp vs baseline). Full table: {\"1\": 0.469, \"2\": 0.538, \"3\": 0.644, \"4\": 0.483, \"5\": 0.484, \"6\": 0.663, \"7\": 0.388, \"8\": 0.458}",
+        "odds": -120,
+        "odds_source": "user_assumed_no_run_inning_-120",
+        "pick": "Inning 6 - No Run Scored",
+        "pregame_snapshot": {
+          "actionability": "research_signal",
+          "assumed_odds": -120,
+          "away_team": "Cleveland Guardians",
+          "baseline_probability": 0.5184,
+          "confidence": "High",
+          "date": "2026-07-09",
+          "decision": "BET",
+          "edge": 14.49,
+          "edge_pp": 14.49,
+          "game": "Minnesota Twins vs Cleveland Guardians",
+          "game_id": "823683",
+          "game_order": 4,
+          "game_start_time": "2026-07-09T17:40:00Z",
+          "home_team": "Minnesota Twins",
+          "inning": 6,
+          "league": "MLB",
+          "line_source": "user_assumed_no_run_inning_price",
+          "market": "no_run_inning",
+          "market_implied_probability": 0.545455,
+          "market_priced": true,
+          "matchup": "Minnesota Twins vs Cleveland Guardians",
+          "model_prediction": "66.3%",
+          "notes": "Top no-run inning candidate (edge +14.5pp vs baseline). Full table: {\"1\": 0.469, \"2\": 0.538, \"3\": 0.644, \"4\": 0.483, \"5\": 0.484, \"6\": 0.663, \"7\": 0.388, \"8\": 0.458}",
+          "odds": -120,
+          "odds_source": "user_assumed_no_run_inning_-120",
+          "pick": "Inning 6 - No Run Scored",
+          "pricing_type": "user_assumed",
+          "probability": 0.663,
+          "source": "MLB Inning",
+          "sport": "MLB",
+          "start_time": "2026-07-09T17:40:00Z",
+          "team": ""
+        },
+        "pricing_type": "user_assumed",
+        "primary_consensus_passed": false,
+        "probability": 0.5426,
+        "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
+        "raw_edge": 14.49,
+        "raw_model_probability": 0.663,
+        "raw_probability": 0.663,
+        "selected_side_implied_probability": 0.545455,
+        "source": "MLB Inning",
+        "sport": "MLB",
+        "start_time": "2026-07-09T17:40:00Z",
+        "team": "",
+        "units": 0.25,
+        "validation_lean": true,
+        "validation_reason": "validation fallback: mlb_inning had zero strict BET/LEAN publications; published top raw model signal as a small LEAN for tracking",
+        "validation_score": 60.79,
         "walk_forward_roi": 0.00439814814814815,
         "walk_forward_samples": 201
       },
@@ -21123,7 +21132,7 @@
         "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
         "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
         "model_prediction": "47.8%",
-        "notes": "Top no-run inning candidate (edge +9.3pp vs baseline). Full table: {\"1\": 0.478, \"2\": 0.543, \"3\": 0.457, \"4\": 0.545, \"5\": 0.581, \"6\": 0.568, \"7\": 0.407, \"8\": 0.446}",
+        "notes": "Top no-run inning candidate (edge +9.3pp vs baseline). Full table: {\"1\": 0.478, \"2\": 0.509, \"3\": 0.457, \"4\": 0.545, \"5\": 0.545, \"6\": 0.568, \"7\": 0.407, \"8\": 0.413}",
         "odds": -120,
         "odds_source": "user_assumed_no_run_inning_-120",
         "pick": "Inning 1 - No Run Scored",
@@ -21181,14 +21190,14 @@
         "actionability": "research_signal",
         "assumed_odds": -120,
         "away_team": "Philadelphia Phillies",
-        "baseline_probability": 0.5041,
-        "calibrated_edge": -4.95,
-        "calibrated_model_probability": 0.496001,
-        "calibrated_probability": 0.496001,
+        "baseline_probability": 0.5184,
+        "calibrated_edge": -5.66,
+        "calibrated_model_probability": 0.488902,
+        "calibrated_probability": 0.488902,
         "calibration": {
           "applied": true,
           "key": "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning",
-          "probability_delta": -0.084999,
+          "probability_delta": -0.079098,
           "samples": 201,
           "version": "cal-2406-2026-07-09"
         },
@@ -21355,14 +21364,14 @@
         ],
         "date": "2026-07-09",
         "decision": "PASS",
-        "edge": -4.95,
-        "edge_pp": 7.66,
+        "edge": -5.66,
+        "edge_pp": 5.0,
         "game": "Cincinnati Reds vs Philadelphia Phillies",
         "game_id": "824494",
         "game_order": 8,
         "game_start_time": "2026-07-09T23:10:00Z",
         "home_team": "Cincinnati Reds",
-        "inning": 5,
+        "inning": 6,
         "league": "MLB",
         "line_source": "user_assumed_no_run_inning_price",
         "market": "no_run_inning",
@@ -21373,40 +21382,40 @@
         "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
         "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
         "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
-        "model_prediction": "58.1%",
-        "notes": "Top no-run inning candidate (edge +7.7pp vs baseline). Full table: {\"1\": 0.478, \"2\": 0.543, \"3\": 0.457, \"4\": 0.545, \"5\": 0.581, \"6\": 0.568, \"7\": 0.407, \"8\": 0.446}",
+        "model_prediction": "56.8%",
+        "notes": "Top no-run inning candidate (edge +5.0pp vs baseline). Full table: {\"1\": 0.478, \"2\": 0.509, \"3\": 0.457, \"4\": 0.545, \"5\": 0.545, \"6\": 0.568, \"7\": 0.407, \"8\": 0.413}",
         "odds": -120,
         "odds_source": "user_assumed_no_run_inning_-120",
-        "pick": "Inning 5 - No Run Scored",
+        "pick": "Inning 6 - No Run Scored",
         "pregame_snapshot": {
           "actionability": "research_signal",
           "assumed_odds": -120,
           "away_team": "Philadelphia Phillies",
-          "baseline_probability": 0.5041,
+          "baseline_probability": 0.5184,
           "confidence": "Medium",
           "date": "2026-07-09",
           "decision": "LEAN",
-          "edge": 7.66,
-          "edge_pp": 7.66,
+          "edge": 5.0,
+          "edge_pp": 5.0,
           "game": "Cincinnati Reds vs Philadelphia Phillies",
           "game_id": "824494",
           "game_order": 8,
           "game_start_time": "2026-07-09T23:10:00Z",
           "home_team": "Cincinnati Reds",
-          "inning": 5,
+          "inning": 6,
           "league": "MLB",
           "line_source": "user_assumed_no_run_inning_price",
           "market": "no_run_inning",
           "market_implied_probability": 0.545455,
           "market_priced": true,
           "matchup": "Cincinnati Reds vs Philadelphia Phillies",
-          "model_prediction": "58.1%",
-          "notes": "Top no-run inning candidate (edge +7.7pp vs baseline). Full table: {\"1\": 0.478, \"2\": 0.543, \"3\": 0.457, \"4\": 0.545, \"5\": 0.581, \"6\": 0.568, \"7\": 0.407, \"8\": 0.446}",
+          "model_prediction": "56.8%",
+          "notes": "Top no-run inning candidate (edge +5.0pp vs baseline). Full table: {\"1\": 0.478, \"2\": 0.509, \"3\": 0.457, \"4\": 0.545, \"5\": 0.545, \"6\": 0.568, \"7\": 0.407, \"8\": 0.413}",
           "odds": -120,
           "odds_source": "user_assumed_no_run_inning_-120",
-          "pick": "Inning 5 - No Run Scored",
+          "pick": "Inning 6 - No Run Scored",
           "pricing_type": "user_assumed",
-          "probability": 0.581,
+          "probability": 0.568,
           "source": "MLB Inning",
           "sport": "MLB",
           "start_time": "2026-07-09T23:10:00Z",
@@ -21414,11 +21423,11 @@
         },
         "pricing_type": "user_assumed",
         "primary_consensus_passed": false,
-        "probability": 0.496,
+        "probability": 0.4889,
         "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
-        "raw_edge": 7.66,
-        "raw_model_probability": 0.581,
-        "raw_probability": 0.581,
+        "raw_edge": 5.0,
+        "raw_model_probability": 0.568,
+        "raw_probability": 0.568,
         "selected_side_implied_probability": 0.545455,
         "source": "MLB Inning",
         "sport": "MLB",
@@ -22127,7 +22136,7 @@
         "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
         "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
         "model_prediction": "48.8%",
-        "notes": "Top no-run inning candidate (edge +10.3pp vs baseline). Full table: {\"1\": 0.488, \"2\": 0.61, \"3\": 0.552, \"4\": 0.498, \"5\": 0.668, \"6\": 0.53, \"7\": 0.422, \"8\": 0.469}",
+        "notes": "Top no-run inning candidate (edge +10.3pp vs baseline). Full table: {\"1\": 0.488, \"2\": 0.52, \"3\": 0.552, \"4\": 0.498, \"5\": 0.564, \"6\": 0.53, \"7\": 0.422, \"8\": 0.394}",
         "odds": -120,
         "odds_source": "user_assumed_no_run_inning_-120",
         "pick": "Inning 1 - No Run Scored",
@@ -22182,21 +22191,21 @@
         "walk_forward_samples": 201
       },
       {
-        "actionability": "validation_lean",
+        "actionability": "research_signal",
         "assumed_odds": -120,
         "away_team": "Los Angeles Angels",
-        "baseline_probability": 0.5041,
-        "calibrated_edge": 0.01,
-        "calibrated_model_probability": 0.545575,
-        "calibrated_probability": 0.545575,
+        "baseline_probability": 0.49,
+        "calibrated_edge": -6.52,
+        "calibrated_model_probability": 0.480241,
+        "calibrated_probability": 0.480241,
         "calibration": {
           "applied": true,
           "key": "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning",
-          "probability_delta": -0.122425,
+          "probability_delta": -0.071759,
           "samples": 201,
           "version": "cal-2406-2026-07-09"
         },
-        "confidence": "High",
+        "confidence": "Medium",
         "consensus_factor_categories": {
           "calibration": {
             "missing": [],
@@ -22211,13 +22220,6 @@
             "support": [
               "inning_baseline_edge",
               "matchup_structure"
-            ]
-          },
-          "market_price": {
-            "missing": [],
-            "risk": [],
-            "support": [
-              "market_price"
             ]
           },
           "park_weather": {
@@ -22254,22 +22256,17 @@
           }
         },
         "consensus_gate_version": "mlb_team_consensus_v1.1.0",
-        "consensus_hard_blockers": [],
-        "consensus_passed": true,
-        "consensus_publication_mode": "validation_fallback",
+        "consensus_hard_blockers": [
+          "non_positive_calibrated_edge"
+        ],
+        "consensus_passed": false,
+        "consensus_publication_mode": "research",
         "consensus_qualified": false,
-        "consensus_rejection_reason": "edge_signal_threshold_not_met(edge=0.01, probability=0.545575, signals=12)",
+        "consensus_rejection_reason": "non_positive_calibrated_edge",
         "consensus_required": true,
-        "consensus_score": 34.568,
-        "consensus_signal_count": 12,
+        "consensus_score": 27.5,
+        "consensus_signal_count": 11,
         "consensus_signals": [
-          {
-            "category": "market_price",
-            "detail": "calibrated probability beats selected-side market price",
-            "impact": "support",
-            "name": "market_price",
-            "strength": 0.001
-          },
           {
             "category": "calibration",
             "detail": "active calibration group has enough samples",
@@ -22370,15 +22367,15 @@
           }
         ],
         "date": "2026-07-09",
-        "decision": "LEAN",
-        "edge": 0.01,
-        "edge_pp": 16.4,
+        "decision": "PASS",
+        "edge": -6.52,
+        "edge_pp": 6.17,
         "game": "Texas Rangers vs Los Angeles Angels",
         "game_id": "822877",
         "game_order": 10,
         "game_start_time": "2026-07-10T00:05:00Z",
         "home_team": "Texas Rangers",
-        "inning": 5,
+        "inning": 3,
         "league": "MLB",
         "line_source": "user_assumed_no_run_inning_price",
         "market": "no_run_inning",
@@ -22389,40 +22386,40 @@
         "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
         "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
         "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
-        "model_prediction": "66.8%",
-        "notes": "Top no-run inning candidate (edge +16.4pp vs baseline). Full table: {\"1\": 0.488, \"2\": 0.61, \"3\": 0.552, \"4\": 0.498, \"5\": 0.668, \"6\": 0.53, \"7\": 0.422, \"8\": 0.469}",
+        "model_prediction": "55.2%",
+        "notes": "Top no-run inning candidate (edge +6.2pp vs baseline). Full table: {\"1\": 0.488, \"2\": 0.52, \"3\": 0.552, \"4\": 0.498, \"5\": 0.564, \"6\": 0.53, \"7\": 0.422, \"8\": 0.394}",
         "odds": -120,
         "odds_source": "user_assumed_no_run_inning_-120",
-        "pick": "Inning 5 - No Run Scored",
+        "pick": "Inning 3 - No Run Scored",
         "pregame_snapshot": {
           "actionability": "research_signal",
           "assumed_odds": -120,
           "away_team": "Los Angeles Angels",
-          "baseline_probability": 0.5041,
-          "confidence": "High",
+          "baseline_probability": 0.49,
+          "confidence": "Medium",
           "date": "2026-07-09",
-          "decision": "BET",
-          "edge": 16.4,
-          "edge_pp": 16.4,
+          "decision": "LEAN",
+          "edge": 6.17,
+          "edge_pp": 6.17,
           "game": "Texas Rangers vs Los Angeles Angels",
           "game_id": "822877",
           "game_order": 10,
           "game_start_time": "2026-07-10T00:05:00Z",
           "home_team": "Texas Rangers",
-          "inning": 5,
+          "inning": 3,
           "league": "MLB",
           "line_source": "user_assumed_no_run_inning_price",
           "market": "no_run_inning",
           "market_implied_probability": 0.545455,
           "market_priced": true,
           "matchup": "Texas Rangers vs Los Angeles Angels",
-          "model_prediction": "66.8%",
-          "notes": "Top no-run inning candidate (edge +16.4pp vs baseline). Full table: {\"1\": 0.488, \"2\": 0.61, \"3\": 0.552, \"4\": 0.498, \"5\": 0.668, \"6\": 0.53, \"7\": 0.422, \"8\": 0.469}",
+          "model_prediction": "55.2%",
+          "notes": "Top no-run inning candidate (edge +6.2pp vs baseline). Full table: {\"1\": 0.488, \"2\": 0.52, \"3\": 0.552, \"4\": 0.498, \"5\": 0.564, \"6\": 0.53, \"7\": 0.422, \"8\": 0.394}",
           "odds": -120,
           "odds_source": "user_assumed_no_run_inning_-120",
-          "pick": "Inning 5 - No Run Scored",
+          "pick": "Inning 3 - No Run Scored",
           "pricing_type": "user_assumed",
-          "probability": 0.668,
+          "probability": 0.552,
           "source": "MLB Inning",
           "sport": "MLB",
           "start_time": "2026-07-10T00:05:00Z",
@@ -22430,20 +22427,17 @@
         },
         "pricing_type": "user_assumed",
         "primary_consensus_passed": false,
-        "probability": 0.5456,
+        "probability": 0.4802,
         "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
-        "raw_edge": 16.4,
-        "raw_model_probability": 0.668,
-        "raw_probability": 0.668,
+        "raw_edge": 6.17,
+        "raw_model_probability": 0.552,
+        "raw_probability": 0.552,
         "selected_side_implied_probability": 0.545455,
         "source": "MLB Inning",
         "sport": "MLB",
         "start_time": "2026-07-10T00:05:00Z",
         "team": "",
-        "units": 0.25,
-        "validation_lean": true,
-        "validation_reason": "validation fallback: mlb_inning had zero strict BET/LEAN publications; published top raw model signal as a small LEAN for tracking",
-        "validation_score": 63.2,
+        "units": 0.0,
         "walk_forward_roi": 0.00439814814814815,
         "walk_forward_samples": 201
       },
@@ -22644,7 +22638,7 @@
         "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
         "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
         "model_prediction": "58.0%",
-        "notes": "Top no-run inning candidate (edge +6.2pp vs baseline). Full table: {\"1\": 0.425, \"2\": 0.58, \"3\": 0.489, \"4\": 0.5, \"5\": 0.489, \"6\": 0.522, \"7\": 0.447, \"8\": 0.396}",
+        "notes": "Top no-run inning candidate (edge +6.2pp vs baseline). Full table: {\"1\": 0.425, \"2\": 0.58, \"3\": 0.516, \"4\": 0.5, \"5\": 0.489, \"6\": 0.552, \"7\": 0.447, \"8\": 0.396}",
         "odds": -120,
         "odds_source": "user_assumed_no_run_inning_-120",
         "pick": "Inning 2 - No Run Scored",
@@ -22689,6 +22683,257 @@
         "raw_edge": 6.2,
         "raw_model_probability": 0.58,
         "raw_probability": 0.58,
+        "selected_side_implied_probability": 0.545455,
+        "source": "MLB Inning",
+        "sport": "MLB",
+        "start_time": "2026-07-10T01:40:00Z",
+        "team": "",
+        "units": 0.0,
+        "walk_forward_roi": 0.00439814814814815,
+        "walk_forward_samples": 201
+      },
+      {
+        "actionability": "research_signal",
+        "assumed_odds": -120,
+        "away_team": "Arizona Diamondbacks",
+        "baseline_probability": 0.5184,
+        "calibrated_edge": -6.52,
+        "calibrated_model_probability": 0.480241,
+        "calibrated_probability": 0.480241,
+        "calibration": {
+          "applied": true,
+          "key": "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning",
+          "probability_delta": -0.071759,
+          "samples": 201,
+          "version": "cal-2406-2026-07-09"
+        },
+        "confidence": "Medium",
+        "consensus_factor_categories": {
+          "calibration": {
+            "missing": [],
+            "risk": [],
+            "support": [
+              "probability_calibration"
+            ]
+          },
+          "inning_baseline": {
+            "missing": [],
+            "risk": [],
+            "support": [
+              "inning_baseline_edge",
+              "matchup_structure"
+            ]
+          },
+          "park_weather": {
+            "missing": [],
+            "risk": [],
+            "support": [
+              "park_weather",
+              "park_factor",
+              "venue_context"
+            ]
+          },
+          "starting_pitcher": {
+            "missing": [],
+            "risk": [],
+            "support": [
+              "starting_pitcher",
+              "starter_run_prevention"
+            ]
+          },
+          "travel_rest": {
+            "missing": [],
+            "risk": [],
+            "support": [
+              "travel_rest_context",
+              "short_rest_schedule"
+            ]
+          },
+          "walk_forward": {
+            "missing": [],
+            "risk": [],
+            "support": [
+              "walk_forward_validation"
+            ]
+          }
+        },
+        "consensus_gate_version": "mlb_team_consensus_v1.1.0",
+        "consensus_hard_blockers": [
+          "non_positive_calibrated_edge"
+        ],
+        "consensus_passed": false,
+        "consensus_publication_mode": "research",
+        "consensus_qualified": false,
+        "consensus_rejection_reason": "non_positive_calibrated_edge",
+        "consensus_required": true,
+        "consensus_score": 27.5,
+        "consensus_signal_count": 11,
+        "consensus_signals": [
+          {
+            "category": "calibration",
+            "detail": "active calibration group has enough samples",
+            "impact": "support",
+            "name": "probability_calibration",
+            "strength": 1.0
+          },
+          {
+            "category": "walk_forward",
+            "detail": "model family has positive decided history in the gated era input",
+            "impact": "support",
+            "name": "walk_forward_validation",
+            "strength": 1.0
+          },
+          {
+            "category": "inning_baseline",
+            "detail": "scoreless probability beats inning baseline",
+            "impact": "support",
+            "name": "inning_baseline_edge",
+            "strength": 1.0
+          },
+          {
+            "category": "starting_pitcher",
+            "detail": "starter inning profile is applicable",
+            "impact": "support",
+            "name": "starting_pitcher",
+            "strength": 1.0
+          },
+          {
+            "category": "starting_pitcher",
+            "detail": "home: ERA/WHIP run-prevention context included",
+            "impact": "support",
+            "name": "starter_run_prevention",
+            "strength": 0.7
+          },
+          {
+            "category": "starting_pitcher",
+            "detail": "away: ERA/WHIP run-prevention context included",
+            "impact": "support",
+            "name": "starter_run_prevention",
+            "strength": 0.7
+          },
+          {
+            "category": "park_weather",
+            "detail": "venue factor included in inning projection",
+            "impact": "support",
+            "name": "park_weather",
+            "strength": 1.0
+          },
+          {
+            "category": "park_weather",
+            "detail": "park run factor included",
+            "impact": "support",
+            "name": "park_factor",
+            "strength": 0.8
+          },
+          {
+            "category": "park_weather",
+            "detail": "venue context included: Petco Park",
+            "impact": "support",
+            "name": "venue_context",
+            "strength": 0.5
+          },
+          {
+            "category": "inning_baseline",
+            "detail": "full inning table available for matchup shape",
+            "impact": "support",
+            "name": "matchup_structure",
+            "strength": 1.0
+          },
+          {
+            "category": "travel_rest",
+            "detail": "away team: 1d since previous game; 0 mi",
+            "impact": "support",
+            "name": "travel_rest_context",
+            "strength": 1.0
+          },
+          {
+            "category": "travel_rest",
+            "detail": "away team: 1 day(s) since previous game",
+            "impact": "support",
+            "name": "short_rest_schedule",
+            "strength": 0.6
+          },
+          {
+            "category": "travel_rest",
+            "detail": "home team: 1d since previous game; 0 mi",
+            "impact": "support",
+            "name": "travel_rest_context",
+            "strength": 1.0
+          },
+          {
+            "category": "travel_rest",
+            "detail": "home team: 1 day(s) since previous game",
+            "impact": "support",
+            "name": "short_rest_schedule",
+            "strength": 0.6
+          }
+        ],
+        "date": "2026-07-09",
+        "decision": "PASS",
+        "edge": -6.52,
+        "edge_pp": 3.33,
+        "game": "San Diego Padres vs Arizona Diamondbacks",
+        "game_id": "823277",
+        "game_order": 11,
+        "game_start_time": "2026-07-10T01:40:00Z",
+        "home_team": "San Diego Padres",
+        "inning": 6,
+        "league": "MLB",
+        "line_source": "user_assumed_no_run_inning_price",
+        "market": "no_run_inning",
+        "market_implied_probability": 0.545455,
+        "market_no_vig_probability": 0.545455,
+        "market_priced": true,
+        "matchup": "San Diego Padres vs Arizona Diamondbacks",
+        "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
+        "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
+        "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
+        "model_prediction": "55.2%",
+        "notes": "Top no-run inning candidate (edge +3.3pp vs baseline). Full table: {\"1\": 0.425, \"2\": 0.58, \"3\": 0.516, \"4\": 0.5, \"5\": 0.489, \"6\": 0.552, \"7\": 0.447, \"8\": 0.396}",
+        "odds": -120,
+        "odds_source": "user_assumed_no_run_inning_-120",
+        "pick": "Inning 6 - No Run Scored",
+        "pregame_snapshot": {
+          "actionability": "research_signal",
+          "assumed_odds": -120,
+          "away_team": "Arizona Diamondbacks",
+          "baseline_probability": 0.5184,
+          "confidence": "Medium",
+          "date": "2026-07-09",
+          "decision": "LEAN",
+          "edge": 3.33,
+          "edge_pp": 3.33,
+          "game": "San Diego Padres vs Arizona Diamondbacks",
+          "game_id": "823277",
+          "game_order": 11,
+          "game_start_time": "2026-07-10T01:40:00Z",
+          "home_team": "San Diego Padres",
+          "inning": 6,
+          "league": "MLB",
+          "line_source": "user_assumed_no_run_inning_price",
+          "market": "no_run_inning",
+          "market_implied_probability": 0.545455,
+          "market_priced": true,
+          "matchup": "San Diego Padres vs Arizona Diamondbacks",
+          "model_prediction": "55.2%",
+          "notes": "Top no-run inning candidate (edge +3.3pp vs baseline). Full table: {\"1\": 0.425, \"2\": 0.58, \"3\": 0.516, \"4\": 0.5, \"5\": 0.489, \"6\": 0.552, \"7\": 0.447, \"8\": 0.396}",
+          "odds": -120,
+          "odds_source": "user_assumed_no_run_inning_-120",
+          "pick": "Inning 6 - No Run Scored",
+          "pricing_type": "user_assumed",
+          "probability": 0.552,
+          "source": "MLB Inning",
+          "sport": "MLB",
+          "start_time": "2026-07-10T01:40:00Z",
+          "team": ""
+        },
+        "pricing_type": "user_assumed",
+        "primary_consensus_passed": false,
+        "probability": 0.4802,
+        "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
+        "raw_edge": 3.33,
+        "raw_model_probability": 0.552,
+        "raw_probability": 0.552,
         "selected_side_implied_probability": 0.545455,
         "source": "MLB Inning",
         "sport": "MLB",
@@ -22895,7 +23140,7 @@
         "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
         "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
         "model_prediction": "47.6%",
-        "notes": "Top no-run inning candidate (edge +9.1pp vs baseline). Full table: {\"1\": 0.476, \"2\": 0.499, \"3\": 0.496, \"4\": 0.567, \"5\": 0.488, \"6\": 0.508, \"7\": 0.489, \"8\": 0.371}",
+        "notes": "Top no-run inning candidate (edge +9.1pp vs baseline). Full table: {\"1\": 0.476, \"2\": 0.529, \"3\": 0.496, \"4\": 0.567, \"5\": 0.518, \"6\": 0.508, \"7\": 0.489, \"8\": 0.399}",
         "odds": -120,
         "odds_source": "user_assumed_no_run_inning_-120",
         "pick": "Inning 1 - No Run Scored",
@@ -23146,7 +23391,7 @@
         "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
         "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
         "model_prediction": "56.7%",
-        "notes": "Top no-run inning candidate (edge +4.9pp vs baseline). Full table: {\"1\": 0.476, \"2\": 0.499, \"3\": 0.496, \"4\": 0.567, \"5\": 0.488, \"6\": 0.508, \"7\": 0.489, \"8\": 0.371}",
+        "notes": "Top no-run inning candidate (edge +4.9pp vs baseline). Full table: {\"1\": 0.476, \"2\": 0.529, \"3\": 0.496, \"4\": 0.567, \"5\": 0.518, \"6\": 0.508, \"7\": 0.489, \"8\": 0.399}",
         "odds": -120,
         "odds_source": "user_assumed_no_run_inning_-120",
         "pick": "Inning 4 - No Run Scored",
@@ -23204,7 +23449,7 @@
     "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
     "raw_lines": 2,
     "requested_date": "2026-07-09",
-    "validation_leans_published": 3,
+    "validation_leans_published": 2,
     "validation_publication_mode": "fallback_when_strict_gate_empty"
   },
   "mlb_new": {
@@ -23241,9 +23486,9 @@
     "consensus_gate_version": "mlb_team_consensus_v1.1.0",
     "consensus_rejection_reasons": {
       "edge_signal_threshold_not_met(edge=0.91, probability=0.532918, signals=5)": 2,
-      "missing_reliable_market_price": 4,
+      "missing_reliable_market_price": 3,
       "non_positive_calibrated_edge": 7,
-      "raw_model_abstained": 13
+      "raw_model_abstained": 14
     },
     "consensus_required": true,
     "model_stack": "v2",
@@ -23470,39 +23715,39 @@
         "edge": -3.83,
         "home_team": "Pittsburgh Pirates",
         "kelly": 0.59,
-        "line": 9.5,
-        "market_line": 9.5,
+        "line": 10.0,
+        "market_line": 10.0,
         "market_no_vig_probability": 0.5238095238095238,
         "market_total_source": "model_output",
         "market_type": "totals",
         "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
         "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
         "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
-        "model_prediction": 9.1,
+        "model_prediction": 9.6,
         "odds": -110,
-        "pick": "Under 9.5 (Atlanta Braves vs Pittsburgh Pirates)",
+        "pick": "Under 10.0 (Atlanta Braves vs Pittsburgh Pirates)",
         "pregame_snapshot": {
           "assumed_odds": -110,
           "away_team": "Atlanta Braves",
-          "decision": "LEAN",
+          "decision": "PASS",
           "direction": "Under",
-          "edge": 4.22,
+          "edge": 1.12,
           "home_team": "Pittsburgh Pirates",
-          "kelly": 2.21,
-          "line": 9.5,
-          "market_line": 9.5,
+          "kelly": 0.59,
+          "line": 10.0,
+          "market_line": 10.0,
           "market_total_source": "model_output",
           "market_type": "totals",
-          "model_prediction": 8.8,
+          "model_prediction": 9.6,
           "odds": -110,
-          "pick": "Under 9.5 (Atlanta Braves vs Pittsburgh Pirates)",
-          "prob": 0.566,
-          "probability": 0.566,
-          "selection": "Under",
+          "pick": "Under 10.0 (Atlanta Braves vs Pittsburgh Pirates)",
+          "prob": 0.535,
+          "probability": 0.535,
+          "selection": "PASS",
           "source": "MLB Model",
           "sport": "MLB",
-          "units": 0.01,
-          "vegas": 9.5
+          "units": 0.0,
+          "vegas": 10.0
         },
         "primary_consensus_passed": false,
         "prob": 0.535,
@@ -23517,7 +23762,7 @@
         "source": "MLB Model",
         "sport": "MLB",
         "units": 0.0,
-        "vegas": 9.5,
+        "vegas": 10.0,
         "walk_forward_roi": 0.08225830930338446,
         "walk_forward_samples": 139
       },
@@ -24614,13 +24859,13 @@
       {
         "actionability": "research_signal",
         "away_team": "Boston Red Sox",
-        "calibrated_edge": -1.71,
-        "calibrated_model_probability": 0.48287,
-        "calibrated_probability": 0.48287,
+        "calibrated_edge": -3.38,
+        "calibrated_model_probability": 0.466215,
+        "calibrated_probability": 0.466215,
         "calibration": {
           "applied": true,
           "key": "global",
-          "probability_delta": -0.09133,
+          "probability_delta": -0.076185,
           "samples": 1404,
           "version": "cal-2406-2026-07-09"
         },
@@ -24656,6 +24901,7 @@
         },
         "consensus_gate_version": "mlb_team_consensus_v1.1.0",
         "consensus_hard_blockers": [
+          "raw_model_abstained",
           "missing_reliable_market_price",
           "missing_selected_side_implied_probability",
           "non_positive_calibrated_edge"
@@ -24663,7 +24909,7 @@
         "consensus_passed": false,
         "consensus_publication_mode": "research",
         "consensus_qualified": false,
-        "consensus_rejection_reason": "missing_reliable_market_price; missing_selected_side_implied_probability; non_positive_calibrated_edge",
+        "consensus_rejection_reason": "raw_model_abstained; missing_reliable_market_price; missing_selected_side_implied_probability; non_positive_calibrated_edge",
         "consensus_required": true,
         "consensus_score": 10.0,
         "consensus_signal_count": 4,
@@ -24698,7 +24944,7 @@
           }
         ],
         "decision": "PASS",
-        "edge": -1.71,
+        "edge": -3.38,
         "home_team": "Chicago White Sox",
         "market_no_vig_probability": null,
         "market_pick_prob": null,
@@ -24706,7 +24952,7 @@
         "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
         "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
         "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
-        "model_odds": -135,
+        "model_odds": -119,
         "odds": null,
         "pick": "White Sox ML (Red Sox vs White Sox)",
         "pregame_snapshot": {
@@ -24726,12 +24972,12 @@
           "units": 0.4
         },
         "primary_consensus_passed": false,
-        "probability": 0.4829,
+        "probability": 0.4662,
         "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
-        "raw_edge": 7.42,
-        "raw_model_probability": 0.5742,
-        "raw_probability": 0.5742,
-        "raw_units": 0.4,
+        "raw_edge": 4.24,
+        "raw_model_probability": 0.5424,
+        "raw_probability": 0.5424,
+        "raw_units": 0.0,
         "selected_side_implied_probability": null,
         "source": "MLB Model",
         "sport": "MLB",
@@ -26808,6 +27054,148 @@
         "sport": "MLB",
         "units": 0.0,
         "vegas": 8.5,
+        "walk_forward_roi": 0.08225830930338446,
+        "walk_forward_samples": 139
+      },
+      {
+        "actionability": "research_signal",
+        "assumed_odds": -110,
+        "away_team": "Atlanta Braves",
+        "calibrated_edge": -3.83,
+        "calibrated_model_probability": 0.485526,
+        "calibrated_probability": 0.485526,
+        "calibration": {
+          "applied": true,
+          "key": "model:mlb_new|source:mlb model|sport:mlb|bet:totals",
+          "probability_delta": -0.049474,
+          "samples": 36,
+          "version": "cal-2406-2026-07-09"
+        },
+        "consensus_factor_categories": {
+          "calibration": {
+            "missing": [],
+            "risk": [],
+            "support": [
+              "probability_calibration"
+            ]
+          },
+          "model_stack": {
+            "missing": [],
+            "risk": [],
+            "support": [
+              "model_stack_ready"
+            ]
+          },
+          "team_form": {
+            "missing": [],
+            "risk": [],
+            "support": [
+              "team_identity_context"
+            ]
+          },
+          "walk_forward": {
+            "missing": [],
+            "risk": [],
+            "support": [
+              "walk_forward_validation"
+            ]
+          }
+        },
+        "consensus_gate_version": "mlb_team_consensus_v1.1.0",
+        "consensus_hard_blockers": [
+          "raw_model_abstained",
+          "non_positive_calibrated_edge"
+        ],
+        "consensus_passed": false,
+        "consensus_publication_mode": "research",
+        "consensus_qualified": false,
+        "consensus_rejection_reason": "raw_model_abstained; non_positive_calibrated_edge",
+        "consensus_required": true,
+        "consensus_score": 10.0,
+        "consensus_signal_count": 4,
+        "consensus_signals": [
+          {
+            "category": "calibration",
+            "detail": "active calibration group has enough samples",
+            "impact": "support",
+            "name": "probability_calibration",
+            "strength": 1.0
+          },
+          {
+            "category": "walk_forward",
+            "detail": "model family has positive decided history in the gated era input",
+            "impact": "support",
+            "name": "walk_forward_validation",
+            "strength": 1.0
+          },
+          {
+            "category": "model_stack",
+            "detail": "MLB full-game v2 artifacts are ready",
+            "impact": "support",
+            "name": "model_stack_ready",
+            "strength": 1.0
+          },
+          {
+            "category": "team_form",
+            "detail": "selected MLB team context present",
+            "impact": "support",
+            "name": "team_identity_context",
+            "strength": 0.4
+          }
+        ],
+        "decision": "PASS",
+        "direction": "Under",
+        "edge": -3.83,
+        "home_team": "Pittsburgh Pirates",
+        "kelly": 0.59,
+        "line": 9.5,
+        "market_line": 9.5,
+        "market_no_vig_probability": 0.5238095238095238,
+        "market_total_source": "model_output",
+        "market_type": "totals",
+        "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
+        "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
+        "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
+        "model_prediction": 9.1,
+        "odds": -110,
+        "pick": "Under 9.5 (Atlanta Braves vs Pittsburgh Pirates)",
+        "pregame_snapshot": {
+          "assumed_odds": -110,
+          "away_team": "Atlanta Braves",
+          "decision": "LEAN",
+          "direction": "Under",
+          "edge": 4.22,
+          "home_team": "Pittsburgh Pirates",
+          "kelly": 2.21,
+          "line": 9.5,
+          "market_line": 9.5,
+          "market_total_source": "model_output",
+          "market_type": "totals",
+          "model_prediction": 8.8,
+          "odds": -110,
+          "pick": "Under 9.5 (Atlanta Braves vs Pittsburgh Pirates)",
+          "prob": 0.566,
+          "probability": 0.566,
+          "selection": "Under",
+          "source": "MLB Model",
+          "sport": "MLB",
+          "units": 0.01,
+          "vegas": 9.5
+        },
+        "primary_consensus_passed": false,
+        "prob": 0.535,
+        "probability": 0.4855,
+        "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
+        "raw_edge": 1.12,
+        "raw_model_probability": 0.535,
+        "raw_probability": 0.535,
+        "raw_units": 0.0,
+        "selected_side_implied_probability": 0.5238095238095238,
+        "selection": "PASS",
+        "source": "MLB Model",
+        "sport": "MLB",
+        "units": 0.0,
+        "vegas": 9.5,
         "walk_forward_roi": 0.08225830930338446,
         "walk_forward_samples": 139
       },
@@ -29341,7 +29729,7 @@
               "pitcher_rest_label": "normal rest (5d)",
               "pitcher_rest_runs_modifier": 0.0,
               "pitcher_venue_f5_allowed": 2.9,
-              "projected_runs": 2.67,
+              "projected_runs": 2.65,
               "team_current_f5_runs": 2.835,
               "team_prior_f5_runs": 2.893,
               "team_recent_f5_runs": 3.625,
@@ -29354,9 +29742,9 @@
               "travel_run_delta": -0.0,
               "travel_timezone_shift_hours": 0,
               "venue_delta": 0.18,
-              "wind_direction": "out",
-              "wind_mph": 6.0,
-              "wind_run_delta_per_team": 0.025
+              "wind_direction": "in",
+              "wind_mph": 4.0,
+              "wind_run_delta_per_team": 0.0
             },
             "away_pitcher": {
               "current_f5_allowed": 4.7,
@@ -29435,7 +29823,7 @@
               "pitcher_rest_label": "normal rest (5d)",
               "pitcher_rest_runs_modifier": 0.0,
               "pitcher_venue_f5_allowed": 2.303,
-              "projected_runs": 3.49,
+              "projected_runs": 3.47,
               "team_current_f5_runs": 2.404,
               "team_prior_f5_runs": 2.465,
               "team_recent_f5_runs": 2.792,
@@ -29448,9 +29836,9 @@
               "travel_run_delta": -0.0,
               "travel_timezone_shift_hours": 0,
               "venue_delta": 0.18,
-              "wind_direction": "out",
-              "wind_mph": 6.0,
-              "wind_run_delta_per_team": 0.025
+              "wind_direction": "in",
+              "wind_mph": 4.0,
+              "wind_run_delta_per_team": 0.0
             },
             "home_pitcher": {
               "current_f5_allowed": 2.875,
@@ -29553,10 +29941,10 @@
               },
               "park_run_delta_per_team": 0.18,
               "run_delta_per_team": 0.18,
-              "weather_raw": "6 mph, Out To LF",
-              "wind_direction": "out",
-              "wind_mph": 6.0,
-              "wind_run_delta_per_team": 0.025
+              "weather_raw": "4 mph, In From CF",
+              "wind_direction": "in",
+              "wind_mph": 4.0,
+              "wind_run_delta_per_team": 0.0
             }
           },
           "game_id": "824816",
@@ -29565,13 +29953,13 @@
           "home_pitcher": "Trevor Rogers",
           "home_team": "Baltimore Orioles",
           "matchup": "Chicago Cubs @ Baltimore Orioles",
-          "notes": "F5 projection Chicago Cubs 2.67, Baltimore Orioles 3.49 (total 6.16). BvP PA away/home: 0+48/0+25; venue F5 total 4.93 over 60 games. Travel away/home: 1d since previous game; 0 mi (fatigue 0.00) / 1d since previous game; 0 mi (fatigue 0.00).",
+          "notes": "F5 projection Chicago Cubs 2.65, Baltimore Orioles 3.47 (total 6.12). BvP PA away/home: 0+48/0+25; venue F5 total 4.93 over 60 games. Travel away/home: 1d since previous game; 0 mi (fatigue 0.00) / 1d since previous game; 0 mi (fatigue 0.00).",
           "projected_first_five": {
             "away_lead_probability": 0.3957,
-            "away_runs": 2.67,
+            "away_runs": 2.65,
             "home_lead_probability": 0.6043,
-            "home_runs": 3.49,
-            "total_runs": 6.16
+            "home_runs": 3.47,
+            "total_runs": 6.12
           },
           "top_picks": [
             {
@@ -29591,12 +29979,13 @@
               "assumed_odds": -170,
               "confidence": "Low",
               "decision": "PASS",
-              "edge_pct": 0.97,
+              "edge_pct": 0.16,
+              "guardrail": "line gap below bet threshold",
               "market": "f5_total",
-              "model_prediction": "6.16 F5 total",
+              "model_prediction": "6.12 F5 total",
               "pick": "Over 5.5 F5",
-              "probability": 0.6394,
-              "projection_gap": 0.66,
+              "probability": 0.6312,
+              "projection_gap": 0.62,
               "team": "",
               "vegas_line": 5.5
             }
@@ -34566,7 +34955,7 @@
           "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
           "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_first_five",
           "model_prediction": "Baltimore Orioles +0.82 F5 runs",
-          "notes": "F5 projection Chicago Cubs 2.67, Baltimore Orioles 3.49 (total 6.16). BvP PA away/home: 0+48/0+25; venue F5 total 4.93 over 60 games. Travel away/home: 1d since previous game; 0 mi (fatigue 0.00) / 1d since previous game; 0 mi (fatigue 0.00). Projection: Chicago Cubs 2.67, Baltimore Orioles 3.49; total 6.16.",
+          "notes": "F5 projection Chicago Cubs 2.65, Baltimore Orioles 3.47 (total 6.12). BvP PA away/home: 0+48/0+25; venue F5 total 4.93 over 60 games. Travel away/home: 1d since previous game; 0 mi (fatigue 0.00) / 1d since previous game; 0 mi (fatigue 0.00). Projection: Chicago Cubs 2.65, Baltimore Orioles 3.47; total 6.12.",
           "odds": -110,
           "odds_source": "user_assumed_f5_moneyline_fallback",
           "pick": "Baltimore Orioles F5 ML",
@@ -34622,13 +35011,13 @@
           "actionability": "research_signal",
           "assumed_odds": -170,
           "away_team": "Chicago Cubs",
-          "calibrated_edge": -10.93,
-          "calibrated_model_probability": 0.520363,
-          "calibrated_probability": 0.520363,
+          "calibrated_edge": -11.38,
+          "calibrated_model_probability": 0.515849,
+          "calibrated_probability": 0.515849,
           "calibration": {
             "applied": true,
             "key": "model:mlb_first_five|source:mlb first five|sport:mlb|bet:f5_total",
-            "probability_delta": -0.119037,
+            "probability_delta": -0.115351,
             "samples": 107,
             "version": "cal-2406-2026-07-09"
           },
@@ -34714,7 +35103,7 @@
           "consensus_qualified": false,
           "consensus_rejection_reason": "raw_model_abstained; non_positive_calibrated_edge; failed_walk_forward_validation",
           "consensus_required": true,
-          "consensus_score": 47.036,
+          "consensus_score": 46.585,
           "consensus_signal_count": 18,
           "consensus_signals": [
             {
@@ -34951,7 +35340,7 @@
           ],
           "date": "2026-07-09",
           "decision": "PASS",
-          "edge": -10.93,
+          "edge": -11.38,
           "game": "Chicago Cubs @ Baltimore Orioles",
           "game_id": "824816",
           "game_order": 3,
@@ -34968,8 +35357,8 @@
           "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_first_five",
           "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
           "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_first_five",
-          "model_prediction": "6.16 F5 total",
-          "notes": "F5 projection Chicago Cubs 2.67, Baltimore Orioles 3.49 (total 6.16). BvP PA away/home: 0+48/0+25; venue F5 total 4.93 over 60 games. Travel away/home: 1d since previous game; 0 mi (fatigue 0.00) / 1d since previous game; 0 mi (fatigue 0.00). Projection: Chicago Cubs 2.67, Baltimore Orioles 3.49; total 6.16.",
+          "model_prediction": "6.12 F5 total",
+          "notes": "F5 projection Chicago Cubs 2.65, Baltimore Orioles 3.47 (total 6.12). BvP PA away/home: 0+48/0+25; venue F5 total 4.93 over 60 games. Travel away/home: 1d since previous game; 0 mi (fatigue 0.00) / 1d since previous game; 0 mi (fatigue 0.00). Projection: Chicago Cubs 2.65, Baltimore Orioles 3.47; total 6.12.",
           "odds": -170,
           "odds_source": "user_assumed_f5_total_5.5",
           "pick": "Over 5.5 F5",
@@ -35007,11 +35396,11 @@
           },
           "pricing_type": "user_assumed",
           "primary_consensus_passed": false,
-          "probability": 0.5204,
+          "probability": 0.5158,
           "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_first_five",
-          "raw_edge": 0.98,
-          "raw_model_probability": 0.6394,
-          "raw_probability": 0.6394,
+          "raw_edge": 0.16,
+          "raw_model_probability": 0.6312,
+          "raw_probability": 0.6312,
           "selected_side_implied_probability": 0.62963,
           "source": "MLB First Five",
           "sport": "MLB",
@@ -41380,8 +41769,7 @@
     "mlb_inning": {
       "consensus_gate_version": "mlb_team_consensus_v1.1.0",
       "consensus_rejection_reasons": {
-        "edge_signal_threshold_not_met(edge=0.01, probability=0.545575, signals=12)": 1,
-        "non_positive_calibrated_edge": 21
+        "non_positive_calibrated_edge": 23
       },
       "consensus_required": true,
       "date": "2026-07-09",
@@ -41690,23 +42078,23 @@
             "8": 0.5625
           },
           "edge_table": {
-            "1": 0.21,
+            "1": 0.1255,
             "2": 0.0605,
             "3": 0.0308,
-            "4": 0.1473,
+            "4": 0.0489,
             "5": -0.0169,
             "6": 0.037,
-            "7": 0.0263,
+            "7": -0.0733,
             "8": -0.1507
           },
           "full_inning_table": {
-            "1": 0.594,
+            "1": 0.51,
             "2": 0.579,
             "3": 0.521,
-            "4": 0.666,
+            "4": 0.567,
             "5": 0.487,
             "6": 0.555,
-            "7": 0.574,
+            "7": 0.474,
             "8": 0.412
           },
           "game_id": "822954",
@@ -41734,21 +42122,21 @@
           "top_2_picks": [
             {
               "baseline": 0.3844,
-              "confidence": "High",
+              "confidence": "Medium",
               "decision": "BET",
-              "edge_pp": 21.0,
+              "edge_pp": 12.55,
               "inning": 1,
-              "label": "Inning 1 - No Run Scored (59.4%, edge +21.0pp)",
-              "probability_scoreless": 0.594
+              "label": "Inning 1 - No Run Scored (51.0%, edge +12.6pp)",
+              "probability_scoreless": 0.51
             },
             {
               "baseline": 0.5184,
-              "confidence": "High",
-              "decision": "BET",
-              "edge_pp": 14.73,
-              "inning": 4,
-              "label": "Inning 4 - No Run Scored (66.6%, edge +14.7pp)",
-              "probability_scoreless": 0.666
+              "confidence": "Medium",
+              "decision": "LEAN",
+              "edge_pp": 6.05,
+              "inning": 2,
+              "label": "Inning 2 - No Run Scored (57.9%, edge +6.0pp)",
+              "probability_scoreless": 0.579
             }
           ],
           "travel": {
@@ -41921,8 +42309,8 @@
           "venue_factor": 1.0,
           "weather": {
             "condition": "Overcast",
-            "temp": "86",
-            "wind": "6 mph, Out To LF"
+            "temp": "80",
+            "wind": "4 mph, In From CF"
           }
         },
         {
@@ -41955,23 +42343,23 @@
             "8": 0.5625
           },
           "edge_table": {
-            "1": 0.1366,
+            "1": 0.0848,
             "2": 0.0192,
-            "3": 0.0614,
-            "4": 0.0217,
+            "3": 0.1535,
+            "4": -0.0358,
             "5": -0.0198,
-            "6": 0.0446,
-            "7": -0.0937,
+            "6": 0.1449,
+            "7": -0.1593,
             "8": -0.104
           },
           "full_inning_table": {
-            "1": 0.521,
+            "1": 0.469,
             "2": 0.538,
-            "3": 0.551,
-            "4": 0.54,
+            "3": 0.644,
+            "4": 0.483,
             "5": 0.484,
-            "6": 0.563,
-            "7": 0.454,
+            "6": 0.663,
+            "7": 0.388,
             "8": 0.458
           },
           "game_id": "823683",
@@ -41998,22 +42386,22 @@
           "matchup": "Minnesota Twins vs Cleveland Guardians",
           "top_2_picks": [
             {
-              "baseline": 0.3844,
-              "confidence": "Medium",
+              "baseline": 0.49,
+              "confidence": "High",
               "decision": "BET",
-              "edge_pp": 13.66,
-              "inning": 1,
-              "label": "Inning 1 - No Run Scored (52.1%, edge +13.7pp)",
-              "probability_scoreless": 0.521
+              "edge_pp": 15.35,
+              "inning": 3,
+              "label": "Inning 3 - No Run Scored (64.4%, edge +15.3pp)",
+              "probability_scoreless": 0.644
             },
             {
-              "baseline": 0.49,
-              "confidence": "Medium",
-              "decision": "LEAN",
-              "edge_pp": 6.14,
-              "inning": 3,
-              "label": "Inning 3 - No Run Scored (55.1%, edge +6.1pp)",
-              "probability_scoreless": 0.551
+              "baseline": 0.5184,
+              "confidence": "High",
+              "decision": "BET",
+              "edge_pp": 14.49,
+              "inning": 6,
+              "label": "Inning 6 - No Run Scored (66.3%, edge +14.5pp)",
+              "probability_scoreless": 0.663
             }
           ],
           "travel": {
@@ -42486,23 +42874,23 @@
           },
           "edge_table": {
             "1": 0.0934,
-            "2": 0.0246,
+            "2": -0.0093,
             "3": -0.0335,
             "4": 0.0263,
-            "5": 0.0766,
+            "5": 0.0411,
             "6": 0.05,
             "7": -0.1402,
-            "8": -0.1162
+            "8": -0.149
           },
           "full_inning_table": {
             "1": 0.478,
-            "2": 0.543,
+            "2": 0.509,
             "3": 0.457,
             "4": 0.545,
-            "5": 0.581,
+            "5": 0.545,
             "6": 0.568,
             "7": 0.407,
-            "8": 0.446
+            "8": 0.413
           },
           "game_id": "824494",
           "game_order": 8,
@@ -42537,13 +42925,13 @@
               "probability_scoreless": 0.478
             },
             {
-              "baseline": 0.5041,
+              "baseline": 0.5184,
               "confidence": "Medium",
               "decision": "LEAN",
-              "edge_pp": 7.66,
-              "inning": 5,
-              "label": "Inning 5 - No Run Scored (58.1%, edge +7.7pp)",
-              "probability_scoreless": 0.581
+              "edge_pp": 5.0,
+              "inning": 6,
+              "label": "Inning 6 - No Run Scored (56.8%, edge +5.0pp)",
+              "probability_scoreless": 0.568
             }
           ],
           "travel": {
@@ -42760,23 +43148,23 @@
           },
           "edge_table": {
             "1": 0.1035,
-            "2": 0.0916,
+            "2": 0.0014,
             "3": 0.0617,
             "4": -0.0208,
-            "5": 0.164,
+            "5": 0.0603,
             "6": 0.012,
             "7": -0.1255,
-            "8": -0.0936
+            "8": -0.1689
           },
           "full_inning_table": {
             "1": 0.488,
-            "2": 0.61,
+            "2": 0.52,
             "3": 0.552,
             "4": 0.498,
-            "5": 0.668,
+            "5": 0.564,
             "6": 0.53,
             "7": 0.422,
-            "8": 0.469
+            "8": 0.394
           },
           "game_id": "822877",
           "game_order": 10,
@@ -42802,15 +43190,6 @@
           "matchup": "Texas Rangers vs Los Angeles Angels",
           "top_2_picks": [
             {
-              "baseline": 0.5041,
-              "confidence": "High",
-              "decision": "BET",
-              "edge_pp": 16.4,
-              "inning": 5,
-              "label": "Inning 5 - No Run Scored (66.8%, edge +16.4pp)",
-              "probability_scoreless": 0.668
-            },
-            {
               "baseline": 0.3844,
               "confidence": "Medium",
               "decision": "LEAN",
@@ -42818,6 +43197,15 @@
               "inning": 1,
               "label": "Inning 1 - No Run Scored (48.8%, edge +10.3pp)",
               "probability_scoreless": 0.488
+            },
+            {
+              "baseline": 0.49,
+              "confidence": "Medium",
+              "decision": "LEAN",
+              "edge_pp": 6.17,
+              "inning": 3,
+              "label": "Inning 3 - No Run Scored (55.2%, edge +6.2pp)",
+              "probability_scoreless": 0.552
             }
           ],
           "travel": {
@@ -42898,20 +43286,20 @@
           "edge_table": {
             "1": 0.0407,
             "2": 0.062,
-            "3": -0.0008,
+            "3": 0.0263,
             "4": -0.0184,
             "5": -0.0148,
-            "6": 0.0037,
+            "6": 0.0333,
             "7": -0.1007,
             "8": -0.1665
           },
           "full_inning_table": {
             "1": 0.425,
             "2": 0.58,
-            "3": 0.489,
+            "3": 0.516,
             "4": 0.5,
             "5": 0.489,
-            "6": 0.522,
+            "6": 0.552,
             "7": 0.447,
             "8": 0.396
           },
@@ -42946,6 +43334,15 @@
               "inning": 2,
               "label": "Inning 2 - No Run Scored (58.0%, edge +6.2pp)",
               "probability_scoreless": 0.58
+            },
+            {
+              "baseline": 0.5184,
+              "confidence": "Medium",
+              "decision": "LEAN",
+              "edge_pp": 3.33,
+              "inning": 6,
+              "label": "Inning 6 - No Run Scored (55.2%, edge +3.3pp)",
+              "probability_scoreless": 0.552
             }
           ],
           "travel": {
@@ -43025,23 +43422,23 @@
           },
           "edge_table": {
             "1": 0.0914,
-            "2": -0.0194,
+            "2": 0.0107,
             "3": 0.0061,
             "4": 0.0489,
-            "5": -0.0159,
+            "5": 0.0134,
             "6": -0.0104,
             "7": -0.0582,
-            "8": -0.1919
+            "8": -0.1633
           },
           "full_inning_table": {
             "1": 0.476,
-            "2": 0.499,
+            "2": 0.529,
             "3": 0.496,
             "4": 0.567,
-            "5": 0.488,
+            "5": 0.518,
             "6": 0.508,
             "7": 0.489,
-            "8": 0.371
+            "8": 0.399
           },
           "game_id": "823201",
           "game_order": 12,
@@ -43133,7 +43530,7 @@
         }
       ],
       "model": "MLBInning",
-      "note": "MLB Inning processed 13 game(s), returned 22 top inning pick(s).",
+      "note": "MLB Inning processed 13 game(s), returned 23 top inning pick(s).",
       "ok": true,
       "picks": [
         {
@@ -44180,17 +44577,17 @@
           "assumed_odds": -120,
           "away_team": "New York Yankees",
           "baseline_probability": 0.3844,
-          "calibrated_edge": -4.23,
-          "calibrated_model_probability": 0.503163,
-          "calibrated_probability": 0.503163,
+          "calibrated_edge": -8.77,
+          "calibrated_model_probability": 0.457802,
+          "calibrated_probability": 0.457802,
           "calibration": {
             "applied": true,
             "key": "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning",
-            "probability_delta": -0.090837,
+            "probability_delta": -0.052198,
             "samples": 201,
             "version": "cal-2406-2026-07-09"
           },
-          "confidence": "High",
+          "confidence": "Medium",
           "consensus_factor_categories": {
             "calibration": {
               "missing": [],
@@ -44250,7 +44647,7 @@
           "consensus_qualified": false,
           "consensus_rejection_reason": "non_positive_calibrated_edge",
           "consensus_required": true,
-          "consensus_score": 30.316,
+          "consensus_score": 30.0,
           "consensus_signal_count": 12,
           "consensus_signals": [
             {
@@ -44361,8 +44758,8 @@
           ],
           "date": "2026-07-09",
           "decision": "PASS",
-          "edge": -4.23,
-          "edge_pp": 21.0,
+          "edge": -8.77,
+          "edge_pp": 12.55,
           "game": "Tampa Bay Rays vs New York Yankees",
           "game_id": "822954",
           "game_order": 2,
@@ -44379,8 +44776,8 @@
           "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
           "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
           "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
-          "model_prediction": "59.4%",
-          "notes": "Top no-run inning candidate (edge +21.0pp vs baseline). Full table: {\"1\": 0.594, \"2\": 0.579, \"3\": 0.521, \"4\": 0.666, \"5\": 0.487, \"6\": 0.555, \"7\": 0.574, \"8\": 0.412}",
+          "model_prediction": "51.0%",
+          "notes": "Top no-run inning candidate (edge +12.6pp vs baseline). Full table: {\"1\": 0.51, \"2\": 0.579, \"3\": 0.521, \"4\": 0.567, \"5\": 0.487, \"6\": 0.555, \"7\": 0.474, \"8\": 0.412}",
           "odds": -120,
           "odds_source": "user_assumed_no_run_inning_-120",
           "pick": "Inning 1 - No Run Scored",
@@ -44420,11 +44817,11 @@
           },
           "pricing_type": "user_assumed",
           "primary_consensus_passed": false,
-          "probability": 0.5032,
+          "probability": 0.4578,
           "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
-          "raw_edge": 21.0,
-          "raw_model_probability": 0.594,
-          "raw_probability": 0.594,
+          "raw_edge": 12.55,
+          "raw_model_probability": 0.51,
+          "raw_probability": 0.51,
           "selected_side_implied_probability": 0.545455,
           "source": "MLB Inning",
           "sport": "MLB",
@@ -44435,21 +44832,21 @@
           "walk_forward_samples": 201
         },
         {
-          "actionability": "validation_lean",
+          "actionability": "research_signal",
           "assumed_odds": -120,
           "away_team": "New York Yankees",
           "baseline_probability": 0.5184,
-          "calibrated_edge": -0.11,
-          "calibrated_model_probability": 0.544382,
-          "calibrated_probability": 0.544382,
+          "calibrated_edge": -5.05,
+          "calibrated_model_probability": 0.494905,
+          "calibrated_probability": 0.494905,
           "calibration": {
             "applied": true,
             "key": "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning",
-            "probability_delta": -0.121618,
+            "probability_delta": -0.084095,
             "samples": 201,
             "version": "cal-2406-2026-07-09"
           },
-          "confidence": "High",
+          "confidence": "Medium",
           "consensus_factor_categories": {
             "calibration": {
               "missing": [],
@@ -44504,12 +44901,12 @@
           "consensus_hard_blockers": [
             "non_positive_calibrated_edge"
           ],
-          "consensus_passed": true,
-          "consensus_publication_mode": "validation_fallback",
+          "consensus_passed": false,
+          "consensus_publication_mode": "research",
           "consensus_qualified": false,
           "consensus_rejection_reason": "non_positive_calibrated_edge",
           "consensus_required": true,
-          "consensus_score": 34.438,
+          "consensus_score": 30.0,
           "consensus_signal_count": 12,
           "consensus_signals": [
             {
@@ -44619,15 +45016,15 @@
             }
           ],
           "date": "2026-07-09",
-          "decision": "LEAN",
-          "edge": -0.11,
-          "edge_pp": 14.73,
+          "decision": "PASS",
+          "edge": -5.05,
+          "edge_pp": 6.05,
           "game": "Tampa Bay Rays vs New York Yankees",
           "game_id": "822954",
           "game_order": 2,
           "game_start_time": "2026-07-09T17:10:00Z",
           "home_team": "Tampa Bay Rays",
-          "inning": 4,
+          "inning": 2,
           "league": "MLB",
           "line_source": "user_assumed_no_run_inning_price",
           "market": "no_run_inning",
@@ -44638,40 +45035,40 @@
           "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
           "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
           "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
-          "model_prediction": "66.6%",
-          "notes": "Top no-run inning candidate (edge +14.7pp vs baseline). Full table: {\"1\": 0.594, \"2\": 0.579, \"3\": 0.521, \"4\": 0.666, \"5\": 0.487, \"6\": 0.555, \"7\": 0.574, \"8\": 0.412}",
+          "model_prediction": "57.9%",
+          "notes": "Top no-run inning candidate (edge +6.0pp vs baseline). Full table: {\"1\": 0.51, \"2\": 0.579, \"3\": 0.521, \"4\": 0.567, \"5\": 0.487, \"6\": 0.555, \"7\": 0.474, \"8\": 0.412}",
           "odds": -120,
           "odds_source": "user_assumed_no_run_inning_-120",
-          "pick": "Inning 4 - No Run Scored",
+          "pick": "Inning 2 - No Run Scored",
           "pregame_snapshot": {
             "actionability": "research_signal",
             "assumed_odds": -120,
             "away_team": "New York Yankees",
             "baseline_probability": 0.5184,
-            "confidence": "High",
+            "confidence": "Medium",
             "date": "2026-07-09",
-            "decision": "BET",
-            "edge": 14.73,
-            "edge_pp": 14.73,
+            "decision": "LEAN",
+            "edge": 6.05,
+            "edge_pp": 6.05,
             "game": "Tampa Bay Rays vs New York Yankees",
             "game_id": "822954",
             "game_order": 2,
             "game_start_time": "2026-07-09T17:10:00Z",
             "home_team": "Tampa Bay Rays",
-            "inning": 4,
+            "inning": 2,
             "league": "MLB",
             "line_source": "user_assumed_no_run_inning_price",
             "market": "no_run_inning",
             "market_implied_probability": 0.545455,
             "market_priced": true,
             "matchup": "Tampa Bay Rays vs New York Yankees",
-            "model_prediction": "66.6%",
-            "notes": "Top no-run inning candidate (edge +14.7pp vs baseline). Full table: {\"1\": 0.594, \"2\": 0.579, \"3\": 0.521, \"4\": 0.666, \"5\": 0.487, \"6\": 0.555, \"7\": 0.574, \"8\": 0.412}",
+            "model_prediction": "57.9%",
+            "notes": "Top no-run inning candidate (edge +6.0pp vs baseline). Full table: {\"1\": 0.51, \"2\": 0.579, \"3\": 0.521, \"4\": 0.567, \"5\": 0.487, \"6\": 0.555, \"7\": 0.474, \"8\": 0.412}",
             "odds": -120,
             "odds_source": "user_assumed_no_run_inning_-120",
-            "pick": "Inning 4 - No Run Scored",
+            "pick": "Inning 2 - No Run Scored",
             "pricing_type": "user_assumed",
-            "probability": 0.666,
+            "probability": 0.579,
             "source": "MLB Inning",
             "sport": "MLB",
             "start_time": "2026-07-09T17:10:00Z",
@@ -44679,20 +45076,17 @@
           },
           "pricing_type": "user_assumed",
           "primary_consensus_passed": false,
-          "probability": 0.5444,
+          "probability": 0.4949,
           "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
-          "raw_edge": 14.73,
-          "raw_model_probability": 0.666,
-          "raw_probability": 0.666,
+          "raw_edge": 6.05,
+          "raw_model_probability": 0.579,
+          "raw_probability": 0.579,
           "selected_side_implied_probability": 0.545455,
           "source": "MLB Inning",
           "sport": "MLB",
           "start_time": "2026-07-09T17:10:00Z",
           "team": "",
-          "units": 0.25,
-          "validation_lean": true,
-          "validation_reason": "validation fallback: mlb_inning had zero strict BET/LEAN publications; published top raw model signal as a small LEAN for tracking",
-          "validation_score": 61.33,
+          "units": 0.0,
           "walk_forward_roi": 0.00439814814814815,
           "walk_forward_samples": 201
         },
@@ -44959,277 +45353,18 @@
           "actionability": "research_signal",
           "assumed_odds": -120,
           "away_team": "Cleveland Guardians",
-          "baseline_probability": 0.3844,
-          "calibrated_edge": -8.18,
-          "calibrated_model_probability": 0.463646,
-          "calibrated_probability": 0.463646,
-          "calibration": {
-            "applied": true,
-            "key": "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning",
-            "probability_delta": -0.057354,
-            "samples": 201,
-            "version": "cal-2406-2026-07-09"
-          },
-          "confidence": "Medium",
-          "consensus_factor_categories": {
-            "calibration": {
-              "missing": [],
-              "risk": [],
-              "support": [
-                "probability_calibration"
-              ]
-            },
-            "inning_baseline": {
-              "missing": [],
-              "risk": [],
-              "support": [
-                "inning_baseline_edge",
-                "matchup_structure"
-              ]
-            },
-            "park_weather": {
-              "missing": [],
-              "risk": [],
-              "support": [
-                "park_weather",
-                "park_factor",
-                "venue_context",
-                "wind_weather"
-              ]
-            },
-            "starting_pitcher": {
-              "missing": [],
-              "risk": [],
-              "support": [
-                "starting_pitcher",
-                "starter_run_prevention"
-              ]
-            },
-            "travel_rest": {
-              "missing": [],
-              "risk": [],
-              "support": [
-                "travel_rest_context",
-                "short_rest_schedule"
-              ]
-            },
-            "walk_forward": {
-              "missing": [],
-              "risk": [],
-              "support": [
-                "walk_forward_validation"
-              ]
-            }
-          },
-          "consensus_gate_version": "mlb_team_consensus_v1.1.0",
-          "consensus_hard_blockers": [
-            "non_positive_calibrated_edge"
-          ],
-          "consensus_passed": false,
-          "consensus_publication_mode": "research",
-          "consensus_qualified": false,
-          "consensus_rejection_reason": "non_positive_calibrated_edge",
-          "consensus_required": true,
-          "consensus_score": 30.0,
-          "consensus_signal_count": 12,
-          "consensus_signals": [
-            {
-              "category": "calibration",
-              "detail": "active calibration group has enough samples",
-              "impact": "support",
-              "name": "probability_calibration",
-              "strength": 1.0
-            },
-            {
-              "category": "walk_forward",
-              "detail": "model family has positive decided history in the gated era input",
-              "impact": "support",
-              "name": "walk_forward_validation",
-              "strength": 1.0
-            },
-            {
-              "category": "inning_baseline",
-              "detail": "scoreless probability beats inning baseline",
-              "impact": "support",
-              "name": "inning_baseline_edge",
-              "strength": 1.0
-            },
-            {
-              "category": "starting_pitcher",
-              "detail": "starter inning profile is applicable",
-              "impact": "support",
-              "name": "starting_pitcher",
-              "strength": 1.0
-            },
-            {
-              "category": "starting_pitcher",
-              "detail": "home: ERA/WHIP run-prevention context included",
-              "impact": "support",
-              "name": "starter_run_prevention",
-              "strength": 0.7
-            },
-            {
-              "category": "starting_pitcher",
-              "detail": "away: ERA/WHIP run-prevention context included",
-              "impact": "support",
-              "name": "starter_run_prevention",
-              "strength": 0.7
-            },
-            {
-              "category": "park_weather",
-              "detail": "venue factor included in inning projection",
-              "impact": "support",
-              "name": "park_weather",
-              "strength": 1.0
-            },
-            {
-              "category": "park_weather",
-              "detail": "park run factor included",
-              "impact": "support",
-              "name": "park_factor",
-              "strength": 0.8
-            },
-            {
-              "category": "park_weather",
-              "detail": "venue context included: Target Field",
-              "impact": "support",
-              "name": "venue_context",
-              "strength": 0.5
-            },
-            {
-              "category": "park_weather",
-              "detail": "weather context included for inning run environment",
-              "impact": "support",
-              "name": "wind_weather",
-              "strength": 0.6
-            },
-            {
-              "category": "inning_baseline",
-              "detail": "full inning table available for matchup shape",
-              "impact": "support",
-              "name": "matchup_structure",
-              "strength": 1.0
-            },
-            {
-              "category": "travel_rest",
-              "detail": "away team: 1d since previous game; 0 mi",
-              "impact": "support",
-              "name": "travel_rest_context",
-              "strength": 1.0
-            },
-            {
-              "category": "travel_rest",
-              "detail": "away team: 1 day(s) since previous game",
-              "impact": "support",
-              "name": "short_rest_schedule",
-              "strength": 0.6
-            },
-            {
-              "category": "travel_rest",
-              "detail": "home team: 1d since previous game; 0 mi",
-              "impact": "support",
-              "name": "travel_rest_context",
-              "strength": 1.0
-            },
-            {
-              "category": "travel_rest",
-              "detail": "home team: 1 day(s) since previous game",
-              "impact": "support",
-              "name": "short_rest_schedule",
-              "strength": 0.6
-            }
-          ],
-          "date": "2026-07-09",
-          "decision": "PASS",
-          "edge": -8.18,
-          "edge_pp": 13.66,
-          "game": "Minnesota Twins vs Cleveland Guardians",
-          "game_id": "823683",
-          "game_order": 4,
-          "game_start_time": "2026-07-09T17:40:00Z",
-          "home_team": "Minnesota Twins",
-          "inning": 1,
-          "league": "MLB",
-          "line_source": "user_assumed_no_run_inning_price",
-          "market": "no_run_inning",
-          "market_implied_probability": 0.545455,
-          "market_no_vig_probability": 0.545455,
-          "market_priced": true,
-          "matchup": "Minnesota Twins vs Cleveland Guardians",
-          "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
-          "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
-          "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
-          "model_prediction": "52.1%",
-          "notes": "Top no-run inning candidate (edge +13.7pp vs baseline). Full table: {\"1\": 0.521, \"2\": 0.538, \"3\": 0.551, \"4\": 0.54, \"5\": 0.484, \"6\": 0.563, \"7\": 0.454, \"8\": 0.458}",
-          "odds": -120,
-          "odds_source": "user_assumed_no_run_inning_-120",
-          "pick": "Inning 1 - No Run Scored",
-          "pregame_snapshot": {
-            "actionability": "research_signal",
-            "assumed_odds": -120,
-            "away_team": "Cleveland Guardians",
-            "baseline_probability": 0.3844,
-            "confidence": "Medium",
-            "date": "2026-07-09",
-            "decision": "LEAN",
-            "edge": 8.48,
-            "edge_pp": 8.48,
-            "game": "Minnesota Twins vs Cleveland Guardians",
-            "game_id": "823683",
-            "game_order": 4,
-            "game_start_time": "2026-07-09T17:40:00Z",
-            "home_team": "Minnesota Twins",
-            "inning": 1,
-            "league": "MLB",
-            "line_source": "user_assumed_no_run_inning_price",
-            "market": "no_run_inning",
-            "market_implied_probability": 0.545455,
-            "market_priced": true,
-            "matchup": "Minnesota Twins vs Cleveland Guardians",
-            "model_prediction": "46.9%",
-            "notes": "Top no-run inning candidate (edge +8.5pp vs baseline). Full table: {\"1\": 0.469, \"2\": 0.538, \"3\": 0.551, \"4\": 0.483, \"5\": 0.484, \"6\": 0.563, \"7\": 0.388, \"8\": 0.458}",
-            "odds": -120,
-            "odds_source": "user_assumed_no_run_inning_-120",
-            "pick": "Inning 1 - No Run Scored",
-            "pricing_type": "user_assumed",
-            "probability": 0.469,
-            "source": "MLB Inning",
-            "sport": "MLB",
-            "start_time": "2026-07-09T17:40:00Z",
-            "team": ""
-          },
-          "pricing_type": "user_assumed",
-          "primary_consensus_passed": false,
-          "probability": 0.4636,
-          "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
-          "raw_edge": 13.66,
-          "raw_model_probability": 0.521,
-          "raw_probability": 0.521,
-          "selected_side_implied_probability": 0.545455,
-          "source": "MLB Inning",
-          "sport": "MLB",
-          "start_time": "2026-07-09T17:40:00Z",
-          "team": "",
-          "units": 0.0,
-          "walk_forward_roi": 0.00439814814814815,
-          "walk_forward_samples": 201
-        },
-        {
-          "actionability": "research_signal",
-          "assumed_odds": -120,
-          "away_team": "Cleveland Guardians",
           "baseline_probability": 0.49,
-          "calibrated_edge": -6.58,
-          "calibrated_model_probability": 0.479702,
-          "calibrated_probability": 0.479702,
+          "calibrated_edge": -1.4,
+          "calibrated_model_probability": 0.531457,
+          "calibrated_probability": 0.531457,
           "calibration": {
             "applied": true,
             "key": "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning",
-            "probability_delta": -0.071298,
+            "probability_delta": -0.112543,
             "samples": 201,
             "version": "cal-2406-2026-07-09"
           },
-          "confidence": "Medium",
+          "confidence": "High",
           "consensus_factor_categories": {
             "calibration": {
               "missing": [],
@@ -45289,7 +45424,7 @@
           "consensus_qualified": false,
           "consensus_rejection_reason": "non_positive_calibrated_edge",
           "consensus_required": true,
-          "consensus_score": 30.0,
+          "consensus_score": 33.146,
           "consensus_signal_count": 12,
           "consensus_signals": [
             {
@@ -45400,8 +45535,8 @@
           ],
           "date": "2026-07-09",
           "decision": "PASS",
-          "edge": -6.58,
-          "edge_pp": 6.14,
+          "edge": -1.4,
+          "edge_pp": 15.35,
           "game": "Minnesota Twins vs Cleveland Guardians",
           "game_id": "823683",
           "game_order": 4,
@@ -45418,8 +45553,8 @@
           "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
           "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
           "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
-          "model_prediction": "55.1%",
-          "notes": "Top no-run inning candidate (edge +6.1pp vs baseline). Full table: {\"1\": 0.521, \"2\": 0.538, \"3\": 0.551, \"4\": 0.54, \"5\": 0.484, \"6\": 0.563, \"7\": 0.454, \"8\": 0.458}",
+          "model_prediction": "64.4%",
+          "notes": "Top no-run inning candidate (edge +15.3pp vs baseline). Full table: {\"1\": 0.469, \"2\": 0.538, \"3\": 0.644, \"4\": 0.483, \"5\": 0.484, \"6\": 0.663, \"7\": 0.388, \"8\": 0.458}",
           "odds": -120,
           "odds_source": "user_assumed_no_run_inning_-120",
           "pick": "Inning 3 - No Run Scored",
@@ -45459,17 +45594,279 @@
           },
           "pricing_type": "user_assumed",
           "primary_consensus_passed": false,
-          "probability": 0.4797,
+          "probability": 0.5315,
           "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
-          "raw_edge": 6.14,
-          "raw_model_probability": 0.551,
-          "raw_probability": 0.551,
+          "raw_edge": 15.35,
+          "raw_model_probability": 0.644,
+          "raw_probability": 0.644,
           "selected_side_implied_probability": 0.545455,
           "source": "MLB Inning",
           "sport": "MLB",
           "start_time": "2026-07-09T17:40:00Z",
           "team": "",
           "units": 0.0,
+          "walk_forward_roi": 0.00439814814814815,
+          "walk_forward_samples": 201
+        },
+        {
+          "actionability": "validation_lean",
+          "assumed_odds": -120,
+          "away_team": "Cleveland Guardians",
+          "baseline_probability": 0.5184,
+          "calibrated_edge": -0.29,
+          "calibrated_model_probability": 0.5426,
+          "calibrated_probability": 0.5426,
+          "calibration": {
+            "applied": true,
+            "key": "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning",
+            "probability_delta": -0.1204,
+            "samples": 201,
+            "version": "cal-2406-2026-07-09"
+          },
+          "confidence": "High",
+          "consensus_factor_categories": {
+            "calibration": {
+              "missing": [],
+              "risk": [],
+              "support": [
+                "probability_calibration"
+              ]
+            },
+            "inning_baseline": {
+              "missing": [],
+              "risk": [],
+              "support": [
+                "inning_baseline_edge",
+                "matchup_structure"
+              ]
+            },
+            "park_weather": {
+              "missing": [],
+              "risk": [],
+              "support": [
+                "park_weather",
+                "park_factor",
+                "venue_context",
+                "wind_weather"
+              ]
+            },
+            "starting_pitcher": {
+              "missing": [],
+              "risk": [],
+              "support": [
+                "starting_pitcher",
+                "starter_run_prevention"
+              ]
+            },
+            "travel_rest": {
+              "missing": [],
+              "risk": [],
+              "support": [
+                "travel_rest_context",
+                "short_rest_schedule"
+              ]
+            },
+            "walk_forward": {
+              "missing": [],
+              "risk": [],
+              "support": [
+                "walk_forward_validation"
+              ]
+            }
+          },
+          "consensus_gate_version": "mlb_team_consensus_v1.1.0",
+          "consensus_hard_blockers": [
+            "non_positive_calibrated_edge"
+          ],
+          "consensus_passed": true,
+          "consensus_publication_mode": "validation_fallback",
+          "consensus_qualified": false,
+          "consensus_rejection_reason": "non_positive_calibrated_edge",
+          "consensus_required": true,
+          "consensus_score": 34.26,
+          "consensus_signal_count": 12,
+          "consensus_signals": [
+            {
+              "category": "calibration",
+              "detail": "active calibration group has enough samples",
+              "impact": "support",
+              "name": "probability_calibration",
+              "strength": 1.0
+            },
+            {
+              "category": "walk_forward",
+              "detail": "model family has positive decided history in the gated era input",
+              "impact": "support",
+              "name": "walk_forward_validation",
+              "strength": 1.0
+            },
+            {
+              "category": "inning_baseline",
+              "detail": "scoreless probability beats inning baseline",
+              "impact": "support",
+              "name": "inning_baseline_edge",
+              "strength": 1.0
+            },
+            {
+              "category": "starting_pitcher",
+              "detail": "starter inning profile is applicable",
+              "impact": "support",
+              "name": "starting_pitcher",
+              "strength": 1.0
+            },
+            {
+              "category": "starting_pitcher",
+              "detail": "home: ERA/WHIP run-prevention context included",
+              "impact": "support",
+              "name": "starter_run_prevention",
+              "strength": 0.7
+            },
+            {
+              "category": "starting_pitcher",
+              "detail": "away: ERA/WHIP run-prevention context included",
+              "impact": "support",
+              "name": "starter_run_prevention",
+              "strength": 0.7
+            },
+            {
+              "category": "park_weather",
+              "detail": "venue factor included in inning projection",
+              "impact": "support",
+              "name": "park_weather",
+              "strength": 1.0
+            },
+            {
+              "category": "park_weather",
+              "detail": "park run factor included",
+              "impact": "support",
+              "name": "park_factor",
+              "strength": 0.8
+            },
+            {
+              "category": "park_weather",
+              "detail": "venue context included: Target Field",
+              "impact": "support",
+              "name": "venue_context",
+              "strength": 0.5
+            },
+            {
+              "category": "park_weather",
+              "detail": "weather context included for inning run environment",
+              "impact": "support",
+              "name": "wind_weather",
+              "strength": 0.6
+            },
+            {
+              "category": "inning_baseline",
+              "detail": "full inning table available for matchup shape",
+              "impact": "support",
+              "name": "matchup_structure",
+              "strength": 1.0
+            },
+            {
+              "category": "travel_rest",
+              "detail": "away team: 1d since previous game; 0 mi",
+              "impact": "support",
+              "name": "travel_rest_context",
+              "strength": 1.0
+            },
+            {
+              "category": "travel_rest",
+              "detail": "away team: 1 day(s) since previous game",
+              "impact": "support",
+              "name": "short_rest_schedule",
+              "strength": 0.6
+            },
+            {
+              "category": "travel_rest",
+              "detail": "home team: 1d since previous game; 0 mi",
+              "impact": "support",
+              "name": "travel_rest_context",
+              "strength": 1.0
+            },
+            {
+              "category": "travel_rest",
+              "detail": "home team: 1 day(s) since previous game",
+              "impact": "support",
+              "name": "short_rest_schedule",
+              "strength": 0.6
+            }
+          ],
+          "date": "2026-07-09",
+          "decision": "LEAN",
+          "edge": -0.29,
+          "edge_pp": 14.49,
+          "game": "Minnesota Twins vs Cleveland Guardians",
+          "game_id": "823683",
+          "game_order": 4,
+          "game_start_time": "2026-07-09T17:40:00Z",
+          "home_team": "Minnesota Twins",
+          "inning": 6,
+          "league": "MLB",
+          "line_source": "user_assumed_no_run_inning_price",
+          "market": "no_run_inning",
+          "market_implied_probability": 0.545455,
+          "market_no_vig_probability": 0.545455,
+          "market_priced": true,
+          "matchup": "Minnesota Twins vs Cleveland Guardians",
+          "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
+          "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
+          "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
+          "model_prediction": "66.3%",
+          "notes": "Top no-run inning candidate (edge +14.5pp vs baseline). Full table: {\"1\": 0.469, \"2\": 0.538, \"3\": 0.644, \"4\": 0.483, \"5\": 0.484, \"6\": 0.663, \"7\": 0.388, \"8\": 0.458}",
+          "odds": -120,
+          "odds_source": "user_assumed_no_run_inning_-120",
+          "pick": "Inning 6 - No Run Scored",
+          "pregame_snapshot": {
+            "actionability": "research_signal",
+            "assumed_odds": -120,
+            "away_team": "Cleveland Guardians",
+            "baseline_probability": 0.5184,
+            "confidence": "High",
+            "date": "2026-07-09",
+            "decision": "BET",
+            "edge": 14.49,
+            "edge_pp": 14.49,
+            "game": "Minnesota Twins vs Cleveland Guardians",
+            "game_id": "823683",
+            "game_order": 4,
+            "game_start_time": "2026-07-09T17:40:00Z",
+            "home_team": "Minnesota Twins",
+            "inning": 6,
+            "league": "MLB",
+            "line_source": "user_assumed_no_run_inning_price",
+            "market": "no_run_inning",
+            "market_implied_probability": 0.545455,
+            "market_priced": true,
+            "matchup": "Minnesota Twins vs Cleveland Guardians",
+            "model_prediction": "66.3%",
+            "notes": "Top no-run inning candidate (edge +14.5pp vs baseline). Full table: {\"1\": 0.469, \"2\": 0.538, \"3\": 0.644, \"4\": 0.483, \"5\": 0.484, \"6\": 0.663, \"7\": 0.388, \"8\": 0.458}",
+            "odds": -120,
+            "odds_source": "user_assumed_no_run_inning_-120",
+            "pick": "Inning 6 - No Run Scored",
+            "pricing_type": "user_assumed",
+            "probability": 0.663,
+            "source": "MLB Inning",
+            "sport": "MLB",
+            "start_time": "2026-07-09T17:40:00Z",
+            "team": ""
+          },
+          "pricing_type": "user_assumed",
+          "primary_consensus_passed": false,
+          "probability": 0.5426,
+          "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
+          "raw_edge": 14.49,
+          "raw_model_probability": 0.663,
+          "raw_probability": 0.663,
+          "selected_side_implied_probability": 0.545455,
+          "source": "MLB Inning",
+          "sport": "MLB",
+          "start_time": "2026-07-09T17:40:00Z",
+          "team": "",
+          "units": 0.25,
+          "validation_lean": true,
+          "validation_reason": "validation fallback: mlb_inning had zero strict BET/LEAN publications; published top raw model signal as a small LEAN for tracking",
+          "validation_score": 60.79,
           "walk_forward_roi": 0.00439814814814815,
           "walk_forward_samples": 201
         },
@@ -46690,7 +47087,7 @@
           "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
           "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
           "model_prediction": "47.8%",
-          "notes": "Top no-run inning candidate (edge +9.3pp vs baseline). Full table: {\"1\": 0.478, \"2\": 0.543, \"3\": 0.457, \"4\": 0.545, \"5\": 0.581, \"6\": 0.568, \"7\": 0.407, \"8\": 0.446}",
+          "notes": "Top no-run inning candidate (edge +9.3pp vs baseline). Full table: {\"1\": 0.478, \"2\": 0.509, \"3\": 0.457, \"4\": 0.545, \"5\": 0.545, \"6\": 0.568, \"7\": 0.407, \"8\": 0.413}",
           "odds": -120,
           "odds_source": "user_assumed_no_run_inning_-120",
           "pick": "Inning 1 - No Run Scored",
@@ -46748,14 +47145,14 @@
           "actionability": "research_signal",
           "assumed_odds": -120,
           "away_team": "Philadelphia Phillies",
-          "baseline_probability": 0.5041,
-          "calibrated_edge": -4.95,
-          "calibrated_model_probability": 0.496001,
-          "calibrated_probability": 0.496001,
+          "baseline_probability": 0.5184,
+          "calibrated_edge": -5.66,
+          "calibrated_model_probability": 0.488902,
+          "calibrated_probability": 0.488902,
           "calibration": {
             "applied": true,
             "key": "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning",
-            "probability_delta": -0.084999,
+            "probability_delta": -0.079098,
             "samples": 201,
             "version": "cal-2406-2026-07-09"
           },
@@ -46922,14 +47319,14 @@
           ],
           "date": "2026-07-09",
           "decision": "PASS",
-          "edge": -4.95,
-          "edge_pp": 7.66,
+          "edge": -5.66,
+          "edge_pp": 5.0,
           "game": "Cincinnati Reds vs Philadelphia Phillies",
           "game_id": "824494",
           "game_order": 8,
           "game_start_time": "2026-07-09T23:10:00Z",
           "home_team": "Cincinnati Reds",
-          "inning": 5,
+          "inning": 6,
           "league": "MLB",
           "line_source": "user_assumed_no_run_inning_price",
           "market": "no_run_inning",
@@ -46940,40 +47337,40 @@
           "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
           "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
           "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
-          "model_prediction": "58.1%",
-          "notes": "Top no-run inning candidate (edge +7.7pp vs baseline). Full table: {\"1\": 0.478, \"2\": 0.543, \"3\": 0.457, \"4\": 0.545, \"5\": 0.581, \"6\": 0.568, \"7\": 0.407, \"8\": 0.446}",
+          "model_prediction": "56.8%",
+          "notes": "Top no-run inning candidate (edge +5.0pp vs baseline). Full table: {\"1\": 0.478, \"2\": 0.509, \"3\": 0.457, \"4\": 0.545, \"5\": 0.545, \"6\": 0.568, \"7\": 0.407, \"8\": 0.413}",
           "odds": -120,
           "odds_source": "user_assumed_no_run_inning_-120",
-          "pick": "Inning 5 - No Run Scored",
+          "pick": "Inning 6 - No Run Scored",
           "pregame_snapshot": {
             "actionability": "research_signal",
             "assumed_odds": -120,
             "away_team": "Philadelphia Phillies",
-            "baseline_probability": 0.5041,
+            "baseline_probability": 0.5184,
             "confidence": "Medium",
             "date": "2026-07-09",
             "decision": "LEAN",
-            "edge": 7.66,
-            "edge_pp": 7.66,
+            "edge": 5.0,
+            "edge_pp": 5.0,
             "game": "Cincinnati Reds vs Philadelphia Phillies",
             "game_id": "824494",
             "game_order": 8,
             "game_start_time": "2026-07-09T23:10:00Z",
             "home_team": "Cincinnati Reds",
-            "inning": 5,
+            "inning": 6,
             "league": "MLB",
             "line_source": "user_assumed_no_run_inning_price",
             "market": "no_run_inning",
             "market_implied_probability": 0.545455,
             "market_priced": true,
             "matchup": "Cincinnati Reds vs Philadelphia Phillies",
-            "model_prediction": "58.1%",
-            "notes": "Top no-run inning candidate (edge +7.7pp vs baseline). Full table: {\"1\": 0.478, \"2\": 0.543, \"3\": 0.457, \"4\": 0.545, \"5\": 0.581, \"6\": 0.568, \"7\": 0.407, \"8\": 0.446}",
+            "model_prediction": "56.8%",
+            "notes": "Top no-run inning candidate (edge +5.0pp vs baseline). Full table: {\"1\": 0.478, \"2\": 0.509, \"3\": 0.457, \"4\": 0.545, \"5\": 0.545, \"6\": 0.568, \"7\": 0.407, \"8\": 0.413}",
             "odds": -120,
             "odds_source": "user_assumed_no_run_inning_-120",
-            "pick": "Inning 5 - No Run Scored",
+            "pick": "Inning 6 - No Run Scored",
             "pricing_type": "user_assumed",
-            "probability": 0.581,
+            "probability": 0.568,
             "source": "MLB Inning",
             "sport": "MLB",
             "start_time": "2026-07-09T23:10:00Z",
@@ -46981,11 +47378,11 @@
           },
           "pricing_type": "user_assumed",
           "primary_consensus_passed": false,
-          "probability": 0.496,
+          "probability": 0.4889,
           "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
-          "raw_edge": 7.66,
-          "raw_model_probability": 0.581,
-          "raw_probability": 0.581,
+          "raw_edge": 5.0,
+          "raw_model_probability": 0.568,
+          "raw_probability": 0.568,
           "selected_side_implied_probability": 0.545455,
           "source": "MLB Inning",
           "sport": "MLB",
@@ -47694,7 +48091,7 @@
           "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
           "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
           "model_prediction": "48.8%",
-          "notes": "Top no-run inning candidate (edge +10.3pp vs baseline). Full table: {\"1\": 0.488, \"2\": 0.61, \"3\": 0.552, \"4\": 0.498, \"5\": 0.668, \"6\": 0.53, \"7\": 0.422, \"8\": 0.469}",
+          "notes": "Top no-run inning candidate (edge +10.3pp vs baseline). Full table: {\"1\": 0.488, \"2\": 0.52, \"3\": 0.552, \"4\": 0.498, \"5\": 0.564, \"6\": 0.53, \"7\": 0.422, \"8\": 0.394}",
           "odds": -120,
           "odds_source": "user_assumed_no_run_inning_-120",
           "pick": "Inning 1 - No Run Scored",
@@ -47749,21 +48146,21 @@
           "walk_forward_samples": 201
         },
         {
-          "actionability": "validation_lean",
+          "actionability": "research_signal",
           "assumed_odds": -120,
           "away_team": "Los Angeles Angels",
-          "baseline_probability": 0.5041,
-          "calibrated_edge": 0.01,
-          "calibrated_model_probability": 0.545575,
-          "calibrated_probability": 0.545575,
+          "baseline_probability": 0.49,
+          "calibrated_edge": -6.52,
+          "calibrated_model_probability": 0.480241,
+          "calibrated_probability": 0.480241,
           "calibration": {
             "applied": true,
             "key": "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning",
-            "probability_delta": -0.122425,
+            "probability_delta": -0.071759,
             "samples": 201,
             "version": "cal-2406-2026-07-09"
           },
-          "confidence": "High",
+          "confidence": "Medium",
           "consensus_factor_categories": {
             "calibration": {
               "missing": [],
@@ -47778,13 +48175,6 @@
               "support": [
                 "inning_baseline_edge",
                 "matchup_structure"
-              ]
-            },
-            "market_price": {
-              "missing": [],
-              "risk": [],
-              "support": [
-                "market_price"
               ]
             },
             "park_weather": {
@@ -47821,22 +48211,17 @@
             }
           },
           "consensus_gate_version": "mlb_team_consensus_v1.1.0",
-          "consensus_hard_blockers": [],
-          "consensus_passed": true,
-          "consensus_publication_mode": "validation_fallback",
+          "consensus_hard_blockers": [
+            "non_positive_calibrated_edge"
+          ],
+          "consensus_passed": false,
+          "consensus_publication_mode": "research",
           "consensus_qualified": false,
-          "consensus_rejection_reason": "edge_signal_threshold_not_met(edge=0.01, probability=0.545575, signals=12)",
+          "consensus_rejection_reason": "non_positive_calibrated_edge",
           "consensus_required": true,
-          "consensus_score": 34.568,
-          "consensus_signal_count": 12,
+          "consensus_score": 27.5,
+          "consensus_signal_count": 11,
           "consensus_signals": [
-            {
-              "category": "market_price",
-              "detail": "calibrated probability beats selected-side market price",
-              "impact": "support",
-              "name": "market_price",
-              "strength": 0.001
-            },
             {
               "category": "calibration",
               "detail": "active calibration group has enough samples",
@@ -47937,15 +48322,15 @@
             }
           ],
           "date": "2026-07-09",
-          "decision": "LEAN",
-          "edge": 0.01,
-          "edge_pp": 16.4,
+          "decision": "PASS",
+          "edge": -6.52,
+          "edge_pp": 6.17,
           "game": "Texas Rangers vs Los Angeles Angels",
           "game_id": "822877",
           "game_order": 10,
           "game_start_time": "2026-07-10T00:05:00Z",
           "home_team": "Texas Rangers",
-          "inning": 5,
+          "inning": 3,
           "league": "MLB",
           "line_source": "user_assumed_no_run_inning_price",
           "market": "no_run_inning",
@@ -47956,40 +48341,40 @@
           "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
           "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
           "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
-          "model_prediction": "66.8%",
-          "notes": "Top no-run inning candidate (edge +16.4pp vs baseline). Full table: {\"1\": 0.488, \"2\": 0.61, \"3\": 0.552, \"4\": 0.498, \"5\": 0.668, \"6\": 0.53, \"7\": 0.422, \"8\": 0.469}",
+          "model_prediction": "55.2%",
+          "notes": "Top no-run inning candidate (edge +6.2pp vs baseline). Full table: {\"1\": 0.488, \"2\": 0.52, \"3\": 0.552, \"4\": 0.498, \"5\": 0.564, \"6\": 0.53, \"7\": 0.422, \"8\": 0.394}",
           "odds": -120,
           "odds_source": "user_assumed_no_run_inning_-120",
-          "pick": "Inning 5 - No Run Scored",
+          "pick": "Inning 3 - No Run Scored",
           "pregame_snapshot": {
             "actionability": "research_signal",
             "assumed_odds": -120,
             "away_team": "Los Angeles Angels",
-            "baseline_probability": 0.5041,
-            "confidence": "High",
+            "baseline_probability": 0.49,
+            "confidence": "Medium",
             "date": "2026-07-09",
-            "decision": "BET",
-            "edge": 16.4,
-            "edge_pp": 16.4,
+            "decision": "LEAN",
+            "edge": 6.17,
+            "edge_pp": 6.17,
             "game": "Texas Rangers vs Los Angeles Angels",
             "game_id": "822877",
             "game_order": 10,
             "game_start_time": "2026-07-10T00:05:00Z",
             "home_team": "Texas Rangers",
-            "inning": 5,
+            "inning": 3,
             "league": "MLB",
             "line_source": "user_assumed_no_run_inning_price",
             "market": "no_run_inning",
             "market_implied_probability": 0.545455,
             "market_priced": true,
             "matchup": "Texas Rangers vs Los Angeles Angels",
-            "model_prediction": "66.8%",
-            "notes": "Top no-run inning candidate (edge +16.4pp vs baseline). Full table: {\"1\": 0.488, \"2\": 0.61, \"3\": 0.552, \"4\": 0.498, \"5\": 0.668, \"6\": 0.53, \"7\": 0.422, \"8\": 0.469}",
+            "model_prediction": "55.2%",
+            "notes": "Top no-run inning candidate (edge +6.2pp vs baseline). Full table: {\"1\": 0.488, \"2\": 0.52, \"3\": 0.552, \"4\": 0.498, \"5\": 0.564, \"6\": 0.53, \"7\": 0.422, \"8\": 0.394}",
             "odds": -120,
             "odds_source": "user_assumed_no_run_inning_-120",
-            "pick": "Inning 5 - No Run Scored",
+            "pick": "Inning 3 - No Run Scored",
             "pricing_type": "user_assumed",
-            "probability": 0.668,
+            "probability": 0.552,
             "source": "MLB Inning",
             "sport": "MLB",
             "start_time": "2026-07-10T00:05:00Z",
@@ -47997,20 +48382,17 @@
           },
           "pricing_type": "user_assumed",
           "primary_consensus_passed": false,
-          "probability": 0.5456,
+          "probability": 0.4802,
           "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
-          "raw_edge": 16.4,
-          "raw_model_probability": 0.668,
-          "raw_probability": 0.668,
+          "raw_edge": 6.17,
+          "raw_model_probability": 0.552,
+          "raw_probability": 0.552,
           "selected_side_implied_probability": 0.545455,
           "source": "MLB Inning",
           "sport": "MLB",
           "start_time": "2026-07-10T00:05:00Z",
           "team": "",
-          "units": 0.25,
-          "validation_lean": true,
-          "validation_reason": "validation fallback: mlb_inning had zero strict BET/LEAN publications; published top raw model signal as a small LEAN for tracking",
-          "validation_score": 63.2,
+          "units": 0.0,
           "walk_forward_roi": 0.00439814814814815,
           "walk_forward_samples": 201
         },
@@ -48211,7 +48593,7 @@
           "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
           "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
           "model_prediction": "58.0%",
-          "notes": "Top no-run inning candidate (edge +6.2pp vs baseline). Full table: {\"1\": 0.425, \"2\": 0.58, \"3\": 0.489, \"4\": 0.5, \"5\": 0.489, \"6\": 0.522, \"7\": 0.447, \"8\": 0.396}",
+          "notes": "Top no-run inning candidate (edge +6.2pp vs baseline). Full table: {\"1\": 0.425, \"2\": 0.58, \"3\": 0.516, \"4\": 0.5, \"5\": 0.489, \"6\": 0.552, \"7\": 0.447, \"8\": 0.396}",
           "odds": -120,
           "odds_source": "user_assumed_no_run_inning_-120",
           "pick": "Inning 2 - No Run Scored",
@@ -48256,6 +48638,257 @@
           "raw_edge": 6.2,
           "raw_model_probability": 0.58,
           "raw_probability": 0.58,
+          "selected_side_implied_probability": 0.545455,
+          "source": "MLB Inning",
+          "sport": "MLB",
+          "start_time": "2026-07-10T01:40:00Z",
+          "team": "",
+          "units": 0.0,
+          "walk_forward_roi": 0.00439814814814815,
+          "walk_forward_samples": 201
+        },
+        {
+          "actionability": "research_signal",
+          "assumed_odds": -120,
+          "away_team": "Arizona Diamondbacks",
+          "baseline_probability": 0.5184,
+          "calibrated_edge": -6.52,
+          "calibrated_model_probability": 0.480241,
+          "calibrated_probability": 0.480241,
+          "calibration": {
+            "applied": true,
+            "key": "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning",
+            "probability_delta": -0.071759,
+            "samples": 201,
+            "version": "cal-2406-2026-07-09"
+          },
+          "confidence": "Medium",
+          "consensus_factor_categories": {
+            "calibration": {
+              "missing": [],
+              "risk": [],
+              "support": [
+                "probability_calibration"
+              ]
+            },
+            "inning_baseline": {
+              "missing": [],
+              "risk": [],
+              "support": [
+                "inning_baseline_edge",
+                "matchup_structure"
+              ]
+            },
+            "park_weather": {
+              "missing": [],
+              "risk": [],
+              "support": [
+                "park_weather",
+                "park_factor",
+                "venue_context"
+              ]
+            },
+            "starting_pitcher": {
+              "missing": [],
+              "risk": [],
+              "support": [
+                "starting_pitcher",
+                "starter_run_prevention"
+              ]
+            },
+            "travel_rest": {
+              "missing": [],
+              "risk": [],
+              "support": [
+                "travel_rest_context",
+                "short_rest_schedule"
+              ]
+            },
+            "walk_forward": {
+              "missing": [],
+              "risk": [],
+              "support": [
+                "walk_forward_validation"
+              ]
+            }
+          },
+          "consensus_gate_version": "mlb_team_consensus_v1.1.0",
+          "consensus_hard_blockers": [
+            "non_positive_calibrated_edge"
+          ],
+          "consensus_passed": false,
+          "consensus_publication_mode": "research",
+          "consensus_qualified": false,
+          "consensus_rejection_reason": "non_positive_calibrated_edge",
+          "consensus_required": true,
+          "consensus_score": 27.5,
+          "consensus_signal_count": 11,
+          "consensus_signals": [
+            {
+              "category": "calibration",
+              "detail": "active calibration group has enough samples",
+              "impact": "support",
+              "name": "probability_calibration",
+              "strength": 1.0
+            },
+            {
+              "category": "walk_forward",
+              "detail": "model family has positive decided history in the gated era input",
+              "impact": "support",
+              "name": "walk_forward_validation",
+              "strength": 1.0
+            },
+            {
+              "category": "inning_baseline",
+              "detail": "scoreless probability beats inning baseline",
+              "impact": "support",
+              "name": "inning_baseline_edge",
+              "strength": 1.0
+            },
+            {
+              "category": "starting_pitcher",
+              "detail": "starter inning profile is applicable",
+              "impact": "support",
+              "name": "starting_pitcher",
+              "strength": 1.0
+            },
+            {
+              "category": "starting_pitcher",
+              "detail": "home: ERA/WHIP run-prevention context included",
+              "impact": "support",
+              "name": "starter_run_prevention",
+              "strength": 0.7
+            },
+            {
+              "category": "starting_pitcher",
+              "detail": "away: ERA/WHIP run-prevention context included",
+              "impact": "support",
+              "name": "starter_run_prevention",
+              "strength": 0.7
+            },
+            {
+              "category": "park_weather",
+              "detail": "venue factor included in inning projection",
+              "impact": "support",
+              "name": "park_weather",
+              "strength": 1.0
+            },
+            {
+              "category": "park_weather",
+              "detail": "park run factor included",
+              "impact": "support",
+              "name": "park_factor",
+              "strength": 0.8
+            },
+            {
+              "category": "park_weather",
+              "detail": "venue context included: Petco Park",
+              "impact": "support",
+              "name": "venue_context",
+              "strength": 0.5
+            },
+            {
+              "category": "inning_baseline",
+              "detail": "full inning table available for matchup shape",
+              "impact": "support",
+              "name": "matchup_structure",
+              "strength": 1.0
+            },
+            {
+              "category": "travel_rest",
+              "detail": "away team: 1d since previous game; 0 mi",
+              "impact": "support",
+              "name": "travel_rest_context",
+              "strength": 1.0
+            },
+            {
+              "category": "travel_rest",
+              "detail": "away team: 1 day(s) since previous game",
+              "impact": "support",
+              "name": "short_rest_schedule",
+              "strength": 0.6
+            },
+            {
+              "category": "travel_rest",
+              "detail": "home team: 1d since previous game; 0 mi",
+              "impact": "support",
+              "name": "travel_rest_context",
+              "strength": 1.0
+            },
+            {
+              "category": "travel_rest",
+              "detail": "home team: 1 day(s) since previous game",
+              "impact": "support",
+              "name": "short_rest_schedule",
+              "strength": 0.6
+            }
+          ],
+          "date": "2026-07-09",
+          "decision": "PASS",
+          "edge": -6.52,
+          "edge_pp": 3.33,
+          "game": "San Diego Padres vs Arizona Diamondbacks",
+          "game_id": "823277",
+          "game_order": 11,
+          "game_start_time": "2026-07-10T01:40:00Z",
+          "home_team": "San Diego Padres",
+          "inning": 6,
+          "league": "MLB",
+          "line_source": "user_assumed_no_run_inning_price",
+          "market": "no_run_inning",
+          "market_implied_probability": 0.545455,
+          "market_no_vig_probability": 0.545455,
+          "market_priced": true,
+          "matchup": "San Diego Padres vs Arizona Diamondbacks",
+          "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
+          "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
+          "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
+          "model_prediction": "55.2%",
+          "notes": "Top no-run inning candidate (edge +3.3pp vs baseline). Full table: {\"1\": 0.425, \"2\": 0.58, \"3\": 0.516, \"4\": 0.5, \"5\": 0.489, \"6\": 0.552, \"7\": 0.447, \"8\": 0.396}",
+          "odds": -120,
+          "odds_source": "user_assumed_no_run_inning_-120",
+          "pick": "Inning 6 - No Run Scored",
+          "pregame_snapshot": {
+            "actionability": "research_signal",
+            "assumed_odds": -120,
+            "away_team": "Arizona Diamondbacks",
+            "baseline_probability": 0.5184,
+            "confidence": "Medium",
+            "date": "2026-07-09",
+            "decision": "LEAN",
+            "edge": 3.33,
+            "edge_pp": 3.33,
+            "game": "San Diego Padres vs Arizona Diamondbacks",
+            "game_id": "823277",
+            "game_order": 11,
+            "game_start_time": "2026-07-10T01:40:00Z",
+            "home_team": "San Diego Padres",
+            "inning": 6,
+            "league": "MLB",
+            "line_source": "user_assumed_no_run_inning_price",
+            "market": "no_run_inning",
+            "market_implied_probability": 0.545455,
+            "market_priced": true,
+            "matchup": "San Diego Padres vs Arizona Diamondbacks",
+            "model_prediction": "55.2%",
+            "notes": "Top no-run inning candidate (edge +3.3pp vs baseline). Full table: {\"1\": 0.425, \"2\": 0.58, \"3\": 0.516, \"4\": 0.5, \"5\": 0.489, \"6\": 0.552, \"7\": 0.447, \"8\": 0.396}",
+            "odds": -120,
+            "odds_source": "user_assumed_no_run_inning_-120",
+            "pick": "Inning 6 - No Run Scored",
+            "pricing_type": "user_assumed",
+            "probability": 0.552,
+            "source": "MLB Inning",
+            "sport": "MLB",
+            "start_time": "2026-07-10T01:40:00Z",
+            "team": ""
+          },
+          "pricing_type": "user_assumed",
+          "primary_consensus_passed": false,
+          "probability": 0.4802,
+          "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
+          "raw_edge": 3.33,
+          "raw_model_probability": 0.552,
+          "raw_probability": 0.552,
           "selected_side_implied_probability": 0.545455,
           "source": "MLB Inning",
           "sport": "MLB",
@@ -48462,7 +49095,7 @@
           "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
           "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
           "model_prediction": "47.6%",
-          "notes": "Top no-run inning candidate (edge +9.1pp vs baseline). Full table: {\"1\": 0.476, \"2\": 0.499, \"3\": 0.496, \"4\": 0.567, \"5\": 0.488, \"6\": 0.508, \"7\": 0.489, \"8\": 0.371}",
+          "notes": "Top no-run inning candidate (edge +9.1pp vs baseline). Full table: {\"1\": 0.476, \"2\": 0.529, \"3\": 0.496, \"4\": 0.567, \"5\": 0.518, \"6\": 0.508, \"7\": 0.489, \"8\": 0.399}",
           "odds": -120,
           "odds_source": "user_assumed_no_run_inning_-120",
           "pick": "Inning 1 - No Run Scored",
@@ -48713,7 +49346,7 @@
           "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
           "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
           "model_prediction": "56.7%",
-          "notes": "Top no-run inning candidate (edge +4.9pp vs baseline). Full table: {\"1\": 0.476, \"2\": 0.499, \"3\": 0.496, \"4\": 0.567, \"5\": 0.488, \"6\": 0.508, \"7\": 0.489, \"8\": 0.371}",
+          "notes": "Top no-run inning candidate (edge +4.9pp vs baseline). Full table: {\"1\": 0.476, \"2\": 0.529, \"3\": 0.496, \"4\": 0.567, \"5\": 0.518, \"6\": 0.508, \"7\": 0.489, \"8\": 0.399}",
           "odds": -120,
           "odds_source": "user_assumed_no_run_inning_-120",
           "pick": "Inning 4 - No Run Scored",
@@ -48771,7 +49404,7 @@
       "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_inning",
       "raw_lines": 2,
       "requested_date": "2026-07-09",
-      "validation_leans_published": 3,
+      "validation_leans_published": 2,
       "validation_publication_mode": "fallback_when_strict_gate_empty"
     },
     "mlb_new": {
@@ -48808,9 +49441,9 @@
       "consensus_gate_version": "mlb_team_consensus_v1.1.0",
       "consensus_rejection_reasons": {
         "edge_signal_threshold_not_met(edge=0.91, probability=0.532918, signals=5)": 2,
-        "missing_reliable_market_price": 4,
+        "missing_reliable_market_price": 3,
         "non_positive_calibrated_edge": 7,
-        "raw_model_abstained": 13
+        "raw_model_abstained": 14
       },
       "consensus_required": true,
       "model_stack": "v2",
@@ -49037,39 +49670,39 @@
           "edge": -3.83,
           "home_team": "Pittsburgh Pirates",
           "kelly": 0.59,
-          "line": 9.5,
-          "market_line": 9.5,
+          "line": 10.0,
+          "market_line": 10.0,
           "market_no_vig_probability": 0.5238095238095238,
           "market_total_source": "model_output",
           "market_type": "totals",
           "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
           "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
           "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
-          "model_prediction": 9.1,
+          "model_prediction": 9.6,
           "odds": -110,
-          "pick": "Under 9.5 (Atlanta Braves vs Pittsburgh Pirates)",
+          "pick": "Under 10.0 (Atlanta Braves vs Pittsburgh Pirates)",
           "pregame_snapshot": {
             "assumed_odds": -110,
             "away_team": "Atlanta Braves",
-            "decision": "LEAN",
+            "decision": "PASS",
             "direction": "Under",
-            "edge": 4.22,
+            "edge": 1.12,
             "home_team": "Pittsburgh Pirates",
-            "kelly": 2.21,
-            "line": 9.5,
-            "market_line": 9.5,
+            "kelly": 0.59,
+            "line": 10.0,
+            "market_line": 10.0,
             "market_total_source": "model_output",
             "market_type": "totals",
-            "model_prediction": 8.8,
+            "model_prediction": 9.6,
             "odds": -110,
-            "pick": "Under 9.5 (Atlanta Braves vs Pittsburgh Pirates)",
-            "prob": 0.566,
-            "probability": 0.566,
-            "selection": "Under",
+            "pick": "Under 10.0 (Atlanta Braves vs Pittsburgh Pirates)",
+            "prob": 0.535,
+            "probability": 0.535,
+            "selection": "PASS",
             "source": "MLB Model",
             "sport": "MLB",
-            "units": 0.01,
-            "vegas": 9.5
+            "units": 0.0,
+            "vegas": 10.0
           },
           "primary_consensus_passed": false,
           "prob": 0.535,
@@ -49084,7 +49717,7 @@
           "source": "MLB Model",
           "sport": "MLB",
           "units": 0.0,
-          "vegas": 9.5,
+          "vegas": 10.0,
           "walk_forward_roi": 0.08225830930338446,
           "walk_forward_samples": 139
         },
@@ -50181,13 +50814,13 @@
         {
           "actionability": "research_signal",
           "away_team": "Boston Red Sox",
-          "calibrated_edge": -1.71,
-          "calibrated_model_probability": 0.48287,
-          "calibrated_probability": 0.48287,
+          "calibrated_edge": -3.38,
+          "calibrated_model_probability": 0.466215,
+          "calibrated_probability": 0.466215,
           "calibration": {
             "applied": true,
             "key": "global",
-            "probability_delta": -0.09133,
+            "probability_delta": -0.076185,
             "samples": 1404,
             "version": "cal-2406-2026-07-09"
           },
@@ -50223,6 +50856,7 @@
           },
           "consensus_gate_version": "mlb_team_consensus_v1.1.0",
           "consensus_hard_blockers": [
+            "raw_model_abstained",
             "missing_reliable_market_price",
             "missing_selected_side_implied_probability",
             "non_positive_calibrated_edge"
@@ -50230,7 +50864,7 @@
           "consensus_passed": false,
           "consensus_publication_mode": "research",
           "consensus_qualified": false,
-          "consensus_rejection_reason": "missing_reliable_market_price; missing_selected_side_implied_probability; non_positive_calibrated_edge",
+          "consensus_rejection_reason": "raw_model_abstained; missing_reliable_market_price; missing_selected_side_implied_probability; non_positive_calibrated_edge",
           "consensus_required": true,
           "consensus_score": 10.0,
           "consensus_signal_count": 4,
@@ -50265,7 +50899,7 @@
             }
           ],
           "decision": "PASS",
-          "edge": -1.71,
+          "edge": -3.38,
           "home_team": "Chicago White Sox",
           "market_no_vig_probability": null,
           "market_pick_prob": null,
@@ -50273,7 +50907,7 @@
           "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
           "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
           "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
-          "model_odds": -135,
+          "model_odds": -119,
           "odds": null,
           "pick": "White Sox ML (Red Sox vs White Sox)",
           "pregame_snapshot": {
@@ -50293,12 +50927,12 @@
             "units": 0.4
           },
           "primary_consensus_passed": false,
-          "probability": 0.4829,
+          "probability": 0.4662,
           "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
-          "raw_edge": 7.42,
-          "raw_model_probability": 0.5742,
-          "raw_probability": 0.5742,
-          "raw_units": 0.4,
+          "raw_edge": 4.24,
+          "raw_model_probability": 0.5424,
+          "raw_probability": 0.5424,
+          "raw_units": 0.0,
           "selected_side_implied_probability": null,
           "source": "MLB Model",
           "sport": "MLB",
@@ -52375,6 +53009,148 @@
           "sport": "MLB",
           "units": 0.0,
           "vegas": 8.5,
+          "walk_forward_roi": 0.08225830930338446,
+          "walk_forward_samples": 139
+        },
+        {
+          "actionability": "research_signal",
+          "assumed_odds": -110,
+          "away_team": "Atlanta Braves",
+          "calibrated_edge": -3.83,
+          "calibrated_model_probability": 0.485526,
+          "calibrated_probability": 0.485526,
+          "calibration": {
+            "applied": true,
+            "key": "model:mlb_new|source:mlb model|sport:mlb|bet:totals",
+            "probability_delta": -0.049474,
+            "samples": 36,
+            "version": "cal-2406-2026-07-09"
+          },
+          "consensus_factor_categories": {
+            "calibration": {
+              "missing": [],
+              "risk": [],
+              "support": [
+                "probability_calibration"
+              ]
+            },
+            "model_stack": {
+              "missing": [],
+              "risk": [],
+              "support": [
+                "model_stack_ready"
+              ]
+            },
+            "team_form": {
+              "missing": [],
+              "risk": [],
+              "support": [
+                "team_identity_context"
+              ]
+            },
+            "walk_forward": {
+              "missing": [],
+              "risk": [],
+              "support": [
+                "walk_forward_validation"
+              ]
+            }
+          },
+          "consensus_gate_version": "mlb_team_consensus_v1.1.0",
+          "consensus_hard_blockers": [
+            "raw_model_abstained",
+            "non_positive_calibrated_edge"
+          ],
+          "consensus_passed": false,
+          "consensus_publication_mode": "research",
+          "consensus_qualified": false,
+          "consensus_rejection_reason": "raw_model_abstained; non_positive_calibrated_edge",
+          "consensus_required": true,
+          "consensus_score": 10.0,
+          "consensus_signal_count": 4,
+          "consensus_signals": [
+            {
+              "category": "calibration",
+              "detail": "active calibration group has enough samples",
+              "impact": "support",
+              "name": "probability_calibration",
+              "strength": 1.0
+            },
+            {
+              "category": "walk_forward",
+              "detail": "model family has positive decided history in the gated era input",
+              "impact": "support",
+              "name": "walk_forward_validation",
+              "strength": 1.0
+            },
+            {
+              "category": "model_stack",
+              "detail": "MLB full-game v2 artifacts are ready",
+              "impact": "support",
+              "name": "model_stack_ready",
+              "strength": 1.0
+            },
+            {
+              "category": "team_form",
+              "detail": "selected MLB team context present",
+              "impact": "support",
+              "name": "team_identity_context",
+              "strength": 0.4
+            }
+          ],
+          "decision": "PASS",
+          "direction": "Under",
+          "edge": -3.83,
+          "home_team": "Pittsburgh Pirates",
+          "kelly": 0.59,
+          "line": 9.5,
+          "market_line": 9.5,
+          "market_no_vig_probability": 0.5238095238095238,
+          "market_total_source": "model_output",
+          "market_type": "totals",
+          "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
+          "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
+          "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
+          "model_prediction": 9.1,
+          "odds": -110,
+          "pick": "Under 9.5 (Atlanta Braves vs Pittsburgh Pirates)",
+          "pregame_snapshot": {
+            "assumed_odds": -110,
+            "away_team": "Atlanta Braves",
+            "decision": "LEAN",
+            "direction": "Under",
+            "edge": 4.22,
+            "home_team": "Pittsburgh Pirates",
+            "kelly": 2.21,
+            "line": 9.5,
+            "market_line": 9.5,
+            "market_total_source": "model_output",
+            "market_type": "totals",
+            "model_prediction": 8.8,
+            "odds": -110,
+            "pick": "Under 9.5 (Atlanta Braves vs Pittsburgh Pirates)",
+            "prob": 0.566,
+            "probability": 0.566,
+            "selection": "Under",
+            "source": "MLB Model",
+            "sport": "MLB",
+            "units": 0.01,
+            "vegas": 9.5
+          },
+          "primary_consensus_passed": false,
+          "prob": 0.535,
+          "probability": 0.4855,
+          "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
+          "raw_edge": 1.12,
+          "raw_model_probability": 0.535,
+          "raw_probability": 0.535,
+          "raw_units": 0.0,
+          "selected_side_implied_probability": 0.5238095238095238,
+          "selection": "PASS",
+          "source": "MLB Model",
+          "sport": "MLB",
+          "units": 0.0,
+          "vegas": 9.5,
           "walk_forward_roi": 0.08225830930338446,
           "walk_forward_samples": 139
         },
@@ -54780,32 +55556,32 @@
         },
         {
           "away_team": "Indiana Fever",
-          "calibrated_probability": 0.448994,
+          "calibrated_probability": 0.458248,
           "calibration": {
             "applied": true,
             "key": "global",
-            "probability_delta": -0.060006,
+            "probability_delta": -0.068752,
             "samples": 1404,
             "version": "cal-2406-2026-07-09"
           },
-          "confidence": 50.9,
+          "confidence": 52.7,
           "confidence_label": "Low",
           "decision": "PASS",
-          "edge": -3.36,
+          "edge": -2.44,
           "game": "Indiana Fever @ Phoenix Mercury",
           "guardrail_reasons": [],
           "h2h_games": 0,
           "has_market_price": true,
           "home_team": "Phoenix Mercury",
           "league": "WNBA",
-          "market_edge": 0.0262,
+          "market_edge": 0.0444,
           "market_pick_odds": -102,
           "market_pick_prob": 0.4826,
           "market_source": "DraftKings via ESPN",
           "market_type": "h2h",
           "matchup": "Indiana Fever @ Phoenix Mercury",
-          "model_prediction": -0.3,
-          "notes": "Proj Margin: Indiana Fever +0.3 | Total: 166.9 | Conf: Low",
+          "model_prediction": -0.8,
+          "notes": "Proj Margin: Indiana Fever +0.8 | Total: 167.5 | Conf: Low",
           "odds": -102,
           "pick": "Indiana Fever ML (Indiana Fever @ Phoenix Mercury)",
           "pregame_snapshot": {
@@ -54841,9 +55617,9 @@
             "team": "Indiana Fever",
             "units": 0.0
           },
-          "probability": 0.449,
-          "projected_total": 166.9,
-          "raw_probability": 0.509,
+          "probability": 0.4582,
+          "projected_total": 167.5,
+          "raw_probability": 0.527,
           "raw_units": 0.0,
           "source": "WNBA Model",
           "sport": "WNBA",
@@ -54857,19 +55633,19 @@
         },
         {
           "away_team": "Indiana Fever",
-          "calibrated_probability": 0.443464,
+          "calibrated_probability": 0.450499,
           "calibration": {
             "applied": true,
             "key": "model:wnba|source:wnba model|sport:wnba|bet:spread",
-            "probability_delta": -0.109436,
+            "probability_delta": -0.119001,
             "samples": 32,
             "version": "cal-2406-2026-07-09"
           },
-          "confidence": 55.3,
-          "confidence_label": "Low",
-          "cover_margin": 1.77,
+          "confidence": 57.0,
+          "confidence_label": "Medium",
+          "cover_margin": 2.33,
           "decision": "PASS",
-          "edge": -8.03,
+          "edge": -7.33,
           "game": "Indiana Fever @ Phoenix Mercury",
           "guardrail_reasons": [],
           "h2h_games": 0,
@@ -54877,14 +55653,14 @@
           "home_team": "Phoenix Mercury",
           "league": "WNBA",
           "line": 1.5,
-          "market_edge": 0.0291,
+          "market_edge": 0.0457,
           "market_line": 1.5,
           "market_pick_odds": -110,
           "market_pick_prob": 0.5238,
           "market_source": "DraftKings via ESPN",
           "market_type": "spread",
           "matchup": "Indiana Fever @ Phoenix Mercury",
-          "model_prediction": 0.27,
+          "model_prediction": 0.83,
           "odds": -110,
           "pick": "Indiana Fever +1.5 (Indiana Fever @ Phoenix Mercury)",
           "pregame_snapshot": {
@@ -54924,11 +55700,11 @@
             "units": 0.0,
             "vegas": 1.5
           },
-          "probability": 0.4435,
-          "projected_total": 166.9,
-          "raw_edge": 2.91,
-          "raw_probability": 0.5529,
-          "raw_units": 0.0,
+          "probability": 0.4505,
+          "projected_total": 167.5,
+          "raw_edge": 4.57,
+          "raw_probability": 0.5695,
+          "raw_units": 0.01,
           "selection": "Indiana Fever",
           "source": "WNBA Model",
           "sport": "WNBA",
@@ -54942,18 +55718,18 @@
         },
         {
           "away_team": "Indiana Fever",
-          "calibrated_probability": 0.467217,
+          "calibrated_probability": 0.460972,
           "calibration": {
             "applied": true,
             "key": "model:wnba|source:wnba model|sport:wnba|bet:totals",
-            "probability_delta": -0.112083,
+            "probability_delta": -0.105228,
             "samples": 47,
             "version": "cal-2406-2026-07-09"
           },
-          "confidence": 57.9,
+          "confidence": 56.6,
           "confidence_label": "Low",
           "decision": "PASS",
-          "edge": -5.66,
+          "edge": -6.28,
           "game": "Indiana Fever @ Phoenix Mercury",
           "guardrail_reasons": [
             "model-to-line total gap below 5 points"
@@ -54963,14 +55739,14 @@
           "home_team": "Phoenix Mercury",
           "league": "WNBA",
           "line": 170.5,
-          "market_edge": 0.0555,
+          "market_edge": 0.0424,
           "market_line": 170.5,
           "market_pick_odds": -110,
           "market_pick_prob": 0.5238,
           "market_source": "DraftKings via ESPN",
           "market_type": "totals",
           "matchup": "Indiana Fever @ Phoenix Mercury",
-          "model_prediction": 166.9,
+          "model_prediction": 167.5,
           "odds": -110,
           "pick": "Under 170.5 (Indiana Fever vs Phoenix Mercury)",
           "pregame_snapshot": {
@@ -55006,10 +55782,10 @@
             "units": 0.0,
             "vegas": 170.5
           },
-          "probability": 0.4672,
-          "projected_total": 166.9,
-          "raw_edge": 5.55,
-          "raw_probability": 0.5793,
+          "probability": 0.461,
+          "projected_total": 167.5,
+          "raw_edge": 4.24,
+          "raw_probability": 0.5662,
           "raw_units": 0.0,
           "selection": "Under",
           "source": "WNBA Model",
@@ -57255,7 +58031,7 @@
     ],
     "updatedAt": "2026-07-09T13:13:17.666680Z"
   },
-  "updatedAt": "2026-07-09T15:53:16.298835Z",
+  "updatedAt": "2026-07-09T16:37:18.811389Z",
   "wnba": {
     "ok": true,
     "picks": [
@@ -57492,32 +58268,32 @@
       },
       {
         "away_team": "Indiana Fever",
-        "calibrated_probability": 0.448994,
+        "calibrated_probability": 0.458248,
         "calibration": {
           "applied": true,
           "key": "global",
-          "probability_delta": -0.060006,
+          "probability_delta": -0.068752,
           "samples": 1404,
           "version": "cal-2406-2026-07-09"
         },
-        "confidence": 50.9,
+        "confidence": 52.7,
         "confidence_label": "Low",
         "decision": "PASS",
-        "edge": -3.36,
+        "edge": -2.44,
         "game": "Indiana Fever @ Phoenix Mercury",
         "guardrail_reasons": [],
         "h2h_games": 0,
         "has_market_price": true,
         "home_team": "Phoenix Mercury",
         "league": "WNBA",
-        "market_edge": 0.0262,
+        "market_edge": 0.0444,
         "market_pick_odds": -102,
         "market_pick_prob": 0.4826,
         "market_source": "DraftKings via ESPN",
         "market_type": "h2h",
         "matchup": "Indiana Fever @ Phoenix Mercury",
-        "model_prediction": -0.3,
-        "notes": "Proj Margin: Indiana Fever +0.3 | Total: 166.9 | Conf: Low",
+        "model_prediction": -0.8,
+        "notes": "Proj Margin: Indiana Fever +0.8 | Total: 167.5 | Conf: Low",
         "odds": -102,
         "pick": "Indiana Fever ML (Indiana Fever @ Phoenix Mercury)",
         "pregame_snapshot": {
@@ -57553,9 +58329,9 @@
           "team": "Indiana Fever",
           "units": 0.0
         },
-        "probability": 0.449,
-        "projected_total": 166.9,
-        "raw_probability": 0.509,
+        "probability": 0.4582,
+        "projected_total": 167.5,
+        "raw_probability": 0.527,
         "raw_units": 0.0,
         "source": "WNBA Model",
         "sport": "WNBA",
@@ -57569,19 +58345,19 @@
       },
       {
         "away_team": "Indiana Fever",
-        "calibrated_probability": 0.443464,
+        "calibrated_probability": 0.450499,
         "calibration": {
           "applied": true,
           "key": "model:wnba|source:wnba model|sport:wnba|bet:spread",
-          "probability_delta": -0.109436,
+          "probability_delta": -0.119001,
           "samples": 32,
           "version": "cal-2406-2026-07-09"
         },
-        "confidence": 55.3,
-        "confidence_label": "Low",
-        "cover_margin": 1.77,
+        "confidence": 57.0,
+        "confidence_label": "Medium",
+        "cover_margin": 2.33,
         "decision": "PASS",
-        "edge": -8.03,
+        "edge": -7.33,
         "game": "Indiana Fever @ Phoenix Mercury",
         "guardrail_reasons": [],
         "h2h_games": 0,
@@ -57589,14 +58365,14 @@
         "home_team": "Phoenix Mercury",
         "league": "WNBA",
         "line": 1.5,
-        "market_edge": 0.0291,
+        "market_edge": 0.0457,
         "market_line": 1.5,
         "market_pick_odds": -110,
         "market_pick_prob": 0.5238,
         "market_source": "DraftKings via ESPN",
         "market_type": "spread",
         "matchup": "Indiana Fever @ Phoenix Mercury",
-        "model_prediction": 0.27,
+        "model_prediction": 0.83,
         "odds": -110,
         "pick": "Indiana Fever +1.5 (Indiana Fever @ Phoenix Mercury)",
         "pregame_snapshot": {
@@ -57636,11 +58412,11 @@
           "units": 0.0,
           "vegas": 1.5
         },
-        "probability": 0.4435,
-        "projected_total": 166.9,
-        "raw_edge": 2.91,
-        "raw_probability": 0.5529,
-        "raw_units": 0.0,
+        "probability": 0.4505,
+        "projected_total": 167.5,
+        "raw_edge": 4.57,
+        "raw_probability": 0.5695,
+        "raw_units": 0.01,
         "selection": "Indiana Fever",
         "source": "WNBA Model",
         "sport": "WNBA",
@@ -57654,18 +58430,18 @@
       },
       {
         "away_team": "Indiana Fever",
-        "calibrated_probability": 0.467217,
+        "calibrated_probability": 0.460972,
         "calibration": {
           "applied": true,
           "key": "model:wnba|source:wnba model|sport:wnba|bet:totals",
-          "probability_delta": -0.112083,
+          "probability_delta": -0.105228,
           "samples": 47,
           "version": "cal-2406-2026-07-09"
         },
-        "confidence": 57.9,
+        "confidence": 56.6,
         "confidence_label": "Low",
         "decision": "PASS",
-        "edge": -5.66,
+        "edge": -6.28,
         "game": "Indiana Fever @ Phoenix Mercury",
         "guardrail_reasons": [
           "model-to-line total gap below 5 points"
@@ -57675,14 +58451,14 @@
         "home_team": "Phoenix Mercury",
         "league": "WNBA",
         "line": 170.5,
-        "market_edge": 0.0555,
+        "market_edge": 0.0424,
         "market_line": 170.5,
         "market_pick_odds": -110,
         "market_pick_prob": 0.5238,
         "market_source": "DraftKings via ESPN",
         "market_type": "totals",
         "matchup": "Indiana Fever @ Phoenix Mercury",
-        "model_prediction": 166.9,
+        "model_prediction": 167.5,
         "odds": -110,
         "pick": "Under 170.5 (Indiana Fever vs Phoenix Mercury)",
         "pregame_snapshot": {
@@ -57718,10 +58494,10 @@
           "units": 0.0,
           "vegas": 170.5
         },
-        "probability": 0.4672,
-        "projected_total": 166.9,
-        "raw_edge": 5.55,
-        "raw_probability": 0.5793,
+        "probability": 0.461,
+        "projected_total": 167.5,
+        "raw_edge": 4.24,
+        "raw_probability": 0.5662,
         "raw_units": 0.0,
         "selection": "Under",
         "source": "WNBA Model",
