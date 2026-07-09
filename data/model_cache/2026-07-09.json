@@ -45820,7 +45820,7 @@
           "game": "Minnesota Twins vs Cleveland Guardians",
           "game_id": "823683",
           "game_order": 4,
-          "game_start_time": "2026-07-09T17:40:00Z",
+          "game_start_time": "2026-07-09T17:40Z",
           "home_team": "Minnesota Twins",
           "inning": 6,
           "league": "MLB",
@@ -45882,7 +45882,7 @@
           "selected_side_implied_probability": 0.545455,
           "source": "MLB Inning",
           "sport": "MLB",
-          "start_time": "2026-07-09T17:40:00Z",
+          "start_time": "2026-07-09T17:40Z",
           "team": "",
           "units": 0.25,
           "validation_lean": true,
@@ -55749,6 +55749,7 @@
           "decision": "BET",
           "edge": null,
           "game": "New York Mets vs Kansas City Royals",
+          "game_start_time": "2026-07-09T17:10Z",
           "matchup": "New York Mets vs Kansas City Royals",
           "odds": 120,
           "pick": "Royals ML (Mets vs Royals)",
@@ -55768,6 +55769,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-07-09T17:10Z",
           "units": 1
         },
         {
@@ -55775,6 +55777,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Tampa Bay Rays vs New York Yankees",
+          "game_start_time": "2026-07-09T17:10Z",
           "matchup": "Tampa Bay Rays vs New York Yankees",
           "odds": -160,
           "pick": "Rays ML (Rays vs Yankees)",
@@ -55794,6 +55797,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-07-09T17:10Z",
           "units": 1
         },
         {
@@ -56008,6 +56012,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Atlanta Dream vs Seattle Storm",
+          "game_start_time": "2026-07-10T00:00Z",
           "matchup": "Atlanta Dream vs Seattle Storm",
           "odds": -161,
           "pick": "Seattle Storm on the +13.5 line (Dream vs Storm)",
@@ -56027,6 +56032,7 @@
           "probability": null,
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
+          "start_time": "2026-07-10T00:00Z",
           "units": 1
         },
         {
@@ -56062,6 +56068,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Phoenix Mercury vs Indiana Fever",
+          "game_start_time": "2026-07-10T02:00Z",
           "matchup": "Phoenix Mercury vs Indiana Fever",
           "odds": -181,
           "pick": "Indiana Fever on the +4.5 line (Mercury vs Fever)",
@@ -56081,6 +56088,7 @@
           "probability": null,
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
+          "start_time": "2026-07-10T02:00Z",
           "units": 1
         }
       ],
