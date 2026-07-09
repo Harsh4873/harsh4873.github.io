@@ -159,7 +159,7 @@
           "player": "",
           "probabilitySource": "market_implied",
           "rawProbability": 0.5575,
-          "result": "pending",
+          "result": "win",
           "source": "SportyTraderMLB",
           "sourceKey": "sportytrader_mlb",
           "sourceType": "external",
@@ -321,7 +321,7 @@
   ],
   "date": "2026-07-08",
   "engineVersion": "parlay_cards_v5_market_excess",
-  "generatedAt": "2026-07-08T23:32:59.342239Z",
+  "generatedAt": "2026-07-09T01:19:08.059372Z",
   "notices": [
     "Leg probabilities are anchored to market prices and adjusted only by each source's proven trailing excess.",
     "No same-game, same-player, or same-side duplicate legs are allowed; game keys are canonicalized across sources.",

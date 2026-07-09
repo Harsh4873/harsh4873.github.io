@@ -394,7 +394,7 @@
           "ranking_updated_at": "2026-07-08T16:19:06.834655Z",
           "reason": "The active four-model consensus gate qualifies this market at 63.2%; the All Time variant is retained as a supporting signal.",
           "research_details": "History model over probability 33.0%; Under history hit rate 36-100 (36.0%)",
-          "result": "pending",
+          "result": "loss",
           "scope": "player",
           "selected_side_implied_probability": 0.5816,
           "selection": "Under",
@@ -939,7 +939,7 @@
           "recent_three_point_pct": 0.3,
           "record_factor": 1.0185,
           "redistribution_from": [],
-          "result": "pending",
+          "result": "win",
           "sample_games": 22,
           "scope": "player",
           "season_three_point_attempts": 3.7727,
@@ -1206,7 +1206,7 @@
           "redistribution_from": [
             "Brittney Sykes"
           ],
-          "result": "pending",
+          "result": "win",
           "sample_games": 10,
           "scope": "player",
           "season_three_point_attempts": 2.4,
