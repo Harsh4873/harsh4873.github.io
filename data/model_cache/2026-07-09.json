@@ -44063,6 +44063,7 @@
           "raw_edge": 9.81,
           "raw_model_probability": 0.617,
           "raw_probability": 0.617,
+          "result": "loss",
           "selected_side_implied_probability": 0.545455,
           "source": "MLB Inning",
           "sport": "MLB",
@@ -45879,6 +45880,7 @@
           "raw_edge": 14.49,
           "raw_model_probability": 0.663,
           "raw_probability": 0.663,
+          "result": "loss",
           "selected_side_implied_probability": 0.545455,
           "source": "MLB Inning",
           "sport": "MLB",
@@ -50275,6 +50277,7 @@
           "raw_model_probability": 0.5895,
           "raw_probability": 0.5895,
           "raw_units": 0.03,
+          "result": "loss",
           "selected_side_implied_probability": 0.5238095238095238,
           "selection": "Under",
           "source": "MLB Model",
@@ -51107,6 +51110,7 @@
           "raw_model_probability": 0.6171,
           "raw_probability": 0.6171,
           "raw_units": 0.05,
+          "result": "win",
           "selected_side_implied_probability": 0.5238095238095238,
           "selection": "Under",
           "source": "MLB Model",
@@ -54604,6 +54608,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-09-07-2026-pittsburgh-pirates-atlanta-braves-prediction",
           "sport": "MLB",
@@ -54640,6 +54645,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-09-07-2026-new-york-mets-kansas-city-royals-prediction",
           "sport": "MLB",
@@ -54676,6 +54682,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-09-07-2026-tampa-bay-rays-new-york-yankees-prediction",
           "sport": "MLB",
@@ -54712,6 +54719,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-09-07-2026-baltimore-orioles-chicago-cubs-prediction",
           "sport": "MLB",
@@ -54748,6 +54756,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-09-07-2026-minnesota-twins-cleveland-guardians-prediction",
           "sport": "MLB",
@@ -54784,6 +54793,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-09-07-2026-chicago-white-sox-boston-red-sox-prediction",
           "sport": "MLB",
@@ -55222,6 +55232,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-09T16:35Z",
@@ -55250,6 +55261,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-09T17:10Z",
@@ -55278,6 +55290,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-09T17:10Z",
@@ -55306,6 +55319,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-09T17:40Z",
@@ -55334,6 +55348,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-09T18:10Z",
@@ -55739,6 +55754,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-07-09T16:35Z",
@@ -55767,6 +55783,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-07-09T17:10Z",
@@ -55795,6 +55812,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-07-09T17:10Z",
@@ -55823,6 +55841,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-07-09T17:30Z",
@@ -55851,6 +55870,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-07-09T18:10Z",
