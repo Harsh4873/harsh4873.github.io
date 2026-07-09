@@ -872,6 +872,43 @@ def test_scores24_fails_closed_when_blocked_retry_stays_blocked(monkeypatch):
     assert client.detail_calls == 2
 
 
+def test_scores24_client_can_disable_inner_attempt_sleep(monkeypatch):
+    module = _load_module(
+        "scores24_attempt_sleep_test",
+        ROOT / "scripts" / "scrapers" / "scores24_scraper.py",
+    )
+    monkeypatch.setenv("SCORES24_CAMOUFOX_FALLBACK", "false")
+    monkeypatch.setenv("SCORES24_REQUEST_ATTEMPTS", "2")
+    monkeypatch.setenv("SCORES24_ATTEMPT_RETRY_DELAY_SECONDS", "0")
+    slept = []
+    monkeypatch.setattr(module.time, "sleep", lambda seconds: slept.append(seconds))
+
+    class FakeResponse:
+        text = "Cloudflare"
+        status_code = 429
+
+    class FakeSession:
+        def __init__(self):
+            self.headers = {}
+            self.calls = 0
+
+        def get(self, url: str, timeout: int = 35):
+            self.calls += 1
+            return FakeResponse()
+
+    session = FakeSession()
+    client = module.Scores24Client(session=session, browser_fallback=False, interval_seconds=0)
+    client._prefer_camoufox = False
+    monkeypatch.setattr(client, "_impersonated_html", lambda _url: ("", 0))
+
+    _html, status, blocked = client.get_html("https://scores24.live/en/baseball/test")
+
+    assert status == 429
+    assert blocked is True
+    assert session.calls == 2
+    assert slept == []
+
+
 def test_local_scores24_publisher_registers_separate_models():
     workflow = (ROOT / ".github" / "workflows" / "external-feed-refresh.yml").read_text(encoding="utf-8")
     refresh = (ROOT / "scripts" / "refresh_external_feeds.py").read_text(encoding="utf-8")
@@ -894,7 +931,12 @@ def test_local_scores24_publisher_registers_separate_models():
     assert 'GH_BIN="$(command -v gh || true)"' in publisher
     assert "SCORES24_BROWSER_FALLBACK=true" in publisher
     assert "SCORES24_CAMOUFOX_FALLBACK=true" in publisher
-    assert "SCORES24_REQUEST_INTERVAL_SECONDS=8" in publisher
+    assert 'PUBLISH_FEEDS="${SCORES24_PUBLISH_FEEDS:-scores24_mlb,scores24_wnba,scores24_fifa_world_cup}"' in publisher
+    assert 'SCORES24_REQUEST_INTERVAL_SECONDS="${REQUEST_INTERVAL}"' in publisher
+    assert 'SCORES24_REQUEST_ATTEMPTS="${REQUEST_ATTEMPTS}"' in publisher
+    assert 'SCORES24_ATTEMPT_RETRY_DELAY_SECONDS="${ATTEMPT_RETRY_DELAY}"' in publisher
+    assert 'SCORES24_PUBLISH_FEED_COOLDOWN_SECONDS' in publisher
+    assert '--feeds "${feed_key}"' in publisher
     assert "--date YYYY-MM-DD" in publisher
     assert "SCORES24_DATE" in publisher
     assert "Scores24 refresh incomplete; refusing to publish" in publisher

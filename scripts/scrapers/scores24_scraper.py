@@ -417,7 +417,13 @@ class Scores24Client:
         except Exception:
             return "", 0
 
-    def get_html(self, url: str, attempts: int = 3) -> tuple[str, int, bool]:
+    def get_html(self, url: str, attempts: int | None = None) -> tuple[str, int, bool]:
+        max_attempts = (
+            int(_env_float("SCORES24_REQUEST_ATTEMPTS", 3, 1))
+            if attempts is None
+            else max(1, attempts)
+        )
+        attempt_retry_delay = _env_float("SCORES24_ATTEMPT_RETRY_DELAY_SECONDS", 1.0)
         if self._prefer_camoufox:
             self._pace()
             camoufox_html, camoufox_status = self._camoufox_html(url)
@@ -429,7 +435,7 @@ class Scores24Client:
         last_html = ""
         last_status = 0
         blocked = False
-        for attempt in range(max(1, attempts)):
+        for attempt in range(max_attempts):
             self._pace()
             last_html, last_status = self._impersonated_html(url)
             if not last_status:
@@ -446,8 +452,10 @@ class Scores24Client:
                 return last_html, last_status, False
             if last_status == 404:
                 return last_html, last_status, False
-            if attempt + 1 < attempts:
-                time.sleep((4.0 if blocked else 2.0) * (attempt + 1))
+            if attempt + 1 < max_attempts:
+                sleep_seconds = (4.0 if blocked else 2.0) * (attempt + 1) * attempt_retry_delay
+                if sleep_seconds > 0:
+                    time.sleep(sleep_seconds)
 
         if blocked:
             camoufox_html, camoufox_status = self._camoufox_html(url)

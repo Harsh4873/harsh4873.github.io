@@ -21,6 +21,16 @@ if [[ -z "${GH_BIN}" ]]; then
 fi
 
 DATE_ISO="${SCORES24_DATE:-$(date +%F)}"
+PUBLISH_FEEDS="${SCORES24_PUBLISH_FEEDS:-scores24_mlb,scores24_wnba,scores24_fifa_world_cup}"
+PUBLISH_SPORTS="${SCORES24_PUBLISH_SPORTS:-mlb,wnba,fifa_world_cup}"
+REQUEST_INTERVAL="${SCORES24_REQUEST_INTERVAL_SECONDS:-12}"
+REQUEST_ATTEMPTS="${SCORES24_REQUEST_ATTEMPTS:-1}"
+ATTEMPT_RETRY_DELAY="${SCORES24_ATTEMPT_RETRY_DELAY_SECONDS:-0}"
+BLOCK_RETRY_DELAY="${SCORES24_BLOCK_RETRY_DELAY_SECONDS:-90}"
+BLOCK_RETRY_ROUNDS="${SCORES24_BLOCK_RETRY_ROUNDS:-4}"
+HOST_BLOCK_COOLDOWN="${SCORES24_HOST_BLOCK_COOLDOWN_SECONDS:-90}"
+CURL_SESSION_MAX_REQUESTS="${SCORES24_CURL_SESSION_MAX_REQUESTS:-1}"
+FEED_COOLDOWN="${SCORES24_PUBLISH_FEED_COOLDOWN_SECONDS:-90}"
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --date)
@@ -83,14 +93,38 @@ if os.environ.get("SCORES24_CAMOUFOX_FALLBACK", "true").lower() in {"1", "true",
         print(f"Scores24 Camoufox warmup skipped: {exc}")
 PY
 
-SCORES24_BROWSER_FALLBACK=true \
-SCORES24_CAMOUFOX_FALLBACK=true \
-SCORES24_REQUEST_INTERVAL_SECONDS=8 \
-"${PYTHON_BIN}" "${TEMP_REPO}/scripts/refresh_external_feeds.py" \
-  --date "${DATE_ISO}" \
-  --feeds "scores24_wnba,scores24_mlb,scores24_fifa_world_cup" \
-  --sports "mlb,wnba,fifa_world_cup" \
-  --skip-firestore
+IFS=',' read -r -a FEED_KEYS <<< "${PUBLISH_FEEDS}"
+feed_index=0
+for raw_feed_key in "${FEED_KEYS[@]}"; do
+  feed_key="$(printf '%s' "${raw_feed_key}" | tr -d '[:space:]')"
+  if [[ -z "${feed_key}" ]]; then
+    continue
+  fi
+  if [[ "${feed_index}" -gt 0 ]]; then
+    sleep "${FEED_COOLDOWN}"
+  fi
+  echo "Refreshing ${feed_key} for ${DATE_ISO}."
+  SCORES24_BROWSER_FALLBACK=true \
+  SCORES24_CAMOUFOX_FALLBACK=true \
+  SCORES24_REQUEST_INTERVAL_SECONDS="${REQUEST_INTERVAL}" \
+  SCORES24_REQUEST_ATTEMPTS="${REQUEST_ATTEMPTS}" \
+  SCORES24_ATTEMPT_RETRY_DELAY_SECONDS="${ATTEMPT_RETRY_DELAY}" \
+  SCORES24_BLOCK_RETRY_DELAY_SECONDS="${BLOCK_RETRY_DELAY}" \
+  SCORES24_BLOCK_RETRY_ROUNDS="${BLOCK_RETRY_ROUNDS}" \
+  SCORES24_HOST_BLOCK_COOLDOWN_SECONDS="${HOST_BLOCK_COOLDOWN}" \
+  SCORES24_CURL_SESSION_MAX_REQUESTS="${CURL_SESSION_MAX_REQUESTS}" \
+  "${PYTHON_BIN}" "${TEMP_REPO}/scripts/refresh_external_feeds.py" \
+    --date "${DATE_ISO}" \
+    --feeds "${feed_key}" \
+    --sports "${PUBLISH_SPORTS}" \
+    --skip-firestore
+  feed_index=$((feed_index + 1))
+done
+
+if [[ "${feed_index}" -eq 0 ]]; then
+  echo "No Scores24 feeds selected for publish." >&2
+  exit 2
+fi
 
 "${PYTHON_BIN}" - "${TEMP_REPO}/data/model_cache/latest.json" <<'PY'
 import json
