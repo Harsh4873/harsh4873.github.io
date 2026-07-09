@@ -180,6 +180,96 @@
       "stakeUnits": 1.0,
       "title": "Edge Double",
       "whyQualified": "Both legs come from sources whose graded picks have beaten their own market prices, and the slip clears the calibrated edge gate."
+    },
+    {
+      "activeLegCount": 2,
+      "averageSourceForm": null,
+      "category": "prop_double",
+      "categoryLabel": "Prop Double",
+      "categoryScore": 51.5631,
+      "categoryShortLabel": "Prop Double",
+      "comboKey": "pp_99dc678de0f6f08ac070_consensus|pp_e57edf29246fa31139be_consensus",
+      "consensusLegs": 2,
+      "date": "2026-07-09",
+      "decimalOdds": 2.8812,
+      "estimatedProbability": 0.4982,
+      "fairOdds": 101,
+      "fallback": false,
+      "geomeanProbability": 0.7058,
+      "hasPlayerProp": true,
+      "id": "parlay-77ad36677c55ec91-prop_double",
+      "legCount": 2,
+      "legs": [
+        {
+          "calibratedEdge": 0.1218,
+          "consensusSources": [],
+          "decimalOdds": 1.6757,
+          "decision": "BET",
+          "estimatedProbability": 0.7186,
+          "game": "Milwaukee Brewers @ St. Louis Cardinals",
+          "gameKey": "2026-07-09:mlb:game:823034",
+          "legId": "pp_e57edf29246fa31139be_consensus",
+          "market": "Total Strikeouts",
+          "marketKey": "2026-07-09:mlb:game:823034::logan henderson::total strikeouts::over::4.5",
+          "marketProbability": 0.5968,
+          "modelRank": null,
+          "oddsAmerican": -148,
+          "pick": "Logan Henderson Over 4.5 Strikeouts",
+          "pickId": "pp_e57edf29246fa31139be_consensus",
+          "player": "Logan Henderson",
+          "probabilitySource": "probability",
+          "rawProbability": 0.6864,
+          "result": "pending",
+          "source": "MLBPlayerProps",
+          "sourceKey": "mlb_player_props",
+          "sourceType": "player_prop",
+          "sport": "MLB",
+          "startTime": "2026-07-09T23:45:00Z",
+          "trailingSamples": 41
+        },
+        {
+          "calibratedEdge": 0.1117,
+          "consensusSources": [],
+          "decimalOdds": 1.7194,
+          "decision": "LEAN",
+          "estimatedProbability": 0.6933,
+          "game": "New York Yankees @ Tampa Bay Rays",
+          "gameKey": "2026-07-09:mlb:game:822954",
+          "legId": "pp_99dc678de0f6f08ac070_consensus",
+          "market": "Total Strikeouts",
+          "marketKey": "2026-07-09:mlb:game:822954::drew rasmussen::total strikeouts::under::6.5",
+          "marketProbability": 0.5816,
+          "modelRank": null,
+          "oddsAmerican": -139,
+          "pick": "Drew Rasmussen Under 6.5 Strikeouts",
+          "pickId": "pp_99dc678de0f6f08ac070_consensus",
+          "player": "Drew Rasmussen",
+          "probabilitySource": "probability",
+          "rawProbability": 0.6411,
+          "result": "pending",
+          "source": "MLBPlayerProps",
+          "sourceKey": "mlb_player_props",
+          "sourceType": "player_prop",
+          "sport": "MLB",
+          "startTime": "2026-07-09T17:10Z",
+          "trailingSamples": 41
+        }
+      ],
+      "oddsAmerican": 188,
+      "parlayEv": 0.4354,
+      "payoutQuality": null,
+      "pickMode": "player",
+      "profitUnits": 0.0,
+      "result": "pending",
+      "score": 49.8213,
+      "sportMix": "MLB Props + MLB Props",
+      "sportPattern": "2-same",
+      "sports": [
+        "MLB"
+      ],
+      "stakeUnits": 1.0,
+      "title": "Prop Double",
+      "whyQualified": "Consensus-qualified player props with market pricing; families are mixed when possible to reduce correlated misses."
     }
   ],
   "categories": [
@@ -205,7 +295,7 @@
       "threeLegCount": 0
     },
     {
-      "count": 0,
+      "count": 1,
       "description": "A single disciplined two-leg player-prop slip from consensus-qualified, market-priced props.",
       "fallbackCount": 0,
       "key": "prop_double",
@@ -215,7 +305,7 @@
         "hitRate": null,
         "losses": 0,
         "netUnits": 0.0,
-        "pending": 0,
+        "pending": 1,
         "pushes": 0,
         "recentForm": "",
         "roi": null,
@@ -228,7 +318,7 @@
   ],
   "date": "2026-07-09",
   "engineVersion": "parlay_cards_v5_market_excess",
-  "generatedAt": "2026-07-09T15:53:18.187664Z",
+  "generatedAt": "2026-07-09T16:15:42.977946Z",
   "notices": [
     "Leg probabilities are anchored to market prices and adjusted only by each source's proven trailing excess.",
     "No same-game, same-player, or same-side duplicate legs are allowed; game keys are canonicalized across sources.",
@@ -259,7 +349,7 @@
       "label": "Prop Double",
       "losses": 4,
       "netUnits": -1.61,
-      "pending": 0,
+      "pending": 1,
       "pushes": 0,
       "recentForm": "LLLLW",
       "roi": -0.2683,
@@ -269,20 +359,20 @@
     }
   ],
   "summary": {
-    "averageOdds": 233.0,
-    "displayedCards": 2,
-    "eligibleLegs": 33,
+    "averageOdds": 218.0,
+    "displayedCards": 3,
+    "eligibleLegs": 34,
     "generatedThreeLegCandidates": 0,
     "modes": {
       "player": {
-        "averageOdds": null,
-        "displayedCards": 0,
+        "averageOdds": 188.0,
+        "displayedCards": 1,
         "record": {
           "averageOdds": null,
           "hitRate": null,
           "losses": 0,
           "netUnits": 0.0,
-          "pending": 0,
+          "pending": 1,
           "pushes": 0,
           "recentForm": "",
           "roi": null,
@@ -290,7 +380,7 @@
           "wins": 0
         },
         "threeLegCards": 0,
-        "twoLegFallbackCards": 0
+        "twoLegFallbackCards": 1
       },
       "team": {
         "averageOdds": 233.0,
@@ -316,7 +406,7 @@
       "hitRate": null,
       "losses": 0,
       "netUnits": 0.0,
-      "pending": 2,
+      "pending": 3,
       "pushes": 0,
       "recentForm": "",
       "roi": null,
@@ -324,6 +414,6 @@
       "wins": 0
     },
     "threeLegCards": 0,
-    "twoLegFallbackCards": 2
+    "twoLegFallbackCards": 3
   }
 }
