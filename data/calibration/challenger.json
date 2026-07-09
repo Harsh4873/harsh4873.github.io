@@ -1,127 +1,127 @@
 {
-  "decided_count": 2276,
-  "evaluated_at": "2026-07-07T18:54:21.509007Z",
+  "decided_count": 2406,
+  "evaluated_at": "2026-07-09T09:04:02.790463Z",
   "global": {
-    "intercept": -0.23750479,
-    "samples": 1362,
+    "intercept": -0.22337763,
+    "samples": 1404,
     "shrinkage_prior_samples": 120.0,
-    "slope": 0.52369531
+    "slope": 0.51781797
   },
   "groups": {
     "model:mlb_first_five|source:mlb first five|sport:mlb|bet:f5_side": {
-      "intercept": -0.0962618,
-      "samples": 101,
-      "shrinkage_prior_samples": 80.0,
-      "slope": 0.57827786
-    },
-    "model:mlb_first_five|source:mlb first five|sport:mlb|bet:f5_total": {
-      "intercept": -0.22247249,
-      "samples": 107,
-      "shrinkage_prior_samples": 80.0,
-      "slope": 0.51779655
-    },
-    "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning": {
-      "intercept": -0.20263643,
-      "samples": 194,
-      "shrinkage_prior_samples": 80.0,
-      "slope": 0.54436603
-    },
-    "model:mlb_new|source:mlb model|sport:mlb|bet:totals": {
-      "intercept": -0.16491261,
-      "samples": 33,
-      "shrinkage_prior_samples": 80.0,
-      "slope": 0.5603138
-    },
-    "model:mlb_new|source:mlb new|sport:mlb|bet:h2h": {
-      "intercept": -0.17615509,
-      "samples": 101,
-      "shrinkage_prior_samples": 80.0,
-      "slope": 0.53369254
-    },
-    "model:mlb_new|source:mlb new|sport:mlb|bet:totals": {
-      "intercept": -0.24079505,
+      "intercept": -0.0776197,
       "samples": 103,
       "shrinkage_prior_samples": 80.0,
-      "slope": 0.52908708
+      "slope": 0.57790214
+    },
+    "model:mlb_first_five|source:mlb first five|sport:mlb|bet:f5_total": {
+      "intercept": -0.21108954,
+      "samples": 107,
+      "shrinkage_prior_samples": 80.0,
+      "slope": 0.5108356
+    },
+    "model:mlb_inning|source:mlb inning|sport:mlb|bet:no_run_inning": {
+      "intercept": -0.19055764,
+      "samples": 201,
+      "shrinkage_prior_samples": 80.0,
+      "slope": 0.53402394
+    },
+    "model:mlb_new|source:mlb model|sport:mlb|bet:totals": {
+      "intercept": -0.13687267,
+      "samples": 36,
+      "shrinkage_prior_samples": 80.0,
+      "slope": 0.56308029
+    },
+    "model:mlb_new|source:mlb new|sport:mlb|bet:h2h": {
+      "intercept": -0.16505834,
+      "samples": 101,
+      "shrinkage_prior_samples": 80.0,
+      "slope": 0.52721814
+    },
+    "model:mlb_new|source:mlb new|sport:mlb|bet:totals": {
+      "intercept": -0.22938761,
+      "samples": 103,
+      "shrinkage_prior_samples": 80.0,
+      "slope": 0.5224418
     },
     "model:mlb_player_props_all_time|source:mlb all time props|sport:mlb|bet:hits_runs_rbis": {
-      "intercept": -0.30093906,
+      "intercept": -0.28826414,
       "samples": 64,
       "shrinkage_prior_samples": 80.0,
-      "slope": 0.47483468
+      "slope": 0.46787753
     },
     "model:mlb_player_props_hot_l10|source:mlb hot (l10) props|sport:mlb|bet:hits": {
-      "intercept": -0.30182651,
+      "intercept": -0.28863935,
       "samples": 40,
       "shrinkage_prior_samples": 80.0,
-      "slope": 0.47950659
+      "slope": 0.47307478
     },
     "model:mlb_player_props_matchup_h2h|source:mlb matchup (h2h) props|sport:mlb|bet:hits": {
-      "intercept": -0.3195635,
+      "intercept": -0.30564,
       "samples": 59,
       "shrinkage_prior_samples": 80.0,
-      "slope": 0.32136037
+      "slope": 0.31517959
     },
     "model:mlb_player_props_season|source:mlb season props|sport:mlb|bet:total_bases": {
-      "intercept": -0.28788445,
+      "intercept": -0.27489376,
       "samples": 31,
       "shrinkage_prior_samples": 80.0,
-      "slope": 0.51627772
+      "slope": 0.51019021
     },
     "model:mlb_player_props|source:mlbplayerprops|sport:mlb|bet:hits_runs_rbis": {
-      "intercept": -0.22091094,
-      "samples": 37,
-      "shrinkage_prior_samples": 80.0,
-      "slope": 0.52017011
-    },
-    "model:wnba_player_props_all_time|source:wnba all time props|sport:wnba|bet:totalrebounds": {
-      "intercept": -0.32778421,
+      "intercept": -0.21321255,
       "samples": 38,
       "shrinkage_prior_samples": 80.0,
-      "slope": 0.47710638
+      "slope": 0.50954798
+    },
+    "model:wnba_player_props_all_time|source:wnba all time props|sport:wnba|bet:totalrebounds": {
+      "intercept": -0.31480009,
+      "samples": 38,
+      "shrinkage_prior_samples": 80.0,
+      "slope": 0.47070351
     },
     "model:wnba|source:wnba model|sport:wnba|bet:spread": {
-      "intercept": -0.31902312,
-      "samples": 30,
+      "intercept": -0.31677251,
+      "samples": 32,
       "shrinkage_prior_samples": 80.0,
-      "slope": 0.43970714
+      "slope": 0.4221346
     },
     "model:wnba|source:wnba model|sport:wnba|bet:totals": {
-      "intercept": -0.2923324,
-      "samples": 43,
+      "intercept": -0.281359,
+      "samples": 47,
       "shrinkage_prior_samples": 80.0,
-      "slope": 0.47797312
+      "slope": 0.46901231
     }
   },
   "holdout": {
     "challenger": {
-      "brier_score": 0.24036,
-      "calibration_error": 0.20722035,
-      "log_loss": 0.67378418,
+      "brier_score": 0.2503474,
+      "calibration_error": 0.17036359,
+      "log_loss": 0.69378831,
       "qualified_bets": 5,
       "roi": null,
-      "samples": 33
+      "samples": 42
     },
     "champion": {
-      "brier_score": 0.23204023,
-      "calibration_error": 0.19962996,
-      "log_loss": 0.65679686,
-      "qualified_bets": 10,
-      "roi": 0.14029181,
-      "samples": 33
+      "brier_score": 0.25568565,
+      "calibration_error": 0.17193212,
+      "log_loss": 0.70451935,
+      "qualified_bets": 9,
+      "roi": null,
+      "samples": 42
     }
   },
   "minimum_group_samples": 30,
   "promotion": {
-    "approved": false,
+    "approved": true,
     "reasons": [
-      "brier_improved=False",
+      "brier_improved=True",
       "calibration_improved=False",
-      "log_loss_safe=False",
+      "log_loss_safe=True",
       "roi_safe=True"
     ]
   },
   "schema_version": 1,
-  "trainable_decided_count": 1362,
-  "version": "cal-2276-2026-07-07"
+  "trainable_decided_count": 1404,
+  "version": "cal-2406-2026-07-09"
 }
