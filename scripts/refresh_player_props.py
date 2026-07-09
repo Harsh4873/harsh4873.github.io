@@ -18,6 +18,7 @@ DEFAULT_OUTPUT_DIR = REPO_ROOT / "data" / "player_props_cache"
 sys.path.insert(0, str(REPO_ROOT))
 
 from player_props import generate_payload  # noqa: E402
+from scripts.merge_player_props_cache_payload import PUBLIC_PLAYER_PROP_MODEL_KEYS  # noqa: E402
 from scripts.pick_calibration import apply_calibration_to_payload  # noqa: E402
 
 
@@ -51,6 +52,15 @@ def main() -> int:
     args = _parse_args()
     target_date = _target_date(args.date)
     payload = apply_calibration_to_payload(generate_payload(target_date))
+    models = payload.get("models") if isinstance(payload.get("models"), dict) else {}
+    payload = {
+        **payload,
+        "models": {
+            key: bucket
+            for key, bucket in models.items()
+            if key in PUBLIC_PLAYER_PROP_MODEL_KEYS
+        },
+    }
     output_dir = args.output_dir.resolve()
     _write_json(output_dir / f"{target_date}.json", payload)
     _write_json(output_dir / "latest.json", payload)
