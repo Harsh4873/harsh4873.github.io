@@ -1,7 +1,7 @@
 {
   "date": "2026-07-10",
   "errors": [],
-  "externalFeedsUpdatedAt": "2026-07-10T17:31:37.796932Z",
+  "externalFeedsUpdatedAt": "2026-07-10T21:18:09.418286Z",
   "external_feed_errors": [
     "scores24_wnba: Scores24WNBA was blocked before it could finish today's official matchups: Golden State Valkyries @ Connecticut Sun, Dallas Wings @ Toronto Tempo, Chicago Sky @ Los Angeles Sparks"
   ],
@@ -756,43 +756,26 @@
     "sportsgambler_fifa_world_cup": {
       "date": "2026-07-10",
       "errors": [],
-      "generatedAt": "2026-07-10T16:35:33.531758Z",
+      "generatedAt": "2026-07-10T21:18:09.418286Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-10",
         "feed": "sportsgambler_fifa_world_cup",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 1,
+        "pick_count": 0,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-10T16:35:33.531758Z"
+        "updatedAt": "2026-07-10T21:18:09.418286Z"
       },
-      "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 1 pick(s).",
+      "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 0 pick(s).",
       "ok": true,
-      "picks": [
-        {
-          "calibration_excluded": true,
-          "date": "2026-07-10",
-          "decision": "BET",
-          "edge": null,
-          "game": "Spain vs Belgium",
-          "grade_supported": true,
-          "market_type": "soccer_moneyline",
-          "matchup": "Spain vs Belgium",
-          "odds": -167,
-          "pick": "Spain To Win (Spain vs Belgium)",
-          "probability": null,
-          "source": "SportsGamblerFIFAWorldCup",
-          "sport": "FIFA WC",
-          "units": 1
-        }
-      ],
-      "updatedAt": "2026-07-10T16:35:33.531758Z"
+      "picks": [],
+      "updatedAt": "2026-07-10T21:18:09.418286Z"
     },
     "sportsgambler_mlb": {
       "date": "2026-07-10",
       "errors": [],
-      "generatedAt": "2026-07-10T16:35:33.531758Z",
+      "generatedAt": "2026-07-10T21:18:09.418286Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-10",
@@ -801,7 +784,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 15,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-10T16:35:33.531758Z"
+        "updatedAt": "2026-07-10T21:18:09.418286Z"
       },
       "note": "Scheduled sportsgambler_mlb refresh returned 15 pick(s).",
       "ok": true,
@@ -838,7 +821,7 @@
           "edge": null,
           "game": "Pittsburgh Pirates vs Milwaukee Brewers",
           "matchup": "Pittsburgh Pirates vs Milwaukee Brewers",
-          "odds": 102,
+          "odds": -102,
           "pick": "Milwaukee Brewers to Win (Pittsburgh Pirates vs Milwaukee Brewers)",
           "pregame_snapshot": {
             "date": "2026-07-10",
@@ -916,7 +899,7 @@
           "edge": null,
           "game": "Miami Marlins vs Cleveland Guardians",
           "matchup": "Miami Marlins vs Cleveland Guardians",
-          "odds": -109,
+          "odds": 102,
           "pick": "Cleveland Guardians to Win (Miami Marlins vs Cleveland Guardians)",
           "pregame_snapshot": {
             "date": "2026-07-10",
@@ -942,7 +925,7 @@
           "edge": null,
           "game": "Tampa Bay Rays vs Seattle Mariners",
           "matchup": "Tampa Bay Rays vs Seattle Mariners",
-          "odds": -116,
+          "odds": -123,
           "pick": "Tampa Bay Rays to Win (Tampa Bay Rays vs Seattle Mariners)",
           "pregame_snapshot": {
             "date": "2026-07-10",
@@ -968,7 +951,7 @@
           "edge": null,
           "game": "Cincinnati Reds vs Chicago Cubs",
           "matchup": "Cincinnati Reds vs Chicago Cubs",
-          "odds": -104,
+          "odds": -116,
           "pick": "Chicago Cubs to Win (Cincinnati Reds vs Chicago Cubs)",
           "pregame_snapshot": {
             "date": "2026-07-10",
@@ -994,7 +977,7 @@
           "edge": null,
           "game": "New York Mets vs Boston Red Sox",
           "matchup": "New York Mets vs Boston Red Sox",
-          "odds": -137,
+          "odds": -143,
           "pick": "New York Mets to Win (New York Mets vs Boston Red Sox)",
           "pregame_snapshot": {
             "date": "2026-07-10",
@@ -1020,7 +1003,7 @@
           "edge": null,
           "game": "Chicago White Sox vs Athletics",
           "matchup": "Chicago White Sox vs Athletics",
-          "odds": -185,
+          "odds": -159,
           "pick": "Chicago White Sox to Win (Chicago White Sox vs Athletics)",
           "pregame_snapshot": {
             "date": "2026-07-10",
@@ -1046,7 +1029,7 @@
           "edge": null,
           "game": "Texas Rangers vs Houston Astros",
           "matchup": "Texas Rangers vs Houston Astros",
-          "odds": -143,
+          "odds": -147,
           "pick": "Houston Astros to Win (Texas Rangers vs Houston Astros)",
           "pregame_snapshot": {
             "date": "2026-07-10",
@@ -1072,7 +1055,7 @@
           "edge": null,
           "game": "Minnesota Twins vs Los Angeles Angels",
           "matchup": "Minnesota Twins vs Los Angeles Angels",
-          "odds": -132,
+          "odds": -149,
           "pick": "Minnesota Twins to Win (Minnesota Twins vs Los Angeles Angels)",
           "pregame_snapshot": {
             "date": "2026-07-10",
@@ -1098,7 +1081,7 @@
           "edge": null,
           "game": "St. Louis Cardinals vs Atlanta Braves",
           "matchup": "St. Louis Cardinals vs Atlanta Braves",
-          "odds": -172,
+          "odds": -167,
           "pick": "Atlanta Braves to Win (St. Louis Cardinals vs Atlanta Braves)",
           "pregame_snapshot": {
             "date": "2026-07-10",
@@ -1124,7 +1107,7 @@
           "edge": null,
           "game": "San Diego Padres vs Toronto Blue Jays",
           "matchup": "San Diego Padres vs Toronto Blue Jays",
-          "odds": -103,
+          "odds": -106,
           "pick": "Toronto Blue Jays to Win (San Diego Padres vs Toronto Blue Jays)",
           "pregame_snapshot": {
             "date": "2026-07-10",
@@ -1150,7 +1133,7 @@
           "edge": null,
           "game": "Los Angeles Dodgers vs Arizona Diamondbacks",
           "matchup": "Los Angeles Dodgers vs Arizona Diamondbacks",
-          "odds": 210,
+          "odds": 215,
           "pick": "Arizona Diamondbacks to Win (Los Angeles Dodgers vs Arizona Diamondbacks)",
           "pregame_snapshot": {
             "date": "2026-07-10",
@@ -1197,12 +1180,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-10T16:35:33.531758Z"
+      "updatedAt": "2026-07-10T21:18:09.418286Z"
     },
     "sportsgambler_nba": {
       "date": "2026-07-10",
       "errors": [],
-      "generatedAt": "2026-07-10T16:35:33.531758Z",
+      "generatedAt": "2026-07-10T21:18:09.418286Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-10",
@@ -1211,17 +1194,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-10T16:35:33.531758Z"
+        "updatedAt": "2026-07-10T21:18:09.418286Z"
       },
       "note": "Scheduled sportsgambler_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-07-10T16:35:33.531758Z"
+      "updatedAt": "2026-07-10T21:18:09.418286Z"
     },
     "sportsgambler_wnba": {
       "date": "2026-07-10",
       "errors": [],
-      "generatedAt": "2026-07-10T16:35:33.531758Z",
+      "generatedAt": "2026-07-10T21:18:09.418286Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-10",
@@ -1230,37 +1213,11 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 3,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-10T16:35:33.531758Z"
+        "updatedAt": "2026-07-10T21:18:09.418286Z"
       },
       "note": "Scheduled sportsgambler_wnba refresh returned 3 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "date": "2026-07-10",
-          "decision": "BET",
-          "edge": null,
-          "game": "Toronto Tempo vs Dallas Wings",
-          "matchup": "Toronto Tempo vs Dallas Wings",
-          "odds": -112,
-          "pick": "Wings -6.5 (Toronto Tempo vs Dallas Wings)",
-          "pregame_snapshot": {
-            "date": "2026-07-10",
-            "decision": "BET",
-            "edge": null,
-            "game": "Toronto Tempo vs Dallas Wings",
-            "matchup": "Toronto Tempo vs Dallas Wings",
-            "odds": -112,
-            "pick": "Wings -6.5 (Toronto Tempo vs Dallas Wings)",
-            "probability": null,
-            "source": "SportsGamblerWNBA",
-            "sport": "WNBA",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportsGamblerWNBA",
-          "sport": "WNBA",
-          "units": 1
-        },
         {
           "date": "2026-07-10",
           "decision": "BET",
@@ -1277,6 +1234,32 @@
             "matchup": "Connecticut Sun vs Golden State Valkyries",
             "odds": -110,
             "pick": "Sun +7.5 (Connecticut Sun vs Golden State Valkyries)",
+            "probability": null,
+            "source": "SportsGamblerWNBA",
+            "sport": "WNBA",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportsGamblerWNBA",
+          "sport": "WNBA",
+          "units": 1
+        },
+        {
+          "date": "2026-07-10",
+          "decision": "BET",
+          "edge": null,
+          "game": "Toronto Tempo vs Dallas Wings",
+          "matchup": "Toronto Tempo vs Dallas Wings",
+          "odds": -112,
+          "pick": "Wings -6.5 (Toronto Tempo vs Dallas Wings)",
+          "pregame_snapshot": {
+            "date": "2026-07-10",
+            "decision": "BET",
+            "edge": null,
+            "game": "Toronto Tempo vs Dallas Wings",
+            "matchup": "Toronto Tempo vs Dallas Wings",
+            "odds": -112,
+            "pick": "Wings -6.5 (Toronto Tempo vs Dallas Wings)",
             "probability": null,
             "source": "SportsGamblerWNBA",
             "sport": "WNBA",
@@ -1314,48 +1297,31 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-10T16:35:33.531758Z"
+      "updatedAt": "2026-07-10T21:18:09.418286Z"
     },
     "sportytrader_fifa_world_cup": {
       "date": "2026-07-10",
       "errors": [],
-      "generatedAt": "2026-07-10T16:35:33.531758Z",
+      "generatedAt": "2026-07-10T21:18:09.418286Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-10",
         "feed": "sportytrader_fifa_world_cup",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 1,
+        "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-10T16:35:33.531758Z"
+        "updatedAt": "2026-07-10T21:18:09.418286Z"
       },
-      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 1 pick(s).",
+      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 0 pick(s).",
       "ok": true,
-      "picks": [
-        {
-          "calibration_excluded": true,
-          "date": "2026-07-10",
-          "decision": "BET",
-          "edge": null,
-          "game": "Spain vs Belgium",
-          "grade_supported": false,
-          "market_type": "soccer_specialty",
-          "matchup": "Spain vs Belgium",
-          "odds": 275,
-          "pick": "Belgium to Score Over 1.5 Goals (Spain vs Belgium)",
-          "probability": null,
-          "source": "SportyTraderFIFAWorldCup",
-          "sport": "FIFA WC",
-          "units": 1
-        }
-      ],
-      "updatedAt": "2026-07-10T16:35:33.531758Z"
+      "picks": [],
+      "updatedAt": "2026-07-10T21:18:09.418286Z"
     },
     "sportytrader_mlb": {
       "date": "2026-07-10",
       "errors": [],
-      "generatedAt": "2026-07-10T16:35:33.531758Z",
+      "generatedAt": "2026-07-10T21:18:09.418286Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-10",
@@ -1364,7 +1330,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 8,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-10T16:35:33.531758Z"
+        "updatedAt": "2026-07-10T21:18:09.418286Z"
       },
       "note": "Scheduled sportytrader_mlb refresh returned 8 pick(s).",
       "ok": true,
@@ -1578,12 +1544,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-10T16:35:33.531758Z"
+      "updatedAt": "2026-07-10T21:18:09.418286Z"
     },
     "sportytrader_nba": {
       "date": "2026-07-10",
       "errors": [],
-      "generatedAt": "2026-07-10T16:35:33.531758Z",
+      "generatedAt": "2026-07-10T21:18:09.418286Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-10",
@@ -1592,17 +1558,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-10T16:35:33.531758Z"
+        "updatedAt": "2026-07-10T21:18:09.418286Z"
       },
       "note": "Scheduled sportytrader_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-07-10T16:35:33.531758Z"
+      "updatedAt": "2026-07-10T21:18:09.418286Z"
     },
     "sportytrader_wnba": {
       "date": "2026-07-10",
       "errors": [],
-      "generatedAt": "2026-07-10T16:35:33.531758Z",
+      "generatedAt": "2026-07-10T21:18:09.418286Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-10",
@@ -1611,7 +1577,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 2,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-10T16:35:33.531758Z"
+        "updatedAt": "2026-07-10T21:18:09.418286Z"
       },
       "note": "Scheduled sportytrader_wnba refresh returned 2 pick(s).",
       "ok": true,
@@ -1669,7 +1635,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-10T16:35:33.531758Z"
+      "updatedAt": "2026-07-10T21:18:09.418286Z"
     }
   },
   "fifa_world_cup": {
@@ -61794,45 +61760,26 @@
     "sportsgambler_fifa_world_cup": {
       "date": "2026-07-10",
       "errors": [],
-      "generatedAt": "2026-07-10T16:35:33.531758Z",
+      "generatedAt": "2026-07-10T21:18:09.418286Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-10",
         "feed": "sportsgambler_fifa_world_cup",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 1,
+        "pick_count": 0,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-10T16:35:33.531758Z"
+        "updatedAt": "2026-07-10T21:18:09.418286Z"
       },
-      "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 1 pick(s).",
+      "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 0 pick(s).",
       "ok": true,
-      "picks": [
-        {
-          "calibration_excluded": true,
-          "date": "2026-07-10",
-          "decision": "BET",
-          "edge": null,
-          "game": "Spain vs Belgium",
-          "game_start_time": "2026-07-10T19:00Z",
-          "grade_supported": true,
-          "market_type": "soccer_moneyline",
-          "matchup": "Spain vs Belgium",
-          "odds": -167,
-          "pick": "Spain To Win (Spain vs Belgium)",
-          "probability": null,
-          "source": "SportsGamblerFIFAWorldCup",
-          "sport": "FIFA WC",
-          "start_time": "2026-07-10T19:00Z",
-          "units": 1
-        }
-      ],
-      "updatedAt": "2026-07-10T16:35:33.531758Z"
+      "picks": [],
+      "updatedAt": "2026-07-10T21:18:09.418286Z"
     },
     "sportsgambler_mlb": {
       "date": "2026-07-10",
       "errors": [],
-      "generatedAt": "2026-07-10T16:35:33.531758Z",
+      "generatedAt": "2026-07-10T21:18:09.418286Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-10",
@@ -61841,7 +61788,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 15,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-10T16:35:33.531758Z"
+        "updatedAt": "2026-07-10T21:18:09.418286Z"
       },
       "note": "Scheduled sportsgambler_mlb refresh returned 15 pick(s).",
       "ok": true,
@@ -61881,7 +61828,7 @@
           "game": "Pittsburgh Pirates vs Milwaukee Brewers",
           "game_start_time": "2026-07-10T22:40Z",
           "matchup": "Pittsburgh Pirates vs Milwaukee Brewers",
-          "odds": 102,
+          "odds": -102,
           "pick": "Milwaukee Brewers to Win (Pittsburgh Pirates vs Milwaukee Brewers)",
           "pregame_snapshot": {
             "date": "2026-07-10",
@@ -61965,7 +61912,7 @@
           "game": "Miami Marlins vs Cleveland Guardians",
           "game_start_time": "2026-07-10T23:10Z",
           "matchup": "Miami Marlins vs Cleveland Guardians",
-          "odds": -109,
+          "odds": 102,
           "pick": "Cleveland Guardians to Win (Miami Marlins vs Cleveland Guardians)",
           "pregame_snapshot": {
             "date": "2026-07-10",
@@ -61993,7 +61940,7 @@
           "game": "Tampa Bay Rays vs Seattle Mariners",
           "game_start_time": "2026-07-10T23:10Z",
           "matchup": "Tampa Bay Rays vs Seattle Mariners",
-          "odds": -116,
+          "odds": -123,
           "pick": "Tampa Bay Rays to Win (Tampa Bay Rays vs Seattle Mariners)",
           "pregame_snapshot": {
             "date": "2026-07-10",
@@ -62021,7 +61968,7 @@
           "game": "Cincinnati Reds vs Chicago Cubs",
           "game_start_time": "2026-07-10T23:10Z",
           "matchup": "Cincinnati Reds vs Chicago Cubs",
-          "odds": -104,
+          "odds": -116,
           "pick": "Chicago Cubs to Win (Cincinnati Reds vs Chicago Cubs)",
           "pregame_snapshot": {
             "date": "2026-07-10",
@@ -62049,7 +61996,7 @@
           "game": "New York Mets vs Boston Red Sox",
           "game_start_time": "2026-07-10T23:15Z",
           "matchup": "New York Mets vs Boston Red Sox",
-          "odds": -137,
+          "odds": -143,
           "pick": "New York Mets to Win (New York Mets vs Boston Red Sox)",
           "pregame_snapshot": {
             "date": "2026-07-10",
@@ -62077,7 +62024,7 @@
           "game": "Chicago White Sox vs Athletics",
           "game_start_time": "2026-07-10T23:40Z",
           "matchup": "Chicago White Sox vs Athletics",
-          "odds": -185,
+          "odds": -159,
           "pick": "Chicago White Sox to Win (Chicago White Sox vs Athletics)",
           "pregame_snapshot": {
             "date": "2026-07-10",
@@ -62105,7 +62052,7 @@
           "game": "Texas Rangers vs Houston Astros",
           "game_start_time": "2026-07-11T00:05Z",
           "matchup": "Texas Rangers vs Houston Astros",
-          "odds": -143,
+          "odds": -147,
           "pick": "Houston Astros to Win (Texas Rangers vs Houston Astros)",
           "pregame_snapshot": {
             "date": "2026-07-10",
@@ -62133,7 +62080,7 @@
           "game": "Minnesota Twins vs Los Angeles Angels",
           "game_start_time": "2026-07-11T00:10Z",
           "matchup": "Minnesota Twins vs Los Angeles Angels",
-          "odds": -132,
+          "odds": -149,
           "pick": "Minnesota Twins to Win (Minnesota Twins vs Los Angeles Angels)",
           "pregame_snapshot": {
             "date": "2026-07-10",
@@ -62161,7 +62108,7 @@
           "game": "St. Louis Cardinals vs Atlanta Braves",
           "game_start_time": "2026-07-11T00:15Z",
           "matchup": "St. Louis Cardinals vs Atlanta Braves",
-          "odds": -172,
+          "odds": -167,
           "pick": "Atlanta Braves to Win (St. Louis Cardinals vs Atlanta Braves)",
           "pregame_snapshot": {
             "date": "2026-07-10",
@@ -62189,7 +62136,7 @@
           "game": "San Diego Padres vs Toronto Blue Jays",
           "game_start_time": "2026-07-11T01:40Z",
           "matchup": "San Diego Padres vs Toronto Blue Jays",
-          "odds": -103,
+          "odds": -106,
           "pick": "Toronto Blue Jays to Win (San Diego Padres vs Toronto Blue Jays)",
           "pregame_snapshot": {
             "date": "2026-07-10",
@@ -62217,7 +62164,7 @@
           "game": "Los Angeles Dodgers vs Arizona Diamondbacks",
           "game_start_time": "2026-07-11T02:10Z",
           "matchup": "Los Angeles Dodgers vs Arizona Diamondbacks",
-          "odds": 210,
+          "odds": 215,
           "pick": "Arizona Diamondbacks to Win (Los Angeles Dodgers vs Arizona Diamondbacks)",
           "pregame_snapshot": {
             "date": "2026-07-10",
@@ -62267,12 +62214,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-10T16:35:33.531758Z"
+      "updatedAt": "2026-07-10T21:18:09.418286Z"
     },
     "sportsgambler_nba": {
       "date": "2026-07-10",
       "errors": [],
-      "generatedAt": "2026-07-10T16:35:33.531758Z",
+      "generatedAt": "2026-07-10T21:18:09.418286Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-10",
@@ -62281,17 +62228,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-10T16:35:33.531758Z"
+        "updatedAt": "2026-07-10T21:18:09.418286Z"
       },
       "note": "Scheduled sportsgambler_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-07-10T16:35:33.531758Z"
+      "updatedAt": "2026-07-10T21:18:09.418286Z"
     },
     "sportsgambler_wnba": {
       "date": "2026-07-10",
       "errors": [],
-      "generatedAt": "2026-07-10T16:35:33.531758Z",
+      "generatedAt": "2026-07-10T21:18:09.418286Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-10",
@@ -62300,39 +62247,11 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 3,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-10T16:35:33.531758Z"
+        "updatedAt": "2026-07-10T21:18:09.418286Z"
       },
       "note": "Scheduled sportsgambler_wnba refresh returned 3 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "date": "2026-07-10",
-          "decision": "BET",
-          "edge": null,
-          "game": "Toronto Tempo vs Dallas Wings",
-          "game_start_time": "2026-07-10T23:30Z",
-          "matchup": "Toronto Tempo vs Dallas Wings",
-          "odds": -112,
-          "pick": "Wings -6.5 (Toronto Tempo vs Dallas Wings)",
-          "pregame_snapshot": {
-            "date": "2026-07-10",
-            "decision": "BET",
-            "edge": null,
-            "game": "Toronto Tempo vs Dallas Wings",
-            "matchup": "Toronto Tempo vs Dallas Wings",
-            "odds": -112,
-            "pick": "Wings -6.5 (Toronto Tempo vs Dallas Wings)",
-            "probability": null,
-            "source": "SportsGamblerWNBA",
-            "sport": "WNBA",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportsGamblerWNBA",
-          "sport": "WNBA",
-          "start_time": "2026-07-10T23:30Z",
-          "units": 1
-        },
         {
           "date": "2026-07-10",
           "decision": "BET",
@@ -62350,6 +62269,34 @@
             "matchup": "Connecticut Sun vs Golden State Valkyries",
             "odds": -110,
             "pick": "Sun +7.5 (Connecticut Sun vs Golden State Valkyries)",
+            "probability": null,
+            "source": "SportsGamblerWNBA",
+            "sport": "WNBA",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportsGamblerWNBA",
+          "sport": "WNBA",
+          "start_time": "2026-07-10T23:30Z",
+          "units": 1
+        },
+        {
+          "date": "2026-07-10",
+          "decision": "BET",
+          "edge": null,
+          "game": "Toronto Tempo vs Dallas Wings",
+          "game_start_time": "2026-07-10T23:30Z",
+          "matchup": "Toronto Tempo vs Dallas Wings",
+          "odds": -112,
+          "pick": "Wings -6.5 (Toronto Tempo vs Dallas Wings)",
+          "pregame_snapshot": {
+            "date": "2026-07-10",
+            "decision": "BET",
+            "edge": null,
+            "game": "Toronto Tempo vs Dallas Wings",
+            "matchup": "Toronto Tempo vs Dallas Wings",
+            "odds": -112,
+            "pick": "Wings -6.5 (Toronto Tempo vs Dallas Wings)",
             "probability": null,
             "source": "SportsGamblerWNBA",
             "sport": "WNBA",
@@ -62390,48 +62337,31 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-10T16:35:33.531758Z"
+      "updatedAt": "2026-07-10T21:18:09.418286Z"
     },
     "sportytrader_fifa_world_cup": {
       "date": "2026-07-10",
       "errors": [],
-      "generatedAt": "2026-07-10T16:35:33.531758Z",
+      "generatedAt": "2026-07-10T21:18:09.418286Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-10",
         "feed": "sportytrader_fifa_world_cup",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 1,
+        "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-10T16:35:33.531758Z"
+        "updatedAt": "2026-07-10T21:18:09.418286Z"
       },
-      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 1 pick(s).",
+      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 0 pick(s).",
       "ok": true,
-      "picks": [
-        {
-          "calibration_excluded": true,
-          "date": "2026-07-10",
-          "decision": "BET",
-          "edge": null,
-          "game": "Spain vs Belgium",
-          "grade_supported": false,
-          "market_type": "soccer_specialty",
-          "matchup": "Spain vs Belgium",
-          "odds": 275,
-          "pick": "Belgium to Score Over 1.5 Goals (Spain vs Belgium)",
-          "probability": null,
-          "source": "SportyTraderFIFAWorldCup",
-          "sport": "FIFA WC",
-          "units": 1
-        }
-      ],
-      "updatedAt": "2026-07-10T16:35:33.531758Z"
+      "picks": [],
+      "updatedAt": "2026-07-10T21:18:09.418286Z"
     },
     "sportytrader_mlb": {
       "date": "2026-07-10",
       "errors": [],
-      "generatedAt": "2026-07-10T16:35:33.531758Z",
+      "generatedAt": "2026-07-10T21:18:09.418286Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-10",
@@ -62440,7 +62370,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 8,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-10T16:35:33.531758Z"
+        "updatedAt": "2026-07-10T21:18:09.418286Z"
       },
       "note": "Scheduled sportytrader_mlb refresh returned 8 pick(s).",
       "ok": true,
@@ -62670,12 +62600,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-10T16:35:33.531758Z"
+      "updatedAt": "2026-07-10T21:18:09.418286Z"
     },
     "sportytrader_nba": {
       "date": "2026-07-10",
       "errors": [],
-      "generatedAt": "2026-07-10T16:35:33.531758Z",
+      "generatedAt": "2026-07-10T21:18:09.418286Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-10",
@@ -62684,17 +62614,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-10T16:35:33.531758Z"
+        "updatedAt": "2026-07-10T21:18:09.418286Z"
       },
       "note": "Scheduled sportytrader_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-07-10T16:35:33.531758Z"
+      "updatedAt": "2026-07-10T21:18:09.418286Z"
     },
     "sportytrader_wnba": {
       "date": "2026-07-10",
       "errors": [],
-      "generatedAt": "2026-07-10T16:35:33.531758Z",
+      "generatedAt": "2026-07-10T21:18:09.418286Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-10",
@@ -62703,7 +62633,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 2,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-10T16:35:33.531758Z"
+        "updatedAt": "2026-07-10T21:18:09.418286Z"
       },
       "note": "Scheduled sportytrader_wnba refresh returned 2 pick(s).",
       "ok": true,
@@ -62765,7 +62695,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-10T16:35:33.531758Z"
+      "updatedAt": "2026-07-10T21:18:09.418286Z"
     },
     "wnba": {
       "ok": true,
@@ -66056,43 +65986,26 @@
   "sportsgambler_fifa_world_cup": {
     "date": "2026-07-10",
     "errors": [],
-    "generatedAt": "2026-07-10T16:35:33.531758Z",
+    "generatedAt": "2026-07-10T21:18:09.418286Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-10",
       "feed": "sportsgambler_fifa_world_cup",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 1,
+      "pick_count": 0,
       "provider": "sportsgambler",
-      "updatedAt": "2026-07-10T16:35:33.531758Z"
+      "updatedAt": "2026-07-10T21:18:09.418286Z"
     },
-    "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 1 pick(s).",
+    "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 0 pick(s).",
     "ok": true,
-    "picks": [
-      {
-        "calibration_excluded": true,
-        "date": "2026-07-10",
-        "decision": "BET",
-        "edge": null,
-        "game": "Spain vs Belgium",
-        "grade_supported": true,
-        "market_type": "soccer_moneyline",
-        "matchup": "Spain vs Belgium",
-        "odds": -167,
-        "pick": "Spain To Win (Spain vs Belgium)",
-        "probability": null,
-        "source": "SportsGamblerFIFAWorldCup",
-        "sport": "FIFA WC",
-        "units": 1
-      }
-    ],
-    "updatedAt": "2026-07-10T16:35:33.531758Z"
+    "picks": [],
+    "updatedAt": "2026-07-10T21:18:09.418286Z"
   },
   "sportsgambler_mlb": {
     "date": "2026-07-10",
     "errors": [],
-    "generatedAt": "2026-07-10T16:35:33.531758Z",
+    "generatedAt": "2026-07-10T21:18:09.418286Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-10",
@@ -66101,7 +66014,7 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 15,
       "provider": "sportsgambler",
-      "updatedAt": "2026-07-10T16:35:33.531758Z"
+      "updatedAt": "2026-07-10T21:18:09.418286Z"
     },
     "note": "Scheduled sportsgambler_mlb refresh returned 15 pick(s).",
     "ok": true,
@@ -66138,7 +66051,7 @@
         "edge": null,
         "game": "Pittsburgh Pirates vs Milwaukee Brewers",
         "matchup": "Pittsburgh Pirates vs Milwaukee Brewers",
-        "odds": 102,
+        "odds": -102,
         "pick": "Milwaukee Brewers to Win (Pittsburgh Pirates vs Milwaukee Brewers)",
         "pregame_snapshot": {
           "date": "2026-07-10",
@@ -66216,7 +66129,7 @@
         "edge": null,
         "game": "Miami Marlins vs Cleveland Guardians",
         "matchup": "Miami Marlins vs Cleveland Guardians",
-        "odds": -109,
+        "odds": 102,
         "pick": "Cleveland Guardians to Win (Miami Marlins vs Cleveland Guardians)",
         "pregame_snapshot": {
           "date": "2026-07-10",
@@ -66242,7 +66155,7 @@
         "edge": null,
         "game": "Tampa Bay Rays vs Seattle Mariners",
         "matchup": "Tampa Bay Rays vs Seattle Mariners",
-        "odds": -116,
+        "odds": -123,
         "pick": "Tampa Bay Rays to Win (Tampa Bay Rays vs Seattle Mariners)",
         "pregame_snapshot": {
           "date": "2026-07-10",
@@ -66268,7 +66181,7 @@
         "edge": null,
         "game": "Cincinnati Reds vs Chicago Cubs",
         "matchup": "Cincinnati Reds vs Chicago Cubs",
-        "odds": -104,
+        "odds": -116,
         "pick": "Chicago Cubs to Win (Cincinnati Reds vs Chicago Cubs)",
         "pregame_snapshot": {
           "date": "2026-07-10",
@@ -66294,7 +66207,7 @@
         "edge": null,
         "game": "New York Mets vs Boston Red Sox",
         "matchup": "New York Mets vs Boston Red Sox",
-        "odds": -137,
+        "odds": -143,
         "pick": "New York Mets to Win (New York Mets vs Boston Red Sox)",
         "pregame_snapshot": {
           "date": "2026-07-10",
@@ -66320,7 +66233,7 @@
         "edge": null,
         "game": "Chicago White Sox vs Athletics",
         "matchup": "Chicago White Sox vs Athletics",
-        "odds": -185,
+        "odds": -159,
         "pick": "Chicago White Sox to Win (Chicago White Sox vs Athletics)",
         "pregame_snapshot": {
           "date": "2026-07-10",
@@ -66346,7 +66259,7 @@
         "edge": null,
         "game": "Texas Rangers vs Houston Astros",
         "matchup": "Texas Rangers vs Houston Astros",
-        "odds": -143,
+        "odds": -147,
         "pick": "Houston Astros to Win (Texas Rangers vs Houston Astros)",
         "pregame_snapshot": {
           "date": "2026-07-10",
@@ -66372,7 +66285,7 @@
         "edge": null,
         "game": "Minnesota Twins vs Los Angeles Angels",
         "matchup": "Minnesota Twins vs Los Angeles Angels",
-        "odds": -132,
+        "odds": -149,
         "pick": "Minnesota Twins to Win (Minnesota Twins vs Los Angeles Angels)",
         "pregame_snapshot": {
           "date": "2026-07-10",
@@ -66398,7 +66311,7 @@
         "edge": null,
         "game": "St. Louis Cardinals vs Atlanta Braves",
         "matchup": "St. Louis Cardinals vs Atlanta Braves",
-        "odds": -172,
+        "odds": -167,
         "pick": "Atlanta Braves to Win (St. Louis Cardinals vs Atlanta Braves)",
         "pregame_snapshot": {
           "date": "2026-07-10",
@@ -66424,7 +66337,7 @@
         "edge": null,
         "game": "San Diego Padres vs Toronto Blue Jays",
         "matchup": "San Diego Padres vs Toronto Blue Jays",
-        "odds": -103,
+        "odds": -106,
         "pick": "Toronto Blue Jays to Win (San Diego Padres vs Toronto Blue Jays)",
         "pregame_snapshot": {
           "date": "2026-07-10",
@@ -66450,7 +66363,7 @@
         "edge": null,
         "game": "Los Angeles Dodgers vs Arizona Diamondbacks",
         "matchup": "Los Angeles Dodgers vs Arizona Diamondbacks",
-        "odds": 210,
+        "odds": 215,
         "pick": "Arizona Diamondbacks to Win (Los Angeles Dodgers vs Arizona Diamondbacks)",
         "pregame_snapshot": {
           "date": "2026-07-10",
@@ -66497,12 +66410,12 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-07-10T16:35:33.531758Z"
+    "updatedAt": "2026-07-10T21:18:09.418286Z"
   },
   "sportsgambler_nba": {
     "date": "2026-07-10",
     "errors": [],
-    "generatedAt": "2026-07-10T16:35:33.531758Z",
+    "generatedAt": "2026-07-10T21:18:09.418286Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-10",
@@ -66511,17 +66424,17 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 0,
       "provider": "sportsgambler",
-      "updatedAt": "2026-07-10T16:35:33.531758Z"
+      "updatedAt": "2026-07-10T21:18:09.418286Z"
     },
     "note": "Scheduled sportsgambler_nba refresh returned 0 pick(s).",
     "ok": true,
     "picks": [],
-    "updatedAt": "2026-07-10T16:35:33.531758Z"
+    "updatedAt": "2026-07-10T21:18:09.418286Z"
   },
   "sportsgambler_wnba": {
     "date": "2026-07-10",
     "errors": [],
-    "generatedAt": "2026-07-10T16:35:33.531758Z",
+    "generatedAt": "2026-07-10T21:18:09.418286Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-10",
@@ -66530,37 +66443,11 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 3,
       "provider": "sportsgambler",
-      "updatedAt": "2026-07-10T16:35:33.531758Z"
+      "updatedAt": "2026-07-10T21:18:09.418286Z"
     },
     "note": "Scheduled sportsgambler_wnba refresh returned 3 pick(s).",
     "ok": true,
     "picks": [
-      {
-        "date": "2026-07-10",
-        "decision": "BET",
-        "edge": null,
-        "game": "Toronto Tempo vs Dallas Wings",
-        "matchup": "Toronto Tempo vs Dallas Wings",
-        "odds": -112,
-        "pick": "Wings -6.5 (Toronto Tempo vs Dallas Wings)",
-        "pregame_snapshot": {
-          "date": "2026-07-10",
-          "decision": "BET",
-          "edge": null,
-          "game": "Toronto Tempo vs Dallas Wings",
-          "matchup": "Toronto Tempo vs Dallas Wings",
-          "odds": -112,
-          "pick": "Wings -6.5 (Toronto Tempo vs Dallas Wings)",
-          "probability": null,
-          "source": "SportsGamblerWNBA",
-          "sport": "WNBA",
-          "units": 1
-        },
-        "probability": null,
-        "source": "SportsGamblerWNBA",
-        "sport": "WNBA",
-        "units": 1
-      },
       {
         "date": "2026-07-10",
         "decision": "BET",
@@ -66577,6 +66464,32 @@
           "matchup": "Connecticut Sun vs Golden State Valkyries",
           "odds": -110,
           "pick": "Sun +7.5 (Connecticut Sun vs Golden State Valkyries)",
+          "probability": null,
+          "source": "SportsGamblerWNBA",
+          "sport": "WNBA",
+          "units": 1
+        },
+        "probability": null,
+        "source": "SportsGamblerWNBA",
+        "sport": "WNBA",
+        "units": 1
+      },
+      {
+        "date": "2026-07-10",
+        "decision": "BET",
+        "edge": null,
+        "game": "Toronto Tempo vs Dallas Wings",
+        "matchup": "Toronto Tempo vs Dallas Wings",
+        "odds": -112,
+        "pick": "Wings -6.5 (Toronto Tempo vs Dallas Wings)",
+        "pregame_snapshot": {
+          "date": "2026-07-10",
+          "decision": "BET",
+          "edge": null,
+          "game": "Toronto Tempo vs Dallas Wings",
+          "matchup": "Toronto Tempo vs Dallas Wings",
+          "odds": -112,
+          "pick": "Wings -6.5 (Toronto Tempo vs Dallas Wings)",
           "probability": null,
           "source": "SportsGamblerWNBA",
           "sport": "WNBA",
@@ -66614,48 +66527,31 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-07-10T16:35:33.531758Z"
+    "updatedAt": "2026-07-10T21:18:09.418286Z"
   },
   "sportytrader_fifa_world_cup": {
     "date": "2026-07-10",
     "errors": [],
-    "generatedAt": "2026-07-10T16:35:33.531758Z",
+    "generatedAt": "2026-07-10T21:18:09.418286Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-10",
       "feed": "sportytrader_fifa_world_cup",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 1,
+      "pick_count": 0,
       "provider": "sportytrader",
-      "updatedAt": "2026-07-10T16:35:33.531758Z"
+      "updatedAt": "2026-07-10T21:18:09.418286Z"
     },
-    "note": "Scheduled sportytrader_fifa_world_cup refresh returned 1 pick(s).",
+    "note": "Scheduled sportytrader_fifa_world_cup refresh returned 0 pick(s).",
     "ok": true,
-    "picks": [
-      {
-        "calibration_excluded": true,
-        "date": "2026-07-10",
-        "decision": "BET",
-        "edge": null,
-        "game": "Spain vs Belgium",
-        "grade_supported": false,
-        "market_type": "soccer_specialty",
-        "matchup": "Spain vs Belgium",
-        "odds": 275,
-        "pick": "Belgium to Score Over 1.5 Goals (Spain vs Belgium)",
-        "probability": null,
-        "source": "SportyTraderFIFAWorldCup",
-        "sport": "FIFA WC",
-        "units": 1
-      }
-    ],
-    "updatedAt": "2026-07-10T16:35:33.531758Z"
+    "picks": [],
+    "updatedAt": "2026-07-10T21:18:09.418286Z"
   },
   "sportytrader_mlb": {
     "date": "2026-07-10",
     "errors": [],
-    "generatedAt": "2026-07-10T16:35:33.531758Z",
+    "generatedAt": "2026-07-10T21:18:09.418286Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-10",
@@ -66664,7 +66560,7 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 8,
       "provider": "sportytrader",
-      "updatedAt": "2026-07-10T16:35:33.531758Z"
+      "updatedAt": "2026-07-10T21:18:09.418286Z"
     },
     "note": "Scheduled sportytrader_mlb refresh returned 8 pick(s).",
     "ok": true,
@@ -66878,12 +66774,12 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-07-10T16:35:33.531758Z"
+    "updatedAt": "2026-07-10T21:18:09.418286Z"
   },
   "sportytrader_nba": {
     "date": "2026-07-10",
     "errors": [],
-    "generatedAt": "2026-07-10T16:35:33.531758Z",
+    "generatedAt": "2026-07-10T21:18:09.418286Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-10",
@@ -66892,17 +66788,17 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 0,
       "provider": "sportytrader",
-      "updatedAt": "2026-07-10T16:35:33.531758Z"
+      "updatedAt": "2026-07-10T21:18:09.418286Z"
     },
     "note": "Scheduled sportytrader_nba refresh returned 0 pick(s).",
     "ok": true,
     "picks": [],
-    "updatedAt": "2026-07-10T16:35:33.531758Z"
+    "updatedAt": "2026-07-10T21:18:09.418286Z"
   },
   "sportytrader_wnba": {
     "date": "2026-07-10",
     "errors": [],
-    "generatedAt": "2026-07-10T16:35:33.531758Z",
+    "generatedAt": "2026-07-10T21:18:09.418286Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-10",
@@ -66911,7 +66807,7 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 2,
       "provider": "sportytrader",
-      "updatedAt": "2026-07-10T16:35:33.531758Z"
+      "updatedAt": "2026-07-10T21:18:09.418286Z"
     },
     "note": "Scheduled sportytrader_wnba refresh returned 2 pick(s).",
     "ok": true,
@@ -66969,9 +66865,9 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-07-10T16:35:33.531758Z"
+    "updatedAt": "2026-07-10T21:18:09.418286Z"
   },
-  "updatedAt": "2026-07-10T20:24:55.181718Z",
+  "updatedAt": "2026-07-10T21:18:09.418286Z",
   "wnba": {
     "ok": true,
     "picks": [
