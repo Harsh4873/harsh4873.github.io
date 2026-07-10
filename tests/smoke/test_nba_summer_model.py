@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import datetime as dt
+
 
 def _event(
     event_id: str,
@@ -128,7 +130,10 @@ def test_nba_summer_model_skips_started_games_and_emits_pregame_pick(monkeypatch
 
     monkeypatch.setattr(summer_model, "_request_scoreboard", lambda date: payloads[date])
 
-    result = summer_model.generate_nba_summer_picks(target)
+    result = summer_model.generate_nba_summer_picks(
+        target,
+        now_utc=dt.datetime(2026, 7, 9, 22, 0, tzinfo=dt.timezone.utc),
+    )
 
     assert result["ok"] is True
     assert result["slate_games"] == 2

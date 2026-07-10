@@ -37,6 +37,25 @@ Model and feed refreshes:
 4. Preserve existing `result`, `start_time`, and `game_start_time` fields for matching picks.
 5. Commit and push as the triggering GitHub actor.
 
+For the audited in-house team-model buckets (`mlb_new`, `mlb_first_five`,
+`mlb_inning`, `fifa_world_cup`, and `nba_summer`), the model refresh also
+stores an immutable first-publication/revision record in
+`data/calibration/team_prop_pregame_ledger.json`. Certification requires a
+trusted per-pick publication timestamp earlier than the scheduled start.
+Legacy cache rows remain visible but are not promoted into certified evidence.
+
+The certified ledger separates three concepts:
+
+- forecast evaluation, which includes certified PASS/LEAN/BET outcomes;
+- market/ROI evaluation, which additionally requires observed executable odds;
+- calibration training, which additionally requires explicit eligibility and
+  continues to exclude FIFA.
+
+`scripts/team_prop_model_evaluator.py` reads only this ledger and reports
+chronological metrics by model version and market, including Brier score, log
+loss, calibration bins, verified-price ROI, market benchmarks, and retained
+feature-contract coverage.
+
 `scripts/cache_manifest.py` updates the dated-cache manifest whenever model or feed caches are written or merged.
 
 ## Deployment Contract

@@ -76,20 +76,23 @@ jobs:
           git config user.name  "${GITHUB_ACTOR}"
           git config user.email "${ACTOR_EMAIL}"
           BRANCH="${GITHUB_REF_NAME:-main}"
-          if [ -z "$(git status --porcelain -- data/model_cache data/parlay_cards)" ]; then
-            echo "No change in data/model_cache or data/parlay_cards — skipping commit."
+          if [ -z "$(git status --porcelain -- data/model_cache data/parlay_cards data/calibration/team_prop_pregame_ledger.json)" ]; then
+            echo "No model-cache, parlay-card, or team-prop ledger change — skipping commit."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           GENERATED_CACHE="${RUNNER_TEMP}/model-cache-latest.json"
+          GENERATED_TEAM_LEDGER="${RUNNER_TEMP}/team-prop-pregame-ledger.json"
           cp data/model_cache/latest.json "$GENERATED_CACHE"
+          cp data/calibration/team_prop_pregame_ledger.json "$GENERATED_TEAM_LEDGER"
           for attempt in 1 2 3; do
             git fetch origin "$BRANCH"
             git reset --hard "origin/${BRANCH}"
             python scripts/merge_model_cache_payload.py "$GENERATED_CACHE"
+            cp "$GENERATED_TEAM_LEDGER" data/calibration/team_prop_pregame_ledger.json
             CACHE_DATE=$(python -c "import json; print(json.load(open('data/model_cache/latest.json'))['date'])")
             python scripts/build_parlay_cards.py --date "$CACHE_DATE"
-            git add data/model_cache data/parlay_cards
+            git add data/model_cache data/parlay_cards data/calibration/team_prop_pregame_ledger.json
             if git diff --cached --quiet; then
               echo "No staged cache change after merge — skipping commit."
               echo "changed=false" >> "$GITHUB_OUTPUT"

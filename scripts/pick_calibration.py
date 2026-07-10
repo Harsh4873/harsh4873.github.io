@@ -11,6 +11,10 @@ from pathlib import Path
 from typing import Any, Iterator
 
 from player_props.era import is_ml_era_pick
+from scripts.team_prop_pregame_ledger import (
+    TEAM_PROP_MODEL_KEYS,
+    load_team_prop_pregame_ledger,
+)
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -340,6 +344,7 @@ def ledger_record(
     odds = odds if odds is not None else _number(snapshot.get("assumed_odds"))
     raw_units = _number(snapshot.get("units"))
     units = _number(pick.get("units"))
+    stake_units = units if units is not None else raw_units
     sport = str(snapshot.get("sport") or pick.get("sport") or "unknown")
     source = str(snapshot.get("source") or pick.get("source") or model_key)
     bet_type = infer_bet_type(snapshot)
@@ -363,13 +368,78 @@ def ledger_record(
         "edge": _number(pick.get("edge")),
         "odds": odds,
         "raw_units": raw_units,
-        "units": units,
+        "units": stake_units,
+        "stake_units": stake_units,
         "raw_decision": str(snapshot.get("decision") or ""),
         "decision": str(pick.get("decision") or snapshot.get("decision") or ""),
         "result": result,
         "outcome": outcome,
-        "profit": _profit(result, units if units is not None else raw_units, odds, implied_probability),
+        "profit": _profit(result, stake_units, odds, implied_probability),
         "pregame_snapshot": snapshot,
+    }
+
+
+def _certified_team_record(record: dict[str, Any]) -> dict[str, Any] | None:
+    """Convert one certified, price-verified team snapshot for calibration.
+
+    The complete team ledger remains the evaluation source.  The universal
+    calibration ledger receives only rows that passed its stricter provenance
+    contract, so legacy/assumed/proxy prices cannot promote a calibration.
+    """
+
+    if record.get("calibration_eligible") is not True:
+        return None
+    certification = record.get("certification")
+    if not isinstance(certification, dict) or certification.get("status") != "certified":
+        return None
+    model_key = str(record.get("model_key") or "").strip()
+    if model_key not in TEAM_PROP_MODEL_KEYS or model_key in CALIBRATION_EXCLUDED_MODEL_KEYS:
+        return None
+    raw_probability = normalize_probability(record.get("raw_probability"))
+    if raw_probability is None:
+        return None
+    price = record.get("price") if isinstance(record.get("price"), dict) else {}
+    odds = _number(record.get("observed_american_odds"))
+    odds = odds if odds is not None else _number(price.get("odds"))
+    implied_probability = american_implied_probability(odds)
+    if odds is None or implied_probability is None:
+        return None
+    result = str(record.get("result") or "pending").strip().lower()
+    outcome = 1 if result == "win" else 0 if result == "loss" else None
+    stake_units = _number(record.get("stake"))
+    snapshot = record.get("pregame_snapshot") if isinstance(record.get("pregame_snapshot"), dict) else {}
+    sport = str(record.get("sport") or snapshot.get("sport") or "unknown")
+    source = str(record.get("source") or snapshot.get("source") or model_key)
+    bet_type = str(record.get("market") or infer_bet_type(snapshot) or "other")
+    displayed_probability = normalize_probability(record.get("displayed_probability"))
+    return {
+        "id": str(record.get("id") or ""),
+        "date": str(record.get("slate_date") or snapshot.get("date") or ""),
+        "cache_type": "team_prop_pregame_ledger",
+        "model_key": model_key,
+        "model_version": str(record.get("model_version") or model_key),
+        "source": source,
+        "sport": sport,
+        "bet_type": bet_type,
+        "calibration_group": calibration_group_key(model_key, sport, bet_type, source),
+        "pick": str(record.get("pick") or snapshot.get("pick") or ""),
+        "matchup": str(record.get("matchup") or snapshot.get("matchup") or snapshot.get("game") or ""),
+        "raw_probability": round(raw_probability, 6),
+        "probability": round(displayed_probability, 6) if displayed_probability is not None else None,
+        "market_implied_probability": implied_probability,
+        "raw_edge": _number(snapshot.get("edge")),
+        "edge": _number(snapshot.get("edge")),
+        "odds": odds,
+        "raw_units": stake_units,
+        "units": stake_units,
+        "stake_units": stake_units,
+        "raw_decision": str(record.get("raw_decision") or snapshot.get("decision") or ""),
+        "decision": str(record.get("decision") or snapshot.get("decision") or ""),
+        "result": result,
+        "outcome": outcome,
+        "profit": _profit(result, stake_units, odds, implied_probability),
+        "calibration_eligible": True,
+        "pregame_snapshot": copy.deepcopy(snapshot),
     }
 
 
@@ -384,6 +454,10 @@ def _iter_bucket_records(
     if isinstance(models, dict):
         for model_key, bucket in models.items():
             if str(model_key) in CALIBRATION_EXCLUDED_MODEL_KEYS:
+                continue
+            if cache_type == "model_cache" and str(model_key) in TEAM_PROP_MODEL_KEYS:
+                # These buckets are represented only by immutable certified
+                # snapshots; mutable legacy cache rows are not training data.
                 continue
             if not isinstance(bucket, dict) or not isinstance(bucket.get("picks"), list):
                 continue
@@ -432,12 +506,25 @@ def build_outcome_ledger(repo_root: Path = REPO_ROOT) -> dict[str, Any]:
     for path in sorted((repo_root / "data" / "player_props_cache").glob("20??-??-??.json")):
         add_payload(path, cache_type="player_props_cache")
 
+    team_ledger = load_team_prop_pregame_ledger(repo_root=repo_root)
+    for snapshot_record in team_ledger.get("records") or []:
+        if not isinstance(snapshot_record, dict):
+            continue
+        record = _certified_team_record(snapshot_record)
+        if record and record.get("id"):
+            records_by_id[str(record["id"])] = record
+
     records = sorted(
         records_by_id.values(),
         key=lambda record: (str(record.get("date") or ""), str(record.get("model_key") or ""), str(record.get("id") or "")),
     )
     decided = [record for record in records if record.get("result") in {"win", "loss"}]
-    trainable = [record for record in decided if record.get("raw_probability") is not None]
+    trainable = [
+        record
+        for record in decided
+        if record.get("raw_probability") is not None
+        and record.get("calibration_eligible") is not False
+    ]
     return {
         "schema_version": CALIBRATION_SCHEMA_VERSION,
         "summary": {

@@ -153,7 +153,10 @@ def evaluate(rows: list[dict[str, Any]], mapping: dict[str, Any]) -> dict[str, A
         if row.get("market_implied_probability") is not None
         and probability - float(row["market_implied_probability"]) >= 0.03
     ]
-    stake = sum(float(row.get("raw_units") or row.get("units") or 1) for row, _ in qualified)
+    stake = sum(
+        float(row.get("stake_units") or row.get("units") or row.get("raw_units") or 1)
+        for row, _ in qualified
+    )
     profit = sum(float(row.get("profit") or 0) for row, _ in qualified)
     return {
         "samples": len(rows),
@@ -190,6 +193,7 @@ def _trainable_records(ledger: dict[str, Any]) -> list[dict[str, Any]]:
             if isinstance(row, dict)
             and row.get("outcome") in {0, 1}
             and isinstance(row.get("raw_probability"), (int, float))
+            and row.get("calibration_eligible") is not False
         ],
         key=lambda row: (str(row.get("date") or ""), str(row.get("id") or "")),
     )

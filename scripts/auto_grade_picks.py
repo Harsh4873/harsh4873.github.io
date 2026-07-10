@@ -3,7 +3,9 @@
 
 from __future__ import annotations
 
+import copy
 import hashlib
+import importlib
 import json
 import shutil
 import sys
@@ -19,9 +21,6 @@ PLAYER_PROPS_SNAPSHOT_DIR = REPO_ROOT / "data" / "player_props_snapshots"
 sys.path.insert(0, str(REPO_ROOT))
 
 import pickgrader_server  # noqa: E402
-from scripts.pick_calibration import rebuild_outcome_ledger  # noqa: E402
-from scripts.build_parlay_cards import rebuild_parlay_cards  # noqa: E402
-from player_props.era import is_ml_era_pick  # noqa: E402
 
 
 def _read_json(path: Path) -> dict[str, Any] | None:
@@ -76,11 +75,16 @@ def grade_payload(payload: dict[str, Any], *, ml_player_props_only: bool = False
     pending: list[dict[str, Any]] = []
     refs: dict[str, dict[str, Any]] = {}
     changed = 0
+    is_ml_era_pick = None
+    if ml_player_props_only:
+        from player_props.era import is_ml_era_pick as is_ml_era_pick_predicate
+
+        is_ml_era_pick = is_ml_era_pick_predicate
 
     for scope, picks in _iter_pick_lists(payload):
         for index, pick in enumerate(picks):
             changed += pickgrader_server.apply_external_pick_metadata(pick)
-            if ml_player_props_only and not is_ml_era_pick(pick, fallback_timestamp):
+            if ml_player_props_only and is_ml_era_pick is not None and not is_ml_era_pick(pick, fallback_timestamp):
                 continue
             if str(pick.get("decision") or "").strip().upper() not in {"BET", "LEAN"}:
                 continue
@@ -128,7 +132,166 @@ def grade_file(path: Path, *, ml_player_props_only: bool = False) -> int:
     return changed
 
 
+def _team_prop_ledger_storage() -> tuple[Any, Any] | None:
+    """Load the optional certified team-prop ledger without coupling legacy grading to it."""
+    try:
+        module = importlib.import_module("scripts.team_prop_pregame_ledger")
+    except ModuleNotFoundError as exc:
+        if exc.name == "scripts.team_prop_pregame_ledger":
+            return None
+        raise
+
+    load = getattr(module, "load_team_prop_pregame_ledger", None)
+    write = getattr(module, "write_team_prop_pregame_ledger", None)
+    if not callable(load) or not callable(write):
+        raise RuntimeError("team-prop pregame ledger does not expose the required storage functions")
+    return load, write
+
+
+def _certified_team_prop_record(record: Any) -> bool:
+    if not isinstance(record, dict):
+        return False
+    certification = record.get("certification")
+    if isinstance(certification, dict) and str(certification.get("status") or "").strip().lower() == "certified":
+        return True
+    return record.get("certified_pregame") is True
+
+
+def _pending_certified_team_prop_candidate(record: dict[str, Any]) -> tuple[str, dict[str, Any]] | None:
+    """Build an immutable-snapshot grading candidate for a certified ledger record."""
+    if not _certified_team_prop_record(record):
+        return None
+    if str(record.get("result") or "pending").strip().lower() != "pending":
+        return None
+
+    snapshot = record.get("pregame_snapshot")
+    if not isinstance(snapshot, dict):
+        snapshot = record.get("snapshot")
+    if not isinstance(snapshot, dict):
+        return None
+
+    decision = str(snapshot.get("decision") or record.get("decision") or "").strip().upper()
+    if decision not in {"BET", "LEAN", "PASS"}:
+        return None
+
+    record_id = str(record.get("id") or record.get("snapshot_id") or "").strip()
+    if not record_id:
+        return None
+
+    candidate = copy.deepcopy(snapshot)
+    candidate["id"] = record_id
+    candidate["decision"] = decision
+    candidate["result"] = "pending"
+    for key in (
+        "date",
+        "game_date",
+        "slate_date",
+        "sport",
+        "pick",
+        "selection",
+        "matchup",
+        "game",
+        "away_team",
+        "home_team",
+        "market_type",
+        "market",
+        "grade_supported",
+    ):
+        if candidate.get(key) in {None, ""} and record.get(key) not in {None, ""}:
+            candidate[key] = copy.deepcopy(record[key])
+
+    if not str(candidate.get("date") or candidate.get("game_date") or candidate.get("slate_date") or "").strip():
+        return None
+    if not str(candidate.get("sport") or "").strip() or not str(candidate.get("pick") or candidate.get("selection") or "").strip():
+        return None
+    return record_id, candidate
+
+
+def grade_certified_team_prop_snapshots(repo_root: Path = REPO_ROOT) -> dict[str, Any]:
+    """Grade certified team-prop snapshots, including intentional PASS forecasts.
+
+    This is intentionally separate from ``grade_payload``: existing cache files
+    keep their historical BET/LEAN-only grading contract, while the immutable
+    ledger supplies the explicit certification required for PASS evaluation.
+    """
+    storage = _team_prop_ledger_storage()
+    if storage is None:
+        return {
+            "available": False,
+            "candidates": 0,
+            "graded": 0,
+            "start_times": 0,
+            "changed": False,
+        }
+
+    load, write = storage
+    payload = load(repo_root=repo_root)
+    if not isinstance(payload, dict):
+        raise RuntimeError("team-prop pregame ledger returned an invalid payload")
+    records = payload.get("records")
+    if not isinstance(records, list):
+        raise RuntimeError("team-prop pregame ledger is missing its records list")
+
+    candidates: list[dict[str, Any]] = []
+    records_by_id: dict[str, dict[str, Any]] = {}
+    for record in records:
+        candidate_row = _pending_certified_team_prop_candidate(record)
+        if candidate_row is None:
+            continue
+        record_id, candidate = candidate_row
+        if record_id in records_by_id:
+            continue
+        records_by_id[record_id] = record
+        candidates.append(candidate)
+
+    if not candidates:
+        return {
+            "available": True,
+            "candidates": 0,
+            "graded": 0,
+            "start_times": 0,
+            "changed": False,
+        }
+
+    response = pickgrader_server.auto_grade(candidates, {}, datetime.now().year)
+    grades = response.get("graded") if isinstance(response, dict) else {}
+    start_times = response.get("startTimes") if isinstance(response, dict) else {}
+    grades = grades if isinstance(grades, dict) else {}
+    start_times = start_times if isinstance(start_times, dict) else {}
+
+    changed = False
+    graded = 0
+    updated_start_times = 0
+    for record_id, record in records_by_id.items():
+        result = str(grades.get(record_id) or "pending").strip().lower()
+        if result in {"win", "loss", "push"} and record.get("result") != result:
+            record["result"] = result
+            changed = True
+            graded += 1
+        start_time = str(start_times.get(record_id) or "").strip()
+        if start_time:
+            if record.get("start_time") != start_time:
+                record["start_time"] = start_time
+                changed = True
+                updated_start_times += 1
+            if record.get("game_start_time") != start_time:
+                record["game_start_time"] = start_time
+                changed = True
+
+    persisted = write(payload, repo_root=repo_root) if changed else False
+    return {
+        "available": True,
+        "candidates": len(candidates),
+        "graded": graded,
+        "start_times": updated_start_times,
+        "changed": bool(persisted),
+    }
+
+
 def main() -> int:
+    from scripts.build_parlay_cards import rebuild_parlay_cards
+    from scripts.pick_calibration import rebuild_outcome_ledger
+
     total = 0
     for cache_dir in (MODEL_CACHE_DIR, PLAYER_PROPS_CACHE_DIR):
         for path in sorted(cache_dir.glob("20??-??-??.json")):
@@ -142,6 +305,16 @@ def main() -> int:
 
     for path in sorted(PLAYER_PROPS_SNAPSHOT_DIR.glob("20??-??-??/*.json")):
         total += grade_file(path, ml_player_props_only=True)
+
+    certified_summary = grade_certified_team_prop_snapshots()
+    if certified_summary["available"]:
+        print(
+            "[auto-grade] certified team-prop ledger: "
+            f"{certified_summary['graded']} result(s), "
+            f"{certified_summary['start_times']} start time(s), "
+            f"{certified_summary['candidates']} candidate(s), "
+            f"changed={certified_summary['changed']}"
+        )
 
     ledger, ledger_changed = rebuild_outcome_ledger()
     print(

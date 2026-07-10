@@ -361,6 +361,7 @@ PICKLEDGER_ADMIN_EMAILS = {
 
 SPORT_TO_ESPNSLUG = {
     "NBA": ("basketball", "nba"),
+    "NBA SUMMER": ("basketball", "nba-summer"),
     "WNBA": ("basketball", "wnba"),
     "NHL": ("hockey", "nhl"),
     "MLB": ("baseball", "mlb"),

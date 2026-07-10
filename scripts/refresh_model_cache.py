@@ -22,6 +22,10 @@ from scripts.cache_manifest import write_cache_manifest  # noqa: E402
 from scripts.merge_model_cache_payload import merge_payload  # noqa: E402
 from scripts.mlb_team_consensus import apply_mlb_team_consensus_to_payload  # noqa: E402
 from scripts.pick_calibration import apply_calibration_to_payload  # noqa: E402
+from scripts.team_prop_pregame_ledger import (  # noqa: E402
+    capture_team_prop_pregame_snapshots,
+    stamp_team_prop_pregame_timing,
+)
 
 
 def _parse_args() -> argparse.Namespace:
@@ -139,12 +143,27 @@ def _run_model_job_with_retries(
 
 def _write_json_cache(date_iso: str, payload: dict[str, Any]) -> None:
     MODEL_CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    # This is the only normal publication path that is allowed to certify a
+    # team pick.  The marker is per-pick (not inferred later from a mutable
+    # daily cache timestamp), and it does not alter any model value or
+    # decision.
+    stamp_team_prop_pregame_timing(
+        payload,
+        published_at=str(payload.get("generatedAt") or ""),
+        data_as_of=str(payload.get("generatedAt") or ""),
+    )
     merged = merge_payload(payload, MODEL_CACHE_DIR)
     for target in (MODEL_CACHE_DIR / f"{date_iso}.json", MODEL_CACHE_DIR / "latest.json"):
         with target.open("w", encoding="utf-8") as handle:
             json.dump(merged, handle, indent=2, sort_keys=True, default=str)
             handle.write("\n")
     write_cache_manifest(MODEL_CACHE_DIR)
+    summary = capture_team_prop_pregame_snapshots(merged, repo_root=REPO_ROOT)
+    print(
+        "[team-pregame-ledger] "
+        f"captured={summary['added']} unchanged={summary['unchanged']} "
+        f"team_picks={summary['team_picks']}"
+    )
 
 
 def main() -> int:

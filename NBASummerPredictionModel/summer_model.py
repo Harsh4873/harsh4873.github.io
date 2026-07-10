@@ -291,10 +291,18 @@ def _extract_market(competition: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def _parse_games(payload: dict[str, Any], target_date: str) -> list[SummerGame]:
+def _parse_games(
+    payload: dict[str, Any],
+    target_date: str,
+    *,
+    now_utc: dt.datetime | None = None,
+) -> list[SummerGame]:
     games: list[SummerGame] = []
-    target_today = target_date == dt.date.today().isoformat()
-    now_utc = dt.datetime.now(dt.timezone.utc)
+    now_utc = now_utc or dt.datetime.now(dt.timezone.utc)
+    if now_utc.tzinfo is None:
+        raise ValueError("now_utc must be timezone-aware")
+    now_utc = now_utc.astimezone(dt.timezone.utc)
+    target_today = target_date == now_utc.date().isoformat()
 
     for event in payload.get("events") or []:
         if not isinstance(event, dict):
@@ -600,7 +608,12 @@ def _build_pick(game: SummerGame, projection: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def generate_nba_summer_picks(date_str: str | None = None, echo: bool = False) -> dict[str, Any]:
+def generate_nba_summer_picks(
+    date_str: str | None = None,
+    echo: bool = False,
+    *,
+    now_utc: dt.datetime | None = None,
+) -> dict[str, Any]:
     """Return a model-cache-ready NBA Summer League payload for *date_str*."""
     target_date = _normalize_date(date_str)
     try:
@@ -608,7 +621,7 @@ def generate_nba_summer_picks(date_str: str | None = None, echo: bool = False) -
     except (HTTPError, URLError, TimeoutError, json.JSONDecodeError, OSError) as exc:
         return {"ok": False, "error": f"NBA Summer scoreboard unavailable: {exc}"}
 
-    games = _parse_games(target_payload, target_date)
+    games = _parse_games(target_payload, target_date, now_utc=now_utc)
     if not games:
         return {
             "ok": True,

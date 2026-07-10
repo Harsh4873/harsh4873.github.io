@@ -181,7 +181,9 @@ def _walk_forward_performance(ledger_path: Path = OUTCOME_LEDGER_PATH) -> dict[t
         else:
             group["losses"] += 1
         group["profit"] += float(record.get("profit") or 0.0)
-        group["stake"] += abs(float(record.get("raw_units") or record.get("units") or 1.0))
+        group["stake"] += abs(
+            float(record.get("stake_units") or record.get("units") or record.get("raw_units") or 1.0)
+        )
     for group in groups.values():
         samples = int(group["samples"] or 0)
         stake = float(group["stake"] or 0.0)
