@@ -2892,7 +2892,7 @@
       "venue_count": 15
     }
   },
-  "generatedAt": "2026-07-10T15:27:33.993377Z",
+  "generatedAt": "2026-07-10T16:34:27.421787Z",
   "generatedBy": "github-actions:model-cache-refresh",
   "mlb_first_five": {
     "consensus_gate_version": "mlb_team_consensus_v1.1.0",
@@ -10093,7 +10093,7 @@
         "game": "Chicago Cubs @ Cincinnati Reds",
         "game_id": "824493",
         "game_order": 4,
-        "game_start_time": "2026-07-10T23:10:00Z",
+        "game_start_time": "2026-07-10T23:10Z",
         "home_team": "Cincinnati Reds",
         "league": "MLB",
         "line": null,
@@ -10153,7 +10153,7 @@
         "selected_side_implied_probability": 0.52381,
         "source": "MLB First Five",
         "sport": "MLB",
-        "start_time": "2026-07-10T23:10:00Z",
+        "start_time": "2026-07-10T23:10Z",
         "team": "Chicago Cubs",
         "units": 0.5,
         "walk_forward_roi": 0.009300039513121246,
@@ -14271,7 +14271,7 @@
         "game": "Los Angeles Angels @ Minnesota Twins",
         "game_id": "823685",
         "game_order": 10,
-        "game_start_time": "2026-07-11T00:10:00Z",
+        "game_start_time": "2026-07-11T00:10Z",
         "home_team": "Minnesota Twins",
         "league": "MLB",
         "line": null,
@@ -14331,7 +14331,7 @@
         "selected_side_implied_probability": 0.52381,
         "source": "MLB First Five",
         "sport": "MLB",
-        "start_time": "2026-07-11T00:10:00Z",
+        "start_time": "2026-07-11T00:10Z",
         "team": "Minnesota Twins",
         "units": 0.25,
         "walk_forward_roi": 0.009300039513121246,
@@ -15664,7 +15664,7 @@
         "game": "Toronto Blue Jays @ San Diego Padres",
         "game_id": "823278",
         "game_order": 12,
-        "game_start_time": "2026-07-11T01:40:00Z",
+        "game_start_time": "2026-07-11T01:40Z",
         "home_team": "San Diego Padres",
         "league": "MLB",
         "line": null,
@@ -15724,7 +15724,7 @@
         "selected_side_implied_probability": 0.52381,
         "source": "MLB First Five",
         "sport": "MLB",
-        "start_time": "2026-07-11T01:40:00Z",
+        "start_time": "2026-07-11T01:40Z",
         "team": "San Diego Padres",
         "units": 0.25,
         "walk_forward_roi": 0.009300039513121246,
@@ -17495,7 +17495,7 @@
         "game": "Colorado Rockies @ San Francisco Giants",
         "game_id": "823200",
         "game_order": 14,
-        "game_start_time": "2026-07-11T02:15:00Z",
+        "game_start_time": "2026-07-11T02:15Z",
         "home_team": "San Francisco Giants",
         "league": "MLB",
         "line": null,
@@ -17555,7 +17555,7 @@
         "selected_side_implied_probability": 0.52381,
         "source": "MLB First Five",
         "sport": "MLB",
-        "start_time": "2026-07-11T02:15:00Z",
+        "start_time": "2026-07-11T02:15Z",
         "team": "San Francisco Giants",
         "units": 0.5,
         "walk_forward_roi": 0.009300039513121246,
@@ -18117,20 +18117,20 @@
         "edge_table": {
           "1": 0.0578,
           "2": -0.0573,
-          "3": -0.0558,
+          "3": -0.0418,
           "4": -0.081,
           "5": -0.0873,
-          "6": -0.1403,
+          "6": -0.1302,
           "7": -0.0904,
           "8": -0.1783
         },
         "full_inning_table": {
           "1": 0.442,
           "2": 0.461,
-          "3": 0.434,
+          "3": 0.448,
           "4": 0.437,
           "5": 0.417,
-          "6": 0.378,
+          "6": 0.388,
           "7": 0.457,
           "8": 0.384
         },
@@ -22471,7 +22471,7 @@
         "game": "Texas Rangers vs Houston Astros",
         "game_id": "822878",
         "game_order": 9,
-        "game_start_time": "2026-07-11T00:05:00Z",
+        "game_start_time": "2026-07-11T00:05Z",
         "home_team": "Texas Rangers",
         "inning": 5,
         "league": "MLB",
@@ -22533,7 +22533,7 @@
         "selected_side_implied_probability": 0.545455,
         "source": "MLB Inning",
         "sport": "MLB",
-        "start_time": "2026-07-11T00:05:00Z",
+        "start_time": "2026-07-11T00:05Z",
         "team": "",
         "units": 0.25,
         "validation_lean": true,
@@ -23959,7 +23959,7 @@
         "game": "Los Angeles Dodgers vs Arizona Diamondbacks",
         "game_id": "823927",
         "game_order": 13,
-        "game_start_time": "2026-07-11T02:10:00Z",
+        "game_start_time": "2026-07-11T02:10Z",
         "home_team": "Los Angeles Dodgers",
         "inning": 5,
         "league": "MLB",
@@ -24021,7 +24021,7 @@
         "selected_side_implied_probability": 0.545455,
         "source": "MLB Inning",
         "sport": "MLB",
-        "start_time": "2026-07-11T02:10:00Z",
+        "start_time": "2026-07-11T02:10Z",
         "team": "",
         "units": 0.25,
         "validation_lean": true,
@@ -24550,17 +24550,17 @@
         "edge": -1.9,
         "home_team": "Detroit Tigers",
         "kelly": 2.36,
-        "line": 8.5,
-        "market_line": 8.5,
+        "line": 9.0,
+        "market_line": 9.0,
         "market_no_vig_probability": 0.5238095238095238,
         "market_total_source": "model_output",
         "market_type": "totals",
         "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
         "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
         "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
-        "model_prediction": 7.8,
+        "model_prediction": 8.2,
         "odds": -110,
-        "pick": "Under 8.5 (Philadelphia Phillies vs Detroit Tigers)",
+        "pick": "Under 9.0 (Philadelphia Phillies vs Detroit Tigers)",
         "pregame_snapshot": {
           "assumed_odds": -110,
           "away_team": "Philadelphia Phillies",
@@ -24569,20 +24569,20 @@
           "edge": 4.5,
           "home_team": "Detroit Tigers",
           "kelly": 2.36,
-          "line": 8.5,
-          "market_line": 8.5,
+          "line": 9.0,
+          "market_line": 9.0,
           "market_total_source": "model_output",
           "market_type": "totals",
-          "model_prediction": 7.8,
+          "model_prediction": 8.2,
           "odds": -110,
-          "pick": "Under 8.5 (Philadelphia Phillies vs Detroit Tigers)",
+          "pick": "Under 9.0 (Philadelphia Phillies vs Detroit Tigers)",
           "prob": 0.5688,
           "probability": 0.5688,
           "selection": "Under",
           "source": "MLB Model",
           "sport": "MLB",
           "units": 0.01,
-          "vegas": 8.5
+          "vegas": 9.0
         },
         "primary_consensus_passed": false,
         "prob": 0.5688,
@@ -24597,7 +24597,7 @@
         "source": "MLB Model",
         "sport": "MLB",
         "units": 0.0,
-        "vegas": 8.5,
+        "vegas": 9.0,
         "walk_forward_roi": 0.08152185668245628,
         "walk_forward_samples": 141
       },
@@ -27537,6 +27537,7 @@
         "decision": "LEAN",
         "direction": "Under",
         "edge": 0.91,
+        "game_start_time": "2026-07-11T00:15Z",
         "home_team": "St. Louis Cardinals",
         "kelly": 4.9,
         "line": 8.0,
@@ -27585,6 +27586,7 @@
         "selection": "Under",
         "source": "MLB Model",
         "sport": "MLB",
+        "start_time": "2026-07-11T00:15Z",
         "units": 0.25,
         "validation_lean": true,
         "validation_reason": "validation fallback: mlb_new had zero strict BET/LEAN publications; published top raw model signal as a small LEAN for tracking",
@@ -28353,6 +28355,288 @@
         "edge": -1.18,
         "home_team": "San Francisco Giants",
         "kelly": 3.02,
+        "line": 8.0,
+        "market_line": 8.0,
+        "market_no_vig_probability": 0.5238095238095238,
+        "market_total_source": "model_output",
+        "market_type": "totals",
+        "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
+        "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
+        "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
+        "model_prediction": 7.1,
+        "odds": -110,
+        "pick": "Under 8.0 (Colorado Rockies vs San Francisco Giants)",
+        "pregame_snapshot": {
+          "assumed_odds": -110,
+          "away_team": "Colorado Rockies",
+          "decision": "BET",
+          "direction": "Under",
+          "edge": 5.76,
+          "home_team": "San Francisco Giants",
+          "kelly": 3.02,
+          "line": 8.0,
+          "market_line": 8.0,
+          "market_total_source": "model_output",
+          "market_type": "totals",
+          "model_prediction": 7.1,
+          "odds": -110,
+          "pick": "Under 8.0 (Colorado Rockies vs San Francisco Giants)",
+          "prob": 0.5814,
+          "probability": 0.5814,
+          "selection": "Under",
+          "source": "MLB Model",
+          "sport": "MLB",
+          "units": 0.03,
+          "vegas": 8.0
+        },
+        "primary_consensus_passed": false,
+        "prob": 0.5814,
+        "probability": 0.512,
+        "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
+        "raw_edge": 5.76,
+        "raw_model_probability": 0.5814,
+        "raw_probability": 0.5814,
+        "raw_units": 0.03,
+        "selected_side_implied_probability": 0.5238095238095238,
+        "selection": "Under",
+        "source": "MLB Model",
+        "sport": "MLB",
+        "units": 0.0,
+        "vegas": 8.0,
+        "walk_forward_roi": 0.08152185668245628,
+        "walk_forward_samples": 141
+      },
+      {
+        "actionability": "research_signal",
+        "assumed_odds": -110,
+        "away_team": "Philadelphia Phillies",
+        "calibrated_edge": -1.9,
+        "calibrated_model_probability": 0.504769,
+        "calibrated_probability": 0.504769,
+        "calibration": {
+          "applied": true,
+          "key": "model:mlb_new|source:mlb model|sport:mlb|bet:totals",
+          "probability_delta": -0.064031,
+          "samples": 36,
+          "version": "cal-2406-2026-07-09"
+        },
+        "consensus_factor_categories": {
+          "calibration": {
+            "missing": [],
+            "risk": [],
+            "support": [
+              "probability_calibration"
+            ]
+          },
+          "model_stack": {
+            "missing": [],
+            "risk": [],
+            "support": [
+              "model_stack_ready"
+            ]
+          },
+          "team_form": {
+            "missing": [],
+            "risk": [],
+            "support": [
+              "team_identity_context"
+            ]
+          },
+          "walk_forward": {
+            "missing": [],
+            "risk": [],
+            "support": [
+              "walk_forward_validation"
+            ]
+          }
+        },
+        "consensus_gate_version": "mlb_team_consensus_v1.1.0",
+        "consensus_hard_blockers": [
+          "non_positive_calibrated_edge"
+        ],
+        "consensus_passed": false,
+        "consensus_publication_mode": "research",
+        "consensus_qualified": false,
+        "consensus_rejection_reason": "non_positive_calibrated_edge",
+        "consensus_required": true,
+        "consensus_score": 10.477,
+        "consensus_signal_count": 4,
+        "consensus_signals": [
+          {
+            "category": "calibration",
+            "detail": "active calibration group has enough samples",
+            "impact": "support",
+            "name": "probability_calibration",
+            "strength": 1.0
+          },
+          {
+            "category": "walk_forward",
+            "detail": "model family has positive decided history in the gated era input",
+            "impact": "support",
+            "name": "walk_forward_validation",
+            "strength": 1.0
+          },
+          {
+            "category": "model_stack",
+            "detail": "MLB full-game v2 artifacts are ready",
+            "impact": "support",
+            "name": "model_stack_ready",
+            "strength": 1.0
+          },
+          {
+            "category": "team_form",
+            "detail": "selected MLB team context present",
+            "impact": "support",
+            "name": "team_identity_context",
+            "strength": 0.4
+          }
+        ],
+        "decision": "PASS",
+        "direction": "Under",
+        "edge": -1.9,
+        "home_team": "Detroit Tigers",
+        "kelly": 2.36,
+        "line": 8.5,
+        "market_line": 8.5,
+        "market_no_vig_probability": 0.5238095238095238,
+        "market_total_source": "model_output",
+        "market_type": "totals",
+        "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
+        "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
+        "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
+        "model_prediction": 7.8,
+        "odds": -110,
+        "pick": "Under 8.5 (Philadelphia Phillies vs Detroit Tigers)",
+        "pregame_snapshot": {
+          "assumed_odds": -110,
+          "away_team": "Philadelphia Phillies",
+          "decision": "LEAN",
+          "direction": "Under",
+          "edge": 4.5,
+          "home_team": "Detroit Tigers",
+          "kelly": 2.36,
+          "line": 8.5,
+          "market_line": 8.5,
+          "market_total_source": "model_output",
+          "market_type": "totals",
+          "model_prediction": 7.8,
+          "odds": -110,
+          "pick": "Under 8.5 (Philadelphia Phillies vs Detroit Tigers)",
+          "prob": 0.5688,
+          "probability": 0.5688,
+          "selection": "Under",
+          "source": "MLB Model",
+          "sport": "MLB",
+          "units": 0.01,
+          "vegas": 8.5
+        },
+        "primary_consensus_passed": false,
+        "prob": 0.5688,
+        "probability": 0.5048,
+        "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
+        "raw_edge": 4.5,
+        "raw_model_probability": 0.5688,
+        "raw_probability": 0.5688,
+        "raw_units": 0.01,
+        "selected_side_implied_probability": 0.5238095238095238,
+        "selection": "Under",
+        "source": "MLB Model",
+        "sport": "MLB",
+        "units": 0.0,
+        "vegas": 8.5,
+        "walk_forward_roi": 0.08152185668245628,
+        "walk_forward_samples": 141
+      },
+      {
+        "actionability": "research_signal",
+        "assumed_odds": -110,
+        "away_team": "Colorado Rockies",
+        "calibrated_edge": -1.18,
+        "calibrated_model_probability": 0.512026,
+        "calibrated_probability": 0.512026,
+        "calibration": {
+          "applied": true,
+          "key": "model:mlb_new|source:mlb model|sport:mlb|bet:totals",
+          "probability_delta": -0.069374,
+          "samples": 36,
+          "version": "cal-2406-2026-07-09"
+        },
+        "consensus_factor_categories": {
+          "calibration": {
+            "missing": [],
+            "risk": [],
+            "support": [
+              "probability_calibration"
+            ]
+          },
+          "model_stack": {
+            "missing": [],
+            "risk": [],
+            "support": [
+              "model_stack_ready"
+            ]
+          },
+          "team_form": {
+            "missing": [],
+            "risk": [],
+            "support": [
+              "team_identity_context"
+            ]
+          },
+          "walk_forward": {
+            "missing": [],
+            "risk": [],
+            "support": [
+              "walk_forward_validation"
+            ]
+          }
+        },
+        "consensus_gate_version": "mlb_team_consensus_v1.1.0",
+        "consensus_hard_blockers": [
+          "non_positive_calibrated_edge"
+        ],
+        "consensus_passed": false,
+        "consensus_publication_mode": "research",
+        "consensus_qualified": false,
+        "consensus_rejection_reason": "non_positive_calibrated_edge",
+        "consensus_required": true,
+        "consensus_score": 11.203,
+        "consensus_signal_count": 4,
+        "consensus_signals": [
+          {
+            "category": "calibration",
+            "detail": "active calibration group has enough samples",
+            "impact": "support",
+            "name": "probability_calibration",
+            "strength": 1.0
+          },
+          {
+            "category": "walk_forward",
+            "detail": "model family has positive decided history in the gated era input",
+            "impact": "support",
+            "name": "walk_forward_validation",
+            "strength": 1.0
+          },
+          {
+            "category": "model_stack",
+            "detail": "MLB full-game v2 artifacts are ready",
+            "impact": "support",
+            "name": "model_stack_ready",
+            "strength": 1.0
+          },
+          {
+            "category": "team_form",
+            "detail": "selected MLB team context present",
+            "impact": "support",
+            "name": "team_identity_context",
+            "strength": 0.4
+          }
+        ],
+        "decision": "PASS",
+        "direction": "Under",
+        "edge": -1.18,
+        "home_team": "San Francisco Giants",
+        "kelly": 3.02,
         "line": 8.5,
         "market_line": 8.5,
         "market_no_vig_probability": 0.5238095238095238,
@@ -28645,6 +28929,7 @@
         "decision": "LEAN",
         "direction": "Under",
         "edge": 0.91,
+        "game_start_time": "2026-07-11T00:15Z",
         "home_team": "St. Louis Cardinals",
         "kelly": 4.9,
         "line": 7.5,
@@ -28693,6 +28978,7 @@
         "selection": "Under",
         "source": "MLB Model",
         "sport": "MLB",
+        "start_time": "2026-07-11T00:15Z",
         "units": 0.25,
         "validation_lean": true,
         "validation_reason": "validation fallback: mlb_new had zero strict BET/LEAN publications; published top raw model signal as a small LEAN for tracking",
@@ -45309,20 +45595,20 @@
           "edge_table": {
             "1": 0.0578,
             "2": -0.0573,
-            "3": -0.0558,
+            "3": -0.0418,
             "4": -0.081,
             "5": -0.0873,
-            "6": -0.1403,
+            "6": -0.1302,
             "7": -0.0904,
             "8": -0.1783
           },
           "full_inning_table": {
             "1": 0.442,
             "2": 0.461,
-            "3": 0.434,
+            "3": 0.448,
             "4": 0.437,
             "5": 0.417,
-            "6": 0.378,
+            "6": 0.388,
             "7": 0.457,
             "8": 0.384
           },
@@ -51742,17 +52028,17 @@
           "edge": -1.9,
           "home_team": "Detroit Tigers",
           "kelly": 2.36,
-          "line": 8.5,
-          "market_line": 8.5,
+          "line": 9.0,
+          "market_line": 9.0,
           "market_no_vig_probability": 0.5238095238095238,
           "market_total_source": "model_output",
           "market_type": "totals",
           "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
           "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
           "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
-          "model_prediction": 7.8,
+          "model_prediction": 8.2,
           "odds": -110,
-          "pick": "Under 8.5 (Philadelphia Phillies vs Detroit Tigers)",
+          "pick": "Under 9.0 (Philadelphia Phillies vs Detroit Tigers)",
           "pregame_snapshot": {
             "assumed_odds": -110,
             "away_team": "Philadelphia Phillies",
@@ -51761,20 +52047,20 @@
             "edge": 4.5,
             "home_team": "Detroit Tigers",
             "kelly": 2.36,
-            "line": 8.5,
-            "market_line": 8.5,
+            "line": 9.0,
+            "market_line": 9.0,
             "market_total_source": "model_output",
             "market_type": "totals",
-            "model_prediction": 7.8,
+            "model_prediction": 8.2,
             "odds": -110,
-            "pick": "Under 8.5 (Philadelphia Phillies vs Detroit Tigers)",
+            "pick": "Under 9.0 (Philadelphia Phillies vs Detroit Tigers)",
             "prob": 0.5688,
             "probability": 0.5688,
             "selection": "Under",
             "source": "MLB Model",
             "sport": "MLB",
             "units": 0.01,
-            "vegas": 8.5
+            "vegas": 9.0
           },
           "primary_consensus_passed": false,
           "prob": 0.5688,
@@ -51789,7 +52075,7 @@
           "source": "MLB Model",
           "sport": "MLB",
           "units": 0.0,
-          "vegas": 8.5,
+          "vegas": 9.0,
           "walk_forward_roi": 0.08152185668245628,
           "walk_forward_samples": 141
         },
@@ -55456,6 +55742,288 @@
           "units": 0.0,
           "walk_forward_roi": 0.05033671955256251,
           "walk_forward_samples": 108
+        },
+        {
+          "actionability": "research_signal",
+          "assumed_odds": -110,
+          "away_team": "Colorado Rockies",
+          "calibrated_edge": -1.18,
+          "calibrated_model_probability": 0.512026,
+          "calibrated_probability": 0.512026,
+          "calibration": {
+            "applied": true,
+            "key": "model:mlb_new|source:mlb model|sport:mlb|bet:totals",
+            "probability_delta": -0.069374,
+            "samples": 36,
+            "version": "cal-2406-2026-07-09"
+          },
+          "consensus_factor_categories": {
+            "calibration": {
+              "missing": [],
+              "risk": [],
+              "support": [
+                "probability_calibration"
+              ]
+            },
+            "model_stack": {
+              "missing": [],
+              "risk": [],
+              "support": [
+                "model_stack_ready"
+              ]
+            },
+            "team_form": {
+              "missing": [],
+              "risk": [],
+              "support": [
+                "team_identity_context"
+              ]
+            },
+            "walk_forward": {
+              "missing": [],
+              "risk": [],
+              "support": [
+                "walk_forward_validation"
+              ]
+            }
+          },
+          "consensus_gate_version": "mlb_team_consensus_v1.1.0",
+          "consensus_hard_blockers": [
+            "non_positive_calibrated_edge"
+          ],
+          "consensus_passed": false,
+          "consensus_publication_mode": "research",
+          "consensus_qualified": false,
+          "consensus_rejection_reason": "non_positive_calibrated_edge",
+          "consensus_required": true,
+          "consensus_score": 11.203,
+          "consensus_signal_count": 4,
+          "consensus_signals": [
+            {
+              "category": "calibration",
+              "detail": "active calibration group has enough samples",
+              "impact": "support",
+              "name": "probability_calibration",
+              "strength": 1.0
+            },
+            {
+              "category": "walk_forward",
+              "detail": "model family has positive decided history in the gated era input",
+              "impact": "support",
+              "name": "walk_forward_validation",
+              "strength": 1.0
+            },
+            {
+              "category": "model_stack",
+              "detail": "MLB full-game v2 artifacts are ready",
+              "impact": "support",
+              "name": "model_stack_ready",
+              "strength": 1.0
+            },
+            {
+              "category": "team_form",
+              "detail": "selected MLB team context present",
+              "impact": "support",
+              "name": "team_identity_context",
+              "strength": 0.4
+            }
+          ],
+          "decision": "PASS",
+          "direction": "Under",
+          "edge": -1.18,
+          "home_team": "San Francisco Giants",
+          "kelly": 3.02,
+          "line": 8.0,
+          "market_line": 8.0,
+          "market_no_vig_probability": 0.5238095238095238,
+          "market_total_source": "model_output",
+          "market_type": "totals",
+          "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
+          "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
+          "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
+          "model_prediction": 7.1,
+          "odds": -110,
+          "pick": "Under 8.0 (Colorado Rockies vs San Francisco Giants)",
+          "pregame_snapshot": {
+            "assumed_odds": -110,
+            "away_team": "Colorado Rockies",
+            "decision": "BET",
+            "direction": "Under",
+            "edge": 5.76,
+            "home_team": "San Francisco Giants",
+            "kelly": 3.02,
+            "line": 8.0,
+            "market_line": 8.0,
+            "market_total_source": "model_output",
+            "market_type": "totals",
+            "model_prediction": 7.1,
+            "odds": -110,
+            "pick": "Under 8.0 (Colorado Rockies vs San Francisco Giants)",
+            "prob": 0.5814,
+            "probability": 0.5814,
+            "selection": "Under",
+            "source": "MLB Model",
+            "sport": "MLB",
+            "units": 0.03,
+            "vegas": 8.0
+          },
+          "primary_consensus_passed": false,
+          "prob": 0.5814,
+          "probability": 0.512,
+          "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
+          "raw_edge": 5.76,
+          "raw_model_probability": 0.5814,
+          "raw_probability": 0.5814,
+          "raw_units": 0.03,
+          "selected_side_implied_probability": 0.5238095238095238,
+          "selection": "Under",
+          "source": "MLB Model",
+          "sport": "MLB",
+          "units": 0.0,
+          "vegas": 8.0,
+          "walk_forward_roi": 0.08152185668245628,
+          "walk_forward_samples": 141
+        },
+        {
+          "actionability": "research_signal",
+          "assumed_odds": -110,
+          "away_team": "Philadelphia Phillies",
+          "calibrated_edge": -1.9,
+          "calibrated_model_probability": 0.504769,
+          "calibrated_probability": 0.504769,
+          "calibration": {
+            "applied": true,
+            "key": "model:mlb_new|source:mlb model|sport:mlb|bet:totals",
+            "probability_delta": -0.064031,
+            "samples": 36,
+            "version": "cal-2406-2026-07-09"
+          },
+          "consensus_factor_categories": {
+            "calibration": {
+              "missing": [],
+              "risk": [],
+              "support": [
+                "probability_calibration"
+              ]
+            },
+            "model_stack": {
+              "missing": [],
+              "risk": [],
+              "support": [
+                "model_stack_ready"
+              ]
+            },
+            "team_form": {
+              "missing": [],
+              "risk": [],
+              "support": [
+                "team_identity_context"
+              ]
+            },
+            "walk_forward": {
+              "missing": [],
+              "risk": [],
+              "support": [
+                "walk_forward_validation"
+              ]
+            }
+          },
+          "consensus_gate_version": "mlb_team_consensus_v1.1.0",
+          "consensus_hard_blockers": [
+            "non_positive_calibrated_edge"
+          ],
+          "consensus_passed": false,
+          "consensus_publication_mode": "research",
+          "consensus_qualified": false,
+          "consensus_rejection_reason": "non_positive_calibrated_edge",
+          "consensus_required": true,
+          "consensus_score": 10.477,
+          "consensus_signal_count": 4,
+          "consensus_signals": [
+            {
+              "category": "calibration",
+              "detail": "active calibration group has enough samples",
+              "impact": "support",
+              "name": "probability_calibration",
+              "strength": 1.0
+            },
+            {
+              "category": "walk_forward",
+              "detail": "model family has positive decided history in the gated era input",
+              "impact": "support",
+              "name": "walk_forward_validation",
+              "strength": 1.0
+            },
+            {
+              "category": "model_stack",
+              "detail": "MLB full-game v2 artifacts are ready",
+              "impact": "support",
+              "name": "model_stack_ready",
+              "strength": 1.0
+            },
+            {
+              "category": "team_form",
+              "detail": "selected MLB team context present",
+              "impact": "support",
+              "name": "team_identity_context",
+              "strength": 0.4
+            }
+          ],
+          "decision": "PASS",
+          "direction": "Under",
+          "edge": -1.9,
+          "home_team": "Detroit Tigers",
+          "kelly": 2.36,
+          "line": 8.5,
+          "market_line": 8.5,
+          "market_no_vig_probability": 0.5238095238095238,
+          "market_total_source": "model_output",
+          "market_type": "totals",
+          "ml_rank_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
+          "mlb_team_consensus_version": "mlb_team_consensus_v1.1.0",
+          "model_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
+          "model_prediction": 7.8,
+          "odds": -110,
+          "pick": "Under 8.5 (Philadelphia Phillies vs Detroit Tigers)",
+          "pregame_snapshot": {
+            "assumed_odds": -110,
+            "away_team": "Philadelphia Phillies",
+            "decision": "LEAN",
+            "direction": "Under",
+            "edge": 4.5,
+            "home_team": "Detroit Tigers",
+            "kelly": 2.36,
+            "line": 8.5,
+            "market_line": 8.5,
+            "market_total_source": "model_output",
+            "market_type": "totals",
+            "model_prediction": 7.8,
+            "odds": -110,
+            "pick": "Under 8.5 (Philadelphia Phillies vs Detroit Tigers)",
+            "prob": 0.5688,
+            "probability": 0.5688,
+            "selection": "Under",
+            "source": "MLB Model",
+            "sport": "MLB",
+            "units": 0.01,
+            "vegas": 8.5
+          },
+          "primary_consensus_passed": false,
+          "prob": 0.5688,
+          "probability": 0.5048,
+          "ranking_epoch": "MLB:mlb_team_consensus_v1.1.0:mlb_new",
+          "raw_edge": 4.5,
+          "raw_model_probability": 0.5688,
+          "raw_probability": 0.5688,
+          "raw_units": 0.01,
+          "selected_side_implied_probability": 0.5238095238095238,
+          "selection": "Under",
+          "source": "MLB Model",
+          "sport": "MLB",
+          "units": 0.0,
+          "vegas": 8.5,
+          "walk_forward_roi": 0.08152185668245628,
+          "walk_forward_samples": 141
         },
         {
           "actionability": "research_signal",
@@ -61253,7 +61821,7 @@
     ],
     "updatedAt": "2026-07-10T13:02:58.199788Z"
   },
-  "updatedAt": "2026-07-10T15:27:33.993377Z",
+  "updatedAt": "2026-07-10T16:34:27.421787Z",
   "wnba": {
     "ok": true,
     "picks": [
