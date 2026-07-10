@@ -242,12 +242,12 @@ def main() -> int:
 
         result = _normalize_feed_result(feed_key, raw_result, date_iso, sports, now_iso)
         split_results = _split_provider_result(feed_key, result, date_iso, sports, now_iso)
-        results.update(split_results)
         ok = bool(result.get("ok"))
         pick_count = len(result.get("picks") or [])
         print(f"[external-feeds] {feed_key}: {'ok' if ok else 'error'} ({pick_count} pick(s))")
         if ok:
             success_count += 1
+            results.update(split_results)
             if feed_key in SPLIT_PROVIDER_FEEDS:
                 payload["models"].pop(feed_key, None)
                 payload.pop(feed_key, None)
