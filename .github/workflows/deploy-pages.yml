@@ -50,6 +50,12 @@ jobs:
           ref: gym
           path: gym-app
 
+      - name: Checkout personal portfolio
+        uses: actions/checkout@v4
+        with:
+          ref: me
+          path: me-app
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
@@ -61,12 +67,17 @@ jobs:
           cache-dependency-path: |
             package-lock.json
             gym-app/package-lock.json
+            me-app/package-lock.json
 
       - name: Install frontend dependencies
         run: npm ci
 
       - name: Install Gym dependencies
         working-directory: gym-app
+        run: npm ci
+
+      - name: Install portfolio dependencies
+        working-directory: me-app
         run: npm ci
 
       - name: Build site artifact
@@ -86,6 +97,13 @@ jobs:
           mkdir -p ../dist/gym
           cp -R dist/. ../dist/gym/
 
+      - name: Build personal portfolio artifact
+        working-directory: me-app
+        run: |
+          npm run build
+          mkdir -p ../dist/me
+          cp -R dist/. ../dist/me/
+
       - name: Verify styled Pages artifact
         run: |
           grep -q 'rel="stylesheet"' dist/index.html
@@ -100,6 +118,10 @@ jobs:
           grep -q '/gym/assets/' dist/gym/index.html
           test -n "$(find dist/gym/assets -maxdepth 1 -name '*.css' -print -quit)"
           test -n "$(find dist/gym/assets -maxdepth 1 -name '*.js' -print -quit)"
+          test -f dist/me/index.html
+          grep -q '/me/assets/' dist/me/index.html
+          test -n "$(find dist/me/assets -maxdepth 1 -name '*.css' -print -quit)"
+          test -n "$(find dist/me/assets -maxdepth 1 -name '*.js' -print -quit)"
           python scripts/site_upcheck.py
 
       - name: Upload artifact
