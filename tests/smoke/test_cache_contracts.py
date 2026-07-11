@@ -8,7 +8,7 @@ from scripts import site_upcheck
 
 
 ROOT = Path(__file__).resolve().parents[2]
-PLAYER_PROP_MODEL_KEYS = {"mlb_player_props", "wnba_player_props"}
+PLAYER_PROP_MODEL_KEYS = {"nba_player_props", "mlb_player_props", "wnba_player_props"}
 
 
 def _read_json(path: Path) -> dict:

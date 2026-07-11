@@ -156,7 +156,7 @@ def test_merge_does_not_force_rejected_variant_snapshots_into_latest_board(tmp_p
     assert [pick["id"] for pick in picks] == ["generated"]
 
 
-def test_merge_keeps_wnba_3pm_public_but_separate_from_generic_wnba_props(tmp_path: Path):
+def test_merge_keeps_wnba_3pm_research_bucket_out_of_public_cache(tmp_path: Path):
     cache_dir = tmp_path / "data" / "player_props_cache"
     snapshot_dir = tmp_path / "data" / "player_props_snapshots"
     cache_dir.mkdir(parents=True)
@@ -214,12 +214,8 @@ def test_merge_keeps_wnba_3pm_public_but_separate_from_generic_wnba_props(tmp_pa
     (snapshot_dir / "2026-06-20" / "snapshot.json").write_text(json.dumps(snapshot), encoding="utf-8")
 
     merged = merge_payload(generated, cache_dir, snapshot_dir)
-    assert set(merged["models"]) == {"wnba_player_props", "wnba_3pm"}
+    assert set(merged["models"]) == {"wnba_player_props"}
     generic_picks = merged["models"]["wnba_player_props"]["picks"]
-    three_pm_picks = merged["models"]["wnba_3pm"]["picks"]
 
     assert {pick["id"] for pick in generic_picks} == {"generic-wnba"}
     assert {pick["model_key"] for pick in generic_picks} == {"wnba_player_props"}
-    assert {pick["id"] for pick in three_pm_picks} == {"current-3pm", "snapshot-3pm", "generated-3pm"}
-    assert {pick["model_key"] for pick in three_pm_picks} == {"wnba_3pm"}
-    assert {pick["source"] for pick in three_pm_picks} == {"WNBA3PM"}
