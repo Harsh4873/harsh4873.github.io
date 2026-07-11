@@ -822,6 +822,40 @@ class Aggregate:
         )
 
 
+def source_value_stats(source: Aggregate) -> dict[str, Any]:
+    """Source-level VALUE-lane statistics shared by estimates and report cards."""
+
+    source_alpha = source.residual_sum / (source.samples + SOURCE_PRIOR_ROWS)
+    if source.samples:
+        source_variance = sum(
+            (row.residual - source_alpha) ** 2 for row in source.rows
+        ) / source.samples
+    else:
+        source_variance = 0.25
+    source_std_error = math.sqrt(
+        max(MIN_RESIDUAL_VARIANCE, source_variance)
+        / (source.samples + SOURCE_PRIOR_ROWS)
+    )
+    source_z = source_alpha / source_std_error if source_std_error else 0.0
+    probability_positive = 0.5 * (1.0 + math.erf(source_z / math.sqrt(2.0)))
+    flat_roi = source.net_units / source.samples if source.samples else None
+    first_half, second_half = source.chronological_half_net_units
+    return {
+        "alpha": source_alpha,
+        "alphaStdError": source_std_error,
+        "probabilityPositiveEv": probability_positive,
+        "flatRoi": flat_roi,
+        "flatNetUnits": source.net_units,
+        "firstHalfFlatNetUnits": first_half,
+        "secondHalfFlatNetUnits": second_half,
+        "halvesNonnegative": first_half >= 0.0 and second_half >= 0.0,
+        "samples": source.samples,
+        "distinctDates": len(source.dates),
+        "wins": source.wins,
+        "losses": source.losses,
+    }
+
+
 class EvidenceBook:
     """Verified, settled, strictly-prior market residuals."""
 
@@ -956,25 +990,17 @@ class EvidenceBook:
         # VALUE lane: the source-level shrunk residual against posted prices.
         # Its EV question is "does this source beat its own break-even",
         # so the candidate anchor is the break-even probability, not no-vig.
-        if source.samples:
-            source_variance = sum(
-                (row.residual - source_alpha) ** 2 for row in source.rows
-            ) / source.samples
-        else:
-            source_variance = 0.25
-        source_std_error = math.sqrt(
-            max(MIN_RESIDUAL_VARIANCE, source_variance)
-            / (source.samples + SOURCE_PRIOR_ROWS)
-        )
-        source_z = source_alpha / source_std_error if source_std_error else 0.0
-        source_probability_positive = 0.5 * (1.0 + math.erf(source_z / math.sqrt(2.0)))
+        source_stats = source_value_stats(source)
+        source_std_error = source_stats["alphaStdError"]
+        source_probability_positive = source_stats["probabilityPositiveEv"]
         value_probability = min(0.99, max(0.01, break_even + source_alpha))
         value_lower_probability = min(
             0.99,
             max(0.01, break_even + source_alpha - LOWER_BOUND_Z * source_std_error),
         )
-        source_flat_roi = source.net_units / source.samples if source.samples else None
-        source_first_half, source_second_half = source.chronological_half_net_units
+        source_flat_roi = source_stats["flatRoi"]
+        source_first_half = source_stats["firstHalfFlatNetUnits"]
+        source_second_half = source_stats["secondHalfFlatNetUnits"]
 
         estimate = {
             "marketProbability": round(market_probability, 6),
@@ -1427,6 +1453,99 @@ def select_portfolio(candidates: Sequence[Mapping[str, Any]]) -> dict[str, list[
     }
 
 
+def _source_report_cards(
+    evidence_book: EvidenceBook, candidates: Sequence[Mapping[str, Any]]
+) -> list[dict[str, Any]]:
+    """Per-source VALUE-lane gate progress for the qualification leaderboard.
+
+    Every number is already computed by the evidence book; this only lays the
+    gates out so the site can show how far each source is from earning a
+    stake, instead of a bare rejection.
+    """
+
+    labels: dict[tuple[str, ...], str] = {}
+    candidates_today: dict[tuple[str, ...], int] = defaultdict(int)
+    live_today: dict[tuple[str, ...], int] = defaultdict(int)
+    for candidate in candidates:
+        key = (
+            _text(candidate.get("mode")),
+            _text(candidate.get("sourceKey")),
+            _norm(candidate.get("sport")) or "unknown_sport",
+        )
+        labels.setdefault(key, _text(candidate.get("source")) or key[1])
+        candidates_today[key] += 1
+        if candidate.get("liveQualified"):
+            live_today[key] += 1
+
+    keys = set(evidence_book.by_source) | set(candidates_today)
+    cards: list[dict[str, Any]] = []
+    for key in keys:
+        if len(key) != 3:
+            continue
+        stats = source_value_stats(evidence_book.by_source[key])
+        probability_positive = round(stats["probabilityPositiveEv"], 6)
+        flat_roi = stats["flatRoi"]
+        gates = {
+            "sourceSamples": {
+                "required": VALUE_MIN_SOURCE_SAMPLES,
+                "actual": stats["samples"],
+                "passed": stats["samples"] >= VALUE_MIN_SOURCE_SAMPLES,
+            },
+            "distinctPriorDates": {
+                "required": VALUE_MIN_SOURCE_DATES,
+                "actual": stats["distinctDates"],
+                "passed": stats["distinctDates"] >= VALUE_MIN_SOURCE_DATES,
+            },
+            "positiveFlatRoi": {
+                "required": 0.0,
+                "actual": round(flat_roi, 6) if flat_roi is not None else None,
+                "passed": (flat_roi or 0.0) > 0.0,
+            },
+            "stableChronologicalHalves": {
+                "required": True,
+                "actual": stats["halvesNonnegative"],
+                "passed": bool(stats["halvesNonnegative"] and stats["samples"]),
+            },
+            "probabilityPositiveEv": {
+                "required": VALUE_MIN_PROBABILITY_POSITIVE_EV,
+                "actual": probability_positive,
+                "passed": probability_positive >= VALUE_MIN_PROBABILITY_POSITIVE_EV,
+            },
+        }
+        gates_passed = sum(1 for gate in gates.values() if gate["passed"])
+        cards.append(
+            {
+                "mode": key[0],
+                "sourceKey": key[1],
+                "sport": key[2],
+                "source": labels.get(key) or key[1],
+                "samples": stats["samples"],
+                "distinctDates": stats["distinctDates"],
+                "wins": stats["wins"],
+                "losses": stats["losses"],
+                "flatNetUnits": round(stats["flatNetUnits"], 4),
+                "flatRoi": round(flat_roi, 6) if flat_roi is not None else None,
+                "alpha": round(stats["alpha"], 6),
+                "probabilityPositiveEv": probability_positive,
+                "gates": gates,
+                "gatesPassed": gates_passed,
+                "gatesTotal": len(gates),
+                "evidenceQualified": gates_passed == len(gates),
+                "candidatesToday": candidates_today.get(key, 0),
+                "liveToday": live_today.get(key, 0),
+            }
+        )
+    cards.sort(
+        key=lambda card: (
+            -int(card["gatesPassed"]),
+            -float(card["probabilityPositiveEv"]),
+            -int(card["samples"]),
+            str(card["sourceKey"]),
+        )
+    )
+    return cards
+
+
 def _flat_record(
     candidates: Iterable[Mapping[str, Any]], *, stake_weighted: bool = False
 ) -> dict[str, Any]:
@@ -1563,6 +1682,7 @@ def build_profit_desk_payload(
 
     live_record = _flat_record(portfolio["live"], stake_weighted=True)
     research_record = _flat_record(portfolio["all"])
+    source_cards = _source_report_cards(evidence_book, candidates)
     policy = {
         "version": POLICY_VERSION,
         "status": "LIVE" if live_slate else "RESEARCH_BACKFILL",
@@ -1629,6 +1749,7 @@ def build_profit_desk_payload(
         "livePortfolioCandidates": len(portfolio["live"]),
         "liveQualified": live_qualified,
         "evidenceRows": len(evidence_book.rows),
+        "sourcesTracked": len(source_cards),
         "modes": mode_summary,
         "shadowRecord": research_record,
         "researchRecord": research_record,
@@ -1659,6 +1780,7 @@ def build_profit_desk_payload(
         "summary": summary,
         "portfolio": portfolio,
         "candidates": candidates,
+        "sources": source_cards,
         "notices": notices,
     }
 

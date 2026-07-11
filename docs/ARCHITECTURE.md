@@ -45,6 +45,13 @@ Model and feed refreshes:
 1. Generate JSON without Firestore writes.
 2. Reset to the latest `main`.
 3. Merge the generated payload.
+4. Attach real pregame market prices (`scripts/market_odds.py`): both
+   moneylines, total over/under prices, spreads, and MLB first-5-innings
+   markets from the ESPN scoreboard/prop feeds. Scraped picks keep their own
+   executable odds and gain a verifiable two-sided baseline; in-house model
+   picks with assumed prices have them replaced by the real observed price
+   for their exact market and line. Captured pregame prices are preserved by
+   the merge layer once a game goes live.
 4. Preserve existing `result`, `start_time`, and `game_start_time` fields for matching picks.
 5. Commit and push as the triggering GitHub actor.
 

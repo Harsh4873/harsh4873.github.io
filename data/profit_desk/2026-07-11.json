@@ -8907,6 +8907,1296 @@
     "team": []
   },
   "schemaVersion": 2,
+  "sources": [
+    {
+      "alpha": 0.025148,
+      "candidatesToday": 2,
+      "distinctDates": 20,
+      "evidenceQualified": true,
+      "flatNetUnits": 24.6201,
+      "flatRoi": 0.077666,
+      "gates": {
+        "distinctPriorDates": {
+          "actual": 20,
+          "passed": true,
+          "required": 15
+        },
+        "positiveFlatRoi": {
+          "actual": 0.077666,
+          "passed": true,
+          "required": 0.0
+        },
+        "probabilityPositiveEv": {
+          "actual": 0.831984,
+          "passed": true,
+          "required": 0.7
+        },
+        "sourceSamples": {
+          "actual": 317,
+          "passed": true,
+          "required": 150
+        },
+        "stableChronologicalHalves": {
+          "actual": true,
+          "passed": true,
+          "required": true
+        }
+      },
+      "gatesPassed": 5,
+      "gatesTotal": 5,
+      "liveToday": 2,
+      "losses": 165,
+      "mode": "player",
+      "probabilityPositiveEv": 0.831984,
+      "samples": 317,
+      "source": "MLBPlayerProps",
+      "sourceKey": "mlb_player_props",
+      "sport": "mlb",
+      "wins": 152
+    },
+    {
+      "alpha": 0.041729,
+      "candidatesToday": 2,
+      "distinctDates": 15,
+      "evidenceQualified": false,
+      "flatNetUnits": 4.3435,
+      "flatRoi": 0.241303,
+      "gates": {
+        "distinctPriorDates": {
+          "actual": 15,
+          "passed": true,
+          "required": 15
+        },
+        "positiveFlatRoi": {
+          "actual": 0.241303,
+          "passed": true,
+          "required": 0.0
+        },
+        "probabilityPositiveEv": {
+          "actual": 0.752903,
+          "passed": true,
+          "required": 0.7
+        },
+        "sourceSamples": {
+          "actual": 18,
+          "passed": false,
+          "required": 150
+        },
+        "stableChronologicalHalves": {
+          "actual": true,
+          "passed": true,
+          "required": true
+        }
+      },
+      "gatesPassed": 4,
+      "gatesTotal": 5,
+      "liveToday": 0,
+      "losses": 6,
+      "mode": "team",
+      "probabilityPositiveEv": 0.752903,
+      "samples": 18,
+      "source": "SportsGamblerFIFAWorldCup",
+      "sourceKey": "sportsgambler_fifa_world_cup",
+      "sport": "fifa wc",
+      "wins": 12
+    },
+    {
+      "alpha": 0.011489,
+      "candidatesToday": 12,
+      "distinctDates": 34,
+      "evidenceQualified": false,
+      "flatNetUnits": 7.1213,
+      "flatRoi": 0.023817,
+      "gates": {
+        "distinctPriorDates": {
+          "actual": 34,
+          "passed": true,
+          "required": 15
+        },
+        "positiveFlatRoi": {
+          "actual": 0.023817,
+          "passed": true,
+          "required": 0.0
+        },
+        "probabilityPositiveEv": {
+          "actual": 0.666878,
+          "passed": false,
+          "required": 0.7
+        },
+        "sourceSamples": {
+          "actual": 299,
+          "passed": true,
+          "required": 150
+        },
+        "stableChronologicalHalves": {
+          "actual": true,
+          "passed": true,
+          "required": true
+        }
+      },
+      "gatesPassed": 4,
+      "gatesTotal": 5,
+      "liveToday": 0,
+      "losses": 133,
+      "mode": "team",
+      "probabilityPositiveEv": 0.666878,
+      "samples": 299,
+      "source": "SportsGamblerMLB",
+      "sourceKey": "sportsgambler_mlb",
+      "sport": "mlb",
+      "wins": 166
+    },
+    {
+      "alpha": 0.071487,
+      "candidatesToday": 0,
+      "distinctDates": 3,
+      "evidenceQualified": false,
+      "flatNetUnits": 12.5,
+      "flatRoi": 0.390625,
+      "gates": {
+        "distinctPriorDates": {
+          "actual": 3,
+          "passed": false,
+          "required": 15
+        },
+        "positiveFlatRoi": {
+          "actual": 0.390625,
+          "passed": true,
+          "required": 0.0
+        },
+        "probabilityPositiveEv": {
+          "actual": 0.878719,
+          "passed": true,
+          "required": 0.7
+        },
+        "sourceSamples": {
+          "actual": 32,
+          "passed": false,
+          "required": 150
+        },
+        "stableChronologicalHalves": {
+          "actual": true,
+          "passed": true,
+          "required": true
+        }
+      },
+      "gatesPassed": 3,
+      "gatesTotal": 5,
+      "liveToday": 0,
+      "losses": 15,
+      "mode": "player",
+      "probabilityPositiveEv": 0.878719,
+      "samples": 32,
+      "source": "mlb_player_props_matchup_h2h",
+      "sourceKey": "mlb_player_props_matchup_h2h",
+      "sport": "mlb",
+      "wins": 17
+    },
+    {
+      "alpha": 0.028,
+      "candidatesToday": 2,
+      "distinctDates": 15,
+      "evidenceQualified": false,
+      "flatNetUnits": 2.229,
+      "flatRoi": 0.117315,
+      "gates": {
+        "distinctPriorDates": {
+          "actual": 15,
+          "passed": true,
+          "required": 15
+        },
+        "positiveFlatRoi": {
+          "actual": 0.117315,
+          "passed": true,
+          "required": 0.0
+        },
+        "probabilityPositiveEv": {
+          "actual": 0.686564,
+          "passed": false,
+          "required": 0.7
+        },
+        "sourceSamples": {
+          "actual": 19,
+          "passed": false,
+          "required": 150
+        },
+        "stableChronologicalHalves": {
+          "actual": false,
+          "passed": false,
+          "required": true
+        }
+      },
+      "gatesPassed": 2,
+      "gatesTotal": 5,
+      "liveToday": 0,
+      "losses": 6,
+      "mode": "team",
+      "probabilityPositiveEv": 0.686564,
+      "samples": 19,
+      "source": "Scores24FIFAWorldCup",
+      "sourceKey": "scores24_fifa_world_cup",
+      "sport": "fifa wc",
+      "wins": 13
+    },
+    {
+      "alpha": 0.027541,
+      "candidatesToday": 0,
+      "distinctDates": 3,
+      "evidenceQualified": false,
+      "flatNetUnits": 2.0467,
+      "flatRoi": 0.682234,
+      "gates": {
+        "distinctPriorDates": {
+          "actual": 3,
+          "passed": false,
+          "required": 15
+        },
+        "positiveFlatRoi": {
+          "actual": 0.682234,
+          "passed": true,
+          "required": 0.0
+        },
+        "probabilityPositiveEv": {
+          "actual": 0.684174,
+          "passed": false,
+          "required": 0.7
+        },
+        "sourceSamples": {
+          "actual": 3,
+          "passed": false,
+          "required": 150
+        },
+        "stableChronologicalHalves": {
+          "actual": true,
+          "passed": true,
+          "required": true
+        }
+      },
+      "gatesPassed": 2,
+      "gatesTotal": 5,
+      "liveToday": 0,
+      "losses": 0,
+      "mode": "team",
+      "probabilityPositiveEv": 0.684174,
+      "samples": 3,
+      "source": "sportytrader_nba",
+      "sourceKey": "sportytrader_nba",
+      "sport": "nba",
+      "wins": 3
+    },
+    {
+      "alpha": 0.011344,
+      "candidatesToday": 0,
+      "distinctDates": 1,
+      "evidenceQualified": false,
+      "flatNetUnits": 0.8696,
+      "flatRoi": 0.869565,
+      "gates": {
+        "distinctPriorDates": {
+          "actual": 1,
+          "passed": false,
+          "required": 15
+        },
+        "positiveFlatRoi": {
+          "actual": 0.869565,
+          "passed": true,
+          "required": 0.0
+        },
+        "probabilityPositiveEv": {
+          "actual": 0.56359,
+          "passed": false,
+          "required": 0.7
+        },
+        "sourceSamples": {
+          "actual": 1,
+          "passed": false,
+          "required": 150
+        },
+        "stableChronologicalHalves": {
+          "actual": true,
+          "passed": true,
+          "required": true
+        }
+      },
+      "gatesPassed": 2,
+      "gatesTotal": 5,
+      "liveToday": 0,
+      "losses": 0,
+      "mode": "team",
+      "probabilityPositiveEv": 0.56359,
+      "samples": 1,
+      "source": "sportsgambler_nba",
+      "sourceKey": "sportsgambler_nba",
+      "sport": "nba",
+      "wins": 1
+    },
+    {
+      "alpha": 0.002527,
+      "candidatesToday": 3,
+      "distinctDates": 31,
+      "evidenceQualified": false,
+      "flatNetUnits": -1.6054,
+      "flatRoi": -0.008725,
+      "gates": {
+        "distinctPriorDates": {
+          "actual": 31,
+          "passed": true,
+          "required": 15
+        },
+        "positiveFlatRoi": {
+          "actual": -0.008725,
+          "passed": false,
+          "required": 0.0
+        },
+        "probabilityPositiveEv": {
+          "actual": 0.530923,
+          "passed": false,
+          "required": 0.7
+        },
+        "sourceSamples": {
+          "actual": 184,
+          "passed": true,
+          "required": 150
+        },
+        "stableChronologicalHalves": {
+          "actual": false,
+          "passed": false,
+          "required": true
+        }
+      },
+      "gatesPassed": 2,
+      "gatesTotal": 5,
+      "liveToday": 0,
+      "losses": 87,
+      "mode": "team",
+      "probabilityPositiveEv": 0.530923,
+      "samples": 184,
+      "source": "SportyTraderMLB",
+      "sourceKey": "sportytrader_mlb",
+      "sport": "mlb",
+      "wins": 97
+    },
+    {
+      "alpha": -0.015974,
+      "candidatesToday": 12,
+      "distinctDates": 25,
+      "evidenceQualified": false,
+      "flatNetUnits": -7.6052,
+      "flatRoi": -0.028699,
+      "gates": {
+        "distinctPriorDates": {
+          "actual": 25,
+          "passed": true,
+          "required": 15
+        },
+        "positiveFlatRoi": {
+          "actual": -0.028699,
+          "passed": false,
+          "required": 0.0
+        },
+        "probabilityPositiveEv": {
+          "actual": 0.28671,
+          "passed": false,
+          "required": 0.7
+        },
+        "sourceSamples": {
+          "actual": 265,
+          "passed": true,
+          "required": 150
+        },
+        "stableChronologicalHalves": {
+          "actual": false,
+          "passed": false,
+          "required": true
+        }
+      },
+      "gatesPassed": 2,
+      "gatesTotal": 5,
+      "liveToday": 0,
+      "losses": 116,
+      "mode": "team",
+      "probabilityPositiveEv": 0.28671,
+      "samples": 265,
+      "source": "Scores24MLB",
+      "sourceKey": "scores24_mlb",
+      "sport": "mlb",
+      "wins": 149
+    },
+    {
+      "alpha": 0.00982,
+      "candidatesToday": 0,
+      "distinctDates": 3,
+      "evidenceQualified": false,
+      "flatNetUnits": 1.2173,
+      "flatRoi": 0.055333,
+      "gates": {
+        "distinctPriorDates": {
+          "actual": 3,
+          "passed": false,
+          "required": 15
+        },
+        "positiveFlatRoi": {
+          "actual": 0.055333,
+          "passed": true,
+          "required": 0.0
+        },
+        "probabilityPositiveEv": {
+          "actual": 0.561755,
+          "passed": false,
+          "required": 0.7
+        },
+        "sourceSamples": {
+          "actual": 22,
+          "passed": false,
+          "required": 150
+        },
+        "stableChronologicalHalves": {
+          "actual": false,
+          "passed": false,
+          "required": true
+        }
+      },
+      "gatesPassed": 1,
+      "gatesTotal": 5,
+      "liveToday": 0,
+      "losses": 10,
+      "mode": "player",
+      "probabilityPositiveEv": 0.561755,
+      "samples": 22,
+      "source": "wnba_player_props_season",
+      "sourceKey": "wnba_player_props_season",
+      "sport": "wnba",
+      "wins": 12
+    },
+    {
+      "alpha": -0.022001,
+      "candidatesToday": 3,
+      "distinctDates": 27,
+      "evidenceQualified": false,
+      "flatNetUnits": -4.42,
+      "flatRoi": -0.065971,
+      "gates": {
+        "distinctPriorDates": {
+          "actual": 27,
+          "passed": true,
+          "required": 15
+        },
+        "positiveFlatRoi": {
+          "actual": -0.065971,
+          "passed": false,
+          "required": 0.0
+        },
+        "probabilityPositiveEv": {
+          "actual": 0.324623,
+          "passed": false,
+          "required": 0.7
+        },
+        "sourceSamples": {
+          "actual": 67,
+          "passed": false,
+          "required": 150
+        },
+        "stableChronologicalHalves": {
+          "actual": false,
+          "passed": false,
+          "required": true
+        }
+      },
+      "gatesPassed": 1,
+      "gatesTotal": 5,
+      "liveToday": 0,
+      "losses": 34,
+      "mode": "team",
+      "probabilityPositiveEv": 0.324623,
+      "samples": 67,
+      "source": "SportsGamblerWNBA",
+      "sourceKey": "sportsgambler_wnba",
+      "sport": "wnba",
+      "wins": 33
+    },
+    {
+      "alpha": -0.031817,
+      "candidatesToday": 3,
+      "distinctDates": 21,
+      "evidenceQualified": false,
+      "flatNetUnits": -5.4291,
+      "flatRoi": -0.096948,
+      "gates": {
+        "distinctPriorDates": {
+          "actual": 21,
+          "passed": true,
+          "required": 15
+        },
+        "positiveFlatRoi": {
+          "actual": -0.096948,
+          "passed": false,
+          "required": 0.0
+        },
+        "probabilityPositiveEv": {
+          "actual": 0.265343,
+          "passed": false,
+          "required": 0.7
+        },
+        "sourceSamples": {
+          "actual": 56,
+          "passed": false,
+          "required": 150
+        },
+        "stableChronologicalHalves": {
+          "actual": false,
+          "passed": false,
+          "required": true
+        }
+      },
+      "gatesPassed": 1,
+      "gatesTotal": 5,
+      "liveToday": 0,
+      "losses": 27,
+      "mode": "team",
+      "probabilityPositiveEv": 0.265343,
+      "samples": 56,
+      "source": "Scores24WNBA",
+      "sourceKey": "scores24_wnba",
+      "sport": "wnba",
+      "wins": 29
+    },
+    {
+      "alpha": -0.059487,
+      "candidatesToday": 2,
+      "distinctDates": 21,
+      "evidenceQualified": false,
+      "flatNetUnits": -9.1998,
+      "flatRoi": -0.204439,
+      "gates": {
+        "distinctPriorDates": {
+          "actual": 21,
+          "passed": true,
+          "required": 15
+        },
+        "positiveFlatRoi": {
+          "actual": -0.204439,
+          "passed": false,
+          "required": 0.0
+        },
+        "probabilityPositiveEv": {
+          "actual": 0.133448,
+          "passed": false,
+          "required": 0.7
+        },
+        "sourceSamples": {
+          "actual": 45,
+          "passed": false,
+          "required": 150
+        },
+        "stableChronologicalHalves": {
+          "actual": false,
+          "passed": false,
+          "required": true
+        }
+      },
+      "gatesPassed": 1,
+      "gatesTotal": 5,
+      "liveToday": 0,
+      "losses": 24,
+      "mode": "team",
+      "probabilityPositiveEv": 0.133448,
+      "samples": 45,
+      "source": "SportyTraderWNBA",
+      "sourceKey": "sportytrader_wnba",
+      "sport": "wnba",
+      "wins": 21
+    },
+    {
+      "alpha": 0.012815,
+      "candidatesToday": 0,
+      "distinctDates": 3,
+      "evidenceQualified": false,
+      "flatNetUnits": -0.1969,
+      "flatRoi": -0.006154,
+      "gates": {
+        "distinctPriorDates": {
+          "actual": 3,
+          "passed": false,
+          "required": 15
+        },
+        "positiveFlatRoi": {
+          "actual": -0.006154,
+          "passed": false,
+          "required": 0.0
+        },
+        "probabilityPositiveEv": {
+          "actual": 0.586871,
+          "passed": false,
+          "required": 0.7
+        },
+        "sourceSamples": {
+          "actual": 32,
+          "passed": false,
+          "required": 150
+        },
+        "stableChronologicalHalves": {
+          "actual": false,
+          "passed": false,
+          "required": true
+        }
+      },
+      "gatesPassed": 0,
+      "gatesTotal": 5,
+      "liveToday": 0,
+      "losses": 17,
+      "mode": "player",
+      "probabilityPositiveEv": 0.586871,
+      "samples": 32,
+      "source": "mlb_player_props_all_time",
+      "sourceKey": "mlb_player_props_all_time",
+      "sport": "mlb",
+      "wins": 15
+    },
+    {
+      "alpha": 0.010977,
+      "candidatesToday": 0,
+      "distinctDates": 3,
+      "evidenceQualified": false,
+      "flatNetUnits": -0.4875,
+      "flatRoi": -0.01741,
+      "gates": {
+        "distinctPriorDates": {
+          "actual": 3,
+          "passed": false,
+          "required": 15
+        },
+        "positiveFlatRoi": {
+          "actual": -0.01741,
+          "passed": false,
+          "required": 0.0
+        },
+        "probabilityPositiveEv": {
+          "actual": 0.572656,
+          "passed": false,
+          "required": 0.7
+        },
+        "sourceSamples": {
+          "actual": 28,
+          "passed": false,
+          "required": 150
+        },
+        "stableChronologicalHalves": {
+          "actual": false,
+          "passed": false,
+          "required": true
+        }
+      },
+      "gatesPassed": 0,
+      "gatesTotal": 5,
+      "liveToday": 0,
+      "losses": 15,
+      "mode": "player",
+      "probabilityPositiveEv": 0.572656,
+      "samples": 28,
+      "source": "mlb_player_props_season",
+      "sourceKey": "mlb_player_props_season",
+      "sport": "mlb",
+      "wins": 13
+    },
+    {
+      "alpha": 0.003737,
+      "candidatesToday": 0,
+      "distinctDates": 3,
+      "evidenceQualified": false,
+      "flatNetUnits": -3.1844,
+      "flatRoi": -0.11794,
+      "gates": {
+        "distinctPriorDates": {
+          "actual": 3,
+          "passed": false,
+          "required": 15
+        },
+        "positiveFlatRoi": {
+          "actual": -0.11794,
+          "passed": false,
+          "required": 0.0
+        },
+        "probabilityPositiveEv": {
+          "actual": 0.526405,
+          "passed": false,
+          "required": 0.7
+        },
+        "sourceSamples": {
+          "actual": 27,
+          "passed": false,
+          "required": 150
+        },
+        "stableChronologicalHalves": {
+          "actual": false,
+          "passed": false,
+          "required": true
+        }
+      },
+      "gatesPassed": 0,
+      "gatesTotal": 5,
+      "liveToday": 0,
+      "losses": 16,
+      "mode": "player",
+      "probabilityPositiveEv": 0.526405,
+      "samples": 27,
+      "source": "mlb_player_props_hot_l10",
+      "sourceKey": "mlb_player_props_hot_l10",
+      "sport": "mlb",
+      "wins": 11
+    },
+    {
+      "alpha": 0.0,
+      "candidatesToday": 2,
+      "distinctDates": 0,
+      "evidenceQualified": false,
+      "flatNetUnits": 0,
+      "flatRoi": null,
+      "gates": {
+        "distinctPriorDates": {
+          "actual": 0,
+          "passed": false,
+          "required": 15
+        },
+        "positiveFlatRoi": {
+          "actual": null,
+          "passed": false,
+          "required": 0.0
+        },
+        "probabilityPositiveEv": {
+          "actual": 0.5,
+          "passed": false,
+          "required": 0.7
+        },
+        "sourceSamples": {
+          "actual": 0,
+          "passed": false,
+          "required": 150
+        },
+        "stableChronologicalHalves": {
+          "actual": true,
+          "passed": false,
+          "required": true
+        }
+      },
+      "gatesPassed": 0,
+      "gatesTotal": 5,
+      "liveToday": 0,
+      "losses": 0,
+      "mode": "team",
+      "probabilityPositiveEv": 0.5,
+      "samples": 0,
+      "source": "FIFA Model",
+      "sourceKey": "fifa_world_cup",
+      "sport": "fifa wc",
+      "wins": 0
+    },
+    {
+      "alpha": 0.0,
+      "candidatesToday": 3,
+      "distinctDates": 0,
+      "evidenceQualified": false,
+      "flatNetUnits": 0,
+      "flatRoi": null,
+      "gates": {
+        "distinctPriorDates": {
+          "actual": 0,
+          "passed": false,
+          "required": 15
+        },
+        "positiveFlatRoi": {
+          "actual": null,
+          "passed": false,
+          "required": 0.0
+        },
+        "probabilityPositiveEv": {
+          "actual": 0.5,
+          "passed": false,
+          "required": 0.7
+        },
+        "sourceSamples": {
+          "actual": 0,
+          "passed": false,
+          "required": 150
+        },
+        "stableChronologicalHalves": {
+          "actual": true,
+          "passed": false,
+          "required": true
+        }
+      },
+      "gatesPassed": 0,
+      "gatesTotal": 5,
+      "liveToday": 0,
+      "losses": 0,
+      "mode": "team",
+      "probabilityPositiveEv": 0.5,
+      "samples": 0,
+      "source": "MLB Inning",
+      "sourceKey": "mlb_inning",
+      "sport": "mlb",
+      "wins": 0
+    },
+    {
+      "alpha": 0.0,
+      "candidatesToday": 2,
+      "distinctDates": 0,
+      "evidenceQualified": false,
+      "flatNetUnits": 0,
+      "flatRoi": null,
+      "gates": {
+        "distinctPriorDates": {
+          "actual": 0,
+          "passed": false,
+          "required": 15
+        },
+        "positiveFlatRoi": {
+          "actual": null,
+          "passed": false,
+          "required": 0.0
+        },
+        "probabilityPositiveEv": {
+          "actual": 0.5,
+          "passed": false,
+          "required": 0.7
+        },
+        "sourceSamples": {
+          "actual": 0,
+          "passed": false,
+          "required": 150
+        },
+        "stableChronologicalHalves": {
+          "actual": true,
+          "passed": false,
+          "required": true
+        }
+      },
+      "gatesPassed": 0,
+      "gatesTotal": 5,
+      "liveToday": 0,
+      "losses": 0,
+      "mode": "team",
+      "probabilityPositiveEv": 0.5,
+      "samples": 0,
+      "source": "MLB Model",
+      "sourceKey": "mlb_new",
+      "sport": "mlb",
+      "wins": 0
+    },
+    {
+      "alpha": 0.0,
+      "candidatesToday": 7,
+      "distinctDates": 0,
+      "evidenceQualified": false,
+      "flatNetUnits": 0,
+      "flatRoi": null,
+      "gates": {
+        "distinctPriorDates": {
+          "actual": 0,
+          "passed": false,
+          "required": 15
+        },
+        "positiveFlatRoi": {
+          "actual": null,
+          "passed": false,
+          "required": 0.0
+        },
+        "probabilityPositiveEv": {
+          "actual": 0.5,
+          "passed": false,
+          "required": 0.7
+        },
+        "sourceSamples": {
+          "actual": 0,
+          "passed": false,
+          "required": 150
+        },
+        "stableChronologicalHalves": {
+          "actual": true,
+          "passed": false,
+          "required": true
+        }
+      },
+      "gatesPassed": 0,
+      "gatesTotal": 5,
+      "liveToday": 0,
+      "losses": 0,
+      "mode": "team",
+      "probabilityPositiveEv": 0.5,
+      "samples": 0,
+      "source": "NBA Summer League",
+      "sourceKey": "nba_summer",
+      "sport": "nba summer",
+      "wins": 0
+    },
+    {
+      "alpha": 0.0,
+      "candidatesToday": 1,
+      "distinctDates": 0,
+      "evidenceQualified": false,
+      "flatNetUnits": 0,
+      "flatRoi": null,
+      "gates": {
+        "distinctPriorDates": {
+          "actual": 0,
+          "passed": false,
+          "required": 15
+        },
+        "positiveFlatRoi": {
+          "actual": null,
+          "passed": false,
+          "required": 0.0
+        },
+        "probabilityPositiveEv": {
+          "actual": 0.5,
+          "passed": false,
+          "required": 0.7
+        },
+        "sourceSamples": {
+          "actual": 0,
+          "passed": false,
+          "required": 150
+        },
+        "stableChronologicalHalves": {
+          "actual": true,
+          "passed": false,
+          "required": true
+        }
+      },
+      "gatesPassed": 0,
+      "gatesTotal": 5,
+      "liveToday": 0,
+      "losses": 0,
+      "mode": "player",
+      "probabilityPositiveEv": 0.5,
+      "samples": 0,
+      "source": "SportyTraderFIFAWorldCup",
+      "sourceKey": "sportytrader_fifa_world_cup",
+      "sport": "fifa wc",
+      "wins": 0
+    },
+    {
+      "alpha": 0.0,
+      "candidatesToday": 1,
+      "distinctDates": 0,
+      "evidenceQualified": false,
+      "flatNetUnits": 0,
+      "flatRoi": null,
+      "gates": {
+        "distinctPriorDates": {
+          "actual": 0,
+          "passed": false,
+          "required": 15
+        },
+        "positiveFlatRoi": {
+          "actual": null,
+          "passed": false,
+          "required": 0.0
+        },
+        "probabilityPositiveEv": {
+          "actual": 0.5,
+          "passed": false,
+          "required": 0.7
+        },
+        "sourceSamples": {
+          "actual": 0,
+          "passed": false,
+          "required": 150
+        },
+        "stableChronologicalHalves": {
+          "actual": true,
+          "passed": false,
+          "required": true
+        }
+      },
+      "gatesPassed": 0,
+      "gatesTotal": 5,
+      "liveToday": 0,
+      "losses": 0,
+      "mode": "team",
+      "probabilityPositiveEv": 0.5,
+      "samples": 0,
+      "source": "WNBA Model",
+      "sourceKey": "wnba",
+      "sport": "wnba",
+      "wins": 0
+    },
+    {
+      "alpha": -0.007823,
+      "candidatesToday": 1,
+      "distinctDates": 8,
+      "evidenceQualified": false,
+      "flatNetUnits": -1.2252,
+      "flatRoi": -0.136133,
+      "gates": {
+        "distinctPriorDates": {
+          "actual": 8,
+          "passed": false,
+          "required": 15
+        },
+        "positiveFlatRoi": {
+          "actual": -0.136133,
+          "passed": false,
+          "required": 0.0
+        },
+        "probabilityPositiveEv": {
+          "actual": 0.454428,
+          "passed": false,
+          "required": 0.7
+        },
+        "sourceSamples": {
+          "actual": 9,
+          "passed": false,
+          "required": 150
+        },
+        "stableChronologicalHalves": {
+          "actual": false,
+          "passed": false,
+          "required": true
+        }
+      },
+      "gatesPassed": 0,
+      "gatesTotal": 5,
+      "liveToday": 0,
+      "losses": 5,
+      "mode": "team",
+      "probabilityPositiveEv": 0.454428,
+      "samples": 9,
+      "source": "SportyTraderFIFAWorldCup",
+      "sourceKey": "sportytrader_fifa_world_cup",
+      "sport": "fifa wc",
+      "wins": 4
+    },
+    {
+      "alpha": -0.008985,
+      "candidatesToday": 0,
+      "distinctDates": 3,
+      "evidenceQualified": false,
+      "flatNetUnits": -1.1525,
+      "flatRoi": -0.104777,
+      "gates": {
+        "distinctPriorDates": {
+          "actual": 3,
+          "passed": false,
+          "required": 15
+        },
+        "positiveFlatRoi": {
+          "actual": -0.104777,
+          "passed": false,
+          "required": 0.0
+        },
+        "probabilityPositiveEv": {
+          "actual": 0.447782,
+          "passed": false,
+          "required": 0.7
+        },
+        "sourceSamples": {
+          "actual": 11,
+          "passed": false,
+          "required": 150
+        },
+        "stableChronologicalHalves": {
+          "actual": false,
+          "passed": false,
+          "required": true
+        }
+      },
+      "gatesPassed": 0,
+      "gatesTotal": 5,
+      "liveToday": 0,
+      "losses": 6,
+      "mode": "player",
+      "probabilityPositiveEv": 0.447782,
+      "samples": 11,
+      "source": "wnba_player_props_hot_l10",
+      "sourceKey": "wnba_player_props_hot_l10",
+      "sport": "wnba",
+      "wins": 5
+    },
+    {
+      "alpha": -0.012608,
+      "candidatesToday": 0,
+      "distinctDates": 1,
+      "evidenceQualified": false,
+      "flatNetUnits": -1.0,
+      "flatRoi": -1.0,
+      "gates": {
+        "distinctPriorDates": {
+          "actual": 1,
+          "passed": false,
+          "required": 15
+        },
+        "positiveFlatRoi": {
+          "actual": -1.0,
+          "passed": false,
+          "required": 0.0
+        },
+        "probabilityPositiveEv": {
+          "actual": 0.43641,
+          "passed": false,
+          "required": 0.7
+        },
+        "sourceSamples": {
+          "actual": 1,
+          "passed": false,
+          "required": 150
+        },
+        "stableChronologicalHalves": {
+          "actual": false,
+          "passed": false,
+          "required": true
+        }
+      },
+      "gatesPassed": 0,
+      "gatesTotal": 5,
+      "liveToday": 0,
+      "losses": 1,
+      "mode": "player",
+      "probabilityPositiveEv": 0.43641,
+      "samples": 1,
+      "source": "sportytrader_mlb",
+      "sourceKey": "sportytrader_mlb",
+      "sport": "mlb",
+      "wins": 0
+    },
+    {
+      "alpha": -0.037797,
+      "candidatesToday": 0,
+      "distinctDates": 3,
+      "evidenceQualified": false,
+      "flatNetUnits": -3.7927,
+      "flatRoi": -0.210707,
+      "gates": {
+        "distinctPriorDates": {
+          "actual": 3,
+          "passed": false,
+          "required": 15
+        },
+        "positiveFlatRoi": {
+          "actual": -0.210707,
+          "passed": false,
+          "required": 0.0
+        },
+        "probabilityPositiveEv": {
+          "actual": 0.285633,
+          "passed": false,
+          "required": 0.7
+        },
+        "sourceSamples": {
+          "actual": 18,
+          "passed": false,
+          "required": 150
+        },
+        "stableChronologicalHalves": {
+          "actual": false,
+          "passed": false,
+          "required": true
+        }
+      },
+      "gatesPassed": 0,
+      "gatesTotal": 5,
+      "liveToday": 0,
+      "losses": 11,
+      "mode": "player",
+      "probabilityPositiveEv": 0.285633,
+      "samples": 18,
+      "source": "wnba_player_props_matchup_h2h",
+      "sourceKey": "wnba_player_props_matchup_h2h",
+      "sport": "wnba",
+      "wins": 7
+    },
+    {
+      "alpha": -0.049697,
+      "candidatesToday": 0,
+      "distinctDates": 3,
+      "evidenceQualified": false,
+      "flatNetUnits": -5.5895,
+      "flatRoi": -0.429962,
+      "gates": {
+        "distinctPriorDates": {
+          "actual": 3,
+          "passed": false,
+          "required": 15
+        },
+        "positiveFlatRoi": {
+          "actual": -0.429962,
+          "passed": false,
+          "required": 0.0
+        },
+        "probabilityPositiveEv": {
+          "actual": 0.219035,
+          "passed": false,
+          "required": 0.7
+        },
+        "sourceSamples": {
+          "actual": 13,
+          "passed": false,
+          "required": 150
+        },
+        "stableChronologicalHalves": {
+          "actual": false,
+          "passed": false,
+          "required": true
+        }
+      },
+      "gatesPassed": 0,
+      "gatesTotal": 5,
+      "liveToday": 0,
+      "losses": 9,
+      "mode": "player",
+      "probabilityPositiveEv": 0.219035,
+      "samples": 13,
+      "source": "wnba_player_props_all_time",
+      "sourceKey": "wnba_player_props_all_time",
+      "sport": "wnba",
+      "wins": 4
+    },
+    {
+      "alpha": -0.059043,
+      "candidatesToday": 2,
+      "distinctDates": 8,
+      "evidenceQualified": false,
+      "flatNetUnits": -8.7361,
+      "flatRoi": -0.242668,
+      "gates": {
+        "distinctPriorDates": {
+          "actual": 8,
+          "passed": false,
+          "required": 15
+        },
+        "positiveFlatRoi": {
+          "actual": -0.242668,
+          "passed": false,
+          "required": 0.0
+        },
+        "probabilityPositiveEv": {
+          "actual": 0.146913,
+          "passed": false,
+          "required": 0.7
+        },
+        "sourceSamples": {
+          "actual": 36,
+          "passed": false,
+          "required": 150
+        },
+        "stableChronologicalHalves": {
+          "actual": false,
+          "passed": false,
+          "required": true
+        }
+      },
+      "gatesPassed": 0,
+      "gatesTotal": 5,
+      "liveToday": 0,
+      "losses": 22,
+      "mode": "player",
+      "probabilityPositiveEv": 0.146913,
+      "samples": 36,
+      "source": "WNBAPlayerProps",
+      "sourceKey": "wnba_player_props",
+      "sport": "wnba",
+      "wins": 14
+    }
+  ],
   "summary": {
     "avoid": 19,
     "candidateCount": 60,
@@ -8999,6 +10289,7 @@
       "stakedUnits": 0.0,
       "wins": 0
     },
+    "sourcesTracked": 28,
     "valueQualified": 2,
     "watchlist": 39
   }

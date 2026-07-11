@@ -114,6 +114,13 @@ ROI turns nonpositive, or its probability of profit decays below the lane
 threshold — qualification lapses automatically on the next build and the desk
 returns to `Sit out`. That is the design working, not a bug.
 
+## Qualification leaderboard
+
+Each artifact exports per-source VALUE-gate progress (`sources`), rendered on
+the Rankings tab: settled priced rows, distinct dates, flat ROI, half
+stability, and probability of profit against each threshold. Sources climb
+onto the card — and fall off it — purely by these numbers.
+
 ## Statistical references
 
 - Glenn Brier, [Verification of Forecasts Expressed in Terms of Probability](https://doi.org/10.1175/1520-0493(1950)078%3C0001:VOFEIT%3E2.0.CO;2), 1950.
