@@ -749,7 +749,6 @@
       "blockers": [
         "unverified_price_provenance",
         "missing_or_invalid_price_timestamp",
-        "missing_or_invalid_game_start_time",
         "unverified_no_vig_probability",
         "unsupported_grading",
         "missing_model_version",
@@ -820,7 +819,7 @@
         "quality": "assumed",
         "source": null,
         "sourceField": "unverified",
-        "startTime": null,
+        "startTime": "2026-07-11T23:05Z",
         "tier": "D",
         "tierLabel": "assumed_proxy_or_synthetic",
         "timestamp": null,
@@ -841,7 +840,6 @@
       "blockers": [
         "assumed_or_non_executable_price",
         "unverified_price_provenance",
-        "missing_or_invalid_game_start_time",
         "missing_policy_version"
       ],
       "canonicalGame": "2026-07-11:mlb:seattle mariners|tampa bay rays",
@@ -893,12 +891,12 @@
       "player": null,
       "policyVersion": "unversioned",
       "price": {
-        "ageHours": null,
+        "ageHours": 4.973,
         "breakEvenProbability": 0.52381,
         "decimalOdds": 1.909091,
         "eligibleForAlphaEstimate": false,
-        "fresh": false,
-        "freshPregame": false,
+        "fresh": true,
+        "freshPregame": true,
         "maxAgeHours": 24.0,
         "noVigInputs": {
           "field": "market_no_vig_probability"
@@ -911,7 +909,7 @@
         "quality": "assumed",
         "source": null,
         "sourceField": "unverified",
-        "startTime": null,
+        "startTime": "2026-07-11T20:10Z",
         "tier": "D",
         "tierLabel": "assumed_proxy_or_synthetic",
         "timestamp": "2026-07-11T15:11:36.129616Z",
@@ -932,7 +930,6 @@
       "blockers": [
         "unverified_price_provenance",
         "missing_or_invalid_price_timestamp",
-        "missing_or_invalid_game_start_time",
         "unverified_no_vig_probability",
         "unsupported_grading",
         "missing_model_version",
@@ -1003,7 +1000,7 @@
         "quality": "assumed",
         "source": null,
         "sourceField": "unverified",
-        "startTime": null,
+        "startTime": "2026-07-11T20:00Z",
         "tier": "D",
         "tierLabel": "assumed_proxy_or_synthetic",
         "timestamp": null,
@@ -3932,7 +3929,6 @@
       "blockers": [
         "unverified_price_provenance",
         "missing_or_invalid_price_timestamp",
-        "missing_or_invalid_game_start_time",
         "unverified_no_vig_probability",
         "missing_model_version",
         "missing_policy_version"
@@ -4002,7 +3998,7 @@
         "quality": "assumed",
         "source": "DraftKings via ESPN",
         "sourceField": "pick.market_source",
-        "startTime": null,
+        "startTime": "2026-07-11T17:00Z",
         "tier": "D",
         "tierLabel": "assumed_proxy_or_synthetic",
         "timestamp": null,

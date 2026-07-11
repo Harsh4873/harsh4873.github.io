@@ -62032,6 +62032,7 @@
           "decision": "LEAN",
           "direction": "Under",
           "edge": 1.72,
+          "game_start_time": "2026-07-11T20:10Z",
           "home_team": "Tampa Bay Rays",
           "kelly": 3.92,
           "line": 7.0,
@@ -62080,6 +62081,7 @@
           "selection": "Under",
           "source": "MLB Model",
           "sport": "MLB",
+          "start_time": "2026-07-11T20:10Z",
           "units": 0.25,
           "validation_lean": true,
           "validation_reason": "validation fallback: mlb_new had zero strict BET/LEAN publications; published top raw model signal as a small LEAN for tracking",
@@ -67650,6 +67652,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Baltimore Orioles vs Kansas City Royals",
+          "game_start_time": "2026-07-11T23:05Z",
           "matchup": "Baltimore Orioles vs Kansas City Royals",
           "odds": 135,
           "pick": "Royals ML (Orioles vs Royals)",
@@ -67669,6 +67672,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-07-11T23:05Z",
           "units": 1
         }
       ],
@@ -67743,6 +67747,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Atlanta Dream vs Portland Fire",
+          "game_start_time": "2026-07-11T20:00Z",
           "matchup": "Atlanta Dream vs Portland Fire",
           "odds": -110,
           "pick": "Dream (-13.5) cover the spread (Dream vs Fire)",
@@ -67762,6 +67767,7 @@
           "probability": null,
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
+          "start_time": "2026-07-11T20:00Z",
           "units": 1
         },
         {
@@ -67979,6 +67985,7 @@
           "decision": "LEAN",
           "edge": 4.7,
           "game": "New York Liberty @ Minnesota Lynx",
+          "game_start_time": "2026-07-11T17:00Z",
           "guardrail_reasons": [
             "new totals market capped at LEAN while its live record is established"
           ],
@@ -68038,6 +68045,7 @@
           "selection": "Under",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-07-11T17:00Z",
           "units": 0.01,
           "vegas": 173.5
         },
