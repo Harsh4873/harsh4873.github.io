@@ -27,6 +27,7 @@ from scripts.pick_calibration import (  # noqa: E402
 
 TRIGGER_INTERVAL = 100
 MIN_TRAINABLE_ROWS = 40
+TRAINING_CONTRACT_VERSION = 2
 
 
 def _parse_args() -> argparse.Namespace:
@@ -193,7 +194,9 @@ def _trainable_records(ledger: dict[str, Any]) -> list[dict[str, Any]]:
             if isinstance(row, dict)
             and row.get("outcome") in {0, 1}
             and isinstance(row.get("raw_probability"), (int, float))
-            and row.get("calibration_eligible") is not False
+            and row.get("calibration_eligible") is True
+            and row.get("ml_calibration_excluded") is not True
+            and str(row.get("probability_source") or "") != "player_props_ml_v1"
         ],
         key=lambda row: (str(row.get("date") or ""), str(row.get("id") or "")),
     )
@@ -217,7 +220,12 @@ def run_training(calibration_dir: Path, *, force: bool = False) -> dict[str, Any
     decided_count = int((ledger.get("summary") or {}).get("decided_picks") or 0)
     last_count = int(state.get("last_evaluated_decided_count") or 0)
     new_decisions = max(0, decided_count - last_count)
-    if not force and new_decisions < TRIGGER_INTERVAL:
+    contract_changed = bool(state or active) and (
+        int(state.get("training_contract_version") or 0) != TRAINING_CONTRACT_VERSION
+        or bool(active)
+        and int((active or {}).get("training_contract_version") or 0) != TRAINING_CONTRACT_VERSION
+    )
+    if not force and not contract_changed and new_decisions < TRIGGER_INTERVAL:
         return {
             "evaluated": False,
             "promoted": False,
@@ -229,9 +237,9 @@ def run_training(calibration_dir: Path, *, force: bool = False) -> dict[str, Any
     rows = _trainable_records(ledger)
     if len(rows) < MIN_TRAINABLE_ROWS:
         raise SystemExit(f"Need at least {MIN_TRAINABLE_ROWS} trainable decided picks; found {len(rows)}")
-    last_trainable_count = int(state.get("last_trainable_decided_count") or 0)
+    last_trainable_count = 0 if contract_changed else int(state.get("last_trainable_decided_count") or 0)
     new_trainable_count = max(0, len(rows) - last_trainable_count)
-    if active and last_trainable_count and not force:
+    if active and last_trainable_count and not force and not contract_changed:
         if new_trainable_count < 20:
             return {
                 "evaluated": False,
@@ -248,16 +256,17 @@ def run_training(calibration_dir: Path, *, force: bool = False) -> dict[str, Any
     training_rows = rows[:-holdout_size]
     holdout_rows = rows[-holdout_size:]
 
-    champion_mapping = _active_mapping(active, len(training_rows))
+    champion_mapping = _active_mapping(None if contract_changed else active, len(training_rows))
     challenger_mapping = fit_mapping(training_rows)
     champion_metrics = evaluate(holdout_rows, champion_mapping)
     challenger_metrics = evaluate(holdout_rows, challenger_mapping)
     promote, reasons = should_promote(champion_metrics, challenger_metrics)
     now = _utc_now()
     final_mapping = fit_mapping(rows)
-    version = f"cal-{decided_count}-{now[:10]}"
+    version = f"cal-v{TRAINING_CONTRACT_VERSION}-{decided_count}-{now[:10]}"
     challenger_payload = {
         "schema_version": CALIBRATION_SCHEMA_VERSION,
+        "training_contract_version": TRAINING_CONTRACT_VERSION,
         "version": version,
         "evaluated_at": now,
         "decided_count": decided_count,
@@ -277,10 +286,11 @@ def run_training(calibration_dir: Path, *, force: bool = False) -> dict[str, Any
             "promotion": {"approved": True, "reasons": reasons},
         }
         active_changed = write_json_if_changed(calibration_dir / "active.json", active_payload)
-    elif not active:
+    elif not active or contract_changed:
         active_payload = {
             "schema_version": CALIBRATION_SCHEMA_VERSION,
-            "version": "identity-v1",
+            "training_contract_version": TRAINING_CONTRACT_VERSION,
+            "version": f"identity-v{TRAINING_CONTRACT_VERSION}",
             "promoted_at": now,
             "decided_count": decided_count,
             "trainable_decided_count": len(rows),
@@ -294,6 +304,7 @@ def run_training(calibration_dir: Path, *, force: bool = False) -> dict[str, Any
 
     state_payload = {
         "schema_version": CALIBRATION_SCHEMA_VERSION,
+        "training_contract_version": TRAINING_CONTRACT_VERSION,
         "last_evaluated_at": now,
         "last_evaluated_decided_count": decided_count,
         "last_trainable_decided_count": len(rows),
@@ -312,6 +323,7 @@ def run_training(calibration_dir: Path, *, force: bool = False) -> dict[str, Any
         "champion": champion_metrics,
         "challenger": challenger_metrics,
         "reasons": reasons,
+        "training_contract_changed": contract_changed,
     }
 
 

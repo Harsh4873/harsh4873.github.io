@@ -10,6 +10,8 @@ committed JSON in data/
       |
       +--> scheduled ESPN auto-grader --> committed results
       |
+      +--> Profit Desk builder --> dated shadow decision artifacts
+      |
       v
 Vite static build --> GitHub Pages
 ```
@@ -20,9 +22,16 @@ The production viewer is intentionally static. It does not load Firebase, authen
 
 - `src/data.ts` loads every dated file listed in `data/model_cache/index.json`.
 - `src/data.ts` loads every dated file listed in `data/player_props_cache/index.json`.
+- `src/data.ts` loads the compact, precomputed files listed in
+  `data/profit_desk/index.json`; the browser never invents a profit score from
+  raw picks.
 - Picks receive deterministic browser IDs so client-side ESPN grades can be stored locally.
 - `src/main.ts` renders Home, Search, Rankings, Trends, and Daily from the same pick collection.
 - Rankings are calculated from committed results across all manifest dates.
+- Profit Desk is shadow-only at launch. It requires observed, fresh pricing and
+  a verified no-vig market baseline, uses strictly prior version-compatible
+  evidence, applies shrinkage and an uncertainty penalty, and publishes 0u when
+  promotion gates are not met. See `docs/PROFIT_DESK.md`.
 - The Refresh button checks ESPN for pending games and stores temporary local grades. The scheduled grader remains authoritative because it writes results into repository JSON.
 
 ## Writer Contract
@@ -55,6 +64,12 @@ The certified ledger separates three concepts:
 chronological metrics by model version and market, including Brier score, log
 loss, calibration bins, verified-price ROI, market benchmarks, and retained
 feature-contract coverage.
+
+The universal probability calibrator has a versioned training contract. Rows
+whose probabilities are owned by the player-prop ML policy remain available
+for evaluation but are explicitly ineligible to train the separate shared
+Platt layer. A training-contract change invalidates the prior mapping and
+forces evaluation against a clean identity champion.
 
 `scripts/cache_manifest.py` updates the dated-cache manifest whenever model or feed caches are written or merged.
 

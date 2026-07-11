@@ -101,7 +101,7 @@ def test_calibration_leaves_units_alone_when_no_edge_or_market_price_exists():
     assert payload["models"]["nba"]["picks"][0]["units"] == 1.13
 
 
-def test_ml_player_props_skip_old_calibration_but_remain_ledger_trainable(tmp_path: Path):
+def test_ml_player_props_skip_old_calibration_and_are_not_ledger_trainable(tmp_path: Path):
     active = {
         "version": "test-ml-skip",
         "minimum_group_samples": 1,
@@ -130,7 +130,10 @@ def test_ml_player_props_skip_old_calibration_but_remain_ledger_trainable(tmp_pa
     (props_dir / "2026-06-20.json").write_text(json.dumps(payload), encoding="utf-8")
     ledger = build_outcome_ledger(tmp_path)
     assert ledger["summary"]["total_picks"] == 1
+    assert ledger["summary"]["trainable_decided_picks"] == 0
     assert ledger["records"][0]["raw_probability"] == 0.7
+    assert ledger["records"][0]["calibration_eligible"] is False
+    assert ledger["records"][0]["calibration_exclusion_reason"] == "ml_owned_probability"
 
 
 def test_player_prop_ledger_forgets_pre_ml_records(tmp_path: Path):
@@ -287,6 +290,7 @@ def test_trainer_waits_for_100_new_decisions_then_force_evaluates(tmp_path: Path
                 "profit": 0.91 if outcome else -1,
                 "outcome": outcome,
                 "calibration_group": group,
+                "calibration_eligible": True,
             }
         )
     ledger = {
@@ -320,6 +324,7 @@ def test_existing_champion_waits_for_enough_unseen_trainable_rows(tmp_path: Path
             "profit": 0.91 if index % 2 == 0 else -1,
             "outcome": 1 if index % 2 == 0 else 0,
             "calibration_group": group,
+            "calibration_eligible": True,
         }
         for index in range(110)
     ]
@@ -328,11 +333,19 @@ def test_existing_champion_waits_for_enough_unseen_trainable_rows(tmp_path: Path
         encoding="utf-8",
     )
     (calibration_dir / "active.json").write_text(
-        json.dumps({"global": {"intercept": 0, "slope": 1, "samples": 100}, "groups": {}}),
+        json.dumps({
+            "training_contract_version": 2,
+            "global": {"intercept": 0, "slope": 1, "samples": 100},
+            "groups": {},
+        }),
         encoding="utf-8",
     )
     (calibration_dir / "state.json").write_text(
-        json.dumps({"last_evaluated_decided_count": 100, "last_trainable_decided_count": 100}),
+        json.dumps({
+            "training_contract_version": 2,
+            "last_evaluated_decided_count": 100,
+            "last_trainable_decided_count": 100,
+        }),
         encoding="utf-8",
     )
 
@@ -340,6 +353,55 @@ def test_existing_champion_waits_for_enough_unseen_trainable_rows(tmp_path: Path
 
     assert result["evaluated"] is False
     assert result["new_trainable_decisions"] == 10
+
+
+def test_training_contract_change_replaces_incompatible_active_mapping(tmp_path: Path):
+    calibration_dir = tmp_path / "calibration"
+    calibration_dir.mkdir()
+    group = calibration_group_key("mlb_new", "MLB", "moneyline")
+    records = [
+        {
+            "id": str(index),
+            "date": f"2026-06-{(index % 28) + 1:02d}",
+            "raw_probability": 0.55,
+            "market_implied_probability": 0.52,
+            "raw_units": 1,
+            "profit": 0.91 if index % 2 == 0 else -1,
+            "outcome": 1 if index % 2 == 0 else 0,
+            "calibration_group": group,
+            "calibration_eligible": True,
+        }
+        for index in range(60)
+    ]
+    (calibration_dir / "outcome_ledger.json").write_text(
+        json.dumps({"summary": {"decided_picks": 60}, "records": records}),
+        encoding="utf-8",
+    )
+    (calibration_dir / "active.json").write_text(
+        json.dumps({
+            "training_contract_version": 1,
+            "version": "contaminated-v1",
+            "global": {"intercept": 2.5, "slope": 2.5, "samples": 1000},
+            "groups": {},
+        }),
+        encoding="utf-8",
+    )
+    (calibration_dir / "state.json").write_text(
+        json.dumps({
+            "training_contract_version": 1,
+            "last_evaluated_decided_count": 60,
+            "last_trainable_decided_count": 60,
+        }),
+        encoding="utf-8",
+    )
+
+    result = run_training(calibration_dir)
+    active = json.loads((calibration_dir / "active.json").read_text())
+
+    assert result["evaluated"] is True
+    assert result["training_contract_changed"] is True
+    assert active["training_contract_version"] == 2
+    assert active["version"] != "contaminated-v1"
 
 
 def test_champion_challenger_gate_requires_quality_and_roi_safety():

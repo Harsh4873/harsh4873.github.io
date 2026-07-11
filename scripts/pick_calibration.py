@@ -350,6 +350,16 @@ def ledger_record(
     bet_type = infer_bet_type(snapshot)
     implied_probability = market_probability(snapshot)
     outcome = 1 if result == "win" else 0 if result == "loss" else None
+    probability_source = str(
+        snapshot.get("probability_source")
+        or pick.get("probability_source")
+        or ""
+    ).strip()
+    ml_calibration_excluded = bool(
+        snapshot.get("ml_calibration_excluded") is True
+        or pick.get("ml_calibration_excluded") is True
+        or probability_source == ML_OWNED_PROBABILITY_SOURCE
+    )
     return {
         "id": _record_id(cache_type, date_iso, model_key, pick),
         "date": str(snapshot.get("date") or pick.get("date") or date_iso),
@@ -359,6 +369,10 @@ def ledger_record(
         "sport": sport,
         "bet_type": bet_type,
         "calibration_group": calibration_group_key(model_key, sport, bet_type, source),
+        "probability_source": probability_source,
+        "ml_calibration_excluded": ml_calibration_excluded,
+        "calibration_eligible": not ml_calibration_excluded,
+        "calibration_exclusion_reason": "ml_owned_probability" if ml_calibration_excluded else None,
         "pick": str(snapshot.get("pick") or pick.get("pick") or ""),
         "matchup": str(snapshot.get("matchup") or snapshot.get("game") or pick.get("matchup") or pick.get("game") or ""),
         "raw_probability": round(raw_probability, 6) if raw_probability is not None else None,
@@ -523,7 +537,7 @@ def build_outcome_ledger(repo_root: Path = REPO_ROOT) -> dict[str, Any]:
         record
         for record in decided
         if record.get("raw_probability") is not None
-        and record.get("calibration_eligible") is not False
+        and record.get("calibration_eligible") is True
     ]
     return {
         "schema_version": CALIBRATION_SCHEMA_VERSION,

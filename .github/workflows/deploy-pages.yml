@@ -94,6 +94,8 @@ jobs:
           test -n "$(find dist/assets -maxdepth 1 -name '*.js' -print -quit)"
           ! grep -q 'src/main.ts' dist/index.html
           test -f dist/data/model_cache/index.json
+          test -f dist/data/profit_desk/index.json
+          test -f dist/data/profit_desk/latest.json
           test -f dist/gym/index.html
           grep -q '/gym/assets/' dist/gym/index.html
           test -n "$(find dist/gym/assets -maxdepth 1 -name '*.css' -print -quit)"

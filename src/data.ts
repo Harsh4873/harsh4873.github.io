@@ -9,6 +9,8 @@ export interface Pick {
   date: string;
   units: number;
   odds: number | null;
+  price_verified?: boolean;
+  price_provenance?: 'verified' | 'unverified' | 'assumed' | 'missing';
   result: PickResult;
   pl: number;
   probability?: number | null;
@@ -193,6 +195,127 @@ export interface ParlayCardsPayload {
   [key: string]: unknown;
 }
 
+export type ProfitDeskTier = 'shadow' | 'watch' | 'avoid';
+export type ProfitDeskPriceQuality =
+  | 'verified_two_sided'
+  | 'verified_no_vig'
+  | 'one_sided'
+  | 'assumed'
+  | 'missing'
+  | 'stale';
+
+export interface ProfitDeskPrice {
+  quality?: ProfitDeskPriceQuality | string;
+  source?: string;
+  updatedAt?: string | null;
+  ageHours?: number | null;
+  fresh?: boolean;
+  twoSided?: boolean;
+  noVigProbability?: number | null;
+  breakEvenProbability?: number | null;
+}
+
+export interface ProfitDeskEstimate {
+  marketProbability?: number | null;
+  alpha?: number | null;
+  alphaStdError?: number | null;
+  probability?: number | null;
+  lowerProbability?: number | null;
+  expectedValue?: number | null;
+  conservativeExpectedValue?: number | null;
+  probabilityPositiveEv?: number | null;
+}
+
+export interface ProfitDeskEvidence {
+  sourceSamples?: number;
+  segmentSamples?: number;
+  distinctDates?: number;
+  wins?: number;
+  losses?: number;
+  flatNetUnits?: number | null;
+  flatRoi?: number | null;
+  priorOnly?: boolean;
+}
+
+export interface ProfitDeskBlocker {
+  code?: string;
+  label?: string;
+  detail?: string;
+}
+
+export interface ProfitDeskCandidate {
+  id?: string;
+  mode?: PickMode;
+  tier?: ProfitDeskTier | string;
+  portfolioSelected?: boolean;
+  rank?: number | null;
+  source?: string;
+  sport?: string;
+  pick?: string;
+  game?: string;
+  player?: string;
+  market?: string;
+  startTime?: string | null;
+  result?: PickResult | string;
+  decision?: string;
+  oddsAmerican?: number | null;
+  stakeUnits?: number | null;
+  price?: ProfitDeskPrice;
+  estimate?: ProfitDeskEstimate;
+  evidence?: ProfitDeskEvidence;
+  blockers?: Array<ProfitDeskBlocker | string>;
+  consensusSources?: string[];
+}
+
+export interface ProfitDeskModeSummary {
+  candidateCount?: number;
+  candidatesEvaluated?: number;
+  observedPriceCandidates?: number;
+  shadowQualified?: number;
+  researchQualified?: number;
+  watchlist?: number;
+  selected?: number;
+  portfolioCandidates?: number;
+  liveQualified?: number;
+  evidenceRows?: number;
+}
+
+export interface ProfitDeskLiveRecord {
+  wins?: number;
+  losses?: number;
+  pushes?: number;
+  pending?: number;
+  settled?: number;
+  netUnits?: number | null;
+  roi?: number | null;
+}
+
+export interface ProfitDeskSummary extends ProfitDeskModeSummary {
+  liveRecord?: ProfitDeskLiveRecord;
+  modes?: Partial<Record<PickMode, ProfitDeskModeSummary>>;
+}
+
+export interface ProfitDeskPolicy {
+  status?: string;
+  mode?: string;
+  firstLiveDate?: string | null;
+  gates?: Record<string, unknown>;
+  notes?: string[];
+}
+
+export interface ProfitDeskPayload {
+  schemaVersion?: string | number;
+  date: string;
+  generatedAt?: string;
+  engineVersion?: string;
+  phase?: string;
+  policy?: ProfitDeskPolicy;
+  summary?: ProfitDeskSummary;
+  candidates?: ProfitDeskCandidate[];
+  portfolio?: Partial<Record<PickMode | 'all', ProfitDeskCandidate[]>>;
+  [key: string]: unknown;
+}
+
 const RESULT_STORAGE_KEY = 'pickledger_static_results_v2';
 const GAME_TIME_STORAGE_KEY = 'pickledger_static_game_times_v2';
 const ARCHIVED_SPORTS = new Set(['NBA']);
@@ -254,6 +377,8 @@ let latestTeamCache: ModelCachePayload | null = null;
 let latestPlayerCache: PlayerPropsPayload | null = null;
 let parlayPayloads: ParlayCardsPayload[] = [];
 let latestParlayPayload: ParlayCardsPayload | null = null;
+let profitDeskPayloads: ProfitDeskPayload[] = [];
+let latestProfitDeskPayload: ProfitDeskPayload | null = null;
 
 function readStorage<T>(key: string, fallback: T): T {
   try {
@@ -315,10 +440,35 @@ function stablePickId(raw: Record<string, unknown>, date: string, source: string
 
 export function calculateProfit(pick: Pick, result: PickResult = pick.result): number {
   if (result === 'pending' || result === 'push') return 0;
-  if (result === 'loss') return -pick.units;
+  if (pick.price_verified !== true) return 0;
   const odds = numberOrNull(pick.odds);
-  if (odds == null || odds === 0) return pick.units;
+  if (odds == null || odds === 0) return 0;
+  if (result === 'loss') return -pick.units;
   return Number((odds > 0 ? pick.units * odds / 100 : pick.units * 100 / Math.abs(odds)).toFixed(2));
+}
+
+function normalizedPriceProvenance(raw: Record<string, unknown>, odds: number | null): {
+  verified: boolean;
+  provenance: Pick['price_provenance'];
+} {
+  if (odds == null || odds === 0) return { verified: false, provenance: 'missing' };
+  const quality = String(raw.price_quality || raw.odds_quality || raw.market_price_quality || '').trim().toLowerCase();
+  const verifiedQualities = new Set(['verified', 'verified_two_sided', 'verified_no_vig', 'observed_sportsbook']);
+  const explicitlyVerified = raw.price_verified === true || raw.odds_verified === true || verifiedQualities.has(quality);
+  if (explicitlyVerified) return { verified: true, provenance: 'verified' };
+  const provenanceText = [
+    raw.pricing_type,
+    raw.price_source,
+    raw.odds_source,
+    raw.line_source,
+    raw.market_source,
+  ].map(value => String(value || '').trim().toLowerCase()).filter(Boolean).join(' ');
+  const nonExecutable = /assumed|synthetic|proxy|fallback|default|estimated|model[_ ]price/.test(provenanceText);
+  const usesAssumedPrice = raw.odds == null && raw.american_odds == null && raw.price == null && raw.assumed_odds != null;
+  if (usesAssumedPrice || quality === 'assumed' || nonExecutable) return { verified: false, provenance: 'assumed' };
+  const observedMarker = /posted|sportsbook|bookmaker|observed|executable/.test(provenanceText);
+  if (raw.market_priced === true && observedMarker) return { verified: true, provenance: 'verified' };
+  return { verified: false, provenance: 'unverified' };
 }
 
 function normalizePick(
@@ -350,6 +500,8 @@ function normalizePick(
     game?.start_time || game?.game_start_time ||
     gameTimes[id] || '',
   ).trim() || null;
+  const odds = numberOrNull(raw.odds ?? raw.assumed_odds ?? raw.american_odds ?? raw.price);
+  const priceProvenance = normalizedPriceProvenance(raw, odds);
 
   const pick: Pick = {
     ...raw,
@@ -363,7 +515,9 @@ function normalizePick(
     key_factors: raw.key_factors ?? raw.factors ?? raw.guardrail_reasons,
     date,
     units,
-    odds: numberOrNull(raw.odds ?? raw.assumed_odds ?? raw.american_odds ?? raw.price),
+    odds,
+    price_verified: priceProvenance.verified,
+    price_provenance: priceProvenance.provenance,
     probability: numberOrNull(raw.probability ?? raw.model_probability ?? raw.predicted_probability),
     result,
     pl: 0,
@@ -523,6 +677,27 @@ async function loadParlayCardFiles(): Promise<ParlayCardsPayload[]> {
   return payloads;
 }
 
+async function loadProfitDeskFiles(): Promise<ProfitDeskPayload[]> {
+  const manifest = await fetchJson<CacheManifest>('./data/profit_desk/index.json');
+  const files = Array.isArray(manifest?.files)
+    ? manifest.files.filter(file => /^\d{4}-\d{2}-\d{2}\.json$/.test(file))
+    : [];
+  if (!files.length) {
+    const fallback = await fetchJson<ProfitDeskPayload>('./data/profit_desk/latest.json');
+    profitDeskPayloads = fallback?.date ? [fallback] : [];
+    latestProfitDeskPayload = profitDeskPayloads[0] || null;
+    return profitDeskPayloads;
+  }
+
+  const payloads = (await Promise.all(
+    files.map(file => fetchJson<ProfitDeskPayload>(`./data/profit_desk/${file}`)),
+  )).filter((payload): payload is ProfitDeskPayload => Boolean(payload?.date));
+  payloads.sort((a, b) => String(a.date || '').localeCompare(String(b.date || '')));
+  profitDeskPayloads = payloads;
+  latestProfitDeskPayload = payloads[payloads.length - 1] || null;
+  return payloads;
+}
+
 function sortPicks(picks: Pick[]): Pick[] {
   return picks.sort((a, b) => (
     a.date.localeCompare(b.date) ||
@@ -547,6 +722,7 @@ export async function loadAllData(): Promise<Pick[]> {
     loadCacheFiles(),
     loadPlayerCacheFiles(),
     loadParlayCardFiles(),
+    loadProfitDeskFiles(),
   ]);
   const teamById = new Map<string, Pick>();
   const playerById = new Map<string, Pick>();
@@ -575,6 +751,17 @@ export function getParlayCardsPayload(date?: string): ParlayCardsPayload | null 
 
 export function getParlayCardPayloads(): ParlayCardsPayload[] {
   return parlayPayloads;
+}
+
+export function getProfitDeskPayload(date?: string): ProfitDeskPayload | null {
+  if (date) {
+    return profitDeskPayloads.find(payload => payload.date === date) || null;
+  }
+  return latestProfitDeskPayload;
+}
+
+export function getProfitDeskPayloads(): ProfitDeskPayload[] {
+  return profitDeskPayloads;
 }
 
 export function getResults(): Record<string, PickResult> {

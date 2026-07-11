@@ -69,6 +69,9 @@ jobs:
       - name: Rebuild parlay cards
         run: python scripts/build_parlay_cards.py --date "${{ github.event.inputs.date || '' }}"
 
+      - name: Rebuild Profit Desk
+        run: python scripts/build_profit_desk.py --date "${{ github.event.inputs.date || '' }}"
+
       - name: Commit cache JSON if changed
         id: commit-cache
         run: |
@@ -76,8 +79,8 @@ jobs:
           git config user.name  "${GITHUB_ACTOR}"
           git config user.email "${ACTOR_EMAIL}"
           BRANCH="${GITHUB_REF_NAME:-main}"
-          if [ -z "$(git status --porcelain -- data/model_cache data/parlay_cards data/calibration/team_prop_pregame_ledger.json)" ]; then
-            echo "No model-cache, parlay-card, or team-prop ledger change — skipping commit."
+          if [ -z "$(git status --porcelain -- data/model_cache data/parlay_cards data/profit_desk data/calibration/team_prop_pregame_ledger.json)" ]; then
+            echo "No model-cache, parlay-card, Profit Desk, or team-prop ledger change — skipping commit."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
@@ -92,7 +95,8 @@ jobs:
             cp "$GENERATED_TEAM_LEDGER" data/calibration/team_prop_pregame_ledger.json
             CACHE_DATE=$(python -c "import json; print(json.load(open('data/model_cache/latest.json'))['date'])")
             python scripts/build_parlay_cards.py --date "$CACHE_DATE"
-            git add data/model_cache data/parlay_cards data/calibration/team_prop_pregame_ledger.json
+            python scripts/build_profit_desk.py --date "$CACHE_DATE"
+            git add data/model_cache data/parlay_cards data/profit_desk data/calibration/team_prop_pregame_ledger.json
             if git diff --cached --quiet; then
               echo "No staged cache change after merge — skipping commit."
               echo "changed=false" >> "$GITHUB_OUTPUT"

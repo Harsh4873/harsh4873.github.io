@@ -18,7 +18,9 @@ MODEL_CACHE_DIR = REPO_ROOT / "data" / "model_cache"
 PLAYER_PROPS_CACHE_DIR = REPO_ROOT / "data" / "player_props_cache"
 PLAYER_PROPS_SNAPSHOT_DIR = REPO_ROOT / "data" / "player_props_snapshots"
 PARLAY_CARDS_DIR = REPO_ROOT / "data" / "parlay_cards"
+PROFIT_DESK_DIR = REPO_ROOT / "data" / "profit_desk"
 PARLAY_ENGINE_VERSION = "parlay_cards_v5_market_excess"
+PROFIT_DESK_ENGINE_VERSION = "profit_desk_v1_shadow"
 REQUIRED_MODEL_KEYS = {
     "mlb_new",
     "mlb_inning",
@@ -389,6 +391,48 @@ def main() -> int:
             if values and int(values.get("displayedCards") or 0) != len(cards):
                 failures.append(f"latest parlay summary {mode} displayedCards does not match cards length")
 
+    profit_latest = _read_json(PROFIT_DESK_DIR / "latest.json")
+    profit_dated = _read_json(PROFIT_DESK_DIR / f"{today}.json")
+    profit_manifest = _read_json(PROFIT_DESK_DIR / "index.json")
+    if not profit_latest:
+        failures.append("data/profit_desk/latest.json is missing or invalid")
+    elif str(profit_latest.get("date") or "") != today:
+        failures.append(f"latest Profit Desk is {profit_latest.get('date') or 'undated'}, expected {today}")
+    if not profit_dated:
+        failures.append(f"data/profit_desk/{today}.json is missing or invalid")
+    if not profit_manifest:
+        failures.append("data/profit_desk/index.json is missing or invalid")
+    else:
+        if f"{today}.json" not in (profit_manifest.get("files") or []):
+            failures.append(f"Profit Desk manifest does not include {today}.json")
+        if str(profit_manifest.get("engineVersion") or "") != PROFIT_DESK_ENGINE_VERSION:
+            failures.append(
+                f"Profit Desk manifest uses {profit_manifest.get('engineVersion') or 'unknown'} engine, "
+                f"expected {PROFIT_DESK_ENGINE_VERSION}"
+            )
+    if profit_latest:
+        if str(profit_latest.get("engineVersion") or "") != PROFIT_DESK_ENGINE_VERSION:
+            failures.append(
+                f"latest Profit Desk uses {profit_latest.get('engineVersion') or 'unknown'} engine, "
+                f"expected {PROFIT_DESK_ENGINE_VERSION}"
+            )
+        candidates = [row for row in profit_latest.get("candidates") or [] if isinstance(row, dict)]
+        summary = profit_latest.get("summary") if isinstance(profit_latest.get("summary"), dict) else {}
+        candidate_count = int(summary.get("candidatesEvaluated") or summary.get("candidateCount") or 0)
+        if candidate_count != len(candidates):
+            failures.append("latest Profit Desk candidate summary does not match candidates length")
+        phase = str(profit_latest.get("phase") or (profit_latest.get("policy") or {}).get("mode") or "").lower()
+        if phase != "shadow":
+            failures.append(f"latest Profit Desk phase is {phase or 'missing'}, expected shadow")
+        if int(summary.get("liveQualified") or 0) != 0:
+            failures.append("shadow Profit Desk reports live-qualified picks")
+        if any(float(row.get("stakeUnits") or 0) != 0 or row.get("liveQualified") is True for row in candidates):
+            failures.append("shadow Profit Desk includes a nonzero stake or live-qualified candidate")
+        if any(str(row.get("tier") or "") not in {"shadow", "watch", "avoid"} for row in candidates):
+            failures.append("latest Profit Desk includes an invalid candidate tier")
+        if any(not isinstance(row.get("blockers"), list) for row in candidates):
+            failures.append("latest Profit Desk candidate is missing explicit blockers")
+
     if args.data_only:
         for message in warnings:
             print(f"[readiness] warning: {message}")
@@ -447,11 +491,18 @@ def main() -> int:
     parlay_count = len(parlay_latest.get("cards") or []) if parlay_latest else 0
     parlay_summary = parlay_latest.get("summary") if isinstance(parlay_latest, dict) and isinstance(parlay_latest.get("summary"), dict) else {}
     parlay_three_leg_count = int(parlay_summary.get("threeLegCards") or 0)
+    profit_count = len(profit_latest.get("candidates") or []) if profit_latest else 0
+    profit_shadow = int(
+        (profit_latest.get("summary") or {}).get("researchQualified")
+        or (profit_latest.get("summary") or {}).get("shadowQualified")
+        or 0
+    ) if profit_latest else 0
     print(
         f"[upcheck] healthy for {today}: "
         f"teams_raw={team_counts}, teams_visible={team_visible_counts}, "
         f"player_props_raw={player_counts}, player_props_visible={player_visible_counts}, "
-        f"parlay_cards={parlay_count}, parlay_3_leg={parlay_three_leg_count}"
+        f"parlay_cards={parlay_count}, parlay_3_leg={parlay_three_leg_count}, "
+        f"profit_candidates={profit_count}, profit_shadow={profit_shadow}"
     )
     return 0
 

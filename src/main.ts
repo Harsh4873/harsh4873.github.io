@@ -4,6 +4,7 @@ import {
   getCacheStatus,
   getParlayCardsPayload,
   getParlayCardPayloads,
+  getProfitDeskPayload,
   loadAllData,
   setPickMode as setDataPickMode,
   setLocalGameTime,
@@ -13,6 +14,10 @@ import {
   type ParlayRanking,
   type Pick,
   type PickResult,
+  type ProfitDeskBlocker,
+  type ProfitDeskCandidate,
+  type ProfitDeskModeSummary,
+  type ProfitDeskPayload,
 } from './data';
 
 type Stats = {
@@ -52,7 +57,7 @@ type DailySourceForm = {
   score: number;
 };
 
-type DailyView = 'picks' | 'consensus' | 'sources' | 'research';
+type DailyView = 'card' | 'watchlist' | 'method';
 type ParlayView = string;
 type DailySort = 'time' | 'percentage';
 type ResultMode = 'pending' | 'all' | 'settled';
@@ -100,7 +105,8 @@ const ESPN_ENDPOINTS: Record<string, [string, string]> = {
 const activeFilters = new Set<string>();
 let activePickMode: PickMode = 'team';
 let homeMode: ResultMode = 'pending';
-let dailyView: DailyView = 'picks';
+let dailyView: DailyView = 'card';
+let profitDeskSport = 'ALL';
 let parlayView: ParlayView = 'all';
 let parlayResultMode: ResultMode = 'pending';
 let dailySort: DailySort = 'time';
@@ -424,8 +430,9 @@ function statsFor(picks: Pick[]): Stats {
   const pushes = picks.filter(pick => pick.result === 'push').length;
   const pending = picks.filter(isOpenPick).length;
   const decided = wins + losses;
-  const net = Number(picks.reduce((sum, pick) => sum + pick.pl, 0).toFixed(2));
-  const risk = Number(picks.filter(pick => pick.result !== 'pending' && pick.result !== 'push')
+  const pricedPicks = picks.filter(pick => pick.price_verified === true && pick.odds != null && pick.odds !== 0);
+  const net = Number(pricedPicks.reduce((sum, pick) => sum + pick.pl, 0).toFixed(2));
+  const risk = Number(pricedPicks.filter(pick => pick.result !== 'pending' && pick.result !== 'push')
     .reduce((sum, pick) => sum + pick.units, 0).toFixed(2));
   return {
     total: picks.length,
@@ -989,8 +996,8 @@ function renderPickRow(pick: Pick): string {
       : ' data-home-pick-text role="button" tabindex="0" aria-expanded="false"';
   return `<div class="home-feed-row result-${pick.result}${isPlayer ? ' player-row' : ''}${hasResearch ? ' is-expandable' : ''}${expanded ? ' expanded' : ''}"${researchAttrs}>
     ${isPlayer ? '' : `<span class="home-feed-row-sport">${escapeHtml(pick.sport)}</span>`}
-    <div class="home-feed-row-body"><div class="home-feed-row-source">${escapeHtml(sourceName(pick))}</div><div class="home-feed-row-pick"${pickTextAttrs}>${escapeHtml(pick.pick)}</div><div class="home-feed-row-meta">${escapeHtml([formatOdds(pick), decision === 'PASS' ? '' : `${pick.units}u`, formatStart(pick.start_time), activePickMode === 'player' ? '' : pick.decision].filter(Boolean).join(' | '))}</div>${researchDetailsHtml(pick, expanded)}</div>
-    <div class="home-feed-row-pl ${pick.pl > 0 ? 'positive' : pick.pl < 0 ? 'negative' : 'neutral'}">${isUnsupportedPendingPick(pick) ? 'Untracked' : pick.result === 'pending' ? decision === 'PASS' ? 'Pass' : `${pick.units}u risk` : signedUnits(pick.pl)}</div>
+    <div class="home-feed-row-body"><div class="home-feed-row-source">${escapeHtml(sourceName(pick))}</div><div class="home-feed-row-pick"${pickTextAttrs}>${escapeHtml(pick.pick)}</div><div class="home-feed-row-meta">${escapeHtml([formatOdds(pick), pick.odds != null && pick.price_verified !== true ? 'price unverified' : '', decision === 'PASS' ? '' : `${pick.units}u`, formatStart(pick.start_time), activePickMode === 'player' ? '' : pick.decision].filter(Boolean).join(' | '))}</div>${researchDetailsHtml(pick, expanded)}</div>
+    <div class="home-feed-row-pl ${pick.pl > 0 ? 'positive' : pick.pl < 0 ? 'negative' : 'neutral'}">${isUnsupportedPendingPick(pick) || (pick.result !== 'pending' && pick.price_verified !== true) ? 'P/L untracked' : pick.result === 'pending' ? decision === 'PASS' ? 'Pass' : `${pick.units}u risk` : signedUnits(pick.pl)}</div>
     <div class="home-feed-row-control">${pickResultBadge(pick)}${yourBetAddButton(pick)}</div>
   </div>`;
 }
@@ -1789,12 +1796,216 @@ function parlayRankingsPanel(rankings: ParlayRanking[] = []): string {
   );
 }
 
+function numericSummary(value: unknown, fallback = 0): number {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : fallback;
+}
+
+function profitDeskCandidateKey(candidate: ProfitDeskCandidate): string {
+  return candidate.id || [candidate.mode, candidate.source, candidate.sport, candidate.game, candidate.player, candidate.market, candidate.pick]
+    .map(value => String(value || '').trim().toLowerCase())
+    .join('::');
+}
+
+function profitDeskCandidates(payload: ProfitDeskPayload | null): ProfitDeskCandidate[] {
+  if (!payload) return [];
+  const candidates = Array.isArray(payload.candidates) ? payload.candidates : [];
+  const portfolio = payload.portfolio && typeof payload.portfolio === 'object'
+    ? Object.values(payload.portfolio).flatMap(value => Array.isArray(value) ? value : [])
+    : [];
+  const byKey = new Map<string, ProfitDeskCandidate>();
+  [...candidates, ...portfolio].forEach(candidate => {
+    if (!candidate || typeof candidate !== 'object') return;
+    const key = profitDeskCandidateKey(candidate);
+    const existing = byKey.get(key);
+    byKey.set(key, existing ? { ...existing, ...candidate, portfolioSelected: existing.portfolioSelected || candidate.portfolioSelected || portfolio.includes(candidate) } : candidate);
+  });
+  return [...byKey.values()];
+}
+
+function profitDeskPortfolio(payload: ProfitDeskPayload | null): ProfitDeskCandidate[] {
+  if (!payload?.portfolio || typeof payload.portfolio !== 'object') return [];
+  const modePortfolio = payload.portfolio[activePickMode];
+  const allPortfolio = payload.portfolio.all;
+  return [...(Array.isArray(modePortfolio) ? modePortfolio : []), ...(Array.isArray(allPortfolio) ? allPortfolio : [])]
+    .filter((candidate): candidate is ProfitDeskCandidate => Boolean(candidate) && typeof candidate === 'object');
+}
+
+function profitDeskModeSummary(payload: ProfitDeskPayload | null): ProfitDeskModeSummary | null {
+  const summary = payload?.summary;
+  if (!summary) return null;
+  const modeSummary = summary.modes?.[activePickMode];
+  return modeSummary && typeof modeSummary === 'object' ? modeSummary : summary;
+}
+
+function compareProfitDeskCandidate(left: ProfitDeskCandidate, right: ProfitDeskCandidate): number {
+  const leftRank = Number(left.rank);
+  const rightRank = Number(right.rank);
+  const safeLeftRank = Number.isFinite(leftRank) ? leftRank : Number.MAX_SAFE_INTEGER;
+  const safeRightRank = Number.isFinite(rightRank) ? rightRank : Number.MAX_SAFE_INTEGER;
+  return safeLeftRank - safeRightRank
+    || String(left.startTime || '').localeCompare(String(right.startTime || ''))
+    || String(left.pick || '').localeCompare(String(right.pick || ''));
+}
+
+function formatProfitDeskGeneratedAt(value: string | undefined): string {
+  if (!value) return 'time unavailable';
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return value;
+  return parsed.toLocaleString('en-US', {
+    timeZone: DISPLAY_TIME_ZONE,
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    timeZoneName: 'short',
+  });
+}
+
+function profitSummaryMetric(label: string, value: string | number, tone = '', detail = ''): string {
+  return `<div class="profit-summary-metric ${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong>${detail ? `<small>${escapeHtml(detail)}</small>` : ''}</div>`;
+}
+
+function profitDeskPriceQualityLabel(value: unknown): string {
+  const labels: Record<string, string> = {
+    verified_two_sided: 'Verified two-sided',
+    verified_no_vig: 'Verified no-vig',
+    one_sided: 'One-sided only',
+    assumed: 'Assumed price',
+    missing: 'Price missing',
+    stale: 'Stale price',
+  };
+  const key = String(value || 'missing');
+  return labels[key] || key.replace(/_/g, ' ');
+}
+
+function profitDeskBlockerText(blocker: ProfitDeskBlocker | string): { label: string; detail: string } {
+  if (typeof blocker === 'string') return { label: blocker, detail: '' };
+  return {
+    label: String(blocker.label || blocker.code || 'Blocked'),
+    detail: String(blocker.detail || ''),
+  };
+}
+
+function profitDeskBlockersHtml(blockers: Array<ProfitDeskBlocker | string> | undefined): string {
+  if (!Array.isArray(blockers) || !blockers.length) {
+    return '<div class="profit-candidate-clear"><span aria-hidden="true">✓</span> No active blockers in the artifact</div>';
+  }
+  return `<div class="profit-blockers"><div class="profit-blockers-label">WHY IT IS BLOCKED</div><ul>${blockers.map(blocker => {
+    const reason = profitDeskBlockerText(blocker);
+    return `<li><strong>${escapeHtml(reason.label)}</strong>${reason.detail ? `<span>${escapeHtml(reason.detail)}</span>` : ''}</li>`;
+  }).join('')}</ul></div>`;
+}
+
+function profitDeskCandidateCard(candidate: ProfitDeskCandidate): string {
+  const estimate = candidate.estimate || {};
+  const estimateAliases = estimate as typeof estimate & {
+    conservativeProbability?: number | null;
+    probabilityPositiveEV?: number | null;
+    prPositiveEv?: number | null;
+  };
+  const evidence = candidate.evidence || {};
+  const price = candidate.price || {};
+  const conservativeProbability = estimate.lowerProbability ?? estimateAliases.conservativeProbability;
+  const positiveEvProbability = estimate.probabilityPositiveEv ?? estimateAliases.probabilityPositiveEV ?? estimateAliases.prPositiveEv;
+  const marketProbability = price.noVigProbability ?? estimate.marketProbability;
+  const sourceSamples = numericSummary(evidence.sourceSamples, 0);
+  const segmentSamples = numericSummary(evidence.segmentSamples, 0);
+  const distinctDates = numericSummary(evidence.distinctDates, 0);
+  const wins = numericSummary(evidence.wins, 0);
+  const losses = numericSummary(evidence.losses, 0);
+  const age = price.ageHours == null || !Number.isFinite(Number(price.ageHours)) ? '--' : `${Number(price.ageHours).toFixed(Number(price.ageHours) < 10 ? 1 : 0)}h`;
+  const freshLabel = price.fresh ? 'Fresh' : price.quality === 'missing' ? 'Missing' : 'Not fresh';
+  const consensus = Array.isArray(candidate.consensusSources) ? candidate.consensusSources.filter(Boolean) : [];
+  const meta = [candidate.game, candidate.player, candidate.market, candidate.startTime ? formatStart(candidate.startTime) : ''].filter(Boolean).join(' • ');
+  const evidenceTone = evidence.priorOnly ? 'PRIOR ONLY' : 'DATED FLAT-1U EVIDENCE';
+  return `<article class="profit-candidate tier-${escapeHtml(candidate.tier || 'watch')}" aria-label="${escapeHtml(candidate.pick || 'Profit Desk candidate')}">
+    <div class="profit-candidate-head">
+      <div><div class="profit-candidate-kicker">${candidate.rank == null ? '' : `#${escapeHtml(candidate.rank)} • `}${escapeHtml(candidate.sport || 'SPORT')} • ${escapeHtml(candidate.source || 'UNKNOWN SOURCE')}</div><h3>${escapeHtml(candidate.pick || 'Unnamed candidate')}</h3><p>${escapeHtml(meta || 'Game details unavailable')}</p></div>
+      <div class="profit-shadow-stake"><span>${escapeHtml(String(candidate.tier || 'shadow').toUpperCase())}</span><strong>0u</strong><small>NOT LIVE</small></div>
+    </div>
+    <div class="profit-price-row"><span>${escapeHtml(formatAmericanOddsValue(candidate.oddsAmerican))} price</span><span class="quality-${escapeHtml(price.quality || 'missing')}">${escapeHtml(profitDeskPriceQualityLabel(price.quality))}</span><span>${escapeHtml(freshLabel)} • ${escapeHtml(age)}</span></div>
+    <div class="profit-metric-grid">
+      <div><span>Break-even</span><strong>${escapeHtml(formatProbabilityValue(price.breakEvenProbability))}</strong></div>
+      <div><span>Market no-vig</span><strong>${escapeHtml(formatProbabilityValue(marketProbability))}</strong></div>
+      <div class="primary"><span>Conservative probability</span><strong>${escapeHtml(formatProbabilityValue(conservativeProbability))}</strong></div>
+      <div class="primary"><span>Conservative EV</span><strong>${escapeHtml(formatEvValue(estimate.conservativeExpectedValue))}</strong></div>
+      <div><span>Pr(EV &gt; 0)</span><strong>${escapeHtml(formatProbabilityValue(positiveEvProbability))}</strong></div>
+      <div><span>Market-relative alpha</span><strong>${escapeHtml(formatEvValue(estimate.alpha))}</strong></div>
+    </div>
+    <div class="profit-evidence-row">
+      <div><span>${escapeHtml(evidenceTone)}</span><strong>${sourceSamples} source / ${segmentSamples} segment samples</strong></div>
+      <div><span>Coverage</span><strong>${distinctDates} distinct dates • ${wins}-${losses}</strong></div>
+      <div><span>Flat 1u evidence</span><strong>${escapeHtml(evidence.flatNetUnits == null ? '--' : signedUnits(Number(evidence.flatNetUnits)))} • ${escapeHtml(formatEvValue(evidence.flatRoi))} ROI</strong></div>
+    </div>
+    <div class="profit-price-source"><strong>PRICE TRACE</strong><span>${escapeHtml(price.source || 'No observed price source')} • updated ${escapeHtml(formatProfitDeskGeneratedAt(price.updatedAt || undefined))} • ${price.twoSided ? 'two-sided market' : 'not two-sided'}</span></div>
+    ${consensus.length ? `<div class="profit-consensus"><span>CONSENSUS CONTEXT</span>${consensus.map(source => `<strong>${escapeHtml(source)}</strong>`).join('')}</div>` : ''}
+    ${profitDeskBlockersHtml(candidate.blockers)}
+    <div class="profit-shadow-warning">Shadow/backtest research is not live proof. Recorded stake: 0u.</div>
+  </article>`;
+}
+
+function profitDeskCandidateSection(
+  title: string,
+  subtitle: string,
+  candidates: ProfitDeskCandidate[],
+  emptyTitle: string,
+  emptyDetail: string,
+): string {
+  return `<section class="profit-section"><div class="profit-section-head"><div><div class="profit-section-kicker">PRECOMPUTED DECISION OUTPUT</div><h2>${escapeHtml(title)}</h2><p>${escapeHtml(subtitle)}</p></div><span>${candidates.length} CANDIDATE${candidates.length === 1 ? '' : 'S'}</span></div>${candidates.length
+    ? `<div class="profit-candidate-grid">${candidates.map(profitDeskCandidateCard).join('')}</div>`
+    : `<div class="profit-empty"><strong>${escapeHtml(emptyTitle)}</strong><span>${escapeHtml(emptyDetail)}</span></div>`}</section>`;
+}
+
+function humanizeProfitGate(value: string): string {
+  return value.replace(/([a-z0-9])([A-Z])/g, '$1 $2').replace(/[_-]+/g, ' ').replace(/^./, first => first.toUpperCase());
+}
+
+function formatProfitGateValue(value: unknown): string {
+  if (value == null || value === '') return 'Not set';
+  if (typeof value === 'boolean') return value ? 'Required' : 'Not required';
+  if (Array.isArray(value)) return value.map(item => String(item)).join(', ');
+  if (typeof value === 'object') return Object.entries(value as Record<string, unknown>)
+    .map(([key, nested]) => `${humanizeProfitGate(key)}: ${formatProfitGateValue(nested)}`)
+    .join(' • ');
+  return String(value);
+}
+
+function profitDeskMethodHtml(payload: ProfitDeskPayload | null): string {
+  const gates = payload?.policy?.gates && typeof payload.policy.gates === 'object' ? Object.entries(payload.policy.gates) : [];
+  const notes = Array.isArray(payload?.policy?.notes) ? payload.policy.notes : [];
+  const policyStatus = payload?.policy?.status || payload?.policy?.mode || payload?.phase || 'artifact unavailable';
+  return `<section class="profit-section profit-method">
+    <div class="profit-section-head"><div><div class="profit-section-kicker">MARKET-ANCHORED SELECTION POLICY</div><h2>How a pick earns promotion</h2><p>The browser displays a dated decision artifact. It does not rescore the raw pick database.</p></div><span>${escapeHtml(String(policyStatus).toUpperCase())}</span></div>
+    <div class="profit-method-steps">
+      <article><span>01</span><h3>Require a usable price</h3><p>Start with observed American odds and a break-even or two-sided no-vig market baseline. Missing, stale, or assumed prices block promotion.</p></article>
+      <article><span>02</span><h3>Estimate excess over market</h3><p>Adjust the market baseline only by a source and segment&rsquo;s historically observed excess. Source forecasts never qualify as profit evidence on their own.</p></article>
+      <article><span>03</span><h3>Penalize uncertainty</h3><p>Shrink thin samples and rank on the conservative lower estimate, conservative EV, and the probability EV is positive—not the most optimistic point estimate.</p></article>
+      <article><span>04</span><h3>Abstain or promote</h3><p>Clear price, freshness, sample, distinct-date, EV, independence, and portfolio-overlap gates. Until shadow tracking satisfies the live policy, every candidate remains 0u.</p></article>
+    </div>
+    <div class="profit-policy-grid">
+      <div><div class="profit-policy-title">Promotion requirements</div>${gates.length ? `<dl>${gates.map(([key, value]) => `<div><dt>${escapeHtml(humanizeProfitGate(key))}</dt><dd>${escapeHtml(formatProfitGateValue(value))}</dd></div>`).join('')}</dl>` : '<p>No policy gates were published for this date. That is itself a blocker; nothing can be promoted.</p>'}</div>
+      <div><div class="profit-policy-title">Live-proof boundary</div><p>Backtests and shadow results can reject a weak rule, but they do not prove that it will generate live profit. Live recordkeeping begins only after promotion${payload?.policy?.firstLiveDate ? ` on ${escapeHtml(dateLabel(payload.policy.firstLiveDate, true))}` : ''}.</p>${notes.length ? `<ul>${notes.map(note => `<li>${escapeHtml(note)}</li>`).join('')}</ul>` : ''}</div>
+    </div>
+  </section>`;
+}
+
+function bindProfitDeskControls(container: HTMLElement): void {
+  container.querySelectorAll<HTMLButtonElement>('[data-profit-sport]').forEach(button => {
+    button.addEventListener('click', () => setProfitDeskSport(button.dataset.profitSport || 'ALL'));
+  });
+}
+
 function setDailyView(view: string): void {
-  if (activePickMode === 'player' && view === 'consensus') view = 'picks';
-  if (view === 'picks' || view === 'consensus' || view === 'sources' || view === 'research') {
+  if (view === 'card' || view === 'watchlist' || view === 'method') {
     dailyView = view;
     renderDaily();
   }
+}
+
+function setProfitDeskSport(sport: string): void {
+  profitDeskSport = sport || 'ALL';
+  renderDaily();
 }
 
 function setParlayView(view: string): void {
@@ -1822,99 +2033,93 @@ function renderDaily(): void {
   if (!container) return;
   ensureSelection();
   const key = selectedDate || latestAvailableDateKey();
-  const picks = getAllPicks().filter(pick => pickDateKey(pick) === key);
-  const stats = statsFor(picks);
-  const pending = picks.filter(isOpenPick);
-  if (activePickMode === 'player' && dailyView === 'consensus') dailyView = 'picks';
-  const forms = dailySourceForms(key, picks);
-  const formsBySource = new Map(forms.map(form => [form.source, form]));
-  const ranked = (candidates: Pick[]) => [...candidates].sort((a, b) => dailyPickScore(b, formsBySource) - dailyPickScore(a, formsBySource));
-  const modelCalls = uniqueDailyPicks(ranked(pending.filter(isPublishedDailyPick))).slice(0, 8);
-  const probabilityLeaders = uniqueDailyPicks([...pending].filter(pick => pickProbability(pick) != null)
-    .sort((a, b) => (pickProbability(b) || 0) - (pickProbability(a) || 0))).slice(0, 8);
-  const valueZone = uniqueDailyPicks(ranked(pending.filter(pick => isPublishedDailyPick(pick) && ((pick.odds || 0) > 0 || (pickEdgePercent(pick) || 0) >= 10)))).slice(0, 6);
-  const researchQueue = uniqueDailyPicks([...pending].filter(pick => (
-    (pickProbability(pick) || 0) >= 0.6 && !isPublishedDailyPick(pick)
-  ) || (pick.odds != null && pick.odds <= -300)).sort((a, b) => (pickProbability(b) || 0) - (pickProbability(a) || 0))).slice(0, 6);
-  const priceyCount = uniqueDailyPicks(pending.filter(pick => pick.odds != null && pick.odds <= -300)).length;
-  const tagsById = new Map<string, Set<string>>();
-  const addTag = (tagPicks: Pick[], tag: string): void => tagPicks.forEach(pick => {
-    const tags = tagsById.get(pick.id) || new Set<string>();
-    tags.add(tag);
-    tagsById.set(pick.id, tags);
-  });
-  addTag(modelCalls, 'MODEL GREENLIGHT');
-  addTag(valueZone, 'VALUE');
-  addTag(probabilityLeaders, 'PROBABILITY LEADER');
-  addTag(researchQueue, 'RESEARCH');
-  addTag(pending.filter(pick => pick.odds != null && pick.odds <= -300), 'PRICEY FAVORITE');
-
-  const topCandidates = [...new Map(
-    [...modelCalls, ...valueZone, ...probabilityLeaders.filter(isPublishedDailyPick)]
-      .map(pick => [pick.id, pick]),
-  ).values()];
-  const topGroups = sortDailyGroups(dailyPickGroups(topCandidates, tagsById, formsBySource, pending));
-  const topKeys = new Set(topGroups.map(group => group.key));
-  const playerResearchPool = activePickMode === 'player'
-    ? uniqueDailyPicks(ranked(pending.filter(pick => !topKeys.has(dailyPickKey(pick)) && (
-      !isPublishedDailyPick(pick) ||
-      pickProbability(pick) != null ||
-      pickEdgePercent(pick) != null ||
-      Boolean(pick.reason || pick.rationale || pick.key_factors)
-    )))).slice(0, 8)
-    : [];
-  addTag(playerResearchPool, 'RESEARCH');
-  const researchCandidates = [...new Map(
-    [...researchQueue, ...playerResearchPool, ...probabilityLeaders.filter(pick => !isPublishedDailyPick(pick))]
-      .filter(pick => !topKeys.has(dailyPickKey(pick)))
-      .map(pick => [pick.id, pick]),
-  ).values()];
-  const researchGroups = sortDailyGroups(dailyPickGroups(researchCandidates, tagsById, formsBySource, pending));
-  const hotForms = forms.filter(form => form.todayCalls.length)
-    .sort(compareDailySourceForms)
-    .slice(0, 8);
-  const games = new Map<string, Pick[]>();
-  pending.forEach(pick => games.set(gameKey(pick), [...(games.get(gameKey(pick)) || []), pick]));
-  const consensusCount = [...games.values()].reduce((total, gamePicks) => total + trendSignalGroups(gamePicks).filter(signal => signal.matching).length, 0);
-  const viewOptionsBase: DailyViewOption[] = [
-    { key: 'picks', label: 'Top Picks', count: topGroups.length, description: 'Unique actionable markets' },
-    { key: 'consensus', label: 'Consensus', count: consensusCount, description: 'All matching market signals' },
-    { key: 'sources', label: 'Active Sources', count: hotForms.length, description: 'Sources issuing BET/LEAN calls today' },
-    { key: 'research', label: 'Research', count: researchGroups.length, description: activePickMode === 'player' ? 'Next-best prop candidates' : 'High probability and pricey spots' },
+  const payload = getProfitDeskPayload(key);
+  const candidatePool = profitDeskCandidates(payload);
+  const modeCandidates = candidatePool.filter(candidate => !candidate.mode || candidate.mode === activePickMode);
+  const sports = [...new Set(modeCandidates.map(candidate => String(candidate.sport || '').trim()).filter(Boolean))].sort();
+  if (profitDeskSport !== 'ALL' && !sports.includes(profitDeskSport)) profitDeskSport = 'ALL';
+  const filteredCandidates = modeCandidates.filter(candidate => (
+    (profitDeskSport === 'ALL' || candidate.sport === profitDeskSport) &&
+    (activeFilters.size === 0 || activeFilters.has(String(candidate.sport || '')) || activeFilters.has(String(candidate.source || '')))
+  ));
+  const portfolioKeys = new Set(profitDeskPortfolio(payload).map(profitDeskCandidateKey));
+  const cardCandidates = filteredCandidates
+    .filter(candidate => candidate.portfolioSelected || portfolioKeys.has(profitDeskCandidateKey(candidate)))
+    .sort(compareProfitDeskCandidate);
+  const watchCandidates = filteredCandidates
+    .filter(candidate => (candidate.blockers?.length || 0) > 0 || candidate.tier === 'watch' || candidate.tier === 'avoid')
+    .sort(compareProfitDeskCandidate);
+  const modeSummary = profitDeskModeSummary(payload);
+  const researchQualified = numericSummary(modeSummary?.researchQualified ?? modeSummary?.shadowQualified, modeCandidates.filter(candidate => candidate.tier === 'shadow').length);
+  const liveQualified = numericSummary(modeSummary?.liveQualified, 0);
+  const viewOptions: Array<{ key: DailyView; label: string; count: number; description: string }> = [
+    { key: 'card', label: 'Card', count: cardCandidates.length, description: 'Selected shadow candidates' },
+    { key: 'watchlist', label: 'Watchlist', count: watchCandidates.length, description: 'Blocked, with exact reasons' },
+    { key: 'method', label: 'Method', count: 4, description: 'How a pick earns promotion' },
   ];
-  const viewOptions = viewOptionsBase.filter(option => activePickMode !== 'player' || option.key !== 'consensus');
   const activeView = viewOptions.find(option => option.key === dailyView) || viewOptions[0];
-  const sortOptions: Array<{ key: DailySort; label: string; description: string }> = [
-    { key: 'time', label: 'By Time', description: 'Upcoming first' },
-    { key: 'percentage', label: 'By Percentage', description: 'Highest model % first' },
-  ];
-  const activeSort = sortOptions.find(option => option.key === dailySort) || sortOptions[0];
-  const dailyFocus = activePickMode === 'player' ? 'top picks, sources, or research' : 'picks, consensus, sources, or research';
-  const researchSubtitle = activePickMode === 'player'
-    ? 'Next-best player prop candidates and pass research, excluding anything already in Top Picks.'
-    : 'High-probability non-published calls and expensive favorites, excluding anything already in Top Picks.';
-  const activeBody = dailyView === 'picks'
-    ? dailySection('Top Picks', 'Greenlights, value, and high-probability BET/LEAN calls merged into one card per market.', dailyPickGrid(topGroups), `${topGroups.length} unique markets`)
-    : dailyView === 'consensus'
-      ? dailySection('Consensus Signals', 'Same market selection from at least two independent sources.', dailyConsensusCards(pending), `${consensusCount} matching signals`)
-      : dailyView === 'sources'
-        ? dailySection('Hot Sources', 'Recent three-slate form plus each source’s unique BET/LEAN calls today.', hotForms.length ? `<div class="daily-model-grid">${hotForms.map(dailyHotModelCard).join('')}</div>` : '<div class="daily-empty"><div class="daily-empty-title">No hot source has a published call today</div><div class="daily-empty-sub">This view appears when a source has enough recent decisions and a current greenlight.</div></div>', `${hotForms.length} active sources`)
-        : dailySection('Research Queue', researchSubtitle, dailyPickGrid(researchGroups), `${researchGroups.length} unique markets`);
+  const activeBody = dailyView === 'card'
+    ? profitDeskCandidateSection(
+      'Shadow Card',
+      'Research selections only. Every shadow position is fixed at 0u until the live gates are met.',
+      cardCandidates,
+      'No candidate made the shadow portfolio',
+      payload ? 'The engine abstained after price, uncertainty, evidence, and overlap checks.' : 'No dated Profit Desk artifact was published, so no substitute recommendation is shown.',
+    )
+    : dailyView === 'watchlist'
+      ? profitDeskCandidateSection(
+        'Watchlist & Rejections',
+        'Candidates stay here until every blocker is cleared. Reasons come directly from the precomputed policy artifact.',
+        watchCandidates,
+        'No blocked candidates in this scope',
+        payload ? 'Try All Sports or clear a Home sport/source filter.' : 'The pipeline must publish this date before a watchlist can be evaluated.',
+      )
+      : profitDeskMethodHtml(payload);
+  const summary = payload?.summary;
+  const record = summary?.liveRecord;
+  const decisionTitle = liveQualified > 0 ? `${liveQualified} live-qualified` : 'Sit out';
+  const decisionDetail = liveQualified > 0
+    ? 'Review only the live-qualified portfolio and its stated stake limits.'
+    : researchQualified > 0
+      ? `Shadow test only — ${researchQualified} research-qualified candidate${researchQualified === 1 ? '' : 's'}, all at 0u.`
+      : 'No position, no forced action, and no fallback to unpriced picks.';
+  const pipelineState = payload
+    ? `${String(payload.policy?.status || payload.policy?.mode || payload.phase || 'shadow').toUpperCase()} • ${escapeHtml(payload.engineVersion || 'profit desk')} • generated ${escapeHtml(formatProfitDeskGeneratedAt(payload.generatedAt))}`
+    : 'MISSING ARTIFACT • PIPELINE HAS NOT PUBLISHED THIS DATE';
+  const evaluated = numericSummary(modeSummary?.candidatesEvaluated ?? modeSummary?.candidateCount, modeCandidates.length);
+  const observed = numericSummary(modeSummary?.observedPriceCandidates, modeCandidates.filter(candidate => Boolean(candidate.price?.source)).length);
+  const selected = numericSummary(modeSummary?.portfolioCandidates ?? modeSummary?.selected, cardCandidates.length);
+  const evidenceRows = numericSummary(modeSummary?.evidenceRows, 0);
 
-  container.innerHTML = `<div class="daily-hero"><div class="daily-hero-row"><div><div class="daily-eyebrow">TODAY'S QUICK READ</div><div class="daily-title">The Shortlist</div><div class="daily-sub">${escapeHtml(dateLabel(key, true))} | Each unique market appears once. Choose a view to focus on ${dailyFocus}.</div></div><div class="daily-clock-wrap"><div class="daily-clock-label">PICKS FOR</div><div class="daily-clock">${escapeHtml(key)}</div></div></div></div>
-    <div class="daily-view-shell">
-      <div class="daily-view-copy"><div class="daily-view-eyebrow">CHOOSE A VIEW</div><div class="daily-view-title">${escapeHtml(activeView.label)}</div><div class="daily-view-description">${escapeHtml(activeView.description)}. Sorted ${escapeHtml(activeSort.label.toLowerCase())}; ${stats.pending} picks remain open and ${priceyCount} are pricey favorites.</div></div>
-      <div class="daily-view-nav" role="tablist" aria-label="Daily shortlist categories">${viewOptions.map(option => `<button class="daily-view-tab ${dailyView === option.key ? 'active' : ''}" type="button" role="tab" aria-selected="${dailyView === option.key}" onclick="setDailyView('${option.key}')"><span class="daily-view-tab-count">${option.count}</span><span class="daily-view-tab-label">${option.label}</span><span class="daily-view-tab-desc">${option.description}</span></button>`).join('')}</div>
-      <div class="daily-controls-row">
-        ${inlineDatePickerHtml('daily', dailyCalendarOpen, 'Best Bets Date')}
-        <label class="daily-view-select-wrap"><span>Daily category</span><select class="daily-view-select" onchange="setDailyView(this.value)">${viewOptions.map(option => `<option value="${option.key}" ${dailyView === option.key ? 'selected' : ''}>${option.label} (${option.count})</option>`).join('')}</select></label>
-        <div class="daily-sort-control" role="group" aria-label="Sort best bets">${sortOptions.map(option => `<button type="button" class="${dailySort === option.key ? 'active' : ''}" onclick="setDailySort('${option.key}')"><span>${escapeHtml(option.label)}</span><small>${escapeHtml(option.description)}</small></button>`).join('')}</div>
+  container.innerHTML = `<div class="profit-desk-shell">
+    <section class="profit-decision ${payload ? 'has-data' : 'is-missing'}" aria-labelledby="profit-desk-decision">
+      <div class="profit-decision-copy">
+        <div class="profit-kicker">${payload ? 'LIVE DECISION' : 'PIPELINE STATUS'} • ${escapeHtml(activePickMode === 'player' ? 'PLAYER PROPS' : 'TEAM PICKS')}</div>
+        <h1 class="profit-decision-title" id="profit-desk-decision">${payload ? escapeHtml(decisionTitle) : 'No recommendation'}</h1>
+        <p class="profit-decision-detail">${payload ? escapeHtml(decisionDetail) : `No precomputed Profit Desk artifact exists for ${escapeHtml(key)}. This screen will not improvise a recommendation from raw pick feeds or client-side scoring.`}</p>
+        <div class="profit-decision-badges"><span class="profit-status-badge">${payload && researchQualified > 0 && liveQualified === 0 ? 'SHADOW TEST ONLY • 0U' : payload ? `${liveQualified} LIVE QUALIFIED` : 'ABSTAIN'}</span><span>${pipelineState}</span></div>
       </div>
-    </div>
-    <div class="daily-active-content">${activeBody}</div>
-    <div class="daily-disclaimer"><strong>Quick read, not a blind card.</strong> Model probability estimates the chance of winning. Edge compares that chance with the market price. Recent records and consensus add context, but none guarantees the next result. Duplicate market cards are merged, with every contributing source shown inside the card.</div>`;
+      <div class="profit-decision-date">${inlineDatePickerHtml('daily', dailyCalendarOpen, 'Profit Desk Date')}</div>
+    </section>
+    <section class="profit-summary" aria-label="Profit Desk summary">
+      ${profitSummaryMetric('Evaluated', evaluated)}
+      ${profitSummaryMetric('Observed prices', observed)}
+      ${profitSummaryMetric('Research qualified', researchQualified, 'accent')}
+      ${profitSummaryMetric('Portfolio', selected)}
+      ${profitSummaryMetric('Live qualified', liveQualified, liveQualified ? 'positive' : 'neutral')}
+      ${profitSummaryMetric('Evidence rows', evidenceRows)}
+      ${profitSummaryMetric('Live record', record ? `${Number(record.wins || 0)}-${Number(record.losses || 0)}${record.pushes ? `-${record.pushes}` : ''}` : '0-0', '', record ? `${signedUnits(Number(record.netUnits || 0))} • ${formatEvValue(record.roi)}` : 'No live proof yet')}
+    </section>
+    <section class="profit-controls" aria-label="Profit Desk controls">
+      <div><div class="profit-control-kicker">DECISION VIEW</div><div class="profit-control-title">${escapeHtml(activeView.label)}</div><p>${escapeHtml(activeView.description)} • Board filters: ${escapeHtml(activeFilterSummary())}</p></div>
+      <div class="profit-view-tabs" role="tablist" aria-label="Profit Desk views">${viewOptions.map(option => `<button type="button" role="tab" aria-selected="${dailyView === option.key}" class="${dailyView === option.key ? 'active' : ''}" onclick="setDailyView('${option.key}')"><strong>${option.count}</strong><span>${escapeHtml(option.label)}</span></button>`).join('')}</div>
+      <div class="profit-sport-filter" role="group" aria-label="Filter Profit Desk candidates by sport"><span>SPORT</span>${['ALL', ...sports].map(sport => `<button type="button" data-profit-sport="${escapeHtml(sport)}" aria-pressed="${profitDeskSport === sport}" class="${profitDeskSport === sport ? 'active' : ''}">${escapeHtml(sport === 'ALL' ? 'All Sports' : sport)}</button>`).join('')}</div>
+    </section>
+    <div class="profit-active-view">${activeBody}</div>
+    <aside class="profit-proof-note"><strong>What counts as evidence here:</strong> observed market prices, no-vig or break-even baselines, conservative uncertainty-adjusted estimates, and dated flat-1u tracking. Shadow and backtest results are research evidence, not live proof. When the live gates fail, the correct stake is 0u.</aside>
+  </div>`;
   bindInlineDatePicker('daily');
-  bindPickCards(container);
+  bindProfitDeskControls(container);
 }
 
 function renderParlays(): void {
@@ -2722,7 +2927,8 @@ function switchPickMode(mode: PickMode): void {
   setDataPickMode(mode);
   activeFilters.clear();
   homeMode = 'pending';
-  dailyView = 'picks';
+  dailyView = 'card';
+  profitDeskSport = 'ALL';
   parlayView = 'all';
   parlayResultMode = 'pending';
   selectedDate = '';
@@ -2757,6 +2963,7 @@ Object.assign(window, {
   goHome,
   setHomeResultMode,
   setDailyView,
+  setProfitDeskSport,
   setParlayView,
   setParlayResultMode,
   setDailySort,

@@ -97,7 +97,8 @@ jobs:
             CACHE_DATE=$(python -c 'import json,sys; print(json.load(open(sys.argv[1]))["date"])' "$GENERATED_CACHE")
             if [ "$DEPLOYABLE" = "true" ]; then
               python scripts/build_parlay_cards.py --date "$CACHE_DATE"
-              git add data/parlay_cards
+              python scripts/build_profit_desk.py --date "$CACHE_DATE"
+              git add data/parlay_cards data/profit_desk
             fi
             git commit -m "chore(feeds): refresh external feeds for ${CACHE_DATE}"
             if git push origin "HEAD:${BRANCH}"; then

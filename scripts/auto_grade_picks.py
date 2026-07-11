@@ -290,6 +290,7 @@ def grade_certified_team_prop_snapshots(repo_root: Path = REPO_ROOT) -> dict[str
 
 def main() -> int:
     from scripts.build_parlay_cards import rebuild_parlay_cards
+    from scripts.build_profit_desk import rebuild_profit_desk
     from scripts.pick_calibration import rebuild_outcome_ledger
 
     total = 0
@@ -325,6 +326,8 @@ def main() -> int:
     )
     parlay_changed = rebuild_parlay_cards(all_dates=True)
     print(f"[auto-grade] parlay cards: {parlay_changed} file update(s)")
+    profit_desk_changed = rebuild_profit_desk(all_dates=True)
+    print(f"[auto-grade] Profit Desk: {profit_desk_changed} file update(s)")
     print(f"[auto-grade] complete: {total} update(s)")
     return 0
 

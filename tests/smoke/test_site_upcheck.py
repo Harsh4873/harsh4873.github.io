@@ -58,6 +58,22 @@ def _upcheck_repo(tmp_path: Path, date: str) -> Path:
         "summary": {"displayedCards": 0, "threeLegCards": 0},
         "cards": [],
     }
+    profit_payload = {
+        "schemaVersion": "1",
+        "date": date,
+        "engineVersion": "profit_desk_v1_shadow",
+        "phase": "shadow",
+        "policy": {"mode": "shadow", "status": "shadow", "liveStaking": False},
+        "summary": {
+            "candidateCount": 0,
+            "candidatesEvaluated": 0,
+            "shadowQualified": 0,
+            "researchQualified": 0,
+            "liveQualified": 0,
+        },
+        "candidates": [],
+        "portfolio": {"team": [], "player": [], "all": []},
+    }
     for cache_name, payload in (("model_cache", model_payload), ("player_props_cache", props_payload)):
         cache_dir = tmp_path / "data" / cache_name
         _write_json(cache_dir / "latest.json", payload)
@@ -67,6 +83,16 @@ def _upcheck_repo(tmp_path: Path, date: str) -> Path:
     _write_json(parlay_dir / "latest.json", parlay_payload)
     _write_json(parlay_dir / f"{date}.json", parlay_payload)
     _write_json(parlay_dir / "index.json", {"files": [f"{date}.json"]})
+    profit_dir = tmp_path / "data" / "profit_desk"
+    _write_json(profit_dir / "latest.json", profit_payload)
+    _write_json(profit_dir / f"{date}.json", profit_payload)
+    _write_json(
+        profit_dir / "index.json",
+        {
+            "engineVersion": "profit_desk_v1_shadow",
+            "files": [f"{date}.json"],
+        },
+    )
     return scripts / "site_upcheck.py"
 
 
@@ -176,6 +202,51 @@ def test_data_only_readiness_allows_weak_parlay_slate_without_team_cards(tmp_pat
 
     assert result.returncode == 0
     assert "daily data is ready" in result.stdout
+
+
+def test_data_only_readiness_rejects_live_stake_in_shadow_profit_desk(tmp_path: Path):
+    today = datetime.now(ZoneInfo("America/Chicago")).strftime("%Y-%m-%d")
+    script = _upcheck_repo(tmp_path, today)
+    profit_path = tmp_path / "data" / "profit_desk" / "latest.json"
+    payload = json.loads(profit_path.read_text(encoding="utf-8"))
+    payload["summary"]["candidateCount"] = 1
+    payload["summary"]["candidatesEvaluated"] = 1
+    payload["candidates"] = [{
+        "id": "unsafe",
+        "tier": "shadow",
+        "stakeUnits": 0.5,
+        "liveQualified": False,
+        "blockers": [],
+    }]
+    _write_json(profit_path, payload)
+
+    result = subprocess.run(
+        [sys.executable, str(script), "--data-only"],
+        cwd=tmp_path,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 1
+    assert "nonzero stake" in result.stdout
+
+
+def test_data_only_readiness_requires_profit_desk_manifest(tmp_path: Path):
+    today = datetime.now(ZoneInfo("America/Chicago")).strftime("%Y-%m-%d")
+    script = _upcheck_repo(tmp_path, today)
+    (tmp_path / "data" / "profit_desk" / "index.json").unlink()
+
+    result = subprocess.run(
+        [sys.executable, str(script), "--data-only"],
+        cwd=tmp_path,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 1
+    assert "data/profit_desk/index.json is missing or invalid" in result.stdout
 
 
 def test_upcheck_reports_raw_and_visible_pick_counts(tmp_path: Path):
