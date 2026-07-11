@@ -24,14 +24,14 @@
       "totalRebounds": 3
     }
   },
-  "market_rows": 122426,
+  "market_rows": 123979,
   "models": {
     "mlb_history": "2022-26 five-year roster-aware outcome-history classifiers",
     "mlb_season": "2026 market classifier",
     "wnba_history": "2024-26 workload-aware market/count models",
     "wnba_season": "2026 market/count models"
   },
-  "outcome_rows": 418356,
+  "outcome_rows": 419318,
   "roster_aware": true,
   "roster_policy": "Current player IDs only; season features reset annually; recent 3/5/10-game workload dominates older priors.",
   "seasons": {
@@ -266,6 +266,6 @@
     }
   },
   "target_accuracy": 0.7,
-  "training_fingerprint": "10cf21d5965d6e385a093961e50bbc137a4c1658d8e91a7e421935cb0e66c148",
+  "training_fingerprint": "86879d8a897e299afc8e043af6f9c8a75016dad1d58b17700dca588dc7afb824",
   "version": "player_props_consensus_v2.0.0"
 }
