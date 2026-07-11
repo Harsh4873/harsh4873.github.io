@@ -126,11 +126,18 @@ if [[ "${feed_index}" -eq 0 ]]; then
   exit 2
 fi
 
-"${PYTHON_BIN}" - "${TEMP_REPO}/data/model_cache/latest.json" <<'PY'
+SCORES24_CACHE_FILE="${TEMP_REPO}/data/model_cache/${DATE_ISO}.json"
+if [[ ! -f "${SCORES24_CACHE_FILE}" ]]; then
+  SCORES24_CACHE_FILE="${TEMP_REPO}/data/model_cache/latest.json"
+fi
+
+DATE_ISO="${DATE_ISO}" "${PYTHON_BIN}" - "${SCORES24_CACHE_FILE}" <<'PY'
 import json
+import os
 import sys
 from pathlib import Path
 
+date_iso = os.environ["DATE_ISO"]
 required = ("scores24_wnba", "scores24_mlb", "scores24_fifa_world_cup")
 payload = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
 buckets = payload.get("external_feeds") if isinstance(payload.get("external_feeds"), dict) else {}
@@ -141,14 +148,17 @@ for key in required:
     missing = meta.get("missingMatchups") if isinstance(meta.get("missingMatchups"), list) else []
     expected = meta.get("expectedMatchups")
     matched = meta.get("matchedPicks")
+    bucket_date = str(bucket.get("date") or meta.get("date") or "").strip()
     if bucket.get("ok") is not True or missing or expected != matched:
         reason = bucket.get("error") or f"matched {matched!r} of {expected!r}; missing={missing!r}"
         failures.append(f"{key}: {reason}")
+    elif bucket_date != date_iso:
+        failures.append(f"{key}: bucket date {bucket_date!r}, expected {date_iso!r}")
 if failures:
     raise SystemExit("Scores24 refresh incomplete; refusing to publish:\n- " + "\n- ".join(failures))
 PY
 
-cp "${TEMP_REPO}/data/model_cache/latest.json" "${GENERATED_CACHE}"
+cp "${SCORES24_CACHE_FILE}" "${GENERATED_CACHE}"
 
 for attempt in 1 2 3; do
   git -C "${TEMP_REPO}" fetch --quiet origin main
