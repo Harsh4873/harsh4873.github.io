@@ -26627,6 +26627,7 @@
       "raw_decision": "BET",
       "raw_probability": 0.6495,
       "raw_stake": null,
+      "result": "win",
       "revision": 1,
       "selection": "f5_side:minnesota twins",
       "slate_date": "2026-07-11",
@@ -26966,6 +26967,7 @@
       "raw_decision": "PASS",
       "raw_probability": 0.558,
       "raw_stake": null,
+      "result": "loss",
       "revision": 1,
       "selection": "f5_total:over # f5",
       "slate_date": "2026-07-11",
@@ -35562,6 +35564,7 @@
       "raw_decision": "LEAN",
       "raw_probability": 0.8045,
       "raw_stake": 1.01,
+      "result": "loss",
       "revision": 1,
       "selection": "h2h:miami heat",
       "slate_date": "2026-07-11",
@@ -37185,6 +37188,7 @@
       "raw_decision": "LEAN",
       "raw_probability": 0.573,
       "raw_stake": null,
+      "result": "loss",
       "revision": 1,
       "selection": "no_run_inning:inning # - no run scored:3",
       "slate_date": "2026-07-11",
@@ -48512,6 +48516,7 @@
       "raw_decision": "LEAN",
       "raw_probability": 0.573,
       "raw_stake": null,
+      "result": "loss",
       "revision": 2,
       "selection": "no_run_inning:inning # - no run scored:3",
       "slate_date": "2026-07-11",
@@ -51227,6 +51232,7 @@
       "raw_decision": "BET",
       "raw_probability": 0.6495,
       "raw_stake": null,
+      "result": "win",
       "revision": 2,
       "selection": "f5_side:minnesota twins",
       "slate_date": "2026-07-11",
@@ -51566,6 +51572,7 @@
       "raw_decision": "PASS",
       "raw_probability": 0.558,
       "raw_stake": null,
+      "result": "loss",
       "revision": 2,
       "selection": "f5_total:over # f5",
       "slate_date": "2026-07-11",
@@ -60304,6 +60311,7 @@
       "raw_decision": "LEAN",
       "raw_probability": 0.8045,
       "raw_stake": 1.01,
+      "result": "loss",
       "revision": 1,
       "selection": "h2h:miami heat",
       "slate_date": "2026-07-11",
@@ -64457,6 +64465,7 @@
       "raw_decision": "LEAN",
       "raw_probability": 0.573,
       "raw_stake": null,
+      "result": "loss",
       "revision": 3,
       "selection": "no_run_inning:inning # - no run scored:3",
       "slate_date": "2026-07-11",
@@ -69617,6 +69626,7 @@
       "raw_decision": "LEAN",
       "raw_probability": 0.573,
       "raw_stake": null,
+      "result": "loss",
       "revision": 4,
       "selection": "no_run_inning:inning # - no run scored:3",
       "slate_date": "2026-07-11",
@@ -71189,6 +71199,7 @@
       "raw_decision": "BET",
       "raw_probability": 0.6386,
       "raw_stake": null,
+      "result": "win",
       "revision": 3,
       "selection": "f5_side:minnesota twins",
       "slate_date": "2026-07-11",
@@ -71528,6 +71539,7 @@
       "raw_decision": "PASS",
       "raw_probability": 0.5602,
       "raw_stake": null,
+      "result": "loss",
       "revision": 3,
       "selection": "f5_total:over # f5",
       "slate_date": "2026-07-11",
@@ -75502,6 +75514,7 @@
       "sport": "FIFA WC",
       "stable_id": "team-pregame-a5f0fa25a695552520cd3b8b",
       "stake": 0.0,
+      "start_time": "2026-07-12T01:00Z",
       "supersedes_id": "team-pregame-rev-16fe1cfc81939807f996694c"
     },
     {
@@ -75663,6 +75676,7 @@
       "sport": "FIFA WC",
       "stable_id": "team-pregame-24055176db52a539a61efc8d",
       "stake": 0.0,
+      "start_time": "2026-07-12T01:00Z",
       "supersedes_id": "team-pregame-rev-5d9ec4bb0918a6b038ba734e"
     },
     {
@@ -75803,6 +75817,7 @@
       "sport": "FIFA WC",
       "stable_id": "team-pregame-b1920e7815e5d84b494dbcdd",
       "stake": 0.76,
+      "start_time": "2026-07-12T01:00Z",
       "supersedes_id": "team-pregame-rev-aef1e792d21d5abdfe6554cf"
     },
     {
@@ -76056,7 +76071,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "824249",
-      "game_start_time": "2026-07-11T22:10:00Z",
+      "game_start_time": "2026-07-11T22:10Z",
       "home_team": "Detroit Tigers",
       "id": "team-pregame-rev-3b2fec5d4d0a3f96613fbb75",
       "market": "f5_side",
@@ -76122,6 +76137,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-83aa60000a10fa268e34ce2b",
       "stake": 0.0,
+      "start_time": "2026-07-11T22:10Z",
       "supersedes_id": "team-pregame-rev-d1c3f5a3e8c298f5d2d6125f"
     },
     {
@@ -76375,7 +76391,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "824249",
-      "game_start_time": "2026-07-11T22:10:00Z",
+      "game_start_time": "2026-07-11T22:10Z",
       "home_team": "Detroit Tigers",
       "id": "team-pregame-rev-c4b01c5ca8b3596d5f9955c6",
       "market": "f5_total",
@@ -76442,6 +76458,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-4c50bffb70a9e08e029a9558",
       "stake": 0.0,
+      "start_time": "2026-07-11T22:10Z",
       "supersedes_id": "team-pregame-rev-5a17d7c86855073a474ac541"
     },
     {
@@ -76696,7 +76713,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "824813",
-      "game_start_time": "2026-07-11T23:05:00Z",
+      "game_start_time": "2026-07-11T23:05Z",
       "home_team": "Baltimore Orioles",
       "id": "team-pregame-rev-dcb15d62708d613d6381be52",
       "market": "f5_side",
@@ -76762,6 +76779,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-b46922f75e22e49a346d2384",
       "stake": 0.0,
+      "start_time": "2026-07-11T23:05Z",
       "supersedes_id": "team-pregame-rev-3faf56e4d9490e19c38ef801"
     },
     {
@@ -77016,7 +77034,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "824813",
-      "game_start_time": "2026-07-11T23:05:00Z",
+      "game_start_time": "2026-07-11T23:05Z",
       "home_team": "Baltimore Orioles",
       "id": "team-pregame-rev-79d56ecede759d7be8904c60",
       "market": "f5_total",
@@ -77083,6 +77101,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-10af2ac4504d88a4dd2122b1",
       "stake": 0.0,
+      "start_time": "2026-07-11T23:05Z",
       "supersedes_id": "team-pregame-rev-8c7a4154f03951fd9e01732b"
     },
     {
@@ -77354,7 +77373,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "822875",
-      "game_start_time": "2026-07-11T23:05:00Z",
+      "game_start_time": "2026-07-11T23:05Z",
       "home_team": "Texas Rangers",
       "id": "team-pregame-rev-edf46bb8145708506c5a5ae8",
       "market": "f5_side",
@@ -77420,6 +77439,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-2c57c1cb02b243ab7519fe07",
       "stake": 0.0,
+      "start_time": "2026-07-11T23:05Z",
       "supersedes_id": "team-pregame-rev-b43a5a9c78d27a20221564a8"
     },
     {
@@ -77691,7 +77711,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "822875",
-      "game_start_time": "2026-07-11T23:05:00Z",
+      "game_start_time": "2026-07-11T23:05Z",
       "home_team": "Texas Rangers",
       "id": "team-pregame-rev-212705a1dad665b3f5b240d9",
       "market": "f5_total",
@@ -77758,6 +77778,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-8372f68ef465886f4e970a8d",
       "stake": 0.0,
+      "start_time": "2026-07-11T23:05Z",
       "supersedes_id": "team-pregame-rev-3f8a8c181a4461ed4b88673d"
     },
     {
@@ -78006,7 +78027,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "824492",
-      "game_start_time": "2026-07-11T23:10:00Z",
+      "game_start_time": "2026-07-11T23:10Z",
       "home_team": "Cincinnati Reds",
       "id": "team-pregame-rev-a11302b917baf59b6489df67",
       "market": "f5_total",
@@ -78073,6 +78094,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-c2da25c71d8bcda7e9b0b501",
       "stake": 0.0,
+      "start_time": "2026-07-11T23:10Z",
       "supersedes_id": "team-pregame-rev-5725dd2dcc34822b40ffd54b"
     },
     {
@@ -78321,7 +78343,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "824492",
-      "game_start_time": "2026-07-11T23:10:00Z",
+      "game_start_time": "2026-07-11T23:10Z",
       "home_team": "Cincinnati Reds",
       "id": "team-pregame-rev-7c9258263ecb0783edf65d5a",
       "market": "f5_side",
@@ -78387,6 +78409,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-7394104381188c36a59c0e1d",
       "stake": 0.0,
+      "start_time": "2026-07-11T23:10Z",
       "supersedes_id": "team-pregame-rev-4d623c706dd29f01dfc860cf"
     },
     {
@@ -78655,7 +78678,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "823030",
-      "game_start_time": "2026-07-11T23:15:00Z",
+      "game_start_time": "2026-07-11T23:15Z",
       "home_team": "St. Louis Cardinals",
       "id": "team-pregame-rev-b4e09b0d4b26cff15a32ca87",
       "market": "f5_total",
@@ -78722,6 +78745,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-7ec6ea0945053d20c6c7c07b",
       "stake": 0.0,
+      "start_time": "2026-07-11T23:15Z",
       "supersedes_id": "team-pregame-rev-ae0527b81bea8865d90b67d6"
     },
     {
@@ -78990,7 +79014,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "823030",
-      "game_start_time": "2026-07-11T23:15:00Z",
+      "game_start_time": "2026-07-11T23:15Z",
       "home_team": "St. Louis Cardinals",
       "id": "team-pregame-rev-5de9e87734764a8d8b8bd94c",
       "market": "f5_side",
@@ -79056,6 +79080,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-b02bae450d07fa263f876411",
       "stake": 0.0,
+      "start_time": "2026-07-11T23:15Z",
       "supersedes_id": "team-pregame-rev-42ec1042ea28e42a808482ec"
     },
     {
@@ -79316,7 +79341,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "823276",
-      "game_start_time": "2026-07-12T00:40:00Z",
+      "game_start_time": "2026-07-12T00:40Z",
       "home_team": "San Diego Padres",
       "id": "team-pregame-rev-ca7cde3297ce56ea7886130c",
       "market": "f5_side",
@@ -79382,6 +79407,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-6b8b01b7be8cf81d7df6a19f",
       "stake": 0.0,
+      "start_time": "2026-07-12T00:40Z",
       "supersedes_id": "team-pregame-rev-b354e120bf4f84e74caaa574"
     },
     {
@@ -79642,7 +79668,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "823276",
-      "game_start_time": "2026-07-12T00:40:00Z",
+      "game_start_time": "2026-07-12T00:40Z",
       "home_team": "San Diego Padres",
       "id": "team-pregame-rev-0d74abd9630f1e6bdf7e6e09",
       "market": "f5_total",
@@ -79709,6 +79735,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-f921cdc3e78cef5ebcd39099",
       "stake": 0.0,
+      "start_time": "2026-07-12T00:40Z",
       "supersedes_id": "team-pregame-rev-1bb60adeb6e119a504daf6af"
     },
     {
@@ -79966,7 +79993,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "823926",
-      "game_start_time": "2026-07-12T01:10:00Z",
+      "game_start_time": "2026-07-12T01:10Z",
       "home_team": "Los Angeles Dodgers",
       "id": "team-pregame-rev-7188b66e525951a23c3dfc25",
       "market": "f5_side",
@@ -80032,6 +80059,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-d23f4c41cbbb7fea1b3eb0b8",
       "stake": 0.0,
+      "start_time": "2026-07-12T01:10Z",
       "supersedes_id": "team-pregame-rev-ab4a3bb5a3886a2f22ea0f4f"
     },
     {
@@ -80289,7 +80317,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "823926",
-      "game_start_time": "2026-07-12T01:10:00Z",
+      "game_start_time": "2026-07-12T01:10Z",
       "home_team": "Los Angeles Dodgers",
       "id": "team-pregame-rev-307daceb5d2a66c2eebc80c0",
       "market": "f5_total",
@@ -80356,6 +80384,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-8542af0d81442b083e936852",
       "stake": 0.0,
+      "start_time": "2026-07-12T01:10Z",
       "supersedes_id": "team-pregame-rev-5129436bc9b29490cf4edc93"
     },
     {
@@ -80384,7 +80413,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "823356",
-      "game_start_time": "2026-07-11T20:05:00Z",
+      "game_start_time": "2026-07-11T16:05Z",
       "home_team": "Pittsburgh Pirates",
       "id": "team-pregame-rev-b52a73114333a79f023a5120",
       "market": "f5_side",
@@ -80442,6 +80471,7 @@
       "raw_decision": "PASS",
       "raw_probability": 0.5385,
       "raw_stake": null,
+      "result": "win",
       "revision": 5,
       "selection": "f5_side:milwaukee brewers",
       "slate_date": "2026-07-11",
@@ -80450,6 +80480,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-bc71e61b8f3a1b16bea35a71",
       "stake": 0.0,
+      "start_time": "2026-07-11T16:05Z",
       "supersedes_id": "team-pregame-rev-7f729a3eca8f166bb54e8d84"
     },
     {
@@ -80478,7 +80509,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "823356",
-      "game_start_time": "2026-07-11T20:05:00Z",
+      "game_start_time": "2026-07-11T16:05Z",
       "home_team": "Pittsburgh Pirates",
       "id": "team-pregame-rev-c0d1e19e3460b9af863b462c",
       "market": "f5_total",
@@ -80536,6 +80567,7 @@
       "raw_decision": "PASS",
       "raw_probability": 0.5602,
       "raw_stake": null,
+      "result": "win",
       "revision": 5,
       "selection": "f5_total:over # f5",
       "slate_date": "2026-07-11",
@@ -80544,6 +80576,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-2c489d979d92e512bd3616b7",
       "stake": 0.0,
+      "start_time": "2026-07-11T16:05Z",
       "supersedes_id": "team-pregame-rev-52e3c2c143e9d27ae55e9b23"
     },
     {
@@ -80572,7 +80605,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "823682",
-      "game_start_time": "2026-07-11T18:10:00Z",
+      "game_start_time": "2026-07-11T18:10Z",
       "home_team": "Minnesota Twins",
       "id": "team-pregame-rev-50f9d2b2fbf552d888910d56",
       "market": "f5_side",
@@ -80630,6 +80663,7 @@
       "raw_decision": "BET",
       "raw_probability": 0.6386,
       "raw_stake": null,
+      "result": "win",
       "revision": 4,
       "selection": "f5_side:minnesota twins",
       "slate_date": "2026-07-11",
@@ -80638,6 +80672,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-1f85b18ee85e30ee3a6aa92a",
       "stake": 0.0,
+      "start_time": "2026-07-11T18:10Z",
       "supersedes_id": "team-pregame-rev-2046550b74d6c87949ccc3c9"
     },
     {
@@ -80666,7 +80701,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "823682",
-      "game_start_time": "2026-07-11T18:10:00Z",
+      "game_start_time": "2026-07-11T18:10Z",
       "home_team": "Minnesota Twins",
       "id": "team-pregame-rev-b6e35fc875ebf4a69e574c79",
       "market": "f5_total",
@@ -80724,6 +80759,7 @@
       "raw_decision": "PASS",
       "raw_probability": 0.5602,
       "raw_stake": null,
+      "result": "loss",
       "revision": 4,
       "selection": "f5_total:over # f5",
       "slate_date": "2026-07-11",
@@ -80732,6 +80768,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-18749a8dd1b97b860d56df56",
       "stake": 0.0,
+      "start_time": "2026-07-11T18:10Z",
       "supersedes_id": "team-pregame-rev-9401c84982dafbf5a07972b2"
     },
     {
@@ -80760,7 +80797,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "824576",
-      "game_start_time": "2026-07-11T18:10:00Z",
+      "game_start_time": "2026-07-11T18:10Z",
       "home_team": "Chicago White Sox",
       "id": "team-pregame-rev-f327ec089875d289ad74b666",
       "market": "f5_side",
@@ -80818,6 +80855,7 @@
       "raw_decision": "PASS",
       "raw_probability": 0.5539,
       "raw_stake": null,
+      "result": "push",
       "revision": 4,
       "selection": "f5_side:athletics",
       "slate_date": "2026-07-11",
@@ -80826,6 +80864,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-bc1e242a1c68b63a6da83051",
       "stake": 0.0,
+      "start_time": "2026-07-11T18:10Z",
       "supersedes_id": "team-pregame-rev-b35fcb0687d97970495f2857"
     },
     {
@@ -80854,7 +80893,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "824576",
-      "game_start_time": "2026-07-11T18:10:00Z",
+      "game_start_time": "2026-07-11T18:10Z",
       "home_team": "Chicago White Sox",
       "id": "team-pregame-rev-cfa97f2113ddcf2fd5fe5383",
       "market": "f5_total",
@@ -80912,6 +80951,7 @@
       "raw_decision": "PASS",
       "raw_probability": 0.5814,
       "raw_stake": null,
+      "result": "loss",
       "revision": 4,
       "selection": "f5_total:over # f5",
       "slate_date": "2026-07-11",
@@ -80920,6 +80960,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-0ac66a6e8e080223fcdb451d",
       "stake": 0.0,
+      "start_time": "2026-07-11T18:10Z",
       "supersedes_id": "team-pregame-rev-c17c5e3a4e6f77690dea94a3"
     },
     {
@@ -80948,7 +80989,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "823198",
-      "game_start_time": "2026-07-11T20:05:00Z",
+      "game_start_time": "2026-07-11T20:05Z",
       "home_team": "San Francisco Giants",
       "id": "team-pregame-rev-2d922cf9b9ff2110495d3858",
       "market": "f5_total",
@@ -81014,6 +81055,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-60df3223efdc0a7caf0d4898",
       "stake": 0.0,
+      "start_time": "2026-07-11T20:05Z",
       "supersedes_id": "team-pregame-rev-dff8d90005dd9b00e4cfcf0b"
     },
     {
@@ -81042,7 +81084,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "823198",
-      "game_start_time": "2026-07-11T20:05:00Z",
+      "game_start_time": "2026-07-11T20:05Z",
       "home_team": "San Francisco Giants",
       "id": "team-pregame-rev-446b660df67d58cd68ff5922",
       "market": "f5_side",
@@ -81108,6 +81150,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-49d4c705824787f2942df04a",
       "stake": 0.0,
+      "start_time": "2026-07-11T20:05Z",
       "supersedes_id": "team-pregame-rev-0011968e8251e5716c49fe67"
     },
     {
@@ -81136,7 +81179,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "822711",
-      "game_start_time": "2026-07-11T20:05:00Z",
+      "game_start_time": "2026-07-11T20:05Z",
       "home_team": "Washington Nationals",
       "id": "team-pregame-rev-9c6d0441f6e1cc77c20da192",
       "market": "f5_side",
@@ -81202,6 +81245,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-0e557761dd5cebd38a2c2285",
       "stake": 0.0,
+      "start_time": "2026-07-11T20:05Z",
       "supersedes_id": "team-pregame-rev-b11fd6434f46f22ed808f721"
     },
     {
@@ -81230,7 +81274,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "822711",
-      "game_start_time": "2026-07-11T20:05:00Z",
+      "game_start_time": "2026-07-11T20:05Z",
       "home_team": "Washington Nationals",
       "id": "team-pregame-rev-60d53d11145a58ced2d1108a",
       "market": "f5_total",
@@ -81296,6 +81340,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-11984807d9c718f4491352b6",
       "stake": 0.0,
+      "start_time": "2026-07-11T20:05Z",
       "supersedes_id": "team-pregame-rev-d8aeb4e45e3a1a193737c05a"
     },
     {
@@ -81324,7 +81369,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "823603",
-      "game_start_time": "2026-07-11T20:10:00Z",
+      "game_start_time": "2026-07-11T20:10Z",
       "home_team": "New York Mets",
       "id": "team-pregame-rev-d2ec4454d8f4e527d0c4388f",
       "market": "f5_side",
@@ -81390,6 +81435,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-6c86ebd516c63aaa2bfba207",
       "stake": 0.0,
+      "start_time": "2026-07-11T20:10Z",
       "supersedes_id": "team-pregame-rev-ef3debefb4d6331bdb5033e6"
     },
     {
@@ -81418,7 +81464,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "823603",
-      "game_start_time": "2026-07-11T20:10:00Z",
+      "game_start_time": "2026-07-11T20:10Z",
       "home_team": "New York Mets",
       "id": "team-pregame-rev-4831cd237bb717d243a81090",
       "market": "f5_total",
@@ -81484,6 +81530,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-8e1ad5b0b219ce873cd21329",
       "stake": 0.0,
+      "start_time": "2026-07-11T20:10Z",
       "supersedes_id": "team-pregame-rev-d791cdb56bbae59b8a0cbd47"
     },
     {
@@ -81512,7 +81559,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "822953",
-      "game_start_time": "2026-07-11T20:10:00Z",
+      "game_start_time": "2026-07-11T20:10Z",
       "home_team": "Tampa Bay Rays",
       "id": "team-pregame-rev-7717fd3e8fe845442dcda81d",
       "market": "f5_total",
@@ -81578,6 +81625,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-77811199baaeca35283bf2e9",
       "stake": 0.0,
+      "start_time": "2026-07-11T20:10Z",
       "supersedes_id": "team-pregame-rev-7fbf6e803175109fa8044e6b"
     },
     {
@@ -81606,7 +81654,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "822953",
-      "game_start_time": "2026-07-11T20:10:00Z",
+      "game_start_time": "2026-07-11T20:10Z",
       "home_team": "Tampa Bay Rays",
       "id": "team-pregame-rev-056d40ad79cadcf31368a906",
       "market": "f5_side",
@@ -81672,6 +81720,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-3a8f3c88f39df4036cb807ba",
       "stake": 0.0,
+      "start_time": "2026-07-11T20:10Z",
       "supersedes_id": "team-pregame-rev-9785b3eaf2f5d4c2622b1716"
     },
     {
@@ -81700,7 +81749,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "823844",
-      "game_start_time": "2026-07-11T20:10:00Z",
+      "game_start_time": "2026-07-11T20:10Z",
       "home_team": "Miami Marlins",
       "id": "team-pregame-rev-011c283e70cd307a37b92c0b",
       "market": "f5_side",
@@ -81766,6 +81815,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-be65e191ba86dd620f0dbd32",
       "stake": 0.0,
+      "start_time": "2026-07-11T20:10Z",
       "supersedes_id": "team-pregame-rev-2a21764eb2a42931d973d273"
     },
     {
@@ -81794,7 +81844,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "823844",
-      "game_start_time": "2026-07-11T20:10:00Z",
+      "game_start_time": "2026-07-11T20:10Z",
       "home_team": "Miami Marlins",
       "id": "team-pregame-rev-7ff81272691a154628a70616",
       "market": "f5_total",
@@ -81860,6 +81910,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-cdcf6b1e0b0daa3535a702c7",
       "stake": 0.0,
+      "start_time": "2026-07-11T20:10Z",
       "supersedes_id": "team-pregame-rev-da126233d2e89e17f2906304"
     },
     {
@@ -81979,7 +82030,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "824249",
-      "game_start_time": "2026-07-11T22:10:00Z",
+      "game_start_time": "2026-07-11T22:10Z",
       "home_team": "Detroit Tigers",
       "id": "team-pregame-rev-c171c6c234c679a79619fbcd",
       "market": "no_run_inning",
@@ -82046,6 +82097,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-67af3bc5aa5748f604b6eaaa",
       "stake": 0.0,
+      "start_time": "2026-07-11T22:10Z",
       "supersedes_id": "team-pregame-rev-497accdd9abe177451f43d78"
     },
     {
@@ -82232,6 +82284,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-2202608691185f83ed0420d2",
       "stake": 0.0,
+      "start_time": "2026-07-11T22:10Z",
       "supersedes_id": "team-pregame-rev-7f774190ca3d6547b0817df3"
     },
     {
@@ -82351,7 +82404,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "824813",
-      "game_start_time": "2026-07-11T23:05:00Z",
+      "game_start_time": "2026-07-11T23:05Z",
       "home_team": "Baltimore Orioles",
       "id": "team-pregame-rev-fa69ff13fb4d9b6772e6db01",
       "market": "no_run_inning",
@@ -82418,6 +82471,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-54df5788be5c95dc3ef45d3c",
       "stake": 0.0,
+      "start_time": "2026-07-11T23:05Z",
       "supersedes_id": "team-pregame-rev-9e7632e168876aaa56244bc9"
     },
     {
@@ -82537,7 +82591,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "824813",
-      "game_start_time": "2026-07-11T23:05:00Z",
+      "game_start_time": "2026-07-11T23:05Z",
       "home_team": "Baltimore Orioles",
       "id": "team-pregame-rev-b336d07cab8dbeacc5133c3c",
       "market": "no_run_inning",
@@ -82604,6 +82658,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-421304211c19f012e827f46c",
       "stake": 0.0,
+      "start_time": "2026-07-11T23:05Z",
       "supersedes_id": "team-pregame-rev-71e766ab6dbe503f8c76e579"
     },
     {
@@ -82723,7 +82778,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "822875",
-      "game_start_time": "2026-07-11T23:05:00Z",
+      "game_start_time": "2026-07-11T23:05Z",
       "home_team": "Texas Rangers",
       "id": "team-pregame-rev-edeb71628d64de9012b61f63",
       "market": "no_run_inning",
@@ -82790,6 +82845,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-08c0871fc3fc0694c88d7a95",
       "stake": 0.0,
+      "start_time": "2026-07-11T23:05Z",
       "supersedes_id": "team-pregame-rev-cfae80fccb157d070296b711"
     },
     {
@@ -82976,6 +83032,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-7ec42196459bf6cd71641dc3",
       "stake": 0.25,
+      "start_time": "2026-07-11T23:05Z",
       "supersedes_id": "team-pregame-rev-3ee02ff5e5104b8d4a040c3d"
     },
     {
@@ -83095,7 +83152,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "824492",
-      "game_start_time": "2026-07-11T23:10:00Z",
+      "game_start_time": "2026-07-11T23:10Z",
       "home_team": "Cincinnati Reds",
       "id": "team-pregame-rev-63f637fd6d58b9fb07132a28",
       "market": "no_run_inning",
@@ -83162,6 +83219,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-e39c4bdaceff7beaadd1b6cb",
       "stake": 0.0,
+      "start_time": "2026-07-11T23:10Z",
       "supersedes_id": "team-pregame-rev-f53ee0aef6d13236e73cf798"
     },
     {
@@ -83281,7 +83339,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "824492",
-      "game_start_time": "2026-07-11T23:10:00Z",
+      "game_start_time": "2026-07-11T23:10Z",
       "home_team": "Cincinnati Reds",
       "id": "team-pregame-rev-954a171629726695ac17c9fc",
       "market": "no_run_inning",
@@ -83348,6 +83406,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-03b98e65338829431597ff50",
       "stake": 0.0,
+      "start_time": "2026-07-11T23:10Z",
       "supersedes_id": "team-pregame-rev-d6681f6b93b46456ba222520"
     },
     {
@@ -83467,7 +83526,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "823030",
-      "game_start_time": "2026-07-11T23:15:00Z",
+      "game_start_time": "2026-07-11T23:15Z",
       "home_team": "St. Louis Cardinals",
       "id": "team-pregame-rev-b6d848497a2ae7b206f6263e",
       "market": "no_run_inning",
@@ -83534,6 +83593,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-cb80236e7fafd614b0e5adc0",
       "stake": 0.0,
+      "start_time": "2026-07-11T23:15Z",
       "supersedes_id": "team-pregame-rev-4fd21b907d8afced5757b2a9"
     },
     {
@@ -83653,7 +83713,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "823276",
-      "game_start_time": "2026-07-12T00:40:00Z",
+      "game_start_time": "2026-07-12T00:40Z",
       "home_team": "San Diego Padres",
       "id": "team-pregame-rev-8f978bedef56f28d15eea565",
       "market": "no_run_inning",
@@ -83720,6 +83780,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-5dbdd69d0427a8c1699a5585",
       "stake": 0.0,
+      "start_time": "2026-07-12T00:40Z",
       "supersedes_id": "team-pregame-rev-84f57b1e25de9bf207dc0f65"
     },
     {
@@ -83839,7 +83900,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "823276",
-      "game_start_time": "2026-07-12T00:40:00Z",
+      "game_start_time": "2026-07-12T00:40Z",
       "home_team": "San Diego Padres",
       "id": "team-pregame-rev-063bc7990fc47f65d725ea48",
       "market": "no_run_inning",
@@ -83906,6 +83967,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-b0bd18a1d08ba449fada2f2a",
       "stake": 0.0,
+      "start_time": "2026-07-12T00:40Z",
       "supersedes_id": "team-pregame-rev-ffdf1b0cb0526c7f4140d35e"
     },
     {
@@ -84025,7 +84087,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "823926",
-      "game_start_time": "2026-07-12T01:10:00Z",
+      "game_start_time": "2026-07-12T01:10Z",
       "home_team": "Los Angeles Dodgers",
       "id": "team-pregame-rev-923c6e20b93356243253afa0",
       "market": "no_run_inning",
@@ -84092,6 +84154,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-5588562446758b3e252c6dbf",
       "stake": 0.0,
+      "start_time": "2026-07-12T01:10Z",
       "supersedes_id": "team-pregame-rev-c9e3f0132e8a55d30b5bf718"
     },
     {
@@ -84211,7 +84274,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "823926",
-      "game_start_time": "2026-07-12T01:10:00Z",
+      "game_start_time": "2026-07-12T01:10Z",
       "home_team": "Los Angeles Dodgers",
       "id": "team-pregame-rev-3fb2f99e52ea1b6cee38aee6",
       "market": "no_run_inning",
@@ -84278,6 +84341,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-5108a15876b046c45be164c5",
       "stake": 0.0,
+      "start_time": "2026-07-12T01:10Z",
       "supersedes_id": "team-pregame-rev-398a27e8f7c52f9141af4002"
     },
     {
@@ -84306,7 +84370,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "823356",
-      "game_start_time": "2026-07-11T20:05:00Z",
+      "game_start_time": "2026-07-11T16:05Z",
       "home_team": "Pittsburgh Pirates",
       "id": "team-pregame-rev-f232f3be1239248d691688b1",
       "market": "no_run_inning",
@@ -84365,6 +84429,7 @@
       "raw_decision": "BET",
       "raw_probability": 0.514,
       "raw_stake": null,
+      "result": "loss",
       "revision": 5,
       "selection": "no_run_inning:inning # - no run scored:1",
       "slate_date": "2026-07-11",
@@ -84373,6 +84438,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-a3cad92ec1079a0526492e6f",
       "stake": 0.0,
+      "start_time": "2026-07-11T16:05Z",
       "supersedes_id": "team-pregame-rev-e206e43359d62c4cc0b04de0"
     },
     {
@@ -84401,7 +84467,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "823356",
-      "game_start_time": "2026-07-11T20:05:00Z",
+      "game_start_time": "2026-07-11T16:05Z",
       "home_team": "Pittsburgh Pirates",
       "id": "team-pregame-rev-ef1e61e3d3210667d46bec3a",
       "market": "no_run_inning",
@@ -84460,6 +84526,7 @@
       "raw_decision": "LEAN",
       "raw_probability": 0.559,
       "raw_stake": null,
+      "result": "win",
       "revision": 5,
       "selection": "no_run_inning:inning # - no run scored:6",
       "slate_date": "2026-07-11",
@@ -84468,6 +84535,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-e13158f4d063112dab01db5b",
       "stake": 0.0,
+      "start_time": "2026-07-11T16:05Z",
       "supersedes_id": "team-pregame-rev-7732f71f4a2972c863c2d30f"
     },
     {
@@ -84496,7 +84564,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "823682",
-      "game_start_time": "2026-07-11T18:10:00Z",
+      "game_start_time": "2026-07-11T18:10Z",
       "home_team": "Minnesota Twins",
       "id": "team-pregame-rev-afcf2815ace8003425c5365a",
       "market": "no_run_inning",
@@ -84555,6 +84623,7 @@
       "raw_decision": "LEAN",
       "raw_probability": 0.573,
       "raw_stake": null,
+      "result": "loss",
       "revision": 5,
       "selection": "no_run_inning:inning # - no run scored:3",
       "slate_date": "2026-07-11",
@@ -84563,6 +84632,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-8960b5719b3e3900b22c33c4",
       "stake": 0.0,
+      "start_time": "2026-07-11T18:10Z",
       "supersedes_id": "team-pregame-rev-5c13c11130dcac998d2fe5a7"
     },
     {
@@ -84591,7 +84661,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "824576",
-      "game_start_time": "2026-07-11T18:10:00Z",
+      "game_start_time": "2026-07-11T18:10Z",
       "home_team": "Chicago White Sox",
       "id": "team-pregame-rev-f8da909e15850fb71b39adbc",
       "market": "no_run_inning",
@@ -84650,6 +84720,7 @@
       "raw_decision": "BET",
       "raw_probability": 0.51,
       "raw_stake": null,
+      "result": "win",
       "revision": 3,
       "selection": "no_run_inning:inning # - no run scored:1",
       "slate_date": "2026-07-11",
@@ -84658,6 +84729,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-55b2f0d788d1b5dd68b3794c",
       "stake": 0.0,
+      "start_time": "2026-07-11T18:10Z",
       "supersedes_id": "team-pregame-rev-0a9e3aadf72c0391d6fcb18a"
     },
     {
@@ -84686,7 +84758,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "824576",
-      "game_start_time": "2026-07-11T18:10:00Z",
+      "game_start_time": "2026-07-11T18:10Z",
       "home_team": "Chicago White Sox",
       "id": "team-pregame-rev-44181ffd2d9d5496690a1f9c",
       "market": "no_run_inning",
@@ -84745,6 +84817,7 @@
       "raw_decision": "LEAN",
       "raw_probability": 0.544,
       "raw_stake": null,
+      "result": "win",
       "revision": 3,
       "selection": "no_run_inning:inning # - no run scored:3",
       "slate_date": "2026-07-11",
@@ -84753,6 +84826,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-9e65d00509da63ec10130e74",
       "stake": 0.0,
+      "start_time": "2026-07-11T18:10Z",
       "supersedes_id": "team-pregame-rev-5d66466ca8cee56e6ea9f55c"
     },
     {
@@ -84781,7 +84855,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "822711",
-      "game_start_time": "2026-07-11T20:05:00Z",
+      "game_start_time": "2026-07-11T20:05Z",
       "home_team": "Washington Nationals",
       "id": "team-pregame-rev-ba2304446ca9c3d25153ab51",
       "market": "no_run_inning",
@@ -84848,6 +84922,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-2c9c6f0b88185e4eea9c816a",
       "stake": 0.0,
+      "start_time": "2026-07-11T20:05Z",
       "supersedes_id": "team-pregame-rev-9b23a3a28aed6195e284625d"
     },
     {
@@ -84876,7 +84951,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "822711",
-      "game_start_time": "2026-07-11T20:05:00Z",
+      "game_start_time": "2026-07-11T20:05Z",
       "home_team": "Washington Nationals",
       "id": "team-pregame-rev-314e18ced3832ec0ad311e66",
       "market": "no_run_inning",
@@ -84943,6 +85018,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-13264dfe18770604aab51a9c",
       "stake": 0.0,
+      "start_time": "2026-07-11T20:05Z",
       "supersedes_id": "team-pregame-rev-f40e6915f0000221abb618a4"
     },
     {
@@ -84971,7 +85047,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "823603",
-      "game_start_time": "2026-07-11T20:10:00Z",
+      "game_start_time": "2026-07-11T20:10Z",
       "home_team": "New York Mets",
       "id": "team-pregame-rev-d1844e94f1b92e23a10e4462",
       "market": "no_run_inning",
@@ -85038,6 +85114,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-ec506721843017f368c18916",
       "stake": 0.0,
+      "start_time": "2026-07-11T20:10Z",
       "supersedes_id": "team-pregame-rev-a66e2352eeaea3459a202072"
     },
     {
@@ -85133,6 +85210,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-762687861cb030d3d9f206ff",
       "stake": 0.25,
+      "start_time": "2026-07-11T20:10Z",
       "supersedes_id": null
     },
     {
@@ -85161,7 +85239,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "822953",
-      "game_start_time": "2026-07-11T20:10:00Z",
+      "game_start_time": "2026-07-11T20:10Z",
       "home_team": "Tampa Bay Rays",
       "id": "team-pregame-rev-638cbcb9ac6fb02b44567b19",
       "market": "no_run_inning",
@@ -85228,6 +85306,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-f67bf4b25324fe580a4684e9",
       "stake": 0.0,
+      "start_time": "2026-07-11T20:10Z",
       "supersedes_id": "team-pregame-rev-32004a7b3fe38f015d404d18"
     },
     {
@@ -85323,6 +85402,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-d563a7831a58629f38d12d79",
       "stake": 0.25,
+      "start_time": "2026-07-11T20:10Z",
       "supersedes_id": "team-pregame-rev-3a8d3df80b38ea78800315ed"
     },
     {
@@ -85351,7 +85431,7 @@
       "financial_eligibility_reason": "assumed_or_proxy_price",
       "financial_eligible": false,
       "game_id": "823844",
-      "game_start_time": "2026-07-11T20:10:00Z",
+      "game_start_time": "2026-07-11T20:10Z",
       "home_team": "Miami Marlins",
       "id": "team-pregame-rev-e41d1d5e57a33abe72861d11",
       "market": "no_run_inning",
@@ -85418,6 +85498,7 @@
       "sport": "MLB",
       "stable_id": "team-pregame-9a925202a562032221fd80f7",
       "stake": 0.0,
+      "start_time": "2026-07-11T20:10Z",
       "supersedes_id": "team-pregame-rev-6e087d7f51679b2ae57377d4"
     }
   ],

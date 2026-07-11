@@ -59080,6 +59080,7 @@
           "projected_total": 173.0,
           "raw_probability": 0.8045,
           "raw_units": 1.01,
+          "result": "loss",
           "sample_games": 1,
           "selection": "Miami Heat",
           "source": "NBA Summer League",
@@ -59360,6 +59361,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-11-07-2026-minnesota-twins-los-angeles-angels-prediction",
           "sport": "MLB",
@@ -60692,6 +60694,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Cincinnati Reds vs Chicago Cubs",
+          "game_start_time": "2026-07-11T23:10Z",
           "market_line": 10.0,
           "market_odds_captured_at": "2026-07-11T21:03:17.449325Z",
           "market_odds_provider": "espn_scoreboard:DraftKings",
@@ -60719,6 +60722,7 @@
           "selected_odds": -104,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-07-11T23:10Z",
           "units": 1
         },
         {
@@ -60726,6 +60730,7 @@
           "decision": "BET",
           "edge": null,
           "game": "St. Louis Cardinals vs Atlanta Braves",
+          "game_start_time": "2026-07-11T23:15Z",
           "market_away_odds": -107,
           "market_home_odds": -112,
           "market_odds_captured_at": "2026-07-11T21:03:17.449325Z",
@@ -60752,6 +60757,7 @@
           "selected_odds": -107,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-07-11T23:15Z",
           "units": 1
         }
       ],
@@ -60848,6 +60854,7 @@
           "confidence_label": "Medium",
           "decision": "LEAN",
           "game": "New York Liberty @ Minnesota Lynx",
+          "game_start_time": "2026-07-11T17:00Z",
           "guardrail_reasons": [
             "no SportsLine market price found"
           ],
@@ -60902,8 +60909,10 @@
           "projected_total": 163.3,
           "raw_probability": 0.651,
           "raw_units": 0.25,
+          "result": "win",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-07-11T17:00Z",
           "starters_out": [
             "Napheesa Collier"
           ],
@@ -60926,6 +60935,7 @@
           "confidence_label": "High",
           "decision": "BET",
           "game": "Portland Fire @ Atlanta Dream",
+          "game_start_time": "2026-07-11T20:00Z",
           "guardrail_reasons": [
             "no SportsLine market price found"
           ],
@@ -60980,6 +60990,7 @@
           "raw_units": 0.87,
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-07-11T20:00Z",
           "starters_out": [],
           "starters_questionable": [],
           "starters_total": 0,
