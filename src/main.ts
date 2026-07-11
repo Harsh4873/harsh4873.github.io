@@ -28,6 +28,7 @@ type Stats = {
   pending: number;
   net: number;
   risk: number;
+  priced: number;
   winRate: number | null;
   roi: number | null;
 };
@@ -445,6 +446,7 @@ function statsFor(picks: Pick[]): Stats {
     pending,
     net,
     risk,
+    priced: pricedPicks.filter(isSettledPick).length,
     winRate: decided ? wins / decided : null,
     roi: risk ? net / risk : null,
   };
@@ -452,6 +454,17 @@ function statsFor(picks: Pick[]): Stats {
 
 function signedUnits(value: number): string {
   return `${value >= 0 ? '+' : ''}${Number(value.toFixed(2))}u`;
+}
+
+// P/L only counts picks settled at verified sportsbook prices. When a bucket
+// has none, "+0u" would read as break-even, so show an untracked marker instead.
+function trackedUnits(stats: Stats): string {
+  return stats.priced ? signedUnits(stats.net) : '—';
+}
+
+function trackedUnitsClass(stats: Stats): string {
+  if (!stats.priced || stats.net === 0) return 'neutral';
+  return stats.net > 0 ? 'positive' : 'negative';
 }
 
 function readYourBets(): UserBet[] {
@@ -533,6 +546,7 @@ function userBetStats(bets: UserBet[]): Stats {
     pending,
     net,
     risk,
+    priced: wins + losses + pushes,
     winRate: decided ? wins / decided : null,
     roi: risk ? net / risk : null,
   };
@@ -598,7 +612,7 @@ function sourceRecordText(picks: Pick[]): string {
   const record = `${stats.wins}-${stats.losses}${stats.pushes ? `-${stats.pushes}` : ''}`;
   return [
     record,
-    signedUnits(stats.net),
+    stats.priced ? signedUnits(stats.net) : '',
     stats.winRate == null ? '' : `${(stats.winRate * 100).toFixed(1)}%`,
     stats.pending ? `${stats.pending} open` : '',
   ].filter(Boolean).join(' | ');
@@ -933,7 +947,7 @@ function renderHome(): void {
     [groups.size, 'Matchups'],
     [new Set(picks.map(sourceName)).size, 'Sources'],
     [stats.pending, 'Open'],
-    [signedUnits(stats.net), 'Net Units'],
+    [trackedUnits(stats), 'Net Units'],
   ].map(([value, label]) => `<div class="home-summary-card"><div class="home-summary-value">${escapeHtml(value)}</div><div class="home-summary-label">${label}</div></div>`).join('');
 
   const popover = document.getElementById('home-date-popover');
@@ -977,7 +991,7 @@ function renderGameCard(picks: Pick[]): string {
   return `<article class="home-game-card status-${statusClass(picks)}">
     <div class="home-game-top">
       <div class="home-game-kicker"><span class="home-sport-pill">${escapeHtml(picks[0]?.sport)}</span><span class="home-status-pill ${statusClass(picks)}">${pending ? 'OPEN' : `${stats.wins}-${stats.losses}${stats.pushes ? `-${stats.pushes}` : ''}`}</span></div>
-      <div class="home-game-right-stack">${scoreChip}<div class="home-game-pl ${stats.net > 0 ? 'positive' : stats.net < 0 ? 'negative' : 'neutral'}">${pending ? `${stats.pending} open` : signedUnits(stats.net)}</div><div class="home-game-caption">${formatStart(start)}</div></div>
+      <div class="home-game-right-stack">${scoreChip}<div class="home-game-pl ${trackedUnitsClass(stats)}">${pending ? `${stats.pending} open` : trackedUnits(stats)}</div><div class="home-game-caption">${formatStart(start)}</div></div>
     </div>
     <div><div class="home-game-title">${escapeHtml(gameName(picks[0]))}</div><div class="home-game-meta">${escapeHtml(dateLabel(pickDateKey(picks[0])))} | ${picks.length} ${itemLabel} | ${new Set(picks.map(sourceName)).size} sources</div></div>
     <div class="home-game-picks">${sortedPicks.map(renderPickRow).join('')}</div>
@@ -1076,7 +1090,7 @@ function updateOverallStats(): void {
     'stat-pushes': stats.pushes,
     'stat-pending': stats.pending,
     'stat-acc': stats.winRate == null ? '—' : `${(stats.winRate * 100).toFixed(1)}%`,
-    'stat-units': signedUnits(stats.net),
+    'stat-units': trackedUnits(stats),
     'stat-roi': stats.roi == null ? '—' : `${(stats.roi * 100).toFixed(1)}%`,
   };
   Object.entries(values).forEach(([id, value]) => {
@@ -1128,7 +1142,7 @@ function renderRankings(): void {
       return `<article class="source-card ${index < 3 ? `rank-${index + 1}` : ''} ${expanded ? 'expanded' : ''}" data-source-card="${escapeHtml(item.source)}" role="button" tabindex="0" aria-expanded="${expanded}">
         <div class="card-rank">${index + 1}</div><div class="card-name">${escapeHtml(item.source)}</div>
         <div class="score-bar-wrap"><div class="score-label"><span>ACCURACY</span><span class="score-val">${item.stats.winRate == null ? '—' : `${(item.stats.winRate * 100).toFixed(1)}%`} (${item.stats.wins}-${item.stats.losses})</span></div><div class="bar-bg"><div class="bar-fill bar-acc" style="width:${(item.stats.winRate || 0) * 100}%"></div></div></div>
-        <div class="score-bar-wrap"><div class="score-label"><span>ROI</span><span class="score-val">${item.stats.roi == null ? '—' : `${(item.stats.roi * 100).toFixed(1)}%`} (${signedUnits(item.stats.net)})</span></div><div class="bar-bg"><div class="bar-fill bar-roi" style="width:${Math.max(0, Math.min(100, 50 + (item.stats.roi || 0) * 100))}%"></div></div></div>
+        <div class="score-bar-wrap"><div class="score-label"><span>ROI</span><span class="score-val">${item.stats.priced ? `${item.stats.roi == null ? '—' : `${(item.stats.roi * 100).toFixed(1)}%`} (${signedUnits(item.stats.net)})` : '— (no priced picks)'}</span></div><div class="bar-bg"><div class="bar-fill bar-roi" style="width:${Math.max(0, Math.min(100, 50 + (item.stats.roi || 0) * 100))}%"></div></div></div>
         <div class="algo-score"><div class="algo-score-val">${item.stats.total}</div><div class="algo-score-info">DECIDED PICKS<br>${escapeHtml(rankingScope)}</div></div>
         <div class="source-expand-control"><span data-source-expand-label>${expanded ? 'Hide period records' : 'View period records'}</span><span class="source-expand-icon" aria-hidden="true">&#9662;</span></div>
         <div class="source-deep-dive">
@@ -1145,7 +1159,10 @@ function renderRankings(): void {
   const sportBoard = document.getElementById('sport-board');
   if (sportBoard) sportBoard.innerHTML = [...bySport.entries()].map(([sport, picks]) => {
     const stats = statsFor(picks);
-    return `<div class="sport-card"><div class="sport-name">${escapeHtml(sport)}</div><div class="sport-meta">${stats.wins}-${stats.losses}${stats.pushes ? `-${stats.pushes}` : ''} record<br>${stats.total} decided picks</div><div class="sport-units ${stats.net >= 0 ? 'positive' : 'negative'}">${signedUnits(stats.net)}</div><div class="sport-meta">ROI ${stats.roi == null ? '—' : `${(stats.roi * 100).toFixed(1)}%`}</div></div>`;
+    const profitLine = stats.priced
+      ? `ROI ${stats.roi == null ? '—' : `${(stats.roi * 100).toFixed(1)}%`} • ${stats.priced} priced pick${stats.priced === 1 ? '' : 's'}`
+      : 'P/L untracked — no verified-price picks yet';
+    return `<div class="sport-card"><div class="sport-name">${escapeHtml(sport)}</div><div class="sport-meta">${stats.wins}-${stats.losses}${stats.pushes ? `-${stats.pushes}` : ''} record<br>${stats.total} decided picks</div><div class="sport-units ${trackedUnitsClass(stats)}">${trackedUnits(stats)}</div><div class="sport-meta">${profitLine}</div></div>`;
   }).join('');
 
   renderDayOfWeekTable();
@@ -1564,7 +1581,7 @@ function dailyHotModelCard(form: DailySourceForm): string {
     <div class="daily-model-head"><div><div class="daily-model-kicker">HOT SOURCE</div><div class="daily-model-name">${escapeHtml(form.source)}</div></div><div class="daily-model-rate">${form.recentStats.winRate == null ? '—' : `${(form.recentStats.winRate * 100).toFixed(0)}%`}</div></div>
     <div class="daily-model-records"><span>Last ${form.recentDates.length} slates: ${form.recentStats.wins}-${form.recentStats.losses}${form.recentStats.pushes ? `-${form.recentStats.pushes}` : ''}</span><span>Last slate: ${lastDecided ? `${form.lastStats.wins}-${form.lastStats.losses}${form.lastStats.pushes ? `-${form.lastStats.pushes}` : ''}` : 'No decisions'}</span></div>
     <div class="daily-model-picks">${todays.length ? todays.map(pick => `<div><strong>${escapeHtml(pick.pick)}</strong><span>${escapeHtml([dailyDecision(pick), formatOdds(pick), pickProbability(pick) == null ? '' : `${(pickProbability(pick)! * 100).toFixed(1)}%`].filter(Boolean).join(' | '))}</span></div>`).join('') : '<div><strong>No published call today</strong><span>Recent form is hot, but the model is sitting out.</span></div>'}</div>
-    <div class="daily-model-foot">${recentDecided} recent decisions | ${signedUnits(form.recentStats.net)}</div>
+    <div class="daily-model-foot">${recentDecided} recent decisions${form.recentStats.priced ? ` | ${signedUnits(form.recentStats.net)}` : ''}</div>
   </article>`;
 }
 

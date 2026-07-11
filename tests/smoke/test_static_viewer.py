@@ -297,6 +297,21 @@ def test_profit_and_roi_exclude_missing_assumed_and_unverified_prices():
     assert "P/L untracked" in main
 
 
+def test_rankings_show_untracked_units_instead_of_zero_when_nothing_is_priced():
+    main = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
+    html = (ROOT / "index.html").read_text(encoding="utf-8")
+
+    # Buckets with no verified-price settled picks must never render "+0u"
+    # as if they broke even; they show an untracked marker instead.
+    assert "function trackedUnits(" in main
+    assert "return stats.priced ? signedUnits(stats.net) : '—'" in main
+    assert "priced: pricedPicks.filter(isSettledPick).length" in main
+    assert "P/L untracked — no verified-price picks yet" in main
+    assert "'— (no priced picks)'" in main
+    assert "Units and ROI count only picks settled at verified sportsbook prices." in html
+    assert '<div class="stat-box-val" id="stat-units">&mdash;</div>' in html
+
+
 def test_parlays_tab_renders_card_level_filters_and_rankings():
     main = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
     css = (ROOT / "src" / "styles" / "pickledger.css").read_text(encoding="utf-8")
