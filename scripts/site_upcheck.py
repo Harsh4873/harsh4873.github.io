@@ -20,7 +20,8 @@ PLAYER_PROPS_SNAPSHOT_DIR = REPO_ROOT / "data" / "player_props_snapshots"
 PARLAY_CARDS_DIR = REPO_ROOT / "data" / "parlay_cards"
 PROFIT_DESK_DIR = REPO_ROOT / "data" / "profit_desk"
 PARLAY_ENGINE_VERSION = "parlay_cards_v5_market_excess"
-PROFIT_DESK_ENGINE_VERSION = "profit_desk_v1_shadow"
+PROFIT_DESK_ENGINE_VERSION = "profit_desk_v2_live"
+PROFIT_DESK_FIRST_LIVE_DATE = "2026-07-11"
 REQUIRED_MODEL_KEYS = {
     "mlb_new",
     "mlb_inning",
@@ -422,13 +423,25 @@ def main() -> int:
         if candidate_count != len(candidates):
             failures.append("latest Profit Desk candidate summary does not match candidates length")
         phase = str(profit_latest.get("phase") or (profit_latest.get("policy") or {}).get("mode") or "").lower()
-        if phase != "shadow":
-            failures.append(f"latest Profit Desk phase is {phase or 'missing'}, expected shadow")
-        if int(summary.get("liveQualified") or 0) != 0:
-            failures.append("shadow Profit Desk reports live-qualified picks")
-        if any(float(row.get("stakeUnits") or 0) != 0 or row.get("liveQualified") is True for row in candidates):
-            failures.append("shadow Profit Desk includes a nonzero stake or live-qualified candidate")
-        if any(str(row.get("tier") or "") not in {"shadow", "watch", "avoid"} for row in candidates):
+        expected_phase = "live" if today >= PROFIT_DESK_FIRST_LIVE_DATE else "research_backfill"
+        if phase != expected_phase:
+            failures.append(f"latest Profit Desk phase is {phase or 'missing'}, expected {expected_phase}")
+        live_candidates = [row for row in candidates if row.get("liveQualified") is True]
+        if int(summary.get("liveQualified") or 0) != len(live_candidates):
+            failures.append("latest Profit Desk liveQualified summary does not match candidates")
+        for row in candidates:
+            stake = float(row.get("stakeUnits") or 0)
+            if stake != 0 and row.get("liveQualified") is not True:
+                failures.append("Profit Desk candidate has a stake without live qualification")
+                break
+            if row.get("liveQualified") is True and (
+                stake <= 0 or str(row.get("tier") or "") not in {"edge", "value"}
+            ):
+                failures.append("Profit Desk live candidate is missing a lane stake")
+                break
+        if phase != "live" and live_candidates:
+            failures.append("non-live Profit Desk artifact reports live-qualified picks")
+        if any(str(row.get("tier") or "") not in {"edge", "value", "watch", "avoid"} for row in candidates):
             failures.append("latest Profit Desk includes an invalid candidate tier")
         if any(not isinstance(row.get("blockers"), list) for row in candidates):
             failures.append("latest Profit Desk candidate is missing explicit blockers")
@@ -492,17 +505,21 @@ def main() -> int:
     parlay_summary = parlay_latest.get("summary") if isinstance(parlay_latest, dict) and isinstance(parlay_latest.get("summary"), dict) else {}
     parlay_three_leg_count = int(parlay_summary.get("threeLegCards") or 0)
     profit_count = len(profit_latest.get("candidates") or []) if profit_latest else 0
-    profit_shadow = int(
+    profit_qualified = int(
         (profit_latest.get("summary") or {}).get("researchQualified")
         or (profit_latest.get("summary") or {}).get("shadowQualified")
         or 0
+    ) if profit_latest else 0
+    profit_live = int(
+        (profit_latest.get("summary") or {}).get("liveQualified") or 0
     ) if profit_latest else 0
     print(
         f"[upcheck] healthy for {today}: "
         f"teams_raw={team_counts}, teams_visible={team_visible_counts}, "
         f"player_props_raw={player_counts}, player_props_visible={player_visible_counts}, "
         f"parlay_cards={parlay_count}, parlay_3_leg={parlay_three_leg_count}, "
-        f"profit_candidates={profit_count}, profit_shadow={profit_shadow}"
+        f"profit_candidates={profit_count}, profit_qualified={profit_qualified}, "
+        f"profit_live={profit_live}"
     )
     return 0
 

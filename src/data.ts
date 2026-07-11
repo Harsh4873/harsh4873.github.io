@@ -195,7 +195,8 @@ export interface ParlayCardsPayload {
   [key: string]: unknown;
 }
 
-export type ProfitDeskTier = 'shadow' | 'watch' | 'avoid';
+export type ProfitDeskTier = 'edge' | 'value' | 'shadow' | 'watch' | 'avoid';
+export type ProfitDeskLane = 'edge' | 'value';
 export type ProfitDeskPriceQuality =
   | 'verified_two_sided'
   | 'verified_no_vig'
@@ -224,16 +225,22 @@ export interface ProfitDeskEstimate {
   expectedValue?: number | null;
   conservativeExpectedValue?: number | null;
   probabilityPositiveEv?: number | null;
+  value?: ProfitDeskEstimate;
 }
 
 export interface ProfitDeskEvidence {
   sourceSamples?: number;
   segmentSamples?: number;
   distinctDates?: number;
+  sourceDistinctDates?: number;
   wins?: number;
   losses?: number;
+  sourceWins?: number;
+  sourceLosses?: number;
   flatNetUnits?: number | null;
   flatRoi?: number | null;
+  sourceFlatNetUnits?: number | null;
+  sourceFlatRoi?: number | null;
   priorOnly?: boolean;
 }
 
@@ -260,10 +267,15 @@ export interface ProfitDeskCandidate {
   decision?: string;
   oddsAmerican?: number | null;
   stakeUnits?: number | null;
+  lane?: ProfitDeskLane | string | null;
+  liveQualified?: boolean;
+  edgeQualified?: boolean;
+  valueQualified?: boolean;
   price?: ProfitDeskPrice;
   estimate?: ProfitDeskEstimate;
   evidence?: ProfitDeskEvidence;
   blockers?: Array<ProfitDeskBlocker | string>;
+  laneBlockers?: Partial<Record<'structural' | 'edge' | 'value', string[]>>;
   consensusSources?: string[];
 }
 
@@ -273,6 +285,8 @@ export interface ProfitDeskModeSummary {
   observedPriceCandidates?: number;
   shadowQualified?: number;
   researchQualified?: number;
+  edgeQualified?: number;
+  valueQualified?: number;
   watchlist?: number;
   selected?: number;
   portfolioCandidates?: number;
@@ -292,6 +306,7 @@ export interface ProfitDeskLiveRecord {
 
 export interface ProfitDeskSummary extends ProfitDeskModeSummary {
   liveRecord?: ProfitDeskLiveRecord;
+  liveRecordToDate?: ProfitDeskLiveRecord;
   modes?: Partial<Record<PickMode, ProfitDeskModeSummary>>;
 }
 

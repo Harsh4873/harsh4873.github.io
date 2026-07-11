@@ -143,14 +143,16 @@ def test_static_viewer_keeps_public_tabs_and_client_grading():
     data = (ROOT / "src" / "data.ts").read_text(encoding="utf-8")
     html = (ROOT / "index.html").read_text(encoding="utf-8")
 
-    for tab in ("home", "search", "rankings", "daily", "parlays"):
+    for tab in ("home", "search", "rankings", "daily", "parlays", "profit"):
         assert f"id=\"tab-{tab}\"" in html
     assert 'id="tab-trends"' not in html
     assert ">TRENDS</button>" not in html
-    assert 'onclick="switchTab(\'daily\')">PROFIT DESK</button>' in html
+    assert 'onclick="switchTab(\'daily\')">BEST BETS</button>' in html
     assert 'onclick="switchTab(\'parlays\')">PARLAYS</button>' in html
+    assert 'onclick="switchTab(\'profit\')">PROFIT DESK</button>' in html
     assert ">YOUR BETS</button>" not in html
-    assert html.index(">PROFIT DESK</button>") < html.index(">PARLAYS</button>")
+    assert html.index(">BEST BETS</button>") < html.index(">PARLAYS</button>")
+    assert html.index(">PARLAYS</button>") < html.index(">PROFIT DESK</button>")
     assert "async function refreshAutoGrades()" in main
     assert "async function gradeDate(" in main
     assert "site.api.espn.com" in main
@@ -217,39 +219,70 @@ def test_source_rankings_expand_period_records_and_static_cards_do_not_fake_clic
     assert ".daily-bet-card:hover" not in css
 
 
-def test_daily_tab_is_a_precomputed_decision_first_profit_desk():
+def test_profit_desk_is_its_own_precomputed_decision_first_tab():
     main = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
     data = (ROOT / "src" / "data.ts").read_text(encoding="utf-8")
     css = (ROOT / "src" / "styles" / "pickledger.css").read_text(encoding="utf-8")
+    html = (ROOT / "index.html").read_text(encoding="utf-8")
 
-    for section in ("Shadow Card", "Watchlist & Rejections", "How a pick earns promotion"):
+    for section in ("Live Card", "Watchlist & Rejections", "How a pick earns promotion"):
         assert section in main
-    assert "type DailyView = 'card' | 'watchlist' | 'method'" in main
-    assert "let dailyView: DailyView = 'card'" in main
+    assert 'id="profit-container"' in html
+    assert "type ProfitView = 'card' | 'watchlist' | 'method'" in main
+    assert "let profitView: ProfitView = 'card'" in main
+    assert "function renderProfit(" in main
     assert "getProfitDeskPayload(key)" in main
     assert "function profitDeskCandidateCard(" in main
     assert "function profitDeskMethodHtml(" in main
     assert "Profit Desk Date" in main
-    assert "function toggleDailyDatePicker(" in main
+    assert "function toggleProfitDatePicker(" in main
     assert "role=\"tablist\" aria-label=\"Profit Desk views\"" in main
     assert "Sit out" in main
-    assert "Shadow test only" in main
+    assert "RESEARCH ONLY • 0U" in main
     assert "No recommendation" in main
     assert "will not improvise a recommendation from raw pick feeds or client-side scoring" in main
     assert "Conservative probability" in main
-    assert "Conservative EV" in main
+    assert "Expected value" in main
     assert "Pr(EV &gt; 0)" in main
     assert "distinct dates" in main
-    assert "Flat 1u evidence" in main
-    assert "Shadow/backtest research is not live proof" in main
+    assert "Flat-stake evidence" in main
+    assert "LIVE STAKE" in main
+    assert "Research context is not live proof" in main
+    assert "EDGE clears strict segment-level market-alpha gates" in main
     assert "./data/profit_desk/index.json" in data
     assert "./data/profit_desk/latest.json" in data
     assert "export interface ProfitDeskPayload" in data
     assert "export function getProfitDeskPayload(" in data
+    assert "liveRecordToDate" in data
     assert ".profit-decision" in css
     assert ".profit-candidate" in css
+    assert ".profit-candidate.tier-edge::before" in css
+    assert ".profit-shadow-stake.is-live" in css
     assert ".profit-method-steps" in css
     assert ".profit-sport-filter" in css
+
+
+def test_best_bets_shortlist_is_fully_restored_on_the_daily_tab():
+    main = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
+    html = (ROOT / "index.html").read_text(encoding="utf-8")
+    css = (ROOT / "src" / "styles" / "pickledger.css").read_text(encoding="utf-8")
+
+    assert 'onclick="switchTab(\'daily\')">BEST BETS</button>' in html
+    assert "type DailyView = 'picks' | 'consensus' | 'sources' | 'research'" in main
+    assert "let dailyView: DailyView = 'picks'" in main
+    assert "function renderDaily(" in main
+    assert "The Shortlist" in main
+    assert "function dailyPickScore(" in main
+    assert "Best Bets Date" in main
+    for section in ("Top Picks", "Consensus Signals", "Hot Sources", "Research Queue"):
+        assert section in main
+    assert "MODEL GREENLIGHT" in main
+    assert "PROBABILITY LEADER" in main
+    assert "PRICEY FAVORITE" in main
+    assert "Quick read, not a blind card." in main
+    assert ".daily-hero" in css
+    assert ".daily-view-shell" in css
+    assert ".daily-bet-card" in css
 
 
 def test_profit_and_roi_exclude_missing_assumed_and_unverified_prices():
@@ -322,9 +355,10 @@ def test_player_mode_keeps_best_bets_available_and_prop_sources_separate():
 
     assert 'data-player-hidden-tab="trends"' not in html
     assert "function syncModeTabs(" not in main
-    assert 'onclick="switchTab(\'daily\')">PROFIT DESK</button>' in html
+    assert 'onclick="switchTab(\'daily\')">BEST BETS</button>' in html
     assert 'onclick="switchTab(\'parlays\')">PARLAYS</button>' in html
-    assert "dailyView = 'card'" in main
+    assert "dailyView = 'picks'" in main
+    assert "profitView = 'card'" in main
     assert "parlayView = 'all'" in main
     assert "Parlay filter" in main
     assert "const requestedDate = selectedDate || today" in main
