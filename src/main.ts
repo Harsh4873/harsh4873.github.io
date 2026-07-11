@@ -1149,6 +1149,58 @@ function renderRankings(): void {
   }).join('');
 
   renderDayOfWeekTable();
+  renderProfitQualificationBoard();
+}
+
+const QUALIFICATION_GATE_LABELS: Record<string, string> = {
+  sourceSamples: 'Settled priced rows',
+  distinctPriorDates: 'Distinct dates',
+  positiveFlatRoi: 'Positive flat ROI',
+  stableChronologicalHalves: 'Stable halves',
+  probabilityPositiveEv: 'Pr(profit)',
+};
+
+function qualificationGateValue(value: number | boolean | null | undefined, key: string): string {
+  if (value == null) return '—';
+  if (typeof value === 'boolean') return value ? 'stable' : 'unstable';
+  if (key === 'positiveFlatRoi') return `${(Number(value) * 100).toFixed(1)}%`;
+  if (key === 'probabilityPositiveEv') return `${(Number(value) * 100).toFixed(1)}%`;
+  return String(value);
+}
+
+function qualificationGateTarget(value: number | boolean | null | undefined, key: string): string {
+  if (value == null) return '';
+  if (typeof value === 'boolean') return 'required';
+  if (key === 'positiveFlatRoi') return '> 0%';
+  if (key === 'probabilityPositiveEv') return `≥ ${(Number(value) * 100).toFixed(0)}%`;
+  return `≥ ${value}`;
+}
+
+function renderProfitQualificationBoard(): void {
+  const container = document.getElementById('profit-qualification-board');
+  if (!container) return;
+  const payload = getProfitDeskPayload();
+  const cards = Array.isArray(payload?.sources) ? payload!.sources!.filter(card => card && typeof card === 'object') : [];
+  if (!cards.length) {
+    container.innerHTML = '<div class="empty-state">Qualification progress appears after the Profit Desk publishes its next artifact.</div>';
+    return;
+  }
+  const visible = cards.filter(card => (card.samples || 0) > 0 || (card.candidatesToday || 0) > 0).slice(0, 14);
+  container.innerHTML = `<div class="qual-grid">${visible.map(card => {
+    const qualified = card.evidenceQualified === true;
+    const gates = card.gates && typeof card.gates === 'object' ? Object.entries(card.gates) : [];
+    const record = `${card.wins ?? 0}-${card.losses ?? 0}`;
+    const roi = card.flatRoi == null ? '—' : `${(Number(card.flatRoi) * 100).toFixed(1)}%`;
+    return `<article class="qual-card ${qualified ? 'is-qualified' : ''}">
+      <div class="qual-head">
+        <div><div class="qual-source">${escapeHtml(card.source || card.sourceKey || 'Unknown source')}</div><div class="qual-meta">${escapeHtml(String(card.sport || '').toUpperCase())} • ${escapeHtml(String(card.mode || ''))} • ${record} at real prices • ROI ${escapeHtml(roi)}</div></div>
+        <div class="qual-score ${qualified ? 'positive' : ''}"><strong>${card.gatesPassed ?? 0}/${card.gatesTotal ?? 5}</strong><span>${qualified ? 'ON THE CARD' : 'GATES CLEARED'}</span></div>
+      </div>
+      <ul class="qual-gates">${gates.map(([key, gate]) => `<li class="${gate?.passed ? 'pass' : 'fail'}"><span class="qual-gate-mark" aria-hidden="true">${gate?.passed ? '✓' : '✗'}</span><span class="qual-gate-label">${escapeHtml(QUALIFICATION_GATE_LABELS[key] || key)}</span><span class="qual-gate-value">${escapeHtml(qualificationGateValue(gate?.actual, key))} <small>${escapeHtml(qualificationGateTarget(gate?.required, key))}</small></span></li>`).join('')}</ul>
+      ${(card.liveToday || 0) > 0 ? `<div class="qual-live-note">${card.liveToday} live pick${card.liveToday === 1 ? '' : 's'} on today's card</div>` : ''}
+    </article>`;
+  }).join('')}</div>
+  <p class="qual-footnote">Evidence counts only settled picks with real executable prices and pregame timestamps, dated strictly before each slate. Sources qualify and lapse automatically as these numbers move.</p>`;
 }
 
 function bindSourceCards(leaderboard: HTMLElement): void {

@@ -1222,3 +1222,24 @@ def test_external_feed_merge_promotes_complete_cache_to_latest(tmp_path):
 
     assert latest_updated is True
     assert json.loads((cache_dir / "latest.json").read_text(encoding="utf-8"))["date"] == "2026-06-15"
+
+
+def test_rankings_tab_renders_profit_desk_qualification_board():
+    main = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
+    data = (ROOT / "src" / "data.ts").read_text(encoding="utf-8")
+    html = (ROOT / "index.html").read_text(encoding="utf-8")
+    css = (ROOT / "src" / "styles" / "pickledger.css").read_text(encoding="utf-8")
+
+    assert 'id="profit-qualification-section"' in html
+    assert 'id="profit-qualification-board"' in html
+    assert "Profit Desk Qualification" in html
+    assert "function renderProfitQualificationBoard(" in main
+    assert "renderProfitQualificationBoard();" in main
+    assert "QUALIFICATION_GATE_LABELS" in main
+    assert "ON THE CARD" in main
+    assert "GATES CLEARED" in main
+    assert "export interface ProfitDeskSourceCard" in data
+    assert "sources?: ProfitDeskSourceCard[]" in data
+    assert ".qual-card" in css
+    assert ".qual-gates" in css
+    assert ".qual-card.is-qualified::before" in css

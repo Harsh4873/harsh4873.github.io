@@ -61,6 +61,27 @@ REQUIRED_TEAM_MODEL_KEYS = {
     "fifa_world_cup",
 }
 PICK_METADATA_FIELDS = {"result", "start_time", "game_start_time", "pregame_snapshot"}
+MARKET_ODDS_METADATA_FIELDS = {
+    # Pregame market prices captured by scripts/market_odds.py.  Once a game
+    # goes live the attach step skips it, so these captured pregame values
+    # must survive later merges instead of being wiped by a regenerated pick.
+    "market_odds_provider",
+    "market_odds_captured_at",
+    "market_updated_at",
+    "market_home_odds",
+    "market_away_odds",
+    "market_draw_odds",
+    "market_over_odds",
+    "market_under_odds",
+    "market_line",
+    "selected_odds",
+    "opposite_odds",
+    "market_no_vig_selected_probability",
+    "assumed_odds_replaced",
+    "model_assumed_odds",
+}
+REPLACED_PRICE_FIELDS = ("odds", "pricing_type", "odds_source", "price_source", "market_priced")
+
 
 
 def _parse_args() -> argparse.Namespace:
@@ -223,8 +244,20 @@ def _preserve_pick_metadata(current_bucket: Any, generated_bucket: Any) -> Any:
     generated_picks = generated_bucket.get("picks")
     if not isinstance(current_picks, list) or not isinstance(generated_picks, list):
         return generated_bucket
+    def _kept_fields(pick: dict[str, Any]) -> dict[str, Any]:
+        kept = {
+            field: pick[field]
+            for field in (*PICK_METADATA_FIELDS, *MARKET_ODDS_METADATA_FIELDS)
+            if field in pick
+        }
+        if pick.get("assumed_odds_replaced") is True:
+            # A real captured price must not be reverted to a regenerated
+            # assumed price after the game has started.
+            kept.update({field: pick[field] for field in REPLACED_PRICE_FIELDS if field in pick})
+        return kept
+
     metadata = {
-        _pick_key(pick): {field: pick[field] for field in PICK_METADATA_FIELDS if field in pick}
+        _pick_key(pick): _kept_fields(pick)
         for pick in current_picks
         if isinstance(pick, dict)
     }

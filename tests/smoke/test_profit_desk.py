@@ -704,3 +704,51 @@ def test_result_sync_settles_frozen_live_artifacts_and_cumulative_record(tmp_pat
     assert cumulative["wins"] == 1
     assert cumulative["netUnits"] == pytest.approx(1.0)
     assert cumulative["sinceDate"] == desk.FIRST_LIVE_DATE
+
+
+def test_source_report_cards_expose_value_gate_progress():
+    history = history_payloads(
+        wins_per_date=5,
+        losses_per_date=3,
+        days=20,
+        target_date=LIVE_DATE,
+    )
+    built = desk.build_profit_desk_payload(
+        LIVE_DATE,
+        make_payload([make_pick(slate_date=LIVE_DATE)], slate_date=LIVE_DATE),
+        None,
+        team_history=history,
+        prop_history=[],
+    )
+    cards = built["sources"]
+    assert built["summary"]["sourcesTracked"] == len(cards)
+    assert len(cards) == 1
+    card = cards[0]
+    assert card["sourceKey"] == "test"
+    assert card["samples"] == 160
+    assert card["distinctDates"] == 20
+    assert card["gatesTotal"] == 5
+    gates = card["gates"]
+    assert gates["sourceSamples"]["passed"] is True
+    assert gates["distinctPriorDates"]["passed"] is True
+    assert gates["positiveFlatRoi"]["passed"] is True
+    assert gates["stableChronologicalHalves"]["passed"] is True
+    assert gates["probabilityPositiveEv"]["required"] == desk.VALUE_MIN_PROBABILITY_POSITIVE_EV
+    assert card["evidenceQualified"] == (card["gatesPassed"] == 5)
+    assert card["candidatesToday"] == 1
+    assert card["liveToday"] == (1 if built["summary"]["liveQualified"] else 0)
+
+
+def test_source_report_cards_show_failing_gates_for_thin_sources():
+    built = desk.build_profit_desk_payload(
+        LIVE_DATE,
+        make_payload([make_pick(slate_date=LIVE_DATE)], slate_date=LIVE_DATE),
+        None,
+        team_history=[],
+        prop_history=[],
+    )
+    card = built["sources"][0]
+    assert card["samples"] == 0
+    assert card["gatesPassed"] < card["gatesTotal"]
+    assert card["gates"]["sourceSamples"]["passed"] is False
+    assert card["evidenceQualified"] is False

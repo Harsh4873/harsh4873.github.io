@@ -318,6 +318,33 @@ export interface ProfitDeskPolicy {
   notes?: string[];
 }
 
+export interface ProfitDeskGateProgress {
+  required?: number | boolean | null;
+  actual?: number | boolean | null;
+  passed?: boolean;
+}
+
+export interface ProfitDeskSourceCard {
+  mode?: PickMode | string;
+  sourceKey?: string;
+  sport?: string;
+  source?: string;
+  samples?: number;
+  distinctDates?: number;
+  wins?: number;
+  losses?: number;
+  flatNetUnits?: number | null;
+  flatRoi?: number | null;
+  alpha?: number | null;
+  probabilityPositiveEv?: number | null;
+  gates?: Record<string, ProfitDeskGateProgress>;
+  gatesPassed?: number;
+  gatesTotal?: number;
+  evidenceQualified?: boolean;
+  candidatesToday?: number;
+  liveToday?: number;
+}
+
 export interface ProfitDeskPayload {
   schemaVersion?: string | number;
   date: string;
@@ -328,6 +355,7 @@ export interface ProfitDeskPayload {
   summary?: ProfitDeskSummary;
   candidates?: ProfitDeskCandidate[];
   portfolio?: Partial<Record<PickMode | 'all', ProfitDeskCandidate[]>>;
+  sources?: ProfitDeskSourceCard[];
   [key: string]: unknown;
 }
 

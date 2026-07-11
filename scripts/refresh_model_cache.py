@@ -19,6 +19,7 @@ sys.path.insert(0, str(REPO_ROOT))
 
 import pickgrader_server as server  # noqa: E402
 from scripts.cache_manifest import write_cache_manifest  # noqa: E402
+from scripts.market_odds import apply_market_odds_to_payload  # noqa: E402
 from scripts.merge_model_cache_payload import merge_payload  # noqa: E402
 from scripts.mlb_team_consensus import apply_mlb_team_consensus_to_payload  # noqa: E402
 from scripts.pick_calibration import apply_calibration_to_payload  # noqa: E402
@@ -153,6 +154,9 @@ def _write_json_cache(date_iso: str, payload: dict[str, Any]) -> None:
         data_as_of=str(payload.get("generatedAt") or ""),
     )
     merged = merge_payload(payload, MODEL_CACHE_DIR)
+    # Attach real pregame market prices to every bucket in the merged slate
+    # (in-house models and external feeds alike) before it is snapshotted.
+    apply_market_odds_to_payload(merged)
     for target in (MODEL_CACHE_DIR / f"{date_iso}.json", MODEL_CACHE_DIR / "latest.json"):
         with target.open("w", encoding="utf-8") as handle:
             json.dump(merged, handle, indent=2, sort_keys=True, default=str)
