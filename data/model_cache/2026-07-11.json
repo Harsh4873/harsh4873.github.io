@@ -1,7 +1,7 @@
 {
   "date": "2026-07-11",
   "errors": [],
-  "externalFeedsUpdatedAt": "2026-07-11T15:12:45.859412Z",
+  "externalFeedsUpdatedAt": "2026-07-11T21:02:21.980906Z",
   "external_feeds": {
     "scores24_fifa_world_cup": {
       "date": "2026-07-11",
@@ -774,7 +774,7 @@
     "sportsgambler_fifa_world_cup": {
       "date": "2026-07-11",
       "errors": [],
-      "generatedAt": "2026-07-11T15:12:45.859412Z",
+      "generatedAt": "2026-07-11T21:02:21.980906Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-11",
@@ -783,7 +783,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 2,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-11T15:12:45.859412Z"
+        "updatedAt": "2026-07-11T21:02:21.980906Z"
       },
       "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 2 pick(s).",
       "ok": true,
@@ -821,103 +821,25 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-11T15:12:45.859412Z"
+      "updatedAt": "2026-07-11T21:02:21.980906Z"
     },
     "sportsgambler_mlb": {
       "date": "2026-07-11",
       "errors": [],
-      "generatedAt": "2026-07-11T15:12:45.859412Z",
+      "generatedAt": "2026-07-11T21:02:21.980906Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-11",
         "feed": "sportsgambler_mlb",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 16,
+        "pick_count": 13,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-11T15:12:45.859412Z"
+        "updatedAt": "2026-07-11T21:02:21.980906Z"
       },
-      "note": "Scheduled sportsgambler_mlb refresh returned 16 pick(s).",
+      "note": "Scheduled sportsgambler_mlb refresh returned 13 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "date": "2026-07-11",
-          "decision": "BET",
-          "edge": null,
-          "game": "Pittsburgh Pirates vs Milwaukee Brewers",
-          "matchup": "Pittsburgh Pirates vs Milwaukee Brewers",
-          "odds": 102,
-          "pick": "Milwaukee Brewers to Win (Pittsburgh Pirates vs Milwaukee Brewers)",
-          "pregame_snapshot": {
-            "date": "2026-07-11",
-            "decision": "BET",
-            "edge": null,
-            "game": "Pittsburgh Pirates vs Milwaukee Brewers",
-            "matchup": "Pittsburgh Pirates vs Milwaukee Brewers",
-            "odds": 102,
-            "pick": "Milwaukee Brewers to Win (Pittsburgh Pirates vs Milwaukee Brewers)",
-            "probability": null,
-            "source": "SportsGamblerMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        {
-          "date": "2026-07-11",
-          "decision": "BET",
-          "edge": null,
-          "game": "Chicago White Sox vs Athletics",
-          "matchup": "Chicago White Sox vs Athletics",
-          "odds": 102,
-          "pick": "Chicago White Sox to Win (Chicago White Sox vs Athletics)",
-          "pregame_snapshot": {
-            "date": "2026-07-11",
-            "decision": "BET",
-            "edge": null,
-            "game": "Chicago White Sox vs Athletics",
-            "matchup": "Chicago White Sox vs Athletics",
-            "odds": 102,
-            "pick": "Chicago White Sox to Win (Chicago White Sox vs Athletics)",
-            "probability": null,
-            "source": "SportsGamblerMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        {
-          "date": "2026-07-11",
-          "decision": "BET",
-          "edge": null,
-          "game": "Minnesota Twins vs Los Angeles Angels",
-          "matchup": "Minnesota Twins vs Los Angeles Angels",
-          "odds": -172,
-          "pick": "Minnesota Twins to Win (Minnesota Twins vs Los Angeles Angels)",
-          "pregame_snapshot": {
-            "date": "2026-07-11",
-            "decision": "BET",
-            "edge": null,
-            "game": "Minnesota Twins vs Los Angeles Angels",
-            "matchup": "Minnesota Twins vs Los Angeles Angels",
-            "odds": -172,
-            "pick": "Minnesota Twins to Win (Minnesota Twins vs Los Angeles Angels)",
-            "probability": null,
-            "source": "SportsGamblerMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "units": 1
-        },
         {
           "date": "2026-07-11",
           "decision": "BET",
@@ -950,7 +872,7 @@
           "edge": null,
           "game": "Washington Nationals vs New York Yankees",
           "matchup": "Washington Nationals vs New York Yankees",
-          "odds": -217,
+          "odds": -208,
           "pick": "New York Yankees to Win (Washington Nationals vs New York Yankees)",
           "pregame_snapshot": {
             "date": "2026-07-11",
@@ -976,7 +898,7 @@
           "edge": null,
           "game": "Pittsburgh Pirates vs Milwaukee Brewers",
           "matchup": "Pittsburgh Pirates vs Milwaukee Brewers",
-          "odds": 112,
+          "odds": 110,
           "pick": "Pittsburgh Pirates to Win (Pittsburgh Pirates vs Milwaukee Brewers)",
           "pregame_snapshot": {
             "date": "2026-07-11",
@@ -1002,7 +924,7 @@
           "edge": null,
           "game": "New York Mets vs Boston Red Sox",
           "matchup": "New York Mets vs Boston Red Sox",
-          "odds": 125,
+          "odds": 123,
           "pick": "Boston Red Sox to Win (New York Mets vs Boston Red Sox)",
           "pregame_snapshot": {
             "date": "2026-07-11",
@@ -1028,7 +950,7 @@
           "edge": null,
           "game": "Tampa Bay Rays vs Seattle Mariners",
           "matchup": "Tampa Bay Rays vs Seattle Mariners",
-          "odds": -112,
+          "odds": -108,
           "pick": "Seattle Mariners to Win (Tampa Bay Rays vs Seattle Mariners)",
           "pregame_snapshot": {
             "date": "2026-07-11",
@@ -1054,7 +976,7 @@
           "edge": null,
           "game": "Miami Marlins vs Cleveland Guardians",
           "matchup": "Miami Marlins vs Cleveland Guardians",
-          "odds": 143,
+          "odds": 130,
           "pick": "Cleveland Guardians to Win (Miami Marlins vs Cleveland Guardians)",
           "pregame_snapshot": {
             "date": "2026-07-11",
@@ -1080,7 +1002,7 @@
           "edge": null,
           "game": "Detroit Tigers vs Philadelphia Phillies",
           "matchup": "Detroit Tigers vs Philadelphia Phillies",
-          "odds": 116,
+          "odds": 117,
           "pick": "Detroit Tigers to Win (Detroit Tigers vs Philadelphia Phillies)",
           "pregame_snapshot": {
             "date": "2026-07-11",
@@ -1106,7 +1028,7 @@
           "edge": null,
           "game": "Baltimore Orioles vs Kansas City Royals",
           "matchup": "Baltimore Orioles vs Kansas City Royals",
-          "odds": 128,
+          "odds": 132,
           "pick": "Kansas City Royals to Win (Baltimore Orioles vs Kansas City Royals)",
           "pregame_snapshot": {
             "date": "2026-07-11",
@@ -1132,7 +1054,7 @@
           "edge": null,
           "game": "Texas Rangers vs Houston Astros",
           "matchup": "Texas Rangers vs Houston Astros",
-          "odds": -118,
+          "odds": -122,
           "pick": "Texas Rangers to Win (Texas Rangers vs Houston Astros)",
           "pregame_snapshot": {
             "date": "2026-07-11",
@@ -1158,7 +1080,7 @@
           "edge": null,
           "game": "Cincinnati Reds vs Chicago Cubs",
           "matchup": "Cincinnati Reds vs Chicago Cubs",
-          "odds": -125,
+          "odds": -111,
           "pick": "Chicago Cubs to Win (Cincinnati Reds vs Chicago Cubs)",
           "pregame_snapshot": {
             "date": "2026-07-11",
@@ -1184,7 +1106,7 @@
           "edge": null,
           "game": "St. Louis Cardinals vs Atlanta Braves",
           "matchup": "St. Louis Cardinals vs Atlanta Braves",
-          "odds": 102,
+          "odds": -105,
           "pick": "St. Louis Cardinals to Win (St. Louis Cardinals vs Atlanta Braves)",
           "pregame_snapshot": {
             "date": "2026-07-11",
@@ -1210,7 +1132,7 @@
           "edge": null,
           "game": "San Diego Padres vs Toronto Blue Jays",
           "matchup": "San Diego Padres vs Toronto Blue Jays",
-          "odds": -115,
+          "odds": -119,
           "pick": "San Diego Padres to Win (San Diego Padres vs Toronto Blue Jays)",
           "pregame_snapshot": {
             "date": "2026-07-11",
@@ -1236,7 +1158,7 @@
           "edge": null,
           "game": "Los Angeles Dodgers vs Arizona Diamondbacks",
           "matchup": "Los Angeles Dodgers vs Arizona Diamondbacks",
-          "odds": -303,
+          "odds": -286,
           "pick": "Los Angeles Dodgers to Win (Los Angeles Dodgers vs Arizona Diamondbacks)",
           "pregame_snapshot": {
             "date": "2026-07-11",
@@ -1257,12 +1179,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-11T15:12:45.859412Z"
+      "updatedAt": "2026-07-11T21:02:21.980906Z"
     },
     "sportsgambler_nba": {
       "date": "2026-07-11",
       "errors": [],
-      "generatedAt": "2026-07-11T15:12:45.859412Z",
+      "generatedAt": "2026-07-11T21:02:21.980906Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-11",
@@ -1271,56 +1193,30 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-11T15:12:45.859412Z"
+        "updatedAt": "2026-07-11T21:02:21.980906Z"
       },
       "note": "Scheduled sportsgambler_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-07-11T15:12:45.859412Z"
+      "updatedAt": "2026-07-11T21:02:21.980906Z"
     },
     "sportsgambler_wnba": {
       "date": "2026-07-11",
       "errors": [],
-      "generatedAt": "2026-07-11T15:12:45.859412Z",
+      "generatedAt": "2026-07-11T21:02:21.980906Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-11",
         "feed": "sportsgambler_wnba",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 3,
+        "pick_count": 2,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-11T15:12:45.859412Z"
+        "updatedAt": "2026-07-11T21:02:21.980906Z"
       },
-      "note": "Scheduled sportsgambler_wnba refresh returned 3 pick(s).",
+      "note": "Scheduled sportsgambler_wnba refresh returned 2 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "date": "2026-07-11",
-          "decision": "BET",
-          "edge": null,
-          "game": "Minnesota Lynx vs New York Liberty",
-          "matchup": "Minnesota Lynx vs New York Liberty",
-          "odds": -133,
-          "pick": "Lynx Moneyline (Minnesota Lynx vs New York Liberty)",
-          "pregame_snapshot": {
-            "date": "2026-07-11",
-            "decision": "BET",
-            "edge": null,
-            "game": "Minnesota Lynx vs New York Liberty",
-            "matchup": "Minnesota Lynx vs New York Liberty",
-            "odds": -133,
-            "pick": "Lynx Moneyline (Minnesota Lynx vs New York Liberty)",
-            "probability": null,
-            "source": "SportsGamblerWNBA",
-            "sport": "WNBA",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportsGamblerWNBA",
-          "sport": "WNBA",
-          "units": 1
-        },
         {
           "date": "2026-07-11",
           "decision": "BET",
@@ -1374,42 +1270,25 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-11T15:12:45.859412Z"
+      "updatedAt": "2026-07-11T21:02:21.980906Z"
     },
     "sportytrader_fifa_world_cup": {
       "date": "2026-07-11",
       "errors": [],
-      "generatedAt": "2026-07-11T15:12:45.859412Z",
+      "generatedAt": "2026-07-11T21:02:21.980906Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-11",
         "feed": "sportytrader_fifa_world_cup",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 2,
+        "pick_count": 1,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-11T15:12:45.859412Z"
+        "updatedAt": "2026-07-11T21:02:21.980906Z"
       },
-      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 2 pick(s).",
+      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 1 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "calibration_excluded": true,
-          "date": "2026-07-11",
-          "decision": "BET",
-          "edge": null,
-          "game": "Norway vs England",
-          "grade_supported": false,
-          "market_type": "external_player_prop",
-          "matchup": "Norway vs England",
-          "odds": 115,
-          "pick": "Martin Odegaard 1+ Shots on Target (Norway vs England)",
-          "probability": null,
-          "scope": "player",
-          "source": "SportyTraderFIFAWorldCup",
-          "sport": "FIFA WC",
-          "units": 1
-        },
         {
           "calibration_excluded": true,
           "date": "2026-07-11",
@@ -1427,103 +1306,25 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-11T15:12:45.859412Z"
+      "updatedAt": "2026-07-11T21:02:21.980906Z"
     },
     "sportytrader_mlb": {
       "date": "2026-07-11",
       "errors": [],
-      "generatedAt": "2026-07-11T15:12:45.859412Z",
+      "generatedAt": "2026-07-11T21:02:21.980906Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-11",
         "feed": "sportytrader_mlb",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 4,
+        "pick_count": 3,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-11T15:12:45.859412Z"
+        "updatedAt": "2026-07-11T21:02:21.980906Z"
       },
-      "note": "Scheduled sportytrader_mlb refresh returned 4 pick(s).",
+      "note": "Scheduled sportytrader_mlb refresh returned 3 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "date": "2026-07-11",
-          "decision": "BET",
-          "edge": null,
-          "game": "Minnesota Twins vs Los Angeles Angels",
-          "matchup": "Minnesota Twins vs Los Angeles Angels",
-          "odds": 114,
-          "pick": "Twins -1.5 (Twins vs Angels)",
-          "pregame_snapshot": {
-            "date": "2026-07-11",
-            "decision": "BET",
-            "edge": null,
-            "game": "Minnesota Twins vs Los Angeles Angels",
-            "matchup": "Minnesota Twins vs Los Angeles Angels",
-            "odds": 114,
-            "pick": "Twins -1.5 (Twins vs Angels)",
-            "probability": null,
-            "source": "SportyTraderMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportyTraderMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        {
-          "date": "2026-07-11",
-          "decision": "BET",
-          "edge": null,
-          "game": "Chicago White Sox vs Athletics",
-          "matchup": "Chicago White Sox vs Athletics",
-          "odds": -106,
-          "pick": "Under 9 (White Sox vs Athletics)",
-          "pregame_snapshot": {
-            "date": "2026-07-11",
-            "decision": "BET",
-            "edge": null,
-            "game": "Chicago White Sox vs Athletics",
-            "matchup": "Chicago White Sox vs Athletics",
-            "odds": -106,
-            "pick": "Under 9 (White Sox vs Athletics)",
-            "probability": null,
-            "source": "SportyTraderMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportyTraderMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        {
-          "date": "2026-07-11",
-          "decision": "BET",
-          "edge": null,
-          "game": "San Francisco Giants vs Colorado Rockies",
-          "matchup": "San Francisco Giants vs Colorado Rockies",
-          "odds": -115,
-          "pick": "Over 8.5 (Giants vs Rockies)",
-          "pregame_snapshot": {
-            "date": "2026-07-11",
-            "decision": "BET",
-            "edge": null,
-            "game": "San Francisco Giants vs Colorado Rockies",
-            "matchup": "San Francisco Giants vs Colorado Rockies",
-            "odds": -115,
-            "pick": "Over 8.5 (Giants vs Rockies)",
-            "probability": null,
-            "source": "SportyTraderMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportyTraderMLB",
-          "sport": "MLB",
-          "units": 1
-        },
         {
           "date": "2026-07-11",
           "decision": "BET",
@@ -1549,14 +1350,66 @@
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "units": 1
+        },
+        {
+          "date": "2026-07-11",
+          "decision": "BET",
+          "edge": null,
+          "game": "Cincinnati Reds vs Chicago Cubs",
+          "matchup": "Cincinnati Reds vs Chicago Cubs",
+          "odds": -108,
+          "pick": "Under 10 (Reds vs Cubs)",
+          "pregame_snapshot": {
+            "date": "2026-07-11",
+            "decision": "BET",
+            "edge": null,
+            "game": "Cincinnati Reds vs Chicago Cubs",
+            "matchup": "Cincinnati Reds vs Chicago Cubs",
+            "odds": -108,
+            "pick": "Under 10 (Reds vs Cubs)",
+            "probability": null,
+            "source": "SportyTraderMLB",
+            "sport": "MLB",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "date": "2026-07-11",
+          "decision": "BET",
+          "edge": null,
+          "game": "St. Louis Cardinals vs Atlanta Braves",
+          "matchup": "St. Louis Cardinals vs Atlanta Braves",
+          "odds": 152,
+          "pick": "Braves -1.5 (Cardinals vs Braves)",
+          "pregame_snapshot": {
+            "date": "2026-07-11",
+            "decision": "BET",
+            "edge": null,
+            "game": "St. Louis Cardinals vs Atlanta Braves",
+            "matchup": "St. Louis Cardinals vs Atlanta Braves",
+            "odds": 152,
+            "pick": "Braves -1.5 (Cardinals vs Braves)",
+            "probability": null,
+            "source": "SportyTraderMLB",
+            "sport": "MLB",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
         }
       ],
-      "updatedAt": "2026-07-11T15:12:45.859412Z"
+      "updatedAt": "2026-07-11T21:02:21.980906Z"
     },
     "sportytrader_nba": {
       "date": "2026-07-11",
       "errors": [],
-      "generatedAt": "2026-07-11T15:12:45.859412Z",
+      "generatedAt": "2026-07-11T21:02:21.980906Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-11",
@@ -1565,82 +1418,30 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-11T15:12:45.859412Z"
+        "updatedAt": "2026-07-11T21:02:21.980906Z"
       },
       "note": "Scheduled sportytrader_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-07-11T15:12:45.859412Z"
+      "updatedAt": "2026-07-11T21:02:21.980906Z"
     },
     "sportytrader_wnba": {
       "date": "2026-07-11",
       "errors": [],
-      "generatedAt": "2026-07-11T15:12:45.859412Z",
+      "generatedAt": "2026-07-11T21:02:21.980906Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-11",
         "feed": "sportytrader_wnba",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 3,
+        "pick_count": 1,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-11T15:12:45.859412Z"
+        "updatedAt": "2026-07-11T21:02:21.980906Z"
       },
-      "note": "Scheduled sportytrader_wnba refresh returned 3 pick(s).",
+      "note": "Scheduled sportytrader_wnba refresh returned 1 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "date": "2026-07-11",
-          "decision": "BET",
-          "edge": null,
-          "game": "Minnesota Lynx vs New York Liberty",
-          "matchup": "Minnesota Lynx vs New York Liberty",
-          "odds": -160,
-          "pick": "Over 170.5 (Lynx vs Liberty)",
-          "pregame_snapshot": {
-            "date": "2026-07-11",
-            "decision": "BET",
-            "edge": null,
-            "game": "Minnesota Lynx vs New York Liberty",
-            "matchup": "Minnesota Lynx vs New York Liberty",
-            "odds": -160,
-            "pick": "Over 170.5 (Lynx vs Liberty)",
-            "probability": null,
-            "source": "SportyTraderWNBA",
-            "sport": "WNBA",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportyTraderWNBA",
-          "sport": "WNBA",
-          "units": 1
-        },
-        {
-          "date": "2026-07-11",
-          "decision": "BET",
-          "edge": null,
-          "game": "Atlanta Dream vs Portland Fire",
-          "matchup": "Atlanta Dream vs Portland Fire",
-          "odds": -110,
-          "pick": "Dream (-13.5) cover the spread (Dream vs Fire)",
-          "pregame_snapshot": {
-            "date": "2026-07-11",
-            "decision": "BET",
-            "edge": null,
-            "game": "Atlanta Dream vs Portland Fire",
-            "matchup": "Atlanta Dream vs Portland Fire",
-            "odds": -110,
-            "pick": "Dream (-13.5) cover the spread (Dream vs Fire)",
-            "probability": null,
-            "source": "SportyTraderWNBA",
-            "sport": "WNBA",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportyTraderWNBA",
-          "sport": "WNBA",
-          "units": 1
-        },
         {
           "date": "2026-07-11",
           "decision": "BET",
@@ -1668,7 +1469,7 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-11T15:12:45.859412Z"
+      "updatedAt": "2026-07-11T21:02:21.980906Z"
     }
   },
   "fifa_world_cup": {
@@ -63464,8 +63265,14 @@
           "edge": null,
           "game": "Kansas City Royals @ Baltimore Orioles",
           "home_team": "Baltimore Orioles",
+          "market_away_odds": 134,
+          "market_home_odds": -162,
+          "market_odds_captured_at": "2026-07-11T21:03:17.449325Z",
+          "market_odds_provider": "espn_scoreboard:DraftKings",
+          "market_updated_at": "2026-07-11T21:03:17.449325Z",
           "matchup": "Kansas City Royals @ Baltimore Orioles",
           "odds": -159,
+          "opposite_odds": 134,
           "pick": "Baltimore Orioles ML (Kansas City Royals @ Baltimore Orioles)",
           "pregame_snapshot": {
             "away_team": "Kansas City Royals",
@@ -63486,6 +63293,7 @@
             "units": 1
           },
           "probability": null,
+          "selected_odds": -162,
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-11-07-2026-baltimore-orioles-kansas-city-royals-prediction",
           "sport": "MLB",
@@ -63500,8 +63308,14 @@
           "edge": null,
           "game": "Houston Astros @ Texas Rangers",
           "home_team": "Texas Rangers",
+          "market_away_odds": 101,
+          "market_home_odds": -122,
+          "market_odds_captured_at": "2026-07-11T21:03:17.449325Z",
+          "market_odds_provider": "espn_scoreboard:DraftKings",
+          "market_updated_at": "2026-07-11T21:03:17.449325Z",
           "matchup": "Houston Astros @ Texas Rangers",
           "odds": 119,
+          "opposite_odds": 101,
           "pick": "Texas Rangers ML (Houston Astros @ Texas Rangers)",
           "pregame_snapshot": {
             "away_team": "Houston Astros",
@@ -63522,6 +63336,7 @@
             "units": 1
           },
           "probability": null,
+          "selected_odds": -122,
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-10-07-2026-texas-rangers-houston-astros-prediction",
           "sport": "MLB",
@@ -63572,8 +63387,14 @@
           "edge": null,
           "game": "Atlanta Braves @ St. Louis Cardinals",
           "home_team": "St. Louis Cardinals",
+          "market_away_odds": -107,
+          "market_home_odds": -112,
+          "market_odds_captured_at": "2026-07-11T21:03:17.449325Z",
+          "market_odds_provider": "espn_scoreboard:DraftKings",
+          "market_updated_at": "2026-07-11T21:03:17.449325Z",
           "matchup": "Atlanta Braves @ St. Louis Cardinals",
           "odds": -164,
+          "opposite_odds": -112,
           "pick": "Atlanta Braves ML (Atlanta Braves @ St. Louis Cardinals)",
           "pregame_snapshot": {
             "away_team": "Atlanta Braves",
@@ -63594,6 +63415,7 @@
             "units": 1
           },
           "probability": null,
+          "selected_odds": -107,
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-10-07-2026-st-louis-cardinals-atlanta-braves-prediction",
           "sport": "MLB",
@@ -63608,8 +63430,14 @@
           "edge": null,
           "game": "Toronto Blue Jays @ San Diego Padres",
           "home_team": "San Diego Padres",
+          "market_away_odds": -108,
+          "market_home_odds": -112,
+          "market_odds_captured_at": "2026-07-11T21:03:17.449325Z",
+          "market_odds_provider": "espn_scoreboard:DraftKings",
+          "market_updated_at": "2026-07-11T21:03:17.449325Z",
           "matchup": "Toronto Blue Jays @ San Diego Padres",
           "odds": -114,
+          "opposite_odds": -108,
           "pick": "San Diego Padres ML (Toronto Blue Jays @ San Diego Padres)",
           "pregame_snapshot": {
             "away_team": "Toronto Blue Jays",
@@ -63630,6 +63458,7 @@
             "units": 1
           },
           "probability": null,
+          "selected_odds": -112,
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-10-07-2026-san-diego-padres-toronto-blue-jays-prediction",
           "sport": "MLB",
@@ -63814,7 +63643,7 @@
     "sportsgambler_fifa_world_cup": {
       "date": "2026-07-11",
       "errors": [],
-      "generatedAt": "2026-07-11T15:12:45.859412Z",
+      "generatedAt": "2026-07-11T21:02:21.980906Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-11",
@@ -63823,7 +63652,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 2,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-11T15:12:45.859412Z"
+        "updatedAt": "2026-07-11T21:02:21.980906Z"
       },
       "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 2 pick(s).",
       "ok": true,
@@ -63852,7 +63681,14 @@
           "game": "Argentina vs Switzerland",
           "game_start_time": "2026-07-12T01:00Z",
           "grade_supported": true,
+          "market_away_odds": 450,
+          "market_draw_odds": 255,
+          "market_home_odds": -145,
+          "market_no_vig_selected_probability": 0.560799,
+          "market_odds_captured_at": "2026-07-11T21:03:17.449325Z",
+          "market_odds_provider": "espn_scoreboard:DraftKings",
           "market_type": "soccer_moneyline",
+          "market_updated_at": "2026-07-11T21:03:17.449325Z",
           "matchup": "Argentina vs Switzerland",
           "odds": -147,
           "pick": "Argentina To Win (Argentina vs Switzerland)",
@@ -63863,111 +63699,25 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-11T15:12:45.859412Z"
+      "updatedAt": "2026-07-11T21:02:21.980906Z"
     },
     "sportsgambler_mlb": {
       "date": "2026-07-11",
       "errors": [],
-      "generatedAt": "2026-07-11T15:12:45.859412Z",
+      "generatedAt": "2026-07-11T21:02:21.980906Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-11",
         "feed": "sportsgambler_mlb",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 16,
+        "pick_count": 13,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-11T15:12:45.859412Z"
+        "updatedAt": "2026-07-11T21:02:21.980906Z"
       },
-      "note": "Scheduled sportsgambler_mlb refresh returned 16 pick(s).",
+      "note": "Scheduled sportsgambler_mlb refresh returned 13 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "date": "2026-07-11",
-          "decision": "BET",
-          "edge": null,
-          "game": "Pittsburgh Pirates vs Milwaukee Brewers",
-          "game_start_time": "2026-07-11T16:05Z",
-          "matchup": "Pittsburgh Pirates vs Milwaukee Brewers",
-          "odds": 102,
-          "pick": "Milwaukee Brewers to Win (Pittsburgh Pirates vs Milwaukee Brewers)",
-          "pregame_snapshot": {
-            "date": "2026-07-11",
-            "decision": "BET",
-            "edge": null,
-            "game": "Pittsburgh Pirates vs Milwaukee Brewers",
-            "matchup": "Pittsburgh Pirates vs Milwaukee Brewers",
-            "odds": 102,
-            "pick": "Milwaukee Brewers to Win (Pittsburgh Pirates vs Milwaukee Brewers)",
-            "probability": null,
-            "source": "SportsGamblerMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "result": "loss",
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "start_time": "2026-07-11T16:05Z",
-          "units": 1
-        },
-        {
-          "date": "2026-07-11",
-          "decision": "BET",
-          "edge": null,
-          "game": "Chicago White Sox vs Athletics",
-          "game_start_time": "2026-07-11T18:10Z",
-          "matchup": "Chicago White Sox vs Athletics",
-          "odds": 102,
-          "pick": "Chicago White Sox to Win (Chicago White Sox vs Athletics)",
-          "pregame_snapshot": {
-            "date": "2026-07-11",
-            "decision": "BET",
-            "edge": null,
-            "game": "Chicago White Sox vs Athletics",
-            "matchup": "Chicago White Sox vs Athletics",
-            "odds": 102,
-            "pick": "Chicago White Sox to Win (Chicago White Sox vs Athletics)",
-            "probability": null,
-            "source": "SportsGamblerMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "result": "win",
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "start_time": "2026-07-11T18:10Z",
-          "units": 1
-        },
-        {
-          "date": "2026-07-11",
-          "decision": "BET",
-          "edge": null,
-          "game": "Minnesota Twins vs Los Angeles Angels",
-          "game_start_time": "2026-07-11T18:10Z",
-          "matchup": "Minnesota Twins vs Los Angeles Angels",
-          "odds": -172,
-          "pick": "Minnesota Twins to Win (Minnesota Twins vs Los Angeles Angels)",
-          "pregame_snapshot": {
-            "date": "2026-07-11",
-            "decision": "BET",
-            "edge": null,
-            "game": "Minnesota Twins vs Los Angeles Angels",
-            "matchup": "Minnesota Twins vs Los Angeles Angels",
-            "odds": -172,
-            "pick": "Minnesota Twins to Win (Minnesota Twins vs Los Angeles Angels)",
-            "probability": null,
-            "source": "SportsGamblerMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "start_time": "2026-07-11T18:10Z",
-          "units": 1
-        },
         {
           "date": "2026-07-11",
           "decision": "BET",
@@ -64003,7 +63753,7 @@
           "game": "Washington Nationals vs New York Yankees",
           "game_start_time": "2026-07-11T20:05Z",
           "matchup": "Washington Nationals vs New York Yankees",
-          "odds": -217,
+          "odds": -208,
           "pick": "New York Yankees to Win (Washington Nationals vs New York Yankees)",
           "pregame_snapshot": {
             "date": "2026-07-11",
@@ -64031,7 +63781,7 @@
           "game": "Pittsburgh Pirates vs Milwaukee Brewers",
           "game_start_time": "2026-07-11T16:05Z",
           "matchup": "Pittsburgh Pirates vs Milwaukee Brewers",
-          "odds": 112,
+          "odds": 110,
           "pick": "Pittsburgh Pirates to Win (Pittsburgh Pirates vs Milwaukee Brewers)",
           "pregame_snapshot": {
             "date": "2026-07-11",
@@ -64060,7 +63810,7 @@
           "game": "New York Mets vs Boston Red Sox",
           "game_start_time": "2026-07-11T20:10Z",
           "matchup": "New York Mets vs Boston Red Sox",
-          "odds": 125,
+          "odds": 123,
           "pick": "Boston Red Sox to Win (New York Mets vs Boston Red Sox)",
           "pregame_snapshot": {
             "date": "2026-07-11",
@@ -64088,7 +63838,7 @@
           "game": "Tampa Bay Rays vs Seattle Mariners",
           "game_start_time": "2026-07-11T20:10Z",
           "matchup": "Tampa Bay Rays vs Seattle Mariners",
-          "odds": -112,
+          "odds": -108,
           "pick": "Seattle Mariners to Win (Tampa Bay Rays vs Seattle Mariners)",
           "pregame_snapshot": {
             "date": "2026-07-11",
@@ -64116,7 +63866,7 @@
           "game": "Miami Marlins vs Cleveland Guardians",
           "game_start_time": "2026-07-11T20:10Z",
           "matchup": "Miami Marlins vs Cleveland Guardians",
-          "odds": 143,
+          "odds": 130,
           "pick": "Cleveland Guardians to Win (Miami Marlins vs Cleveland Guardians)",
           "pregame_snapshot": {
             "date": "2026-07-11",
@@ -64143,8 +63893,14 @@
           "edge": null,
           "game": "Detroit Tigers vs Philadelphia Phillies",
           "game_start_time": "2026-07-11T22:10Z",
+          "market_away_odds": -148,
+          "market_home_odds": 123,
+          "market_odds_captured_at": "2026-07-11T21:03:17.449325Z",
+          "market_odds_provider": "espn_scoreboard:DraftKings",
+          "market_updated_at": "2026-07-11T21:03:17.449325Z",
           "matchup": "Detroit Tigers vs Philadelphia Phillies",
-          "odds": 116,
+          "odds": 117,
+          "opposite_odds": -148,
           "pick": "Detroit Tigers to Win (Detroit Tigers vs Philadelphia Phillies)",
           "pregame_snapshot": {
             "date": "2026-07-11",
@@ -64160,6 +63916,7 @@
             "units": 1
           },
           "probability": null,
+          "selected_odds": 123,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-11T22:10Z",
@@ -64171,8 +63928,14 @@
           "edge": null,
           "game": "Baltimore Orioles vs Kansas City Royals",
           "game_start_time": "2026-07-11T23:05Z",
+          "market_away_odds": 134,
+          "market_home_odds": -162,
+          "market_odds_captured_at": "2026-07-11T21:03:17.449325Z",
+          "market_odds_provider": "espn_scoreboard:DraftKings",
+          "market_updated_at": "2026-07-11T21:03:17.449325Z",
           "matchup": "Baltimore Orioles vs Kansas City Royals",
-          "odds": 128,
+          "odds": 132,
+          "opposite_odds": -162,
           "pick": "Kansas City Royals to Win (Baltimore Orioles vs Kansas City Royals)",
           "pregame_snapshot": {
             "date": "2026-07-11",
@@ -64188,6 +63951,7 @@
             "units": 1
           },
           "probability": null,
+          "selected_odds": 134,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-11T23:05Z",
@@ -64199,8 +63963,14 @@
           "edge": null,
           "game": "Texas Rangers vs Houston Astros",
           "game_start_time": "2026-07-11T23:05Z",
+          "market_away_odds": 101,
+          "market_home_odds": -122,
+          "market_odds_captured_at": "2026-07-11T21:03:17.449325Z",
+          "market_odds_provider": "espn_scoreboard:DraftKings",
+          "market_updated_at": "2026-07-11T21:03:17.449325Z",
           "matchup": "Texas Rangers vs Houston Astros",
-          "odds": -118,
+          "odds": -122,
+          "opposite_odds": 101,
           "pick": "Texas Rangers to Win (Texas Rangers vs Houston Astros)",
           "pregame_snapshot": {
             "date": "2026-07-11",
@@ -64216,6 +63986,7 @@
             "units": 1
           },
           "probability": null,
+          "selected_odds": -122,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-11T23:05Z",
@@ -64227,8 +63998,14 @@
           "edge": null,
           "game": "Cincinnati Reds vs Chicago Cubs",
           "game_start_time": "2026-07-11T23:10Z",
+          "market_away_odds": -106,
+          "market_home_odds": -114,
+          "market_odds_captured_at": "2026-07-11T21:03:17.449325Z",
+          "market_odds_provider": "espn_scoreboard:DraftKings",
+          "market_updated_at": "2026-07-11T21:03:17.449325Z",
           "matchup": "Cincinnati Reds vs Chicago Cubs",
-          "odds": -125,
+          "odds": -111,
+          "opposite_odds": -114,
           "pick": "Chicago Cubs to Win (Cincinnati Reds vs Chicago Cubs)",
           "pregame_snapshot": {
             "date": "2026-07-11",
@@ -64244,6 +64021,7 @@
             "units": 1
           },
           "probability": null,
+          "selected_odds": -106,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-11T23:10Z",
@@ -64255,8 +64033,14 @@
           "edge": null,
           "game": "St. Louis Cardinals vs Atlanta Braves",
           "game_start_time": "2026-07-11T23:15Z",
+          "market_away_odds": -107,
+          "market_home_odds": -112,
+          "market_odds_captured_at": "2026-07-11T21:03:17.449325Z",
+          "market_odds_provider": "espn_scoreboard:DraftKings",
+          "market_updated_at": "2026-07-11T21:03:17.449325Z",
           "matchup": "St. Louis Cardinals vs Atlanta Braves",
-          "odds": 102,
+          "odds": -105,
+          "opposite_odds": -107,
           "pick": "St. Louis Cardinals to Win (St. Louis Cardinals vs Atlanta Braves)",
           "pregame_snapshot": {
             "date": "2026-07-11",
@@ -64272,6 +64056,7 @@
             "units": 1
           },
           "probability": null,
+          "selected_odds": -112,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-11T23:15Z",
@@ -64283,8 +64068,14 @@
           "edge": null,
           "game": "San Diego Padres vs Toronto Blue Jays",
           "game_start_time": "2026-07-12T00:40Z",
+          "market_away_odds": -108,
+          "market_home_odds": -112,
+          "market_odds_captured_at": "2026-07-11T21:03:17.449325Z",
+          "market_odds_provider": "espn_scoreboard:DraftKings",
+          "market_updated_at": "2026-07-11T21:03:17.449325Z",
           "matchup": "San Diego Padres vs Toronto Blue Jays",
-          "odds": -115,
+          "odds": -119,
+          "opposite_odds": -108,
           "pick": "San Diego Padres to Win (San Diego Padres vs Toronto Blue Jays)",
           "pregame_snapshot": {
             "date": "2026-07-11",
@@ -64300,6 +64091,7 @@
             "units": 1
           },
           "probability": null,
+          "selected_odds": -112,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-12T00:40Z",
@@ -64311,8 +64103,14 @@
           "edge": null,
           "game": "Los Angeles Dodgers vs Arizona Diamondbacks",
           "game_start_time": "2026-07-12T01:10Z",
+          "market_away_odds": 225,
+          "market_home_odds": -282,
+          "market_odds_captured_at": "2026-07-11T21:03:17.449325Z",
+          "market_odds_provider": "espn_scoreboard:DraftKings",
+          "market_updated_at": "2026-07-11T21:03:17.449325Z",
           "matchup": "Los Angeles Dodgers vs Arizona Diamondbacks",
-          "odds": -303,
+          "odds": -286,
+          "opposite_odds": 225,
           "pick": "Los Angeles Dodgers to Win (Los Angeles Dodgers vs Arizona Diamondbacks)",
           "pregame_snapshot": {
             "date": "2026-07-11",
@@ -64328,18 +64126,19 @@
             "units": 1
           },
           "probability": null,
+          "selected_odds": -282,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
           "start_time": "2026-07-12T01:10Z",
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-11T15:12:45.859412Z"
+      "updatedAt": "2026-07-11T21:02:21.980906Z"
     },
     "sportsgambler_nba": {
       "date": "2026-07-11",
       "errors": [],
-      "generatedAt": "2026-07-11T15:12:45.859412Z",
+      "generatedAt": "2026-07-11T21:02:21.980906Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-11",
@@ -64348,59 +64147,30 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-11T15:12:45.859412Z"
+        "updatedAt": "2026-07-11T21:02:21.980906Z"
       },
       "note": "Scheduled sportsgambler_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-07-11T15:12:45.859412Z"
+      "updatedAt": "2026-07-11T21:02:21.980906Z"
     },
     "sportsgambler_wnba": {
       "date": "2026-07-11",
       "errors": [],
-      "generatedAt": "2026-07-11T15:12:45.859412Z",
+      "generatedAt": "2026-07-11T21:02:21.980906Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-11",
         "feed": "sportsgambler_wnba",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 3,
+        "pick_count": 2,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-11T15:12:45.859412Z"
+        "updatedAt": "2026-07-11T21:02:21.980906Z"
       },
-      "note": "Scheduled sportsgambler_wnba refresh returned 3 pick(s).",
+      "note": "Scheduled sportsgambler_wnba refresh returned 2 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "date": "2026-07-11",
-          "decision": "BET",
-          "edge": null,
-          "game": "Minnesota Lynx vs New York Liberty",
-          "game_start_time": "2026-07-11T17:00Z",
-          "matchup": "Minnesota Lynx vs New York Liberty",
-          "odds": -133,
-          "pick": "Lynx Moneyline (Minnesota Lynx vs New York Liberty)",
-          "pregame_snapshot": {
-            "date": "2026-07-11",
-            "decision": "BET",
-            "edge": null,
-            "game": "Minnesota Lynx vs New York Liberty",
-            "matchup": "Minnesota Lynx vs New York Liberty",
-            "odds": -133,
-            "pick": "Lynx Moneyline (Minnesota Lynx vs New York Liberty)",
-            "probability": null,
-            "source": "SportsGamblerWNBA",
-            "sport": "WNBA",
-            "units": 1
-          },
-          "probability": null,
-          "result": "win",
-          "source": "SportsGamblerWNBA",
-          "sport": "WNBA",
-          "start_time": "2026-07-11T17:00Z",
-          "units": 1
-        },
         {
           "date": "2026-07-11",
           "decision": "BET",
@@ -64435,8 +64205,14 @@
           "edge": null,
           "game": "Las Vegas Aces vs Phoenix Mercury",
           "game_start_time": "2026-07-11T22:00Z",
+          "market_away_odds": 275,
+          "market_home_odds": -345,
+          "market_odds_captured_at": "2026-07-11T21:03:17.449325Z",
+          "market_odds_provider": "espn_scoreboard:DraftKings",
+          "market_updated_at": "2026-07-11T21:03:17.449325Z",
           "matchup": "Las Vegas Aces vs Phoenix Mercury",
           "odds": -110,
+          "opposite_odds": -345,
           "pick": "Mercury +9.5 (Las Vegas Aces vs Phoenix Mercury)",
           "pregame_snapshot": {
             "date": "2026-07-11",
@@ -64452,48 +64228,32 @@
             "units": 1
           },
           "probability": null,
+          "selected_odds": 275,
           "source": "SportsGamblerWNBA",
           "sport": "WNBA",
           "start_time": "2026-07-11T22:00Z",
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-11T15:12:45.859412Z"
+      "updatedAt": "2026-07-11T21:02:21.980906Z"
     },
     "sportytrader_fifa_world_cup": {
       "date": "2026-07-11",
       "errors": [],
-      "generatedAt": "2026-07-11T15:12:45.859412Z",
+      "generatedAt": "2026-07-11T21:02:21.980906Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-11",
         "feed": "sportytrader_fifa_world_cup",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 2,
+        "pick_count": 1,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-11T15:12:45.859412Z"
+        "updatedAt": "2026-07-11T21:02:21.980906Z"
       },
-      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 2 pick(s).",
+      "note": "Scheduled sportytrader_fifa_world_cup refresh returned 1 pick(s).",
       "ok": true,
       "picks": [
-        {
-          "calibration_excluded": true,
-          "date": "2026-07-11",
-          "decision": "BET",
-          "edge": null,
-          "game": "Norway vs England",
-          "grade_supported": false,
-          "market_type": "external_player_prop",
-          "matchup": "Norway vs England",
-          "odds": 115,
-          "pick": "Martin Odegaard 1+ Shots on Target (Norway vs England)",
-          "probability": null,
-          "scope": "player",
-          "source": "SportyTraderFIFAWorldCup",
-          "sport": "FIFA WC",
-          "units": 1
-        },
         {
           "calibration_excluded": true,
           "date": "2026-07-11",
@@ -64511,118 +64271,39 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-11T15:12:45.859412Z"
+      "updatedAt": "2026-07-11T21:02:21.980906Z"
     },
     "sportytrader_mlb": {
       "date": "2026-07-11",
       "errors": [],
-      "generatedAt": "2026-07-11T15:12:45.859412Z",
+      "generatedAt": "2026-07-11T21:02:21.980906Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-11",
         "feed": "sportytrader_mlb",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 4,
+        "pick_count": 3,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-11T15:12:45.859412Z"
+        "updatedAt": "2026-07-11T21:02:21.980906Z"
       },
-      "note": "Scheduled sportytrader_mlb refresh returned 4 pick(s).",
+      "note": "Scheduled sportytrader_mlb refresh returned 3 pick(s).",
       "ok": true,
       "picks": [
         {
           "date": "2026-07-11",
           "decision": "BET",
           "edge": null,
-          "game": "Minnesota Twins vs Los Angeles Angels",
-          "game_start_time": "2026-07-11T18:10Z",
-          "matchup": "Minnesota Twins vs Los Angeles Angels",
-          "odds": 114,
-          "pick": "Twins -1.5 (Twins vs Angels)",
-          "pregame_snapshot": {
-            "date": "2026-07-11",
-            "decision": "BET",
-            "edge": null,
-            "game": "Minnesota Twins vs Los Angeles Angels",
-            "matchup": "Minnesota Twins vs Los Angeles Angels",
-            "odds": 114,
-            "pick": "Twins -1.5 (Twins vs Angels)",
-            "probability": null,
-            "source": "SportyTraderMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportyTraderMLB",
-          "sport": "MLB",
-          "start_time": "2026-07-11T18:10Z",
-          "units": 1
-        },
-        {
-          "date": "2026-07-11",
-          "decision": "BET",
-          "edge": null,
-          "game": "Chicago White Sox vs Athletics",
-          "game_start_time": "2026-07-11T18:10Z",
-          "matchup": "Chicago White Sox vs Athletics",
-          "odds": -106,
-          "pick": "Under 9 (White Sox vs Athletics)",
-          "pregame_snapshot": {
-            "date": "2026-07-11",
-            "decision": "BET",
-            "edge": null,
-            "game": "Chicago White Sox vs Athletics",
-            "matchup": "Chicago White Sox vs Athletics",
-            "odds": -106,
-            "pick": "Under 9 (White Sox vs Athletics)",
-            "probability": null,
-            "source": "SportyTraderMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "result": "win",
-          "source": "SportyTraderMLB",
-          "sport": "MLB",
-          "start_time": "2026-07-11T18:10Z",
-          "units": 1
-        },
-        {
-          "date": "2026-07-11",
-          "decision": "BET",
-          "edge": null,
-          "game": "San Francisco Giants vs Colorado Rockies",
-          "game_start_time": "2026-07-11T20:05Z",
-          "matchup": "San Francisco Giants vs Colorado Rockies",
-          "odds": -115,
-          "pick": "Over 8.5 (Giants vs Rockies)",
-          "pregame_snapshot": {
-            "date": "2026-07-11",
-            "decision": "BET",
-            "edge": null,
-            "game": "San Francisco Giants vs Colorado Rockies",
-            "matchup": "San Francisco Giants vs Colorado Rockies",
-            "odds": -115,
-            "pick": "Over 8.5 (Giants vs Rockies)",
-            "probability": null,
-            "source": "SportyTraderMLB",
-            "sport": "MLB",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportyTraderMLB",
-          "sport": "MLB",
-          "start_time": "2026-07-11T20:05Z",
-          "units": 1
-        },
-        {
-          "date": "2026-07-11",
-          "decision": "BET",
-          "edge": null,
           "game": "Baltimore Orioles vs Kansas City Royals",
           "game_start_time": "2026-07-11T23:05Z",
+          "market_away_odds": 134,
+          "market_home_odds": -162,
+          "market_odds_captured_at": "2026-07-11T21:03:17.449325Z",
+          "market_odds_provider": "espn_scoreboard:DraftKings",
+          "market_updated_at": "2026-07-11T21:03:17.449325Z",
           "matchup": "Baltimore Orioles vs Kansas City Royals",
           "odds": 135,
+          "opposite_odds": -162,
           "pick": "Royals ML (Orioles vs Royals)",
           "pregame_snapshot": {
             "date": "2026-07-11",
@@ -64638,18 +64319,86 @@
             "units": 1
           },
           "probability": null,
+          "selected_odds": 134,
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-07-11T23:05Z",
           "units": 1
+        },
+        {
+          "date": "2026-07-11",
+          "decision": "BET",
+          "edge": null,
+          "game": "Cincinnati Reds vs Chicago Cubs",
+          "market_line": 10.0,
+          "market_odds_captured_at": "2026-07-11T21:03:17.449325Z",
+          "market_odds_provider": "espn_scoreboard:DraftKings",
+          "market_over_odds": -116,
+          "market_under_odds": -104,
+          "market_updated_at": "2026-07-11T21:03:17.449325Z",
+          "matchup": "Cincinnati Reds vs Chicago Cubs",
+          "odds": -108,
+          "opposite_odds": -116,
+          "pick": "Under 10 (Reds vs Cubs)",
+          "pregame_snapshot": {
+            "date": "2026-07-11",
+            "decision": "BET",
+            "edge": null,
+            "game": "Cincinnati Reds vs Chicago Cubs",
+            "matchup": "Cincinnati Reds vs Chicago Cubs",
+            "odds": -108,
+            "pick": "Under 10 (Reds vs Cubs)",
+            "probability": null,
+            "source": "SportyTraderMLB",
+            "sport": "MLB",
+            "units": 1
+          },
+          "probability": null,
+          "selected_odds": -104,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
+        },
+        {
+          "date": "2026-07-11",
+          "decision": "BET",
+          "edge": null,
+          "game": "St. Louis Cardinals vs Atlanta Braves",
+          "market_away_odds": -107,
+          "market_home_odds": -112,
+          "market_odds_captured_at": "2026-07-11T21:03:17.449325Z",
+          "market_odds_provider": "espn_scoreboard:DraftKings",
+          "market_updated_at": "2026-07-11T21:03:17.449325Z",
+          "matchup": "St. Louis Cardinals vs Atlanta Braves",
+          "odds": 152,
+          "opposite_odds": -112,
+          "pick": "Braves -1.5 (Cardinals vs Braves)",
+          "pregame_snapshot": {
+            "date": "2026-07-11",
+            "decision": "BET",
+            "edge": null,
+            "game": "St. Louis Cardinals vs Atlanta Braves",
+            "matchup": "St. Louis Cardinals vs Atlanta Braves",
+            "odds": 152,
+            "pick": "Braves -1.5 (Cardinals vs Braves)",
+            "probability": null,
+            "source": "SportyTraderMLB",
+            "sport": "MLB",
+            "units": 1
+          },
+          "probability": null,
+          "selected_odds": -107,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
         }
       ],
-      "updatedAt": "2026-07-11T15:12:45.859412Z"
+      "updatedAt": "2026-07-11T21:02:21.980906Z"
     },
     "sportytrader_nba": {
       "date": "2026-07-11",
       "errors": [],
-      "generatedAt": "2026-07-11T15:12:45.859412Z",
+      "generatedAt": "2026-07-11T21:02:21.980906Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-11",
@@ -64658,95 +64407,44 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-11T15:12:45.859412Z"
+        "updatedAt": "2026-07-11T21:02:21.980906Z"
       },
       "note": "Scheduled sportytrader_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-07-11T15:12:45.859412Z"
+      "updatedAt": "2026-07-11T21:02:21.980906Z"
     },
     "sportytrader_wnba": {
       "date": "2026-07-11",
       "errors": [],
-      "generatedAt": "2026-07-11T15:12:45.859412Z",
+      "generatedAt": "2026-07-11T21:02:21.980906Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-11",
         "feed": "sportytrader_wnba",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 3,
+        "pick_count": 1,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-11T15:12:45.859412Z"
+        "updatedAt": "2026-07-11T21:02:21.980906Z"
       },
-      "note": "Scheduled sportytrader_wnba refresh returned 3 pick(s).",
+      "note": "Scheduled sportytrader_wnba refresh returned 1 pick(s).",
       "ok": true,
       "picks": [
         {
           "date": "2026-07-11",
           "decision": "BET",
           "edge": null,
-          "game": "Minnesota Lynx vs New York Liberty",
-          "game_start_time": "2026-07-11T17:00Z",
-          "matchup": "Minnesota Lynx vs New York Liberty",
-          "odds": -160,
-          "pick": "Over 170.5 (Lynx vs Liberty)",
-          "pregame_snapshot": {
-            "date": "2026-07-11",
-            "decision": "BET",
-            "edge": null,
-            "game": "Minnesota Lynx vs New York Liberty",
-            "matchup": "Minnesota Lynx vs New York Liberty",
-            "odds": -160,
-            "pick": "Over 170.5 (Lynx vs Liberty)",
-            "probability": null,
-            "source": "SportyTraderWNBA",
-            "sport": "WNBA",
-            "units": 1
-          },
-          "probability": null,
-          "result": "win",
-          "source": "SportyTraderWNBA",
-          "sport": "WNBA",
-          "start_time": "2026-07-11T17:00Z",
-          "units": 1
-        },
-        {
-          "date": "2026-07-11",
-          "decision": "BET",
-          "edge": null,
-          "game": "Atlanta Dream vs Portland Fire",
-          "game_start_time": "2026-07-11T20:00Z",
-          "matchup": "Atlanta Dream vs Portland Fire",
-          "odds": -110,
-          "pick": "Dream (-13.5) cover the spread (Dream vs Fire)",
-          "pregame_snapshot": {
-            "date": "2026-07-11",
-            "decision": "BET",
-            "edge": null,
-            "game": "Atlanta Dream vs Portland Fire",
-            "matchup": "Atlanta Dream vs Portland Fire",
-            "odds": -110,
-            "pick": "Dream (-13.5) cover the spread (Dream vs Fire)",
-            "probability": null,
-            "source": "SportyTraderWNBA",
-            "sport": "WNBA",
-            "units": 1
-          },
-          "probability": null,
-          "source": "SportyTraderWNBA",
-          "sport": "WNBA",
-          "start_time": "2026-07-11T20:00Z",
-          "units": 1
-        },
-        {
-          "date": "2026-07-11",
-          "decision": "BET",
-          "edge": null,
           "game": "Las Vegas Aces vs Phoenix Mercury",
           "game_start_time": "2026-07-11T22:00Z",
+          "market_away_odds": 275,
+          "market_home_odds": -345,
+          "market_odds_captured_at": "2026-07-11T21:03:17.449325Z",
+          "market_odds_provider": "espn_scoreboard:DraftKings",
+          "market_updated_at": "2026-07-11T21:03:17.449325Z",
           "matchup": "Las Vegas Aces vs Phoenix Mercury",
           "odds": -115,
+          "opposite_odds": -345,
           "pick": "Mercury +10.5 (Aces vs Mercury)",
           "pregame_snapshot": {
             "date": "2026-07-11",
@@ -64762,13 +64460,14 @@
             "units": 1
           },
           "probability": null,
+          "selected_odds": 275,
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
           "start_time": "2026-07-11T22:00Z",
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-11T15:12:45.859412Z"
+      "updatedAt": "2026-07-11T21:02:21.980906Z"
     },
     "wnba": {
       "ok": true,
@@ -67736,7 +67435,7 @@
   "sportsgambler_fifa_world_cup": {
     "date": "2026-07-11",
     "errors": [],
-    "generatedAt": "2026-07-11T15:12:45.859412Z",
+    "generatedAt": "2026-07-11T21:02:21.980906Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-11",
@@ -67745,7 +67444,7 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 2,
       "provider": "sportsgambler",
-      "updatedAt": "2026-07-11T15:12:45.859412Z"
+      "updatedAt": "2026-07-11T21:02:21.980906Z"
     },
     "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 2 pick(s).",
     "ok": true,
@@ -67783,103 +67482,25 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-07-11T15:12:45.859412Z"
+    "updatedAt": "2026-07-11T21:02:21.980906Z"
   },
   "sportsgambler_mlb": {
     "date": "2026-07-11",
     "errors": [],
-    "generatedAt": "2026-07-11T15:12:45.859412Z",
+    "generatedAt": "2026-07-11T21:02:21.980906Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-11",
       "feed": "sportsgambler_mlb",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 16,
+      "pick_count": 13,
       "provider": "sportsgambler",
-      "updatedAt": "2026-07-11T15:12:45.859412Z"
+      "updatedAt": "2026-07-11T21:02:21.980906Z"
     },
-    "note": "Scheduled sportsgambler_mlb refresh returned 16 pick(s).",
+    "note": "Scheduled sportsgambler_mlb refresh returned 13 pick(s).",
     "ok": true,
     "picks": [
-      {
-        "date": "2026-07-11",
-        "decision": "BET",
-        "edge": null,
-        "game": "Pittsburgh Pirates vs Milwaukee Brewers",
-        "matchup": "Pittsburgh Pirates vs Milwaukee Brewers",
-        "odds": 102,
-        "pick": "Milwaukee Brewers to Win (Pittsburgh Pirates vs Milwaukee Brewers)",
-        "pregame_snapshot": {
-          "date": "2026-07-11",
-          "decision": "BET",
-          "edge": null,
-          "game": "Pittsburgh Pirates vs Milwaukee Brewers",
-          "matchup": "Pittsburgh Pirates vs Milwaukee Brewers",
-          "odds": 102,
-          "pick": "Milwaukee Brewers to Win (Pittsburgh Pirates vs Milwaukee Brewers)",
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        "probability": null,
-        "source": "SportsGamblerMLB",
-        "sport": "MLB",
-        "units": 1
-      },
-      {
-        "date": "2026-07-11",
-        "decision": "BET",
-        "edge": null,
-        "game": "Chicago White Sox vs Athletics",
-        "matchup": "Chicago White Sox vs Athletics",
-        "odds": 102,
-        "pick": "Chicago White Sox to Win (Chicago White Sox vs Athletics)",
-        "pregame_snapshot": {
-          "date": "2026-07-11",
-          "decision": "BET",
-          "edge": null,
-          "game": "Chicago White Sox vs Athletics",
-          "matchup": "Chicago White Sox vs Athletics",
-          "odds": 102,
-          "pick": "Chicago White Sox to Win (Chicago White Sox vs Athletics)",
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        "probability": null,
-        "source": "SportsGamblerMLB",
-        "sport": "MLB",
-        "units": 1
-      },
-      {
-        "date": "2026-07-11",
-        "decision": "BET",
-        "edge": null,
-        "game": "Minnesota Twins vs Los Angeles Angels",
-        "matchup": "Minnesota Twins vs Los Angeles Angels",
-        "odds": -172,
-        "pick": "Minnesota Twins to Win (Minnesota Twins vs Los Angeles Angels)",
-        "pregame_snapshot": {
-          "date": "2026-07-11",
-          "decision": "BET",
-          "edge": null,
-          "game": "Minnesota Twins vs Los Angeles Angels",
-          "matchup": "Minnesota Twins vs Los Angeles Angels",
-          "odds": -172,
-          "pick": "Minnesota Twins to Win (Minnesota Twins vs Los Angeles Angels)",
-          "probability": null,
-          "source": "SportsGamblerMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        "probability": null,
-        "source": "SportsGamblerMLB",
-        "sport": "MLB",
-        "units": 1
-      },
       {
         "date": "2026-07-11",
         "decision": "BET",
@@ -67912,7 +67533,7 @@
         "edge": null,
         "game": "Washington Nationals vs New York Yankees",
         "matchup": "Washington Nationals vs New York Yankees",
-        "odds": -217,
+        "odds": -208,
         "pick": "New York Yankees to Win (Washington Nationals vs New York Yankees)",
         "pregame_snapshot": {
           "date": "2026-07-11",
@@ -67938,7 +67559,7 @@
         "edge": null,
         "game": "Pittsburgh Pirates vs Milwaukee Brewers",
         "matchup": "Pittsburgh Pirates vs Milwaukee Brewers",
-        "odds": 112,
+        "odds": 110,
         "pick": "Pittsburgh Pirates to Win (Pittsburgh Pirates vs Milwaukee Brewers)",
         "pregame_snapshot": {
           "date": "2026-07-11",
@@ -67964,7 +67585,7 @@
         "edge": null,
         "game": "New York Mets vs Boston Red Sox",
         "matchup": "New York Mets vs Boston Red Sox",
-        "odds": 125,
+        "odds": 123,
         "pick": "Boston Red Sox to Win (New York Mets vs Boston Red Sox)",
         "pregame_snapshot": {
           "date": "2026-07-11",
@@ -67990,7 +67611,7 @@
         "edge": null,
         "game": "Tampa Bay Rays vs Seattle Mariners",
         "matchup": "Tampa Bay Rays vs Seattle Mariners",
-        "odds": -112,
+        "odds": -108,
         "pick": "Seattle Mariners to Win (Tampa Bay Rays vs Seattle Mariners)",
         "pregame_snapshot": {
           "date": "2026-07-11",
@@ -68016,7 +67637,7 @@
         "edge": null,
         "game": "Miami Marlins vs Cleveland Guardians",
         "matchup": "Miami Marlins vs Cleveland Guardians",
-        "odds": 143,
+        "odds": 130,
         "pick": "Cleveland Guardians to Win (Miami Marlins vs Cleveland Guardians)",
         "pregame_snapshot": {
           "date": "2026-07-11",
@@ -68042,7 +67663,7 @@
         "edge": null,
         "game": "Detroit Tigers vs Philadelphia Phillies",
         "matchup": "Detroit Tigers vs Philadelphia Phillies",
-        "odds": 116,
+        "odds": 117,
         "pick": "Detroit Tigers to Win (Detroit Tigers vs Philadelphia Phillies)",
         "pregame_snapshot": {
           "date": "2026-07-11",
@@ -68068,7 +67689,7 @@
         "edge": null,
         "game": "Baltimore Orioles vs Kansas City Royals",
         "matchup": "Baltimore Orioles vs Kansas City Royals",
-        "odds": 128,
+        "odds": 132,
         "pick": "Kansas City Royals to Win (Baltimore Orioles vs Kansas City Royals)",
         "pregame_snapshot": {
           "date": "2026-07-11",
@@ -68094,7 +67715,7 @@
         "edge": null,
         "game": "Texas Rangers vs Houston Astros",
         "matchup": "Texas Rangers vs Houston Astros",
-        "odds": -118,
+        "odds": -122,
         "pick": "Texas Rangers to Win (Texas Rangers vs Houston Astros)",
         "pregame_snapshot": {
           "date": "2026-07-11",
@@ -68120,7 +67741,7 @@
         "edge": null,
         "game": "Cincinnati Reds vs Chicago Cubs",
         "matchup": "Cincinnati Reds vs Chicago Cubs",
-        "odds": -125,
+        "odds": -111,
         "pick": "Chicago Cubs to Win (Cincinnati Reds vs Chicago Cubs)",
         "pregame_snapshot": {
           "date": "2026-07-11",
@@ -68146,7 +67767,7 @@
         "edge": null,
         "game": "St. Louis Cardinals vs Atlanta Braves",
         "matchup": "St. Louis Cardinals vs Atlanta Braves",
-        "odds": 102,
+        "odds": -105,
         "pick": "St. Louis Cardinals to Win (St. Louis Cardinals vs Atlanta Braves)",
         "pregame_snapshot": {
           "date": "2026-07-11",
@@ -68172,7 +67793,7 @@
         "edge": null,
         "game": "San Diego Padres vs Toronto Blue Jays",
         "matchup": "San Diego Padres vs Toronto Blue Jays",
-        "odds": -115,
+        "odds": -119,
         "pick": "San Diego Padres to Win (San Diego Padres vs Toronto Blue Jays)",
         "pregame_snapshot": {
           "date": "2026-07-11",
@@ -68198,7 +67819,7 @@
         "edge": null,
         "game": "Los Angeles Dodgers vs Arizona Diamondbacks",
         "matchup": "Los Angeles Dodgers vs Arizona Diamondbacks",
-        "odds": -303,
+        "odds": -286,
         "pick": "Los Angeles Dodgers to Win (Los Angeles Dodgers vs Arizona Diamondbacks)",
         "pregame_snapshot": {
           "date": "2026-07-11",
@@ -68219,12 +67840,12 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-07-11T15:12:45.859412Z"
+    "updatedAt": "2026-07-11T21:02:21.980906Z"
   },
   "sportsgambler_nba": {
     "date": "2026-07-11",
     "errors": [],
-    "generatedAt": "2026-07-11T15:12:45.859412Z",
+    "generatedAt": "2026-07-11T21:02:21.980906Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-11",
@@ -68233,56 +67854,30 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 0,
       "provider": "sportsgambler",
-      "updatedAt": "2026-07-11T15:12:45.859412Z"
+      "updatedAt": "2026-07-11T21:02:21.980906Z"
     },
     "note": "Scheduled sportsgambler_nba refresh returned 0 pick(s).",
     "ok": true,
     "picks": [],
-    "updatedAt": "2026-07-11T15:12:45.859412Z"
+    "updatedAt": "2026-07-11T21:02:21.980906Z"
   },
   "sportsgambler_wnba": {
     "date": "2026-07-11",
     "errors": [],
-    "generatedAt": "2026-07-11T15:12:45.859412Z",
+    "generatedAt": "2026-07-11T21:02:21.980906Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-11",
       "feed": "sportsgambler_wnba",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 3,
+      "pick_count": 2,
       "provider": "sportsgambler",
-      "updatedAt": "2026-07-11T15:12:45.859412Z"
+      "updatedAt": "2026-07-11T21:02:21.980906Z"
     },
-    "note": "Scheduled sportsgambler_wnba refresh returned 3 pick(s).",
+    "note": "Scheduled sportsgambler_wnba refresh returned 2 pick(s).",
     "ok": true,
     "picks": [
-      {
-        "date": "2026-07-11",
-        "decision": "BET",
-        "edge": null,
-        "game": "Minnesota Lynx vs New York Liberty",
-        "matchup": "Minnesota Lynx vs New York Liberty",
-        "odds": -133,
-        "pick": "Lynx Moneyline (Minnesota Lynx vs New York Liberty)",
-        "pregame_snapshot": {
-          "date": "2026-07-11",
-          "decision": "BET",
-          "edge": null,
-          "game": "Minnesota Lynx vs New York Liberty",
-          "matchup": "Minnesota Lynx vs New York Liberty",
-          "odds": -133,
-          "pick": "Lynx Moneyline (Minnesota Lynx vs New York Liberty)",
-          "probability": null,
-          "source": "SportsGamblerWNBA",
-          "sport": "WNBA",
-          "units": 1
-        },
-        "probability": null,
-        "source": "SportsGamblerWNBA",
-        "sport": "WNBA",
-        "units": 1
-      },
       {
         "date": "2026-07-11",
         "decision": "BET",
@@ -68336,42 +67931,25 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-07-11T15:12:45.859412Z"
+    "updatedAt": "2026-07-11T21:02:21.980906Z"
   },
   "sportytrader_fifa_world_cup": {
     "date": "2026-07-11",
     "errors": [],
-    "generatedAt": "2026-07-11T15:12:45.859412Z",
+    "generatedAt": "2026-07-11T21:02:21.980906Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-11",
       "feed": "sportytrader_fifa_world_cup",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 2,
+      "pick_count": 1,
       "provider": "sportytrader",
-      "updatedAt": "2026-07-11T15:12:45.859412Z"
+      "updatedAt": "2026-07-11T21:02:21.980906Z"
     },
-    "note": "Scheduled sportytrader_fifa_world_cup refresh returned 2 pick(s).",
+    "note": "Scheduled sportytrader_fifa_world_cup refresh returned 1 pick(s).",
     "ok": true,
     "picks": [
-      {
-        "calibration_excluded": true,
-        "date": "2026-07-11",
-        "decision": "BET",
-        "edge": null,
-        "game": "Norway vs England",
-        "grade_supported": false,
-        "market_type": "external_player_prop",
-        "matchup": "Norway vs England",
-        "odds": 115,
-        "pick": "Martin Odegaard 1+ Shots on Target (Norway vs England)",
-        "probability": null,
-        "scope": "player",
-        "source": "SportyTraderFIFAWorldCup",
-        "sport": "FIFA WC",
-        "units": 1
-      },
       {
         "calibration_excluded": true,
         "date": "2026-07-11",
@@ -68389,103 +67967,25 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-07-11T15:12:45.859412Z"
+    "updatedAt": "2026-07-11T21:02:21.980906Z"
   },
   "sportytrader_mlb": {
     "date": "2026-07-11",
     "errors": [],
-    "generatedAt": "2026-07-11T15:12:45.859412Z",
+    "generatedAt": "2026-07-11T21:02:21.980906Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-11",
       "feed": "sportytrader_mlb",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 4,
+      "pick_count": 3,
       "provider": "sportytrader",
-      "updatedAt": "2026-07-11T15:12:45.859412Z"
+      "updatedAt": "2026-07-11T21:02:21.980906Z"
     },
-    "note": "Scheduled sportytrader_mlb refresh returned 4 pick(s).",
+    "note": "Scheduled sportytrader_mlb refresh returned 3 pick(s).",
     "ok": true,
     "picks": [
-      {
-        "date": "2026-07-11",
-        "decision": "BET",
-        "edge": null,
-        "game": "Minnesota Twins vs Los Angeles Angels",
-        "matchup": "Minnesota Twins vs Los Angeles Angels",
-        "odds": 114,
-        "pick": "Twins -1.5 (Twins vs Angels)",
-        "pregame_snapshot": {
-          "date": "2026-07-11",
-          "decision": "BET",
-          "edge": null,
-          "game": "Minnesota Twins vs Los Angeles Angels",
-          "matchup": "Minnesota Twins vs Los Angeles Angels",
-          "odds": 114,
-          "pick": "Twins -1.5 (Twins vs Angels)",
-          "probability": null,
-          "source": "SportyTraderMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        "probability": null,
-        "source": "SportyTraderMLB",
-        "sport": "MLB",
-        "units": 1
-      },
-      {
-        "date": "2026-07-11",
-        "decision": "BET",
-        "edge": null,
-        "game": "Chicago White Sox vs Athletics",
-        "matchup": "Chicago White Sox vs Athletics",
-        "odds": -106,
-        "pick": "Under 9 (White Sox vs Athletics)",
-        "pregame_snapshot": {
-          "date": "2026-07-11",
-          "decision": "BET",
-          "edge": null,
-          "game": "Chicago White Sox vs Athletics",
-          "matchup": "Chicago White Sox vs Athletics",
-          "odds": -106,
-          "pick": "Under 9 (White Sox vs Athletics)",
-          "probability": null,
-          "source": "SportyTraderMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        "probability": null,
-        "source": "SportyTraderMLB",
-        "sport": "MLB",
-        "units": 1
-      },
-      {
-        "date": "2026-07-11",
-        "decision": "BET",
-        "edge": null,
-        "game": "San Francisco Giants vs Colorado Rockies",
-        "matchup": "San Francisco Giants vs Colorado Rockies",
-        "odds": -115,
-        "pick": "Over 8.5 (Giants vs Rockies)",
-        "pregame_snapshot": {
-          "date": "2026-07-11",
-          "decision": "BET",
-          "edge": null,
-          "game": "San Francisco Giants vs Colorado Rockies",
-          "matchup": "San Francisco Giants vs Colorado Rockies",
-          "odds": -115,
-          "pick": "Over 8.5 (Giants vs Rockies)",
-          "probability": null,
-          "source": "SportyTraderMLB",
-          "sport": "MLB",
-          "units": 1
-        },
-        "probability": null,
-        "source": "SportyTraderMLB",
-        "sport": "MLB",
-        "units": 1
-      },
       {
         "date": "2026-07-11",
         "decision": "BET",
@@ -68511,14 +68011,66 @@
         "source": "SportyTraderMLB",
         "sport": "MLB",
         "units": 1
+      },
+      {
+        "date": "2026-07-11",
+        "decision": "BET",
+        "edge": null,
+        "game": "Cincinnati Reds vs Chicago Cubs",
+        "matchup": "Cincinnati Reds vs Chicago Cubs",
+        "odds": -108,
+        "pick": "Under 10 (Reds vs Cubs)",
+        "pregame_snapshot": {
+          "date": "2026-07-11",
+          "decision": "BET",
+          "edge": null,
+          "game": "Cincinnati Reds vs Chicago Cubs",
+          "matchup": "Cincinnati Reds vs Chicago Cubs",
+          "odds": -108,
+          "pick": "Under 10 (Reds vs Cubs)",
+          "probability": null,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
+        },
+        "probability": null,
+        "source": "SportyTraderMLB",
+        "sport": "MLB",
+        "units": 1
+      },
+      {
+        "date": "2026-07-11",
+        "decision": "BET",
+        "edge": null,
+        "game": "St. Louis Cardinals vs Atlanta Braves",
+        "matchup": "St. Louis Cardinals vs Atlanta Braves",
+        "odds": 152,
+        "pick": "Braves -1.5 (Cardinals vs Braves)",
+        "pregame_snapshot": {
+          "date": "2026-07-11",
+          "decision": "BET",
+          "edge": null,
+          "game": "St. Louis Cardinals vs Atlanta Braves",
+          "matchup": "St. Louis Cardinals vs Atlanta Braves",
+          "odds": 152,
+          "pick": "Braves -1.5 (Cardinals vs Braves)",
+          "probability": null,
+          "source": "SportyTraderMLB",
+          "sport": "MLB",
+          "units": 1
+        },
+        "probability": null,
+        "source": "SportyTraderMLB",
+        "sport": "MLB",
+        "units": 1
       }
     ],
-    "updatedAt": "2026-07-11T15:12:45.859412Z"
+    "updatedAt": "2026-07-11T21:02:21.980906Z"
   },
   "sportytrader_nba": {
     "date": "2026-07-11",
     "errors": [],
-    "generatedAt": "2026-07-11T15:12:45.859412Z",
+    "generatedAt": "2026-07-11T21:02:21.980906Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-11",
@@ -68527,82 +68079,30 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 0,
       "provider": "sportytrader",
-      "updatedAt": "2026-07-11T15:12:45.859412Z"
+      "updatedAt": "2026-07-11T21:02:21.980906Z"
     },
     "note": "Scheduled sportytrader_nba refresh returned 0 pick(s).",
     "ok": true,
     "picks": [],
-    "updatedAt": "2026-07-11T15:12:45.859412Z"
+    "updatedAt": "2026-07-11T21:02:21.980906Z"
   },
   "sportytrader_wnba": {
     "date": "2026-07-11",
     "errors": [],
-    "generatedAt": "2026-07-11T15:12:45.859412Z",
+    "generatedAt": "2026-07-11T21:02:21.980906Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-11",
       "feed": "sportytrader_wnba",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 3,
+      "pick_count": 1,
       "provider": "sportytrader",
-      "updatedAt": "2026-07-11T15:12:45.859412Z"
+      "updatedAt": "2026-07-11T21:02:21.980906Z"
     },
-    "note": "Scheduled sportytrader_wnba refresh returned 3 pick(s).",
+    "note": "Scheduled sportytrader_wnba refresh returned 1 pick(s).",
     "ok": true,
     "picks": [
-      {
-        "date": "2026-07-11",
-        "decision": "BET",
-        "edge": null,
-        "game": "Minnesota Lynx vs New York Liberty",
-        "matchup": "Minnesota Lynx vs New York Liberty",
-        "odds": -160,
-        "pick": "Over 170.5 (Lynx vs Liberty)",
-        "pregame_snapshot": {
-          "date": "2026-07-11",
-          "decision": "BET",
-          "edge": null,
-          "game": "Minnesota Lynx vs New York Liberty",
-          "matchup": "Minnesota Lynx vs New York Liberty",
-          "odds": -160,
-          "pick": "Over 170.5 (Lynx vs Liberty)",
-          "probability": null,
-          "source": "SportyTraderWNBA",
-          "sport": "WNBA",
-          "units": 1
-        },
-        "probability": null,
-        "source": "SportyTraderWNBA",
-        "sport": "WNBA",
-        "units": 1
-      },
-      {
-        "date": "2026-07-11",
-        "decision": "BET",
-        "edge": null,
-        "game": "Atlanta Dream vs Portland Fire",
-        "matchup": "Atlanta Dream vs Portland Fire",
-        "odds": -110,
-        "pick": "Dream (-13.5) cover the spread (Dream vs Fire)",
-        "pregame_snapshot": {
-          "date": "2026-07-11",
-          "decision": "BET",
-          "edge": null,
-          "game": "Atlanta Dream vs Portland Fire",
-          "matchup": "Atlanta Dream vs Portland Fire",
-          "odds": -110,
-          "pick": "Dream (-13.5) cover the spread (Dream vs Fire)",
-          "probability": null,
-          "source": "SportyTraderWNBA",
-          "sport": "WNBA",
-          "units": 1
-        },
-        "probability": null,
-        "source": "SportyTraderWNBA",
-        "sport": "WNBA",
-        "units": 1
-      },
       {
         "date": "2026-07-11",
         "decision": "BET",
@@ -68630,9 +68130,9 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-07-11T15:12:45.859412Z"
+    "updatedAt": "2026-07-11T21:02:21.980906Z"
   },
-  "updatedAt": "2026-07-11T16:21:09.276346Z",
+  "updatedAt": "2026-07-11T21:02:21.980906Z",
   "wnba": {
     "ok": true,
     "picks": [
