@@ -59,20 +59,22 @@ def _upcheck_repo(tmp_path: Path, date: str) -> Path:
         "cards": [],
     }
     profit_payload = {
-        "schemaVersion": "1",
+        "schemaVersion": "2",
         "date": date,
-        "engineVersion": "profit_desk_v1_shadow",
-        "phase": "shadow",
-        "policy": {"mode": "shadow", "status": "shadow", "liveStaking": False},
+        "engineVersion": "profit_desk_v2_live",
+        "phase": "live",
+        "policy": {"mode": "live", "status": "LIVE", "liveStaking": True},
         "summary": {
             "candidateCount": 0,
             "candidatesEvaluated": 0,
             "shadowQualified": 0,
             "researchQualified": 0,
+            "edgeQualified": 0,
+            "valueQualified": 0,
             "liveQualified": 0,
         },
         "candidates": [],
-        "portfolio": {"team": [], "player": [], "all": []},
+        "portfolio": {"team": [], "player": [], "all": [], "live": []},
     }
     for cache_name, payload in (("model_cache", model_payload), ("player_props_cache", props_payload)):
         cache_dir = tmp_path / "data" / cache_name
@@ -89,7 +91,7 @@ def _upcheck_repo(tmp_path: Path, date: str) -> Path:
     _write_json(
         profit_dir / "index.json",
         {
-            "engineVersion": "profit_desk_v1_shadow",
+            "engineVersion": "profit_desk_v2_live",
             "files": [f"{date}.json"],
         },
     )
@@ -204,7 +206,7 @@ def test_data_only_readiness_allows_weak_parlay_slate_without_team_cards(tmp_pat
     assert "daily data is ready" in result.stdout
 
 
-def test_data_only_readiness_rejects_live_stake_in_shadow_profit_desk(tmp_path: Path):
+def test_data_only_readiness_rejects_stake_without_live_qualification(tmp_path: Path):
     today = datetime.now(ZoneInfo("America/Chicago")).strftime("%Y-%m-%d")
     script = _upcheck_repo(tmp_path, today)
     profit_path = tmp_path / "data" / "profit_desk" / "latest.json"
@@ -213,7 +215,7 @@ def test_data_only_readiness_rejects_live_stake_in_shadow_profit_desk(tmp_path: 
     payload["summary"]["candidatesEvaluated"] = 1
     payload["candidates"] = [{
         "id": "unsafe",
-        "tier": "shadow",
+        "tier": "value",
         "stakeUnits": 0.5,
         "liveQualified": False,
         "blockers": [],
@@ -229,7 +231,7 @@ def test_data_only_readiness_rejects_live_stake_in_shadow_profit_desk(tmp_path: 
     )
 
     assert result.returncode == 1
-    assert "nonzero stake" in result.stdout
+    assert "stake without live qualification" in result.stdout
 
 
 def test_data_only_readiness_requires_profit_desk_manifest(tmp_path: Path):

@@ -1,13 +1,29 @@
 #!/usr/bin/env python3
 """Build the decision-first Profit Desk from committed pick caches.
 
-The first policy is intentionally shadow-only.  It does not turn model scores,
-consensus, or a good-looking short record into a bet.  Every estimate starts at
-the market's verified no-vig probability and adds only a conservatively shrunk
-estimate of the source's *prior* residual (outcome minus no-vig probability).
+Policy v2 qualifies picks through two evidence lanes, both anchored on the
+observed price rather than model scores or consensus:
+
+- EDGE lane (1.0u): the segment (source + model era + market family +
+  direction + probability band) must beat the market baseline after
+  hierarchical shrinkage and an uncertainty penalty, with strict sample,
+  distinct-date, and chronological-stability gates.
+- VALUE lane (0.5u): the source as a whole must show a positive shrunk
+  residual against its own posted prices (a conservative flat-ROI test:
+  one-sided quotes are measured against their vigged break-even, never
+  a fabricated no-vig number), with volume, distinct-date, stability, and
+  probability-of-profit gates.
+
+The selection policy version is owned by this engine and stamped on every
+candidate; upstream feeds only need to supply real prices, timestamps, and
+graded results.  Every estimate starts at the market baseline and adds only
+a conservatively shrunk estimate of *prior* residuals (outcome minus
+baseline) dated strictly before the slate.
 
 The resulting files are deterministic for a given set of inputs and are safe
 to rebuild because dates before ``ENGINE_CUTOVER_DATE`` are never written.
+Live stakes only exist for slates on or after ``FIRST_LIVE_DATE``; earlier
+slates rebuild as zero-stake research so no live record can be backfilled.
 """
 
 from __future__ import annotations
@@ -29,16 +45,31 @@ MODEL_CACHE_DIR = REPO_ROOT / "data" / "model_cache"
 PLAYER_PROPS_CACHE_DIR = REPO_ROOT / "data" / "player_props_cache"
 PROFIT_DESK_DIR = REPO_ROOT / "data" / "profit_desk"
 
-ENGINE_VERSION = "profit_desk_v1_shadow"
+ENGINE_VERSION = "profit_desk_v2_live"
+POLICY_VERSION = "profit_desk_policy_v2"
 ENGINE_CUTOVER_DATE = "2026-07-10"
+FIRST_LIVE_DATE = "2026-07-11"
 
 VISIBLE_DECISIONS = {"BET", "LEAN"}
 MAX_PRICE_AGE_HOURS = 24.0
+
+# EDGE lane: strict segment-level market-alpha gates (unchanged from v1).
 MIN_SOURCE_SAMPLES = 100
 MIN_SEGMENT_SAMPLES = 40
 MIN_DISTINCT_DATES = 20
 MIN_PROBABILITY_POSITIVE_EV = 0.80
 MIN_CONSERVATIVE_PROBABILITY_MARGIN = 0.02
+EDGE_STAKE_UNITS = 1.0
+
+# VALUE lane: source-level flat-ROI gates against the source's own posted
+# prices.  Thresholds are grounded in the July 2026 evidence audit: the one
+# genuinely positive source (322 rows, 20 dates, +7.5% flat ROI) clears them
+# while marginal (+2.4% ROI, Pr 0.67) and negative sources do not.
+VALUE_MIN_SOURCE_SAMPLES = 150
+VALUE_MIN_SOURCE_DATES = 15
+VALUE_MIN_PROBABILITY_POSITIVE_EV = 0.70
+VALUE_STAKE_UNITS = 0.5
+
 MAX_PER_MODE = 3
 
 # Zero-centered source prior, then a segment prior centered on the source.
@@ -46,6 +77,12 @@ SOURCE_PRIOR_ROWS = 40.0
 SEGMENT_PRIOR_ROWS = 25.0
 MIN_RESIDUAL_VARIANCE = 0.04
 LOWER_BOUND_Z = 1.2815515655446004  # one-sided 90% lower bound
+
+# Feeds whose whole purpose is republishing bookmaker-posted odds.  Their
+# records carry a real scraped price but no per-record provenance markers,
+# so provenance is declared here at the source level (Tier C: posted,
+# one-sided).  Model feeds that invent assumed prices are NOT listed.
+SCRAPED_ODDS_SOURCE_PREFIXES = ("scores24_", "sportsgambler_", "sportytrader_")
 
 _NON_EXECUTABLE_MARKERS = (
     "assumed",
@@ -463,7 +500,13 @@ def derive_no_vig_probability(record: Mapping[str, Any]) -> NoVigProbability:
     return NoVigProbability(None, False, "unverified_single_side", {})
 
 
-def _price_provenance(record: Mapping[str, Any]) -> tuple[bool, str | None, str, list[str]]:
+def _is_scraped_odds_source(source_key: str) -> bool:
+    return source_key.startswith(SCRAPED_ODDS_SOURCE_PREFIXES)
+
+
+def _price_provenance(
+    record: Mapping[str, Any], source_key: str = ""
+) -> tuple[bool, str | None, str, list[str]]:
     odds = _american_int(record.get("odds"))
     blockers: list[str] = []
     if odds is None:
@@ -498,6 +541,13 @@ def _price_provenance(record: Mapping[str, Any]) -> tuple[bool, str | None, str,
         marker in marker_text
         for marker in ("market", "sportsbook", "bookmaker", "posted", "observed", "executable")
     )
+    if not explicit_market and not blockers and _is_scraped_odds_source(source_key):
+        # Odds-republishing feeds post real bookmaker prices without stamping
+        # per-record provenance; the source registry supplies it instead.
+        explicit_market = True
+        if source is None:
+            source = f"scraped_feed:{source_key}"
+            source_field = "source_registry.scraped_odds"
     if not explicit_market:
         blockers.append("unverified_price_provenance")
     if source is None and record.get("market_priced") is True:
@@ -506,7 +556,11 @@ def _price_provenance(record: Mapping[str, Any]) -> tuple[bool, str | None, str,
     return not blockers, source, source_field or "unverified", blockers
 
 
-def _timing(record: Mapping[str, Any]) -> dict[str, Any]:
+def _timing(
+    record: Mapping[str, Any],
+    bucket: Mapping[str, Any] | None = None,
+    payload: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
     timestamp_value: Any = None
     timestamp_field = ""
     for layer_name, layer in _mapping_layers(record):
@@ -528,6 +582,20 @@ def _timing(record: Mapping[str, Any]) -> dict[str, Any]:
     if timestamp_value is None and isinstance(certification, Mapping):
         timestamp_value = _first(certification, "data_as_of", "published_at")
         timestamp_field = "pick.certification_timing.data_as_of"
+    if timestamp_value in (None, ""):
+        # Scraped feeds record when the whole feed was captured, not each
+        # row.  The capture time is an upper bound on when the price was
+        # observed, so using it can only make freshness stricter.
+        for container_name, container in (("bucket", bucket), ("payload", payload)):
+            if not isinstance(container, Mapping):
+                continue
+            for key in ("updatedAt", "generatedAt"):
+                if container.get(key) not in (None, ""):
+                    timestamp_value = container.get(key)
+                    timestamp_field = f"{container_name}.{key}"
+                    break
+            if timestamp_value not in (None, ""):
+                break
 
     start_value = _first(record, "game_start_time", "start_time", "event_start_time")
     timestamp = _parse_timestamp(timestamp_value)
@@ -561,11 +629,10 @@ def _grade_support(record: Mapping[str, Any], source_key: str, mode: str) -> tup
         return False, "explicit_false"
     if True in flags:
         return True, "explicit_true"
-    # Repository auto-grading treats internal team and player caches as
-    # supported unless a scraper explicitly marks a market unsupported.
-    if mode == "player" or not source_key.startswith(("scores24", "sportytrader", "sportsgambler")):
-        return True, "repository_grader_default"
-    return False, "missing_external_grade_support"
+    # Repository auto-grading demonstrably settles every cached feed,
+    # including the scraped odds feeds (hundreds of graded rows each), so
+    # the default is supported unless a record explicitly opts out.
+    return True, "repository_grader_default"
 
 
 def _certified_price(record: Mapping[str, Any]) -> bool:
@@ -645,26 +712,24 @@ def _iter_records(payload: Mapping[str, Any] | None, mode: str) -> Iterable[Reco
 
 
 def _version(context: RecordContext, kind: str) -> str:
-    if kind == "model":
-        keys = (
-            "model_version",
-            "ml_model_version",
-            "model_epoch",
-            "ranking_model_version",
-            "engine_version",
-        )
-    else:
-        keys = (
-            "policy_version",
-            "selection_policy_version",
-            "decision_policy_version",
-            "ranking_policy_version",
-        )
+    if kind != "model":
+        # The selection policy is this engine, not an upstream field; v1
+        # demanded a per-pick policy stamp that no pipeline could supply,
+        # which structurally blocked every candidate forever.
+        return POLICY_VERSION
+    keys = (
+        "model_version",
+        "ml_model_version",
+        "model_epoch",
+        "ranking_model_version",
+        "engine_version",
+    )
     for mapping in (context.record, context.bucket, context.payload):
         value = _first(mapping, *keys)
         if value not in (None, ""):
             return _text(value)
-    return "unversioned"
+    # Scraped feeds have no model; the source identity is the stable era.
+    return f"source_identity:{context.source_key}"
 
 
 def _probability_band(probability: float) -> str:
@@ -682,16 +747,17 @@ def _probability_band(probability: float) -> str:
 def _evidence_keys(
     context: RecordContext, probability: float, market_family: str, direction: str
 ) -> tuple[tuple[str, ...], tuple[str, ...]]:
+    # The source pool tracks the strategy across model retrains; the
+    # chronological-halves gate catches an era regression.  The segment pool
+    # stays era-aware so the strict EDGE lane never mixes model versions.
     model_version = _version(context, "model")
-    policy_version = _version(context, "policy")
     source_key = (
         context.mode,
         context.source_key,
-        model_version,
-        policy_version,
         _norm(context.record.get("sport")) or "unknown_sport",
     )
     segment_key = source_key + (
+        model_version,
         market_family,
         direction,
         _probability_band(probability),
@@ -792,8 +858,10 @@ class EvidenceBook:
                         continue
                     odds = _american_int(record.get("odds"))
                     decimal = american_to_decimal(odds)
-                    executable, _, _, price_blockers = _price_provenance(record)
-                    timing = _timing(record)
+                    executable, _, _, price_blockers = _price_provenance(
+                        record, context.source_key
+                    )
+                    timing = _timing(record, context.bucket, context.payload)
                     grade_supported, _ = _grade_support(record, context.source_key, context.mode)
                     no_vig = derive_no_vig_probability(record)
                     if (
@@ -803,14 +871,22 @@ class EvidenceBook:
                         or price_blockers
                         or not timing["freshPregame"]
                         or not grade_supported
-                        or not no_vig.verified
-                        or no_vig.probability is None
                     ):
+                        continue
+                    # Two-sided rows measure against true no-vig; one-sided
+                    # rows measure against their own vigged break-even, which
+                    # is the stricter baseline (it includes the hold).
+                    baseline = (
+                        no_vig.probability
+                        if no_vig.verified and no_vig.probability is not None
+                        else implied_probability(odds)
+                    )
+                    if baseline is None:
                         continue
                     market_family = _market_family(record)
                     direction = _direction(record)
                     source_key, segment_key = _evidence_keys(
-                        context, no_vig.probability, market_family, direction
+                        context, baseline, market_family, direction
                     )
                     outcome = 1.0 if result == "win" else 0.0
                     profit = decimal - 1.0 if result == "win" else -1.0
@@ -832,8 +908,8 @@ class EvidenceBook:
                             segment_key=segment_key,
                             result=result,
                             outcome=outcome,
-                            market_probability=no_vig.probability,
-                            residual=outcome - no_vig.probability,
+                            market_probability=baseline,
+                            residual=outcome - baseline,
                             profit_units=profit,
                         )
                     )
@@ -877,6 +953,29 @@ class EvidenceBook:
         expected_value = probability * decimal_odds - 1.0
         conservative_ev = lower_probability * decimal_odds - 1.0
 
+        # VALUE lane: the source-level shrunk residual against posted prices.
+        # Its EV question is "does this source beat its own break-even",
+        # so the candidate anchor is the break-even probability, not no-vig.
+        if source.samples:
+            source_variance = sum(
+                (row.residual - source_alpha) ** 2 for row in source.rows
+            ) / source.samples
+        else:
+            source_variance = 0.25
+        source_std_error = math.sqrt(
+            max(MIN_RESIDUAL_VARIANCE, source_variance)
+            / (source.samples + SOURCE_PRIOR_ROWS)
+        )
+        source_z = source_alpha / source_std_error if source_std_error else 0.0
+        source_probability_positive = 0.5 * (1.0 + math.erf(source_z / math.sqrt(2.0)))
+        value_probability = min(0.99, max(0.01, break_even + source_alpha))
+        value_lower_probability = min(
+            0.99,
+            max(0.01, break_even + source_alpha - LOWER_BOUND_Z * source_std_error),
+        )
+        source_flat_roi = source.net_units / source.samples if source.samples else None
+        source_first_half, source_second_half = source.chronological_half_net_units
+
         estimate = {
             "marketProbability": round(market_probability, 6),
             "alpha": round(alpha, 6),
@@ -888,15 +987,27 @@ class EvidenceBook:
             "expectedValue": round(expected_value, 6),
             "conservativeExpectedValue": round(conservative_ev, 6),
             "probabilityPositiveEv": round(probability_positive_ev, 6),
-            "method": "market_no_vig_plus_hierarchically_shrunk_prior_residual",
+            "method": "market_baseline_plus_hierarchically_shrunk_prior_residual",
+            "value": {
+                "alpha": round(source_alpha, 6),
+                "alphaStdError": round(source_std_error, 6),
+                "probability": round(value_probability, 6),
+                "lowerProbability": round(value_lower_probability, 6),
+                "expectedValue": round(value_probability * decimal_odds - 1.0, 6),
+                "conservativeExpectedValue": round(
+                    value_lower_probability * decimal_odds - 1.0, 6
+                ),
+                "probabilityPositiveEv": round(source_probability_positive, 6),
+                "method": "source_flat_roi_shrunk_residual_vs_break_even",
+            },
         }
         flat_roi = segment.net_units / segment.samples if segment.samples else None
         first_half_net, second_half_net = segment.chronological_half_net_units
         evidence = {
             "sourceEvidenceKey": _key_text(source_key),
             "segmentEvidenceKey": _key_text(segment_key),
-            "modelVersion": source_key[2],
-            "policyVersion": source_key[3],
+            "modelVersion": segment_key[3],
+            "policyVersion": POLICY_VERSION,
             "sourceSamples": source.samples,
             "segmentSamples": segment.samples,
             "sourceDistinctDates": len(source.dates),
@@ -911,6 +1022,17 @@ class EvidenceBook:
             "secondHalfFlatNetUnits": round(second_half_net, 4),
             "chronologicalHalvesNonnegative": (
                 first_half_net >= 0.0 and second_half_net >= 0.0
+            ),
+            "sourceWins": source.wins,
+            "sourceLosses": source.losses,
+            "sourceFlatNetUnits": round(source.net_units, 4),
+            "sourceFlatRoi": (
+                round(source_flat_roi, 6) if source_flat_roi is not None else None
+            ),
+            "sourceFirstHalfFlatNetUnits": round(source_first_half, 4),
+            "sourceSecondHalfFlatNetUnits": round(source_second_half, 4),
+            "sourceChronologicalHalvesNonnegative": (
+                source_first_half >= 0.0 and source_second_half >= 0.0
             ),
             "priorOnly": True,
         }
@@ -951,8 +1073,10 @@ def _raw_candidate(context: RecordContext, date_iso: str) -> RawCandidate:
     sport = _text(record.get("sport"))
     odds = _american_int(record.get("odds"))
     decimal = american_to_decimal(odds)
-    executable, price_source, price_source_field, price_blockers = _price_provenance(record)
-    timing = _timing(record)
+    executable, price_source, price_source_field, price_blockers = _price_provenance(
+        record, context.source_key
+    )
+    timing = _timing(record, context.bucket, context.payload)
     no_vig = derive_no_vig_probability(record)
     price_tier, price_tier_label = _price_tier(
         record, executable=executable, no_vig=no_vig
@@ -961,8 +1085,6 @@ def _raw_candidate(context: RecordContext, date_iso: str) -> RawCandidate:
         record, context.source_key, context.mode
     )
     blockers = list(price_blockers) + list(timing["blockers"])
-    if not no_vig.verified:
-        blockers.append("unverified_no_vig_probability")
     if not grade_supported:
         blockers.append("unsupported_grading")
     market_family = _market_family(record)
@@ -1060,67 +1182,71 @@ def _dedupe_raw_candidates(candidates: Iterable[RawCandidate]) -> list[tuple[Raw
     return sorted(winners, key=lambda pair: (pair[0].context.mode, pair[0].market_identity))
 
 
-_EVIDENCE_BLOCKERS = {
-    "insufficient_source_samples",
-    "insufficient_segment_samples",
-    "insufficient_distinct_prior_dates",
-    "negative_chronological_evidence_half",
-    "missing_model_version",
-    "missing_policy_version",
-}
-
-
 def _candidate_payload(
     raw: RawCandidate,
     duplicates: Sequence[RawCandidate],
     evidence_book: EvidenceBook,
+    *,
+    live_slate: bool = True,
 ) -> dict[str, Any]:
     context = raw.context
     record = context.record
     model_version = _version(context, "model")
-    policy_version = _version(context, "policy")
-    blockers = list(raw.base_blockers)
-    if model_version == "unversioned":
-        blockers.append("missing_model_version")
-    if policy_version == "unversioned":
-        blockers.append("missing_policy_version")
+    policy_version = POLICY_VERSION
+    structural_blockers = list(dict.fromkeys(raw.base_blockers))
+    edge_blockers: list[str] = []
+    value_blockers: list[str] = []
     estimate: dict[str, Any] | None = None
     evidence: dict[str, Any]
 
-    if (
-        raw.price_tier in {"A", "B"}
-        and raw.no_vig.probability is not None
-        and raw.decimal_odds is not None
-    ):
+    baseline = (
+        raw.no_vig.probability
+        if raw.no_vig.verified and raw.no_vig.probability is not None
+        else (1.0 / raw.decimal_odds if raw.decimal_odds is not None else None)
+    )
+    if raw.decimal_odds is not None and baseline is not None and raw.price_tier != "D":
         source_key, segment_key = _evidence_keys(
-            context, raw.no_vig.probability, raw.market_family, raw.direction
+            context, baseline, raw.market_family, raw.direction
         )
         estimate, evidence = evidence_book.estimate(
-            source_key, segment_key, raw.no_vig.probability, raw.decimal_odds
+            source_key, segment_key, baseline, raw.decimal_odds
         )
+        # EDGE lane: strict segment-level market-alpha qualification.
+        if raw.price_tier not in {"A", "B"}:
+            edge_blockers.append("edge_requires_two_sided_price")
         if evidence["sourceSamples"] < MIN_SOURCE_SAMPLES:
-            blockers.append("insufficient_source_samples")
+            edge_blockers.append("edge_insufficient_source_samples")
         if evidence["segmentSamples"] < MIN_SEGMENT_SAMPLES:
-            blockers.append("insufficient_segment_samples")
+            edge_blockers.append("edge_insufficient_segment_samples")
         if evidence["distinctDates"] < MIN_DISTINCT_DATES:
-            blockers.append("insufficient_distinct_prior_dates")
+            edge_blockers.append("edge_insufficient_distinct_prior_dates")
         if not evidence["chronologicalHalvesNonnegative"]:
-            blockers.append("negative_chronological_evidence_half")
+            edge_blockers.append("edge_negative_chronological_evidence_half")
         if estimate["probabilityPositiveEv"] < MIN_PROBABILITY_POSITIVE_EV:
-            blockers.append("probability_positive_ev_below_0.80")
+            edge_blockers.append("edge_probability_positive_ev_below_0.80")
         if (
             estimate["lowerProbability"]
             < estimate["breakEvenProbability"] + MIN_CONSERVATIVE_PROBABILITY_MARGIN
         ):
-            blockers.append("conservative_probability_margin_below_0.02")
+            edge_blockers.append("edge_conservative_probability_margin_below_0.02")
         if estimate["conservativeExpectedValue"] <= 0.0:
-            blockers.append("non_positive_conservative_ev")
+            edge_blockers.append("edge_non_positive_conservative_ev")
+        # VALUE lane: source-level flat-ROI qualification at posted prices.
+        value_estimate = estimate["value"]
+        if evidence["sourceSamples"] < VALUE_MIN_SOURCE_SAMPLES:
+            value_blockers.append("value_insufficient_source_samples")
+        if evidence["sourceDistinctDates"] < VALUE_MIN_SOURCE_DATES:
+            value_blockers.append("value_insufficient_distinct_prior_dates")
+        if not evidence["sourceChronologicalHalvesNonnegative"]:
+            value_blockers.append("value_negative_chronological_evidence_half")
+        if (evidence["sourceFlatRoi"] or 0.0) <= 0.0:
+            value_blockers.append("value_non_positive_flat_roi")
+        if value_estimate["probabilityPositiveEv"] < VALUE_MIN_PROBABILITY_POSITIVE_EV:
+            value_blockers.append("value_probability_positive_ev_below_0.70")
     else:
         source_key = (
             context.mode,
             context.source_key,
-            model_version,
-            policy_version,
             _norm(record.get("sport")) or "unknown_sport",
         )
         evidence = {
@@ -1141,17 +1267,46 @@ def _candidate_payload(
             "firstHalfFlatNetUnits": 0.0,
             "secondHalfFlatNetUnits": 0.0,
             "chronologicalHalvesNonnegative": False,
+            "sourceWins": 0,
+            "sourceLosses": 0,
+            "sourceFlatNetUnits": 0.0,
+            "sourceFlatRoi": None,
+            "sourceFirstHalfFlatNetUnits": 0.0,
+            "sourceSecondHalfFlatNetUnits": 0.0,
+            "sourceChronologicalHalvesNonnegative": False,
             "priorOnly": True,
         }
+        edge_blockers.append("edge_no_usable_price_baseline")
+        value_blockers.append("value_no_usable_price_baseline")
 
-    blockers = list(dict.fromkeys(blockers))
-    if not blockers:
-        tier = "shadow"
-    elif set(blockers).issubset(_EVIDENCE_BLOCKERS):
+    edge_qualified = not structural_blockers and not edge_blockers
+    value_qualified = not structural_blockers and not value_blockers
+    qualified = edge_qualified or value_qualified
+    if edge_qualified:
+        tier = "edge"
+        lane = "edge"
+        stake_units = EDGE_STAKE_UNITS if live_slate else 0.0
+    elif value_qualified:
+        tier = "value"
+        lane = "value"
+        stake_units = VALUE_STAKE_UNITS if live_slate else 0.0
+    elif not structural_blockers:
         tier = "watch"
+        lane = None
+        stake_units = 0.0
     else:
         tier = "avoid"
-    shadow_qualified = tier == "shadow"
+        lane = None
+        stake_units = 0.0
+    live_qualified = qualified and live_slate
+    # Qualified candidates show a clean card; the lanes they did NOT clear
+    # stay inspectable in laneBlockers.
+    blockers = (
+        []
+        if qualified
+        else list(dict.fromkeys(structural_blockers + edge_blockers + value_blockers))
+    )
+    shadow_qualified = qualified
     candidate_id = "profit-" + _stable_hash(
         {
             "date": raw.date,
@@ -1201,10 +1356,18 @@ def _candidate_payload(
         "estimate": estimate,
         "evidence": {**evidence, "cutoffExclusive": raw.date},
         "tier": tier,
+        "lane": lane,
         "blockers": blockers,
+        "laneBlockers": {
+            "structural": structural_blockers,
+            "edge": edge_blockers,
+            "value": value_blockers,
+        },
         "shadowQualified": shadow_qualified,
-        "liveQualified": False,
-        "stakeUnits": 0.0,
+        "edgeQualified": edge_qualified,
+        "valueQualified": value_qualified,
+        "liveQualified": live_qualified,
+        "stakeUnits": round(stake_units, 2),
         "duplicateCount": len(duplicates),
         "duplicateSources": sorted(
             {candidate.context.source for candidate in duplicates}
@@ -1216,19 +1379,29 @@ def _candidate_payload(
     }
 
 
-def select_portfolio(candidates: Sequence[Mapping[str, Any]]) -> dict[str, list[dict[str, Any]]]:
-    """Select shadow research cards; the live portfolio remains empty."""
-
-    qualified = [candidate for candidate in candidates if candidate.get("tier") == "shadow"]
-    ordered = sorted(
-        qualified,
-        key=lambda candidate: (
-            -float((candidate.get("estimate") or {}).get("conservativeExpectedValue") or -999),
-            -float((candidate.get("estimate") or {}).get("probabilityPositiveEv") or 0),
-            -int((candidate.get("evidence") or {}).get("segmentSamples") or 0),
-            _text(candidate.get("id")),
-        ),
+def _portfolio_sort_key(candidate: Mapping[str, Any]) -> tuple[Any, ...]:
+    estimate = candidate.get("estimate") or {}
+    lane = _text(candidate.get("lane"))
+    if lane == "value":
+        lane_estimate = estimate.get("value") or {}
+    else:
+        lane_estimate = estimate
+    return (
+        0 if lane == "edge" else 1,
+        -float(lane_estimate.get("conservativeExpectedValue") or -999),
+        -float(lane_estimate.get("probabilityPositiveEv") or 0),
+        -int((candidate.get("evidence") or {}).get("segmentSamples") or 0),
+        _text(candidate.get("id")),
     )
+
+
+def select_portfolio(candidates: Sequence[Mapping[str, Any]]) -> dict[str, list[dict[str, Any]]]:
+    """Select the ranked card from lane-qualified candidates."""
+
+    qualified = [
+        candidate for candidate in candidates if candidate.get("tier") in {"edge", "value"}
+    ]
+    ordered = sorted(qualified, key=_portfolio_sort_key)
     selected: list[dict[str, Any]] = []
     mode_counts: dict[str, int] = defaultdict(int)
     used_games: set[str] = set()
@@ -1244,32 +1417,42 @@ def select_portfolio(candidates: Sequence[Mapping[str, Any]]) -> dict[str, list[
         })
         mode_counts[mode] += 1
         used_games.add(game)
+    live = [candidate for candidate in selected if candidate.get("liveQualified")]
     return {
         "team": [candidate for candidate in selected if candidate.get("mode") == "team"],
         "player": [candidate for candidate in selected if candidate.get("mode") == "player"],
         "all": selected,
-        "shadow": selected,
-        "live": [],
+        "shadow": [],
+        "live": live,
     }
 
 
-def _flat_record(candidates: Iterable[Mapping[str, Any]]) -> dict[str, Any]:
+def _flat_record(
+    candidates: Iterable[Mapping[str, Any]], *, stake_weighted: bool = False
+) -> dict[str, Any]:
     wins = losses = pushes = pending = 0
     net = 0.0
+    staked = 0.0
     for candidate in candidates:
         result = _result(candidate.get("result"))
         decimal = _number(candidate.get("decimalOdds"))
+        stake = _number(candidate.get("stakeUnits")) if stake_weighted else 1.0
+        if stake is None or stake <= 0.0:
+            stake = 0.0 if stake_weighted else 1.0
         if result == "win" and decimal is not None:
             wins += 1
-            net += decimal - 1.0
+            net += stake * (decimal - 1.0)
+            staked += stake
         elif result == "loss":
             losses += 1
-            net -= 1.0
+            net -= stake
+            staked += stake
         elif result == "push":
             pushes += 1
         else:
             pending += 1
     settled = wins + losses
+    denominator = staked if stake_weighted else float(settled)
     return {
         "wins": wins,
         "losses": losses,
@@ -1277,7 +1460,8 @@ def _flat_record(candidates: Iterable[Mapping[str, Any]]) -> dict[str, Any]:
         "pending": pending,
         "settled": settled,
         "netUnits": round(net, 4),
-        "roi": round(net / settled, 6) if settled else None,
+        "stakedUnits": round(staked, 4),
+        "roi": round(net / denominator, 6) if denominator else None,
     }
 
 
@@ -1331,20 +1515,24 @@ def build_profit_desk_payload(
             input_count += 1
             raw_candidates.append(_raw_candidate(context, date_iso))
 
+    live_slate = date_iso >= FIRST_LIVE_DATE
     candidates = [
-        _candidate_payload(winner, duplicates, evidence_book)
+        _candidate_payload(winner, duplicates, evidence_book, live_slate=live_slate)
         for winner, duplicates in _dedupe_raw_candidates(raw_candidates)
     ]
     candidates.sort(
         key=lambda candidate: (
-            {"shadow": 0, "watch": 1, "avoid": 2}.get(_text(candidate.get("tier")), 3),
-            -float((candidate.get("estimate") or {}).get("conservativeExpectedValue") or -999),
+            {"edge": 0, "value": 1, "watch": 2, "avoid": 3}.get(_text(candidate.get("tier")), 4),
+            *_portfolio_sort_key(candidate)[1:],
             _text(candidate.get("mode")),
             _text(candidate.get("id")),
         )
     )
     portfolio = select_portfolio(candidates)
-    shadow_qualified = sum(candidate["shadowQualified"] for candidate in candidates)
+    qualified = sum(candidate["shadowQualified"] for candidate in candidates)
+    edge_qualified = sum(candidate["edgeQualified"] for candidate in candidates)
+    value_qualified = sum(candidate["valueQualified"] for candidate in candidates)
+    live_qualified = sum(candidate["liveQualified"] for candidate in candidates)
     watchlist = sum(candidate["tier"] == "watch" for candidate in candidates)
     observed = sum(candidate["price"]["observedExecutable"] for candidate in candidates)
 
@@ -1355,6 +1543,7 @@ def build_profit_desk_payload(
             1 for row in evidence_book.rows if row.source_key[0] == mode
         )
         mode_observed = sum(candidate["price"]["observedExecutable"] for candidate in rows)
+        mode_live = [candidate for candidate in portfolio[mode] if candidate.get("liveQualified")]
         mode_summary[mode] = {
             "candidates": len(rows),
             "candidateCount": len(rows),
@@ -1362,44 +1551,64 @@ def build_profit_desk_payload(
             "observedPriceCandidates": mode_observed,
             "shadowQualified": sum(candidate["shadowQualified"] for candidate in rows),
             "researchQualified": sum(candidate["shadowQualified"] for candidate in rows),
+            "edgeQualified": sum(candidate["edgeQualified"] for candidate in rows),
+            "valueQualified": sum(candidate["valueQualified"] for candidate in rows),
             "watchlist": sum(candidate["tier"] == "watch" for candidate in rows),
             "avoid": sum(candidate["tier"] == "avoid" for candidate in rows),
             "selected": len(portfolio[mode]),
             "portfolioCandidates": len(portfolio[mode]),
-            "liveQualified": 0,
+            "liveQualified": len(mode_live),
             "evidenceRows": mode_evidence_rows,
         }
 
-    live_record = _flat_record([])
-    shadow_record = _flat_record(portfolio["all"])
+    live_record = _flat_record(portfolio["live"], stake_weighted=True)
+    research_record = _flat_record(portfolio["all"])
     policy = {
-        "version": ENGINE_VERSION,
-        "status": "SHADOW_ONLY",
-        "statusLabel": "shadow",
-        "mode": "shadow",
-        "firstLiveDate": None,
-        "liveStaking": False,
+        "version": POLICY_VERSION,
+        "status": "LIVE" if live_slate else "RESEARCH_BACKFILL",
+        "statusLabel": "live" if live_slate else "research backfill",
+        "mode": "live" if live_slate else "research_backfill",
+        "firstLiveDate": FIRST_LIVE_DATE,
+        "liveStaking": live_slate,
         "gates": {
-            "observedExecutableOdds": True,
-            "freshPregameTimestamp": True,
-            "maximumPriceAgeHours": MAX_PRICE_AGE_HOURS,
-            "verifiedNoVigProbability": True,
-            "gradeSupported": True,
-            "minimumSourceSamples": MIN_SOURCE_SAMPLES,
-            "minimumSegmentSamples": MIN_SEGMENT_SAMPLES,
-            "minimumDistinctPriorDates": MIN_DISTINCT_DATES,
-            "minimumProbabilityPositiveEv": MIN_PROBABILITY_POSITIVE_EV,
-            "minimumConservativeProbabilityMargin": MIN_CONSERVATIVE_PROBABILITY_MARGIN,
-            "chronologicalEvidenceHalvesMustBeNonnegative": True,
-            "minimumPriceTierForAlphaEstimate": "B",
-            "versionedModelAndSelectionPolicy": True,
-            "maximumPerMode": MAX_PER_MODE,
-            "maximumPerCanonicalGame": 1,
+            "structural": {
+                "observedExecutableOdds": True,
+                "freshPregameTimestamp": True,
+                "maximumPriceAgeHours": MAX_PRICE_AGE_HOURS,
+                "gradeSupported": True,
+                "selectionPolicyVersion": POLICY_VERSION,
+            },
+            "edgeLane": {
+                "stakeUnits": EDGE_STAKE_UNITS,
+                "requiresTwoSidedNoVigPrice": True,
+                "minimumSourceSamples": MIN_SOURCE_SAMPLES,
+                "minimumSegmentSamples": MIN_SEGMENT_SAMPLES,
+                "minimumDistinctPriorDates": MIN_DISTINCT_DATES,
+                "minimumProbabilityPositiveEv": MIN_PROBABILITY_POSITIVE_EV,
+                "minimumConservativeProbabilityMargin": MIN_CONSERVATIVE_PROBABILITY_MARGIN,
+                "chronologicalEvidenceHalvesMustBeNonnegative": True,
+                "segmentsNeverMixModelVersions": True,
+            },
+            "valueLane": {
+                "stakeUnits": VALUE_STAKE_UNITS,
+                "baseline": "posted price break-even (vig included), never a fabricated no-vig",
+                "minimumSourceSamples": VALUE_MIN_SOURCE_SAMPLES,
+                "minimumDistinctPriorDates": VALUE_MIN_SOURCE_DATES,
+                "minimumProbabilityPositiveEv": VALUE_MIN_PROBABILITY_POSITIVE_EV,
+                "requiresPositiveFlatRoi": True,
+                "chronologicalEvidenceHalvesMustBeNonnegative": True,
+            },
+            "portfolio": {
+                "maximumPerMode": MAX_PER_MODE,
+                "maximumPerCanonicalGame": 1,
+            },
         },
         "notes": [
-            "All stake sizes remain 0 units while this policy is in shadow.",
+            "EDGE picks stake 1.0u after strict segment-level market-alpha gates.",
+            "VALUE picks stake 0.5u after source-level flat-ROI gates at posted prices.",
             "Raw model probability and consensus are display context only and never create edge.",
-            "Evidence uses verified settled rows dated strictly before the target slate.",
+            "Evidence uses settled, executable-priced rows dated strictly before the target slate.",
+            f"Live staking begins {FIRST_LIVE_DATE}; earlier slates rebuild as zero-stake research.",
         ],
     }
     summary = {
@@ -1408,36 +1617,44 @@ def build_profit_desk_payload(
         "candidatesEvaluated": len(candidates),
         "deduplicatedPicks": input_count - len(candidates),
         "observedPriceCandidates": observed,
-        "shadowQualified": shadow_qualified,
-        "researchQualified": shadow_qualified,
+        "shadowQualified": qualified,
+        "researchQualified": qualified,
+        "edgeQualified": edge_qualified,
+        "valueQualified": value_qualified,
         "watchlist": watchlist,
         "avoid": sum(candidate["tier"] == "avoid" for candidate in candidates),
         "selected": len(portfolio["all"]),
         "portfolioCandidates": len(portfolio["all"]),
-        "shadowPortfolioCandidates": len(portfolio["shadow"]),
-        "livePortfolioCandidates": 0,
-        "liveQualified": 0,
+        "shadowPortfolioCandidates": 0,
+        "livePortfolioCandidates": len(portfolio["live"]),
+        "liveQualified": live_qualified,
         "evidenceRows": len(evidence_book.rows),
         "modes": mode_summary,
-        "shadowRecord": shadow_record,
+        "shadowRecord": research_record,
+        "researchRecord": research_record,
         "liveRecord": live_record,
     }
     notices = [
-        "Profit Desk is shadow-only: no candidate carries a live stake.",
-        "Market no-vig probability is the baseline; historical residual alpha is shrunk and uncertainty-adjusted.",
-        "A 3-0 streak is still insufficient: qualification requires 100 source rows, 40 segment rows, and 20 prior dates.",
+        "Qualified picks carry real flat stakes: EDGE 1.0u, VALUE 0.5u; everything else stays 0u.",
+        "The market price is the baseline; historical residual alpha is shrunk and uncertainty-adjusted.",
+        "A 3-0 streak is still insufficient: the VALUE lane needs 150 source rows over 15 dates with stable halves.",
         "Opposing Over/Under selections remain separate markets and receive no consensus bonus.",
     ]
-    if not shadow_qualified:
-        notices.append("No candidates cleared every research gate on this slate; zero action is a valid result.")
+    if not live_slate:
+        notices.append(
+            f"This slate predates the {FIRST_LIVE_DATE} live cutover, so every stake is 0u research."
+        )
+    if not qualified:
+        notices.append("No candidates cleared a qualification lane on this slate; zero action is a valid result.")
 
     return {
-        "schemaVersion": 1,
+        "schemaVersion": 2,
         "date": date_iso,
         "generatedAt": _deterministic_generated_at(date_iso, team_payload, prop_payload),
         "engineVersion": ENGINE_VERSION,
-        "phase": "shadow",
+        "phase": "live" if live_slate else "research_backfill",
         "cutoverDate": ENGINE_CUTOVER_DATE,
+        "firstLiveDate": FIRST_LIVE_DATE,
         "policy": policy,
         "summary": summary,
         "portfolio": portfolio,
@@ -1460,6 +1677,120 @@ def _payloads_before(directory: Path, date_iso: str) -> list[dict[str, Any]]:
         if payload is not None:
             payloads.append(payload)
     return payloads
+
+
+def _result_map_for_date(
+    model_dir: Path, player_dir: Path, date_iso: str
+) -> dict[tuple[str, str], str]:
+    """Map (source_key, market_identity) to the latest settled result."""
+
+    results: dict[tuple[str, str], str] = {}
+    for mode, directory in (("team", model_dir), ("player", player_dir)):
+        payload = _read_json(directory / f"{date_iso}.json")
+        for context in _iter_records(payload, mode):
+            record = context.record
+            if _record_date(record, context.fallback_date) != date_iso:
+                continue
+            result = _result(record.get("result"))
+            if result == "pending":
+                continue
+            identity = canonical_market_identity(
+                record,
+                mode=context.mode,
+                sport=_text(record.get("sport")),
+                date_iso=date_iso,
+            )
+            results[(context.source_key, identity)] = result
+    return results
+
+
+def _sync_artifact_results(
+    destination: Path, model_dir: Path, player_dir: Path
+) -> int:
+    """Refresh result fields on frozen artifacts as the caches grade.
+
+    Selection is never re-run here: candidates, stakes, and ranks stay exactly
+    as published; only each pick's settled outcome and the derived records
+    move.  This keeps the live record prospective while letting it settle.
+    """
+
+    changed = 0
+    for path in sorted(destination.glob("20??-??-??.json")):
+        if path.stem < ENGINE_CUTOVER_DATE:
+            continue
+        payload = _read_json(path)
+        if payload is None:
+            continue
+        pending = [
+            row
+            for section in ("candidates",)
+            for row in payload.get(section) or []
+            if isinstance(row, dict) and _result(row.get("result")) == "pending"
+        ]
+        portfolio = payload.get("portfolio") if isinstance(payload.get("portfolio"), dict) else {}
+        pending += [
+            row
+            for rows in portfolio.values()
+            for row in (rows if isinstance(rows, list) else [])
+            if isinstance(row, dict) and _result(row.get("result")) == "pending"
+        ]
+        if not pending:
+            continue
+        results = _result_map_for_date(model_dir, player_dir, path.stem)
+        if not results:
+            continue
+        updated = False
+        for row in pending:
+            key = (_text(row.get("sourceKey")), _text(row.get("marketIdentity")))
+            result = results.get(key)
+            if result and result != _result(row.get("result")):
+                row["result"] = result
+                updated = True
+        if not updated:
+            continue
+        summary = payload.get("summary")
+        if isinstance(summary, dict) and isinstance(portfolio, dict):
+            live_rows = [row for row in portfolio.get("live") or [] if isinstance(row, dict)]
+            all_rows = [row for row in portfolio.get("all") or [] if isinstance(row, dict)]
+            summary["liveRecord"] = _flat_record(live_rows, stake_weighted=True)
+            research_record = _flat_record(all_rows)
+            summary["shadowRecord"] = research_record
+            summary["researchRecord"] = research_record
+        if _write_json_if_changed(path, payload):
+            changed += 1
+    return changed
+
+
+def _live_rows_from_artifacts(
+    destination: Path, *, before: str | None = None, through: str | None = None
+) -> list[dict[str, Any]]:
+    live_rows: list[dict[str, Any]] = []
+    for path in sorted(destination.glob("20??-??-??.json")):
+        if path.stem < FIRST_LIVE_DATE:
+            continue
+        if before is not None and path.stem >= before:
+            continue
+        if through is not None and path.stem > through:
+            continue
+        payload = _read_json(path)
+        if payload is None:
+            continue
+        portfolio = payload.get("portfolio") if isinstance(payload.get("portfolio"), dict) else {}
+        live_rows.extend(
+            row for row in portfolio.get("live") or [] if isinstance(row, dict)
+        )
+    return live_rows
+
+
+def _cumulative_live_record(
+    live_rows: Sequence[Mapping[str, Any]], through_date: str
+) -> dict[str, Any]:
+    """Stake-weighted record of every live pick from FIRST_LIVE_DATE onward."""
+
+    record = _flat_record(live_rows, stake_weighted=True)
+    record["sinceDate"] = FIRST_LIVE_DATE
+    record["throughDate"] = through_date
+    return record
 
 
 def _target_dates(
@@ -1526,17 +1857,37 @@ def rebuild_profit_desk(
             team_history=_payloads_before(model_dir, target),
             prop_history=_payloads_before(player_dir, target),
         )
+        prior_live_rows = _live_rows_from_artifacts(destination, before=target)
+        payload["summary"]["liveRecordToDate"] = _cumulative_live_record(
+            prior_live_rows + list(payload["portfolio"]["live"]), target
+        )
         if _write_json_if_changed(destination / f"{target}.json", payload):
             changed += 1
         print(
             f"[profit-desk] {target}: {payload['summary']['candidateCount']} candidate(s), "
-            f"{payload['summary']['shadowQualified']} shadow-qualified"
+            f"{payload['summary']['researchQualified']} qualified, "
+            f"{payload['summary']['liveQualified']} live"
         )
 
+    changed += _sync_artifact_results(destination, model_dir, player_dir)
+
     files = sorted(path.name for path in destination.glob("20??-??-??.json"))
+    if files:
+        # Absorb result syncs into the newest artifact's cumulative record.
+        latest_date = files[-1].removesuffix(".json")
+        latest_dated = _read_json(destination / files[-1])
+        if latest_dated is not None and isinstance(latest_dated.get("summary"), dict):
+            cumulative = _cumulative_live_record(
+                _live_rows_from_artifacts(destination, through=latest_date), latest_date
+            )
+            if latest_dated["summary"].get("liveRecordToDate") != cumulative:
+                latest_dated["summary"]["liveRecordToDate"] = cumulative
+                if _write_json_if_changed(destination / files[-1], latest_dated):
+                    changed += 1
     manifest = {
         "engineVersion": ENGINE_VERSION,
         "cutoverDate": ENGINE_CUTOVER_DATE,
+        "firstLiveDate": FIRST_LIVE_DATE,
         "files": files,
     }
     if _write_json_if_changed(destination / "index.json", manifest):

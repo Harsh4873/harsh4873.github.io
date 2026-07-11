@@ -10,7 +10,7 @@ committed JSON in data/
       |
       +--> scheduled ESPN auto-grader --> committed results
       |
-      +--> Profit Desk builder --> dated shadow decision artifacts
+      +--> Profit Desk builder --> dated live decision artifacts
       |
       v
 Vite static build --> GitHub Pages
@@ -26,12 +26,14 @@ The production viewer is intentionally static. It does not load Firebase, authen
   `data/profit_desk/index.json`; the browser never invents a profit score from
   raw picks.
 - Picks receive deterministic browser IDs so client-side ESPN grades can be stored locally.
-- `src/main.ts` renders Home, Search, Rankings, Trends, and Daily from the same pick collection.
+- `src/main.ts` renders Home, Search, Rankings, Best Bets, Parlays, and the
+  Profit Desk from the same pick collection plus the precomputed desk artifact.
 - Rankings are calculated from committed results across all manifest dates.
-- Profit Desk is shadow-only at launch. It requires observed, fresh pricing and
-  a verified no-vig market baseline, uses strictly prior version-compatible
-  evidence, applies shrinkage and an uncertainty penalty, and publishes 0u when
-  promotion gates are not met. See `docs/PROFIT_DESK.md`.
+- Best Bets is the heuristic daily shortlist. Profit Desk is its own tab after
+  Parlays: it requires observed, fresh pricing, uses strictly prior evidence,
+  applies shrinkage and an uncertainty penalty, and stakes only through its
+  qualification lanes (EDGE 1.0u, VALUE 0.5u) — otherwise it publishes 0u and
+  says so. See `docs/PROFIT_DESK.md`.
 - The Refresh button checks ESPN for pending games and stores temporary local grades. The scheduled grader remains authoritative because it writes results into repository JSON.
 
 ## Writer Contract

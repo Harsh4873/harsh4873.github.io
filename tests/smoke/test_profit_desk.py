@@ -10,6 +10,7 @@ from scripts import build_profit_desk as desk
 
 
 DATE = "2026-07-10"
+LIVE_DATE = "2026-07-11"
 
 
 def make_pick(
@@ -84,8 +85,10 @@ def history_payloads(
     losses_per_date: int = 1,
     days: int = 20,
     mode: str = "team",
+    target_date: str = DATE,
+    market: str = "moneyline",
 ) -> list[dict]:
-    target = date.fromisoformat(DATE)
+    target = date.fromisoformat(target_date)
     payloads = []
     for day_index in range(days):
         slate = (target - timedelta(days=days - day_index)).isoformat()
@@ -99,6 +102,7 @@ def history_payloads(
                 "slate_date": slate,
                 "result": result,
                 "pick_id": f"history-{unique}",
+                "market": market,
             }
             if mode == "player":
                 kwargs.update(
@@ -121,10 +125,11 @@ def candidate_for(
     team_history: list[dict] | None = None,
     prop_history: list[dict] | None = None,
     player: bool = False,
+    slate_date: str = DATE,
 ) -> dict:
-    payload = make_payload([pick])
+    payload = make_payload([pick], slate_date=slate_date)
     built = desk.build_profit_desk_payload(
-        DATE,
+        slate_date,
         None if player else payload,
         payload if player else None,
         team_history=team_history or [],
@@ -189,11 +194,17 @@ def test_assumed_one_sided_and_stale_prices_have_exact_blockers_and_tiers():
     assert by_pick["Assumed ML"]["price"]["tier"] == "D"
     assert "assumed_or_non_executable_price" in by_pick["Assumed ML"]["blockers"]
     assert by_pick["Assumed ML"]["estimate"] is None
+    assert by_pick["Assumed ML"]["tier"] == "avoid"
+    # A posted one-sided price is a legitimate VALUE-lane input measured
+    # against its own break-even; it fails on evidence, not provenance.
     assert by_pick["One Side ML"]["price"]["tier"] == "C"
-    assert "unverified_no_vig_probability" in by_pick["One Side ML"]["blockers"]
-    assert by_pick["One Side ML"]["estimate"] is None
+    assert by_pick["One Side ML"]["estimate"] is not None
+    assert by_pick["One Side ML"]["tier"] == "watch"
+    assert "edge_requires_two_sided_price" in by_pick["One Side ML"]["blockers"]
+    assert "value_insufficient_source_samples" in by_pick["One Side ML"]["blockers"]
     assert by_pick["Stale ML"]["price"]["tier"] == "B"
     assert "stale_price" in by_pick["Stale ML"]["blockers"]
+    assert by_pick["Stale ML"]["tier"] == "avoid"
 
 
 def test_three_and_zero_is_explicitly_insufficient():
@@ -216,12 +227,16 @@ def test_three_and_zero_is_explicitly_insufficient():
         )
     candidate = candidate_for(make_pick(), team_history=prior)
     assert candidate["shadowQualified"] is False
+    assert candidate["liveQualified"] is False
+    assert candidate["stakeUnits"] == 0
     assert candidate["evidence"]["sourceSamples"] == 3
     assert candidate["evidence"]["distinctDates"] == 3
     assert {
-        "insufficient_source_samples",
-        "insufficient_segment_samples",
-        "insufficient_distinct_prior_dates",
+        "edge_insufficient_source_samples",
+        "edge_insufficient_segment_samples",
+        "edge_insufficient_distinct_prior_dates",
+        "value_insufficient_source_samples",
+        "value_insufficient_distinct_prior_dates",
     }.issubset(candidate["blockers"])
 
 
@@ -364,11 +379,14 @@ def test_high_raw_probability_cannot_override_negative_conservative_ev():
     )
     assert candidate["rawModelProbabilityIgnored"] == 0.999
     assert candidate["estimate"]["conservativeExpectedValue"] < 0
-    assert "non_positive_conservative_ev" in candidate["blockers"]
-    assert candidate["tier"] == "avoid"
+    assert "edge_non_positive_conservative_ev" in candidate["blockers"]
+    assert "value_non_positive_flat_roi" in candidate["blockers"]
+    assert candidate["tier"] == "watch"
+    assert candidate["stakeUnits"] == 0
+    assert candidate["liveQualified"] is False
 
 
-def test_positive_fixture_exposes_estimate_evidence_and_shadow_only_policy():
+def test_positive_fixture_backfill_slate_qualifies_without_stakes():
     built = desk.build_profit_desk_payload(
         DATE,
         make_payload([make_pick()]),
@@ -377,7 +395,8 @@ def test_positive_fixture_exposes_estimate_evidence_and_shadow_only_policy():
         prop_history=[],
     )
     candidate = built["candidates"][0]
-    assert candidate["tier"] == "shadow"
+    assert candidate["tier"] == "edge"
+    assert candidate["lane"] == "edge"
     assert candidate["stakeUnits"] == 0
     assert candidate["liveQualified"] is False
     assert candidate["price"]["tier"] == "B"
@@ -390,32 +409,158 @@ def test_positive_fixture_exposes_estimate_evidence_and_shadow_only_policy():
     assert candidate["evidence"]["segmentSamples"] == 120
     assert candidate["evidence"]["distinctDates"] == 20
     assert candidate["evidence"]["chronologicalHalvesNonnegative"] is True
-    assert "model-v1" in candidate["evidence"]["sourceEvidenceKey"]
-    assert "policy-v1" in candidate["evidence"]["segmentEvidenceKey"]
-    assert built["policy"]["status"] == "SHADOW_ONLY"
-    assert built["policy"]["firstLiveDate"] is None
+    assert "model-v1" in candidate["evidence"]["segmentEvidenceKey"]
+    assert candidate["evidence"]["policyVersion"] == desk.POLICY_VERSION
+    assert built["phase"] == "research_backfill"
+    assert built["policy"]["status"] == "RESEARCH_BACKFILL"
+    assert built["policy"]["firstLiveDate"] == desk.FIRST_LIVE_DATE
     assert built["summary"]["liveQualified"] == 0
     assert built["summary"]["researchQualified"] == 1
     assert built["portfolio"]["live"] == []
-    assert built["portfolio"]["shadow"][0]["stakeUnits"] == 0
+    assert built["portfolio"]["all"][0]["stakeUnits"] == 0
 
 
-def test_unversioned_selection_policy_cannot_qualify_even_with_large_history():
-    history = history_payloads()
+def test_positive_fixture_live_slate_takes_the_edge_stake():
+    built = desk.build_profit_desk_payload(
+        LIVE_DATE,
+        make_payload([make_pick(slate_date=LIVE_DATE)], slate_date=LIVE_DATE),
+        None,
+        team_history=history_payloads(target_date=LIVE_DATE),
+        prop_history=[],
+    )
+    candidate = built["candidates"][0]
+    assert candidate["tier"] == "edge"
+    assert candidate["liveQualified"] is True
+    assert candidate["stakeUnits"] == desk.EDGE_STAKE_UNITS
+    assert candidate["blockers"] == []
+    assert built["phase"] == "live"
+    assert built["policy"]["status"] == "LIVE"
+    assert built["summary"]["liveQualified"] == 1
+    assert len(built["portfolio"]["live"]) == 1
+    assert built["portfolio"]["live"][0]["stakeUnits"] == desk.EDGE_STAKE_UNITS
+    record = built["summary"]["liveRecord"]
+    assert record["pending"] == 1
+    assert record["settled"] == 0
+
+
+def test_value_lane_stakes_half_unit_on_source_level_flat_roi_evidence():
+    history = history_payloads(
+        wins_per_date=5,
+        losses_per_date=3,
+        days=20,
+        target_date=LIVE_DATE,
+        market="moneyline",
+    )
+    candidate_pick = make_pick(
+        pick="Different Market Total",
+        market="totals",
+        slate_date=LIVE_DATE,
+    )
+    built = desk.build_profit_desk_payload(
+        LIVE_DATE,
+        make_payload([candidate_pick], slate_date=LIVE_DATE),
+        None,
+        team_history=history,
+        prop_history=[],
+    )
+    candidate = built["candidates"][0]
+    assert candidate["evidence"]["sourceSamples"] == 160
+    assert candidate["evidence"]["segmentSamples"] == 0
+    assert candidate["evidence"]["sourceFlatRoi"] > 0
+    assert candidate["tier"] == "value"
+    assert candidate["lane"] == "value"
+    assert candidate["liveQualified"] is True
+    assert candidate["stakeUnits"] == desk.VALUE_STAKE_UNITS
+    assert candidate["blockers"] == []
+    assert "edge_insufficient_segment_samples" in candidate["laneBlockers"]["edge"]
+    assert candidate["estimate"]["value"]["probabilityPositiveEv"] >= 0.70
+
+
+def test_negative_roi_source_cannot_take_a_value_stake():
+    history = history_payloads(
+        wins_per_date=2,
+        losses_per_date=6,
+        days=20,
+        target_date=LIVE_DATE,
+    )
+    candidate = candidate_for(
+        make_pick(slate_date=LIVE_DATE),
+        team_history=history,
+        slate_date=LIVE_DATE,
+    )
+    assert candidate["liveQualified"] is False
+    assert candidate["stakeUnits"] == 0
+    assert "value_non_positive_flat_roi" in candidate["blockers"]
+
+
+def test_scraped_feed_prices_use_source_registry_and_bucket_timestamp():
+    record = make_pick(slate_date=LIVE_DATE, odds=-130, no_vig=None)
+    for key in ("market_priced", "pricing_type", "odds_source", "market_source", "market_updated_at"):
+        record.pop(key, None)
+    payload = {
+        "date": LIVE_DATE,
+        "generatedAt": f"{LIVE_DATE}T12:00:00Z",
+        "models": {
+            "scores24_mlb": {
+                "ok": True,
+                "updatedAt": f"{LIVE_DATE}T10:00:00Z",
+                "picks": [record],
+            }
+        },
+    }
+    built = desk.build_profit_desk_payload(
+        LIVE_DATE, payload, None, team_history=[], prop_history=[]
+    )
+    candidate = built["candidates"][0]
+    price = candidate["price"]
+    assert price["observedExecutable"] is True
+    assert price["tier"] == "C"
+    assert price["source"] == "scraped_feed:scores24_mlb"
+    assert price["timestampField"] == "bucket.updatedAt"
+    assert price["freshPregame"] is True
+    assert candidate["gradeSupported"] is True
+    assert candidate["tier"] == "watch"
+
+
+def test_model_feeds_with_assumed_prices_stay_blocked():
+    record = make_pick(slate_date=LIVE_DATE, odds=-110)
+    record.update({
+        "assumed_odds": -110,
+        "market_priced": None,
+        "pricing_type": "",
+        "odds_source": "",
+        "market_source": "",
+        "market_total_source": "model_output",
+    })
+    payload = make_payload([record], slate_date=LIVE_DATE, source_key="mlb_new")
+    built = desk.build_profit_desk_payload(
+        LIVE_DATE, payload, None, team_history=[], prop_history=[]
+    )
+    candidate = built["candidates"][0]
+    assert candidate["tier"] == "avoid"
+    assert candidate["stakeUnits"] == 0
+    assert "assumed_or_non_executable_price" in candidate["blockers"]
+
+
+def test_selection_policy_is_engine_owned_and_unversioned_feeds_pool_by_source():
+    history = history_payloads(target_date=LIVE_DATE)
     for payload in history:
         for bucket in payload["models"].values():
             for pick in bucket["picks"]:
                 pick.pop("policy_version", None)
+                pick.pop("model_version", None)
 
     candidate = candidate_for(
-        make_pick(policy_version=""),
+        make_pick(policy_version="", model_version="", slate_date=LIVE_DATE),
         team_history=history,
+        slate_date=LIVE_DATE,
     )
     assert candidate["evidence"]["sourceSamples"] == 120
-    assert candidate["evidence"]["policyVersion"] == "unversioned"
-    assert "missing_policy_version" in candidate["blockers"]
-    assert candidate["shadowQualified"] is False
-    assert candidate["liveQualified"] is False
+    assert candidate["evidence"]["policyVersion"] == desk.POLICY_VERSION
+    assert candidate["modelVersion"] == "source_identity:test"
+    assert candidate["shadowQualified"] is True
+    assert candidate["liveQualified"] is True
+    assert candidate["stakeUnits"] > 0
 
 
 def test_portfolio_caps_modes_and_uses_each_game_once():
@@ -428,11 +573,17 @@ def test_portfolio_caps_modes_and_uses_each_game_once():
                     "id": f"{mode}-{index}",
                     "mode": mode,
                     "canonicalGame": game,
-                    "tier": "shadow",
-                    "stakeUnits": 0.0,
+                    "tier": "edge" if index % 2 == 0 else "value",
+                    "lane": "edge" if index % 2 == 0 else "value",
+                    "liveQualified": True,
+                    "stakeUnits": 1.0 if index % 2 == 0 else 0.5,
                     "estimate": {
                         "conservativeExpectedValue": 0.20 - index / 100,
                         "probabilityPositiveEv": 0.99,
+                        "value": {
+                            "conservativeExpectedValue": 0.10 - index / 100,
+                            "probabilityPositiveEv": 0.90,
+                        },
                     },
                     "evidence": {"segmentSamples": 120},
                 }
@@ -441,10 +592,13 @@ def test_portfolio_caps_modes_and_uses_each_game_once():
     assert len(portfolio["team"]) <= 3
     assert len(portfolio["player"]) <= 3
     assert len(portfolio["all"]) <= 6
+    assert len(portfolio["all"]) > 0
     games = [candidate["canonicalGame"] for candidate in portfolio["all"]]
     assert len(games) == len(set(games))
-    assert portfolio["live"] == []
-    assert portfolio["shadow"] == portfolio["all"]
+    assert portfolio["shadow"] == []
+    assert portfolio["live"] == portfolio["all"]
+    lanes = [candidate["lane"] for candidate in portfolio["all"]]
+    assert lanes == sorted(lanes, key=lambda lane: 0 if lane == "edge" else 1)
 
 
 def test_rebuild_respects_cutover_and_writes_deterministic_schema(tmp_path: Path):
@@ -476,8 +630,10 @@ def test_rebuild_respects_cutover_and_writes_deterministic_schema(tmp_path: Path
     assert dated == latest
     assert dated["engineVersion"] == desk.ENGINE_VERSION
     assert dated["generatedAt"] == f"{DATE}T12:00:00Z"
+    assert "liveRecordToDate" in dated["summary"]
     assert index["files"] == [f"{DATE}.json"]
     assert index["cutoverDate"] == DATE
+    assert index["firstLiveDate"] == desk.FIRST_LIVE_DATE
 
     unchanged = desk.rebuild_profit_desk(
         all_dates=True,
@@ -486,3 +642,65 @@ def test_rebuild_respects_cutover_and_writes_deterministic_schema(tmp_path: Path
         output_dir=output_dir,
     )
     assert unchanged == 0
+
+
+def test_result_sync_settles_frozen_live_artifacts_and_cumulative_record(tmp_path: Path):
+    model_dir = tmp_path / "model"
+    prop_dir = tmp_path / "props"
+    output_dir = tmp_path / "profit"
+    model_dir.mkdir()
+    prop_dir.mkdir()
+    next_date = "2026-07-12"
+
+    live_pick = make_pick(slate_date=LIVE_DATE)
+    history = history_payloads(target_date=LIVE_DATE)
+    for index, payload in enumerate(history):
+        slate = payload["date"]
+        (model_dir / f"{slate}.json").write_text(json.dumps(payload), encoding="utf-8")
+    (model_dir / f"{LIVE_DATE}.json").write_text(
+        json.dumps(make_payload([live_pick], slate_date=LIVE_DATE)), encoding="utf-8"
+    )
+
+    changed = desk.rebuild_profit_desk(
+        date_iso=LIVE_DATE,
+        model_cache_dir=model_dir,
+        player_cache_dir=prop_dir,
+        output_dir=output_dir,
+    )
+    assert changed > 0
+    first = json.loads((output_dir / f"{LIVE_DATE}.json").read_text(encoding="utf-8"))
+    assert first["summary"]["liveQualified"] == 1
+    assert first["portfolio"]["live"][0]["result"] == "pending"
+    assert first["summary"]["liveRecordToDate"]["pending"] == 1
+
+    # The pick settles in the cache; a later slate build must sync the frozen
+    # artifact's result and roll it into the cumulative live record.
+    settled_pick = dict(live_pick, result="win")
+    (model_dir / f"{LIVE_DATE}.json").write_text(
+        json.dumps(make_payload([settled_pick], slate_date=LIVE_DATE)), encoding="utf-8"
+    )
+    (model_dir / f"{next_date}.json").write_text(
+        json.dumps(
+            make_payload(
+                [make_pick(slate_date=next_date, pick="Next ML", game="N @ M")],
+                slate_date=next_date,
+            )
+        ),
+        encoding="utf-8",
+    )
+    desk.rebuild_profit_desk(
+        date_iso=next_date,
+        model_cache_dir=model_dir,
+        player_cache_dir=prop_dir,
+        output_dir=output_dir,
+    )
+
+    synced = json.loads((output_dir / f"{LIVE_DATE}.json").read_text(encoding="utf-8"))
+    assert synced["portfolio"]["live"][0]["result"] == "win"
+    assert synced["summary"]["liveRecord"]["wins"] == 1
+    latest = json.loads((output_dir / "latest.json").read_text(encoding="utf-8"))
+    assert latest["date"] == next_date
+    cumulative = latest["summary"]["liveRecordToDate"]
+    assert cumulative["wins"] == 1
+    assert cumulative["netUnits"] == pytest.approx(1.0)
+    assert cumulative["sinceDate"] == desk.FIRST_LIVE_DATE

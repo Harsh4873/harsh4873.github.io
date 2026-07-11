@@ -5313,6 +5313,8 @@ body[data-theme="light"] .your-bet-board { background-color: #fff; }
   background: linear-gradient(145deg, rgba(77,166,255,0.05), transparent 60%), rgba(255,255,255,0.015);
 }
 .profit-candidate::before { content: ''; position: absolute; inset: 0 auto 0 0; width: 3px; background: var(--accent3); }
+.profit-candidate.tier-edge::before,
+.profit-candidate.tier-value::before { background: var(--accent); }
 .profit-candidate.tier-watch::before { background: var(--gold); }
 .profit-candidate.tier-avoid::before { background: var(--danger); }
 .profit-candidate-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
@@ -5324,6 +5326,9 @@ body[data-theme="light"] .your-bet-board { background-color: #fff; }
 .profit-shadow-stake span,
 .profit-shadow-stake small { display: block; color: var(--gold); font: 800 7px 'DM Mono', monospace; letter-spacing: 0.65px; }
 .profit-shadow-stake strong { display: block; margin: 3px 0; color: var(--text); font: 28px/1 'Bebas Neue', sans-serif; }
+.profit-shadow-stake.is-live { border-color: rgba(0,229,160,0.35); background: rgba(0,229,160,0.08); }
+.profit-shadow-stake.is-live span,
+.profit-shadow-stake.is-live small { color: var(--accent); }
 .profit-price-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
 .profit-price-row span { padding: 5px 7px; border: 1px solid var(--border); border-radius: 7px; color: var(--muted); font: 7px 'DM Mono', monospace; }
 .profit-price-row span:first-child { color: var(--text); font-weight: 800; }
