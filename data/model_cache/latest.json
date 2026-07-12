@@ -56631,6 +56631,7 @@
           "raw_model_probability": 0.6198,
           "raw_probability": 0.6198,
           "raw_units": 0.05,
+          "result": "loss",
           "selected_side_implied_probability": 0.5238095238095238,
           "selection": "Under",
           "source": "MLB Model",
@@ -60824,6 +60825,7 @@
           "raw_model_probability": 0.6303,
           "raw_probability": 0.6303,
           "raw_units": 0.06,
+          "result": "loss",
           "selected_odds": -106,
           "selected_side_implied_probability": 0.5238095238095238,
           "selection": "Under",
@@ -63745,6 +63747,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "selected_odds": -125,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
@@ -64481,6 +64484,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "selected_odds": -125,
           "source": "SportyTraderMLB",
           "sport": "MLB",
