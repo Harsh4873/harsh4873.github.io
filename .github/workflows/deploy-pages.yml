@@ -56,6 +56,12 @@ jobs:
           ref: me
           path: me-app
 
+      - name: Checkout habit tracker
+        uses: actions/checkout@v4
+        with:
+          ref: tracker
+          path: tracker-app
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
@@ -68,6 +74,7 @@ jobs:
             package-lock.json
             gym-app/package-lock.json
             me-app/package-lock.json
+            tracker-app/package-lock.json
 
       - name: Install frontend dependencies
         run: npm ci
@@ -78,6 +85,10 @@ jobs:
 
       - name: Install portfolio dependencies
         working-directory: me-app
+        run: npm ci
+
+      - name: Install tracker dependencies
+        working-directory: tracker-app
         run: npm ci
 
       - name: Build site artifact
@@ -104,6 +115,13 @@ jobs:
           mkdir -p ../dist/me
           cp -R dist/. ../dist/me/
 
+      - name: Build habit tracker artifact
+        working-directory: tracker-app
+        run: |
+          npm run build
+          mkdir -p ../dist/tracker
+          cp -R dist/. ../dist/tracker/
+
       - name: Verify styled Pages artifact
         run: |
           grep -q 'rel="stylesheet"' dist/index.html
@@ -122,6 +140,10 @@ jobs:
           grep -q '/me/assets/' dist/me/index.html
           test -n "$(find dist/me/assets -maxdepth 1 -name '*.css' -print -quit)"
           test -n "$(find dist/me/assets -maxdepth 1 -name '*.js' -print -quit)"
+          test -f dist/tracker/index.html
+          grep -q '/tracker/assets/' dist/tracker/index.html
+          test -n "$(find dist/tracker/assets -maxdepth 1 -name '*.css' -print -quit)"
+          test -n "$(find dist/tracker/assets -maxdepth 1 -name '*.js' -print -quit)"
           python scripts/site_upcheck.py
 
       - name: Upload artifact
