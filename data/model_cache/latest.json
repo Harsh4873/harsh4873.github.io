@@ -56586,6 +56586,7 @@
           "decision": "LEAN",
           "direction": "Under",
           "edge": 3.57,
+          "game_start_time": "2026-07-12T16:15Z",
           "home_team": "Pittsburgh Pirates",
           "kelly": 5.04,
           "line": 8.5,
@@ -56634,6 +56635,7 @@
           "selection": "Under",
           "source": "MLB Model",
           "sport": "MLB",
+          "start_time": "2026-07-12T16:15Z",
           "units": 0.25,
           "validation_lean": true,
           "validation_reason": "validation fallback: mlb_new had zero strict BET/LEAN publications; published top raw model signal as a small LEAN for tracking",
@@ -57163,6 +57165,7 @@
           "decision": "LEAN",
           "direction": "Under",
           "edge": 3.19,
+          "game_start_time": "2026-07-12T17:35Z",
           "home_team": "Washington Nationals",
           "kelly": 4.81,
           "line": 9.5,
@@ -57223,6 +57226,7 @@
           "selection": "Under",
           "source": "MLB Model",
           "sport": "MLB",
+          "start_time": "2026-07-12T17:35Z",
           "units": 0.25,
           "validation_lean": true,
           "validation_reason": "validation fallback: mlb_new had zero strict BET/LEAN publications; published top raw model signal as a small LEAN for tracking",
@@ -65658,6 +65662,7 @@
           "decision": "LEAN",
           "edge": 3.87,
           "game": "Chicago Sky @ Dallas Wings",
+          "game_start_time": "2026-07-12T23:00Z",
           "guardrail_reasons": [
             "new totals market capped at LEAN while its live record is established"
           ],
@@ -65729,6 +65734,7 @@
           "selection": "Under",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-07-12T23:00Z",
           "units": 0.01,
           "vegas": 177.5
         },
