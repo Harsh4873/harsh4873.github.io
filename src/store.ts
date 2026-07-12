@@ -1,18 +1,33 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { toDateKey } from './dates';
-import { HABIT_ICONS, createInitialState, type Habit, type TrackerProfile, type TrackerState } from './model';
+import {
+  HABIT_ICONS,
+  createInitialState,
+  makeGenerationId,
+  type Habit,
+  type HabitEntry,
+  type TrackerProfile,
+  type TrackerState,
+} from './model';
+import {
+  LEGACY_GENERATION_UPDATED_AT,
+  createReplacementGeneration,
+  isDefaultTrackerProfile,
+  isUntouchedStarterHabit,
+} from './sync-core';
 
 const DATABASE_NAME = 'daymark-tracker';
 const DATABASE_VERSION = 1;
 const STORE_NAME = 'tracker-state';
 const STATE_KEY = 'current';
-const LOCAL_KEY = 'daymark-tracker-state-v1';
+const LOCAL_KEY = 'daymark-tracker-state-v2';
+const LEGACY_LOCAL_KEY = 'daymark-tracker-state-v1';
 const RECOVERY_PREFIX = 'daymark-recovery';
 
 type StorageMode = 'indexeddb' | 'localstorage';
 
 interface StoredEnvelope {
-  storageFormat: 'daymark-v1';
+  storageFormat: 'daymark-v2';
   savedAt: string;
   state: TrackerState;
 }
@@ -21,6 +36,14 @@ interface StoredCandidate {
   state: TrackerState;
   savedAt: number;
 }
+
+export type TrackerMutation =
+  | { type: 'entry'; dateKey: string; habitId: string; entry: HabitEntry }
+  | { type: 'habits'; habits: Habit[] }
+  | { type: 'profile'; profile: TrackerProfile }
+  | { type: 'replace'; state: TrackerState };
+
+export type TrackerMutationListener = (mutation: TrackerMutation) => void;
 
 function isObject(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null;
@@ -40,102 +63,155 @@ function isDateKey(value: unknown): value is string {
   return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day;
 }
 
-export function parseTrackerState(value: unknown): TrackerState {
-  if (!isObject(value) || value.version !== 1) {
-    throw new Error('This is not a Daymark v1 backup.');
+function isTimestamp(value: unknown): value is string {
+  return typeof value === 'string' && Number.isFinite(Date.parse(value));
+}
+
+export function parseTrackerState(value: unknown, migrationTimestamp = new Date().toISOString()): TrackerState {
+  if (!isObject(value) || ![1, 2].includes(value.version as number)) {
+    throw new Error('This is not a supported Daymark backup.');
   }
   if (!isObject(value.profile) || !Array.isArray(value.habits) || !isObject(value.entries)) {
     throw new Error('The backup is missing profile, habit, or entry data.');
   }
 
-  const profile = value.profile as unknown as TrackerProfile;
+  const isVersionTwo = value.version === 2;
   if (
-    typeof profile.displayName !== 'string'
-    || ![0, 1].includes(profile.weekStartsOn)
-    || !THEMES.has(profile.theme)
-    || (profile.lastBackupAt !== undefined && typeof profile.lastBackupAt !== 'string')
+    isVersionTwo
+    && (
+      typeof value.generationId !== 'string'
+      || !value.generationId
+      || value.generationId.length > 200
+      || !isTimestamp(value.generationUpdatedAt)
+      || (value.generationPending !== undefined && typeof value.generationPending !== 'boolean')
+    )
+  ) {
+    throw new Error('The backup sync generation is invalid.');
+  }
+
+  const rawProfile = value.profile;
+  if (
+    typeof rawProfile.displayName !== 'string'
+    || ![0, 1].includes(rawProfile.weekStartsOn as number)
+    || typeof rawProfile.theme !== 'string'
+    || !THEMES.has(rawProfile.theme)
+    || (rawProfile.lastBackupAt !== undefined && !isTimestamp(rawProfile.lastBackupAt))
+    || (isVersionTwo && !isTimestamp(rawProfile.updatedAt))
   ) {
     throw new Error('The backup profile is invalid.');
   }
+  const profileCandidate: TrackerProfile = {
+    displayName: rawProfile.displayName,
+    weekStartsOn: rawProfile.weekStartsOn as 0 | 1,
+    theme: rawProfile.theme as TrackerProfile['theme'],
+    updatedAt: isTimestamp(rawProfile.updatedAt) ? rawProfile.updatedAt : migrationTimestamp,
+    ...(isTimestamp(rawProfile.lastBackupAt) ? { lastBackupAt: rawProfile.lastBackupAt } : {}),
+  };
+  const profile: TrackerProfile = !isVersionTwo && isDefaultTrackerProfile(profileCandidate)
+    ? { ...profileCandidate, updatedAt: LEGACY_GENERATION_UPDATED_AT }
+    : profileCandidate;
 
-  const habits = value.habits as unknown as Habit[];
   const habitIds = new Set<string>();
-  habits.forEach((habit) => {
+  const habits = value.habits.map((rawHabit, index): Habit => {
+    if (!isObject(rawHabit)) throw new Error('The backup contains an invalid habit.');
     if (
-      !isObject(habit)
-      || typeof habit.id !== 'string'
-      || !habit.id
-      || typeof habit.name !== 'string'
-      || typeof habit.category !== 'string'
-      || typeof habit.unit !== 'string'
-      || typeof habit.color !== 'string'
-      || !/^#[0-9a-f]{6}$/i.test(habit.color)
-      || !HABIT_ICONS.includes(habit.icon)
-      || !METRICS.has(habit.metric)
-      || !PERIODS.has(habit.period)
-      || !DIRECTIONS.has(habit.direction)
-      || !TIME_SLOTS.has(habit.timeSlot)
-      || !isDateKey(habit.startDate)
-      || typeof habit.createdAt !== 'string'
-      || (habit.archivedAt !== undefined && !isDateKey(habit.archivedAt))
+      typeof rawHabit.id !== 'string'
+      || !rawHabit.id
+      || rawHabit.id.length > 300
+      || typeof rawHabit.name !== 'string'
+      || typeof rawHabit.category !== 'string'
+      || typeof rawHabit.unit !== 'string'
+      || typeof rawHabit.color !== 'string'
+      || !/^#[0-9a-f]{6}$/i.test(rawHabit.color)
+      || typeof rawHabit.icon !== 'string'
+      || !HABIT_ICONS.includes(rawHabit.icon as Habit['icon'])
+      || typeof rawHabit.metric !== 'string'
+      || !METRICS.has(rawHabit.metric)
+      || typeof rawHabit.period !== 'string'
+      || !PERIODS.has(rawHabit.period)
+      || typeof rawHabit.direction !== 'string'
+      || !DIRECTIONS.has(rawHabit.direction)
+      || typeof rawHabit.timeSlot !== 'string'
+      || !TIME_SLOTS.has(rawHabit.timeSlot)
+      || !isDateKey(rawHabit.startDate)
+      || !isTimestamp(rawHabit.createdAt)
+      || (isVersionTwo && (!isTimestamp(rawHabit.updatedAt) || !Number.isInteger(rawHabit.order) || (rawHabit.order as number) < 0))
+      || (rawHabit.archivedAt !== undefined && !isDateKey(rawHabit.archivedAt))
     ) {
       throw new Error('The backup contains an invalid habit.');
     }
-    if (habitIds.has(habit.id)) throw new Error('The backup contains duplicate habit IDs.');
-    habitIds.add(habit.id);
-    if (!Number.isFinite(habit.target) || habit.target <= 0) {
-      throw new Error(`The goal for “${habit.name}” is invalid.`);
+    if (habitIds.has(rawHabit.id)) throw new Error('The backup contains duplicate habit IDs.');
+    habitIds.add(rawHabit.id);
+    if (typeof rawHabit.target !== 'number' || !Number.isFinite(rawHabit.target) || rawHabit.target <= 0) {
+      throw new Error(`The goal for “${rawHabit.name}” is invalid.`);
     }
-    if (!Number.isFinite(habit.increment) || habit.increment <= 0) {
-      throw new Error(`The quick increment for “${habit.name}” is invalid.`);
+    if (typeof rawHabit.increment !== 'number' || !Number.isFinite(rawHabit.increment) || rawHabit.increment <= 0) {
+      throw new Error(`The quick increment for “${rawHabit.name}” is invalid.`);
     }
-    if (habit.metric === 'check') {
-      const maximum = habit.period === 'day' ? 1 : habit.period === 'week' ? 7 : 31;
-      if (habit.direction !== 'atLeast' || !Number.isInteger(habit.target) || habit.target > maximum) {
-        throw new Error(`The check goal for “${habit.name}” is not reachable with one check per day.`);
+    if (rawHabit.metric === 'check') {
+      const maximum = rawHabit.period === 'day' ? 1 : rawHabit.period === 'week' ? 7 : 31;
+      if (rawHabit.direction !== 'atLeast' || !Number.isInteger(rawHabit.target) || rawHabit.target > maximum) {
+        throw new Error(`The check goal for “${rawHabit.name}” is not reachable with one check per day.`);
       }
     }
-    if (!isObject(habit.schedule) || !['everyday', 'selectedDays', 'interval'].includes(habit.schedule.type)) {
-      throw new Error(`The schedule for “${habit.name}” is invalid.`);
+    if (!isObject(rawHabit.schedule) || !['everyday', 'selectedDays', 'interval'].includes(rawHabit.schedule.type as string)) {
+      throw new Error(`The schedule for “${rawHabit.name}” is invalid.`);
     }
-    if (habit.schedule.type === 'selectedDays') {
+    if (rawHabit.schedule.type === 'selectedDays') {
+      const days = rawHabit.schedule.days;
       if (
-        !Array.isArray(habit.schedule.days)
-        || habit.schedule.days.length === 0
-        || habit.schedule.days.some((day) => !Number.isInteger(day) || day < 0 || day > 6)
-        || new Set(habit.schedule.days).size !== habit.schedule.days.length
+        !Array.isArray(days)
+        || days.length === 0
+        || days.some((day) => !Number.isInteger(day) || (day as number) < 0 || (day as number) > 6)
+        || new Set(days).size !== days.length
       ) {
-        throw new Error(`The selected days for “${habit.name}” are invalid.`);
+        throw new Error(`The selected days for “${rawHabit.name}” are invalid.`);
       }
     }
-    if (habit.schedule.type === 'interval') {
-      if (!Number.isInteger(habit.schedule.every) || habit.schedule.every < 1 || !['day', 'week'].includes(habit.schedule.unit)) {
-        throw new Error(`The interval for “${habit.name}” is invalid.`);
+    if (rawHabit.schedule.type === 'interval') {
+      if (
+        !Number.isInteger(rawHabit.schedule.every)
+        || (rawHabit.schedule.every as number) < 1
+        || !['day', 'week'].includes(rawHabit.schedule.unit as string)
+      ) {
+        throw new Error(`The interval for “${rawHabit.name}” is invalid.`);
       }
     }
-    if (habit.pauses !== undefined) {
-      if (!Array.isArray(habit.pauses) || habit.pauses.some((pause) => (
+    if (rawHabit.pauses !== undefined) {
+      if (!Array.isArray(rawHabit.pauses) || rawHabit.pauses.some((pause) => (
         !isObject(pause)
         || !isDateKey(pause.start)
         || (pause.end !== undefined && (!isDateKey(pause.end) || pause.end < pause.start))
       ))) {
-        throw new Error(`The pause history for “${habit.name}” is invalid.`);
+        throw new Error(`The pause history for “${rawHabit.name}” is invalid.`);
       }
-      const openPauses = habit.pauses.filter((pause) => !pause.end);
+      const pauses = rawHabit.pauses as Array<{ start: string; end?: string }>;
+      const openPauses = pauses.filter((pause) => !pause.end);
       if (
         openPauses.length > 1
-        || (openPauses.length === 1 && (!habit.archivedAt || openPauses[0].start !== habit.archivedAt))
-        || (Boolean(habit.archivedAt) && habit.pauses.length > 0 && openPauses.length !== 1)
+        || (openPauses.length === 1 && (!rawHabit.archivedAt || openPauses[0].start !== rawHabit.archivedAt))
+        || (Boolean(rawHabit.archivedAt) && pauses.length > 0 && openPauses.length !== 1)
       ) {
-        throw new Error(`The current pause for “${habit.name}” is invalid.`);
+        throw new Error(`The current pause for “${rawHabit.name}” is invalid.`);
       }
     }
+
+    const normalizedHabit: Habit = {
+      ...(rawHabit as unknown as Omit<Habit, 'updatedAt' | 'order'>),
+      updatedAt: isTimestamp(rawHabit.updatedAt) ? rawHabit.updatedAt : migrationTimestamp,
+      order: typeof rawHabit.order === 'number' ? rawHabit.order : index,
+    };
+    return !isVersionTwo && isUntouchedStarterHabit(normalizedHabit)
+      ? { ...normalizedHabit, updatedAt: LEGACY_GENERATION_UPDATED_AT }
+      : normalizedHabit;
   });
 
+  const entries: TrackerState['entries'] = {};
   Object.entries(value.entries).forEach(([dateKey, rawEntries]) => {
     if (!isDateKey(dateKey) || !isObject(rawEntries)) {
       throw new Error('The backup contains an invalid entry date.');
     }
+    const normalizedDay: Record<string, HabitEntry> = {};
     Object.entries(rawEntries).forEach(([habitId, rawEntry]) => {
       if (!habitIds.has(habitId) || !isObject(rawEntry)) {
         throw new Error(`The backup contains an entry for an unknown habit on ${dateKey}.`);
@@ -144,24 +220,39 @@ export function parseTrackerState(value: unknown): TrackerState {
         typeof rawEntry.value !== 'number'
         || !Number.isFinite(rawEntry.value)
         || rawEntry.value < 0
-        || typeof rawEntry.updatedAt !== 'string'
+        || !isTimestamp(rawEntry.updatedAt)
         || (rawEntry.hasValue !== undefined && typeof rawEntry.hasValue !== 'boolean')
         || (rawEntry.skipped !== undefined && typeof rawEntry.skipped !== 'boolean')
         || (rawEntry.note !== undefined && typeof rawEntry.note !== 'string')
       ) {
         throw new Error(`The backup contains an invalid entry on ${dateKey}.`);
       }
+      normalizedDay[habitId] = rawEntry as unknown as HabitEntry;
     });
+    entries[dateKey] = normalizedDay;
   });
 
-  return value as unknown as TrackerState;
+  return {
+    version: 2,
+    generationId: isVersionTwo ? value.generationId as string : 'local-v1',
+    generationUpdatedAt: isVersionTwo ? value.generationUpdatedAt as string : '1970-01-01T00:00:00.000Z',
+    generationPending: isVersionTwo ? value.generationPending === true : false,
+    profile,
+    habits: habits.sort((left, right) => left.order - right.order || left.id.localeCompare(right.id)),
+    entries,
+  };
 }
 
 function parseStoredCandidate(value: unknown): StoredCandidate {
-  if (isObject(value) && value.storageFormat === 'daymark-v1' && typeof value.savedAt === 'string' && 'state' in value) {
+  if (
+    isObject(value)
+    && ['daymark-v1', 'daymark-v2'].includes(value.storageFormat as string)
+    && typeof value.savedAt === 'string'
+    && 'state' in value
+  ) {
     const savedAt = Date.parse(value.savedAt);
     if (!Number.isFinite(savedAt)) throw new Error('The local storage timestamp is invalid.');
-    return { state: parseTrackerState(value.state), savedAt };
+    return { state: parseTrackerState(value.state, value.savedAt), savedAt };
   }
   // Migrate the original raw-state storage shape without discarding it.
   return { state: parseTrackerState(value), savedAt: 0 };
@@ -213,26 +304,44 @@ async function writeIndexedValue(value: unknown, key = STATE_KEY) {
   });
 }
 
-async function loadState(): Promise<{ state: TrackerState; mode: StorageMode; warning?: string; preserveFirstSave?: boolean }> {
+async function clearIndexedState() {
+  const database = await openDatabase();
+  return new Promise<void>((resolve, reject) => {
+    const transaction = database.transaction(STORE_NAME, 'readwrite');
+    transaction.objectStore(STORE_NAME).clear();
+    transaction.oncomplete = () => {
+      database.close();
+      resolve();
+    };
+    transaction.onerror = () => {
+      database.close();
+      reject(transaction.error ?? new Error('Could not clear local data.'));
+    };
+  });
+}
+
+async function loadState(): Promise<{ state: TrackerState; mode: StorageMode; warning?: string; preserveFirstSave?: boolean; hadStoredState: boolean }> {
   let foundCorruption = false;
   const recoveryKey = `${RECOVERY_PREFIX}-${new Date().toISOString()}`;
   let localCandidate: StoredCandidate | undefined;
   let indexedCandidate: StoredCandidate | undefined;
 
   try {
-    const raw = localStorage.getItem(LOCAL_KEY);
-    if (raw) {
+    [LOCAL_KEY, LEGACY_LOCAL_KEY].forEach((key) => {
+      const raw = localStorage.getItem(key);
+      if (!raw) return;
       try {
-        localCandidate = parseStoredCandidate(JSON.parse(raw));
+        const candidate = parseStoredCandidate(JSON.parse(raw));
+        if (!localCandidate || candidate.savedAt > localCandidate.savedAt) localCandidate = candidate;
       } catch {
         foundCorruption = true;
         try {
-          localStorage.setItem(recoveryKey, raw);
+          localStorage.setItem(`${recoveryKey}-${key}`, raw);
         } catch {
           // The original key remains untouched until an intentional user edit.
         }
       }
-    }
+    });
   } catch {
     // Restricted localStorage can still fall back to IndexedDB.
   }
@@ -262,6 +371,7 @@ async function loadState(): Promise<{ state: TrackerState; mode: StorageMode; wa
       state: candidate.state,
       mode: useIndexed ? 'indexeddb' : 'localstorage',
       warning: foundCorruption ? 'A damaged storage mirror was preserved; Daymark recovered from the valid copy.' : undefined,
+      hadStoredState: true,
     };
   }
 
@@ -270,6 +380,7 @@ async function loadState(): Promise<{ state: TrackerState; mode: StorageMode; wa
     mode: 'indexeddb',
     warning: foundCorruption ? 'Daymark found damaged local data and preserved a recovery snapshot. Starter data is shown until you import a known-good backup or make a new edit.' : undefined,
     preserveFirstSave: foundCorruption,
+    hadStoredState: false,
   };
 }
 
@@ -277,6 +388,7 @@ export interface TrackerStore {
   state: TrackerState | null;
   storageMode: StorageMode;
   storageWarning?: string;
+  hadStoredState: boolean;
   setEntryValue: (habitId: string, dateKey: string, value: number) => void;
   incrementEntry: (habitId: string, dateKey: string, amount: number) => void;
   toggleCheck: (habitId: string, dateKey: string) => void;
@@ -289,14 +401,22 @@ export interface TrackerStore {
   replaceState: (state: TrackerState) => void;
   resetState: () => void;
   markBackedUp: () => void;
+  applySyncedState: (state: TrackerState) => void;
+  subscribeMutations: (listener: TrackerMutationListener) => () => void;
+  clearLocalData: () => Promise<void>;
 }
 
 export function useTrackerStore(): TrackerStore {
   const [state, setState] = useState<TrackerState | null>(null);
   const [storageMode, setStorageMode] = useState<StorageMode>('indexeddb');
   const [storageWarning, setStorageWarning] = useState<string>();
+  const [hadStoredState, setHadStoredState] = useState(false);
   const hydrated = useRef(false);
   const skipNextSave = useRef(false);
+  const persistenceSuspended = useRef(false);
+  const pendingLocalWrites = useRef(new Set<Promise<void>>());
+  const stateRef = useRef<TrackerState | null>(null);
+  const mutationListeners = useRef(new Set<TrackerMutationListener>());
 
   useEffect(() => {
     let active = true;
@@ -304,9 +424,11 @@ export function useTrackerStore(): TrackerStore {
       if (!active) return;
       hydrated.current = true;
       skipNextSave.current = Boolean(loaded.preserveFirstSave);
+      stateRef.current = loaded.state;
       setState(loaded.state);
       setStorageMode(loaded.mode);
       setStorageWarning(loaded.warning);
+      setHadStoredState(loaded.hadStoredState);
     });
     return () => {
       active = false;
@@ -314,31 +436,36 @@ export function useTrackerStore(): TrackerStore {
   }, []);
 
   useEffect(() => {
-    if (!state || !hydrated.current) return;
+    if (!state || !hydrated.current || persistenceSuspended.current) return;
     if (skipNextSave.current) {
       skipNextSave.current = false;
       return;
     }
     let localSaved = false;
     const envelope: StoredEnvelope = {
-      storageFormat: 'daymark-v1',
+      storageFormat: 'daymark-v2',
       savedAt: new Date().toISOString(),
       state,
     };
     try {
       localStorage.setItem(LOCAL_KEY, JSON.stringify(envelope));
+      localStorage.removeItem(LEGACY_LOCAL_KEY);
       localSaved = true;
     } catch {
       // IndexedDB remains available when localStorage is full or restricted.
     }
 
     const persistIndexed = () => {
-      void writeIndexedValue(envelope)
+      if (persistenceSuspended.current) return;
+      const write = writeIndexedValue(envelope);
+      pendingLocalWrites.current.add(write);
+      void write
         .then(() => setStorageMode('indexeddb'))
         .catch(() => {
           if (localSaved) setStorageMode('localstorage');
           else setStorageWarning('This browser is blocking both local storage systems. Export any visible data before leaving this page.');
-        });
+        })
+        .finally(() => pendingLocalWrites.current.delete(write));
     };
     if (!localSaved) {
       persistIndexed();
@@ -348,10 +475,24 @@ export function useTrackerStore(): TrackerStore {
     return () => window.clearTimeout(timeout);
   }, [state]);
 
+  const commit = useCallback((
+    update: (current: TrackerState) => TrackerState,
+    describeMutation: (next: TrackerState, previous: TrackerState) => TrackerMutation,
+  ) => {
+    const previous = stateRef.current;
+    if (!previous) return;
+    const next = update(previous);
+    if (next === previous) return;
+    stateRef.current = next;
+    setState(next);
+    setHadStoredState(true);
+    const mutation = describeMutation(next, previous);
+    mutationListeners.current.forEach((listener) => listener(mutation));
+  }, []);
+
   const updateEntry = useCallback(
     (habitId: string, dateKey: string, transform: (current?: TrackerState['entries'][string][string]) => TrackerState['entries'][string][string] | null) => {
-      setState((current) => {
-        if (!current) return current;
+      commit((current) => {
         const dayEntries = { ...(current.entries[dateKey] ?? {}) };
         const nextEntry = transform(dayEntries[habitId]);
         if (nextEntry) dayEntries[habitId] = nextEntry;
@@ -360,9 +501,14 @@ export function useTrackerStore(): TrackerStore {
         if (Object.keys(dayEntries).length) entries[dateKey] = dayEntries;
         else delete entries[dateKey];
         return { ...current, entries };
-      });
+      }, (next) => ({
+        type: 'entry',
+        dateKey,
+        habitId,
+        entry: next.entries[dateKey][habitId],
+      }));
     },
-    [],
+    [commit],
   );
 
   const setEntryValue = useCallback((habitId: string, dateKey: string, value: number) => {
@@ -422,25 +568,31 @@ export function useTrackerStore(): TrackerStore {
   }, [updateEntry]);
 
   const saveHabit = useCallback((habit: Habit) => {
-    setState((current) => {
-      if (!current) return current;
+    const now = new Date().toISOString();
+    commit((current) => {
       const existingIndex = current.habits.findIndex((candidate) => candidate.id === habit.id);
       const habits = [...current.habits];
-      if (existingIndex >= 0) habits[existingIndex] = habit;
-      else habits.push(habit);
+      const nextHabit: Habit = {
+        ...habit,
+        updatedAt: now,
+        order: existingIndex >= 0 ? current.habits[existingIndex].order : habits.length,
+      };
+      if (existingIndex >= 0) habits[existingIndex] = nextHabit;
+      else habits.push(nextHabit);
       return { ...current, habits };
-    });
+    }, (next) => ({ type: 'habits', habits: next.habits.filter((candidate) => candidate.id === habit.id) }));
     if ('storage' in navigator && 'persist' in navigator.storage) {
       void navigator.storage.persist().catch(() => false);
     }
-  }, []);
+  }, [commit]);
 
   const archiveHabit = useCallback((habitId: string, archive: boolean) => {
-    setState((current) => current ? {
+    const now = new Date().toISOString();
+    commit((current) => ({
       ...current,
       habits: current.habits.map((habit) => {
         if (habit.id !== habitId) return habit;
-        const next = { ...habit };
+        const next = { ...habit, updatedAt: now };
         const today = toDateKey(new Date());
         if (archive) {
           next.archivedAt = today;
@@ -456,12 +608,13 @@ export function useTrackerStore(): TrackerStore {
         }
         return next;
       }),
-    } : current);
-  }, []);
+    }), (next) => ({ type: 'habits', habits: next.habits.filter((habit) => habit.id === habitId) }));
+  }, [commit]);
 
   const moveHabit = useCallback((habitId: string, direction: -1 | 1) => {
-    setState((current) => {
-      if (!current) return current;
+    const now = new Date().toISOString();
+    const affectedIds = new Set<string>();
+    commit((current) => {
       const index = current.habits.findIndex((habit) => habit.id === habitId);
       const activeIndices = current.habits
         .map((habit, habitIndex) => habit.archivedAt ? -1 : habitIndex)
@@ -472,25 +625,74 @@ export function useTrackerStore(): TrackerStore {
       const target = activeIndices[targetPosition];
       const habits = [...current.habits];
       [habits[index], habits[target]] = [habits[target], habits[index]];
+      affectedIds.add(habits[index].id);
+      affectedIds.add(habits[target].id);
+      habits[index] = { ...habits[index], order: index, updatedAt: now };
+      habits[target] = { ...habits[target], order: target, updatedAt: now };
       return { ...current, habits };
-    });
-  }, []);
+    }, (next) => ({ type: 'habits', habits: next.habits.filter((habit) => affectedIds.has(habit.id)) }));
+  }, [commit]);
 
   const updateProfile = useCallback((patch: Partial<TrackerProfile>) => {
-    setState((current) => current ? {
+    const now = new Date().toISOString();
+    commit((current) => ({
       ...current,
-      profile: { ...current.profile, ...patch },
-    } : current);
+      profile: { ...current.profile, ...patch, updatedAt: now },
+    }), (next) => ({ type: 'profile', profile: next.profile }));
+  }, [commit]);
+
+  const replaceState = useCallback((nextState: TrackerState) => {
+    const now = new Date().toISOString();
+    const imported = parseTrackerState(nextState, now);
+    const replacement = createReplacementGeneration(imported, makeGenerationId(), now);
+    commit(() => replacement, () => ({ type: 'replace', state: replacement }));
+  }, [commit]);
+
+  const resetState = useCallback(() => {
+    const now = new Date().toISOString();
+    const replacement = createInitialState({
+      generationId: makeGenerationId(),
+      generationUpdatedAt: now,
+      generationPending: true,
+      now,
+    });
+    commit(() => replacement, () => ({ type: 'replace', state: replacement }));
+  }, [commit]);
+  const markBackedUp = useCallback(() => updateProfile({ lastBackupAt: new Date().toISOString() }), [updateProfile]);
+
+  const applySyncedState = useCallback((nextState: TrackerState) => {
+    const normalized = parseTrackerState(nextState);
+    stateRef.current = normalized;
+    setState(normalized);
+    setHadStoredState(true);
   }, []);
 
-  const replaceState = useCallback((nextState: TrackerState) => setState(parseTrackerState(nextState)), []);
-  const resetState = useCallback(() => setState(createInitialState()), []);
-  const markBackedUp = useCallback(() => updateProfile({ lastBackupAt: new Date().toISOString() }), [updateProfile]);
+  const subscribeMutations = useCallback((listener: TrackerMutationListener) => {
+    mutationListeners.current.add(listener);
+    return () => mutationListeners.current.delete(listener);
+  }, []);
+
+  const clearLocalData = useCallback(async () => {
+    persistenceSuspended.current = true;
+    await Promise.allSettled([...pendingLocalWrites.current]);
+    try {
+      localStorage.removeItem(LOCAL_KEY);
+      localStorage.removeItem(LEGACY_LOCAL_KEY);
+      for (let index = localStorage.length - 1; index >= 0; index -= 1) {
+        const key = localStorage.key(index);
+        if (key?.startsWith(RECOVERY_PREFIX)) localStorage.removeItem(key);
+      }
+    } catch {
+      // IndexedDB is still cleared below when localStorage is restricted.
+    }
+    await clearIndexedState();
+  }, []);
 
   return {
     state,
     storageMode,
     storageWarning,
+    hadStoredState,
     setEntryValue,
     incrementEntry,
     toggleCheck,
@@ -503,5 +705,8 @@ export function useTrackerStore(): TrackerStore {
     replaceState,
     resetState,
     markBackedUp,
+    applySyncedState,
+    subscribeMutations,
+    clearLocalData,
   };
 }

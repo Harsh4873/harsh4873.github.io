@@ -1,9 +1,13 @@
 import {
+  CircleAlert,
   CalendarDays,
   CalendarRange,
   CheckSquare2,
+  Cloud,
+  CloudOff,
   Grid3X3,
   HardDrive,
+  LoaderCircle,
   Moon,
   Settings2,
   ShieldCheck,
@@ -15,6 +19,7 @@ import { useEffect, useRef, useState } from 'react';
 import { clampToToday } from './dates';
 import { isHabitActiveOn } from './metrics';
 import { useTrackerStore } from './store';
+import { useDaymarkSync, type SyncStatus } from './useDaymarkSync';
 import { MonthView } from './views/MonthView';
 import { ProfileView } from './views/ProfileView';
 import { TodayView } from './views/TodayView';
@@ -30,6 +35,13 @@ const NAVIGATION: Array<{ id: ViewId; label: string; shortLabel: string; icon: L
   { id: 'year', label: 'Year', shortLabel: 'Year', icon: Grid3X3 },
   { id: 'profile', label: 'Profile', shortLabel: 'Profile', icon: UserRound },
 ];
+
+const SYNC_PRESENTATION: Record<SyncStatus, { label: string; icon: LucideIcon }> = {
+  synced: { label: 'Synced', icon: Cloud },
+  syncing: { label: 'Syncing', icon: LoaderCircle },
+  offline: { label: 'Offline', icon: CloudOff },
+  'action-needed': { label: 'Action needed', icon: CircleAlert },
+};
 
 function currentView(): ViewId {
   const hash = window.location.hash.replace('#', '') as ViewId;
@@ -49,6 +61,7 @@ function DaymarkLogo() {
 
 export default function App() {
   const store = useTrackerStore();
+  const sync = useDaymarkSync(store);
   const [view, setView] = useState<ViewId>(currentView);
   const [dailyDate, setDailyDate] = useState(new Date());
   const [weekDate, setWeekDate] = useState(new Date());
@@ -106,12 +119,14 @@ export default function App() {
     return (
       <div className="loading-screen" role="status">
         <DaymarkLogo />
-        <span>Opening your local record…</span>
+        <span>Opening your local-first record…</span>
       </div>
     );
   }
 
   const state = store.state;
+  const syncPresentation = SYNC_PRESENTATION[sync.status];
+  const SyncIcon = syncPresentation.icon;
   const dailyHabits = state.habits.filter((habit) => isHabitActiveOn(habit, dailyDate));
   function toggleTheme() {
     store.updateProfile({ theme: resolvedTheme === 'dark' ? 'light' : 'dark' });
@@ -146,10 +161,16 @@ export default function App() {
         </nav>
 
         <div className="header-tools">
-          <span className="local-status" title="Habit data stays in this browser">
-            <ShieldCheck aria-hidden="true" />
-            <span>Local only</span>
-          </span>
+          <button
+            type="button"
+            className={`sync-status sync-status-${sync.status}`}
+            title={sync.message ?? `${syncPresentation.label}. Open sync settings.`}
+            aria-label={`${syncPresentation.label}. Open sync settings.`}
+            onClick={() => navigate('profile')}
+          >
+            <SyncIcon aria-hidden="true" />
+            <span>{syncPresentation.label}</span>
+          </button>
           <button type="button" className="theme-toggle" onClick={toggleTheme} aria-label={`Switch to ${resolvedTheme === 'dark' ? 'light' : 'dark'} theme`}>
             {resolvedTheme === 'dark' ? <Sun aria-hidden="true" /> : <Moon aria-hidden="true" />}
           </button>
@@ -193,6 +214,7 @@ export default function App() {
             replaceState={store.replaceState}
             resetState={store.resetState}
             markBackedUp={store.markBackedUp}
+            sync={sync}
           />
         )}
       </main>
@@ -200,7 +222,7 @@ export default function App() {
       <footer className="app-footer">
         <div><DaymarkLogo /><span><strong>A quiet record of showing up.</strong><small>Built for the long game, not a perfect week.</small></span></div>
         <div className="footer-facts">
-          <span><HardDrive aria-hidden="true" /> On-device storage</span>
+          <span>{sync.user ? <Cloud aria-hidden="true" /> : <HardDrive aria-hidden="true" />} Local-first {sync.user ? '+ private sync' : 'storage'}</span>
           <button type="button" onClick={() => navigate('profile')}><Settings2 aria-hidden="true" /> Data + settings</button>
         </div>
       </footer>

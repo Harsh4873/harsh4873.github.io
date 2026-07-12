@@ -348,20 +348,59 @@ svg {
   font-weight: 800;
 }
 
-.local-status {
+.sync-status {
   display: flex;
   align-items: center;
   gap: 7px;
+  min-height: 38px;
+  padding: 0 11px;
+  border: 1px solid var(--line-strong);
+  border-radius: 99px;
   color: var(--text-soft);
+  background: var(--surface);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.03em;
+  transition: color 150ms ease, border-color 150ms ease, background 150ms ease, transform 150ms ease;
 }
 
-.local-status svg {
+.sync-status:hover {
+  border-color: color-mix(in srgb, var(--sync-color, var(--green)) 45%, var(--line-strong));
+  background: var(--surface-hover);
+  transform: translateY(-1px);
+}
+
+.sync-status svg {
   width: 15px;
   height: 15px;
-  color: var(--green);
+  color: var(--sync-color, var(--green));
+}
+
+.sync-status-synced {
+  --sync-color: var(--green);
+}
+
+.sync-status-syncing {
+  --sync-color: var(--cyan);
+}
+
+.sync-status-offline {
+  --sync-color: var(--text-muted);
+}
+
+.sync-status-action-needed {
+  --sync-color: var(--coral);
+}
+
+.sync-status-syncing svg,
+.sync-panel-syncing .sync-panel-mark svg,
+.sync-state-syncing svg,
+.spin {
+  animation: daymark-spin 1.15s linear infinite;
+}
+
+@keyframes daymark-spin {
+  to { transform: rotate(360deg); }
 }
 
 .theme-toggle,
@@ -2397,6 +2436,200 @@ main {
   color: var(--green);
 }
 
+.sync-panel {
+  --sync-color: var(--green);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 22px;
+  min-height: 182px;
+  margin-top: 14px;
+  padding: 25px;
+  overflow: hidden;
+  border-color: color-mix(in srgb, var(--sync-color) 23%, var(--line));
+  background:
+    linear-gradient(120deg, color-mix(in srgb, var(--sync-color) 7%, transparent), transparent 38%),
+    color-mix(in srgb, var(--surface) 96%, transparent);
+}
+
+.sync-panel-syncing {
+  --sync-color: var(--cyan);
+}
+
+.sync-panel-offline {
+  --sync-color: var(--text-muted);
+}
+
+.sync-panel-action-needed {
+  --sync-color: var(--coral);
+}
+
+.sync-panel-mark {
+  display: grid;
+  place-items: center;
+  width: 62px;
+  height: 62px;
+  border: 1px solid color-mix(in srgb, var(--sync-color) 38%, var(--line));
+  border-radius: 19px;
+  color: var(--sync-color);
+  background: color-mix(in srgb, var(--sync-color) 9%, var(--surface-2));
+}
+
+.sync-panel-mark svg {
+  width: 27px;
+  height: 27px;
+}
+
+.sync-panel-main {
+  min-width: 0;
+}
+
+.sync-panel-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.sync-panel-heading > div {
+  display: grid;
+  min-width: 0;
+}
+
+.sync-panel-heading > div > span,
+.sync-account span,
+.sync-timestamp span {
+  color: var(--sync-color);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.sync-panel-heading h2 {
+  margin: 7px 0 0;
+  font-family: var(--font-display);
+  font-size: 27px;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+}
+
+.sync-state-pill {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 6px;
+  min-height: 30px;
+  padding: 0 10px;
+  border: 1px solid color-mix(in srgb, var(--sync-color) 38%, var(--line));
+  border-radius: 99px;
+  color: var(--sync-color);
+  background: color-mix(in srgb, var(--sync-color) 8%, var(--surface-2));
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.sync-state-pill svg {
+  width: 13px;
+  height: 13px;
+}
+
+.sync-account-row {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  margin-top: 18px;
+}
+
+.sync-account {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+}
+
+.sync-account img,
+.sync-avatar-fallback {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid color-mix(in srgb, var(--sync-color) 30%, var(--line));
+  border-radius: 50%;
+  background: var(--surface-2);
+  object-fit: cover;
+}
+
+.sync-avatar-fallback {
+  color: var(--sync-color);
+}
+
+.sync-avatar-fallback svg {
+  width: 19px;
+  height: 19px;
+}
+
+.sync-account > div,
+.sync-timestamp {
+  display: grid;
+  min-width: 0;
+}
+
+.sync-account strong,
+.sync-timestamp strong {
+  margin-top: 4px;
+  overflow: hidden;
+  color: var(--text-soft);
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sync-account small {
+  margin-top: 3px;
+  overflow: hidden;
+  color: var(--text-muted);
+  font-size: 8px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sync-timestamp {
+  padding-left: 26px;
+  border-left: 1px solid var(--line);
+}
+
+.sync-intro,
+.sync-detail {
+  max-width: 780px;
+  margin: 15px 0 0;
+  color: var(--text-muted);
+  font-size: 9px;
+  line-height: 1.6;
+}
+
+.sync-detail {
+  margin-top: 12px;
+}
+
+.sync-panel-action {
+  display: grid;
+  justify-items: stretch;
+  gap: 9px;
+  min-width: 205px;
+}
+
+.sync-panel-action small {
+  max-width: 230px;
+  color: var(--text-muted);
+  font-size: 8px;
+  line-height: 1.45;
+  text-align: center;
+}
+
 .settings-panel {
   margin-top: 14px;
   overflow: hidden;
@@ -3064,8 +3297,14 @@ main {
     font-size: 10px;
   }
 
-  .local-status span {
+  .sync-status span {
     display: none;
+  }
+
+  .sync-status {
+    width: 40px;
+    padding: 0;
+    justify-content: center;
   }
 
   .today-hero {
@@ -3220,6 +3459,16 @@ main {
     grid-template-columns: 1fr;
   }
 
+  .sync-panel {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .sync-panel-action {
+    grid-column: 2;
+    justify-self: start;
+    min-width: 0;
+  }
+
   .quick-start-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -3273,8 +3522,9 @@ main {
     padding: 0 11px;
   }
 
-  .local-status {
-    display: none;
+  .sync-status {
+    width: 38px;
+    min-height: 38px;
   }
 
   .view-shell {
@@ -3506,6 +3756,51 @@ main {
     font-size: 23px;
   }
 
+  .sync-panel {
+    grid-template-columns: 1fr;
+    gap: 17px;
+    padding: 20px;
+  }
+
+  .sync-panel-mark {
+    width: 48px;
+    height: 48px;
+    border-radius: 15px;
+  }
+
+  .sync-panel-mark svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .sync-panel-heading h2 {
+    font-size: 23px;
+  }
+
+  .sync-account-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .sync-timestamp {
+    padding: 0;
+    border-left: 0;
+  }
+
+  .sync-panel-action {
+    grid-column: auto;
+    width: 100%;
+  }
+
+  .sync-panel-action .button {
+    width: 100%;
+  }
+
+  .sync-panel-action small {
+    max-width: none;
+  }
+
   .settings-grid,
   .form-grid,
   .form-grid.three-columns {
@@ -3692,6 +3987,14 @@ main {
 
   .identity-panel > svg {
     display: none;
+  }
+
+  .sync-panel-heading {
+    flex-direction: column;
+  }
+
+  .sync-account {
+    width: 100%;
   }
 }
 

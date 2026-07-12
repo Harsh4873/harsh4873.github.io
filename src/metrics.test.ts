@@ -30,6 +30,8 @@ function habit(overrides: Partial<Habit> = {}): Habit {
     increment: 2,
     startDate: '2026-07-01',
     createdAt: timestamp,
+    updatedAt: timestamp,
+    order: 0,
     ...overrides,
   };
 }
@@ -40,8 +42,11 @@ function entry(value: number, extra: Partial<HabitEntry> = {}): HabitEntry {
 
 function tracker(testHabit: Habit, entries: TrackerState['entries'] = {}): TrackerState {
   return {
-    version: 1,
-    profile: { displayName: 'Harsh', weekStartsOn: 1, theme: 'dark' },
+    version: 2,
+    generationId: 'test-generation',
+    generationUpdatedAt: timestamp,
+    generationPending: false,
+    profile: { displayName: 'Harsh', weekStartsOn: 1, theme: 'dark', updatedAt: timestamp },
     habits: [testHabit],
     entries,
   };

@@ -41,6 +41,8 @@ export interface Habit {
   increment: number;
   startDate: string;
   createdAt: string;
+  updatedAt: string;
+  order: number;
   archivedAt?: string;
   pauses?: Array<{ start: string; end?: string }>;
 }
@@ -57,11 +59,15 @@ export interface TrackerProfile {
   displayName: string;
   weekStartsOn: 0 | 1;
   theme: ThemePreference;
+  updatedAt: string;
   lastBackupAt?: string;
 }
 
 export interface TrackerState {
-  version: 1;
+  version: 2;
+  generationId: string;
+  generationUpdatedAt: string;
+  generationPending: boolean;
   profile: TrackerProfile;
   habits: Habit[];
   entries: Record<string, Record<string, HabitEntry>>;
@@ -119,9 +125,29 @@ export function makeHabitId() {
   return `habit-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 }
 
-export function createInitialState(): TrackerState {
-  const today = localDateKey();
-  const now = new Date().toISOString();
+export function makeGenerationId() {
+  if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
+    return crypto.randomUUID();
+  }
+
+  return `generation-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+}
+
+interface InitialStateOptions {
+  generationId?: string;
+  generationUpdatedAt?: string;
+  generationPending?: boolean;
+  now?: string;
+  startDate?: string;
+}
+
+export function createInitialState(options: InitialStateOptions = {}): TrackerState {
+  const now = options.now ?? new Date().toISOString();
+  const today = options.startDate ?? localDateKey(new Date(now));
+  const generationId = options.generationId ?? 'local-v1';
+  const generationUpdatedAt = options.generationUpdatedAt
+    ?? (generationId === 'local-v1' ? '1970-01-01T00:00:00.000Z' : now);
+  const entityUpdatedAt = generationId === 'local-v1' ? generationUpdatedAt : now;
 
   const habits: Habit[] = [
     {
@@ -140,6 +166,8 @@ export function createInitialState(): TrackerState {
       increment: 1000,
       startDate: today,
       createdAt: now,
+      updatedAt: entityUpdatedAt,
+      order: 0,
     },
     {
       id: 'starter-read',
@@ -157,6 +185,8 @@ export function createInitialState(): TrackerState {
       increment: 5,
       startDate: today,
       createdAt: now,
+      updatedAt: entityUpdatedAt,
+      order: 1,
     },
     {
       id: 'starter-train',
@@ -174,6 +204,8 @@ export function createInitialState(): TrackerState {
       increment: 1,
       startDate: today,
       createdAt: now,
+      updatedAt: entityUpdatedAt,
+      order: 2,
     },
     {
       id: 'starter-focus',
@@ -191,15 +223,21 @@ export function createInitialState(): TrackerState {
       increment: 15,
       startDate: today,
       createdAt: now,
+      updatedAt: entityUpdatedAt,
+      order: 3,
     },
   ];
 
   return {
-    version: 1,
+    version: 2,
+    generationId,
+    generationUpdatedAt,
+    generationPending: options.generationPending ?? false,
     profile: {
       displayName: 'Harsh',
       weekStartsOn: 1,
       theme: 'dark',
+      updatedAt: entityUpdatedAt,
     },
     habits,
     entries: {},

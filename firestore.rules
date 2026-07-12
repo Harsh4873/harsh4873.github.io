@@ -1,0 +1,38 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAuthorizedGoogleAccount() {
+      return request.auth != null
+        && request.auth.token.email == 'hdav4873@gmail.com'
+        && request.auth.token.email_verified == true
+        && request.auth.token.firebase.sign_in_provider == 'google.com';
+    }
+
+    function ownsDaymarkData(userId) {
+      return isAuthorizedGoogleAccount() && request.auth.uid == userId;
+    }
+
+    function hasConsistentGeneration() {
+      return request.resource.data.generationId is string
+        && request.resource.data.profileGenerationId == request.resource.data.generationId;
+    }
+
+    match /daymark_users/{userId} {
+      allow read: if ownsDaymarkData(userId);
+      allow create, update: if ownsDaymarkData(userId) && hasConsistentGeneration();
+
+      match /habits/{habitId} {
+        allow read, write: if ownsDaymarkData(userId);
+      }
+
+      match /entries/{entryId} {
+        allow read, write: if ownsDaymarkData(userId);
+      }
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

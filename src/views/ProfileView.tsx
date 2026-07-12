@@ -4,18 +4,26 @@ import {
   ArrowUp,
   Check,
   ChevronRight,
+  CircleAlert,
+  Cloud,
+  CloudOff,
   Database,
   Download,
   Edit3,
   FileJson,
   HardDrive,
+  LoaderCircle,
   LockKeyhole,
+  LogIn,
+  LogOut,
   Plus,
   RotateCcw,
   ShieldCheck,
   Sparkles,
   Upload,
+  UserRound,
   X,
+  type LucideIcon,
 } from 'lucide-react';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { createPortal } from 'react-dom';
@@ -34,6 +42,7 @@ import {
 } from '../model';
 import { parseTrackerState, type TrackerStore } from '../store';
 import { HabitBadge, ProgressBar, SectionHeading, habitStyle } from '../ui';
+import type { DaymarkSync, SyncStatus } from '../useDaymarkSync';
 
 interface ProfileViewProps {
   state: TrackerState;
@@ -45,7 +54,15 @@ interface ProfileViewProps {
   replaceState: TrackerStore['replaceState'];
   resetState: TrackerStore['resetState'];
   markBackedUp: TrackerStore['markBackedUp'];
+  sync: DaymarkSync;
 }
+
+const SYNC_PRESENTATION: Record<SyncStatus, { label: string; icon: LucideIcon }> = {
+  synced: { label: 'Synced', icon: Cloud },
+  syncing: { label: 'Syncing', icon: LoaderCircle },
+  offline: { label: 'Offline', icon: CloudOff },
+  'action-needed': { label: 'Action needed', icon: CircleAlert },
+};
 
 const DAY_OPTIONS = [
   { value: 1, label: 'M', name: 'Monday' },
@@ -83,6 +100,8 @@ function createHabit(overrides: Partial<Habit> = {}): Habit {
     increment: 1,
     startDate: toDateKey(new Date()),
     createdAt: now,
+    updatedAt: now,
+    order: 0,
     ...overrides,
   };
 }
@@ -434,6 +453,18 @@ function stateToCsv(state: TrackerState) {
   return rows.map((row) => row.map(csvCell).join(',')).join('\n');
 }
 
+function formatSyncTime(value?: string) {
+  if (!value) return 'Waiting for first sync';
+  const date = new Date(value);
+  if (!Number.isFinite(date.getTime())) return 'Waiting for first sync';
+  return date.toLocaleString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+  });
+}
+
 export function ProfileView({
   state,
   storageMode,
@@ -444,13 +475,40 @@ export function ProfileView({
   replaceState,
   resetState,
   markBackedUp,
+  sync,
 }: ProfileViewProps) {
   const [editor, setEditor] = useState<{ habit: Habit; locked: boolean } | null>(null);
   const [dataMessage, setDataMessage] = useState('');
+  const [authAction, setAuthAction] = useState<'sign-in' | 'sign-out' | null>(null);
   const importInput = useRef<HTMLInputElement>(null);
   const active = state.habits.filter((habit) => !habit.archivedAt);
   const archived = state.habits.filter((habit) => habit.archivedAt);
   const entryCount = Object.values(state.entries).reduce((sum, day) => sum + Object.keys(day).length, 0);
+  const syncPresentation = SYNC_PRESENTATION[sync.status];
+  const SyncIcon = syncPresentation.icon;
+  const signedInName = sync.user?.displayName?.trim() || 'Harsh';
+
+  async function startSignIn() {
+    if (authAction) return;
+    setAuthAction('sign-in');
+    try {
+      await sync.signIn();
+    } finally {
+      setAuthAction(null);
+    }
+  }
+
+  async function startSignOut() {
+    if (authAction) return;
+    const confirmed = window.confirm('Sign out of Daymark on this device? Daymark will first confirm that pending changes reached the cloud, then remove its local copy here. Your other signed-in device will keep the synced record.');
+    if (!confirmed) return;
+    setAuthAction('sign-out');
+    try {
+      await sync.signOut();
+    } finally {
+      setAuthAction(null);
+    }
+  }
 
   function editHabit(habit: Habit) {
     const locked = Object.values(state.entries).some((entries) => Boolean(entries[habit.id]));
@@ -474,10 +532,11 @@ export function ProfileView({
     try {
       const imported = parseTrackerState(JSON.parse(await file.text()));
       const importedEntries = Object.values(imported.entries).reduce((sum, day) => sum + Object.keys(day).length, 0);
-      const confirmed = window.confirm(`Replace this device's Daymark data with ${imported.habits.length} habits and ${importedEntries} entries from “${file.name}”? Export a backup first if needed.`);
+      const scope = sync.user ? 'all of your signed-in devices' : 'this device';
+      const confirmed = window.confirm(`Replace Daymark on ${scope} with ${imported.habits.length} habits and ${importedEntries} entries from “${file.name}”? This becomes the new synced record. Export a backup first if needed.`);
       if (confirmed) {
         replaceState(imported);
-        setDataMessage(`Imported ${imported.habits.length} habits and ${importedEntries} entries.`);
+        setDataMessage(`Imported ${imported.habits.length} habits and ${importedEntries} entries${sync.user ? '; the replacement will propagate across your devices' : ''}.`);
       }
     } catch (error) {
       setDataMessage(error instanceof Error ? error.message : 'That backup could not be imported.');
@@ -487,9 +546,10 @@ export function ProfileView({
   }
 
   function resetAll() {
-    if (window.confirm('Reset Daymark on this device? This removes all current entries and restores the starter habits. Export a backup first if you may want this history later.')) {
+    const scope = sync.user ? 'across every signed-in device' : 'on this device';
+    if (window.confirm(`Reset Daymark ${scope}? This removes all current entries and restores the starter habits. Export a backup first if you may want this history later.`)) {
       resetState();
-      setDataMessage('Daymark was reset to the starter habits.');
+      setDataMessage(`Daymark was reset to the starter habits${sync.user ? '; the reset will propagate across your devices' : ''}.`);
     }
   }
 
@@ -498,7 +558,7 @@ export function ProfileView({
       <SectionHeading
         eyebrow="Profile + system"
         title="Build a tracker that fits the life."
-        copy="Change the goal, unit, rhythm, visual marker, and ordering. Your history stays private on this device until you export it."
+        copy="Change the goal, unit, rhythm, visual marker, and ordering. Your record stays available offline and syncs privately between your devices."
         action={<button type="button" className="button button-primary" onClick={() => setEditor({ habit: createHabit(), locked: false })}><Plus aria-hidden="true" /> New habit</button>}
       />
 
@@ -510,8 +570,51 @@ export function ProfileView({
         </article>
         <article className="panel privacy-panel">
           <ShieldCheck aria-hidden="true" />
-          <div><span>Private by default</span><h2>Stored only in this browser</h2><p>No account, analytics, or cloud database. Backups are yours to keep.</p></div>
+          <div><span>Private by design</span><h2>Account-locked sync</h2><p>Only your verified Google account can access Daymark. There is no analytics tracking.</p></div>
         </article>
+      </section>
+
+      <section className={`panel sync-panel sync-panel-${sync.status}`} aria-labelledby="profile-sync-title" aria-busy={authAction !== null || sync.status === 'syncing'}>
+        <div className="sync-panel-mark" aria-hidden="true"><SyncIcon /></div>
+        <div className="sync-panel-main">
+          <div className="sync-panel-heading">
+            <div><span>Phone + laptop</span><h2 id="profile-sync-title">{sync.user ? `${signedInName}’s devices stay aligned` : 'Turn on automatic sync'}</h2></div>
+            <span className={`sync-state-pill sync-state-${sync.status}`} aria-live="polite"><SyncIcon aria-hidden="true" /> {syncPresentation.label}</span>
+          </div>
+
+          {sync.user ? (
+            <div className="sync-account-row">
+              <div className="sync-account">
+                {sync.user.photoURL
+                  ? <img src={sync.user.photoURL} alt="" referrerPolicy="no-referrer" />
+                  : <span className="sync-avatar-fallback"><UserRound aria-hidden="true" /></span>}
+                <div><span>Google account</span><strong>{signedInName}</strong><small>{sync.user.email}</small></div>
+              </div>
+              <div className="sync-timestamp"><span>Last successful sync</span><strong>{formatSyncTime(sync.lastSyncedAt)}</strong></div>
+            </div>
+          ) : (
+            <p className="sync-intro">Sign in once on each device. Daymark keeps an instant on-device mirror, queues changes while offline, and reconciles them automatically after reconnecting.</p>
+          )}
+
+          {sync.user && (
+            <p className="sync-detail" role="status">{sync.message ?? 'Every habit and check-in is mirrored locally and synced privately across your signed-in devices.'}</p>
+          )}
+          {!sync.user && sync.message && <p className="sync-detail" role="status">{sync.message}</p>}
+        </div>
+        <div className="sync-panel-action">
+          {sync.user ? (
+            <button type="button" className="button button-secondary" onClick={() => void startSignOut()} disabled={authAction !== null}>
+              {authAction === 'sign-out' ? <LoaderCircle className="spin" aria-hidden="true" /> : <LogOut aria-hidden="true" />}
+              {authAction === 'sign-out' ? 'Finishing sync…' : 'Sign out + clear this device'}
+            </button>
+          ) : (
+            <button type="button" className="button button-primary" onClick={() => void startSignIn()} disabled={authAction !== null || sync.status === 'offline'}>
+              {authAction === 'sign-in' ? <LoaderCircle className="spin" aria-hidden="true" /> : <LogIn aria-hidden="true" />}
+              {authAction === 'sign-in' ? 'Opening Google…' : 'Sign in with Google'}
+            </button>
+          )}
+          <small>{sync.user ? 'Pending writes finish before local data is removed.' : 'Restricted to hdav4873@gmail.com'}</small>
+        </div>
       </section>
 
       <section className="panel settings-panel">
@@ -579,12 +682,12 @@ export function ProfileView({
       )}
 
       <section className="data-section">
-        <div className="profile-section-heading"><div><span>Data ownership</span><h2>Back up the record</h2></div><p>JSON is lossless. CSV is easier to analyze.</p></div>
+        <div className="profile-section-heading"><div><span>Data ownership</span><h2>Keep a portable copy</h2></div><p>Sync aligns devices. JSON is a lossless backup; CSV is easier to analyze.</p></div>
         <div className="data-grid">
           <article className="panel data-status-card">
             <span className="data-icon"><Database aria-hidden="true" /></span>
-            <div><span>Local database</span><h3>{storageMode === 'indexeddb' ? 'IndexedDB + fallback' : 'localStorage fallback'}</h3><p>{entryCount} entries across {state.habits.length} habits.</p></div>
-            <small><HardDrive aria-hidden="true" /> This device only</small>
+            <div><span>Offline mirror</span><h3>{storageMode === 'indexeddb' ? 'IndexedDB + fallback' : 'localStorage fallback'}</h3><p>{entryCount} entries across {state.habits.length} habits, ready instantly on this device.</p></div>
+            <small><HardDrive aria-hidden="true" /> Local-first, even without a connection</small>
           </article>
           <article className="panel backup-card">
             <FileJson aria-hidden="true" />
@@ -596,15 +699,15 @@ export function ProfileView({
           </article>
           <article className="panel import-card">
             <Upload aria-hidden="true" />
-            <div><span>Restore</span><h3>Import a Daymark backup</h3><p>You will see the habit and entry counts before anything is replaced.</p></div>
+            <div><span>Restore</span><h3>Import a Daymark backup</h3><p>You will see the counts before anything is replaced. When signed in, the imported record becomes the version shared by every device.</p></div>
             <button type="button" className="button button-secondary" onClick={() => importInput.current?.click()}><Upload aria-hidden="true" /> Choose JSON</button>
             <input ref={importInput} className="sr-only" type="file" accept="application/json,.json" aria-label="Choose a Daymark JSON backup" onChange={(event) => event.target.files?.[0] && void importBackup(event.target.files[0])} />
           </article>
         </div>
         {dataMessage && <p className="data-message" role="status">{dataMessage}</p>}
         <div className="danger-zone">
-          <div><span>Start over</span><p>Restore the four starter habits and remove every local entry.</p></div>
-          <button type="button" className="button button-danger" onClick={resetAll}><RotateCcw aria-hidden="true" /> Reset this device</button>
+          <div><span>Start over everywhere</span><p>Restore the starter habits and remove every entry. When signed in, this reset propagates to your other devices.</p></div>
+          <button type="button" className="button button-danger" onClick={resetAll}><RotateCcw aria-hidden="true" /> Reset Daymark</button>
         </div>
       </section>
 
