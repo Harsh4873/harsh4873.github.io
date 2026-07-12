@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#101311"/>
+  <circle cx="1050" cy="90" r="260" fill="#8d7cff" opacity=".09"/>
+  <circle cx="140" cy="620" r="300" fill="#b8f35b" opacity=".08"/>
+  <g transform="translate(82 76)">
+    <rect width="68" height="68" rx="18" fill="#8d7cff"/>
+    <rect x="14" y="16" width="8" height="36" rx="4" fill="#101311"/>
+    <path d="m30 34 7 7 16-18" fill="none" stroke="#101311" stroke-linecap="round" stroke-linejoin="round" stroke-width="7"/>
+    <text x="92" y="29" fill="#f2f4ed" font-family="Arial, sans-serif" font-size="25" font-weight="700" letter-spacing="4">HARSH.BET</text>
+    <text x="92" y="58" fill="#939b92" font-family="Arial, sans-serif" font-size="19" letter-spacing="3">/ TODO</text>
+  </g>
+  <text x="82" y="275" fill="#f2f4ed" font-family="Georgia, serif" font-size="104" font-weight="700">Slate.</text>
+  <text x="87" y="343" fill="#aeb5ad" font-family="Arial, sans-serif" font-size="34">Plan the blocks. Clear the list.</text>
+  <g transform="translate(83 410)">
+    <rect width="330" height="44" rx="10" fill="#1a1f1b" stroke="#2d352e"/>
+    <rect x="12" y="12" width="20" height="20" rx="6" fill="#b8f35b"/>
+    <path d="m17 22 4 4 8-9" fill="none" stroke="#101311" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+    <rect x="44" y="18" width="180" height="8" rx="4" fill="#3f4941"/>
+    <rect y="56" width="330" height="44" rx="10" fill="#1a1f1b" stroke="#2d352e"/>
+    <rect x="12" y="68" width="20" height="20" rx="6" fill="none" stroke="#59635a" stroke-width="2"/>
+    <rect x="44" y="74" width="220" height="8" rx="4" fill="#59635a"/>
+    <rect x="380" width="240" height="30" rx="8" fill="#8d7cff" opacity=".85"/>
+    <rect x="380" y="38" width="240" height="62" rx="8" fill="#58c9d6" opacity=".6"/>
+  </g>
+</svg>
