@@ -62,6 +62,12 @@ jobs:
           ref: tracker
           path: tracker-app
 
+      - name: Checkout Slate planner
+        uses: actions/checkout@v4
+        with:
+          ref: todo
+          path: todo-app
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
@@ -75,6 +81,7 @@ jobs:
             gym-app/package-lock.json
             me-app/package-lock.json
             tracker-app/package-lock.json
+            todo-app/package-lock.json
 
       - name: Install frontend dependencies
         run: npm ci
@@ -89,6 +96,10 @@ jobs:
 
       - name: Install tracker dependencies
         working-directory: tracker-app
+        run: npm ci
+
+      - name: Install Slate dependencies
+        working-directory: todo-app
         run: npm ci
 
       - name: Build site artifact
@@ -122,6 +133,13 @@ jobs:
           mkdir -p ../dist/tracker
           cp -R dist/. ../dist/tracker/
 
+      - name: Build Slate planner artifact
+        working-directory: todo-app
+        run: |
+          npm run build
+          mkdir -p ../dist/todo
+          cp -R dist/. ../dist/todo/
+
       - name: Verify styled Pages artifact
         run: |
           grep -q 'rel="stylesheet"' dist/index.html
@@ -144,6 +162,10 @@ jobs:
           grep -q '/tracker/assets/' dist/tracker/index.html
           test -n "$(find dist/tracker/assets -maxdepth 1 -name '*.css' -print -quit)"
           test -n "$(find dist/tracker/assets -maxdepth 1 -name '*.js' -print -quit)"
+          test -f dist/todo/index.html
+          grep -q '/todo/assets/' dist/todo/index.html
+          test -n "$(find dist/todo/assets -maxdepth 1 -name '*.css' -print -quit)"
+          test -n "$(find dist/todo/assets -maxdepth 1 -name '*.js' -print -quit)"
           python scripts/site_upcheck.py
 
       - name: Upload artifact
