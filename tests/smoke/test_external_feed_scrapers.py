@@ -909,6 +909,185 @@ def test_scores24_client_can_disable_inner_attempt_sleep(monkeypatch):
     assert slept == []
 
 
+def test_scores24_checkpoint_resumes_without_refetching_resolved(monkeypatch, tmp_path):
+    module = _load_module(
+        "scores24_checkpoint_test",
+        ROOT / "scripts" / "scrapers" / "scores24_scraper.py",
+    )
+    monkeypatch.setenv("SCORES24_CHECKPOINT_DIR", str(tmp_path))
+    monkeypatch.setenv("SCORES24_BLOCK_RETRY_DELAY_SECONDS", "0")
+    monkeypatch.setenv("SCORES24_BLOCK_RETRY_ROUNDS", "0")
+    monkeypatch.setattr(module, "MODEL_CACHE_DIR", tmp_path / "cache")
+    angels_detail = """
+    <html><head><title>Los Angeles Angels vs Tampa Bay Rays Prediction</title></head>
+    <body><div><div>Our choice</div><div>Tampa Bay Rays Win at odds of -179*</div></div></body>
+    </html>
+    """
+    marlins_detail = """
+    <html><head><title>Miami Marlins vs San Francisco Giants Prediction</title></head>
+    <body><div><div>Our choice</div><div>Miami Marlins Win at odds of +105*</div></div></body>
+    </html>
+    """
+    matchups = [
+        {"away": "Tampa Bay Rays", "home": "Los Angeles Angels", "start_time": ""},
+        {"away": "San Francisco Giants", "home": "Miami Marlins", "start_time": ""},
+    ]
+
+    class FirstClient:
+        def get_html(self, url: str, attempts: int = 3):
+            if url.endswith("/l-usa-mlb/predictions"):
+                return (
+                    '<a href="/en/baseball/m-12-06-2026-los-angeles-angels-tampa-bay-rays-prediction">'
+                    "Los Angeles Angels Tampa Bay Rays Prediction</a>",
+                    200,
+                    False,
+                )
+            if "tampa-bay-rays" in url:
+                return angels_detail, 200, False
+            return "Cloudflare", 429, True
+
+    first = module.scrape_scores24("mlb", "2026-06-12", client=FirstClient(), matchups=matchups)
+    assert first["ok"] is False
+    assert first["meta"]["matchedPicks"] == 1
+    checkpoint = json.loads((tmp_path / "scores24-mlb-2026-06-12.json").read_text(encoding="utf-8"))
+    assert len(checkpoint["picks"]) == 1
+
+    class SecondClient:
+        def __init__(self):
+            self.urls = []
+
+        def get_html(self, url: str, attempts: int = 3):
+            self.urls.append(url)
+            if url.endswith("/l-usa-mlb/predictions"):
+                return "", 200, False
+            if "miami-marlins" in url or "san-francisco-giants" in url:
+                return marlins_detail, 200, False
+            return "", 404, False
+
+    second_client = SecondClient()
+    second = module.scrape_scores24("mlb", "2026-06-12", client=second_client, matchups=matchups)
+    assert second["ok"] is True
+    assert second["meta"]["matchedPicks"] == 2
+    assert second["meta"]["checkpointedPicks"] == 1
+    assert all("tampa-bay-rays" not in url for url in second_client.urls)
+
+
+def test_scores24_historical_url_hints_use_committed_slug_and_date_offset(monkeypatch, tmp_path):
+    module = _load_module(
+        "scores24_hints_test",
+        ROOT / "scripts" / "scrapers" / "scores24_scraper.py",
+    )
+    monkeypatch.setenv("SCORES24_CHECKPOINT_DIR", str(tmp_path / "state"))
+    cache_dir = tmp_path / "model_cache"
+    cache_dir.mkdir()
+    monkeypatch.setattr(module, "MODEL_CACHE_DIR", cache_dir)
+    (cache_dir / "2026-07-11.json").write_text(
+        json.dumps(
+            {
+                "date": "2026-07-11",
+                "external_feeds": {
+                    "scores24_mlb": {
+                        "ok": True,
+                        "picks": [
+                            {
+                                "source": "Scores24MLB",
+                                "away_team": "Milwaukee Brewers",
+                                "home_team": "Pittsburgh Pirates",
+                                "source_url": (
+                                    "https://scores24.live/en/baseball/"
+                                    "m-10-07-2026-pittsburgh-pirates-milwaukee-brewers-prediction"
+                                ),
+                            }
+                        ],
+                    }
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    matchup = {"away": "Milwaukee Brewers", "home": "Pittsburgh Pirates", "start_time": ""}
+    hints = module._historical_url_hints("mlb", "2026-07-12", matchup)
+    assert hints[0] == (
+        "https://scores24.live/en/baseball/m-11-07-2026-pittsburgh-pirates-milwaukee-brewers-prediction"
+    )
+    assert (
+        "https://scores24.live/en/baseball/m-12-07-2026-pittsburgh-pirates-milwaukee-brewers-prediction"
+        in hints
+    )
+
+    detail = """
+    <html><head><title>Pittsburgh Pirates vs Milwaukee Brewers Prediction</title></head>
+    <body><div><div>Our choice</div><div>Milwaukee Brewers Win at odds of -136*</div></div></body>
+    </html>
+    """
+
+    class HintClient:
+        def __init__(self):
+            self.detail_urls = []
+
+        def get_html(self, url: str, attempts: int = 3):
+            if url.endswith("/l-usa-mlb/predictions"):
+                return "", 200, False
+            self.detail_urls.append(url)
+            if url == hints[0]:
+                return detail, 200, False
+            return "", 404, False
+
+    client = HintClient()
+    result = module.scrape_scores24("mlb", "2026-07-12", client=client, matchups=[matchup])
+    assert result["ok"] is True
+    assert result["meta"]["matchedPicks"] == 1
+    assert client.detail_urls[0] == hints[0]
+    assert result["picks"][0]["source_url"] == hints[0]
+
+
+def test_scores24_resolves_listed_matchups_before_url_guesses():
+    module = _load_module(
+        "scores24_order_test",
+        ROOT / "scripts" / "scrapers" / "scores24_scraper.py",
+    )
+    listing = (
+        '<a href="/en/baseball/m-12-06-2026-los-angeles-angels-tampa-bay-rays-prediction">'
+        "Los Angeles Angels Tampa Bay Rays Prediction</a>"
+    )
+    rays_detail = """
+    <html><head><title>Los Angeles Angels vs Tampa Bay Rays Prediction</title></head>
+    <body><div><div>Our choice</div><div>Tampa Bay Rays Win at odds of -179*</div></div></body>
+    </html>
+    """
+    marlins_detail = """
+    <html><head><title>Miami Marlins vs San Francisco Giants Prediction</title></head>
+    <body><div><div>Our choice</div><div>Miami Marlins Win at odds of +105*</div></div></body>
+    </html>
+    """
+
+    class OrderClient:
+        def __init__(self):
+            self.detail_urls = []
+
+        def get_html(self, url: str, attempts: int = 3):
+            if url.endswith("/l-usa-mlb/predictions"):
+                return listing, 200, False
+            self.detail_urls.append(url)
+            if "tampa-bay-rays" in url:
+                return rays_detail, 200, False
+            return marlins_detail, 200, False
+
+    client = OrderClient()
+    result = module.scrape_scores24(
+        "mlb",
+        "2026-06-12",
+        client=client,
+        matchups=[
+            {"away": "San Francisco Giants", "home": "Miami Marlins", "start_time": ""},
+            {"away": "Tampa Bay Rays", "home": "Los Angeles Angels", "start_time": ""},
+        ],
+    )
+    assert result["ok"] is True
+    assert result["meta"]["matchedPicks"] == 2
+    assert "tampa-bay-rays" in client.detail_urls[0]
+
+
 def test_local_scores24_publisher_registers_separate_models():
     workflow = (ROOT / ".github" / "workflows" / "external-feed-refresh.yml").read_text(encoding="utf-8")
     refresh = (ROOT / "scripts" / "refresh_external_feeds.py").read_text(encoding="utf-8")

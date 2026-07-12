@@ -9,7 +9,7 @@ import os
 import re
 import time
 import unicodedata
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 from urllib.parse import urljoin
@@ -236,6 +236,165 @@ def fetch_daily_matchups(
     return list(matchups.values()), espn_resolved or bool(cached)
 
 
+def _checkpoint_dir() -> Path | None:
+    raw = os.environ.get("SCORES24_CHECKPOINT_DIR", "").strip()
+    if not raw:
+        return None
+    directory = Path(raw).expanduser()
+    try:
+        directory.mkdir(parents=True, exist_ok=True)
+    except OSError:
+        return None
+    return directory
+
+
+def _checkpoint_path(sport_key: str, date_iso: str) -> Path | None:
+    directory = _checkpoint_dir()
+    if directory is None:
+        return None
+    return directory / f"scores24-{sport_key}-{date_iso}.json"
+
+
+def _load_checkpoint(
+    sport_key: str,
+    date_iso: str,
+    expected: list[dict[str, str]],
+) -> dict[tuple[str, str], dict[str, Any]]:
+    """Return same-day picks already resolved by an earlier run.
+
+    Scores24 blocks tend to hit late-slate matchups after the request budget
+    is spent, so partial progress must survive across publisher runs instead
+    of every retry starting from zero. Entries whose matchup is no longer on
+    the official slate are dropped. Enabled only when SCORES24_CHECKPOINT_DIR
+    is set (the local publisher sets it).
+    """
+    path = _checkpoint_path(sport_key, date_iso)
+    if path is None or not path.exists():
+        return {}
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+    if (
+        not isinstance(payload, dict)
+        or payload.get("date") != date_iso
+        or payload.get("sport") != sport_key
+    ):
+        return {}
+    expected_keys: set[tuple[str, str]] = set()
+    for matchup in expected:
+        key = _matchup_key(matchup.get("away", ""), matchup.get("home", ""))
+        if key:
+            expected_keys.add(key)
+    resolved: dict[tuple[str, str], dict[str, Any]] = {}
+    rows = payload.get("picks") if isinstance(payload.get("picks"), list) else []
+    for row in rows:
+        if not isinstance(row, dict) or not row.get("pick") or not row.get("source"):
+            continue
+        key = _matchup_key(row.get("away_team", ""), row.get("home_team", ""))
+        if key and key in expected_keys:
+            resolved.setdefault(key, row)
+    return resolved
+
+
+def _save_checkpoint(sport_key: str, date_iso: str, picks: list[dict[str, Any]]) -> None:
+    path = _checkpoint_path(sport_key, date_iso)
+    if path is None:
+        return
+    try:
+        staged = path.with_name(path.name + ".tmp")
+        staged.write_text(
+            json.dumps(
+                {
+                    "sport": sport_key,
+                    "date": date_iso,
+                    "updated_at": datetime.now(timezone.utc).isoformat(),
+                    "picks": picks,
+                },
+                indent=2,
+                default=str,
+            ),
+            encoding="utf-8",
+        )
+        staged.replace(path)
+    except OSError:
+        return
+    try:
+        cutoff = time.time() - 3 * 24 * 3600
+        for stale in path.parent.glob("scores24-*.json"):
+            if stale.name != path.name and stale.stat().st_mtime < cutoff:
+                stale.unlink()
+    except OSError:
+        pass
+
+
+def _historical_url_hints(sport_key: str, date_iso: str, matchup: dict[str, str]) -> list[str]:
+    """Derive exact prediction URLs from recently committed Scores24 picks.
+
+    Detail slugs (team spelling, home/away order, and the URL date's offset
+    from the slate date) are stable across days, so a matchup's most recent
+    published source_url beats blind slug guessing — Scores24 challenges
+    wrong-date guesses instead of returning 404. Enabled only when
+    SCORES24_CHECKPOINT_DIR is set (the local publisher sets it).
+    """
+    if not os.environ.get("SCORES24_CHECKPOINT_DIR", "").strip():
+        return []
+    key = _matchup_key(matchup.get("away", ""), matchup.get("home", ""))
+    if not key:
+        return []
+    config = SPORT_CONFIG[sport_key]
+    feed_key = f"scores24_{sport_key}"
+    try:
+        base_date = _parse_target_date(date_iso)
+    except ValueError:
+        return []
+    url_parts: tuple[str, str, str] | None = None
+    url_date: date | None = None
+    history_day: date | None = None
+    for offset in range(1, 15):
+        day = base_date - timedelta(days=offset)
+        path = MODEL_CACHE_DIR / f"{day.isoformat()}.json"
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        feeds = payload.get("external_feeds") if isinstance(payload.get("external_feeds"), dict) else {}
+        bucket = feeds.get(feed_key) if isinstance(feeds.get(feed_key), dict) else {}
+        rows = bucket.get("picks") if isinstance(bucket.get("picks"), list) else []
+        for row in rows:
+            if not isinstance(row, dict) or row.get("source") != config["source"]:
+                continue
+            if _matchup_key(row.get("away_team", ""), row.get("home_team", "")) != key:
+                continue
+            match = re.search(r"^(.*/m-)(\d{2}-\d{2}-\d{4})-(.+)$", _norm_space(row.get("source_url")))
+            if not match:
+                continue
+            url_parts = (match.group(1), match.group(2), match.group(3))
+            try:
+                url_date = datetime.strptime(match.group(2), "%d-%m-%Y").date()
+            except ValueError:
+                url_date = None
+            history_day = day
+            break
+        if url_parts:
+            break
+    if not url_parts:
+        return []
+    prefix, _, tail = url_parts
+    day_candidates: list[date] = []
+    if url_date is not None and history_day is not None:
+        day_candidates.append(base_date + (url_date - history_day))
+    day_candidates.extend(
+        [base_date, base_date - timedelta(days=1), base_date + timedelta(days=1)]
+    )
+    return list(
+        dict.fromkeys(
+            f"{prefix}{candidate_day.strftime('%d-%m-%Y')}-{tail}"
+            for candidate_day in day_candidates
+        )
+    )
+
+
 def _looks_blocked(status: int, html: str) -> bool:
     if status in {403, 429}:
         return True
@@ -274,6 +433,7 @@ class Scores24Client:
         self._camoufox_manager = None
         self._camoufox_context = None
         self._camoufox_failed = False
+        self._camoufox_block_failures = 0
         self._prefer_camoufox = _env_flag("SCORES24_CAMOUFOX_FALLBACK", True)
         self._browser_failed = False
         self._blocked_until = 0.0
@@ -372,13 +532,36 @@ class Scores24Client:
                 proxy_server = os.environ.get("PLAYWRIGHT_PROXY_SERVER", "").strip()
                 if proxy_server:
                     launch_options["proxy"] = {"server": proxy_server}
-                self._camoufox_manager = Camoufox(**launch_options)
-                browser = self._camoufox_manager.__enter__()
-                self._camoufox_context = browser.new_context(
-                    locale="en-US",
-                    timezone_id="America/Chicago",
-                    no_viewport=True,
-                )
+                profile_dir = os.environ.get("SCORES24_CAMOUFOX_PROFILE_DIR", "").strip()
+                if profile_dir:
+                    # A persistent profile lets one cleared challenge cover the
+                    # rest of the slate and same-day reruns instead of every
+                    # fresh launch facing the challenge again.
+                    try:
+                        profile_path = Path(profile_dir).expanduser()
+                        profile_path.mkdir(parents=True, exist_ok=True)
+                        self._camoufox_manager = Camoufox(
+                            persistent_context=True,
+                            user_data_dir=str(profile_path),
+                            **launch_options,
+                        )
+                        self._camoufox_context = self._camoufox_manager.__enter__()
+                    except Exception:
+                        if self._camoufox_manager is not None:
+                            try:
+                                self._camoufox_manager.__exit__(None, None, None)
+                            except Exception:
+                                pass
+                        self._camoufox_manager = None
+                        self._camoufox_context = None
+                if self._camoufox_manager is None:
+                    self._camoufox_manager = Camoufox(**launch_options)
+                    browser = self._camoufox_manager.__enter__()
+                    self._camoufox_context = browser.new_context(
+                        locale="en-US",
+                        timezone_id="America/Chicago",
+                        no_viewport=True,
+                    )
             page = self._camoufox_context.new_page()
             try:
                 response = page.goto(url, timeout=90000, wait_until="domcontentloaded")
@@ -463,7 +646,14 @@ class Scores24Client:
                 self._prefer_camoufox = True
                 self._blocked_until = 0.0
                 return camoufox_html, camoufox_status, False
-            self._camoufox_failed = True
+            # One challenged page must not permanently kill the transport for
+            # the rest of the slate: the browser can still clear challenges on
+            # other URLs, so only repeated block failures disable it.
+            self._camoufox_block_failures += 1
+            if self._camoufox_block_failures >= int(
+                _env_float("SCORES24_CAMOUFOX_BLOCK_TOLERANCE", 2, 1)
+            ):
+                self._camoufox_failed = True
             browser_html, browser_status = self._browser_html(url)
             if browser_status == 200 and not _looks_blocked(browser_status, browser_html):
                 self._blocked_until = 0.0
@@ -722,6 +912,7 @@ def scrape_scores24(
                 "attemptedUrls": 0,
                 "blockedUrls": 0,
                 "blockRetryRounds": 0,
+                "checkpointedPicks": 0,
             },
         }
 
@@ -732,94 +923,114 @@ def scrape_scores24(
     block_retry_rounds = 0
     attempted_urls = 0
     listing_links: list[dict[str, str]] = []
+    checkpointed = _load_checkpoint(sport_key, date_iso, expected)
+    picks: list[dict[str, Any]] = list(checkpointed.values())
+    remaining = [
+        matchup
+        for matchup in expected
+        if _matchup_key(matchup["away"], matchup["home"]) not in checkpointed
+    ]
+    unresolved: list[tuple[dict[str, str], list[str]]] = []
     try:
-        listing_html, _, listing_blocked = scores_client.get_html(config["listing_url"])
-        if listing_blocked:
-            blocked_urls.append(config["listing_url"])
-        else:
-            listing_links = extract_listing_links(listing_html)
+        if remaining:
+            listing_html, _, listing_blocked = scores_client.get_html(config["listing_url"])
+            if listing_blocked:
+                blocked_urls.append(config["listing_url"])
+            else:
+                listing_links = extract_listing_links(listing_html)
 
-        picks: list[dict[str, Any]] = []
-        unresolved: list[tuple[dict[str, str], list[str]]] = []
-        max_candidates = int(_env_float("SCORES24_MAX_CANDIDATES_PER_MATCHUP", 36, 1))
+            max_candidates = int(_env_float("SCORES24_MAX_CANDIDATES_PER_MATCHUP", 36, 1))
 
-        def resolve_candidates(
-            matchup: dict[str, str],
-            candidates: list[str],
-            candidate_limit: int,
-        ) -> dict[str, Any] | None:
-            nonlocal attempted_urls
-            for url in candidates[:candidate_limit]:
-                attempted_urls += 1
-                html, status, blocked = scores_client.get_html(url)
-                if blocked:
-                    blocked_urls.append(url)
+            def resolve_candidates(
+                matchup: dict[str, str],
+                candidates: list[str],
+                candidate_limit: int,
+            ) -> dict[str, Any] | None:
+                nonlocal attempted_urls
+                for url in candidates[:candidate_limit]:
+                    attempted_urls += 1
+                    html, status, blocked = scores_client.get_html(url)
+                    if blocked:
+                        blocked_urls.append(url)
+                        key = _matchup_key(matchup["away"], matchup["home"])
+                        if key:
+                            blocked_matchups.add(key)
+                        # Scores24 can challenge a nonexistent date/order variant
+                        # instead of returning 404. Move that candidate behind the
+                        # untried variants so the next cooled-down retry progresses
+                        # through the official matchup's alternate URL dates/orders.
+                        candidates.remove(url)
+                        candidates.append(url)
+                        break
+                    if status != 200:
+                        continue
+                    if not _matchup_matches_blob(matchup, f"{url.replace('-', ' ')} {_norm_space(BeautifulSoup(html, 'html.parser').title)}"):
+                        continue
+                    tip, odds = extract_our_choice(html)
+                    if not tip:
+                        continue
                     key = _matchup_key(matchup["away"], matchup["home"])
                     if key:
-                        blocked_matchups.add(key)
-                    # Scores24 can challenge a nonexistent date/order variant
-                    # instead of returning 404. Move that candidate behind the
-                    # untried variants so the next cooled-down retry progresses
-                    # through the official matchup's alternate URL dates/orders.
-                    candidates.remove(url)
-                    candidates.append(url)
-                    break
-                if status != 200:
-                    continue
-                if not _matchup_matches_blob(matchup, f"{url.replace('-', ' ')} {_norm_space(BeautifulSoup(html, 'html.parser').title)}"):
-                    continue
-                tip, odds = extract_our_choice(html)
-                if not tip:
-                    continue
-                key = _matchup_key(matchup["away"], matchup["home"])
-                if key:
-                    blocked_matchups.discard(key)
-                return _pick_payload(config, date_iso, matchup, url, tip, odds)
-            return None
+                        blocked_matchups.discard(key)
+                    return _pick_payload(config, date_iso, matchup, url, tip, odds)
+                return None
 
-        for matchup in expected:
-            candidates = list(
-                dict.fromkeys(
-                    [
-                        *_matching_listing_urls(listing_links, matchup),
-                        *candidate_prediction_urls(sport_key, date_iso, matchup),
-                    ]
+            listed_queue: list[tuple[dict[str, str], list[str]]] = []
+            unlisted_queue: list[tuple[dict[str, str], list[str]]] = []
+            for matchup in remaining:
+                listing_urls = _matching_listing_urls(listing_links, matchup)
+                candidates = list(
+                    dict.fromkeys(
+                        [
+                            *listing_urls,
+                            *_historical_url_hints(sport_key, date_iso, matchup),
+                            *candidate_prediction_urls(sport_key, date_iso, matchup),
+                        ]
+                    )
                 )
-            )
-            pick = resolve_candidates(matchup, candidates, max_candidates)
-            if not pick:
-                unresolved.append((matchup, candidates))
-                continue
-            picks.append(pick)
+                # Matchups with listed detail links are near-certain
+                # single-request wins; resolve them before URL guessing so a
+                # mid-run block leaves the checkpoint holding as much of the
+                # slate as possible.
+                (listed_queue if listing_urls else unlisted_queue).append((matchup, candidates))
 
-        max_retry_rounds = int(_env_float("SCORES24_BLOCK_RETRY_ROUNDS", 3, 0))
-        retry_delay = _env_float("SCORES24_BLOCK_RETRY_DELAY_SECONDS", 45.0)
-        while unresolved and block_retry_rounds < max_retry_rounds:
-            unresolved_blocked = any(
-                _matchup_key(matchup["away"], matchup["home"]) in blocked_matchups
-                for matchup, _ in unresolved
-            )
-            if not unresolved_blocked:
-                break
-            block_retry_rounds += 1
-            time.sleep(retry_delay)
-            if owns_client:
-                # A blocked Camoufox/Playwright transport is intentionally marked
-                # failed for the rest of its client lifetime. Reusing that client
-                # makes every retry fall back to the same already-blocked HTTP
-                # path, so late-slate matchups can never recover. Start a fresh
-                # paced transport after the cooldown and retry only unresolved
-                # matchups.
-                scores_client.close()
-                scores_client = Scores24Client()
-            still_unresolved: list[tuple[dict[str, str], list[str]]] = []
-            for matchup, candidates in unresolved:
-                pick = resolve_candidates(matchup, candidates, min(max_candidates, 6))
-                if pick:
-                    picks.append(pick)
-                else:
-                    still_unresolved.append((matchup, candidates))
-            unresolved = still_unresolved
+            for matchup, candidates in [*listed_queue, *unlisted_queue]:
+                pick = resolve_candidates(matchup, candidates, max_candidates)
+                if not pick:
+                    unresolved.append((matchup, candidates))
+                    continue
+                picks.append(pick)
+                _save_checkpoint(sport_key, date_iso, picks)
+
+            max_retry_rounds = int(_env_float("SCORES24_BLOCK_RETRY_ROUNDS", 3, 0))
+            retry_delay = _env_float("SCORES24_BLOCK_RETRY_DELAY_SECONDS", 45.0)
+            while unresolved and block_retry_rounds < max_retry_rounds:
+                unresolved_blocked = any(
+                    _matchup_key(matchup["away"], matchup["home"]) in blocked_matchups
+                    for matchup, _ in unresolved
+                )
+                if not unresolved_blocked:
+                    break
+                block_retry_rounds += 1
+                time.sleep(retry_delay)
+                if owns_client:
+                    # A blocked Camoufox/Playwright transport is intentionally marked
+                    # failed for the rest of its client lifetime. Reusing that client
+                    # makes every retry fall back to the same already-blocked HTTP
+                    # path, so late-slate matchups can never recover. Start a fresh
+                    # paced transport after the cooldown and retry only unresolved
+                    # matchups.
+                    scores_client.close()
+                    scores_client = Scores24Client()
+                still_unresolved: list[tuple[dict[str, str], list[str]]] = []
+                for matchup, candidates in unresolved:
+                    pick = resolve_candidates(matchup, candidates, min(max_candidates, 6))
+                    if pick:
+                        picks.append(pick)
+                        _save_checkpoint(sport_key, date_iso, picks)
+                    else:
+                        still_unresolved.append((matchup, candidates))
+                unresolved = still_unresolved
     finally:
         if owns_client:
             scores_client.close()
@@ -848,6 +1059,7 @@ def scrape_scores24(
                 "attemptedUrls": attempted_urls,
                 "blockedUrls": len(set(blocked_urls)),
                 "blockRetryRounds": block_retry_rounds,
+                "checkpointedPicks": len(checkpointed),
             },
         }
     return {
@@ -868,6 +1080,7 @@ def scrape_scores24(
             "blockedUrls": len(set(blocked_urls)),
             "blockRetryRounds": block_retry_rounds,
             "listingLinks": len(listing_links),
+            "checkpointedPicks": len(checkpointed),
         },
     }
 

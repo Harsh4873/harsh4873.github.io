@@ -31,6 +31,12 @@ BLOCK_RETRY_ROUNDS="${SCORES24_BLOCK_RETRY_ROUNDS:-4}"
 HOST_BLOCK_COOLDOWN="${SCORES24_HOST_BLOCK_COOLDOWN_SECONDS:-90}"
 CURL_SESSION_MAX_REQUESTS="${SCORES24_CURL_SESSION_MAX_REQUESTS:-1}"
 FEED_COOLDOWN="${SCORES24_PUBLISH_FEED_COOLDOWN_SECONDS:-90}"
+# Same-day resume state: verified picks checkpoint + persistent browser
+# profile so reruns only fight for still-missing matchups instead of
+# re-requesting the whole slate from zero after every block.
+SCORES24_STATE_ROOT="${SCORES24_STATE_ROOT:-${HOME}/.cache/pickledger-scores24}"
+export SCORES24_CHECKPOINT_DIR="${SCORES24_CHECKPOINT_DIR:-${SCORES24_STATE_ROOT}}"
+export SCORES24_CAMOUFOX_PROFILE_DIR="${SCORES24_CAMOUFOX_PROFILE_DIR:-${SCORES24_STATE_ROOT}/camoufox-profile}"
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --date)
