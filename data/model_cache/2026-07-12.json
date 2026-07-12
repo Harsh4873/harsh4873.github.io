@@ -50577,6 +50577,7 @@
           "raw_model_probability": 0.6136,
           "raw_probability": 0.6136,
           "raw_units": 0.05,
+          "result": "loss",
           "selected_odds": -101,
           "selected_side_implied_probability": 0.5238095238095238,
           "selection": "Under",
@@ -54039,6 +54040,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "selected_odds": 119,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
@@ -54109,6 +54111,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "selected_odds": -131,
           "source": "SportsGamblerMLB",
           "sport": "MLB",

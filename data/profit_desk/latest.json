@@ -720,6 +720,14 @@
         "value_probability_positive_ev_below_0.70"
       ],
       "canonicalGame": "2026-07-12:mlb:san diego padres|toronto blue jays",
+      "closing": {
+        "capturedAt": "2026-07-12T13:23:50.873376Z",
+        "clv": -0.00651,
+        "decimalOdds": 1.763359,
+        "noVigProbability": 0.541193,
+        "oddsAmerican": -131,
+        "provider": "espn_scoreboard:DraftKings"
+      },
       "consensusSources": [],
       "date": "2026-07-12",
       "decimalOdds": 1.75188,
@@ -840,7 +848,7 @@
         "updatedAt": "2026-07-12T13:23:50.873376Z"
       },
       "rawModelProbabilityIgnored": null,
-      "result": "pending",
+      "result": "loss",
       "shadowQualified": false,
       "source": "SportsGamblerMLB",
       "sourceKey": "sportsgambler_mlb",
@@ -1017,6 +1025,14 @@
         "value_probability_positive_ev_below_0.70"
       ],
       "canonicalGame": "2026-07-12:mlb:san diego padres|toronto blue jays",
+      "closing": {
+        "capturedAt": "2026-07-12T14:23:24.172574Z",
+        "clv": 0.0,
+        "decimalOdds": 1.990099,
+        "noVigProbability": 0.479499,
+        "oddsAmerican": -101,
+        "provider": "espn_scoreboard:DraftKings"
+      },
       "consensusSources": [],
       "date": "2026-07-12",
       "decimalOdds": 1.990099,
@@ -1140,7 +1156,7 @@
         "updatedAt": "2026-07-12T14:23:24.172574Z"
       },
       "rawModelProbabilityIgnored": 0.6136,
-      "result": "pending",
+      "result": "loss",
       "shadowQualified": false,
       "source": "MLB Model",
       "sourceKey": "mlb_new",
@@ -2984,6 +3000,14 @@
         "value_probability_positive_ev_below_0.70"
       ],
       "canonicalGame": "2026-07-12:mlb:colorado rockies|san francisco giants",
+      "closing": {
+        "capturedAt": "2026-07-12T13:23:50.873376Z",
+        "clv": 0.004566,
+        "decimalOdds": 2.19,
+        "noVigProbability": 0.436213,
+        "oddsAmerican": 119,
+        "provider": "espn_scoreboard:DraftKings"
+      },
       "consensusSources": [],
       "date": "2026-07-12",
       "decimalOdds": 2.2,
@@ -3104,7 +3128,7 @@
         "updatedAt": "2026-07-12T13:23:50.873376Z"
       },
       "rawModelProbabilityIgnored": null,
-      "result": "pending",
+      "result": "loss",
       "shadowQualified": false,
       "source": "SportsGamblerMLB",
       "sourceKey": "sportsgambler_mlb",
