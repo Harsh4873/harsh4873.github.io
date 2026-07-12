@@ -1,15 +1,6 @@
 {
-  "last_updated": "2026-07-11T13:06:00.382527",
+  "last_updated": "2026-07-12T13:20:49.195704",
   "report": {
-    "brionna jones": {
-      "player_name": "Brionna Jones",
-      "team_abbr": "ATL",
-      "status": "Out",
-      "sources": [
-        "espn"
-      ],
-      "comment": "Jones is listed as doubtful for Saturday's game versus the Fire."
-    },
     "angel reese": {
       "player_name": "Angel Reese",
       "team_abbr": "ATL",
@@ -17,25 +8,25 @@
       "sources": [
         "espn"
       ],
-      "comment": "Reese (leg) is questionable for Saturday's game against the Fire."
+      "comment": "day-to-day"
     },
-    "maddy westbeld": {
-      "player_name": "Maddy Westbeld",
-      "team_abbr": "CHI",
+    "jaylyn sherrod": {
+      "player_name": "Jaylyn Sherrod",
+      "team_abbr": "ATL",
       "status": "Out",
       "sources": [
         "espn"
       ],
-      "comment": "Westbeld (coach's decision) is listed as out for Friday's game versus the Sparks."
+      "comment": "Sherrod (coach's decision) has been ruled out for Saturday's game against Portland."
     },
-    "chloe bibby": {
-      "player_name": "Chloe Bibby",
-      "team_abbr": "CHI",
+    "brionna jones": {
+      "player_name": "Brionna Jones",
+      "team_abbr": "ATL",
       "status": "Out",
       "sources": [
         "espn"
       ],
-      "comment": "Bibby (coach's decision) has been ruled out for Friday's game against the Sparks."
+      "comment": "Jones (knee) is listed as out for Saturday's game versus Portland."
     },
     "skylar diggins": {
       "player_name": "Skylar Diggins",
@@ -44,7 +35,7 @@
       "sources": [
         "espn"
       ],
-      "comment": "Diggins (knee) is listed as out for Friday's game against the Sparks."
+      "comment": "Diggins (knee) has been ruled out for Sunday's game against Dallas."
     },
     "dijonai carrington": {
       "player_name": "DiJonai Carrington",
@@ -100,24 +91,6 @@
       ],
       "comment": "Griner (quadriceps) is out for Friday's game against the Valkyries."
     },
-    "costanza verona": {
-      "player_name": "Costanza Verona",
-      "team_abbr": "DAL",
-      "status": "Out",
-      "sources": [
-        "espn"
-      ],
-      "comment": "Verona (coach's decision) has been ruled out for Friday's game against the Tempo."
-    },
-    "haley jones": {
-      "player_name": "Haley Jones",
-      "team_abbr": "DAL",
-      "status": "Out",
-      "sources": [
-        "espn"
-      ],
-      "comment": "Jones (coach's decision) has been ruled out for Friday's game against the Tempo."
-    },
     "gabby williams": {
       "player_name": "Gabby Williams",
       "team_abbr": "GSV",
@@ -157,11 +130,11 @@
     "caitlin clark": {
       "player_name": "Caitlin Clark",
       "team_abbr": "IND",
-      "status": "Out",
+      "status": "Day-To-Day",
       "sources": [
         "espn"
       ],
-      "comment": "Clark (back) posted nine points (4-12 FG, 1-6 3Pt), four rebounds, three assists and one steal across 16 minutes in Wednesday's 106-92 loss to the Sparks. She won't play in Thursday's game against Phoenix, Scott Agness of FieldhouseFiles.com reports."
+      "comment": "Clark (back) is listed as probable for Sunday's game against the Aces."
     },
     "cameron brink": {
       "player_name": "Cameron Brink",
@@ -181,14 +154,14 @@
       ],
       "comment": "Plum has suffered a lower left leg injury and will be re-evaluated in four weeks, Mitchell Hansen of CanisHoopus.com reports."
     },
-    "janiah barker": {
-      "player_name": "Janiah Barker",
+    "ta'niya latson": {
+      "player_name": "Ta'Niya Latson",
       "team_abbr": "LV",
-      "status": "Out",
+      "status": "Day-To-Day",
       "sources": [
         "espn"
       ],
-      "comment": "Barker (leg) is listed as out for Saturday's game against Phoenix."
+      "comment": "day-to-day"
     },
     "dana evans": {
       "player_name": "Dana Evans",
@@ -197,7 +170,34 @@
       "sources": [
         "espn"
       ],
-      "comment": "Evans (leg) is questionable for Saturday's game against the Mercury."
+      "comment": "Evans (leg) is listed as out for Saturday's game versus the Mercury."
+    },
+    "janiah barker": {
+      "player_name": "Janiah Barker",
+      "team_abbr": "LV",
+      "status": "Out",
+      "sources": [
+        "espn"
+      ],
+      "comment": "Head coach Becky Hammon said Saturday that she expects a long-term absence for Barker, Nekias Duncan of Yahoo Sports reports."
+    },
+    "liatu king": {
+      "player_name": "Liatu King",
+      "team_abbr": "MIN",
+      "status": "Day-To-Day",
+      "sources": [
+        "espn"
+      ],
+      "comment": "day-to-day"
+    },
+    "maya caldwell": {
+      "player_name": "Maya Caldwell",
+      "team_abbr": "MIN",
+      "status": "Day-To-Day",
+      "sources": [
+        "espn"
+      ],
+      "comment": "day-to-day"
     },
     "napheesa collier": {
       "player_name": "Napheesa Collier",
@@ -226,41 +226,50 @@
       ],
       "comment": "out"
     },
-    "rebecca allen": {
-      "player_name": "Rebecca Allen",
-      "team_abbr": "NY",
-      "status": "Day-To-Day",
-      "sources": [
-        "espn"
-      ],
-      "comment": "day-to-day"
-    },
-    "pauline astier": {
-      "player_name": "Pauline Astier",
-      "team_abbr": "NY",
-      "status": "Day-To-Day",
-      "sources": [
-        "espn"
-      ],
-      "comment": "day-to-day"
-    },
     "leonie fiebich": {
       "player_name": "Leonie Fiebich",
+      "team_abbr": "NY",
+      "status": "Day-To-Day",
+      "sources": [
+        "espn"
+      ],
+      "comment": "day-to-day"
+    },
+    "marine fauthoux": {
+      "player_name": "Marine Fauthoux",
       "team_abbr": "NY",
       "status": "Out",
       "sources": [
         "espn"
       ],
-      "comment": "Fiebich (foot) is out for Saturday game against the Lynx."
+      "comment": "Fauthoux (coach's decision) is listed as out for Saturday's game against Minnesota."
     },
-    "sami whitcomb": {
-      "player_name": "Sami Whitcomb",
+    "anneli maley": {
+      "player_name": "Anneli Maley",
+      "team_abbr": "NY",
+      "status": "Out",
+      "sources": [
+        "espn"
+      ],
+      "comment": "Maley (coach's decision) is listed as out for Saturday's game against Minnesota."
+    },
+    "quionche carter": {
+      "player_name": "Quionche Carter",
       "team_abbr": "PHX",
       "status": "Day-To-Day",
       "sources": [
         "espn"
       ],
-      "comment": "Whitcomb (knee) is questionable for Saturday's game in Las Vegas."
+      "comment": "day-to-day"
+    },
+    "shay ciezki": {
+      "player_name": "Shay Ciezki",
+      "team_abbr": "PHX",
+      "status": "Out",
+      "sources": [
+        "espn"
+      ],
+      "comment": "Ciezki (coach's decision) is listed as out for Saturday's game against the Aces."
     },
     "natasha mack": {
       "player_name": "Natasha Mack",
@@ -283,20 +292,20 @@
     "sarah ashlee barker": {
       "player_name": "Sarah Ashlee Barker",
       "team_abbr": "POR",
-      "status": "Out",
-      "sources": [
-        "espn"
-      ],
-      "comment": "Barker (not with team) is listed as out for Saturday's game against the Dream."
-    },
-    "karlie samuelson": {
-      "player_name": "Karlie Samuelson",
-      "team_abbr": "POR",
       "status": "Day-To-Day",
       "sources": [
         "espn"
       ],
-      "comment": "Samuelson (finger) is questionable for Saturday's game against the Dream."
+      "comment": "day-to-day"
+    },
+    "jordan harrison": {
+      "player_name": "Jordan Harrison",
+      "team_abbr": "POR",
+      "status": "Out",
+      "sources": [
+        "espn"
+      ],
+      "comment": "Harrison (coach's decision) has been ruled out for Saturday's game against Atlanta."
     },
     "sania feagin": {
       "player_name": "Sania Feagin",
@@ -314,25 +323,16 @@
       "sources": [
         "espn"
       ],
-      "comment": "Mair (coach's decision) is out for Thursday's game against the Dream."
+      "comment": "Mair (coach's decision) has been ruled out for Sunday's game against the Mystics."
     },
-    "ornella bankole": {
-      "player_name": "Ornella Bankole",
-      "team_abbr": "TOR",
+    "ezi magbegor": {
+      "player_name": "Ezi Magbegor",
+      "team_abbr": "SEA",
       "status": "Out",
       "sources": [
         "espn"
       ],
-      "comment": "Bankole (coach's decision) won't play Friday against the Wings."
-    },
-    "nyara sabally": {
-      "player_name": "Nyara Sabally",
-      "team_abbr": "TOR",
-      "status": "Out",
-      "sources": [
-        "espn"
-      ],
-      "comment": "Sabally (knee) is out for Friday's game against the Wings."
+      "comment": "Magbegor (face) has been ruled out for Sunday's game against the Mystics."
     },
     "temi fagbenle": {
       "player_name": "Temi Fagbenle",
@@ -341,7 +341,16 @@
       "sources": [
         "espn"
       ],
-      "comment": "Fagbenle (concussion) is out for Friday's game against the Wings."
+      "comment": "Fagbenle (concussion) has been ruled out for Sunday's game against the Liberty."
+    },
+    "nyara sabally": {
+      "player_name": "Nyara Sabally",
+      "team_abbr": "TOR",
+      "status": "Day-To-Day",
+      "sources": [
+        "espn"
+      ],
+      "comment": "Sabally (knee) is listed as questionable for Sunday's game against New York."
     },
     "brittney sykes": {
       "player_name": "Brittney Sykes",
@@ -368,16 +377,16 @@
       "sources": [
         "espn"
       ],
-      "comment": "Citron (knee) is out for Monday's game against the Valkyries."
+      "comment": "Citron (knee) is listed as probable for Sunday's game against the Storm."
     },
-    "darianna littlepage-buggs": {
-      "player_name": "Darianna Littlepage-Buggs",
+    "alicia florez": {
+      "player_name": "Alicia Florez",
       "team_abbr": "WAS",
-      "status": "Out",
+      "status": "Day-To-Day",
       "sources": [
         "espn"
       ],
-      "comment": "Littlepage-Buggs (coach's decision) has been ruled out for Monday's game against Golden State."
+      "comment": "Florez (neck) is listed as questionable for Sunday's game against the Storm."
     }
   }
 }

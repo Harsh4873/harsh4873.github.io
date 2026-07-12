@@ -1,458 +1,56 @@
 {
-  "date": "2026-07-11",
+  "date": "2026-07-12",
   "model": "MLBInning",
   "picks": [
     {
-      "game_id": "823357",
-      "game_start_time": "2026-07-11T16:05:00Z",
+      "game_id": "823358",
+      "game_start_time": "2026-07-12T16:15:00Z",
       "game_order": 0,
       "matchup": "Pittsburgh Pirates vs Milwaukee Brewers",
       "home_team": "Pittsburgh Pirates",
       "away_team": "Milwaukee Brewers",
-      "home_pitcher": "Braxton Ashcraft",
-      "away_pitcher": "Brandon Sproat",
+      "home_pitcher": "Paul Skenes",
+      "away_pitcher": "Robert Gasser",
       "home_pitcher_context": {
-        "name": "Braxton Ashcraft",
-        "era": 3.24,
-        "whip": 1.1,
-        "opponent_obp": 0.285,
-        "opponent_slg": 0.367,
-        "team_bullpen": {
-          "lookback_games": 2,
-          "games_inspected": 2,
-          "fatigue_index": 0.78,
-          "effective_unavailable_count": 6.24,
-          "unavailable_today_count": 4,
-          "back_to_back_arms_count": 1,
-          "high_leverage_used_count": 4
-        }
-      },
-      "away_pitcher_context": {
-        "name": "Brandon Sproat",
-        "era": 5.13,
-        "whip": 1.37,
-        "opponent_obp": 0.341,
-        "opponent_slg": 0.44,
-        "team_bullpen": {
-          "lookback_games": 2,
-          "games_inspected": 2,
-          "fatigue_index": 0.525,
-          "effective_unavailable_count": 4.2,
-          "unavailable_today_count": 3,
-          "back_to_back_arms_count": 0,
-          "high_leverage_used_count": 3
-        }
-      },
-      "travel": {
-        "home": {
-          "available": true,
-          "previous_game_date": "2026-07-09",
-          "previous_venue_id": 31,
-          "previous_venue_name": "PNC Park",
-          "current_venue_id": 31,
-          "current_venue_name": "PNC Park",
-          "days_since_previous_game": 2,
-          "same_venue": true,
-          "distance_miles": 0.0,
-          "timezone_shift_hours": 0,
-          "travel_direction": "same",
-          "travel_fatigue_index": 0.0,
-          "travel_run_delta": -0.0,
-          "label": "2d since previous game; 0 mi"
-        },
-        "away": {
-          "available": true,
-          "previous_game_date": "2026-07-09",
-          "previous_venue_id": 2889,
-          "previous_venue_name": "Busch Stadium",
-          "current_venue_id": 31,
-          "current_venue_name": "PNC Park",
-          "days_since_previous_game": 2,
-          "same_venue": false,
-          "distance_miles": 556.9,
-          "timezone_shift_hours": 1,
-          "travel_direction": "east",
-          "travel_fatigue_index": 0.16,
-          "travel_run_delta": -0.026,
-          "label": "2d since previous game; 557 mi; 1h east"
-        }
-      },
-      "weather": {
-        "temp": "",
-        "condition": "",
-        "wind": ""
-      },
-      "venue": {
-        "id": 31,
-        "name": "PNC Park",
-        "run_factor": 1.0
-      },
-      "venue_factor": 1.0,
-      "top_2_picks": [
-        {
-          "inning": 1,
-          "probability_scoreless": 0.509,
-          "baseline": 0.3844,
-          "edge_pp": 12.51,
-          "decision": "BET",
-          "confidence": "Medium",
-          "label": "Inning 1 - No Run Scored (50.9%, edge +12.5pp)"
-        },
-        {
-          "inning": 6,
-          "probability_scoreless": 0.555,
-          "baseline": 0.5184,
-          "edge_pp": 3.66,
-          "decision": "LEAN",
-          "confidence": "Medium",
-          "label": "Inning 6 - No Run Scored (55.5%, edge +3.7pp)"
-        }
-      ],
-      "full_inning_table": {
-        "1": 0.509,
-        "2": 0.543,
-        "3": 0.487,
-        "4": 0.497,
-        "5": 0.509,
-        "6": 0.555,
-        "7": 0.322,
-        "8": 0.357
-      },
-      "edge_table": {
-        "1": 0.1251,
-        "2": 0.0247,
-        "3": -0.0033,
-        "4": -0.0212,
-        "5": 0.0054,
-        "6": 0.0366,
-        "7": -0.2252,
-        "8": -0.2051
-      },
-      "baseline_table": {
-        "1": 0.3844,
-        "2": 0.5184,
-        "3": 0.49,
-        "4": 0.5184,
-        "5": 0.5041,
-        "6": 0.5184,
-        "7": 0.5476,
-        "8": 0.5625
-      }
-    },
-    {
-      "game_id": "823356",
-      "game_start_time": "2026-07-11T20:05:00Z",
-      "game_order": 1,
-      "matchup": "Pittsburgh Pirates vs Milwaukee Brewers",
-      "home_team": "Pittsburgh Pirates",
-      "away_team": "Milwaukee Brewers",
-      "home_pitcher": "Bubba Chandler",
-      "away_pitcher": "Shane Drohan",
-      "home_pitcher_context": {
-        "name": "Bubba Chandler",
-        "era": 4.82,
-        "whip": 1.44,
-        "opponent_obp": 0.337,
-        "opponent_slg": 0.378,
-        "team_bullpen": {
-          "lookback_games": 2,
-          "games_inspected": 2,
-          "fatigue_index": 0.78,
-          "effective_unavailable_count": 6.24,
-          "unavailable_today_count": 4,
-          "back_to_back_arms_count": 1,
-          "high_leverage_used_count": 4
-        }
-      },
-      "away_pitcher_context": {
-        "name": "Shane Drohan",
-        "era": 2.97,
-        "whip": 1.24,
-        "opponent_obp": 0.301,
-        "opponent_slg": 0.37,
-        "team_bullpen": {
-          "lookback_games": 2,
-          "games_inspected": 2,
-          "fatigue_index": 0.525,
-          "effective_unavailable_count": 4.2,
-          "unavailable_today_count": 3,
-          "back_to_back_arms_count": 0,
-          "high_leverage_used_count": 3
-        }
-      },
-      "travel": {
-        "home": {
-          "available": true,
-          "previous_game_date": "2026-07-09",
-          "previous_venue_id": 31,
-          "previous_venue_name": "PNC Park",
-          "current_venue_id": 31,
-          "current_venue_name": "PNC Park",
-          "days_since_previous_game": 2,
-          "same_venue": true,
-          "distance_miles": 0.0,
-          "timezone_shift_hours": 0,
-          "travel_direction": "same",
-          "travel_fatigue_index": 0.0,
-          "travel_run_delta": -0.0,
-          "label": "2d since previous game; 0 mi"
-        },
-        "away": {
-          "available": true,
-          "previous_game_date": "2026-07-09",
-          "previous_venue_id": 2889,
-          "previous_venue_name": "Busch Stadium",
-          "current_venue_id": 31,
-          "current_venue_name": "PNC Park",
-          "days_since_previous_game": 2,
-          "same_venue": false,
-          "distance_miles": 556.9,
-          "timezone_shift_hours": 1,
-          "travel_direction": "east",
-          "travel_fatigue_index": 0.16,
-          "travel_run_delta": -0.026,
-          "label": "2d since previous game; 557 mi; 1h east"
-        }
-      },
-      "weather": {
-        "temp": "",
-        "condition": "",
-        "wind": ""
-      },
-      "venue": {
-        "id": 31,
-        "name": "PNC Park",
-        "run_factor": 1.0
-      },
-      "venue_factor": 1.0,
-      "top_2_picks": [
-        {
-          "inning": 1,
-          "probability_scoreless": 0.514,
-          "baseline": 0.3844,
-          "edge_pp": 12.98,
-          "decision": "BET",
-          "confidence": "Medium",
-          "label": "Inning 1 - No Run Scored (51.4%, edge +13.0pp)"
-        },
-        {
-          "inning": 6,
-          "probability_scoreless": 0.559,
-          "baseline": 0.5184,
-          "edge_pp": 4.07,
-          "decision": "LEAN",
-          "confidence": "Medium",
-          "label": "Inning 6 - No Run Scored (55.9%, edge +4.1pp)"
-        }
-      ],
-      "full_inning_table": {
-        "1": 0.514,
-        "2": 0.547,
-        "3": 0.492,
-        "4": 0.502,
-        "5": 0.514,
-        "6": 0.559,
-        "7": 0.322,
-        "8": 0.357
-      },
-      "edge_table": {
-        "1": 0.1298,
-        "2": 0.0286,
-        "3": 0.0018,
-        "4": -0.016,
-        "5": 0.0101,
-        "6": 0.0407,
-        "7": -0.2252,
-        "8": -0.2051
-      },
-      "baseline_table": {
-        "1": 0.3844,
-        "2": 0.5184,
-        "3": 0.49,
-        "4": 0.5184,
-        "5": 0.5041,
-        "6": 0.5184,
-        "7": 0.5476,
-        "8": 0.5625
-      }
-    },
-    {
-      "game_id": "823682",
-      "game_start_time": "2026-07-11T18:10:00Z",
-      "game_order": 2,
-      "matchup": "Minnesota Twins vs Los Angeles Angels",
-      "home_team": "Minnesota Twins",
-      "away_team": "Los Angeles Angels",
-      "home_pitcher": "Joe Ryan",
-      "away_pitcher": "Ryan Johnson",
-      "home_pitcher_context": {
-        "name": "Joe Ryan",
-        "era": 2.85,
+        "name": "Paul Skenes",
+        "era": 3.58,
         "whip": 1.04,
-        "opponent_obp": 0.267,
-        "opponent_slg": 0.341,
+        "opponent_obp": 0.273,
+        "opponent_slg": 0.362,
         "team_bullpen": {
           "lookback_games": 2,
           "games_inspected": 2,
-          "fatigue_index": 0.598,
-          "effective_unavailable_count": 4.78,
-          "unavailable_today_count": 3,
-          "back_to_back_arms_count": 1,
-          "high_leverage_used_count": 3
-        }
-      },
-      "away_pitcher_context": {
-        "name": "Ryan Johnson",
-        "era": 6.99,
-        "whip": 1.55,
-        "opponent_obp": 0.344,
-        "opponent_slg": 0.525,
-        "team_bullpen": {
-          "lookback_games": 2,
-          "games_inspected": 2,
-          "fatigue_index": 0.545,
-          "effective_unavailable_count": 4.36,
+          "fatigue_index": 0.593,
+          "effective_unavailable_count": 4.75,
           "unavailable_today_count": 2,
-          "back_to_back_arms_count": 1,
+          "back_to_back_arms_count": 0,
           "high_leverage_used_count": 2
         }
       },
-      "travel": {
-        "home": {
-          "available": true,
-          "previous_game_date": "2026-07-10",
-          "previous_venue_id": 3312,
-          "previous_venue_name": "Target Field",
-          "current_venue_id": 3312,
-          "current_venue_name": "Target Field",
-          "days_since_previous_game": 1,
-          "same_venue": true,
-          "distance_miles": 0.0,
-          "timezone_shift_hours": 0,
-          "travel_direction": "same",
-          "travel_fatigue_index": 0.0,
-          "travel_run_delta": -0.0,
-          "label": "1d since previous game; 0 mi"
-        },
-        "away": {
-          "available": true,
-          "previous_game_date": "2026-07-10",
-          "previous_venue_id": 3312,
-          "previous_venue_name": "Target Field",
-          "current_venue_id": 3312,
-          "current_venue_name": "Target Field",
-          "days_since_previous_game": 1,
-          "same_venue": true,
-          "distance_miles": 0.0,
-          "timezone_shift_hours": 0,
-          "travel_direction": "same",
-          "travel_fatigue_index": 0.0,
-          "travel_run_delta": -0.0,
-          "label": "1d since previous game; 0 mi"
-        }
-      },
-      "weather": {
-        "temp": "",
-        "condition": "",
-        "wind": ""
-      },
-      "venue": {
-        "id": 3312,
-        "name": "Target Field",
-        "run_factor": 1.0
-      },
-      "venue_factor": 1.0,
-      "top_2_picks": [
-        {
-          "inning": 3,
-          "probability_scoreless": 0.573,
-          "baseline": 0.49,
-          "edge_pp": 8.26,
-          "decision": "LEAN",
-          "confidence": "Medium",
-          "label": "Inning 3 - No Run Scored (57.3%, edge +8.3pp)"
-        }
-      ],
-      "full_inning_table": {
-        "1": 0.389,
-        "2": 0.467,
-        "3": 0.573,
-        "4": 0.457,
-        "5": 0.455,
-        "6": 0.537,
-        "7": 0.391,
-        "8": 0.437
-      },
-      "edge_table": {
-        "1": 0.0044,
-        "2": -0.0518,
-        "3": 0.0826,
-        "4": -0.0609,
-        "5": -0.0488,
-        "6": 0.0187,
-        "7": -0.1565,
-        "8": -0.1252
-      },
-      "baseline_table": {
-        "1": 0.3844,
-        "2": 0.5184,
-        "3": 0.49,
-        "4": 0.5184,
-        "5": 0.5041,
-        "6": 0.5184,
-        "7": 0.5476,
-        "8": 0.5625
-      }
-    },
-    {
-      "game_id": "824576",
-      "game_start_time": "2026-07-11T18:10:00Z",
-      "game_order": 3,
-      "matchup": "Chicago White Sox vs Athletics",
-      "home_team": "Chicago White Sox",
-      "away_team": "Athletics",
-      "home_pitcher": "Bryan Hudson",
-      "away_pitcher": "Gage Jump",
-      "home_pitcher_context": {
-        "name": "Bryan Hudson",
-        "era": 2.25,
-        "whip": 1.3,
-        "opponent_obp": 0.337,
-        "opponent_slg": 0.305,
-        "team_bullpen": {
-          "lookback_games": 2,
-          "games_inspected": 2,
-          "fatigue_index": 0.277,
-          "effective_unavailable_count": 2.22,
-          "unavailable_today_count": 1,
-          "back_to_back_arms_count": 1,
-          "high_leverage_used_count": 1
-        }
-      },
       "away_pitcher_context": {
-        "name": "Gage Jump",
-        "era": 3.77,
-        "whip": 1.3,
-        "opponent_obp": 0.326,
-        "opponent_slg": 0.391,
+        "name": "Robert Gasser",
+        "era": 4.15,
+        "whip": 1.18,
+        "opponent_obp": 0.302,
+        "opponent_slg": 0.436,
         "team_bullpen": {
           "lookback_games": 2,
           "games_inspected": 2,
-          "fatigue_index": 0.981,
-          "effective_unavailable_count": 7.85,
-          "unavailable_today_count": 6,
+          "fatigue_index": 0.435,
+          "effective_unavailable_count": 3.48,
+          "unavailable_today_count": 3,
           "back_to_back_arms_count": 0,
-          "high_leverage_used_count": 6
+          "high_leverage_used_count": 3
         }
       },
       "travel": {
         "home": {
           "available": true,
-          "previous_game_date": "2026-07-10",
-          "previous_venue_id": 4,
-          "previous_venue_name": "Rate Field",
-          "current_venue_id": 4,
-          "current_venue_name": "Rate Field",
+          "previous_game_date": "2026-07-11",
+          "previous_venue_id": 31,
+          "previous_venue_name": "PNC Park",
+          "current_venue_id": 31,
+          "current_venue_name": "PNC Park",
           "days_since_previous_game": 1,
           "same_venue": true,
           "distance_miles": 0.0,
@@ -464,11 +62,11 @@
         },
         "away": {
           "available": true,
-          "previous_game_date": "2026-07-10",
-          "previous_venue_id": 4,
-          "previous_venue_name": "Rate Field",
-          "current_venue_id": 4,
-          "current_venue_name": "Rate Field",
+          "previous_game_date": "2026-07-11",
+          "previous_venue_id": 31,
+          "previous_venue_name": "PNC Park",
+          "current_venue_id": 31,
+          "current_venue_name": "PNC Park",
           "days_since_previous_game": 1,
           "same_venue": true,
           "distance_miles": 0.0,
@@ -485,50 +83,50 @@
         "wind": ""
       },
       "venue": {
-        "id": 4,
-        "name": "Rate Field",
+        "id": 31,
+        "name": "PNC Park",
         "run_factor": 1.0
       },
       "venue_factor": 1.0,
       "top_2_picks": [
         {
           "inning": 1,
-          "probability_scoreless": 0.51,
+          "probability_scoreless": 0.544,
           "baseline": 0.3844,
-          "edge_pp": 12.55,
+          "edge_pp": 15.91,
           "decision": "BET",
           "confidence": "Medium",
-          "label": "Inning 1 - No Run Scored (51.0%, edge +12.6pp)"
+          "label": "Inning 1 - No Run Scored (54.4%, edge +15.9pp)"
         },
         {
-          "inning": 3,
-          "probability_scoreless": 0.544,
-          "baseline": 0.49,
-          "edge_pp": 5.35,
+          "inning": 6,
+          "probability_scoreless": 0.567,
+          "baseline": 0.5184,
+          "edge_pp": 4.89,
           "decision": "LEAN",
           "confidence": "Medium",
-          "label": "Inning 3 - No Run Scored (54.4%, edge +5.3pp)"
+          "label": "Inning 6 - No Run Scored (56.7%, edge +4.9pp)"
         }
       ],
       "full_inning_table": {
-        "1": 0.51,
-        "2": 0.567,
-        "3": 0.544,
-        "4": 0.567,
-        "5": 0.51,
-        "6": 0.51,
-        "7": 0.346,
-        "8": 0.471
+        "1": 0.544,
+        "2": 0.552,
+        "3": 0.509,
+        "4": 0.52,
+        "5": 0.53,
+        "6": 0.567,
+        "7": 0.321,
+        "8": 0.383
       },
       "edge_table": {
-        "1": 0.1255,
-        "2": 0.0484,
-        "3": 0.0535,
-        "4": 0.0484,
-        "5": 0.0058,
-        "6": -0.0082,
-        "7": -0.2021,
-        "8": -0.0916
+        "1": 0.1591,
+        "2": 0.0332,
+        "3": 0.0192,
+        "4": 0.0014,
+        "5": 0.026,
+        "6": 0.0489,
+        "7": -0.2262,
+        "8": -0.1797
       },
       "baseline_table": {
         "1": 0.3844,
@@ -542,54 +140,54 @@
       }
     },
     {
-      "game_id": "823198",
-      "game_start_time": "2026-07-11T20:05:00Z",
-      "game_order": 4,
-      "matchup": "San Francisco Giants vs Colorado Rockies",
-      "home_team": "San Francisco Giants",
-      "away_team": "Colorado Rockies",
-      "home_pitcher": "Tyler Mahle",
-      "away_pitcher": "Kyle Freeland",
+      "game_id": "824814",
+      "game_start_time": "2026-07-12T17:35:00Z",
+      "game_order": 1,
+      "matchup": "Baltimore Orioles vs Kansas City Royals",
+      "home_team": "Baltimore Orioles",
+      "away_team": "Kansas City Royals",
+      "home_pitcher": "Shane Baz",
+      "away_pitcher": "Seth Lugo",
       "home_pitcher_context": {
-        "name": "Tyler Mahle",
-        "era": 5.7,
-        "whip": 1.49,
-        "opponent_obp": 0.346,
-        "opponent_slg": 0.473,
+        "name": "Shane Baz",
+        "era": 4.21,
+        "whip": 1.37,
+        "opponent_obp": 0.326,
+        "opponent_slg": 0.412,
         "team_bullpen": {
           "lookback_games": 2,
           "games_inspected": 2,
-          "fatigue_index": 0.451,
-          "effective_unavailable_count": 3.61,
-          "unavailable_today_count": 2,
+          "fatigue_index": 0.236,
+          "effective_unavailable_count": 1.89,
+          "unavailable_today_count": 0,
           "back_to_back_arms_count": 0,
-          "high_leverage_used_count": 2
+          "high_leverage_used_count": 0
         }
       },
       "away_pitcher_context": {
-        "name": "Kyle Freeland",
-        "era": 7.46,
-        "whip": 1.61,
-        "opponent_obp": 0.362,
-        "opponent_slg": 0.565,
+        "name": "Seth Lugo",
+        "era": 4.56,
+        "whip": 1.43,
+        "opponent_obp": 0.34,
+        "opponent_slg": 0.477,
         "team_bullpen": {
           "lookback_games": 2,
           "games_inspected": 2,
-          "fatigue_index": 0.475,
-          "effective_unavailable_count": 3.8,
-          "unavailable_today_count": 2,
+          "fatigue_index": 0.208,
+          "effective_unavailable_count": 1.66,
+          "unavailable_today_count": 0,
           "back_to_back_arms_count": 0,
-          "high_leverage_used_count": 2
+          "high_leverage_used_count": 0
         }
       },
       "travel": {
         "home": {
           "available": true,
-          "previous_game_date": "2026-07-10",
-          "previous_venue_id": 2395,
-          "previous_venue_name": "Oracle Park",
-          "current_venue_id": 2395,
-          "current_venue_name": "Oracle Park",
+          "previous_game_date": "2026-07-11",
+          "previous_venue_id": 2,
+          "previous_venue_name": "Oriole Park at Camden Yards",
+          "current_venue_id": 2,
+          "current_venue_name": "Oriole Park at Camden Yards",
           "days_since_previous_game": 1,
           "same_venue": true,
           "distance_miles": 0.0,
@@ -601,11 +199,11 @@
         },
         "away": {
           "available": true,
-          "previous_game_date": "2026-07-10",
-          "previous_venue_id": 2395,
-          "previous_venue_name": "Oracle Park",
-          "current_venue_id": 2395,
-          "current_venue_name": "Oracle Park",
+          "previous_game_date": "2026-07-11",
+          "previous_venue_id": 2,
+          "previous_venue_name": "Oriole Park at Camden Yards",
+          "current_venue_id": 2,
+          "current_venue_name": "Oriole Park at Camden Yards",
           "days_since_previous_game": 1,
           "same_venue": true,
           "distance_miles": 0.0,
@@ -622,31 +220,50 @@
         "wind": ""
       },
       "venue": {
-        "id": 2395,
-        "name": "Oracle Park",
+        "id": 2,
+        "name": "Oriole Park at Camden Yards",
         "run_factor": 1.0
       },
       "venue_factor": 1.0,
-      "top_2_picks": [],
+      "top_2_picks": [
+        {
+          "inning": 1,
+          "probability_scoreless": 0.453,
+          "baseline": 0.3844,
+          "edge_pp": 6.85,
+          "decision": "LEAN",
+          "confidence": "Medium",
+          "label": "Inning 1 - No Run Scored (45.3%, edge +6.9pp)"
+        },
+        {
+          "inning": 3,
+          "probability_scoreless": 0.552,
+          "baseline": 0.49,
+          "edge_pp": 6.19,
+          "decision": "LEAN",
+          "confidence": "Medium",
+          "label": "Inning 3 - No Run Scored (55.2%, edge +6.2pp)"
+        }
+      ],
       "full_inning_table": {
-        "1": 0.426,
-        "2": 0.436,
-        "3": 0.436,
-        "4": 0.49,
-        "5": 0.436,
-        "6": 0.454,
-        "7": 0.488,
-        "8": 0.36
+        "1": 0.453,
+        "2": 0.518,
+        "3": 0.552,
+        "4": 0.463,
+        "5": 0.517,
+        "6": 0.54,
+        "7": 0.358,
+        "8": 0.451
       },
       "edge_table": {
-        "1": 0.042,
-        "2": -0.0822,
-        "3": -0.0545,
-        "4": -0.0285,
-        "5": -0.0679,
-        "6": -0.0639,
-        "7": -0.0596,
-        "8": -0.2027
+        "1": 0.0685,
+        "2": -0.0004,
+        "3": 0.0619,
+        "4": -0.0557,
+        "5": 0.0126,
+        "6": 0.0219,
+        "7": -0.1895,
+        "8": -0.1112
       },
       "baseline_table": {
         "1": 0.3844,
@@ -660,50 +277,50 @@
       }
     },
     {
-      "game_id": "822711",
-      "game_start_time": "2026-07-11T20:05:00Z",
-      "game_order": 5,
+      "game_id": "822708",
+      "game_start_time": "2026-07-12T17:35:00Z",
+      "game_order": 2,
       "matchup": "Washington Nationals vs New York Yankees",
       "home_team": "Washington Nationals",
       "away_team": "New York Yankees",
-      "home_pitcher": "Miles Mikolas",
-      "away_pitcher": "Cam Schlittler",
+      "home_pitcher": "Cade Cavalli",
+      "away_pitcher": "Will Warren",
       "home_pitcher_context": {
-        "name": "Miles Mikolas",
-        "era": 5.78,
-        "whip": 1.33,
-        "opponent_obp": 0.313,
-        "opponent_slg": 0.493,
+        "name": "Cade Cavalli",
+        "era": 3.88,
+        "whip": 1.38,
+        "opponent_obp": 0.341,
+        "opponent_slg": 0.371,
         "team_bullpen": {
           "lookback_games": 2,
           "games_inspected": 2,
-          "fatigue_index": 0.587,
-          "effective_unavailable_count": 4.69,
-          "unavailable_today_count": 2,
-          "back_to_back_arms_count": 1,
-          "high_leverage_used_count": 2
+          "fatigue_index": 0.876,
+          "effective_unavailable_count": 7.01,
+          "unavailable_today_count": 5,
+          "back_to_back_arms_count": 3,
+          "high_leverage_used_count": 4
         }
       },
       "away_pitcher_context": {
-        "name": "Cam Schlittler",
-        "era": 2.01,
-        "whip": 0.93,
-        "opponent_obp": 0.244,
-        "opponent_slg": 0.323,
+        "name": "Will Warren",
+        "era": 4.15,
+        "whip": 1.37,
+        "opponent_obp": 0.319,
+        "opponent_slg": 0.434,
         "team_bullpen": {
           "lookback_games": 2,
           "games_inspected": 2,
-          "fatigue_index": 0.576,
-          "effective_unavailable_count": 4.61,
+          "fatigue_index": 0.368,
+          "effective_unavailable_count": 2.94,
           "unavailable_today_count": 3,
           "back_to_back_arms_count": 2,
-          "high_leverage_used_count": 1
+          "high_leverage_used_count": 2
         }
       },
       "travel": {
         "home": {
           "available": true,
-          "previous_game_date": "2026-07-10",
+          "previous_game_date": "2026-07-11",
           "previous_venue_id": 3309,
           "previous_venue_name": "Nationals Park",
           "current_venue_id": 3309,
@@ -719,7 +336,7 @@
         },
         "away": {
           "available": true,
-          "previous_game_date": "2026-07-10",
+          "previous_game_date": "2026-07-11",
           "previous_venue_id": 3309,
           "previous_venue_name": "Nationals Park",
           "current_venue_id": 3309,
@@ -748,33 +365,42 @@
       "top_2_picks": [
         {
           "inning": 1,
-          "probability_scoreless": 0.468,
+          "probability_scoreless": 0.486,
           "baseline": 0.3844,
-          "edge_pp": 8.32,
+          "edge_pp": 10.16,
           "decision": "LEAN",
           "confidence": "Medium",
-          "label": "Inning 1 - No Run Scored (46.8%, edge +8.3pp)"
+          "label": "Inning 1 - No Run Scored (48.6%, edge +10.2pp)"
+        },
+        {
+          "inning": 2,
+          "probability_scoreless": 0.556,
+          "baseline": 0.5184,
+          "edge_pp": 3.73,
+          "decision": "LEAN",
+          "confidence": "Medium",
+          "label": "Inning 2 - No Run Scored (55.6%, edge +3.7pp)"
         }
       ],
       "full_inning_table": {
-        "1": 0.468,
-        "2": 0.536,
-        "3": 0.457,
-        "4": 0.534,
-        "5": 0.501,
-        "6": 0.534,
-        "7": 0.39,
-        "8": 0.44
+        "1": 0.486,
+        "2": 0.556,
+        "3": 0.486,
+        "4": 0.556,
+        "5": 0.518,
+        "6": 0.556,
+        "7": 0.388,
+        "8": 0.425
       },
       "edge_table": {
-        "1": 0.0832,
-        "2": 0.0173,
-        "3": -0.0333,
-        "4": 0.0154,
-        "5": -0.0033,
-        "6": 0.0154,
-        "7": -0.158,
-        "8": -0.1226
+        "1": 0.1016,
+        "2": 0.0373,
+        "3": -0.004,
+        "4": 0.0373,
+        "5": 0.0143,
+        "6": 0.0373,
+        "7": -0.1598,
+        "8": -0.138
       },
       "baseline_table": {
         "1": 0.3844,
@@ -788,50 +414,187 @@
       }
     },
     {
-      "game_id": "823603",
-      "game_start_time": "2026-07-11T20:10:00Z",
-      "game_order": 6,
-      "matchup": "New York Mets vs Boston Red Sox",
-      "home_team": "New York Mets",
-      "away_team": "Boston Red Sox",
-      "home_pitcher": "Freddy Peralta",
-      "away_pitcher": "Sonny Gray",
+      "game_id": "824491",
+      "game_start_time": "2026-07-12T17:40:00Z",
+      "game_order": 3,
+      "matchup": "Cincinnati Reds vs Chicago Cubs",
+      "home_team": "Cincinnati Reds",
+      "away_team": "Chicago Cubs",
+      "home_pitcher": "Andrew Abbott",
+      "away_pitcher": "Matthew Boyd",
       "home_pitcher_context": {
-        "name": "Freddy Peralta",
-        "era": 4.68,
-        "whip": 1.42,
-        "opponent_obp": 0.331,
-        "opponent_slg": 0.43,
+        "name": "Andrew Abbott",
+        "era": 3.92,
+        "whip": 1.41,
+        "opponent_obp": 0.326,
+        "opponent_slg": 0.408,
         "team_bullpen": {
           "lookback_games": 2,
           "games_inspected": 2,
-          "fatigue_index": 0.464,
-          "effective_unavailable_count": 3.71,
-          "unavailable_today_count": 2,
-          "back_to_back_arms_count": 0,
+          "fatigue_index": 0.396,
+          "effective_unavailable_count": 3.17,
+          "unavailable_today_count": 3,
+          "back_to_back_arms_count": 1,
           "high_leverage_used_count": 2
         }
       },
       "away_pitcher_context": {
-        "name": "Sonny Gray",
-        "era": 2.54,
-        "whip": 1.1,
-        "opponent_obp": 0.283,
-        "opponent_slg": 0.371,
+        "name": "Matthew Boyd",
+        "era": 4.31,
+        "whip": 1.31,
+        "opponent_obp": 0.321,
+        "opponent_slg": 0.396,
         "team_bullpen": {
           "lookback_games": 2,
           "games_inspected": 2,
-          "fatigue_index": 0.379,
-          "effective_unavailable_count": 3.03,
-          "unavailable_today_count": 2,
-          "back_to_back_arms_count": 2,
+          "fatigue_index": 0.5,
+          "effective_unavailable_count": 4.0,
+          "unavailable_today_count": 3,
+          "back_to_back_arms_count": 1,
           "high_leverage_used_count": 2
         }
       },
       "travel": {
         "home": {
           "available": true,
-          "previous_game_date": "2026-07-10",
+          "previous_game_date": "2026-07-11",
+          "previous_venue_id": 2602,
+          "previous_venue_name": "Great American Ball Park",
+          "current_venue_id": 2602,
+          "current_venue_name": "Great American Ball Park",
+          "days_since_previous_game": 1,
+          "same_venue": true,
+          "distance_miles": 0.0,
+          "timezone_shift_hours": 0,
+          "travel_direction": "same",
+          "travel_fatigue_index": 0.0,
+          "travel_run_delta": -0.0,
+          "label": "1d since previous game; 0 mi"
+        },
+        "away": {
+          "available": true,
+          "previous_game_date": "2026-07-11",
+          "previous_venue_id": 2602,
+          "previous_venue_name": "Great American Ball Park",
+          "current_venue_id": 2602,
+          "current_venue_name": "Great American Ball Park",
+          "days_since_previous_game": 1,
+          "same_venue": true,
+          "distance_miles": 0.0,
+          "timezone_shift_hours": 0,
+          "travel_direction": "same",
+          "travel_fatigue_index": 0.0,
+          "travel_run_delta": -0.0,
+          "label": "1d since previous game; 0 mi"
+        }
+      },
+      "weather": {
+        "temp": "",
+        "condition": "",
+        "wind": ""
+      },
+      "venue": {
+        "id": 2602,
+        "name": "Great American Ball Park",
+        "run_factor": 1.0
+      },
+      "venue_factor": 1.0,
+      "top_2_picks": [
+        {
+          "inning": 1,
+          "probability_scoreless": 0.636,
+          "baseline": 0.3844,
+          "edge_pp": 25.2,
+          "decision": "BET",
+          "confidence": "High",
+          "label": "Inning 1 - No Run Scored (63.6%, edge +25.2pp)"
+        },
+        {
+          "inning": 4,
+          "probability_scoreless": 0.631,
+          "baseline": 0.5184,
+          "edge_pp": 11.3,
+          "decision": "BET",
+          "confidence": "High",
+          "label": "Inning 4 - No Run Scored (63.1%, edge +11.3pp)"
+        }
+      ],
+      "full_inning_table": {
+        "1": 0.636,
+        "2": 0.567,
+        "3": 0.555,
+        "4": 0.631,
+        "5": 0.499,
+        "6": 0.486,
+        "7": 0.532,
+        "8": 0.393
+      },
+      "edge_table": {
+        "1": 0.252,
+        "2": 0.0489,
+        "3": 0.0654,
+        "4": 0.113,
+        "5": -0.0056,
+        "6": -0.0324,
+        "7": -0.0152,
+        "8": -0.1699
+      },
+      "baseline_table": {
+        "1": 0.3844,
+        "2": 0.5184,
+        "3": 0.49,
+        "4": 0.5184,
+        "5": 0.5041,
+        "6": 0.5184,
+        "7": 0.5476,
+        "8": 0.5625
+      }
+    },
+    {
+      "game_id": "823602",
+      "game_start_time": "2026-07-12T17:40:00Z",
+      "game_order": 4,
+      "matchup": "New York Mets vs Boston Red Sox",
+      "home_team": "New York Mets",
+      "away_team": "Boston Red Sox",
+      "home_pitcher": "Zach Thornton",
+      "away_pitcher": "Payton Tolle",
+      "home_pitcher_context": {
+        "name": "Zach Thornton",
+        "era": 4.35,
+        "whip": 1.16,
+        "opponent_obp": 0.286,
+        "opponent_slg": 0.385,
+        "team_bullpen": {
+          "lookback_games": 2,
+          "games_inspected": 2,
+          "fatigue_index": 0.518,
+          "effective_unavailable_count": 4.14,
+          "unavailable_today_count": 3,
+          "back_to_back_arms_count": 1,
+          "high_leverage_used_count": 3
+        }
+      },
+      "away_pitcher_context": {
+        "name": "Payton Tolle",
+        "era": 3.14,
+        "whip": 1.07,
+        "opponent_obp": 0.271,
+        "opponent_slg": 0.342,
+        "team_bullpen": {
+          "lookback_games": 2,
+          "games_inspected": 2,
+          "fatigue_index": 0.587,
+          "effective_unavailable_count": 4.7,
+          "unavailable_today_count": 3,
+          "back_to_back_arms_count": 1,
+          "high_leverage_used_count": 3
+        }
+      },
+      "travel": {
+        "home": {
+          "available": true,
+          "previous_game_date": "2026-07-11",
           "previous_venue_id": 3289,
           "previous_venue_name": "Citi Field",
           "current_venue_id": 3289,
@@ -847,7 +610,7 @@
         },
         "away": {
           "available": true,
-          "previous_game_date": "2026-07-10",
+          "previous_game_date": "2026-07-11",
           "previous_venue_id": 3289,
           "previous_venue_name": "Citi Field",
           "current_venue_id": 3289,
@@ -876,42 +639,42 @@
       "top_2_picks": [
         {
           "inning": 1,
-          "probability_scoreless": 0.527,
+          "probability_scoreless": 0.532,
           "baseline": 0.3844,
-          "edge_pp": 14.28,
+          "edge_pp": 14.78,
           "decision": "BET",
           "confidence": "Medium",
-          "label": "Inning 1 - No Run Scored (52.7%, edge +14.3pp)"
+          "label": "Inning 1 - No Run Scored (53.2%, edge +14.8pp)"
         },
         {
           "inning": 5,
-          "probability_scoreless": 0.562,
+          "probability_scoreless": 0.567,
           "baseline": 0.5041,
-          "edge_pp": 5.79,
+          "edge_pp": 6.29,
           "decision": "LEAN",
           "confidence": "Medium",
-          "label": "Inning 5 - No Run Scored (56.2%, edge +5.8pp)"
+          "label": "Inning 5 - No Run Scored (56.7%, edge +6.3pp)"
         }
       ],
       "full_inning_table": {
-        "1": 0.527,
-        "2": 0.516,
-        "3": 0.526,
-        "4": 0.562,
-        "5": 0.562,
-        "6": 0.539,
-        "7": 0.421,
-        "8": 0.425
+        "1": 0.532,
+        "2": 0.521,
+        "3": 0.531,
+        "4": 0.555,
+        "5": 0.567,
+        "6": 0.554,
+        "7": 0.413,
+        "8": 0.405
       },
       "edge_table": {
-        "1": 0.1428,
-        "2": -0.0028,
-        "3": 0.0364,
-        "4": 0.0436,
-        "5": 0.0579,
-        "6": 0.0201,
-        "7": -0.1264,
-        "8": -0.1379
+        "1": 0.1478,
+        "2": 0.0022,
+        "3": 0.0414,
+        "4": 0.037,
+        "5": 0.0629,
+        "6": 0.036,
+        "7": -0.1348,
+        "8": -0.1576
       },
       "baseline_table": {
         "1": 0.3844,
@@ -925,50 +688,50 @@
       }
     },
     {
-      "game_id": "822953",
-      "game_start_time": "2026-07-11T20:10:00Z",
-      "game_order": 7,
+      "game_id": "822951",
+      "game_start_time": "2026-07-12T17:40:00Z",
+      "game_order": 5,
       "matchup": "Tampa Bay Rays vs Seattle Mariners",
       "home_team": "Tampa Bay Rays",
       "away_team": "Seattle Mariners",
-      "home_pitcher": "Griffin Jax",
-      "away_pitcher": "Logan Gilbert",
+      "home_pitcher": "Ian Seymour",
+      "away_pitcher": "Emerson Hancock",
       "home_pitcher_context": {
-        "name": "Griffin Jax",
-        "era": 3.6,
-        "whip": 1.22,
-        "opponent_obp": 0.304,
-        "opponent_slg": 0.42,
+        "name": "Ian Seymour",
+        "era": 4.11,
+        "whip": 1.08,
+        "opponent_obp": 0.277,
+        "opponent_slg": 0.383,
         "team_bullpen": {
           "lookback_games": 2,
           "games_inspected": 2,
-          "fatigue_index": 0.463,
-          "effective_unavailable_count": 3.7,
-          "unavailable_today_count": 1,
-          "back_to_back_arms_count": 0,
-          "high_leverage_used_count": 1
+          "fatigue_index": 0.464,
+          "effective_unavailable_count": 3.71,
+          "unavailable_today_count": 2,
+          "back_to_back_arms_count": 1,
+          "high_leverage_used_count": 2
         }
       },
       "away_pitcher_context": {
-        "name": "Logan Gilbert",
-        "era": 3.19,
-        "whip": 0.95,
-        "opponent_obp": 0.255,
-        "opponent_slg": 0.372,
+        "name": "Emerson Hancock",
+        "era": 3.23,
+        "whip": 1.01,
+        "opponent_obp": 0.268,
+        "opponent_slg": 0.35,
         "team_bullpen": {
           "lookback_games": 2,
           "games_inspected": 2,
-          "fatigue_index": 0.368,
-          "effective_unavailable_count": 2.94,
-          "unavailable_today_count": 1,
-          "back_to_back_arms_count": 1,
-          "high_leverage_used_count": 1
+          "fatigue_index": 0.237,
+          "effective_unavailable_count": 1.9,
+          "unavailable_today_count": 0,
+          "back_to_back_arms_count": 0,
+          "high_leverage_used_count": 0
         }
       },
       "travel": {
         "home": {
           "available": true,
-          "previous_game_date": "2026-07-10",
+          "previous_game_date": "2026-07-11",
           "previous_venue_id": 12,
           "previous_venue_name": "Tropicana Field",
           "current_venue_id": 12,
@@ -984,7 +747,7 @@
         },
         "away": {
           "available": true,
-          "previous_game_date": "2026-07-10",
+          "previous_game_date": "2026-07-11",
           "previous_venue_id": 12,
           "previous_venue_name": "Tropicana Field",
           "current_venue_id": 12,
@@ -1013,42 +776,42 @@
       "top_2_picks": [
         {
           "inning": 1,
-          "probability_scoreless": 0.53,
+          "probability_scoreless": 0.543,
           "baseline": 0.3844,
-          "edge_pp": 14.6,
+          "edge_pp": 15.82,
           "decision": "BET",
           "confidence": "Medium",
-          "label": "Inning 1 - No Run Scored (53.0%, edge +14.6pp)"
+          "label": "Inning 1 - No Run Scored (54.3%, edge +15.8pp)"
         },
         {
           "inning": 2,
-          "probability_scoreless": 0.603,
+          "probability_scoreless": 0.579,
           "baseline": 0.5184,
-          "edge_pp": 8.47,
+          "edge_pp": 6.07,
           "decision": "LEAN",
           "confidence": "Medium",
-          "label": "Inning 2 - No Run Scored (60.3%, edge +8.5pp)"
+          "label": "Inning 2 - No Run Scored (57.9%, edge +6.1pp)"
         }
       ],
       "full_inning_table": {
-        "1": 0.53,
-        "2": 0.603,
-        "3": 0.562,
+        "1": 0.543,
+        "2": 0.579,
+        "3": 0.518,
         "4": 0.555,
-        "5": 0.466,
-        "6": 0.562,
-        "7": 0.456,
-        "8": 0.428
+        "5": 0.477,
+        "6": 0.532,
+        "7": 0.46,
+        "8": 0.432
       },
       "edge_table": {
-        "1": 0.146,
-        "2": 0.0847,
-        "3": 0.0719,
+        "1": 0.1582,
+        "2": 0.0607,
+        "3": 0.0284,
         "4": 0.037,
-        "5": -0.0385,
-        "6": 0.0432,
-        "7": -0.0913,
-        "8": -0.1347
+        "5": -0.0273,
+        "6": 0.014,
+        "7": -0.0874,
+        "8": -0.1307
       },
       "baseline_table": {
         "1": 0.3844,
@@ -1062,50 +825,187 @@
       }
     },
     {
-      "game_id": "823844",
-      "game_start_time": "2026-07-11T20:10:00Z",
-      "game_order": 8,
-      "matchup": "Miami Marlins vs Cleveland Guardians",
-      "home_team": "Miami Marlins",
-      "away_team": "Cleveland Guardians",
-      "home_pitcher": "Eury P\u00e9rez",
-      "away_pitcher": "Tanner Bibee",
+      "game_id": "824250",
+      "game_start_time": "2026-07-12T17:40:00Z",
+      "game_order": 6,
+      "matchup": "Detroit Tigers vs Philadelphia Phillies",
+      "home_team": "Detroit Tigers",
+      "away_team": "Philadelphia Phillies",
+      "home_pitcher": "Tarik Skubal",
+      "away_pitcher": "Zack Wheeler",
       "home_pitcher_context": {
-        "name": "Eury P\u00e9rez",
-        "era": 3.84,
-        "whip": 1.1,
-        "opponent_obp": 0.291,
-        "opponent_slg": 0.394,
+        "name": "Tarik Skubal",
+        "era": 3.06,
+        "whip": 0.95,
+        "opponent_obp": 0.255,
+        "opponent_slg": 0.387,
         "team_bullpen": {
           "lookback_games": 2,
           "games_inspected": 2,
-          "fatigue_index": 0.316,
-          "effective_unavailable_count": 2.53,
-          "unavailable_today_count": 2,
+          "fatigue_index": 0.337,
+          "effective_unavailable_count": 2.7,
+          "unavailable_today_count": 1,
           "back_to_back_arms_count": 0,
-          "high_leverage_used_count": 2
+          "high_leverage_used_count": 1
         }
       },
       "away_pitcher_context": {
-        "name": "Tanner Bibee",
-        "era": 4.06,
-        "whip": 1.14,
-        "opponent_obp": 0.286,
-        "opponent_slg": 0.415,
+        "name": "Zack Wheeler",
+        "era": 2.28,
+        "whip": 0.91,
+        "opponent_obp": 0.243,
+        "opponent_slg": 0.326,
         "team_bullpen": {
           "lookback_games": 2,
           "games_inspected": 2,
-          "fatigue_index": 0.324,
-          "effective_unavailable_count": 2.59,
-          "unavailable_today_count": 2,
-          "back_to_back_arms_count": 2,
-          "high_leverage_used_count": 2
+          "fatigue_index": 0.253,
+          "effective_unavailable_count": 2.02,
+          "unavailable_today_count": 1,
+          "back_to_back_arms_count": 0,
+          "high_leverage_used_count": 1
         }
       },
       "travel": {
         "home": {
           "available": true,
-          "previous_game_date": "2026-07-10",
+          "previous_game_date": "2026-07-11",
+          "previous_venue_id": 2394,
+          "previous_venue_name": "Comerica Park",
+          "current_venue_id": 2394,
+          "current_venue_name": "Comerica Park",
+          "days_since_previous_game": 1,
+          "same_venue": true,
+          "distance_miles": 0.0,
+          "timezone_shift_hours": 0,
+          "travel_direction": "same",
+          "travel_fatigue_index": 0.0,
+          "travel_run_delta": -0.0,
+          "label": "1d since previous game; 0 mi"
+        },
+        "away": {
+          "available": true,
+          "previous_game_date": "2026-07-11",
+          "previous_venue_id": 2394,
+          "previous_venue_name": "Comerica Park",
+          "current_venue_id": 2394,
+          "current_venue_name": "Comerica Park",
+          "days_since_previous_game": 1,
+          "same_venue": true,
+          "distance_miles": 0.0,
+          "timezone_shift_hours": 0,
+          "travel_direction": "same",
+          "travel_fatigue_index": 0.0,
+          "travel_run_delta": -0.0,
+          "label": "1d since previous game; 0 mi"
+        }
+      },
+      "weather": {
+        "temp": "",
+        "condition": "",
+        "wind": ""
+      },
+      "venue": {
+        "id": 2394,
+        "name": "Comerica Park",
+        "run_factor": 1.0
+      },
+      "venue_factor": 1.0,
+      "top_2_picks": [
+        {
+          "inning": 6,
+          "probability_scoreless": 0.637,
+          "baseline": 0.5184,
+          "edge_pp": 11.83,
+          "decision": "BET",
+          "confidence": "High",
+          "label": "Inning 6 - No Run Scored (63.7%, edge +11.8pp)"
+        },
+        {
+          "inning": 1,
+          "probability_scoreless": 0.488,
+          "baseline": 0.3844,
+          "edge_pp": 10.38,
+          "decision": "LEAN",
+          "confidence": "Medium",
+          "label": "Inning 1 - No Run Scored (48.8%, edge +10.4pp)"
+        }
+      ],
+      "full_inning_table": {
+        "1": 0.488,
+        "2": 0.521,
+        "3": 0.497,
+        "4": 0.521,
+        "5": 0.484,
+        "6": 0.637,
+        "7": 0.408,
+        "8": 0.446
+      },
+      "edge_table": {
+        "1": 0.1038,
+        "2": 0.0029,
+        "3": 0.0067,
+        "4": 0.0029,
+        "5": -0.0199,
+        "6": 0.1183,
+        "7": -0.1398,
+        "8": -0.1166
+      },
+      "baseline_table": {
+        "1": 0.3844,
+        "2": 0.5184,
+        "3": 0.49,
+        "4": 0.5184,
+        "5": 0.5041,
+        "6": 0.5184,
+        "7": 0.5476,
+        "8": 0.5625
+      }
+    },
+    {
+      "game_id": "823842",
+      "game_start_time": "2026-07-12T17:40:00Z",
+      "game_order": 7,
+      "matchup": "Miami Marlins vs Cleveland Guardians",
+      "home_team": "Miami Marlins",
+      "away_team": "Cleveland Guardians",
+      "home_pitcher": "Tyler Phillips",
+      "away_pitcher": "Joey Cantillo",
+      "home_pitcher_context": {
+        "name": "Tyler Phillips",
+        "era": 3.28,
+        "whip": 1.36,
+        "opponent_obp": 0.326,
+        "opponent_slg": 0.379,
+        "team_bullpen": {
+          "lookback_games": 2,
+          "games_inspected": 2,
+          "fatigue_index": 0.327,
+          "effective_unavailable_count": 2.61,
+          "unavailable_today_count": 1,
+          "back_to_back_arms_count": 0,
+          "high_leverage_used_count": 1
+        }
+      },
+      "away_pitcher_context": {
+        "name": "Joey Cantillo",
+        "era": 3.66,
+        "whip": 1.39,
+        "opponent_obp": 0.333,
+        "opponent_slg": 0.394,
+        "team_bullpen": {
+          "lookback_games": 2,
+          "games_inspected": 2,
+          "fatigue_index": 0.313,
+          "effective_unavailable_count": 2.5,
+          "unavailable_today_count": 1,
+          "back_to_back_arms_count": 1,
+          "high_leverage_used_count": 1
+        }
+      },
+      "travel": {
+        "home": {
+          "available": true,
+          "previous_game_date": "2026-07-11",
           "previous_venue_id": 4169,
           "previous_venue_name": "loanDepot park",
           "current_venue_id": 4169,
@@ -1121,7 +1021,7 @@
         },
         "away": {
           "available": true,
-          "previous_game_date": "2026-07-10",
+          "previous_game_date": "2026-07-11",
           "previous_venue_id": 4169,
           "previous_venue_name": "loanDepot park",
           "current_venue_id": 4169,
@@ -1156,6 +1056,15 @@
           "decision": "BET",
           "confidence": "Medium",
           "label": "Inning 1 - No Run Scored (54.3%, edge +15.8pp)"
+        },
+        {
+          "inning": 6,
+          "probability_scoreless": 0.555,
+          "baseline": 0.5184,
+          "edge_pp": 3.7,
+          "decision": "LEAN",
+          "confidence": "Medium",
+          "label": "Inning 6 - No Run Scored (55.5%, edge +3.7pp)"
         }
       ],
       "full_inning_table": {
@@ -1163,8 +1072,8 @@
         "2": 0.506,
         "3": 0.51,
         "4": 0.52,
-        "5": 0.499,
-        "6": 0.544,
+        "5": 0.51,
+        "6": 0.555,
         "7": 0.375,
         "8": 0.454
       },
@@ -1173,8 +1082,8 @@
         "2": -0.0121,
         "3": 0.0199,
         "4": 0.0014,
-        "5": -0.0051,
-        "6": 0.0251,
+        "5": 0.0061,
+        "6": 0.037,
         "7": -0.173,
         "8": -0.1086
       },
@@ -1190,54 +1099,54 @@
       }
     },
     {
-      "game_id": "824249",
-      "game_start_time": "2026-07-11T22:10:00Z",
-      "game_order": 9,
-      "matchup": "Detroit Tigers vs Philadelphia Phillies",
-      "home_team": "Detroit Tigers",
-      "away_team": "Philadelphia Phillies",
-      "home_pitcher": "Casey Mize",
-      "away_pitcher": "Cristopher S\u00e1nchez",
+      "game_id": "823681",
+      "game_start_time": "2026-07-12T18:10:00Z",
+      "game_order": 8,
+      "matchup": "Minnesota Twins vs Los Angeles Angels",
+      "home_team": "Minnesota Twins",
+      "away_team": "Los Angeles Angels",
+      "home_pitcher": "Taj Bradley",
+      "away_pitcher": "Jos\u00e9 Soriano",
       "home_pitcher_context": {
-        "name": "Casey Mize",
-        "era": 2.64,
-        "whip": 0.98,
-        "opponent_obp": 0.254,
-        "opponent_slg": 0.345,
+        "name": "Taj Bradley",
+        "era": 3.67,
+        "whip": 1.22,
+        "opponent_obp": 0.296,
+        "opponent_slg": 0.381,
         "team_bullpen": {
           "lookback_games": 2,
           "games_inspected": 2,
-          "fatigue_index": 0.307,
-          "effective_unavailable_count": 2.46,
+          "fatigue_index": 0.383,
+          "effective_unavailable_count": 3.06,
           "unavailable_today_count": 1,
           "back_to_back_arms_count": 0,
           "high_leverage_used_count": 1
         }
       },
       "away_pitcher_context": {
-        "name": "Cristopher S\u00e1nchez",
-        "era": 2.62,
-        "whip": 1.16,
-        "opponent_obp": 0.287,
-        "opponent_slg": 0.368,
+        "name": "Jos\u00e9 Soriano",
+        "era": 3.4,
+        "whip": 1.28,
+        "opponent_obp": 0.315,
+        "opponent_slg": 0.33,
         "team_bullpen": {
           "lookback_games": 2,
           "games_inspected": 2,
-          "fatigue_index": 0.379,
-          "effective_unavailable_count": 3.03,
-          "unavailable_today_count": 1,
+          "fatigue_index": 0.508,
+          "effective_unavailable_count": 4.06,
+          "unavailable_today_count": 3,
           "back_to_back_arms_count": 0,
-          "high_leverage_used_count": 1
+          "high_leverage_used_count": 3
         }
       },
       "travel": {
         "home": {
           "available": true,
-          "previous_game_date": "2026-07-10",
-          "previous_venue_id": 2394,
-          "previous_venue_name": "Comerica Park",
-          "current_venue_id": 2394,
-          "current_venue_name": "Comerica Park",
+          "previous_game_date": "2026-07-11",
+          "previous_venue_id": 3312,
+          "previous_venue_name": "Target Field",
+          "current_venue_id": 3312,
+          "current_venue_name": "Target Field",
           "days_since_previous_game": 1,
           "same_venue": true,
           "distance_miles": 0.0,
@@ -1249,11 +1158,11 @@
         },
         "away": {
           "available": true,
-          "previous_game_date": "2026-07-10",
-          "previous_venue_id": 2394,
-          "previous_venue_name": "Comerica Park",
-          "current_venue_id": 2394,
-          "current_venue_name": "Comerica Park",
+          "previous_game_date": "2026-07-11",
+          "previous_venue_id": 3312,
+          "previous_venue_name": "Target Field",
+          "current_venue_id": 3312,
+          "current_venue_name": "Target Field",
           "days_since_previous_game": 1,
           "same_venue": true,
           "distance_miles": 0.0,
@@ -1270,50 +1179,50 @@
         "wind": ""
       },
       "venue": {
-        "id": 2394,
-        "name": "Comerica Park",
+        "id": 3312,
+        "name": "Target Field",
         "run_factor": 1.0
       },
       "venue_factor": 1.0,
       "top_2_picks": [
         {
-          "inning": 1,
-          "probability_scoreless": 0.488,
-          "baseline": 0.3844,
-          "edge_pp": 10.38,
-          "decision": "LEAN",
-          "confidence": "Medium",
-          "label": "Inning 1 - No Run Scored (48.8%, edge +10.4pp)"
+          "inning": 3,
+          "probability_scoreless": 0.615,
+          "baseline": 0.49,
+          "edge_pp": 12.52,
+          "decision": "BET",
+          "confidence": "High",
+          "label": "Inning 3 - No Run Scored (61.5%, edge +12.5pp)"
         },
         {
           "inning": 6,
-          "probability_scoreless": 0.601,
+          "probability_scoreless": 0.579,
           "baseline": 0.5184,
-          "edge_pp": 8.28,
+          "edge_pp": 6.05,
           "decision": "LEAN",
           "confidence": "Medium",
-          "label": "Inning 6 - No Run Scored (60.1%, edge +8.3pp)"
+          "label": "Inning 6 - No Run Scored (57.9%, edge +6.0pp)"
         }
       ],
       "full_inning_table": {
-        "1": 0.488,
-        "2": 0.51,
-        "3": 0.468,
-        "4": 0.533,
-        "5": 0.496,
-        "6": 0.601,
-        "7": 0.405,
-        "8": 0.454
+        "1": 0.424,
+        "2": 0.488,
+        "3": 0.615,
+        "4": 0.498,
+        "5": 0.488,
+        "6": 0.579,
+        "7": 0.387,
+        "8": 0.437
       },
       "edge_table": {
-        "1": 0.1038,
-        "2": -0.0085,
-        "3": -0.0216,
-        "4": 0.0142,
-        "5": -0.008,
-        "6": 0.0828,
-        "7": -0.1427,
-        "8": -0.1086
+        "1": 0.0396,
+        "2": -0.0305,
+        "3": 0.1252,
+        "4": -0.0208,
+        "5": -0.0159,
+        "6": 0.0605,
+        "7": -0.1602,
+        "8": -0.1255
       },
       "baseline_table": {
         "1": 0.3844,
@@ -1327,461 +1236,187 @@
       }
     },
     {
-      "game_id": "824813",
-      "game_start_time": "2026-07-11T23:05:00Z",
+      "game_id": "824574",
+      "game_start_time": "2026-07-12T18:10:00Z",
+      "game_order": 9,
+      "matchup": "Chicago White Sox vs Athletics",
+      "home_team": "Chicago White Sox",
+      "away_team": "Athletics",
+      "home_pitcher": "Noah Schultz",
+      "away_pitcher": "J.T. Ginn",
+      "home_pitcher_context": {
+        "name": "Noah Schultz",
+        "era": 6.0,
+        "whip": 1.42,
+        "opponent_obp": 0.353,
+        "opponent_slg": 0.43,
+        "team_bullpen": {
+          "lookback_games": 2,
+          "games_inspected": 2,
+          "fatigue_index": 0.617,
+          "effective_unavailable_count": 4.94,
+          "unavailable_today_count": 5,
+          "back_to_back_arms_count": 0,
+          "high_leverage_used_count": 5
+        }
+      },
+      "away_pitcher_context": {
+        "name": "J.T. Ginn",
+        "era": 3.1,
+        "whip": 1.22,
+        "opponent_obp": 0.305,
+        "opponent_slg": 0.344,
+        "team_bullpen": {
+          "lookback_games": 2,
+          "games_inspected": 2,
+          "fatigue_index": 0.541,
+          "effective_unavailable_count": 4.33,
+          "unavailable_today_count": 1,
+          "back_to_back_arms_count": 0,
+          "high_leverage_used_count": 1
+        }
+      },
+      "travel": {
+        "home": {
+          "available": true,
+          "previous_game_date": "2026-07-11",
+          "previous_venue_id": 4,
+          "previous_venue_name": "Rate Field",
+          "current_venue_id": 4,
+          "current_venue_name": "Rate Field",
+          "days_since_previous_game": 1,
+          "same_venue": true,
+          "distance_miles": 0.0,
+          "timezone_shift_hours": 0,
+          "travel_direction": "same",
+          "travel_fatigue_index": 0.0,
+          "travel_run_delta": -0.0,
+          "label": "1d since previous game; 0 mi"
+        },
+        "away": {
+          "available": true,
+          "previous_game_date": "2026-07-11",
+          "previous_venue_id": 4,
+          "previous_venue_name": "Rate Field",
+          "current_venue_id": 4,
+          "current_venue_name": "Rate Field",
+          "days_since_previous_game": 1,
+          "same_venue": true,
+          "distance_miles": 0.0,
+          "timezone_shift_hours": 0,
+          "travel_direction": "same",
+          "travel_fatigue_index": 0.0,
+          "travel_run_delta": -0.0,
+          "label": "1d since previous game; 0 mi"
+        }
+      },
+      "weather": {
+        "temp": "",
+        "condition": "",
+        "wind": ""
+      },
+      "venue": {
+        "id": 4,
+        "name": "Rate Field",
+        "run_factor": 1.0
+      },
+      "venue_factor": 1.0,
+      "top_2_picks": [
+        {
+          "inning": 1,
+          "probability_scoreless": 0.497,
+          "baseline": 0.3844,
+          "edge_pp": 11.28,
+          "decision": "LEAN",
+          "confidence": "Medium",
+          "label": "Inning 1 - No Run Scored (49.7%, edge +11.3pp)"
+        },
+        {
+          "inning": 3,
+          "probability_scoreless": 0.542,
+          "baseline": 0.49,
+          "edge_pp": 5.21,
+          "decision": "LEAN",
+          "confidence": "Medium",
+          "label": "Inning 3 - No Run Scored (54.2%, edge +5.2pp)"
+        }
+      ],
+      "full_inning_table": {
+        "1": 0.497,
+        "2": 0.541,
+        "3": 0.542,
+        "4": 0.553,
+        "5": 0.497,
+        "6": 0.475,
+        "7": 0.347,
+        "8": 0.474
+      },
+      "edge_table": {
+        "1": 0.1128,
+        "2": 0.0221,
+        "3": 0.0521,
+        "4": 0.0343,
+        "5": -0.0075,
+        "6": -0.0429,
+        "7": -0.2009,
+        "8": -0.0883
+      },
+      "baseline_table": {
+        "1": 0.3844,
+        "2": 0.5184,
+        "3": 0.49,
+        "4": 0.5184,
+        "5": 0.5041,
+        "6": 0.5184,
+        "7": 0.5476,
+        "8": 0.5625
+      }
+    },
+    {
+      "game_id": "823029",
+      "game_start_time": "2026-07-12T18:15:00Z",
       "game_order": 10,
-      "matchup": "Baltimore Orioles vs Kansas City Royals",
-      "home_team": "Baltimore Orioles",
-      "away_team": "Kansas City Royals",
-      "home_pitcher": "Kyle Bradish",
-      "away_pitcher": "Noah Cameron",
-      "home_pitcher_context": {
-        "name": "Kyle Bradish",
-        "era": 3.75,
-        "whip": 1.4,
-        "opponent_obp": 0.331,
-        "opponent_slg": 0.398,
-        "team_bullpen": {
-          "lookback_games": 2,
-          "games_inspected": 2,
-          "fatigue_index": 0.276,
-          "effective_unavailable_count": 2.21,
-          "unavailable_today_count": 1,
-          "back_to_back_arms_count": 1,
-          "high_leverage_used_count": 1
-        }
-      },
-      "away_pitcher_context": {
-        "name": "Noah Cameron",
-        "era": 4.77,
-        "whip": 1.45,
-        "opponent_obp": 0.333,
-        "opponent_slg": 0.437,
-        "team_bullpen": {
-          "lookback_games": 2,
-          "games_inspected": 2,
-          "fatigue_index": 0.353,
-          "effective_unavailable_count": 2.82,
-          "unavailable_today_count": 1,
-          "back_to_back_arms_count": 0,
-          "high_leverage_used_count": 1
-        }
-      },
-      "travel": {
-        "home": {
-          "available": true,
-          "previous_game_date": "2026-07-10",
-          "previous_venue_id": 2,
-          "previous_venue_name": "Oriole Park at Camden Yards",
-          "current_venue_id": 2,
-          "current_venue_name": "Oriole Park at Camden Yards",
-          "days_since_previous_game": 1,
-          "same_venue": true,
-          "distance_miles": 0.0,
-          "timezone_shift_hours": 0,
-          "travel_direction": "same",
-          "travel_fatigue_index": 0.0,
-          "travel_run_delta": -0.0,
-          "label": "1d since previous game; 0 mi"
-        },
-        "away": {
-          "available": true,
-          "previous_game_date": "2026-07-10",
-          "previous_venue_id": 2,
-          "previous_venue_name": "Oriole Park at Camden Yards",
-          "current_venue_id": 2,
-          "current_venue_name": "Oriole Park at Camden Yards",
-          "days_since_previous_game": 1,
-          "same_venue": true,
-          "distance_miles": 0.0,
-          "timezone_shift_hours": 0,
-          "travel_direction": "same",
-          "travel_fatigue_index": 0.0,
-          "travel_run_delta": -0.0,
-          "label": "1d since previous game; 0 mi"
-        }
-      },
-      "weather": {
-        "temp": "",
-        "condition": "",
-        "wind": ""
-      },
-      "venue": {
-        "id": 2,
-        "name": "Oriole Park at Camden Yards",
-        "run_factor": 1.0
-      },
-      "venue_factor": 1.0,
-      "top_2_picks": [
-        {
-          "inning": 1,
-          "probability_scoreless": 0.45,
-          "baseline": 0.3844,
-          "edge_pp": 6.56,
-          "decision": "LEAN",
-          "confidence": "Medium",
-          "label": "Inning 1 - No Run Scored (45.0%, edge +6.6pp)"
-        },
-        {
-          "inning": 3,
-          "probability_scoreless": 0.549,
-          "baseline": 0.49,
-          "edge_pp": 5.87,
-          "decision": "LEAN",
-          "confidence": "Medium",
-          "label": "Inning 3 - No Run Scored (54.9%, edge +5.9pp)"
-        }
-      ],
-      "full_inning_table": {
-        "1": 0.45,
-        "2": 0.526,
-        "3": 0.549,
-        "4": 0.459,
-        "5": 0.502,
-        "6": 0.548,
-        "7": 0.362,
-        "8": 0.445
-      },
-      "edge_table": {
-        "1": 0.0656,
-        "2": 0.0077,
-        "3": 0.0587,
-        "4": -0.0596,
-        "5": -0.002,
-        "6": 0.0299,
-        "7": -0.1857,
-        "8": -0.1171
-      },
-      "baseline_table": {
-        "1": 0.3844,
-        "2": 0.5184,
-        "3": 0.49,
-        "4": 0.5184,
-        "5": 0.5041,
-        "6": 0.5184,
-        "7": 0.5476,
-        "8": 0.5625
-      }
-    },
-    {
-      "game_id": "822875",
-      "game_start_time": "2026-07-11T23:05:00Z",
-      "game_order": 11,
-      "matchup": "Texas Rangers vs Houston Astros",
-      "home_team": "Texas Rangers",
-      "away_team": "Houston Astros",
-      "home_pitcher": "Kumar Rocker",
-      "away_pitcher": "Peter Lambert",
-      "home_pitcher_context": {
-        "name": "Kumar Rocker",
-        "era": 3.95,
-        "whip": 1.34,
-        "opponent_obp": 0.318,
-        "opponent_slg": 0.382,
-        "team_bullpen": {
-          "lookback_games": 2,
-          "games_inspected": 2,
-          "fatigue_index": 0.553,
-          "effective_unavailable_count": 4.42,
-          "unavailable_today_count": 2,
-          "back_to_back_arms_count": 0,
-          "high_leverage_used_count": 2
-        }
-      },
-      "away_pitcher_context": {
-        "name": "Peter Lambert",
-        "era": 3.26,
-        "whip": 1.15,
-        "opponent_obp": 0.293,
-        "opponent_slg": 0.341,
-        "team_bullpen": {
-          "lookback_games": 2,
-          "games_inspected": 2,
-          "fatigue_index": 0.611,
-          "effective_unavailable_count": 4.88,
-          "unavailable_today_count": 3,
-          "back_to_back_arms_count": 1,
-          "high_leverage_used_count": 3
-        }
-      },
-      "travel": {
-        "home": {
-          "available": true,
-          "previous_game_date": "2026-07-10",
-          "previous_venue_id": 5325,
-          "previous_venue_name": "Globe Life Field",
-          "current_venue_id": 5325,
-          "current_venue_name": "Globe Life Field",
-          "days_since_previous_game": 1,
-          "same_venue": true,
-          "distance_miles": 0.0,
-          "timezone_shift_hours": 0,
-          "travel_direction": "same",
-          "travel_fatigue_index": 0.0,
-          "travel_run_delta": -0.0,
-          "label": "1d since previous game; 0 mi"
-        },
-        "away": {
-          "available": true,
-          "previous_game_date": "2026-07-10",
-          "previous_venue_id": 5325,
-          "previous_venue_name": "Globe Life Field",
-          "current_venue_id": 5325,
-          "current_venue_name": "Globe Life Field",
-          "days_since_previous_game": 1,
-          "same_venue": true,
-          "distance_miles": 0.0,
-          "timezone_shift_hours": 0,
-          "travel_direction": "same",
-          "travel_fatigue_index": 0.0,
-          "travel_run_delta": -0.0,
-          "label": "1d since previous game; 0 mi"
-        }
-      },
-      "weather": {
-        "temp": "",
-        "condition": "",
-        "wind": ""
-      },
-      "venue": {
-        "id": 5325,
-        "name": "Globe Life Field",
-        "run_factor": 1.0
-      },
-      "venue_factor": 1.0,
-      "top_2_picks": [
-        {
-          "inning": 1,
-          "probability_scoreless": 0.488,
-          "baseline": 0.3844,
-          "edge_pp": 10.38,
-          "decision": "LEAN",
-          "confidence": "Medium",
-          "label": "Inning 1 - No Run Scored (48.8%, edge +10.4pp)"
-        },
-        {
-          "inning": 5,
-          "probability_scoreless": 0.602,
-          "baseline": 0.5041,
-          "edge_pp": 9.8,
-          "decision": "LEAN",
-          "confidence": "Medium",
-          "label": "Inning 5 - No Run Scored (60.2%, edge +9.8pp)"
-        }
-      ],
-      "full_inning_table": {
-        "1": 0.488,
-        "2": 0.591,
-        "3": 0.509,
-        "4": 0.476,
-        "5": 0.602,
-        "6": 0.456,
-        "7": 0.457,
-        "8": 0.354
-      },
-      "edge_table": {
-        "1": 0.1038,
-        "2": 0.0726,
-        "3": 0.0192,
-        "4": -0.0426,
-        "5": 0.098,
-        "6": -0.0625,
-        "7": -0.0909,
-        "8": -0.2087
-      },
-      "baseline_table": {
-        "1": 0.3844,
-        "2": 0.5184,
-        "3": 0.49,
-        "4": 0.5184,
-        "5": 0.5041,
-        "6": 0.5184,
-        "7": 0.5476,
-        "8": 0.5625
-      }
-    },
-    {
-      "game_id": "824492",
-      "game_start_time": "2026-07-11T23:10:00Z",
-      "game_order": 12,
-      "matchup": "Cincinnati Reds vs Chicago Cubs",
-      "home_team": "Cincinnati Reds",
-      "away_team": "Chicago Cubs",
-      "home_pitcher": "Nick Lodolo",
-      "away_pitcher": "Javier Assad",
-      "home_pitcher_context": {
-        "name": "Nick Lodolo",
-        "era": 4.68,
-        "whip": 1.46,
-        "opponent_obp": 0.365,
-        "opponent_slg": 0.444,
-        "team_bullpen": {
-          "lookback_games": 2,
-          "games_inspected": 2,
-          "fatigue_index": 0.213,
-          "effective_unavailable_count": 1.7,
-          "unavailable_today_count": 0,
-          "back_to_back_arms_count": 0,
-          "high_leverage_used_count": 0
-        }
-      },
-      "away_pitcher_context": {
-        "name": "Javier Assad",
-        "era": 4.15,
-        "whip": 1.1,
-        "opponent_obp": 0.284,
-        "opponent_slg": 0.41,
-        "team_bullpen": {
-          "lookback_games": 2,
-          "games_inspected": 2,
-          "fatigue_index": 0.391,
-          "effective_unavailable_count": 3.12,
-          "unavailable_today_count": 1,
-          "back_to_back_arms_count": 0,
-          "high_leverage_used_count": 1
-        }
-      },
-      "travel": {
-        "home": {
-          "available": true,
-          "previous_game_date": "2026-07-10",
-          "previous_venue_id": 2602,
-          "previous_venue_name": "Great American Ball Park",
-          "current_venue_id": 2602,
-          "current_venue_name": "Great American Ball Park",
-          "days_since_previous_game": 1,
-          "same_venue": true,
-          "distance_miles": 0.0,
-          "timezone_shift_hours": 0,
-          "travel_direction": "same",
-          "travel_fatigue_index": 0.0,
-          "travel_run_delta": -0.0,
-          "label": "1d since previous game; 0 mi"
-        },
-        "away": {
-          "available": true,
-          "previous_game_date": "2026-07-10",
-          "previous_venue_id": 2602,
-          "previous_venue_name": "Great American Ball Park",
-          "current_venue_id": 2602,
-          "current_venue_name": "Great American Ball Park",
-          "days_since_previous_game": 1,
-          "same_venue": true,
-          "distance_miles": 0.0,
-          "timezone_shift_hours": 0,
-          "travel_direction": "same",
-          "travel_fatigue_index": 0.0,
-          "travel_run_delta": -0.0,
-          "label": "1d since previous game; 0 mi"
-        }
-      },
-      "weather": {
-        "temp": "",
-        "condition": "",
-        "wind": ""
-      },
-      "venue": {
-        "id": 2602,
-        "name": "Great American Ball Park",
-        "run_factor": 1.0
-      },
-      "venue_factor": 1.0,
-      "top_2_picks": [
-        {
-          "inning": 1,
-          "probability_scoreless": 0.539,
-          "baseline": 0.3844,
-          "edge_pp": 15.45,
-          "decision": "BET",
-          "confidence": "Medium",
-          "label": "Inning 1 - No Run Scored (53.9%, edge +15.4pp)"
-        },
-        {
-          "inning": 3,
-          "probability_scoreless": 0.578,
-          "baseline": 0.49,
-          "edge_pp": 8.78,
-          "decision": "LEAN",
-          "confidence": "Medium",
-          "label": "Inning 3 - No Run Scored (57.8%, edge +8.8pp)"
-        }
-      ],
-      "full_inning_table": {
-        "1": 0.539,
-        "2": 0.562,
-        "3": 0.578,
-        "4": 0.549,
-        "5": 0.505,
-        "6": 0.529,
-        "7": 0.452,
-        "8": 0.401
-      },
-      "edge_table": {
-        "1": 0.1545,
-        "2": 0.0435,
-        "3": 0.0878,
-        "4": 0.0308,
-        "5": 0.0007,
-        "6": 0.0108,
-        "7": -0.0953,
-        "8": -0.161
-      },
-      "baseline_table": {
-        "1": 0.3844,
-        "2": 0.5184,
-        "3": 0.49,
-        "4": 0.5184,
-        "5": 0.5041,
-        "6": 0.5184,
-        "7": 0.5476,
-        "8": 0.5625
-      }
-    },
-    {
-      "game_id": "823030",
-      "game_start_time": "2026-07-11T23:15:00Z",
-      "game_order": 13,
       "matchup": "St. Louis Cardinals vs Atlanta Braves",
       "home_team": "St. Louis Cardinals",
       "away_team": "Atlanta Braves",
-      "home_pitcher": "Matthew Liberatore",
-      "away_pitcher": "Reynaldo L\u00f3pez",
+      "home_pitcher": "Dustin May",
+      "away_pitcher": "JR Ritchie",
       "home_pitcher_context": {
-        "name": "Matthew Liberatore",
-        "era": 5.34,
-        "whip": 1.53,
-        "opponent_obp": 0.355,
-        "opponent_slg": 0.488,
+        "name": "Dustin May",
+        "era": 4.55,
+        "whip": 1.25,
+        "opponent_obp": 0.315,
+        "opponent_slg": 0.378,
         "team_bullpen": {
           "lookback_games": 2,
           "games_inspected": 2,
-          "fatigue_index": 0.469,
-          "effective_unavailable_count": 3.75,
-          "unavailable_today_count": 2,
-          "back_to_back_arms_count": 1,
-          "high_leverage_used_count": 2
+          "fatigue_index": 0.583,
+          "effective_unavailable_count": 4.66,
+          "unavailable_today_count": 4,
+          "back_to_back_arms_count": 2,
+          "high_leverage_used_count": 4
         }
       },
       "away_pitcher_context": {
-        "name": "Reynaldo L\u00f3pez",
-        "era": 3.18,
-        "whip": 1.27,
-        "opponent_obp": 0.307,
-        "opponent_slg": 0.382,
+        "name": "JR Ritchie",
+        "era": 4.6,
+        "whip": 1.47,
+        "opponent_obp": 0.35,
+        "opponent_slg": 0.389,
         "team_bullpen": {
           "lookback_games": 2,
           "games_inspected": 2,
-          "fatigue_index": 0.611,
-          "effective_unavailable_count": 4.89,
+          "fatigue_index": 0.581,
+          "effective_unavailable_count": 4.65,
           "unavailable_today_count": 3,
-          "back_to_back_arms_count": 1,
+          "back_to_back_arms_count": 0,
           "high_leverage_used_count": 3
         }
       },
       "travel": {
         "home": {
           "available": true,
-          "previous_game_date": "2026-07-10",
+          "previous_game_date": "2026-07-11",
           "previous_venue_id": 2889,
           "previous_venue_name": "Busch Stadium",
           "current_venue_id": 2889,
@@ -1797,7 +1432,7 @@
         },
         "away": {
           "available": true,
-          "previous_game_date": "2026-07-10",
+          "previous_game_date": "2026-07-11",
           "previous_venue_id": 2889,
           "previous_venue_name": "Busch Stadium",
           "current_venue_id": 2889,
@@ -1825,34 +1460,43 @@
       "venue_factor": 1.0,
       "top_2_picks": [
         {
-          "inning": 6,
-          "probability_scoreless": 0.551,
-          "baseline": 0.5184,
-          "edge_pp": 3.29,
+          "inning": 5,
+          "probability_scoreless": 0.56,
+          "baseline": 0.5041,
+          "edge_pp": 5.58,
           "decision": "LEAN",
           "confidence": "Medium",
-          "label": "Inning 6 - No Run Scored (55.1%, edge +3.3pp)"
+          "label": "Inning 5 - No Run Scored (56.0%, edge +5.6pp)"
+        },
+        {
+          "inning": 3,
+          "probability_scoreless": 0.525,
+          "baseline": 0.49,
+          "edge_pp": 3.53,
+          "decision": "LEAN",
+          "confidence": "Medium",
+          "label": "Inning 3 - No Run Scored (52.5%, edge +3.5pp)"
         }
       ],
       "full_inning_table": {
-        "1": 0.442,
-        "2": 0.518,
-        "3": 0.484,
-        "4": 0.528,
-        "5": 0.518,
-        "6": 0.551,
-        "7": 0.448,
-        "8": 0.464
+        "1": 0.449,
+        "2": 0.537,
+        "3": 0.525,
+        "4": 0.523,
+        "5": 0.56,
+        "6": 0.546,
+        "7": 0.446,
+        "8": 0.461
       },
       "edge_table": {
-        "1": 0.0579,
-        "2": -0.0006,
-        "3": -0.0064,
-        "4": 0.0099,
-        "5": 0.0138,
-        "6": 0.0329,
-        "7": -0.0994,
-        "8": -0.0982
+        "1": 0.0645,
+        "2": 0.0184,
+        "3": 0.0353,
+        "4": 0.0049,
+        "5": 0.0558,
+        "6": 0.0278,
+        "7": -0.102,
+        "8": -0.1012
       },
       "baseline_table": {
         "1": 0.3844,
@@ -1866,41 +1510,41 @@
       }
     },
     {
-      "game_id": "823276",
-      "game_start_time": "2026-07-12T00:40:00Z",
-      "game_order": 14,
-      "matchup": "San Diego Padres vs Toronto Blue Jays",
-      "home_team": "San Diego Padres",
-      "away_team": "Toronto Blue Jays",
-      "home_pitcher": "Walker Buehler",
-      "away_pitcher": "Trey Yesavage",
+      "game_id": "822876",
+      "game_start_time": "2026-07-12T18:35:00Z",
+      "game_order": 11,
+      "matchup": "Texas Rangers vs Houston Astros",
+      "home_team": "Texas Rangers",
+      "away_team": "Houston Astros",
+      "home_pitcher": "MacKenzie Gore",
+      "away_pitcher": "Cristian Javier",
       "home_pitcher_context": {
-        "name": "Walker Buehler",
-        "era": 5.07,
-        "whip": 1.39,
-        "opponent_obp": 0.333,
-        "opponent_slg": 0.418,
+        "name": "MacKenzie Gore",
+        "era": 4.72,
+        "whip": 1.31,
+        "opponent_obp": 0.311,
+        "opponent_slg": 0.395,
         "team_bullpen": {
           "lookback_games": 2,
           "games_inspected": 2,
-          "fatigue_index": 0.55,
-          "effective_unavailable_count": 4.4,
-          "unavailable_today_count": 3,
-          "back_to_back_arms_count": 0,
-          "high_leverage_used_count": 3
+          "fatigue_index": 0.402,
+          "effective_unavailable_count": 3.22,
+          "unavailable_today_count": 1,
+          "back_to_back_arms_count": 1,
+          "high_leverage_used_count": 1
         }
       },
       "away_pitcher_context": {
-        "name": "Trey Yesavage",
-        "era": 3.31,
-        "whip": 1.08,
-        "opponent_obp": 0.274,
-        "opponent_slg": 0.336,
+        "name": "Cristian Javier",
+        "era": 10.22,
+        "whip": 2.27,
+        "opponent_obp": 0.476,
+        "opponent_slg": 0.531,
         "team_bullpen": {
           "lookback_games": 2,
           "games_inspected": 2,
-          "fatigue_index": 0.394,
-          "effective_unavailable_count": 3.16,
+          "fatigue_index": 0.319,
+          "effective_unavailable_count": 2.55,
           "unavailable_today_count": 2,
           "back_to_back_arms_count": 0,
           "high_leverage_used_count": 2
@@ -1909,7 +1553,390 @@
       "travel": {
         "home": {
           "available": true,
-          "previous_game_date": "2026-07-10",
+          "previous_game_date": "2026-07-11",
+          "previous_venue_id": 5325,
+          "previous_venue_name": "Globe Life Field",
+          "current_venue_id": 5325,
+          "current_venue_name": "Globe Life Field",
+          "days_since_previous_game": 1,
+          "same_venue": true,
+          "distance_miles": 0.0,
+          "timezone_shift_hours": 0,
+          "travel_direction": "same",
+          "travel_fatigue_index": 0.0,
+          "travel_run_delta": -0.0,
+          "label": "1d since previous game; 0 mi"
+        },
+        "away": {
+          "available": true,
+          "previous_game_date": "2026-07-11",
+          "previous_venue_id": 5325,
+          "previous_venue_name": "Globe Life Field",
+          "current_venue_id": 5325,
+          "current_venue_name": "Globe Life Field",
+          "days_since_previous_game": 1,
+          "same_venue": true,
+          "distance_miles": 0.0,
+          "timezone_shift_hours": 0,
+          "travel_direction": "same",
+          "travel_fatigue_index": 0.0,
+          "travel_run_delta": -0.0,
+          "label": "1d since previous game; 0 mi"
+        }
+      },
+      "weather": {
+        "temp": "",
+        "condition": "",
+        "wind": ""
+      },
+      "venue": {
+        "id": 5325,
+        "name": "Globe Life Field",
+        "run_factor": 1.0
+      },
+      "venue_factor": 1.0,
+      "top_2_picks": [],
+      "full_inning_table": {
+        "1": 0.4,
+        "2": 0.503,
+        "3": 0.427,
+        "4": 0.376,
+        "5": 0.507,
+        "6": 0.373,
+        "7": 0.46,
+        "8": 0.367
+      },
+      "edge_table": {
+        "1": 0.0159,
+        "2": -0.015,
+        "3": -0.0626,
+        "4": -0.1421,
+        "5": 0.0028,
+        "6": -0.1452,
+        "7": -0.0877,
+        "8": -0.1958
+      },
+      "baseline_table": {
+        "1": 0.3844,
+        "2": 0.5184,
+        "3": 0.49,
+        "4": 0.5184,
+        "5": 0.5041,
+        "6": 0.5184,
+        "7": 0.5476,
+        "8": 0.5625
+      }
+    },
+    {
+      "game_id": "823199",
+      "game_start_time": "2026-07-12T20:05:00Z",
+      "game_order": 12,
+      "matchup": "San Francisco Giants vs Colorado Rockies",
+      "home_team": "San Francisco Giants",
+      "away_team": "Colorado Rockies",
+      "home_pitcher": "Trevor McDonald",
+      "away_pitcher": "Michael Lorenzen",
+      "home_pitcher_context": {
+        "name": "Trevor McDonald",
+        "era": 5.46,
+        "whip": 1.38,
+        "opponent_obp": 0.345,
+        "opponent_slg": 0.386,
+        "team_bullpen": {
+          "lookback_games": 2,
+          "games_inspected": 2,
+          "fatigue_index": 0.52,
+          "effective_unavailable_count": 4.16,
+          "unavailable_today_count": 3,
+          "back_to_back_arms_count": 0,
+          "high_leverage_used_count": 3
+        }
+      },
+      "away_pitcher_context": {
+        "name": "Michael Lorenzen",
+        "era": 6.46,
+        "whip": 1.78,
+        "opponent_obp": 0.384,
+        "opponent_slg": 0.525,
+        "team_bullpen": {
+          "lookback_games": 2,
+          "games_inspected": 2,
+          "fatigue_index": 0.56,
+          "effective_unavailable_count": 4.48,
+          "unavailable_today_count": 2,
+          "back_to_back_arms_count": 0,
+          "high_leverage_used_count": 2
+        }
+      },
+      "travel": {
+        "home": {
+          "available": true,
+          "previous_game_date": "2026-07-11",
+          "previous_venue_id": 2395,
+          "previous_venue_name": "Oracle Park",
+          "current_venue_id": 2395,
+          "current_venue_name": "Oracle Park",
+          "days_since_previous_game": 1,
+          "same_venue": true,
+          "distance_miles": 0.0,
+          "timezone_shift_hours": 0,
+          "travel_direction": "same",
+          "travel_fatigue_index": 0.0,
+          "travel_run_delta": -0.0,
+          "label": "1d since previous game; 0 mi"
+        },
+        "away": {
+          "available": true,
+          "previous_game_date": "2026-07-11",
+          "previous_venue_id": 2395,
+          "previous_venue_name": "Oracle Park",
+          "current_venue_id": 2395,
+          "current_venue_name": "Oracle Park",
+          "days_since_previous_game": 1,
+          "same_venue": true,
+          "distance_miles": 0.0,
+          "timezone_shift_hours": 0,
+          "travel_direction": "same",
+          "travel_fatigue_index": 0.0,
+          "travel_run_delta": -0.0,
+          "label": "1d since previous game; 0 mi"
+        }
+      },
+      "weather": {
+        "temp": "",
+        "condition": "",
+        "wind": ""
+      },
+      "venue": {
+        "id": 2395,
+        "name": "Oracle Park",
+        "run_factor": 1.0
+      },
+      "venue_factor": 1.0,
+      "top_2_picks": [
+        {
+          "inning": 1,
+          "probability_scoreless": 0.475,
+          "baseline": 0.3844,
+          "edge_pp": 9.03,
+          "decision": "LEAN",
+          "confidence": "Medium",
+          "label": "Inning 1 - No Run Scored (47.5%, edge +9.0pp)"
+        }
+      ],
+      "full_inning_table": {
+        "1": 0.475,
+        "2": 0.452,
+        "3": 0.452,
+        "4": 0.508,
+        "5": 0.443,
+        "6": 0.472,
+        "7": 0.471,
+        "8": 0.345
+      },
+      "edge_table": {
+        "1": 0.0903,
+        "2": -0.0659,
+        "3": -0.0383,
+        "4": -0.0108,
+        "5": -0.0616,
+        "6": -0.046,
+        "7": -0.0763,
+        "8": -0.2178
+      },
+      "baseline_table": {
+        "1": 0.3844,
+        "2": 0.5184,
+        "3": 0.49,
+        "4": 0.5184,
+        "5": 0.5041,
+        "6": 0.5184,
+        "7": 0.5476,
+        "8": 0.5625
+      }
+    },
+    {
+      "game_id": "823925",
+      "game_start_time": "2026-07-12T20:10:00Z",
+      "game_order": 13,
+      "matchup": "Los Angeles Dodgers vs Arizona Diamondbacks",
+      "home_team": "Los Angeles Dodgers",
+      "away_team": "Arizona Diamondbacks",
+      "home_pitcher": "Emmet Sheehan",
+      "away_pitcher": "Mitch Bratt",
+      "home_pitcher_context": {
+        "name": "Emmet Sheehan",
+        "era": 4.91,
+        "whip": 1.27,
+        "opponent_obp": 0.314,
+        "opponent_slg": 0.466,
+        "team_bullpen": {
+          "lookback_games": 2,
+          "games_inspected": 2,
+          "fatigue_index": 0.828,
+          "effective_unavailable_count": 6.62,
+          "unavailable_today_count": 6,
+          "back_to_back_arms_count": 3,
+          "high_leverage_used_count": 5
+        }
+      },
+      "away_pitcher_context": {
+        "name": "Mitch Bratt",
+        "era": 3.0,
+        "whip": 1.33,
+        "opponent_obp": 0.308,
+        "opponent_slg": 0.273,
+        "team_bullpen": {
+          "lookback_games": 2,
+          "games_inspected": 2,
+          "fatigue_index": 0.313,
+          "effective_unavailable_count": 2.5,
+          "unavailable_today_count": 1,
+          "back_to_back_arms_count": 0,
+          "high_leverage_used_count": 1
+        }
+      },
+      "travel": {
+        "home": {
+          "available": true,
+          "previous_game_date": "2026-07-11",
+          "previous_venue_id": 22,
+          "previous_venue_name": "UNIQLO Field at Dodger Stadium",
+          "current_venue_id": 22,
+          "current_venue_name": "UNIQLO Field at Dodger Stadium",
+          "days_since_previous_game": 1,
+          "same_venue": true,
+          "distance_miles": 0.0,
+          "timezone_shift_hours": 0,
+          "travel_direction": "same",
+          "travel_fatigue_index": 0.0,
+          "travel_run_delta": -0.0,
+          "label": "1d since previous game; 0 mi"
+        },
+        "away": {
+          "available": true,
+          "previous_game_date": "2026-07-11",
+          "previous_venue_id": 22,
+          "previous_venue_name": "UNIQLO Field at Dodger Stadium",
+          "current_venue_id": 22,
+          "current_venue_name": "UNIQLO Field at Dodger Stadium",
+          "days_since_previous_game": 1,
+          "same_venue": true,
+          "distance_miles": 0.0,
+          "timezone_shift_hours": 0,
+          "travel_direction": "same",
+          "travel_fatigue_index": 0.0,
+          "travel_run_delta": -0.0,
+          "label": "1d since previous game; 0 mi"
+        }
+      },
+      "weather": {
+        "temp": "",
+        "condition": "",
+        "wind": ""
+      },
+      "venue": {
+        "id": 22,
+        "name": "UNIQLO Field at Dodger Stadium",
+        "run_factor": 1.0
+      },
+      "venue_factor": 1.0,
+      "top_2_picks": [
+        {
+          "inning": 5,
+          "probability_scoreless": 0.631,
+          "baseline": 0.5041,
+          "edge_pp": 12.64,
+          "decision": "BET",
+          "confidence": "High",
+          "label": "Inning 5 - No Run Scored (63.1%, edge +12.6pp)"
+        },
+        {
+          "inning": 2,
+          "probability_scoreless": 0.624,
+          "baseline": 0.5184,
+          "edge_pp": 10.53,
+          "decision": "BET",
+          "confidence": "High",
+          "label": "Inning 2 - No Run Scored (62.4%, edge +10.5pp)"
+        }
+      ],
+      "full_inning_table": {
+        "1": 0.436,
+        "2": 0.624,
+        "3": 0.501,
+        "4": 0.547,
+        "5": 0.631,
+        "6": 0.447,
+        "7": 0.413,
+        "8": 0.408
+      },
+      "edge_table": {
+        "1": 0.052,
+        "2": 0.1053,
+        "3": 0.0112,
+        "4": 0.0286,
+        "5": 0.1264,
+        "6": -0.0713,
+        "7": -0.1348,
+        "8": -0.1543
+      },
+      "baseline_table": {
+        "1": 0.3844,
+        "2": 0.5184,
+        "3": 0.49,
+        "4": 0.5184,
+        "5": 0.5041,
+        "6": 0.5184,
+        "7": 0.5476,
+        "8": 0.5625
+      }
+    },
+    {
+      "game_id": "823274",
+      "game_start_time": "2026-07-12T20:10:00Z",
+      "game_order": 14,
+      "matchup": "San Diego Padres vs Toronto Blue Jays",
+      "home_team": "San Diego Padres",
+      "away_team": "Toronto Blue Jays",
+      "home_pitcher": "Germ\u00e1n M\u00e1rquez",
+      "away_pitcher": "Kevin Gausman",
+      "home_pitcher_context": {
+        "name": "Germ\u00e1n M\u00e1rquez",
+        "era": 5.02,
+        "whip": 1.43,
+        "opponent_obp": 0.342,
+        "opponent_slg": 0.479,
+        "team_bullpen": {
+          "lookback_games": 2,
+          "games_inspected": 2,
+          "fatigue_index": 0.52,
+          "effective_unavailable_count": 4.16,
+          "unavailable_today_count": 2,
+          "back_to_back_arms_count": 1,
+          "high_leverage_used_count": 2
+        }
+      },
+      "away_pitcher_context": {
+        "name": "Kevin Gausman",
+        "era": 4.32,
+        "whip": 1.22,
+        "opponent_obp": 0.297,
+        "opponent_slg": 0.417,
+        "team_bullpen": {
+          "lookback_games": 2,
+          "games_inspected": 2,
+          "fatigue_index": 0.57,
+          "effective_unavailable_count": 4.56,
+          "unavailable_today_count": 4,
+          "back_to_back_arms_count": 3,
+          "high_leverage_used_count": 3
+        }
+      },
+      "travel": {
+        "home": {
+          "available": true,
+          "previous_game_date": "2026-07-11",
           "previous_venue_id": 2680,
           "previous_venue_name": "Petco Park",
           "current_venue_id": 2680,
@@ -1925,7 +1952,7 @@
         },
         "away": {
           "available": true,
-          "previous_game_date": "2026-07-10",
+          "previous_game_date": "2026-07-11",
           "previous_venue_id": 2680,
           "previous_venue_name": "Petco Park",
           "current_venue_id": 2680,
@@ -1956,177 +1983,40 @@
           "inning": 1,
           "probability_scoreless": 0.522,
           "baseline": 0.3844,
-          "edge_pp": 13.74,
+          "edge_pp": 13.76,
           "decision": "BET",
           "confidence": "Medium",
-          "label": "Inning 1 - No Run Scored (52.2%, edge +13.7pp)"
+          "label": "Inning 1 - No Run Scored (52.2%, edge +13.8pp)"
         },
         {
-          "inning": 2,
-          "probability_scoreless": 0.58,
+          "inning": 6,
+          "probability_scoreless": 0.593,
           "baseline": 0.5184,
-          "edge_pp": 6.12,
+          "edge_pp": 7.41,
           "decision": "LEAN",
           "confidence": "Medium",
-          "label": "Inning 2 - No Run Scored (58.0%, edge +6.1pp)"
+          "label": "Inning 6 - No Run Scored (59.3%, edge +7.4pp)"
         }
       ],
       "full_inning_table": {
         "1": 0.522,
         "2": 0.58,
-        "3": 0.51,
-        "4": 0.554,
-        "5": 0.499,
-        "6": 0.544,
-        "7": 0.453,
-        "8": 0.413
+        "3": 0.554,
+        "4": 0.544,
+        "5": 0.511,
+        "6": 0.593,
+        "7": 0.448,
+        "8": 0.409
       },
       "edge_table": {
-        "1": 0.1374,
-        "2": 0.0612,
-        "3": 0.0197,
-        "4": 0.0355,
-        "5": -0.0046,
-        "6": 0.0256,
-        "7": -0.0949,
-        "8": -0.1494
-      },
-      "baseline_table": {
-        "1": 0.3844,
-        "2": 0.5184,
-        "3": 0.49,
-        "4": 0.5184,
-        "5": 0.5041,
-        "6": 0.5184,
-        "7": 0.5476,
-        "8": 0.5625
-      }
-    },
-    {
-      "game_id": "823926",
-      "game_start_time": "2026-07-12T01:10:00Z",
-      "game_order": 15,
-      "matchup": "Los Angeles Dodgers vs Arizona Diamondbacks",
-      "home_team": "Los Angeles Dodgers",
-      "away_team": "Arizona Diamondbacks",
-      "home_pitcher": "Yoshinobu Yamamoto",
-      "away_pitcher": "Brandon Pfaadt",
-      "home_pitcher_context": {
-        "name": "Yoshinobu Yamamoto",
-        "era": 2.49,
-        "whip": 0.88,
-        "opponent_obp": 0.239,
-        "opponent_slg": 0.314,
-        "team_bullpen": {
-          "lookback_games": 2,
-          "games_inspected": 2,
-          "fatigue_index": 0.291,
-          "effective_unavailable_count": 2.33,
-          "unavailable_today_count": 2,
-          "back_to_back_arms_count": 1,
-          "high_leverage_used_count": 1
-        }
-      },
-      "away_pitcher_context": {
-        "name": "Brandon Pfaadt",
-        "era": 4.84,
-        "whip": 1.34,
-        "opponent_obp": 0.325,
-        "opponent_slg": 0.449,
-        "team_bullpen": {
-          "lookback_games": 2,
-          "games_inspected": 2,
-          "fatigue_index": 0.325,
-          "effective_unavailable_count": 2.6,
-          "unavailable_today_count": 0,
-          "back_to_back_arms_count": 0,
-          "high_leverage_used_count": 0
-        }
-      },
-      "travel": {
-        "home": {
-          "available": true,
-          "previous_game_date": "2026-07-10",
-          "previous_venue_id": 22,
-          "previous_venue_name": "UNIQLO Field at Dodger Stadium",
-          "current_venue_id": 22,
-          "current_venue_name": "UNIQLO Field at Dodger Stadium",
-          "days_since_previous_game": 1,
-          "same_venue": true,
-          "distance_miles": 0.0,
-          "timezone_shift_hours": 0,
-          "travel_direction": "same",
-          "travel_fatigue_index": 0.0,
-          "travel_run_delta": -0.0,
-          "label": "1d since previous game; 0 mi"
-        },
-        "away": {
-          "available": true,
-          "previous_game_date": "2026-07-10",
-          "previous_venue_id": 22,
-          "previous_venue_name": "UNIQLO Field at Dodger Stadium",
-          "current_venue_id": 22,
-          "current_venue_name": "UNIQLO Field at Dodger Stadium",
-          "days_since_previous_game": 1,
-          "same_venue": true,
-          "distance_miles": 0.0,
-          "timezone_shift_hours": 0,
-          "travel_direction": "same",
-          "travel_fatigue_index": 0.0,
-          "travel_run_delta": -0.0,
-          "label": "1d since previous game; 0 mi"
-        }
-      },
-      "weather": {
-        "temp": "",
-        "condition": "",
-        "wind": ""
-      },
-      "venue": {
-        "id": 22,
-        "name": "UNIQLO Field at Dodger Stadium",
-        "run_factor": 1.0
-      },
-      "venue_factor": 1.0,
-      "top_2_picks": [
-        {
-          "inning": 5,
-          "probability_scoreless": 0.583,
-          "baseline": 0.5041,
-          "edge_pp": 7.88,
-          "decision": "LEAN",
-          "confidence": "Medium",
-          "label": "Inning 5 - No Run Scored (58.3%, edge +7.9pp)"
-        },
-        {
-          "inning": 2,
-          "probability_scoreless": 0.58,
-          "baseline": 0.5184,
-          "edge_pp": 6.12,
-          "decision": "LEAN",
-          "confidence": "Medium",
-          "label": "Inning 2 - No Run Scored (58.0%, edge +6.1pp)"
-        }
-      ],
-      "full_inning_table": {
-        "1": 0.449,
-        "2": 0.58,
-        "3": 0.502,
-        "4": 0.559,
-        "5": 0.583,
-        "6": 0.457,
-        "7": 0.429,
-        "8": 0.401
-      },
-      "edge_table": {
-        "1": 0.0644,
-        "2": 0.0612,
-        "3": 0.0115,
-        "4": 0.0411,
-        "5": 0.0788,
-        "6": -0.0615,
-        "7": -0.1183,
-        "8": -0.1615
+        "1": 0.1376,
+        "2": 0.062,
+        "3": 0.0642,
+        "4": 0.0254,
+        "5": 0.0072,
+        "6": 0.0741,
+        "7": -0.0997,
+        "8": -0.1538
       },
       "baseline_table": {
         "1": 0.3844,
