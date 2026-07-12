@@ -50554,7 +50554,7 @@
           "game": "Cincinnati Reds vs Chicago Cubs",
           "game_id": "824491",
           "game_order": 3,
-          "game_start_time": "2026-07-12T17:40:00Z",
+          "game_start_time": "2026-07-12T17:40Z",
           "home_team": "Cincinnati Reds",
           "inning": 1,
           "league": "MLB",
@@ -50616,7 +50616,7 @@
           "selected_side_implied_probability": 0.545455,
           "source": "MLB Inning",
           "sport": "MLB",
-          "start_time": "2026-07-12T17:40:00Z",
+          "start_time": "2026-07-12T17:40Z",
           "team": "",
           "units": 0.25,
           "validation_lean": true,
@@ -52331,7 +52331,7 @@
           "game": "Detroit Tigers vs Philadelphia Phillies",
           "game_id": "824250",
           "game_order": 6,
-          "game_start_time": "2026-07-12T17:40:00Z",
+          "game_start_time": "2026-07-12T17:40Z",
           "home_team": "Detroit Tigers",
           "inning": 6,
           "league": "MLB",
@@ -52393,7 +52393,7 @@
           "selected_side_implied_probability": 0.545455,
           "source": "MLB Inning",
           "sport": "MLB",
-          "start_time": "2026-07-12T17:40:00Z",
+          "start_time": "2026-07-12T17:40Z",
           "team": "",
           "units": 0.25,
           "validation_lean": true,
@@ -55057,7 +55057,7 @@
           "game": "Los Angeles Dodgers vs Arizona Diamondbacks",
           "game_id": "823925",
           "game_order": 13,
-          "game_start_time": "2026-07-12T20:10:00Z",
+          "game_start_time": "2026-07-12T20:10Z",
           "home_team": "Los Angeles Dodgers",
           "inning": 5,
           "league": "MLB",
@@ -55119,7 +55119,7 @@
           "selected_side_implied_probability": 0.545455,
           "source": "MLB Inning",
           "sport": "MLB",
-          "start_time": "2026-07-12T20:10:00Z",
+          "start_time": "2026-07-12T20:10Z",
           "team": "",
           "units": 0.25,
           "validation_lean": true,
@@ -55903,6 +55903,7 @@
           "decision": "LEAN",
           "direction": "Under",
           "edge": 4.49,
+          "game_start_time": "2026-07-12T16:15Z",
           "home_team": "Pittsburgh Pirates",
           "kelly": 5.59,
           "line": 8.0,
@@ -55963,6 +55964,7 @@
           "selection": "Under",
           "source": "MLB Model",
           "sport": "MLB",
+          "start_time": "2026-07-12T16:15Z",
           "units": 0.25,
           "validation_lean": true,
           "validation_reason": "validation fallback: mlb_new had zero strict BET/LEAN publications; published top raw model signal as a small LEAN for tracking",
@@ -56492,6 +56494,7 @@
           "decision": "LEAN",
           "direction": "Under",
           "edge": 4.41,
+          "game_start_time": "2026-07-12T17:35Z",
           "home_team": "Washington Nationals",
           "kelly": 5.54,
           "line": 9.0,
@@ -56552,6 +56555,7 @@
           "selection": "Under",
           "source": "MLB Model",
           "sport": "MLB",
+          "start_time": "2026-07-12T17:35Z",
           "units": 0.25,
           "validation_lean": true,
           "validation_reason": "validation fallback: mlb_new had zero strict BET/LEAN publications; published top raw model signal as a small LEAN for tracking",
@@ -58489,6 +58493,7 @@
           "decision": "LEAN",
           "direction": "Under",
           "edge": 4.72,
+          "game_start_time": "2026-07-12T18:10Z",
           "home_team": "Chicago White Sox",
           "kelly": 5.73,
           "line": 8.5,
@@ -58549,6 +58554,7 @@
           "selection": "Under",
           "source": "MLB Model",
           "sport": "MLB",
+          "start_time": "2026-07-12T18:10Z",
           "units": 0.25,
           "validation_lean": true,
           "validation_reason": "validation fallback: mlb_new had zero strict BET/LEAN publications; published top raw model signal as a small LEAN for tracking",
@@ -60978,7 +60984,7 @@
           "decision": "LEAN",
           "game": "Phoenix Suns @ New Orleans Pelicans",
           "game_id": "401881843",
-          "game_start_time": "2026-07-12T19:00:00Z",
+          "game_start_time": "2026-07-12T19:00Z",
           "guardrail_reasons": [
             "thin Summer League sample"
           ],
@@ -61056,7 +61062,7 @@
           "selection": "Phoenix Suns",
           "source": "NBA Summer League",
           "sport": "NBA SUMMER",
-          "start_time": "2026-07-12T19:00:00Z",
+          "start_time": "2026-07-12T19:00Z",
           "team": "Phoenix Suns",
           "tournament": "NBA Summer League - Las Vegas",
           "units": 0.58,
@@ -61190,7 +61196,7 @@
           "decision": "LEAN",
           "game": "Charlotte Hornets @ Boston Celtics",
           "game_id": "401881845",
-          "game_start_time": "2026-07-12T21:00:00Z",
+          "game_start_time": "2026-07-12T21:00Z",
           "guardrail_reasons": [
             "thin Summer League sample"
           ],
@@ -61268,7 +61274,7 @@
           "selection": "Boston Celtics",
           "source": "NBA Summer League",
           "sport": "NBA SUMMER",
-          "start_time": "2026-07-12T21:00:00Z",
+          "start_time": "2026-07-12T21:00Z",
           "team": "Boston Celtics",
           "tournament": "NBA Summer League - Las Vegas",
           "units": 0.42,
@@ -61296,7 +61302,7 @@
           "decision": "BET",
           "game": "Oklahoma City Thunder @ Golden State Warriors",
           "game_id": "401881846",
-          "game_start_time": "2026-07-12T22:00:00Z",
+          "game_start_time": "2026-07-12T22:00Z",
           "guardrail_reasons": [],
           "has_market_price": false,
           "home_team": "Golden State Warriors",
@@ -61370,7 +61376,7 @@
           "selection": "Golden State Warriors",
           "source": "NBA Summer League",
           "sport": "NBA SUMMER",
-          "start_time": "2026-07-12T22:00:00Z",
+          "start_time": "2026-07-12T22:00Z",
           "team": "Golden State Warriors",
           "tournament": "NBA Summer League - Las Vegas",
           "units": 1.25,
@@ -61610,7 +61616,7 @@
           "decision": "BET",
           "game": "San Antonio Spurs @ Milwaukee Bucks",
           "game_id": "401881849",
-          "game_start_time": "2026-07-13T01:00:00Z",
+          "game_start_time": "2026-07-13T01:00Z",
           "guardrail_reasons": [],
           "has_market_price": false,
           "home_team": "Milwaukee Bucks",
@@ -61684,7 +61690,7 @@
           "selection": "San Antonio Spurs",
           "source": "NBA Summer League",
           "sport": "NBA SUMMER",
-          "start_time": "2026-07-13T01:00:00Z",
+          "start_time": "2026-07-13T01:00Z",
           "team": "San Antonio Spurs",
           "tournament": "NBA Summer League - Las Vegas",
           "units": 1.16,
@@ -61712,7 +61718,7 @@
           "decision": "LEAN",
           "game": "LA Clippers @ Utah Jazz",
           "game_id": "401881850",
-          "game_start_time": "2026-07-13T02:00:00Z",
+          "game_start_time": "2026-07-13T02:00Z",
           "guardrail_reasons": [
             "thin Summer League sample"
           ],
@@ -61790,7 +61796,7 @@
           "selection": "Utah Jazz",
           "source": "NBA Summer League",
           "sport": "NBA SUMMER",
-          "start_time": "2026-07-13T02:00:00Z",
+          "start_time": "2026-07-13T02:00Z",
           "team": "Utah Jazz",
           "tournament": "NBA Summer League - Las Vegas",
           "units": 0.91,
@@ -61843,6 +61849,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Pittsburgh Pirates vs Milwaukee Brewers",
+          "game_start_time": "2026-07-12T16:15Z",
           "market_away_odds": 104,
           "market_home_odds": -125,
           "market_odds_captured_at": "2026-07-12T13:23:50.873376Z",
@@ -61869,6 +61876,7 @@
           "selected_odds": -125,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-07-12T16:15Z",
           "units": 1
         },
         {
@@ -61876,6 +61884,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Baltimore Orioles vs Kansas City Royals",
+          "game_start_time": "2026-07-12T17:35Z",
           "market_away_odds": 128,
           "market_home_odds": -155,
           "market_odds_captured_at": "2026-07-12T13:23:50.873376Z",
@@ -61902,6 +61911,7 @@
           "selected_odds": -155,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-07-12T17:35Z",
           "units": 1
         },
         {
@@ -61909,6 +61919,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Washington Nationals vs New York Yankees",
+          "game_start_time": "2026-07-12T17:35Z",
           "market_away_odds": -112,
           "market_home_odds": -107,
           "market_odds_captured_at": "2026-07-12T13:23:50.873376Z",
@@ -61935,6 +61946,7 @@
           "selected_odds": -107,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-07-12T17:35Z",
           "units": 1
         },
         {
@@ -61942,6 +61954,7 @@
           "decision": "BET",
           "edge": null,
           "game": "New York Mets vs Boston Red Sox",
+          "game_start_time": "2026-07-12T17:40Z",
           "market_away_odds": -123,
           "market_home_odds": 102,
           "market_odds_captured_at": "2026-07-12T13:23:50.873376Z",
@@ -61968,6 +61981,7 @@
           "selected_odds": 102,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-07-12T17:40Z",
           "units": 1
         },
         {
@@ -61975,6 +61989,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Detroit Tigers vs Philadelphia Phillies",
+          "game_start_time": "2026-07-12T17:40Z",
           "market_away_odds": -102,
           "market_home_odds": -118,
           "market_odds_captured_at": "2026-07-12T13:23:50.873376Z",
@@ -62001,6 +62016,7 @@
           "selected_odds": -118,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-07-12T17:40Z",
           "units": 1
         },
         {
@@ -62008,6 +62024,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Miami Marlins vs Cleveland Guardians",
+          "game_start_time": "2026-07-12T17:40Z",
           "market_away_odds": -106,
           "market_home_odds": -114,
           "market_odds_captured_at": "2026-07-12T13:23:50.873376Z",
@@ -62034,6 +62051,7 @@
           "selected_odds": -114,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-07-12T17:40Z",
           "units": 1
         },
         {
@@ -62041,6 +62059,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Tampa Bay Rays vs Seattle Mariners",
+          "game_start_time": "2026-07-12T17:40Z",
           "market_away_odds": 119,
           "market_home_odds": -143,
           "market_odds_captured_at": "2026-07-12T13:23:50.873376Z",
@@ -62067,6 +62086,7 @@
           "selected_odds": 119,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-07-12T17:40Z",
           "units": 1
         },
         {
@@ -62074,6 +62094,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Cincinnati Reds vs Chicago Cubs",
+          "game_start_time": "2026-07-12T17:40Z",
           "market_away_odds": -131,
           "market_home_odds": 109,
           "market_odds_captured_at": "2026-07-12T13:23:50.873376Z",
@@ -62100,6 +62121,7 @@
           "selected_odds": -131,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-07-12T17:40Z",
           "units": 1
         },
         {
@@ -62107,6 +62129,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Minnesota Twins vs Los Angeles Angels",
+          "game_start_time": "2026-07-12T18:10Z",
           "market_away_odds": 113,
           "market_home_odds": -136,
           "market_odds_captured_at": "2026-07-12T13:23:50.873376Z",
@@ -62133,6 +62156,7 @@
           "selected_odds": -136,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-07-12T18:10Z",
           "units": 1
         },
         {
@@ -62140,6 +62164,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Chicago White Sox vs Athletics",
+          "game_start_time": "2026-07-12T18:10Z",
           "market_away_odds": 109,
           "market_home_odds": -132,
           "market_odds_captured_at": "2026-07-12T13:23:50.873376Z",
@@ -62166,6 +62191,7 @@
           "selected_odds": 109,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-07-12T18:10Z",
           "units": 1
         },
         {
@@ -62173,6 +62199,7 @@
           "decision": "BET",
           "edge": null,
           "game": "St. Louis Cardinals vs Atlanta Braves",
+          "game_start_time": "2026-07-12T18:15Z",
           "market_away_odds": 108,
           "market_home_odds": -131,
           "market_odds_captured_at": "2026-07-12T13:23:50.873376Z",
@@ -62199,6 +62226,7 @@
           "selected_odds": 108,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-07-12T18:15Z",
           "units": 1
         },
         {
@@ -62206,6 +62234,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Texas Rangers vs Houston Astros",
+          "game_start_time": "2026-07-12T18:35Z",
           "market_away_odds": 113,
           "market_home_odds": -136,
           "market_odds_captured_at": "2026-07-12T13:23:50.873376Z",
@@ -62232,6 +62261,7 @@
           "selected_odds": 113,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-07-12T18:35Z",
           "units": 1
         },
         {
@@ -62239,6 +62269,7 @@
           "decision": "BET",
           "edge": null,
           "game": "San Francisco Giants vs Colorado Rockies",
+          "game_start_time": "2026-07-12T20:05Z",
           "market_away_odds": 119,
           "market_home_odds": -144,
           "market_odds_captured_at": "2026-07-12T13:23:50.873376Z",
@@ -62265,6 +62296,7 @@
           "selected_odds": 119,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-07-12T20:05Z",
           "units": 1
         },
         {
@@ -62272,6 +62304,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Los Angeles Dodgers vs Arizona Diamondbacks",
+          "game_start_time": "2026-07-12T20:10Z",
           "market_away_odds": 188,
           "market_home_odds": -231,
           "market_odds_captured_at": "2026-07-12T13:23:50.873376Z",
@@ -62298,6 +62331,7 @@
           "selected_odds": 188,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-07-12T20:10Z",
           "units": 1
         },
         {
@@ -62305,6 +62339,7 @@
           "decision": "BET",
           "edge": null,
           "game": "San Diego Padres vs Toronto Blue Jays",
+          "game_start_time": "2026-07-12T20:10Z",
           "market_away_odds": -131,
           "market_home_odds": 108,
           "market_odds_captured_at": "2026-07-12T13:23:50.873376Z",
@@ -62331,6 +62366,7 @@
           "selected_odds": -131,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
+          "start_time": "2026-07-12T20:10Z",
           "units": 1
         }
       ],
@@ -62377,6 +62413,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Washington Mystics vs Seattle Storm",
+          "game_start_time": "2026-07-12T19:00Z",
           "matchup": "Washington Mystics vs Seattle Storm",
           "odds": -110,
           "pick": "Over 159.5 Points (Washington Mystics vs Seattle Storm)",
@@ -62396,6 +62433,7 @@
           "probability": null,
           "source": "SportsGamblerWNBA",
           "sport": "WNBA",
+          "start_time": "2026-07-12T19:00Z",
           "units": 1
         },
         {
@@ -62403,6 +62441,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Toronto Tempo vs New York Liberty",
+          "game_start_time": "2026-07-12T19:00Z",
           "market_away_odds": -285,
           "market_home_odds": 230,
           "market_odds_captured_at": "2026-07-12T13:23:50.873376Z",
@@ -62429,6 +62468,7 @@
           "selected_odds": 230,
           "source": "SportsGamblerWNBA",
           "sport": "WNBA",
+          "start_time": "2026-07-12T19:00Z",
           "units": 1
         },
         {
@@ -62436,6 +62476,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Dallas Wings vs Chicago Sky",
+          "game_start_time": "2026-07-12T23:00Z",
           "market_away_odds": 340,
           "market_home_odds": -440,
           "market_odds_captured_at": "2026-07-12T13:23:50.873376Z",
@@ -62462,6 +62503,7 @@
           "selected_odds": -440,
           "source": "SportsGamblerWNBA",
           "sport": "WNBA",
+          "start_time": "2026-07-12T23:00Z",
           "units": 1
         },
         {
@@ -62469,6 +62511,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Las Vegas Aces vs Indiana Fever",
+          "game_start_time": "2026-07-13T01:00Z",
           "market_away_odds": 164,
           "market_home_odds": -198,
           "market_odds_captured_at": "2026-07-12T13:23:50.873376Z",
@@ -62495,6 +62538,7 @@
           "selected_odds": -198,
           "source": "SportsGamblerWNBA",
           "sport": "WNBA",
+          "start_time": "2026-07-13T01:00Z",
           "units": 1
         }
       ],
@@ -62541,6 +62585,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Pittsburgh Pirates vs Milwaukee Brewers",
+          "game_start_time": "2026-07-12T16:15Z",
           "market_away_odds": 104,
           "market_home_odds": -125,
           "market_odds_captured_at": "2026-07-12T13:23:50.873376Z",
@@ -62567,6 +62612,7 @@
           "selected_odds": -125,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-07-12T16:15Z",
           "units": 1
         },
         {
@@ -62574,6 +62620,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Washington Nationals vs New York Yankees",
+          "game_start_time": "2026-07-12T17:35Z",
           "market_line": 9.0,
           "market_odds_captured_at": "2026-07-12T13:23:50.873376Z",
           "market_odds_provider": "espn_scoreboard:DraftKings",
@@ -62601,6 +62648,7 @@
           "selected_odds": -121,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-07-12T17:35Z",
           "units": 1
         },
         {
@@ -62608,6 +62656,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Baltimore Orioles vs Kansas City Royals",
+          "game_start_time": "2026-07-12T17:35Z",
           "market_away_odds": 128,
           "market_home_odds": -155,
           "market_odds_captured_at": "2026-07-12T13:23:50.873376Z",
@@ -62634,6 +62683,7 @@
           "selected_odds": -155,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-07-12T17:35Z",
           "units": 1
         },
         {
@@ -62641,6 +62691,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Detroit Tigers vs Philadelphia Phillies",
+          "game_start_time": "2026-07-12T17:40Z",
           "matchup": "Detroit Tigers vs Philadelphia Phillies",
           "odds": -120,
           "pick": "Under 7.5 (Tigers vs Phillies)",
@@ -62660,6 +62711,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-07-12T17:40Z",
           "units": 1
         },
         {
@@ -62667,6 +62719,7 @@
           "decision": "BET",
           "edge": null,
           "game": "New York Mets vs Boston Red Sox",
+          "game_start_time": "2026-07-12T17:40Z",
           "market_away_odds": -123,
           "market_home_odds": 102,
           "market_odds_captured_at": "2026-07-12T13:23:50.873376Z",
@@ -62693,6 +62746,7 @@
           "selected_odds": -123,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-07-12T17:40Z",
           "units": 1
         },
         {
@@ -62700,6 +62754,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Cincinnati Reds vs Chicago Cubs",
+          "game_start_time": "2026-07-12T17:40Z",
           "market_line": 9.5,
           "market_odds_captured_at": "2026-07-12T13:23:50.873376Z",
           "market_odds_provider": "espn_scoreboard:DraftKings",
@@ -62727,6 +62782,7 @@
           "selected_odds": -118,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-07-12T17:40Z",
           "units": 1
         },
         {
@@ -62734,6 +62790,7 @@
           "decision": "BET",
           "edge": null,
           "game": "St. Louis Cardinals vs Atlanta Braves",
+          "game_start_time": "2026-07-12T18:15Z",
           "matchup": "St. Louis Cardinals vs Atlanta Braves",
           "odds": -108,
           "pick": "Over 8.5 Total Runs (Cardinals vs Braves)",
@@ -62753,6 +62810,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-07-12T18:15Z",
           "units": 1
         },
         {
@@ -62760,6 +62818,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Texas Rangers vs Houston Astros",
+          "game_start_time": "2026-07-12T18:35Z",
           "market_away_odds": 113,
           "market_home_odds": -136,
           "market_odds_captured_at": "2026-07-12T13:23:50.873376Z",
@@ -62786,6 +62845,7 @@
           "selected_odds": -136,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-07-12T18:35Z",
           "units": 1
         },
         {
@@ -62793,6 +62853,7 @@
           "decision": "BET",
           "edge": null,
           "game": "San Francisco Giants vs Colorado Rockies",
+          "game_start_time": "2026-07-12T20:05Z",
           "matchup": "San Francisco Giants vs Colorado Rockies",
           "odds": -116,
           "pick": "Over 8.5 Total Runs (Giants vs Rockies)",
@@ -62812,6 +62873,7 @@
           "probability": null,
           "source": "SportyTraderMLB",
           "sport": "MLB",
+          "start_time": "2026-07-12T20:05Z",
           "units": 1
         }
       ],
@@ -62858,6 +62920,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Washington Mystics vs Seattle Storm",
+          "game_start_time": "2026-07-12T19:00Z",
           "market_away_odds": 180,
           "market_home_odds": -218,
           "market_odds_captured_at": "2026-07-12T13:23:50.873376Z",
@@ -62884,6 +62947,7 @@
           "selected_odds": -218,
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
+          "start_time": "2026-07-12T19:00Z",
           "units": 1
         },
         {
@@ -62891,6 +62955,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Toronto Tempo vs New York Liberty",
+          "game_start_time": "2026-07-12T19:00Z",
           "matchup": "Toronto Tempo vs New York Liberty",
           "odds": -108,
           "pick": "Liberty (-6.5) cover the spread (Tempo vs Liberty)",
@@ -62910,6 +62975,7 @@
           "probability": null,
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
+          "start_time": "2026-07-12T19:00Z",
           "units": 1
         },
         {
@@ -62917,6 +62983,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Dallas Wings vs Chicago Sky",
+          "game_start_time": "2026-07-12T23:00Z",
           "market_away_odds": 340,
           "market_home_odds": -440,
           "market_odds_captured_at": "2026-07-12T13:23:50.873376Z",
@@ -62943,6 +63010,7 @@
           "selected_odds": -440,
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
+          "start_time": "2026-07-12T23:00Z",
           "units": 1
         },
         {
@@ -62950,6 +63018,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Las Vegas Aces vs Indiana Fever",
+          "game_start_time": "2026-07-13T01:00Z",
           "market_away_odds": 164,
           "market_home_odds": -198,
           "market_odds_captured_at": "2026-07-12T13:23:50.873376Z",
@@ -62976,6 +63045,7 @@
           "selected_odds": 164,
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
+          "start_time": "2026-07-13T01:00Z",
           "units": 1
         }
       ],
@@ -63178,6 +63248,7 @@
           "decision": "LEAN",
           "edge": 5.7,
           "game": "New York Liberty @ Toronto Tempo",
+          "game_start_time": "2026-07-12T19:00Z",
           "guardrail_reasons": [
             "new totals market capped at LEAN while its live record is established"
           ],
@@ -63249,6 +63320,7 @@
           "selection": "Under",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-07-12T19:00Z",
           "units": 0.01,
           "vegas": 177.5
         },
@@ -63722,6 +63794,7 @@
           "decision": "LEAN",
           "edge": 5.53,
           "game": "Chicago Sky @ Dallas Wings",
+          "game_start_time": "2026-07-12T23:00Z",
           "guardrail_reasons": [
             "new totals market capped at LEAN while its live record is established"
           ],
@@ -63793,6 +63866,7 @@
           "selection": "Under",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-07-12T23:00Z",
           "units": 0.01,
           "vegas": 178.5
         },
@@ -63998,6 +64072,7 @@
           "decision": "LEAN",
           "edge": 5.7,
           "game": "Indiana Fever @ Las Vegas Aces",
+          "game_start_time": "2026-07-13T01:00Z",
           "guardrail_reasons": [
             "new totals market capped at LEAN while its live record is established",
             "questionable starter uncertainty"
@@ -64071,6 +64146,7 @@
           "selection": "Under",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-07-13T01:00Z",
           "units": 0.01,
           "vegas": 181.5
         },
@@ -64090,6 +64166,7 @@
           "decision": "LEAN",
           "edge": 4.04,
           "game": "New York Liberty @ Toronto Tempo",
+          "game_start_time": "2026-07-12T19:00Z",
           "guardrail_reasons": [
             "new totals market capped at LEAN while its live record is established"
           ],
@@ -64161,6 +64238,7 @@
           "selection": "Under",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-07-12T19:00Z",
           "units": 0.01,
           "vegas": 176.5
         },
