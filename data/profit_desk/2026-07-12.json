@@ -2325,7 +2325,7 @@
       "player": null,
       "policyVersion": "profit_desk_policy_v2",
       "price": {
-        "ageHours": 6.752,
+        "ageHours": 4.854,
         "breakEvenProbability": 0.537037,
         "decimalOdds": 1.862069,
         "eligibleForAlphaEstimate": false,
@@ -2344,10 +2344,10 @@
         "startTime": "2026-07-12T20:05Z",
         "tier": "C",
         "tierLabel": "posted_one_sided",
-        "timestamp": "2026-07-12T13:19:54.344488Z",
+        "timestamp": "2026-07-12T15:13:46.320602Z",
         "timestampField": "bucket.updatedAt",
         "twoSided": false,
-        "updatedAt": "2026-07-12T13:19:54.344488Z"
+        "updatedAt": "2026-07-12T15:13:46.320602Z"
       },
       "rawModelProbabilityIgnored": null,
       "result": "pending",
@@ -2467,7 +2467,7 @@
       "player": null,
       "policyVersion": "profit_desk_policy_v2",
       "price": {
-        "ageHours": 4.918,
+        "ageHours": 3.02,
         "breakEvenProbability": 0.519231,
         "decimalOdds": 1.925926,
         "eligibleForAlphaEstimate": false,
@@ -2486,10 +2486,10 @@
         "startTime": "2026-07-12T18:15Z",
         "tier": "C",
         "tierLabel": "posted_one_sided",
-        "timestamp": "2026-07-12T13:19:54.344488Z",
+        "timestamp": "2026-07-12T15:13:46.320602Z",
         "timestampField": "bucket.updatedAt",
         "twoSided": false,
-        "updatedAt": "2026-07-12T13:19:54.344488Z"
+        "updatedAt": "2026-07-12T15:13:46.320602Z"
       },
       "rawModelProbabilityIgnored": null,
       "result": "pending",
@@ -3169,7 +3169,7 @@
       "player": null,
       "policyVersion": "profit_desk_policy_v2",
       "price": {
-        "ageHours": 4.335,
+        "ageHours": 2.437,
         "breakEvenProbability": 0.545455,
         "decimalOdds": 1.833333,
         "eligibleForAlphaEstimate": false,
@@ -3188,10 +3188,10 @@
         "startTime": "2026-07-12T17:40Z",
         "tier": "C",
         "tierLabel": "posted_one_sided",
-        "timestamp": "2026-07-12T13:19:54.344488Z",
+        "timestamp": "2026-07-12T15:13:46.320602Z",
         "timestampField": "bucket.updatedAt",
         "twoSided": false,
-        "updatedAt": "2026-07-12T13:19:54.344488Z"
+        "updatedAt": "2026-07-12T15:13:46.320602Z"
       },
       "rawModelProbabilityIgnored": null,
       "result": "pending",
@@ -4195,7 +4195,7 @@
       "player": null,
       "policyVersion": "profit_desk_policy_v2",
       "price": {
-        "ageHours": 5.668,
+        "ageHours": 3.77,
         "breakEvenProbability": 0.52381,
         "decimalOdds": 1.909091,
         "eligibleForAlphaEstimate": false,
@@ -4214,10 +4214,10 @@
         "startTime": "2026-07-12T19:00Z",
         "tier": "C",
         "tierLabel": "posted_one_sided",
-        "timestamp": "2026-07-12T13:19:54.344488Z",
+        "timestamp": "2026-07-12T15:13:46.320602Z",
         "timestampField": "bucket.updatedAt",
         "twoSided": false,
-        "updatedAt": "2026-07-12T13:19:54.344488Z"
+        "updatedAt": "2026-07-12T15:13:46.320602Z"
       },
       "rawModelProbabilityIgnored": null,
       "result": "pending",
@@ -4343,7 +4343,7 @@
       "player": null,
       "policyVersion": "profit_desk_policy_v2",
       "price": {
-        "ageHours": 5.668,
+        "ageHours": 3.77,
         "breakEvenProbability": 0.519231,
         "decimalOdds": 1.925926,
         "eligibleForAlphaEstimate": false,
@@ -4362,10 +4362,10 @@
         "startTime": "2026-07-12T19:00Z",
         "tier": "C",
         "tierLabel": "posted_one_sided",
-        "timestamp": "2026-07-12T13:19:54.344488Z",
+        "timestamp": "2026-07-12T15:13:46.320602Z",
         "timestampField": "bucket.updatedAt",
         "twoSided": false,
-        "updatedAt": "2026-07-12T13:19:54.344488Z"
+        "updatedAt": "2026-07-12T15:13:46.320602Z"
       },
       "rawModelProbabilityIgnored": null,
       "result": "pending",
@@ -7146,7 +7146,7 @@
   "date": "2026-07-12",
   "engineVersion": "profit_desk_v2_live",
   "firstLiveDate": "2026-07-11",
-  "generatedAt": "2026-07-12T15:12:37.894727Z",
+  "generatedAt": "2026-07-12T15:13:46.320602Z",
   "notices": [
     "Qualified picks carry real flat stakes: EDGE 1.0u, VALUE 0.5u; everything else stays 0u.",
     "The market price is the baseline; historical residual alpha is shrunk and uncertainty-adjusted.",
