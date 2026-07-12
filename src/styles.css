@@ -1,6 +1,7 @@
 :root {
-  color: #1f1e1d;
-  background: #faf9f5;
+  color: var(--color-text-primary);
+  background: var(--color-bg);
+  color-scheme: light;
   font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -44,6 +45,7 @@
   --space-7: 32px;
   --space-8: 40px;
   --space-9: 48px;
+  --space-10: 56px;
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 16px;
@@ -57,30 +59,11 @@
   --duration-fast: 120ms;
   --duration-base: 180ms;
   --duration-slow: 280ms;
-
-  --bg: var(--color-bg);
-  --bg-2: var(--color-bg-secondary);
-  --surface: var(--color-surface);
-  --surface-2: var(--color-surface-hover);
-  --card: var(--color-surface);
-  --card-strong: var(--color-surface-hover);
-  --ink: var(--color-text-primary);
-  --muted: var(--color-text-secondary);
-  --line: var(--color-border);
-  --line-strong: var(--color-border-strong);
-  --paper: var(--color-surface);
-  --wash: var(--color-bg-secondary);
-  --green: var(--color-success);
-  --green-strong: var(--color-success);
-  --coral: var(--color-accent);
-  --yellow: var(--chart-4);
-  --blue: var(--chart-2);
-  --danger: var(--color-danger);
-  --shadow: var(--shadow-lg);
-  --shadow-soft: var(--shadow-none);
 }
 
+:root[data-theme="dark"],
 body[data-theme="dark"] {
+  color-scheme: dark;
   --color-bg: #23221d;
   --color-bg-secondary: #2c2b25;
   --color-surface: #2f2e28;
@@ -110,9 +93,9 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background:
-    radial-gradient(circle at top right, color-mix(in srgb, var(--color-accent) 12%, transparent), transparent 34rem),
-    linear-gradient(180deg, var(--color-bg), var(--color-bg-secondary));
+  min-height: 100dvh;
+  overflow-x: hidden;
+  background: var(--color-bg);
   color: var(--color-text-primary);
   transition: background-color var(--duration-base) var(--ease-standard), color var(--duration-base) var(--ease-standard);
 }
@@ -152,6 +135,7 @@ a:focus-visible {
   display: grid;
   grid-template-columns: 256px minmax(0, 1fr);
   min-height: 100vh;
+  min-height: 100dvh;
   background: var(--color-bg);
 }
 
@@ -162,6 +146,7 @@ a:focus-visible {
   flex-direction: column;
   gap: var(--space-5);
   height: 100vh;
+  height: 100dvh;
   padding: var(--space-5);
   border-right: 1px solid var(--color-border);
   background: var(--color-bg-secondary);
@@ -223,8 +208,6 @@ a:focus-visible {
 .rail-summary span,
 .chrome-status span,
 .metric-tile span,
-.storage-panel span,
-.topline-stat span,
 .today-strip span,
 .week-day-head span,
 .week-day p,
@@ -246,7 +229,6 @@ a:focus-visible {
 .eyebrow,
 .calendar-label,
 .metric-tile span,
-.storage-panel span,
 .week-day-head span,
 .program-editor-head > span {
   font-size: 12px;
@@ -451,7 +433,6 @@ a:focus-visible {
   color: var(--color-accent);
 }
 
-.topline-stat,
 .metric-tile,
 .today-dashboard,
 .today-command,
@@ -464,7 +445,6 @@ a:focus-visible {
 .program-side-panel,
 .program-editor-panel,
 .program-workout-row,
-.storage-panel,
 .superset-builder,
 .week-day,
 .settings-action,
@@ -473,30 +453,6 @@ a:focus-visible {
   border-radius: var(--radius-lg);
   background: var(--color-surface);
   box-shadow: var(--shadow-none);
-}
-
-.topline-stat {
-  display: grid;
-  place-items: center;
-  min-width: 108px;
-  min-height: 108px;
-  text-align: center;
-}
-
-.topline-stat svg {
-  color: var(--color-accent);
-}
-
-.topline-stat strong,
-.topline-stat span {
-  display: block;
-}
-
-.topline-stat strong {
-  font-family: var(--font-mono);
-  font-size: 28px;
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
 }
 
 .today-dashboard {
@@ -709,15 +665,25 @@ a:focus-visible {
 }
 
 .progress-orb {
+  position: relative;
+  z-index: 0;
   display: grid;
   place-items: center;
   flex: 0 0 auto;
   width: 132px;
   aspect-ratio: 1;
   border-radius: var(--radius-full);
-  background:
-    radial-gradient(circle, var(--color-surface) 58%, transparent 60%),
-    conic-gradient(var(--color-accent) var(--progress), var(--color-border) 0);
+}
+
+.progress-orb::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: conic-gradient(var(--color-accent) var(--progress), var(--color-border) 0);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 10px), #000 calc(100% - 9px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 10px), #000 calc(100% - 9px));
 }
 
 .progress-orb.large {
@@ -1164,7 +1130,7 @@ a:focus-visible {
 
 .set-row {
   display: grid;
-  grid-template-columns: 64px minmax(140px, 1fr) minmax(74px, 0.45fr);
+  grid-template-columns: 64px minmax(0, 1fr) minmax(74px, 0.45fr);
   gap: var(--space-2);
   align-items: end;
   padding: var(--space-2);
@@ -1176,15 +1142,15 @@ a:focus-visible {
 }
 
 .set-row.with-pounds {
-  grid-template-columns: 64px minmax(140px, 1fr) minmax(96px, 0.6fr) minmax(74px, 0.45fr);
+  grid-template-columns: 64px minmax(0, 1fr) minmax(96px, 0.6fr) minmax(74px, 0.45fr);
 }
 
 .set-row.can-remove {
-  grid-template-columns: 64px minmax(140px, 1fr) minmax(74px, 0.45fr) 36px;
+  grid-template-columns: 64px minmax(0, 1fr) minmax(74px, 0.45fr) 36px;
 }
 
 .set-row.with-pounds.can-remove {
-  grid-template-columns: 64px minmax(140px, 1fr) minmax(96px, 0.6fr) minmax(74px, 0.45fr) 36px;
+  grid-template-columns: 64px minmax(0, 1fr) minmax(96px, 0.6fr) minmax(74px, 0.45fr) 36px;
 }
 
 .set-row.stretch-row {
@@ -1329,7 +1295,7 @@ a:focus-visible {
   padding: var(--space-3);
   border: 1px solid color-mix(in srgb, var(--color-accent) 18%, var(--color-border));
   border-radius: var(--radius-lg);
-  background: color-mix(in srgb, var(--color-surface) 88%, transparent);
+  background: color-mix(in srgb, var(--color-surface) 96%, transparent);
   box-shadow: var(--shadow-md);
   backdrop-filter: blur(16px);
 }
@@ -1513,8 +1479,7 @@ a:focus-visible {
   font-weight: 400;
 }
 
-.metrics-grid,
-.settings-grid {
+.metrics-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--space-3);
@@ -1547,8 +1512,7 @@ a:focus-visible {
   height: 20px;
 }
 
-.metric-tile strong,
-.storage-panel strong {
+.metric-tile strong {
   display: block;
   margin-top: var(--space-2);
   font-family: var(--font-mono);
@@ -1694,10 +1658,6 @@ a:focus-visible {
   color: var(--color-accent);
 }
 
-.settings-action.danger svg {
-  color: var(--color-danger);
-}
-
 .settings-action.spotify-action {
   border-color: color-mix(in srgb, var(--color-accent) 26%, var(--color-border));
   background: var(--color-surface);
@@ -1817,13 +1777,6 @@ a:focus-visible {
   height: 36px;
 }
 
-.storage-panel {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-5);
-  padding: var(--space-5);
-}
-
 .bottom-tabs {
   display: none;
 }
@@ -1831,10 +1784,12 @@ a:focus-visible {
 .app-shell.mobile-preview {
   width: min(100%, 430px);
   max-width: 430px;
-  min-height: calc(100vh - var(--space-6));
+  height: calc(100vh - var(--space-6));
+  height: calc(100dvh - var(--space-6));
   margin: var(--space-3) auto;
   grid-template-columns: 1fr;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
   background: var(--color-bg);
@@ -1871,8 +1826,17 @@ a:focus-visible {
 }
 
 .app-shell.mobile-preview .exercise-group-body {
-  grid-template-columns: 32px minmax(0, 1fr);
+  grid-template-columns: 40px minmax(0, 1fr);
   gap: var(--space-2);
+}
+
+.app-shell.mobile-preview .move-mini-button {
+  width: 40px;
+  height: 40px;
+}
+
+.app-shell.mobile-preview .drag-button {
+  width: 40px;
 }
 
 .app-shell.mobile-preview .set-row,
@@ -1904,15 +1868,9 @@ a:focus-visible {
   font-size: 30px;
 }
 
-.app-shell.mobile-preview .topline-stat {
-  display: none;
-}
-
 .app-shell.mobile-preview .today-strip,
 .app-shell.mobile-preview .notes-grid,
 .app-shell.mobile-preview .program-editor-layout,
-.app-shell.mobile-preview .settings-grid,
-.app-shell.mobile-preview .storage-panel,
 .app-shell.mobile-preview .metrics-grid,
 .app-shell.mobile-preview .logbook-layout,
 .app-shell.mobile-preview .week-grid {
@@ -1933,6 +1891,10 @@ a:focus-visible {
   display: flex;
 }
 
+.app-shell.mobile-preview .session-finish-bar {
+  bottom: calc(65px + var(--space-4));
+}
+
 .app-shell.mobile-preview .bottom-tabs {
   position: sticky;
   right: 0;
@@ -1940,7 +1902,7 @@ a:focus-visible {
   left: 0;
   z-index: 10;
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: var(--space-1);
   padding: var(--space-2);
   border-top: 1px solid var(--color-border);
@@ -1973,7 +1935,7 @@ a:focus-visible {
   }
 
   .app-main {
-    padding: var(--space-5) var(--space-4) 96px;
+    padding: var(--space-5) var(--space-4) calc(96px + env(safe-area-inset-bottom, 0px));
   }
 
   .app-chrome {
@@ -2002,9 +1964,9 @@ a:focus-visible {
     left: 0;
     z-index: 10;
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(6, minmax(0, 1fr));
     gap: var(--space-1);
-    padding: var(--space-2) var(--space-2) calc(var(--space-2) + env(safe-area-inset-bottom));
+    padding: var(--space-2) var(--space-2) calc(var(--space-2) + env(safe-area-inset-bottom, 0px));
     border-top: 1px solid var(--color-border);
     background: var(--color-surface);
   }
@@ -2023,6 +1985,61 @@ a:focus-visible {
   .bottom-tabs .tab-button svg {
     width: 20px;
     height: 20px;
+  }
+
+  /* Tab bar is 67px tall (8px padding + 50px button + 8px padding + 1px border)
+     plus the safe-area inset, so the sticky finish bar must clear all of it. */
+  .session-finish-bar {
+    bottom: calc(var(--space-4) + 67px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .exercise-group-body {
+    grid-template-columns: 40px minmax(0, 1fr);
+  }
+
+  .move-mini-button,
+  .program-workout-row .move-mini-button {
+    width: 40px;
+    height: 40px;
+  }
+
+  .drag-button {
+    width: 40px;
+  }
+
+  .program-workout-row {
+    grid-template-columns: 88px minmax(0, 1fr) 40px;
+  }
+
+  .set-row.can-remove {
+    grid-template-columns: 64px minmax(0, 1fr) minmax(74px, 0.45fr) 40px;
+  }
+
+  .set-row.with-pounds.can-remove {
+    grid-template-columns: 64px minmax(0, 1fr) minmax(96px, 0.6fr) minmax(74px, 0.45fr) 40px;
+  }
+
+  .set-row.stretch-row.can-remove {
+    grid-template-columns: 88px minmax(120px, 180px) 40px;
+  }
+
+  .set-remove-button {
+    width: 40px;
+    height: 40px;
+  }
+
+  .icon-only-button.small {
+    width: 40px;
+    height: 40px;
+    min-height: 40px;
+  }
+
+  .cardio-quick-row button {
+    min-height: 44px;
+  }
+
+  .last-sets-button {
+    min-height: 44px;
   }
 
   .logbook-layout {
@@ -2057,19 +2074,13 @@ a:focus-visible {
     font-size: 30px;
   }
 
-  .topline-stat {
-    display: none;
-  }
-
   .progress-orb {
     width: 116px;
   }
 
   .today-strip,
   .notes-grid,
-  .program-editor-layout,
-  .settings-grid,
-  .storage-panel {
+  .program-editor-layout {
     grid-template-columns: 1fr;
   }
 
@@ -2092,6 +2103,19 @@ a:focus-visible {
   }
 }
 
+@media (max-width: 620px) {
+  .set-row,
+  .set-row.with-pounds,
+  .set-row.can-remove,
+  .set-row.with-pounds.can-remove {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .set-index {
+    grid-column: 1 / -1;
+  }
+}
+
 @media (max-width: 520px) {
   .topline h1 {
     font-size: 32px;
@@ -2104,19 +2128,8 @@ a:focus-visible {
   }
 
   .exercise-group-body {
-    grid-template-columns: 32px minmax(0, 1fr);
+    grid-template-columns: 40px minmax(0, 1fr);
     gap: var(--space-2);
-  }
-
-  .set-row,
-  .set-row.with-pounds,
-  .set-row.can-remove,
-  .set-row.with-pounds.can-remove {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .set-index {
-    grid-column: 1 / -1;
   }
 
   .metrics-grid {

@@ -94,7 +94,7 @@ const TABS: Array<{ id: TabId; label: string; icon: IconType }> = [
   { id: 'milestones', label: 'Progress', icon: Trophy },
   { id: 'settings', label: 'Settings', icon: Settings },
 ];
-const BOTTOM_TABS = TABS.filter((tab) => tab.id !== 'week');
+const BOTTOM_TABS = TABS;
 
 const STATUS_LABELS: Record<DayStatus, string> = {
   completed: 'Completed',
@@ -2024,6 +2024,7 @@ export default function App() {
   }, [program]);
 
   useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
     document.body.setAttribute('data-theme', theme);
     document.documentElement.style.colorScheme = theme;
     const metaTheme = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
@@ -2034,7 +2035,6 @@ export default function App() {
   }, [theme]);
 
   useEffect(() => {
-    document.body.classList.toggle('gym-mobile-preview', mobilePreview);
     window.localStorage.setItem(MOBILE_PREVIEW_STORAGE_KEY, mobilePreview ? 'mobile' : 'desktop');
   }, [mobilePreview]);
 
@@ -2076,7 +2076,7 @@ export default function App() {
   const currentProgress = getProgressMeta(currentExercises, currentLog);
 
   return (
-    <div className={`app-shell ${mobilePreview ? 'mobile-preview' : ''}`} data-theme={theme}>
+    <div className={`app-shell ${mobilePreview ? 'mobile-preview' : ''}`}>
       <aside className="app-rail">
         <div className="brand-mark">
           <Dumbbell aria-hidden="true" />
