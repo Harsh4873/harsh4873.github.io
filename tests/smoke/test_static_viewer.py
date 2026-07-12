@@ -248,6 +248,8 @@ def test_profit_desk_is_its_own_precomputed_decision_first_tab():
     assert "Flat-stake evidence" in main
     assert "LIVE STAKE" in main
     assert "Research context is not live proof" in main
+    assert "CLOSING LINE" in main
+    assert "record.avgClv" in main
     assert "EDGE clears strict segment-level market-alpha gates" in main
     assert "./data/profit_desk/index.json" in data
     assert "./data/profit_desk/latest.json" in data

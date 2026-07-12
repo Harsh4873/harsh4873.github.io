@@ -2019,6 +2019,7 @@ function profitDeskCandidateCard(candidate: ProfitDeskCandidate): string {
       <div><span>Flat-stake evidence</span><strong>${escapeHtml(flatNet == null ? '--' : signedUnits(Number(flatNet)))} • ${escapeHtml(formatEvValue(flatRoi))} ROI</strong></div>
     </div>
     <div class="profit-price-source"><strong>PRICE TRACE</strong><span>${escapeHtml(price.source || 'No observed price source')} • updated ${escapeHtml(formatProfitDeskGeneratedAt(price.updatedAt || undefined))} • ${price.twoSided ? 'two-sided market' : 'not two-sided'}</span></div>
+    ${candidate.closing && candidate.closing.oddsAmerican != null ? `<div class="profit-price-source profit-closing ${Number(candidate.closing.clv || 0) >= 0 ? 'is-positive' : 'is-negative'}"><strong>CLOSING LINE</strong><span>closed ${escapeHtml(formatAmericanOddsValue(candidate.closing.oddsAmerican))}${candidate.closing.clv == null ? '' : ` • CLV ${escapeHtml(formatEvValue(candidate.closing.clv))}`}${candidate.closing.noVigProbability == null ? '' : ` • closing no-vig ${escapeHtml(formatProbabilityValue(candidate.closing.noVigProbability))}`}</span></div>` : ''}
     ${consensus.length ? `<div class="profit-consensus"><span>CONSENSUS CONTEXT</span>${consensus.map(source => `<strong>${escapeHtml(source)}</strong>`).join('')}</div>` : ''}
     ${profitDeskBlockersHtml(candidate.blockers)}
     <div class="profit-shadow-warning">${isLive
@@ -2300,7 +2301,7 @@ function renderProfit(): void {
       ${profitSummaryMetric('Portfolio', selected)}
       ${profitSummaryMetric('Live picks', liveQualified, liveQualified ? 'positive' : 'neutral')}
       ${profitSummaryMetric('Evidence rows', evidenceRows)}
-      ${profitSummaryMetric('Live record', record ? `${Number(record.wins || 0)}-${Number(record.losses || 0)}${record.pushes ? `-${record.pushes}` : ''}` : '0-0', '', record ? `${signedUnits(Number(record.netUnits || 0))} • ${formatEvValue(record.roi)}` : 'No live proof yet')}
+      ${profitSummaryMetric('Live record', record ? `${Number(record.wins || 0)}-${Number(record.losses || 0)}${record.pushes ? `-${record.pushes}` : ''}` : '0-0', '', record ? `${signedUnits(Number(record.netUnits || 0))} • ${formatEvValue(record.roi)}${record.avgClv == null ? '' : ` • CLV ${formatEvValue(record.avgClv)}`}` : 'No live proof yet')}
     </section>
     <section class="profit-controls" aria-label="Profit Desk controls">
       <div><div class="profit-control-kicker">DECISION VIEW</div><div class="profit-control-title">${escapeHtml(activeView.label)}</div><p>${escapeHtml(activeView.description)} • Board filters: ${escapeHtml(activeFilterSummary())}</p></div>

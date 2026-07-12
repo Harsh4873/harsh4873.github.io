@@ -1552,12 +1552,18 @@ def _flat_record(
     wins = losses = pushes = pending = 0
     net = 0.0
     staked = 0.0
+    clv_values: list[float] = []
     for candidate in candidates:
         result = _result(candidate.get("result"))
         decimal = _number(candidate.get("decimalOdds"))
         stake = _number(candidate.get("stakeUnits")) if stake_weighted else 1.0
         if stake is None or stake <= 0.0:
             stake = 0.0 if stake_weighted else 1.0
+        closing = candidate.get("closing")
+        if isinstance(closing, Mapping):
+            clv = _number(closing.get("clv"))
+            if clv is not None:
+                clv_values.append(clv)
         if result == "win" and decimal is not None:
             wins += 1
             net += stake * (decimal - 1.0)
@@ -1581,6 +1587,10 @@ def _flat_record(
         "netUnits": round(net, 4),
         "stakedUnits": round(staked, 4),
         "roi": round(net / denominator, 6) if denominator else None,
+        "clvCount": len(clv_values),
+        "avgClv": (
+            round(sum(clv_values) / len(clv_values), 6) if clv_values else None
+        ),
     }
 
 
@@ -1801,20 +1811,66 @@ def _payloads_before(directory: Path, date_iso: str) -> list[dict[str, Any]]:
     return payloads
 
 
-def _result_map_for_date(
+def _closing_from_record(record: Mapping[str, Any]) -> dict[str, Any] | None:
+    """Extract the last pregame-captured price for the record's own side.
+
+    Captured pregame prices are preserved by the merge layer once a game goes
+    live, so the record's final market fields are the closest observation to
+    the closing line this pipeline has.  A capture stamped after the start
+    time is never trusted as closing.
+    """
+
+    captured_raw = _first(record, "market_odds_captured_at", "market_updated_at")
+    captured = _parse_timestamp(captured_raw)
+    start = _parse_timestamp(
+        _first(record, "game_start_time", "start_time", "event_start_time")
+    )
+    if captured is None or (start is not None and captured > start):
+        return None
+    direction = _direction(record)
+    selected = _american_int(record.get("selected_odds"))
+    opposite = _american_int(record.get("opposite_odds"))
+    if selected is None and direction in {"over", "under"}:
+        over = _american_int(_first(record, "market_over_odds", "over_odds"))
+        under = _american_int(_first(record, "market_under_odds", "under_odds"))
+        if over is not None and under is not None:
+            selected = over if direction == "over" else under
+            opposite = under if direction == "over" else over
+    if selected is None:
+        return None
+    decimal = american_to_decimal(selected)
+    no_vig: float | None = None
+    if opposite is not None:
+        selected_implied = implied_probability(selected)
+        opposite_implied = implied_probability(opposite)
+        if selected_implied and opposite_implied:
+            no_vig = selected_implied / (selected_implied + opposite_implied)
+    explicit_no_vig = normalize_probability(
+        record.get("market_no_vig_selected_probability")
+    )
+    if explicit_no_vig is not None:
+        no_vig = explicit_no_vig
+    return {
+        "oddsAmerican": selected,
+        "decimalOdds": round(decimal, 6) if decimal is not None else None,
+        "noVigProbability": round(no_vig, 6) if no_vig is not None else None,
+        "capturedAt": _text(captured_raw) or None,
+        "provider": _text(record.get("market_odds_provider")) or None,
+    }
+
+
+def _grade_sync_maps(
     model_dir: Path, player_dir: Path, date_iso: str
-) -> dict[tuple[str, str], str]:
-    """Map (source_key, market_identity) to the latest settled result."""
+) -> tuple[dict[tuple[str, str], str], dict[tuple[str, str], dict[str, Any]]]:
+    """Map (source_key, market_identity) to settled results and closing prices."""
 
     results: dict[tuple[str, str], str] = {}
+    closings: dict[tuple[str, str], dict[str, Any]] = {}
     for mode, directory in (("team", model_dir), ("player", player_dir)):
         payload = _read_json(directory / f"{date_iso}.json")
         for context in _iter_records(payload, mode):
             record = context.record
             if _record_date(record, context.fallback_date) != date_iso:
-                continue
-            result = _result(record.get("result"))
-            if result == "pending":
                 continue
             identity = canonical_market_identity(
                 record,
@@ -1822,18 +1878,33 @@ def _result_map_for_date(
                 sport=_text(record.get("sport")),
                 date_iso=date_iso,
             )
-            results[(context.source_key, identity)] = result
-    return results
+            key = (context.source_key, identity)
+            result = _result(record.get("result"))
+            if result != "pending":
+                results[key] = result
+            closing = _closing_from_record(record)
+            if closing is not None:
+                closings.setdefault(key, closing)
+    return results, closings
+
+
+def _result_map_for_date(
+    model_dir: Path, player_dir: Path, date_iso: str
+) -> dict[tuple[str, str], str]:
+    """Map (source_key, market_identity) to the latest settled result."""
+
+    return _grade_sync_maps(model_dir, player_dir, date_iso)[0]
 
 
 def _sync_artifact_results(
     destination: Path, model_dir: Path, player_dir: Path
 ) -> int:
-    """Refresh result fields on frozen artifacts as the caches grade.
+    """Refresh result and closing fields on frozen artifacts as caches grade.
 
     Selection is never re-run here: candidates, stakes, and ranks stay exactly
-    as published; only each pick's settled outcome and the derived records
-    move.  This keeps the live record prospective while letting it settle.
+    as published; only each pick's settled outcome, its closing-price
+    observation, and the derived records move.  This keeps the live record
+    prospective while letting it settle.
     """
 
     changed = 0
@@ -1843,31 +1914,48 @@ def _sync_artifact_results(
         payload = _read_json(path)
         if payload is None:
             continue
-        pending = [
-            row
-            for section in ("candidates",)
-            for row in payload.get(section) or []
-            if isinstance(row, dict) and _result(row.get("result")) == "pending"
-        ]
         portfolio = payload.get("portfolio") if isinstance(payload.get("portfolio"), dict) else {}
-        pending += [
+        rows = [
             row
-            for rows in portfolio.values()
-            for row in (rows if isinstance(rows, list) else [])
-            if isinstance(row, dict) and _result(row.get("result")) == "pending"
+            for row in payload.get("candidates") or []
+            if isinstance(row, dict)
+        ] + [
+            row
+            for bucket in portfolio.values()
+            for row in (bucket if isinstance(bucket, list) else [])
+            if isinstance(row, dict)
         ]
-        if not pending:
+        needs_sync = [
+            row
+            for row in rows
+            if _result(row.get("result")) == "pending" or "closing" not in row
+        ]
+        if not needs_sync:
             continue
-        results = _result_map_for_date(model_dir, player_dir, path.stem)
-        if not results:
+        results, closings = _grade_sync_maps(model_dir, player_dir, path.stem)
+        if not results and not closings:
             continue
         updated = False
-        for row in pending:
+        for row in needs_sync:
             key = (_text(row.get("sourceKey")), _text(row.get("marketIdentity")))
             result = results.get(key)
             if result and result != _result(row.get("result")):
                 row["result"] = result
                 updated = True
+            # Closing attaches once, only after the pick settles, so the value
+            # can never drift while a game is still being priced.
+            if "closing" not in row and _result(row.get("result")) in {"win", "loss", "push"}:
+                closing = closings.get(key)
+                if closing is not None:
+                    entry_decimal = _number(row.get("decimalOdds"))
+                    closing_decimal = _number(closing.get("decimalOdds"))
+                    clv = (
+                        round(entry_decimal / closing_decimal - 1.0, 6)
+                        if entry_decimal and closing_decimal
+                        else None
+                    )
+                    row["closing"] = {**closing, "clv": clv}
+                    updated = True
         if not updated:
             continue
         summary = payload.get("summary")
@@ -1950,12 +2038,14 @@ def rebuild_profit_desk(
     model_cache_dir: Path | str | None = None,
     player_cache_dir: Path | str | None = None,
     output_dir: Path | str | None = None,
+    today_iso: str | None = None,
 ) -> int:
     """Write dated, latest, and index files; return the changed-file count."""
 
     model_dir = Path(model_cache_dir) if model_cache_dir is not None else MODEL_CACHE_DIR
     player_dir = Path(player_cache_dir) if player_cache_dir is not None else PLAYER_PROPS_CACHE_DIR
     destination = Path(output_dir) if output_dir is not None else PROFIT_DESK_DIR
+    today = today_iso or datetime.now(timezone.utc).strftime("%Y-%m-%d")
     targets = _target_dates(
         date_iso=date_iso,
         all_dates=all_dates,
@@ -1966,6 +2056,12 @@ def rebuild_profit_desk(
     for target in targets:
         if target < ENGINE_CUTOVER_DATE:
             print(f"[profit-desk] skipped {target}: predates cutover {ENGINE_CUTOVER_DATE}")
+            continue
+        if target < today and (destination / f"{target}.json").exists():
+            # A published past slate is frozen: re-running selection against
+            # its since-evolved caches would rewrite history with hindsight.
+            # Results and closing prices still flow via the sync pass below.
+            print(f"[profit-desk] skipped {target}: published artifact is frozen (sync-only)")
             continue
         team_payload = _read_json(model_dir / f"{target}.json")
         prop_payload = _read_json(player_dir / f"{target}.json")

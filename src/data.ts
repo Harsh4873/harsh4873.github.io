@@ -269,6 +269,7 @@ export interface ProfitDeskCandidate {
   stakeUnits?: number | null;
   lane?: ProfitDeskLane | string | null;
   liveQualified?: boolean;
+  closing?: ProfitDeskClosing;
   edgeQualified?: boolean;
   valueQualified?: boolean;
   price?: ProfitDeskPrice;
@@ -302,6 +303,17 @@ export interface ProfitDeskLiveRecord {
   settled?: number;
   netUnits?: number | null;
   roi?: number | null;
+  clvCount?: number;
+  avgClv?: number | null;
+}
+
+export interface ProfitDeskClosing {
+  oddsAmerican?: number | null;
+  decimalOdds?: number | null;
+  noVigProbability?: number | null;
+  capturedAt?: string | null;
+  provider?: string | null;
+  clv?: number | null;
 }
 
 export interface ProfitDeskSummary extends ProfitDeskModeSummary {

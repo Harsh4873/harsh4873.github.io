@@ -674,8 +674,16 @@ def test_result_sync_settles_frozen_live_artifacts_and_cumulative_record(tmp_pat
     assert first["summary"]["liveRecordToDate"]["pending"] == 1
 
     # The pick settles in the cache; a later slate build must sync the frozen
-    # artifact's result and roll it into the cumulative live record.
-    settled_pick = dict(live_pick, result="win")
+    # artifact's result, attach the preserved closing price, and roll both
+    # into the cumulative live record.
+    settled_pick = dict(
+        live_pick,
+        result="win",
+        selected_odds=-120,
+        opposite_odds=100,
+        market_odds_captured_at=f"{LIVE_DATE}T19:30:00Z",
+        market_odds_provider="espn_scoreboard:DraftKings",
+    )
     (model_dir / f"{LIVE_DATE}.json").write_text(
         json.dumps(make_payload([settled_pick], slate_date=LIVE_DATE)), encoding="utf-8"
     )
@@ -696,14 +704,24 @@ def test_result_sync_settles_frozen_live_artifacts_and_cumulative_record(tmp_pat
     )
 
     synced = json.loads((output_dir / f"{LIVE_DATE}.json").read_text(encoding="utf-8"))
-    assert synced["portfolio"]["live"][0]["result"] == "win"
+    live_row = synced["portfolio"]["live"][0]
+    assert live_row["result"] == "win"
     assert synced["summary"]["liveRecord"]["wins"] == 1
+    closing = live_row["closing"]
+    assert closing["oddsAmerican"] == -120
+    expected_clv = 2.0 / desk.american_to_decimal(-120) - 1.0
+    assert closing["clv"] == pytest.approx(expected_clv, abs=1e-6)
+    # The fixture's explicit market_no_vig_selected_probability wins over
+    # the pair derivation, exactly like a certified upstream no-vig would.
+    assert closing["noVigProbability"] == pytest.approx(0.5, abs=1e-6)
+    assert synced["summary"]["liveRecord"]["avgClv"] == pytest.approx(expected_clv, abs=1e-6)
     latest = json.loads((output_dir / "latest.json").read_text(encoding="utf-8"))
     assert latest["date"] == next_date
     cumulative = latest["summary"]["liveRecordToDate"]
     assert cumulative["wins"] == 1
     assert cumulative["netUnits"] == pytest.approx(1.0)
     assert cumulative["sinceDate"] == desk.FIRST_LIVE_DATE
+    assert cumulative["avgClv"] == pytest.approx(expected_clv, abs=1e-6)
 
 
 def test_source_report_cards_expose_value_gate_progress():
@@ -752,3 +770,71 @@ def test_source_report_cards_show_failing_gates_for_thin_sources():
     assert card["gatesPassed"] < card["gatesTotal"]
     assert card["gates"]["sourceSamples"]["passed"] is False
     assert card["evidenceQualified"] is False
+
+
+def test_closing_is_never_taken_from_a_postgame_capture():
+    postgame = make_pick(slate_date=LIVE_DATE)
+    postgame.update(
+        {
+            "selected_odds": -140,
+            "opposite_odds": 120,
+            "market_odds_captured_at": f"{LIVE_DATE}T21:00:00Z",  # after 20:00 start
+            "start_time": f"{LIVE_DATE}T20:00:00Z",
+        }
+    )
+    assert desk._closing_from_record(postgame) is None
+    pregame = dict(postgame, market_odds_captured_at=f"{LIVE_DATE}T19:00:00Z")
+    closing = desk._closing_from_record(pregame)
+    assert closing is not None
+    assert closing["oddsAmerican"] == -140
+
+
+def test_published_past_artifacts_are_frozen_against_reselection(tmp_path: Path):
+    model_dir = tmp_path / "model"
+    prop_dir = tmp_path / "props"
+    output_dir = tmp_path / "profit"
+    model_dir.mkdir()
+    prop_dir.mkdir()
+    next_date = "2026-07-12"
+
+    history = history_payloads(target_date=LIVE_DATE)
+    for payload in history:
+        (model_dir / f"{payload['date']}.json").write_text(json.dumps(payload), encoding="utf-8")
+    live_pick = make_pick(slate_date=LIVE_DATE)
+    (model_dir / f"{LIVE_DATE}.json").write_text(
+        json.dumps(make_payload([live_pick], slate_date=LIVE_DATE)), encoding="utf-8"
+    )
+    desk.rebuild_profit_desk(
+        date_iso=LIVE_DATE,
+        model_cache_dir=model_dir,
+        player_cache_dir=prop_dir,
+        output_dir=output_dir,
+        today_iso=LIVE_DATE,
+    )
+    published = json.loads((output_dir / f"{LIVE_DATE}.json").read_text(encoding="utf-8"))
+    assert len(published["portfolio"]["live"]) == 1
+
+    # The cache later gains a second qualifying pick and a settled result.
+    # A next-day rebuild may sync outcomes but must never re-run selection.
+    settled = dict(live_pick, result="win")
+    extra = make_pick(
+        pick="Hindsight ML",
+        game="Hindsight @ Retro",
+        slate_date=LIVE_DATE,
+        pick_id="hindsight",
+    )
+    (model_dir / f"{LIVE_DATE}.json").write_text(
+        json.dumps(make_payload([settled, extra], slate_date=LIVE_DATE)), encoding="utf-8"
+    )
+    desk.rebuild_profit_desk(
+        all_dates=True,
+        model_cache_dir=model_dir,
+        player_cache_dir=prop_dir,
+        output_dir=output_dir,
+        today_iso=next_date,
+    )
+    frozen = json.loads((output_dir / f"{LIVE_DATE}.json").read_text(encoding="utf-8"))
+    live_rows = frozen["portfolio"]["live"]
+    assert len(live_rows) == 1
+    assert live_rows[0]["result"] == "win"
+    assert all("Hindsight" not in str(row.get("pick")) for row in frozen["candidates"])

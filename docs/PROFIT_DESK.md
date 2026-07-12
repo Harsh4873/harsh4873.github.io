@@ -114,6 +114,20 @@ ROI turns nonpositive, or its probability of profit decays below the lane
 threshold — qualification lapses automatically on the next build and the desk
 returns to `Sit out`. That is the design working, not a bug.
 
+## Closing line value and alerts
+
+When a pick settles, the sync pass also attaches the last pregame-captured
+price for its exact side as `closing` (with `clv`, entry price versus that
+closing observation). Beating the close is the fastest available signal that
+selections carry real edge, and the cumulative live record reports `avgClv`
+alongside ROI. A `Profit Desk Notify` workflow announces newly published live
+picks through the `PROFIT_DESK_WEBHOOK_URL` repository secret (silent until
+the secret exists), and never re-pings an unchanged card.
+
+Published past slates are frozen: rebuilds may sync outcomes and closing
+prices onto them but never re-run selection, so hindsight can never edit the
+record.
+
 ## Qualification leaderboard
 
 Each artifact exports per-source VALUE-gate progress (`sources`), rendered on
