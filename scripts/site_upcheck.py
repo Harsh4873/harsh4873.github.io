@@ -244,6 +244,14 @@ def main() -> int:
 
     external_feeds = latest.get("external_feeds") if isinstance(latest, dict) else {}
     external_feeds = external_feeds if isinstance(external_feeds, dict) else {}
+    # Scores24 feeds refresh only from a residential IP — CI and other datacenter IPs are
+    # Cloudflare-blocked — so their published date can legitimately lag by a day. A feed
+    # that is only a day stale (but present, ok, and slate-complete) must not freeze the
+    # entire site deploy while the model, player-props, parlay, and Profit Desk data are
+    # already today's. For deploy readiness, date-staleness is downgraded to a warning;
+    # a missing, errored, or incomplete-slate Scores24 bucket still defers the deploy. The
+    # full upcheck keeps treating staleness as a failure so health monitoring stays strict.
+    stale_feed_sink = warnings if args.data_only else failures
     for key in sorted(REQUIRED_SCORES24_FEED_KEYS):
         bucket = external_feeds.get(key)
         if not isinstance(bucket, dict):
@@ -253,7 +261,7 @@ def main() -> int:
             failures.append(f"external-feed bucket {key} failed: {bucket.get('error') or 'unknown error'}")
             continue
         if str(bucket.get("date") or "") != today:
-            failures.append(f"external-feed bucket {key} is {bucket.get('date') or 'undated'}, expected {today}")
+            stale_feed_sink.append(f"external-feed bucket {key} is {bucket.get('date') or 'undated'}, expected {today}")
         meta = bucket.get("meta") if isinstance(bucket.get("meta"), dict) else {}
         missing = meta.get("missingMatchups") if isinstance(meta.get("missingMatchups"), list) else []
         expected = meta.get("expectedMatchups")

@@ -163,6 +163,34 @@ def test_data_only_readiness_rejects_incomplete_scores24_bucket(tmp_path: Path):
     assert "scores24_fifa_world_cup failed" in result.stdout
 
 
+def test_data_only_readiness_allows_stale_but_valid_scores24_feed(tmp_path: Path):
+    today = datetime.now(ZoneInfo("America/Chicago")).strftime("%Y-%m-%d")
+    yesterday = (datetime.now(ZoneInfo("America/Chicago")) - timedelta(days=1)).strftime("%Y-%m-%d")
+    script = _upcheck_repo(tmp_path, today)
+    # Scores24 refreshes only from a residential IP, so its published date can lag a day
+    # behind the rest of today's data. A stale-but-valid feed (still ok and slate-complete)
+    # must warn without freezing the deploy — the core model/props/parlay data is today's.
+    cache_path = tmp_path / "data" / "model_cache" / "latest.json"
+    payload = json.loads(cache_path.read_text(encoding="utf-8"))
+    for key in SCORES24_KEYS:
+        payload["external_feeds"][key]["date"] = yesterday
+    _write_json(cache_path, payload)
+    _write_json(tmp_path / "data" / "model_cache" / f"{today}.json", payload)
+
+    result = subprocess.run(
+        [sys.executable, str(script), "--data-only"],
+        cwd=tmp_path,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0
+    assert "daily data is ready" in result.stdout
+    assert "[readiness] warning:" in result.stdout
+    assert f"scores24_mlb is {yesterday}" in result.stdout
+
+
 def test_data_only_readiness_allows_weak_parlay_slate_without_team_cards(tmp_path: Path):
     today = datetime.now(ZoneInfo("America/Chicago")).strftime("%Y-%m-%d")
     script = _upcheck_repo(tmp_path, today)
