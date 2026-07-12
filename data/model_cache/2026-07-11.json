@@ -30494,6 +30494,7 @@
           "raw_projected_home_goals": 1.256,
           "raw_projected_total": 2.34,
           "reason": "Switzerland has the best spread-cover edge at +0.5 from the venue-adjusted Poisson score grid.",
+          "result": "loss",
           "source": "FIFA Model",
           "sport": "FIFA WC",
           "start_time": "2026-07-12T01:00Z",
@@ -47185,6 +47186,7 @@
           "raw_edge": 9.8,
           "raw_model_probability": 0.602,
           "raw_probability": 0.602,
+          "result": "win",
           "selected_side_implied_probability": 0.545455,
           "source": "MLB Inning",
           "sport": "MLB",
@@ -58666,6 +58668,7 @@
           "projected_total": 190.0,
           "raw_probability": 0.82,
           "raw_units": 1.05,
+          "result": "loss",
           "sample_games": 1,
           "selection": "Minnesota Timberwolves",
           "source": "NBA Summer League",
@@ -58768,6 +58771,7 @@
           "projected_total": 168.6,
           "raw_probability": 0.6104,
           "raw_units": 0.39,
+          "result": "loss",
           "sample_games": 4,
           "selection": "Brooklyn Nets",
           "source": "NBA Summer League",
@@ -58874,6 +58878,7 @@
           "projected_total": 173.0,
           "raw_probability": 0.7791,
           "raw_units": 0.94,
+          "result": "loss",
           "sample_games": 1,
           "selection": "Houston Rockets",
           "source": "NBA Summer League",
@@ -59268,6 +59273,7 @@
           "odds": -145,
           "pick": "Over 2 (Switzerland @ Argentina)",
           "probability": null,
+          "result": "win",
           "source": "Scores24FIFAWorldCup",
           "source_url": "https://scores24.live/en/soccer/m-12-07-2026-argentina-switzerland-prediction",
           "sport": "FIFA WC",
@@ -59627,6 +59633,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-11-07-2026-detroit-tigers-philadelphia-phillies-prediction",
           "sport": "MLB",
@@ -59669,6 +59676,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "selected_odds": -162,
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-11-07-2026-baltimore-orioles-kansas-city-royals-prediction",
@@ -59712,6 +59720,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "selected_odds": -122,
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-10-07-2026-texas-rangers-houston-astros-prediction",
@@ -59749,6 +59758,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-11-07-2026-cincinnati-reds-chicago-cubs-prediction",
           "sport": "MLB",
@@ -59791,6 +59801,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "selected_odds": -107,
           "source": "Scores24MLB",
           "source_url": "https://scores24.live/en/baseball/m-10-07-2026-st-louis-cardinals-atlanta-braves-prediction",
@@ -60007,6 +60018,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "Scores24WNBA",
           "source_url": "https://scores24.live/en/basketball/m-11-07-2026-las-vegas-aces-w-phoenix-mercury-w--prediction",
           "sport": "WNBA",
@@ -60070,6 +60082,7 @@
           "odds": -147,
           "pick": "Argentina To Win (Argentina vs Switzerland)",
           "probability": null,
+          "result": "win",
           "source": "SportsGamblerFIFAWorldCup",
           "sport": "FIFA WC",
           "start_time": "2026-07-12T01:00Z",
@@ -60298,6 +60311,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "selected_odds": 123,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
@@ -60333,6 +60347,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "selected_odds": 134,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
@@ -60368,6 +60383,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "selected_odds": -122,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
@@ -60403,6 +60419,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "selected_odds": -106,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
@@ -60438,6 +60455,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "selected_odds": -112,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
@@ -60611,6 +60629,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "selected_odds": 275,
           "source": "SportsGamblerWNBA",
           "sport": "WNBA",
@@ -60702,6 +60721,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "selected_odds": 134,
           "source": "SportyTraderMLB",
           "sport": "MLB",
@@ -60738,6 +60758,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "selected_odds": -104,
           "source": "SportyTraderMLB",
           "sport": "MLB",
@@ -60773,6 +60794,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "selected_odds": -107,
           "source": "SportyTraderMLB",
           "sport": "MLB",
@@ -60847,6 +60869,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "selected_odds": 275,
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
