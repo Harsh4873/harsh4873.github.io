@@ -991,6 +991,14 @@
         "value_probability_positive_ev_below_0.70"
       ],
       "canonicalGame": "2026-07-11:mlb:san diego padres|toronto blue jays",
+      "closing": {
+        "capturedAt": "2026-07-11T21:03:17.449325Z",
+        "clv": -0.008275,
+        "decimalOdds": 1.892857,
+        "noVigProbability": 0.50433,
+        "oddsAmerican": -112,
+        "provider": "espn_scoreboard:DraftKings"
+      },
       "consensusSources": [
         "Scores24MLB",
         "SportsGamblerMLB"
@@ -1116,7 +1124,7 @@
         "updatedAt": "2026-07-11T21:03:17.449325Z"
       },
       "rawModelProbabilityIgnored": null,
-      "result": "pending",
+      "result": "win",
       "shadowQualified": false,
       "source": "Scores24MLB",
       "sourceKey": "scores24_mlb",
@@ -1852,6 +1860,14 @@
         "value_probability_positive_ev_below_0.70"
       ],
       "canonicalGame": "2026-07-11:mlb:arizona diamondbacks|los angeles dodgers",
+      "closing": {
+        "capturedAt": "2026-07-11T21:03:17.449325Z",
+        "clv": -0.003662,
+        "decimalOdds": 1.35461,
+        "noVigProbability": 0.705814,
+        "oddsAmerican": -282,
+        "provider": "espn_scoreboard:DraftKings"
+      },
       "consensusSources": [],
       "date": "2026-07-11",
       "decimalOdds": 1.34965,
@@ -1972,7 +1988,7 @@
         "updatedAt": "2026-07-11T21:03:17.449325Z"
       },
       "rawModelProbabilityIgnored": null,
-      "result": "pending",
+      "result": "loss",
       "shadowQualified": false,
       "source": "SportsGamblerMLB",
       "sourceKey": "sportsgambler_mlb",
@@ -2838,7 +2854,7 @@
         "updatedAt": "2026-07-11T14:20:21.122726Z"
       },
       "rawModelProbabilityIgnored": null,
-      "result": "pending",
+      "result": "loss",
       "shadowQualified": false,
       "source": "Scores24MLB",
       "sourceKey": "scores24_mlb",
@@ -6240,7 +6256,7 @@
         "updatedAt": "2026-07-11T21:28:47.572280Z"
       },
       "rawModelProbabilityIgnored": 0.6947,
-      "result": "pending",
+      "result": "win",
       "shadowQualified": false,
       "source": "NBA Summer League",
       "sourceKey": "nba_summer",
