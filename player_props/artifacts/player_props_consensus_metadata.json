@@ -24,14 +24,14 @@
       "totalRebounds": 3
     }
   },
-  "market_rows": 123979,
+  "market_rows": 125726,
   "models": {
     "mlb_history": "2022-26 five-year roster-aware outcome-history classifiers",
     "mlb_season": "2026 market classifier",
     "wnba_history": "2024-26 workload-aware market/count models",
     "wnba_season": "2026 market/count models"
   },
-  "outcome_rows": 419358,
+  "outcome_rows": 420396,
   "roster_aware": true,
   "roster_policy": "Current player IDs only; season features reset annually; recent 3/5/10-game workload dominates older priors.",
   "seasons": {
@@ -162,10 +162,10 @@
     "WNBA": {
       "active": true,
       "combined_out_of_sample": {
-        "accuracy": 0.8378378378378378,
+        "accuracy": 0.8421052631578947,
         "losses": 6,
-        "samples": 37,
-        "wins": 31
+        "samples": 38,
+        "wins": 32
       },
       "failed_policies": {
         "three_pointers_made": {
@@ -182,10 +182,10 @@
           "minimum_validation_samples": 5,
           "selection": "Over",
           "validation": {
-            "accuracy": 0.8478260869565217,
-            "losses": 7,
+            "accuracy": 0.8043478260869565,
+            "losses": 9,
             "samples": 46,
-            "wins": 39
+            "wins": 37
           }
         },
         "totalRebounds": {
@@ -206,10 +206,10 @@
           "minimum_validation_samples": 5,
           "selection": "Over",
           "validation": {
-            "accuracy": 0.5714285714285714,
-            "losses": 3,
-            "samples": 7,
-            "wins": 4
+            "accuracy": 0.5,
+            "losses": 2,
+            "samples": 4,
+            "wins": 2
           }
         }
       },
@@ -221,10 +221,10 @@
         "assists": {
           "active": true,
           "holdout": {
-            "accuracy": 0.75,
+            "accuracy": 0.8,
             "losses": 1,
-            "samples": 4,
-            "wins": 3
+            "samples": 5,
+            "wins": 4
           },
           "meta_gate_threshold": 0.6,
           "minimum_holdout_samples": 3,
@@ -266,6 +266,6 @@
     }
   },
   "target_accuracy": 0.7,
-  "training_fingerprint": "5e901a0c699aa35a4890cfb845dfc6d3152c1dd1fa00e4c36c8f75e65b71d430",
+  "training_fingerprint": "7e5043ee64893dd90746df1d66378b50909fc1cfd56208463517e379475a47a2",
   "version": "player_props_consensus_v2.0.0"
 }
