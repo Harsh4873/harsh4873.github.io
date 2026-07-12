@@ -5486,3 +5486,7 @@ body.mobile-app-mode .profit-evidence-row { grid-template-columns: 1fr; }
 .qual-live-note { margin-top: 10px; padding: 7px 9px; border: 1px solid rgba(0,229,160,0.24); border-radius: 8px; color: var(--accent); font: 800 8px 'DM Mono', monospace; letter-spacing: 0.5px; }
 .qual-footnote { margin-top: 12px; color: var(--muted); font: 9px/1.6 'DM Mono', monospace; }
 body.mobile-app-mode .qual-grid { grid-template-columns: 1fr; }
+
+/* Closing line / CLV on Profit Desk cards */
+.profit-closing.is-positive span { color: var(--accent); }
+.profit-closing.is-negative span { color: var(--danger); }

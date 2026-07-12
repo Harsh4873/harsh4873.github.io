@@ -3,6 +3,14 @@
     {
       "blockers": [],
       "canonicalGame": "2026-07-10:mlb:athletics|chicago white sox",
+      "closing": {
+        "capturedAt": "2026-07-10T15:38Z",
+        "clv": 0.0,
+        "decimalOdds": 1.617284,
+        "noVigProbability": 0.584,
+        "oddsAmerican": -162,
+        "provider": null
+      },
       "consensusSources": [],
       "date": "2026-07-10",
       "decimalOdds": 1.617284,
@@ -133,6 +141,14 @@
     {
       "blockers": [],
       "canonicalGame": "2026-07-10:mlb:arizona diamondbacks|los angeles dodgers",
+      "closing": {
+        "capturedAt": "2026-07-10T07:24Z",
+        "clv": 0.0,
+        "decimalOdds": 1.636943,
+        "noVigProbability": 0.5767,
+        "oddsAmerican": -157,
+        "provider": null
+      },
       "consensusSources": [],
       "date": "2026-07-10",
       "decimalOdds": 1.636943,
@@ -263,6 +279,14 @@
     {
       "blockers": [],
       "canonicalGame": "2026-07-10:mlb:seattle mariners|tampa bay rays",
+      "closing": {
+        "capturedAt": "2026-07-10T04:47Z",
+        "clv": 0.0,
+        "decimalOdds": 1.645161,
+        "noVigProbability": 0.5733,
+        "oddsAmerican": -155,
+        "provider": null
+      },
       "consensusSources": [],
       "date": "2026-07-10",
       "decimalOdds": 1.645161,
@@ -393,6 +417,14 @@
     {
       "blockers": [],
       "canonicalGame": "2026-07-10:mlb:cleveland guardians|miami marlins",
+      "closing": {
+        "capturedAt": "2026-07-10T06:32Z",
+        "clv": 0.0,
+        "decimalOdds": 1.666667,
+        "noVigProbability": 0.5667,
+        "oddsAmerican": -150,
+        "provider": null
+      },
       "consensusSources": [],
       "date": "2026-07-10",
       "decimalOdds": 1.666667,
@@ -8056,6 +8088,14 @@
       {
         "blockers": [],
         "canonicalGame": "2026-07-10:mlb:athletics|chicago white sox",
+        "closing": {
+          "capturedAt": "2026-07-10T15:38Z",
+          "clv": 0.0,
+          "decimalOdds": 1.617284,
+          "noVigProbability": 0.584,
+          "oddsAmerican": -162,
+          "provider": null
+        },
         "consensusSources": [],
         "date": "2026-07-10",
         "decimalOdds": 1.617284,
@@ -8188,6 +8228,14 @@
       {
         "blockers": [],
         "canonicalGame": "2026-07-10:mlb:arizona diamondbacks|los angeles dodgers",
+        "closing": {
+          "capturedAt": "2026-07-10T07:24Z",
+          "clv": 0.0,
+          "decimalOdds": 1.636943,
+          "noVigProbability": 0.5767,
+          "oddsAmerican": -157,
+          "provider": null
+        },
         "consensusSources": [],
         "date": "2026-07-10",
         "decimalOdds": 1.636943,
@@ -8320,6 +8368,14 @@
       {
         "blockers": [],
         "canonicalGame": "2026-07-10:mlb:seattle mariners|tampa bay rays",
+        "closing": {
+          "capturedAt": "2026-07-10T04:47Z",
+          "clv": 0.0,
+          "decimalOdds": 1.645161,
+          "noVigProbability": 0.5733,
+          "oddsAmerican": -155,
+          "provider": null
+        },
         "consensusSources": [],
         "date": "2026-07-10",
         "decimalOdds": 1.645161,
@@ -8455,6 +8511,14 @@
       {
         "blockers": [],
         "canonicalGame": "2026-07-10:mlb:athletics|chicago white sox",
+        "closing": {
+          "capturedAt": "2026-07-10T15:38Z",
+          "clv": 0.0,
+          "decimalOdds": 1.617284,
+          "noVigProbability": 0.584,
+          "oddsAmerican": -162,
+          "provider": null
+        },
         "consensusSources": [],
         "date": "2026-07-10",
         "decimalOdds": 1.617284,
@@ -8587,6 +8651,14 @@
       {
         "blockers": [],
         "canonicalGame": "2026-07-10:mlb:arizona diamondbacks|los angeles dodgers",
+        "closing": {
+          "capturedAt": "2026-07-10T07:24Z",
+          "clv": 0.0,
+          "decimalOdds": 1.636943,
+          "noVigProbability": 0.5767,
+          "oddsAmerican": -157,
+          "provider": null
+        },
         "consensusSources": [],
         "date": "2026-07-10",
         "decimalOdds": 1.636943,
@@ -8719,6 +8791,14 @@
       {
         "blockers": [],
         "canonicalGame": "2026-07-10:mlb:seattle mariners|tampa bay rays",
+        "closing": {
+          "capturedAt": "2026-07-10T04:47Z",
+          "clv": 0.0,
+          "decimalOdds": 1.645161,
+          "noVigProbability": 0.5733,
+          "oddsAmerican": -155,
+          "provider": null
+        },
         "consensusSources": [],
         "date": "2026-07-10",
         "decimalOdds": 1.645161,
@@ -10108,6 +10188,8 @@
     "livePortfolioCandidates": 0,
     "liveQualified": 0,
     "liveRecord": {
+      "avgClv": null,
+      "clvCount": 0,
       "losses": 0,
       "netUnits": 0.0,
       "pending": 0,
@@ -10167,6 +10249,8 @@
     "portfolioCandidates": 3,
     "researchQualified": 4,
     "researchRecord": {
+      "avgClv": 0.0,
+      "clvCount": 3,
       "losses": 1,
       "netUnits": 0.2624,
       "pending": 0,
@@ -10180,6 +10264,8 @@
     "shadowPortfolioCandidates": 0,
     "shadowQualified": 4,
     "shadowRecord": {
+      "avgClv": 0.0,
+      "clvCount": 3,
       "losses": 1,
       "netUnits": 0.2624,
       "pending": 0,
