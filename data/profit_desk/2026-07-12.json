@@ -141,6 +141,14 @@
     {
       "blockers": [],
       "canonicalGame": "2026-07-12:mlb:cleveland guardians|miami marlins",
+      "closing": {
+        "capturedAt": "2026-07-12T14:23Z",
+        "clv": 0.0,
+        "decimalOdds": 1.714286,
+        "noVigProbability": 0.5494,
+        "oddsAmerican": -140,
+        "provider": null
+      },
       "consensusSources": [],
       "date": "2026-07-12",
       "decimalOdds": 1.714286,
@@ -258,7 +266,7 @@
         "updatedAt": "2026-07-12T14:23Z"
       },
       "rawModelProbabilityIgnored": 0.6325,
-      "result": "pending",
+      "result": "loss",
       "shadowQualified": true,
       "source": "MLBPlayerProps",
       "sourceKey": "mlb_player_props",
@@ -419,6 +427,14 @@
         "value_probability_positive_ev_below_0.70"
       ],
       "canonicalGame": "2026-07-12:mlb:boston red sox|new york mets",
+      "closing": {
+        "capturedAt": "2026-07-12T13:23:50.873376Z",
+        "clv": 0.296188,
+        "decimalOdds": 1.813008,
+        "noVigProbability": 0.527001,
+        "oddsAmerican": -123,
+        "provider": "espn_scoreboard:DraftKings"
+      },
       "consensusSources": [],
       "date": "2026-07-12",
       "decimalOdds": 2.35,
@@ -540,7 +556,7 @@
         "updatedAt": "2026-07-12T13:23:50.873376Z"
       },
       "rawModelProbabilityIgnored": null,
-      "result": "pending",
+      "result": "loss",
       "shadowQualified": false,
       "source": "SportyTraderMLB",
       "sourceKey": "sportytrader_mlb",
@@ -556,6 +572,14 @@
         "value_probability_positive_ev_below_0.70"
       ],
       "canonicalGame": "2026-07-12:mlb:baltimore orioles|kansas city royals",
+      "closing": {
+        "capturedAt": "2026-07-12T13:23:50.873376Z",
+        "clv": 0.021342,
+        "decimalOdds": 1.645161,
+        "noVigProbability": 0.580868,
+        "oddsAmerican": -155,
+        "provider": "espn_scoreboard:DraftKings"
+      },
       "consensusSources": [],
       "date": "2026-07-12",
       "decimalOdds": 1.680272,
@@ -674,7 +698,7 @@
         "updatedAt": "2026-07-12T13:23:50.873376Z"
       },
       "rawModelProbabilityIgnored": null,
-      "result": "pending",
+      "result": "win",
       "shadowQualified": false,
       "source": "SportsGamblerMLB",
       "sourceKey": "sportsgambler_mlb",
@@ -842,6 +866,14 @@
         "value_probability_positive_ev_below_0.70"
       ],
       "canonicalGame": "2026-07-12:mlb:baltimore orioles|kansas city royals",
+      "closing": {
+        "capturedAt": "2026-07-12T13:23:50.873376Z",
+        "clv": 0.018548,
+        "decimalOdds": 1.645161,
+        "noVigProbability": 0.580868,
+        "oddsAmerican": -155,
+        "provider": "espn_scoreboard:DraftKings"
+      },
       "consensusSources": [],
       "date": "2026-07-12",
       "decimalOdds": 1.675676,
@@ -964,7 +996,7 @@
         "updatedAt": "2026-07-12T13:23:50.873376Z"
       },
       "rawModelProbabilityIgnored": null,
-      "result": "pending",
+      "result": "win",
       "shadowQualified": false,
       "source": "SportyTraderMLB",
       "sourceKey": "sportytrader_mlb",
@@ -981,6 +1013,14 @@
         "value_probability_positive_ev_below_0.70"
       ],
       "canonicalGame": "2026-07-12:mlb:los angeles angels|minnesota twins",
+      "closing": {
+        "capturedAt": "2026-07-12T13:23:50.873376Z",
+        "clv": 0.003139,
+        "decimalOdds": 1.735294,
+        "noVigProbability": 0.551058,
+        "oddsAmerican": -136,
+        "provider": "espn_scoreboard:DraftKings"
+      },
       "consensusSources": [],
       "date": "2026-07-12",
       "decimalOdds": 1.740741,
@@ -1100,7 +1140,7 @@
         "updatedAt": "2026-07-12T13:23:50.873376Z"
       },
       "rawModelProbabilityIgnored": null,
-      "result": "pending",
+      "result": "win",
       "shadowQualified": false,
       "source": "SportsGamblerMLB",
       "sourceKey": "sportsgambler_mlb",
@@ -1406,6 +1446,14 @@
         "value_probability_positive_ev_below_0.70"
       ],
       "canonicalGame": "2026-07-12:mlb:new york yankees|washington nationals",
+      "closing": {
+        "capturedAt": "2026-07-12T13:23:50.873376Z",
+        "clv": -0.004473,
+        "decimalOdds": 1.934579,
+        "noVigProbability": 0.49455,
+        "oddsAmerican": -107,
+        "provider": "espn_scoreboard:DraftKings"
+      },
       "consensusSources": [],
       "date": "2026-07-12",
       "decimalOdds": 1.925926,
@@ -1526,7 +1574,7 @@
         "updatedAt": "2026-07-12T13:23:50.873376Z"
       },
       "rawModelProbabilityIgnored": null,
-      "result": "pending",
+      "result": "loss",
       "shadowQualified": false,
       "source": "SportsGamblerMLB",
       "sourceKey": "sportsgambler_mlb",
@@ -1544,6 +1592,14 @@
         "value_probability_positive_ev_below_0.70"
       ],
       "canonicalGame": "2026-07-12:mlb:boston red sox|new york mets",
+      "closing": {
+        "capturedAt": "2026-07-12T13:23:50.873376Z",
+        "clv": -0.009901,
+        "decimalOdds": 2.02,
+        "noVigProbability": 0.472999,
+        "oddsAmerican": 102,
+        "provider": "espn_scoreboard:DraftKings"
+      },
       "consensusSources": [],
       "date": "2026-07-12",
       "decimalOdds": 2.0,
@@ -1664,7 +1720,7 @@
         "updatedAt": "2026-07-12T13:23:50.873376Z"
       },
       "rawModelProbabilityIgnored": null,
-      "result": "pending",
+      "result": "loss",
       "shadowQualified": false,
       "source": "SportsGamblerMLB",
       "sourceKey": "sportsgambler_mlb",
@@ -1682,6 +1738,14 @@
         "value_probability_positive_ev_below_0.70"
       ],
       "canonicalGame": "2026-07-12:mlb:detroit tigers|philadelphia phillies",
+      "closing": {
+        "capturedAt": "2026-07-12T13:23:50.873376Z",
+        "clv": 0.016095,
+        "decimalOdds": 1.847458,
+        "noVigProbability": 0.517364,
+        "oddsAmerican": -118,
+        "provider": "espn_scoreboard:DraftKings"
+      },
       "consensusSources": [],
       "date": "2026-07-12",
       "decimalOdds": 1.877193,
@@ -1802,7 +1866,7 @@
         "updatedAt": "2026-07-12T13:23:50.873376Z"
       },
       "rawModelProbabilityIgnored": null,
-      "result": "pending",
+      "result": "loss",
       "shadowQualified": false,
       "source": "SportsGamblerMLB",
       "sourceKey": "sportsgambler_mlb",
@@ -1820,6 +1884,14 @@
         "value_probability_positive_ev_below_0.70"
       ],
       "canonicalGame": "2026-07-12:mlb:athletics|chicago white sox",
+      "closing": {
+        "capturedAt": "2026-07-12T13:23:50.873376Z",
+        "clv": -0.033493,
+        "decimalOdds": 2.09,
+        "noVigProbability": 0.456801,
+        "oddsAmerican": 109,
+        "provider": "espn_scoreboard:DraftKings"
+      },
       "consensusSources": [],
       "date": "2026-07-12",
       "decimalOdds": 2.02,
@@ -1940,7 +2012,7 @@
         "updatedAt": "2026-07-12T13:23:50.873376Z"
       },
       "rawModelProbabilityIgnored": null,
-      "result": "pending",
+      "result": "loss",
       "shadowQualified": false,
       "source": "SportsGamblerMLB",
       "sourceKey": "sportsgambler_mlb",
@@ -2664,6 +2736,14 @@
         "value_probability_positive_ev_below_0.70"
       ],
       "canonicalGame": "2026-07-12:mlb:chicago cubs|cincinnati reds",
+      "closing": {
+        "capturedAt": "2026-07-12T13:23:50.873376Z",
+        "clv": -0.012827,
+        "decimalOdds": 1.763359,
+        "noVigProbability": 0.542384,
+        "oddsAmerican": -131,
+        "provider": "espn_scoreboard:DraftKings"
+      },
       "consensusSources": [],
       "date": "2026-07-12",
       "decimalOdds": 1.740741,
@@ -2784,7 +2864,7 @@
         "updatedAt": "2026-07-12T13:23:50.873376Z"
       },
       "rawModelProbabilityIgnored": null,
-      "result": "pending",
+      "result": "win",
       "shadowQualified": false,
       "source": "SportsGamblerMLB",
       "sourceKey": "sportsgambler_mlb",
@@ -2805,6 +2885,14 @@
         "value_probability_positive_ev_below_0.70"
       ],
       "canonicalGame": "2026-07-12:mlb:new york yankees|washington nationals",
+      "closing": {
+        "capturedAt": "2026-07-12T13:23:50.873376Z",
+        "clv": 0.023608,
+        "decimalOdds": 1.826446,
+        "noVigProbability": 0.522678,
+        "oddsAmerican": -121,
+        "provider": "espn_scoreboard:DraftKings"
+      },
       "consensusSources": [],
       "date": "2026-07-12",
       "decimalOdds": 1.869565,
@@ -2928,7 +3016,7 @@
         "updatedAt": "2026-07-12T13:23:50.873376Z"
       },
       "rawModelProbabilityIgnored": null,
-      "result": "pending",
+      "result": "loss",
       "shadowQualified": false,
       "source": "SportyTraderMLB",
       "sourceKey": "sportytrader_mlb",
@@ -2946,6 +3034,14 @@
         "value_probability_positive_ev_below_0.70"
       ],
       "canonicalGame": "2026-07-12:mlb:cleveland guardians|miami marlins",
+      "closing": {
+        "capturedAt": "2026-07-12T13:23:50.873376Z",
+        "clv": -0.030642,
+        "decimalOdds": 1.877193,
+        "noVigProbability": 0.508664,
+        "oddsAmerican": -114,
+        "provider": "espn_scoreboard:DraftKings"
+      },
       "consensusSources": [],
       "date": "2026-07-12",
       "decimalOdds": 1.819672,
@@ -3066,7 +3162,7 @@
         "updatedAt": "2026-07-12T13:23:50.873376Z"
       },
       "rawModelProbabilityIgnored": null,
-      "result": "pending",
+      "result": "loss",
       "shadowQualified": false,
       "source": "SportsGamblerMLB",
       "sourceKey": "sportsgambler_mlb",
@@ -3210,7 +3306,7 @@
         "updatedAt": "2026-07-12T15:13:46.320602Z"
       },
       "rawModelProbabilityIgnored": null,
-      "result": "pending",
+      "result": "win",
       "shadowQualified": false,
       "source": "SportyTraderMLB",
       "sourceKey": "sportytrader_mlb",
@@ -3382,6 +3478,14 @@
         "value_probability_positive_ev_below_0.70"
       ],
       "canonicalGame": "2026-07-12:mlb:chicago cubs|cincinnati reds",
+      "closing": {
+        "capturedAt": "2026-07-12T13:23:50.873376Z",
+        "clv": -0.007646,
+        "decimalOdds": 1.847458,
+        "noVigProbability": 0.517364,
+        "oddsAmerican": -118,
+        "provider": "espn_scoreboard:DraftKings"
+      },
       "consensusSources": [],
       "date": "2026-07-12",
       "decimalOdds": 1.833333,
@@ -3506,7 +3610,7 @@
         "updatedAt": "2026-07-12T13:23:50.873376Z"
       },
       "rawModelProbabilityIgnored": null,
-      "result": "pending",
+      "result": "loss",
       "shadowQualified": false,
       "source": "SportyTraderMLB",
       "sourceKey": "sportytrader_mlb",
@@ -3529,6 +3633,14 @@
         "value_probability_positive_ev_below_0.70"
       ],
       "canonicalGame": "2026-07-12:mlb:new york yankees|washington nationals",
+      "closing": {
+        "capturedAt": "2026-07-12T13:23:50.873376Z",
+        "clv": 0.0,
+        "decimalOdds": 2.0,
+        "noVigProbability": 0.477322,
+        "oddsAmerican": 100,
+        "provider": "espn_scoreboard:DraftKings"
+      },
       "consensusSources": [],
       "date": "2026-07-12",
       "decimalOdds": 2.0,
@@ -3652,7 +3764,7 @@
         "updatedAt": "2026-07-12T13:23:50.873376Z"
       },
       "rawModelProbabilityIgnored": 0.6224,
-      "result": "pending",
+      "result": "win",
       "shadowQualified": false,
       "source": "MLB Model",
       "sourceKey": "mlb_new",
@@ -3675,6 +3787,14 @@
         "value_probability_positive_ev_below_0.70"
       ],
       "canonicalGame": "2026-07-12:mlb:athletics|chicago white sox",
+      "closing": {
+        "capturedAt": "2026-07-12T13:23:50.873376Z",
+        "clv": 0.0,
+        "decimalOdds": 1.980392,
+        "noVigProbability": 0.481672,
+        "oddsAmerican": -102,
+        "provider": "espn_scoreboard:DraftKings"
+      },
       "consensusSources": [],
       "date": "2026-07-12",
       "decimalOdds": 1.980392,
@@ -3798,7 +3918,7 @@
         "updatedAt": "2026-07-12T13:23:50.873376Z"
       },
       "rawModelProbabilityIgnored": 0.6189,
-      "result": "pending",
+      "result": "loss",
       "shadowQualified": false,
       "source": "MLB Model",
       "sourceKey": "mlb_new",
@@ -4423,6 +4543,14 @@
         "value_probability_positive_ev_below_0.70"
       ],
       "canonicalGame": "2026-07-12:mlb:new york yankees|washington nationals",
+      "closing": {
+        "capturedAt": "2026-07-12T16:33:49.725654Z",
+        "clv": 0.0,
+        "decimalOdds": 1.819672,
+        "noVigProbability": 0.524849,
+        "oddsAmerican": -122,
+        "provider": "espn_scoreboard:DraftKings"
+      },
       "consensusSources": [],
       "date": "2026-07-12",
       "decimalOdds": 1.819672,
@@ -4546,7 +4674,7 @@
         "updatedAt": "2026-07-12T16:33:49.725654Z"
       },
       "rawModelProbabilityIgnored": 0.6154,
-      "result": "pending",
+      "result": "win",
       "shadowQualified": false,
       "source": "MLB Model",
       "sourceKey": "mlb_new",
@@ -5876,6 +6004,14 @@
         "value_probability_positive_ev_below_0.70"
       ],
       "canonicalGame": "2026-07-12:mlb:seattle mariners|tampa bay rays",
+      "closing": {
+        "capturedAt": "2026-07-12T13:23:50.873376Z",
+        "clv": -0.059361,
+        "decimalOdds": 2.19,
+        "noVigProbability": 0.436917,
+        "oddsAmerican": 119,
+        "provider": "espn_scoreboard:DraftKings"
+      },
       "consensusSources": [],
       "date": "2026-07-12",
       "decimalOdds": 2.06,
@@ -5996,7 +6132,7 @@
         "updatedAt": "2026-07-12T13:23:50.873376Z"
       },
       "rawModelProbabilityIgnored": null,
-      "result": "pending",
+      "result": "win",
       "shadowQualified": false,
       "source": "SportsGamblerMLB",
       "sourceKey": "sportsgambler_mlb",
@@ -6685,7 +6821,7 @@
         "updatedAt": "2026-07-12T16:33:41.468884Z"
       },
       "rawModelProbabilityIgnored": 0.636,
-      "result": "pending",
+      "result": "loss",
       "shadowQualified": false,
       "source": "MLB Inning",
       "sourceKey": "mlb_inning",
@@ -7456,7 +7592,7 @@
         "updatedAt": "2026-07-12T16:33:41.468884Z"
       },
       "rawModelProbabilityIgnored": 0.615,
-      "result": "pending",
+      "result": "loss",
       "shadowQualified": false,
       "source": "MLB Inning",
       "sourceKey": "mlb_inning",
@@ -7782,6 +7918,14 @@
       {
         "blockers": [],
         "canonicalGame": "2026-07-12:mlb:cleveland guardians|miami marlins",
+        "closing": {
+          "capturedAt": "2026-07-12T14:23Z",
+          "clv": 0.0,
+          "decimalOdds": 1.714286,
+          "noVigProbability": 0.5494,
+          "oddsAmerican": -140,
+          "provider": null
+        },
         "consensusSources": [],
         "date": "2026-07-12",
         "decimalOdds": 1.714286,
@@ -7901,7 +8045,7 @@
         },
         "rank": 2,
         "rawModelProbabilityIgnored": 0.6325,
-        "result": "pending",
+        "result": "loss",
         "shadowQualified": true,
         "source": "MLBPlayerProps",
         "sourceKey": "mlb_player_props",
@@ -8055,6 +8199,14 @@
       {
         "blockers": [],
         "canonicalGame": "2026-07-12:mlb:cleveland guardians|miami marlins",
+        "closing": {
+          "capturedAt": "2026-07-12T14:23Z",
+          "clv": 0.0,
+          "decimalOdds": 1.714286,
+          "noVigProbability": 0.5494,
+          "oddsAmerican": -140,
+          "provider": null
+        },
         "consensusSources": [],
         "date": "2026-07-12",
         "decimalOdds": 1.714286,
@@ -8174,7 +8326,7 @@
         },
         "rank": 2,
         "rawModelProbabilityIgnored": 0.6325,
-        "result": "pending",
+        "result": "loss",
         "shadowQualified": true,
         "source": "MLBPlayerProps",
         "sourceKey": "mlb_player_props",
@@ -8328,6 +8480,14 @@
       {
         "blockers": [],
         "canonicalGame": "2026-07-12:mlb:cleveland guardians|miami marlins",
+        "closing": {
+          "capturedAt": "2026-07-12T14:23Z",
+          "clv": 0.0,
+          "decimalOdds": 1.714286,
+          "noVigProbability": 0.5494,
+          "oddsAmerican": -140,
+          "provider": null
+        },
         "consensusSources": [],
         "date": "2026-07-12",
         "decimalOdds": 1.714286,
@@ -8447,7 +8607,7 @@
         },
         "rank": 2,
         "rawModelProbabilityIgnored": 0.6325,
-        "result": "pending",
+        "result": "loss",
         "shadowQualified": true,
         "source": "MLBPlayerProps",
         "sourceKey": "mlb_player_props",
@@ -9671,27 +9831,27 @@
     "liveQualified": 2,
     "liveRecord": {
       "avgClv": 0.0,
-      "clvCount": 1,
-      "losses": 1,
-      "netUnits": -0.5,
-      "pending": 1,
+      "clvCount": 2,
+      "losses": 2,
+      "netUnits": -1.0,
+      "pending": 0,
       "pushes": 0,
       "roi": -1.0,
-      "settled": 1,
-      "stakedUnits": 0.5,
+      "settled": 2,
+      "stakedUnits": 1.0,
       "wins": 0
     },
     "liveRecordToDate": {
-      "avgClv": 0.050879,
-      "clvCount": 4,
-      "losses": 4,
-      "netUnits": -2.5,
-      "pending": 1,
+      "avgClv": 0.040703,
+      "clvCount": 5,
+      "losses": 5,
+      "netUnits": -3.0,
+      "pending": 0,
       "pushes": 0,
       "roi": -1.0,
-      "settled": 4,
+      "settled": 5,
       "sinceDate": "2026-07-11",
-      "stakedUnits": 2.5,
+      "stakedUnits": 3.0,
       "throughDate": "2026-07-12",
       "wins": 0
     },
@@ -9734,14 +9894,14 @@
     "researchQualified": 2,
     "researchRecord": {
       "avgClv": 0.0,
-      "clvCount": 1,
-      "losses": 1,
-      "netUnits": -1.0,
-      "pending": 1,
+      "clvCount": 2,
+      "losses": 2,
+      "netUnits": -2.0,
+      "pending": 0,
       "pushes": 0,
       "roi": -1.0,
-      "settled": 1,
-      "stakedUnits": 1.0,
+      "settled": 2,
+      "stakedUnits": 2.0,
       "wins": 0
     },
     "selected": 2,
@@ -9749,14 +9909,14 @@
     "shadowQualified": 2,
     "shadowRecord": {
       "avgClv": 0.0,
-      "clvCount": 1,
-      "losses": 1,
-      "netUnits": -1.0,
-      "pending": 1,
+      "clvCount": 2,
+      "losses": 2,
+      "netUnits": -2.0,
+      "pending": 0,
       "pushes": 0,
       "roi": -1.0,
-      "settled": 1,
-      "stakedUnits": 1.0,
+      "settled": 2,
+      "stakedUnits": 2.0,
       "wins": 0
     },
     "sourcesTracked": 26,

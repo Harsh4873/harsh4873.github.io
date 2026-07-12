@@ -50704,6 +50704,7 @@
           "raw_edge": 25.2,
           "raw_model_probability": 0.636,
           "raw_probability": 0.636,
+          "result": "loss",
           "selected_side_implied_probability": 0.545455,
           "source": "MLB Inning",
           "sport": "MLB",
@@ -53266,6 +53267,7 @@
           "raw_edge": 12.52,
           "raw_model_probability": 0.615,
           "raw_probability": 0.615,
+          "result": "loss",
           "selected_side_implied_probability": 0.545455,
           "source": "MLB Inning",
           "sport": "MLB",
@@ -57222,6 +57224,7 @@
           "raw_model_probability": 0.6154,
           "raw_probability": 0.6154,
           "raw_units": 0.05,
+          "result": "win",
           "selected_odds": -122,
           "selected_side_implied_probability": 0.5238095238095238,
           "selection": "Under",
@@ -59221,6 +59224,7 @@
           "raw_model_probability": 0.6189,
           "raw_probability": 0.6189,
           "raw_units": 0.05,
+          "result": "loss",
           "selected_odds": -102,
           "selected_side_implied_probability": 0.5238095238095238,
           "selection": "Under",
@@ -60999,6 +61003,7 @@
           "raw_model_probability": 0.6224,
           "raw_probability": 0.6224,
           "raw_units": 0.05,
+          "result": "win",
           "selected_odds": 100,
           "selected_side_implied_probability": 0.5238095238095238,
           "selection": "Under",
@@ -63783,6 +63788,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "selected_odds": -155,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
@@ -63818,6 +63824,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "selected_odds": -107,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
@@ -63853,6 +63860,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "selected_odds": 102,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
@@ -63888,6 +63896,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "selected_odds": -118,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
@@ -63923,6 +63932,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "selected_odds": -114,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
@@ -63958,6 +63968,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "selected_odds": 119,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
@@ -63993,6 +64004,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "selected_odds": -131,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
@@ -64028,6 +64040,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "selected_odds": -136,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
@@ -64063,6 +64076,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "selected_odds": 109,
           "source": "SportsGamblerMLB",
           "sport": "MLB",
@@ -64521,6 +64535,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "selected_odds": -121,
           "source": "SportyTraderMLB",
           "sport": "MLB",
@@ -64556,6 +64571,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "selected_odds": -155,
           "source": "SportyTraderMLB",
           "sport": "MLB",
@@ -64585,6 +64601,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "win",
           "source": "SportyTraderMLB",
           "sport": "MLB",
           "start_time": "2026-07-12T17:40Z",
@@ -64619,6 +64636,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "selected_odds": -123,
           "source": "SportyTraderMLB",
           "sport": "MLB",
@@ -64655,6 +64673,7 @@
             "units": 1
           },
           "probability": null,
+          "result": "loss",
           "selected_odds": -118,
           "source": "SportyTraderMLB",
           "sport": "MLB",
