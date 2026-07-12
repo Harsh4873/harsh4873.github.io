@@ -59,10 +59,37 @@ jobs:
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          git add data/calibration
-          git commit -m "chore(calibration): evaluate pick reliability layer"
-          git push origin "HEAD:${BRANCH}"
-          echo "changed=true" >> "$GITHUB_OUTPUT"
+          # Publish is retried against the latest origin/${BRANCH}: another pusher
+          # (a sibling workflow or a manual push to main) can advance the ref between
+          # our checkout and push, rejecting a plain push as non-fast-forward. The
+          # calibration artifacts are training output, so on rejection we resync to
+          # the latest ref and re-apply the already-computed artifacts (rather than
+          # re-training, which would risk the job timeout and could flip the
+          # active_changed result evaluated above).
+          GENERATED_CALIBRATION="${RUNNER_TEMP}/calibration-artifacts"
+          rm -rf "$GENERATED_CALIBRATION"
+          mkdir -p "$GENERATED_CALIBRATION"
+          cp -R data/calibration/. "$GENERATED_CALIBRATION"/
+          for attempt in 1 2 3 4 5; do
+            git add data/calibration
+            if git diff --cached --quiet; then
+              echo "No staged calibration change after resyncing latest origin/${BRANCH}; nothing to publish."
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            git commit -m "chore(calibration): evaluate pick reliability layer"
+            if git push origin "HEAD:${BRANCH}"; then
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            echo "Push rejected on attempt ${attempt} (origin/${BRANCH} advanced); re-applying calibration artifacts onto latest."
+            git fetch origin "$BRANCH"
+            git reset --hard "origin/${BRANCH}"
+            mkdir -p data/calibration
+            cp -R "$GENERATED_CALIBRATION"/. data/calibration/
+          done
+          echo "::error::Unable to publish calibration artifacts after 5 attempts due to persistent push contention on ${BRANCH}."
+          exit 1
 
       - name: Refresh models with promoted calibration
         if: steps.calibration.outputs.active_changed == 'true'
