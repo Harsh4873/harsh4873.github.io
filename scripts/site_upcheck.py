@@ -246,12 +246,11 @@ def main() -> int:
     external_feeds = external_feeds if isinstance(external_feeds, dict) else {}
     # Scores24 feeds refresh only from a residential IP — CI and other datacenter IPs are
     # Cloudflare-blocked — so their published date can legitimately lag by a day. A feed
-    # that is only a day stale (but present, ok, and slate-complete) must not freeze the
-    # entire site deploy while the model, player-props, parlay, and Profit Desk data are
-    # already today's. For deploy readiness, date-staleness is downgraded to a warning;
-    # a missing, errored, or incomplete-slate Scores24 bucket still defers the deploy. The
-    # full upcheck keeps treating staleness as a failure so health monitoring stays strict.
-    stale_feed_sink = warnings if args.data_only else failures
+    # that is only a day stale (but present, ok, and slate-complete) must not block the
+    # site deploy while the model, player-props, parlay, and Profit Desk data are already
+    # today's. Both deploy gates run this check — the readiness job (`--data-only`) and the
+    # artifact-verify step (the full upcheck) — so date-staleness is a warning in both
+    # modes; a missing, errored, or incomplete-slate Scores24 bucket is still a failure.
     for key in sorted(REQUIRED_SCORES24_FEED_KEYS):
         bucket = external_feeds.get(key)
         if not isinstance(bucket, dict):
@@ -261,7 +260,7 @@ def main() -> int:
             failures.append(f"external-feed bucket {key} failed: {bucket.get('error') or 'unknown error'}")
             continue
         if str(bucket.get("date") or "") != today:
-            stale_feed_sink.append(f"external-feed bucket {key} is {bucket.get('date') or 'undated'}, expected {today}")
+            warnings.append(f"external-feed bucket {key} is {bucket.get('date') or 'undated'}, expected {today}")
         meta = bucket.get("meta") if isinstance(bucket.get("meta"), dict) else {}
         missing = meta.get("missingMatchups") if isinstance(meta.get("missingMatchups"), list) else []
         expected = meta.get("expectedMatchups")
