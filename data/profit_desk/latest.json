@@ -3146,6 +3146,14 @@
         "value_probability_positive_ev_below_0.70"
       ],
       "canonicalGame": "2026-07-12:mlb:arizona diamondbacks|los angeles dodgers",
+      "closing": {
+        "capturedAt": "2026-07-12T13:23:50.873376Z",
+        "clv": 0.0,
+        "decimalOdds": 2.88,
+        "noVigProbability": 0.332236,
+        "oddsAmerican": 188,
+        "provider": "espn_scoreboard:DraftKings"
+      },
       "consensusSources": [],
       "date": "2026-07-12",
       "decimalOdds": 2.88,
@@ -3266,7 +3274,7 @@
         "updatedAt": "2026-07-12T13:23:50.873376Z"
       },
       "rawModelProbabilityIgnored": null,
-      "result": "pending",
+      "result": "win",
       "shadowQualified": false,
       "source": "SportsGamblerMLB",
       "sourceKey": "sportsgambler_mlb",
@@ -4194,7 +4202,7 @@
         "updatedAt": "2026-07-12T16:33:41.468884Z"
       },
       "rawModelProbabilityIgnored": 0.6217,
-      "result": "pending",
+      "result": "win",
       "shadowQualified": false,
       "source": "NBA Summer League",
       "sourceKey": "nba_summer",
@@ -4418,7 +4426,7 @@
         "updatedAt": "2026-07-12T21:29:20.619529Z"
       },
       "rawModelProbabilityIgnored": 0.82,
-      "result": "pending",
+      "result": "win",
       "shadowQualified": false,
       "source": "NBA Summer League",
       "sourceKey": "nba_summer",
@@ -4858,7 +4866,7 @@
         "updatedAt": "2026-07-12T16:33:41.468884Z"
       },
       "rawModelProbabilityIgnored": 0.631,
-      "result": "pending",
+      "result": "loss",
       "shadowQualified": false,
       "source": "MLB Inning",
       "sourceKey": "mlb_inning",
