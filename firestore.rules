@@ -2,8 +2,8 @@ rules_version = '2';
 
 // Complete Firestore ruleset for every private harsh.bet app in the shared
 // `pickledgerpro` Firebase project. Deploying one rules file replaces the
-// project rules, so this file must be kept identical on Daymark, Slate, and
-// Fare branches whenever any block changes.
+// project rules, so this file must be kept identical on Daymark, Slate, Fare,
+// and Sift branches whenever any block changes.
 
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -119,6 +119,226 @@ service cloud.firestore {
         allow read: if ownsFareData(userId);
         allow create: if ownsFareData(userId) && isValidFareEntity(entryId);
         allow update: if ownsFareData(userId) && isValidFareEntity(entryId) && keepsFareTombstone();
+      }
+    }
+
+    // Sift (research paper workspace) -------------------------------
+    function ownsResearchData(userId) {
+      return isAuthorizedGoogleAccount() && request.auth.uid == userId;
+    }
+
+    function isValidResearchTombstone() {
+      return (
+        !('deleted' in request.resource.data)
+        && !('deletedAt' in request.resource.data)
+      ) || (
+        request.resource.data.deleted == true
+        && ('deletedAt' in request.resource.data)
+        && request.resource.data.deletedAt is string
+      );
+    }
+
+    function advancesResearchSingleton() {
+      return request.resource.data.updatedAt >= resource.data.updatedAt;
+    }
+
+    function isValidResearchEntity(entityId) {
+      return request.resource.data.id == entityId
+        && request.resource.data.createdAt is string
+        && request.resource.data.updatedAt is string
+        && isValidResearchTombstone();
+    }
+
+    function keepsResearchEntityHistory() {
+      return request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.updatedAt >= resource.data.updatedAt
+        && (
+          !('deleted' in resource.data)
+          || resource.data.deleted != true
+          || (('deleted' in request.resource.data) && request.resource.data.deleted == true)
+        );
+    }
+
+    function isValidResearchProfile(documentId) {
+      return documentId == 'current'
+        && request.resource.data.keys().hasAll([
+          'email', 'displayName', 'onboardingComplete', 'updatedAt'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'email', 'displayName', 'photoURL', 'onboardingComplete', 'updatedAt'
+        ])
+        && request.resource.data.email == 'hdav4873@gmail.com'
+        && request.resource.data.displayName is string
+        && request.resource.data.onboardingComplete is bool
+        && request.resource.data.updatedAt is string
+        && (!('photoURL' in request.resource.data) || request.resource.data.photoURL is string);
+    }
+
+    function isValidResearchSettings(documentId) {
+      return documentId == 'current'
+        && request.resource.data.keys().hasAll([
+          'theme', 'readerWidth', 'defaultZoom', 'autoAnalyze', 'rememberChat', 'updatedAt'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'theme', 'readerWidth', 'defaultZoom', 'autoAnalyze', 'rememberChat', 'updatedAt'
+        ])
+        && request.resource.data.theme in ['system', 'light', 'dark']
+        && request.resource.data.readerWidth in ['comfortable', 'wide', 'full']
+        && request.resource.data.defaultZoom is number
+        && request.resource.data.defaultZoom >= 0.5
+        && request.resource.data.defaultZoom <= 4
+        && request.resource.data.autoAnalyze is bool
+        && request.resource.data.rememberChat is bool
+        && request.resource.data.updatedAt is string;
+    }
+
+    function isValidResearchFile(paperId) {
+      return request.resource.data.file is map
+        && request.resource.data.file.keys().hasAll([
+          'storageKey', 'name', 'sizeBytes', 'mimeType'
+        ])
+        && request.resource.data.file.keys().hasOnly([
+          'storageKey', 'name', 'sizeBytes', 'mimeType', 'sha256'
+        ])
+        && request.resource.data.file.storageKey == paperId
+        && request.resource.data.file.name is string
+        && request.resource.data.file.sizeBytes is int
+        && request.resource.data.file.sizeBytes > 0
+        && request.resource.data.file.sizeBytes <= 52428800
+        && request.resource.data.file.mimeType == 'application/pdf'
+        && (!('sha256' in request.resource.data.file) || (
+          request.resource.data.file.sha256 is string
+          && request.resource.data.file.sha256.matches('^[A-Fa-f0-9]{64}$')
+        ));
+    }
+
+    function isValidResearchPaper(paperId) {
+      return isValidResearchEntity(paperId)
+        && request.resource.data.keys().hasAll([
+          'id', 'createdAt', 'updatedAt', 'title', 'authors', 'file', 'tags',
+          'favorite', 'archived', 'analysisStatus'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'id', 'createdAt', 'updatedAt', 'deleted', 'deletedAt', 'title',
+          'authors', 'year', 'venue', 'doi', 'sourceUrl', 'abstract',
+          'pageCount', 'file', 'tags', 'favorite', 'archived', 'lastOpenedAt',
+          'analysisStatus', 'analysisProgress', 'analysisError', 'analysisModel',
+          'analysisCompletedAt', 'openaiFileId', 'summary'
+        ])
+        && request.resource.data.title is string
+        && request.resource.data.authors is list
+        && request.resource.data.tags is list
+        && request.resource.data.favorite is bool
+        && request.resource.data.archived is bool
+        && request.resource.data.analysisStatus in [
+          'local', 'queued', 'uploading', 'analyzing', 'ready', 'error'
+        ]
+        && (!('year' in request.resource.data) || request.resource.data.year is int)
+        && (!('venue' in request.resource.data) || request.resource.data.venue is string)
+        && (!('doi' in request.resource.data) || request.resource.data.doi is string)
+        && (!('sourceUrl' in request.resource.data) || request.resource.data.sourceUrl is string)
+        && (!('abstract' in request.resource.data) || request.resource.data.abstract is string)
+        && (!('pageCount' in request.resource.data) || request.resource.data.pageCount is int)
+        && (!('analysisProgress' in request.resource.data) || request.resource.data.analysisProgress is number)
+        && (!('analysisProgress' in request.resource.data) || request.resource.data.analysisProgress >= 0)
+        && (!('analysisProgress' in request.resource.data) || request.resource.data.analysisProgress <= 100)
+        && (!('analysisError' in request.resource.data) || request.resource.data.analysisError is string)
+        && (!('analysisModel' in request.resource.data) || request.resource.data.analysisModel is string)
+        && (!('analysisCompletedAt' in request.resource.data) || request.resource.data.analysisCompletedAt is string)
+        && (!('openaiFileId' in request.resource.data) || request.resource.data.openaiFileId is string)
+        && (!('lastOpenedAt' in request.resource.data) || request.resource.data.lastOpenedAt is string)
+        && (!('summary' in request.resource.data) || request.resource.data.summary is map)
+        && isValidResearchFile(paperId);
+    }
+
+    function isValidResearchNote(noteId) {
+      return isValidResearchEntity(noteId)
+        && request.resource.data.keys().hasAll([
+          'id', 'createdAt', 'updatedAt', 'paperId', 'body', 'color'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'id', 'createdAt', 'updatedAt', 'deleted', 'deletedAt', 'paperId',
+          'page', 'section', 'body', 'color'
+        ])
+        && request.resource.data.paperId is string
+        && request.resource.data.body is string
+        && request.resource.data.color in ['amber', 'blue', 'green', 'rose']
+        && (!('page' in request.resource.data) || request.resource.data.page is int)
+        && (!('section' in request.resource.data) || request.resource.data.section is string);
+    }
+
+    function isValidResearchMessage(messageId) {
+      return isValidResearchEntity(messageId)
+        && request.resource.data.keys().hasAll([
+          'id', 'createdAt', 'updatedAt', 'paperId', 'role', 'content',
+          'context', 'citations'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'id', 'createdAt', 'updatedAt', 'deleted', 'deletedAt', 'paperId',
+          'role', 'content', 'context', 'citations', 'grounded',
+          'uncertainty', 'responseId', 'model'
+        ])
+        && request.resource.data.paperId is string
+        && request.resource.data.role in ['user', 'assistant']
+        && request.resource.data.content is string
+        && request.resource.data.context is map
+        && request.resource.data.context.keys().hasAll(['tab'])
+        && request.resource.data.context.keys().hasOnly([
+          'tab', 'page', 'section', 'selectedText'
+        ])
+        && request.resource.data.context.tab in [
+          'brief', 'sections', 'visuals', 'equations', 'ledger', 'notes', 'sources'
+        ]
+        && (!('page' in request.resource.data.context) || request.resource.data.context.page is int)
+        && (!('section' in request.resource.data.context) || request.resource.data.context.section is string)
+        && (!('selectedText' in request.resource.data.context) || request.resource.data.context.selectedText is string)
+        && request.resource.data.citations is list
+        && (!('grounded' in request.resource.data) || request.resource.data.grounded is bool)
+        && (!('uncertainty' in request.resource.data) || request.resource.data.uncertainty is string)
+        && (!('responseId' in request.resource.data) || request.resource.data.responseId is string)
+        && (!('model' in request.resource.data) || request.resource.data.model is string);
+    }
+
+    match /research_users/{userId} {
+      // Sift has no readable root document and never stores original PDF bytes.
+      match /profile/{documentId} {
+        allow read: if ownsResearchData(userId) && documentId == 'current';
+        allow create: if ownsResearchData(userId) && isValidResearchProfile(documentId);
+        allow update: if ownsResearchData(userId)
+          && isValidResearchProfile(documentId)
+          && advancesResearchSingleton();
+      }
+
+      match /settings/{documentId} {
+        allow read: if ownsResearchData(userId) && documentId == 'current';
+        allow create: if ownsResearchData(userId) && isValidResearchSettings(documentId);
+        allow update: if ownsResearchData(userId)
+          && isValidResearchSettings(documentId)
+          && advancesResearchSingleton();
+      }
+
+      match /papers/{paperId} {
+        allow read: if ownsResearchData(userId);
+        allow create: if ownsResearchData(userId) && isValidResearchPaper(paperId);
+        allow update: if ownsResearchData(userId)
+          && isValidResearchPaper(paperId)
+          && keepsResearchEntityHistory();
+      }
+
+      match /notes/{noteId} {
+        allow read: if ownsResearchData(userId);
+        allow create: if ownsResearchData(userId) && isValidResearchNote(noteId);
+        allow update: if ownsResearchData(userId)
+          && isValidResearchNote(noteId)
+          && keepsResearchEntityHistory();
+      }
+
+      match /messages/{messageId} {
+        allow read: if ownsResearchData(userId);
+        allow create: if ownsResearchData(userId) && isValidResearchMessage(messageId);
+        allow update: if ownsResearchData(userId)
+          && isValidResearchMessage(messageId)
+          && keepsResearchEntityHistory();
       }
     }
 

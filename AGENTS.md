@@ -7,7 +7,7 @@ This branch and worktree are for Harsh Dave's Daymark app only.
 - Daymark lives on the `daymark` branch and publishes under `/daymark/`.
 - Do not add or modify PickLedger, betting, prediction, scraper, grading, model-cache, or player-prop code from this branch.
 - Do not add or modify Gym source, workout data, storage, or styling from this branch.
-- Do not add or modify Slate, Fare, or Portfolio source, data, content, or styling from this branch — with one exception: `firestore.rules` intentionally carries the complete Daymark + Slate + Fare ruleset and must stay identical to the copies on the `slate` and `fare` branches.
+- Do not add or modify Slate, Fare, Sift, or Portfolio source, data, content, or styling from this branch — with one exception: `firestore.rules` intentionally carries the complete Daymark + Slate + Fare + Sift ruleset and must stay identical to the copies on the `slate`, `fare`, and `research` branches.
 - Keep Daymark local-first. Habit entries stay in the user's browser unless the user explicitly exports them.
 - Main publishes Daymark by checking out this branch during the Pages workflow and copying the built app into `/daymark/`.
 
