@@ -11,7 +11,7 @@ import {
   type ResearchState,
 } from './model';
 import { clearLocalPdfs, deleteLocalPdf, putLocalPdf } from './local-pdf-store';
-import { mergeStates, stableStringify } from './sync-core';
+import { mergePaperRecords, mergeStates, stableStringify } from './sync-core';
 
 const LOCAL_KEY = 'sift-research-state-v1';
 const RECOVERY_PREFIX = 'sift-research-recovery-';
@@ -63,7 +63,10 @@ export interface ResearchStore {
   storageMode: StorageMode;
   addPaper: (paper: NewPaper) => Paper | undefined;
   importPaper: (file: File, details?: ImportPaperDetails) => Promise<Paper | undefined>;
-  updatePaper: (id: string, patch: PaperPatch) => void;
+  updatePaper: (id: string, patch: PaperPatch) => Paper | undefined;
+  updatePaperLocal: (id: string, patch: PaperPatch) => void;
+  replacePaperLocal: (paper: Paper) => Paper | undefined;
+  updatePaperIfAnalysisLease: (id: string, runId: string, patch: PaperPatch) => boolean;
   markPaperOpened: (id: string) => void;
   deletePaper: (id: string) => void;
   addNote: (note: NewNote) => Note | undefined;
@@ -316,6 +319,33 @@ export function useResearchStore(): ResearchStore {
       { ...current, papers: current.papers.map((item) => item.id === id ? paper : item) },
       { type: 'papers', papers: [paper] },
     );
+    return paper;
+  }, [commit]);
+
+  const updatePaperLocal = useCallback((id: string, patch: PaperPatch) => {
+    const current = stateRef.current;
+    const existing = current?.papers.find((paper) => paper.id === id && !paper.deleted);
+    if (!current || !existing) return;
+    const paper: Paper = { ...existing, ...patch };
+    commit({ ...current, papers: current.papers.map((item) => item.id === id ? paper : item) });
+  }, [commit]);
+
+  const replacePaperLocal = useCallback((paper: Paper) => {
+    const current = stateRef.current;
+    const existing = current?.papers.find((item) => item.id === paper.id);
+    if (!current || !existing || existing.createdAt !== paper.createdAt) return;
+    const merged = mergePaperRecords(existing, paper);
+    commit({ ...current, papers: current.papers.map((item) => item.id === paper.id ? merged : item) });
+    return merged;
+  }, [commit]);
+
+  const updatePaperIfAnalysisLease = useCallback((id: string, runId: string, patch: PaperPatch) => {
+    const current = stateRef.current;
+    const existing = current?.papers.find((paper) => paper.id === id && !paper.deleted);
+    if (!current || !existing || existing.analysisLease?.runId !== runId) return false;
+    const paper: Paper = { ...existing, ...patch };
+    commit({ ...current, papers: current.papers.map((item) => item.id === id ? paper : item) });
+    return true;
   }, [commit]);
 
   const markPaperOpened = useCallback((id: string) => {
@@ -498,6 +528,9 @@ export function useResearchStore(): ResearchStore {
     addPaper,
     importPaper,
     updatePaper,
+    updatePaperLocal,
+    replacePaperLocal,
+    updatePaperIfAnalysisLease,
     markPaperOpened,
     deletePaper,
     addNote,

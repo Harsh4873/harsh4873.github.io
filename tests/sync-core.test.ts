@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { createStarterState, type Paper, type ResearchState } from '../src/model';
 import {
   mergeStates,
+  mergePaperRecords,
   omitUndefinedDeep,
   resolveInitialSync,
   selectEntityWinner,
@@ -11,6 +12,7 @@ import {
 
 const EARLY = '2026-07-13T10:00:00.000Z';
 const LATE = '2026-07-13T11:00:00.000Z';
+const FINAL = '2026-07-13T12:00:00.000Z';
 
 function paper(overrides: Partial<Paper> = {}): Paper {
   return {
@@ -56,6 +58,165 @@ describe('research conflict resolution', () => {
     const second = paper({ id: 'paper-b', file: { ...paper().file, storageKey: 'paper-b' } });
     expect(mergeStates(state([second]), state([first])).papers.map((item) => item.id))
       .toEqual(['paper-a', 'paper-b']);
+  });
+
+  it('keeps an active analysis generation across a later stale metadata edit', () => {
+    const active = paper({
+      analysisStatus: 'analyzing',
+      analysisProgress: 40,
+      analysisUpdatedAt: LATE,
+      analysisLease: {
+        runId: 'analysis-run-1',
+        ownerId: 'research-tab-1',
+        mode: 'local',
+        heartbeatAt: LATE,
+      },
+    });
+    const staleMetadataEdit = paper({
+      updatedAt: FINAL,
+      title: 'Edited in another tab',
+      tags: ['review'],
+    });
+
+    const merged = mergePaperRecords(active, staleMetadataEdit);
+
+    expect(merged).toMatchObject({
+      title: 'Edited in another tab',
+      tags: ['review'],
+      updatedAt: FINAL,
+      analysisStatus: 'analyzing',
+      analysisProgress: 40,
+      analysisUpdatedAt: LATE,
+      analysisLease: active.analysisLease,
+    });
+    expect(mergePaperRecords(staleMetadataEdit, active)).toEqual(merged);
+  });
+
+  it('accepts a later transactional completion without losing newer metadata', () => {
+    const active = paper({
+      analysisStatus: 'analyzing',
+      analysisProgress: 40,
+      analysisUpdatedAt: LATE,
+      analysisLease: {
+        runId: 'analysis-run-1',
+        ownerId: 'research-tab-1',
+        mode: 'local',
+        heartbeatAt: LATE,
+      },
+    });
+    const metadataEdit = paper({
+      updatedAt: FINAL,
+      title: 'Concurrent metadata title',
+      tags: ['review'],
+    });
+    const completed = paper({
+      analysisStatus: 'local',
+      analysisProgress: undefined,
+      analysisUpdatedAt: '2026-07-13T12:30:00.000Z',
+    });
+
+    const merged = mergePaperRecords(mergePaperRecords(active, metadataEdit), completed);
+
+    expect(merged).toMatchObject({
+      title: 'Concurrent metadata title',
+      tags: ['review'],
+      updatedAt: FINAL,
+      analysisStatus: 'local',
+      analysisUpdatedAt: '2026-07-13T12:30:00.000Z',
+    });
+    expect(merged.analysisLease).toBeUndefined();
+    expect(merged.analysisProgress).toBeUndefined();
+  });
+
+  it('keeps deletion irreversible without dropping a concurrent active generation', () => {
+    const active = paper({
+      analysisStatus: 'analyzing',
+      analysisUpdatedAt: LATE,
+      analysisLease: {
+        runId: 'analysis-run-1',
+        ownerId: 'research-tab-1',
+        mode: 'local',
+        heartbeatAt: LATE,
+      },
+    });
+    const staleTombstone = paper({
+      updatedAt: FINAL,
+      deleted: true,
+      deletedAt: FINAL,
+    });
+
+    const merged = mergePaperRecords(active, staleTombstone);
+
+    expect(merged.deleted).toBe(true);
+    expect(merged.analysisLease).toEqual(active.analysisLease);
+    expect(merged.analysisUpdatedAt).toBe(LATE);
+  });
+
+  it('protects a different canonical cloud run from a newer offline completion', () => {
+    const cloudActive = paper({
+      analysisStatus: 'analyzing',
+      analysisUpdatedAt: LATE,
+      analysisRunId: 'cloud-run',
+      analysisLease: {
+        runId: 'cloud-run',
+        ownerId: 'cloud-tab',
+        mode: 'ai',
+        heartbeatAt: LATE,
+      },
+    });
+    const offlineCompletion = paper({
+      updatedAt: FINAL,
+      title: 'Offline metadata edit',
+      analysisStatus: 'local',
+      analysisUpdatedAt: '2026-07-13T13:00:00.000Z',
+      analysisRunId: 'offline-run',
+    });
+
+    const resolution = resolveInitialSync(state([offlineCompletion]), state([cloudActive]));
+
+    expect(resolution.state.papers[0]).toMatchObject({
+      title: 'Offline metadata edit',
+      updatedAt: FINAL,
+      analysisStatus: 'analyzing',
+      analysisUpdatedAt: LATE,
+      analysisRunId: 'cloud-run',
+      analysisLease: cloudActive.analysisLease,
+    });
+    expect(resolution.uploadPapers[0]).toMatchObject({
+      title: 'Offline metadata edit',
+      analysisRunId: 'cloud-run',
+      analysisLease: cloudActive.analysisLease,
+    });
+    expect(mergePaperRecords(
+      cloudActive,
+      offlineCompletion,
+      { preferredActiveSide: 'left' },
+    ).analysisRunId).toBe('cloud-run');
+  });
+
+  it('allows the same run terminal transaction to clear the cloud lease', () => {
+    const cloudActive = paper({
+      analysisStatus: 'analyzing',
+      analysisUpdatedAt: LATE,
+      analysisRunId: 'shared-run',
+      analysisLease: {
+        runId: 'shared-run',
+        ownerId: 'cloud-tab',
+        mode: 'local',
+        heartbeatAt: LATE,
+      },
+    });
+    const completion = paper({
+      analysisStatus: 'local',
+      analysisUpdatedAt: FINAL,
+      analysisRunId: 'shared-run',
+    });
+
+    const resolved = resolveInitialSync(state([completion]), state([cloudActive])).state.papers[0];
+
+    expect(resolved.analysisStatus).toBe('local');
+    expect(resolved.analysisLease).toBeUndefined();
+    expect(resolved.analysisRunId).toBe('shared-run');
   });
 
   it('reports only records that must repair or initialize the cloud', () => {

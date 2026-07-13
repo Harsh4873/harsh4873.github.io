@@ -4,6 +4,7 @@ import {
   CloudUpload,
   FileQuestion,
   FileText,
+  HardDrive,
   Link2,
   LoaderCircle,
   Menu,
@@ -11,13 +12,16 @@ import {
   RotateCcw,
   Sparkles,
 } from 'lucide-react';
+import { isLocalAnalysis } from '../lib/analysis-result';
 import type { UiPaper } from '../lib/ui-types';
 import { IconButton, ProgressBar, formatBytes } from './Primitives';
 
 function statusCopy(paper: UiPaper) {
   if (!paper.availableLocal) return { icon: FileQuestion, label: 'PDF needed on this device', tone: 'missing' };
   switch (paper.analysisStatus) {
-    case 'ready': return { icon: CheckCircle2, label: 'Page-grounded brief ready', tone: 'ready' };
+    case 'ready': return isLocalAnalysis(paper.analysisModel)
+      ? { icon: HardDrive, label: 'Local brief ready', tone: 'local-ready' }
+      : { icon: CheckCircle2, label: 'AI brief ready', tone: 'ready' };
     case 'uploading': return { icon: CloudUpload, label: 'Securely uploading', tone: 'working' };
     case 'analyzing': return { icon: LoaderCircle, label: 'Reading the paper', tone: 'working' };
     case 'queued': return { icon: LoaderCircle, label: 'Preparing analysis', tone: 'working' };
@@ -26,10 +30,11 @@ function statusCopy(paper: UiPaper) {
   }
 }
 
-export function WorkspaceHeader({ paper, onLibrary, onAnalyze, onReattach, onMenu }: {
+export function WorkspaceHeader({ paper, onLibrary, onAnalyzeLocal, onAnalyzeAi, onReattach, onMenu }: {
   paper: UiPaper;
   onLibrary: () => void;
-  onAnalyze: () => void;
+  onAnalyzeLocal: () => void;
+  onAnalyzeAi: () => void;
   onReattach: () => void;
   onMenu: () => void;
 }) {
@@ -41,12 +46,13 @@ export function WorkspaceHeader({ paper, onLibrary, onAnalyze, onReattach, onMen
     <div className="workspace-header__copy">
       <button type="button" className="workspace-back" onClick={onLibrary}><ArrowLeft /><span>Library</span></button>
       <div className="workspace-title-row"><h1>{paper.title}</h1>{paper.sourceUrl && <a href={paper.sourceUrl} target="_blank" rel="noreferrer" aria-label="Open original source"><Link2 /></a>}</div>
-      <div className="workspace-meta"><span>{paper.authors.length ? paper.authors.join(', ') : 'Unknown author'}</span>{paper.year && <span>{paper.year}</span>}<span>{paper.pageCount ? `${paper.pageCount} pages` : formatBytes(paper.fileSize)}</span><span className={`workspace-status workspace-status--${status.tone}`}><StatusIcon className={working ? 'spin' : ''} />{status.label}</span></div>
+      <div className="workspace-meta"><span className="workspace-meta__authors">{paper.authors.length ? paper.authors.join(', ') : 'Unknown author'}</span>{paper.year && <span className="workspace-meta__year">{paper.year}</span>}<span className="workspace-meta__pages">{paper.pageCount ? `${paper.pageCount} pages` : formatBytes(paper.fileSize)}</span><span className={`workspace-status workspace-status--${status.tone}`}><StatusIcon className={working ? 'spin' : ''} />{status.label}</span></div>
       {working && <ProgressBar value={paper.analysisProgress ?? 0} label="Analysis progress" />}
     </div>
     <div className="workspace-header__actions">
       {!paper.availableLocal ? <button type="button" className="button button--secondary" onClick={onReattach}><RotateCcw /> Reattach PDF</button>
-        : !paper.summary && !working ? <button type="button" className="button button--primary" onClick={onAnalyze}><Sparkles /> Analyze paper</button> : null}
+        : !paper.summary && !working ? <><button type="button" className="button button--secondary" onClick={onAnalyzeLocal}><HardDrive /> Local</button><button type="button" className="button button--primary" onClick={onAnalyzeAi}><Sparkles /> AI</button></>
+          : isLocalAnalysis(paper.analysisModel) && !working ? <button type="button" className="button button--primary" onClick={onAnalyzeAi}><Sparkles /> Upgrade with AI</button> : null}
       <IconButton label="Paper options" onClick={onMenu}><MoreHorizontal /></IconButton>
     </div>
   </header>;

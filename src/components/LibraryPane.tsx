@@ -6,6 +6,7 @@ import {
   FileQuestion,
   FileText,
   FolderOpen,
+  HardDrive,
   Plus,
   Search,
   Settings,
@@ -13,6 +14,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { useMemo, useState } from 'react';
+import { isLocalAnalysis } from '../lib/analysis-result';
 import type { UiPaper } from '../lib/ui-types';
 import { BrandLockup } from './Brand';
 import { IconButton, SyncBadge, type SyncTone, formatRelativeDate } from './Primitives';
@@ -22,7 +24,9 @@ type LibrarySort = 'recent' | 'title';
 
 function analysisLabel(paper: UiPaper) {
   if (!paper.availableLocal) return { label: 'Reattach PDF', tone: 'missing' };
-  if (paper.analysisStatus === 'ready') return { label: 'Brief ready', tone: 'ready' };
+  if (paper.analysisStatus === 'ready') return isLocalAnalysis(paper.analysisModel)
+    ? { label: 'Local brief', tone: 'local-ready' }
+    : { label: 'AI brief', tone: 'ready' };
   if (paper.analysisStatus === 'analyzing') return { label: 'Reading paper', tone: 'working' };
   if (paper.analysisStatus === 'uploading' || paper.analysisStatus === 'queued') return { label: 'Uploading', tone: 'working' };
   if (paper.analysisStatus === 'error') return { label: 'Needs attention', tone: 'error' };
@@ -111,7 +115,7 @@ export function LibraryPane({
               aria-current={activePaperId === paper.id ? 'true' : undefined}
             >
               <span className="paper-card__icon">
-                {paper.analysisStatus === 'ready' ? <CheckCircle2 /> : !paper.availableLocal ? <FileQuestion /> : <FileText />}
+                {paper.analysisStatus === 'ready' ? isLocalAnalysis(paper.analysisModel) ? <HardDrive /> : <CheckCircle2 /> : !paper.availableLocal ? <FileQuestion /> : <FileText />}
               </span>
               <span className="paper-card__copy">
                 <strong>{paper.title}</strong>

@@ -97,7 +97,7 @@ export function UploadDialog({ open, mode = 'add', paperTitle, busy = false, onC
       <div className="privacy-grid">
         <div><span><HardDrive /></span><strong>Library copy is local</strong><p>Your library copy stays in this browser on this device.</p></div>
         <div><span><LockKeyhole /></span><strong>Private sync</strong><p>Paper details, analysis, and notes sync only to your signed-in account.</p></div>
-        <div><span><Sparkles /></span><strong>AI is opt-in</strong><p>Analyze paper securely sends the PDF to the AI service; opening and reading it does not.</p></div>
+        <div><span><Sparkles /></span><strong>AI is opt-in</strong><p>Only AI Analysis securely sends the PDF to the AI service. Local Analysis, opening, and reading stay on this device.</p></div>
       </div>
     </Modal>
   );

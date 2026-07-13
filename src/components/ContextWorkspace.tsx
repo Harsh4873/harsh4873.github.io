@@ -6,9 +6,11 @@ import {
   CheckCircle2,
   ChevronRight,
   ClipboardList,
+  CloudUpload,
   ExternalLink,
   FileChartColumn,
   FileSearch,
+  HardDrive,
   Highlighter,
   Lightbulb,
   Link2,
@@ -23,7 +25,8 @@ import {
   X,
 } from 'lucide-react';
 import { type LucideIcon } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { type KeyboardEvent as ReactKeyboardEvent, useMemo, useState } from 'react';
+import { isLocalAnalysis, type AnalysisMode } from '../lib/analysis-result';
 import type { EvidenceRef, UiFinding, UiNote, UiPaper, UiSummary, WorkspaceTab } from '../lib/ui-types';
 import { ConfidenceBadge, EmptyState, EvidenceLink, ExternalAnchor, IconButton, ProgressBar, formatRelativeDate } from './Primitives';
 
@@ -39,11 +42,17 @@ const TABS: Array<{ id: WorkspaceTab; label: string; shortLabel: string; icon: L
 
 export interface AnalysisControl {
   busy: boolean;
+  external?: boolean;
+  externalStale?: boolean;
+  canCancel?: boolean;
+  mode?: AnalysisMode;
   progress?: number;
   stage?: string;
   error?: string;
-  onAnalyze: () => void;
+  onAnalyzeLocal: () => void;
+  onAnalyzeAi: () => void;
   onCancel: () => void;
+  onTakeOver?: () => void;
 }
 
 function EvidenceRow({ items, onOpen }: { items: EvidenceRef[]; onOpen: (item: EvidenceRef) => void }) {
@@ -65,33 +74,62 @@ function FindingCard({ finding, index, onEvidence }: { finding: UiFinding; index
 }
 
 function AnalyzeCard({ paper, control }: { paper: UiPaper; control: AnalysisControl }) {
-  const quota = control.error?.includes('billing') || control.error?.includes('credits') || paper.analysisError?.includes('billing') || paper.analysisError?.includes('credits');
-  if (quota) {
-    return (
-      <section className="ai-setup-card">
-        <span className="ai-setup-card__icon"><ShieldAlert /></span>
-        <div><span className="eyebrow">One setup step</span><h2>AI is connected; API credits need attention</h2><p>The local PDF reader, notes, library, and sync still work. No content was analyzed in this attempt.</p></div>
-      </section>
-    );
-  }
+  const errorText = (control.error ?? paper.analysisError ?? '').toLocaleLowerCase();
+  const quota = errorText.includes('billing') || errorText.includes('credits');
   if (control.busy) {
+    const local = control.mode === 'local';
+    const external = control.external === true;
+    const staleExternal = external && control.externalStale === true;
     return (
       <section className="analysis-progress-card">
-        <div className="analysis-progress-card__top"><span className="analysis-orbit"><Sparkles /><i /></span><div><span className="eyebrow">Source-grounded analysis</span><h2>{control.stage || 'Reading every page…'}</h2></div><button type="button" className="button button--ghost button--small" onClick={control.onCancel}><X /> Cancel</button></div>
+        <div className="analysis-progress-card__top"><span className={`analysis-orbit analysis-orbit--${external ? 'external' : local ? 'local' : 'ai'}`}>{staleExternal ? <AlertCircle /> : external ? <LoaderCircle /> : local ? <HardDrive /> : <Sparkles />}<i /></span><div><span className="eyebrow">{staleExternal ? 'External analysis paused' : external ? 'Analysis in another session' : local ? 'Private local analysis' : 'Source-grounded AI analysis'}</span><h2>{staleExternal ? 'Analysis stopped updating' : control.stage || 'Reading every page…'}</h2></div>{staleExternal ? <button type="button" className="analysis-session-pill analysis-session-pill--action" disabled={!control.onTakeOver} onClick={control.onTakeOver}>Unlock analysis</button> : control.canCancel !== false ? <button type="button" className="button button--ghost button--small" onClick={control.onCancel}><X /> Cancel</button> : <span className="analysis-session-pill">Syncing</span>}</div>
         <ProgressBar value={control.progress ?? 0} label="Paper analysis progress" />
-        <div className="analysis-progress-card__meta"><span>{Math.round(control.progress ?? 0)}%</span><span>Figures, equations, methods, and limitations included</span></div>
+        <div className="analysis-progress-card__meta"><span>{Math.round(control.progress ?? 0)}%</span><span>{staleExternal ? 'No heartbeat arrived from the other session. Unlock only if it is no longer running.' : external ? 'This view will update from private sync while the other session is active.' : local ? 'Running entirely in this browser · no API credits' : 'Figures, equations, methods, and limitations included'}</span></div>
       </section>
     );
   }
   return (
     <section className="analyze-card">
-      <span className="analyze-card__icon"><Sparkles /></span>
-      <div><span className="eyebrow">Ready when you are</span><h2>Turn this paper into a traceable brief</h2><p>Sift will send this PDF to the private AI backend only after you press the button. Every finding must point back to a page.</p></div>
-      <button type="button" className="button button--primary" disabled={!paper.availableLocal} onClick={control.onAnalyze}><Sparkles /> Analyze paper</button>
+      <header className="analyze-card__intro"><span className="analyze-card__icon"><Sparkles /></span><div><span className="eyebrow">Choose how Sift reads</span><h2>Turn this paper into a traceable brief</h2><p>Both paths keep findings tied to paper pages. Choose private on-device speed or the deeper AI pass.</p></div></header>
+      {control.error && <div className="analysis-warning analysis-warning--retry" role="alert"><AlertCircle /><div><strong>The last analysis attempt paused</strong><p>{control.error}</p><p>Choose either path below to try again. Existing notes and saved briefs are unchanged.</p></div></div>}
+      <div className="analysis-choice-grid">
+        <article className="analysis-choice analysis-choice--local">
+          <span className="analysis-choice__icon"><HardDrive /></span>
+          <div><span className="eyebrow">No upload · no credits</span><h3>Local Analysis</h3><p>Build a fast structured brief entirely in this browser. It works without signing in and never sends the PDF to an API.</p></div>
+          <ul><li>Abstract, sections, findings, and references</li><li>Page receipts from extracted PDF text</li><li>Private, cancellable, and available offline</li></ul>
+          <button type="button" className="button button--secondary button--full" disabled={!paper.availableLocal} onClick={control.onAnalyzeLocal}><HardDrive /> Run Local Analysis</button>
+        </article>
+        <article className="analysis-choice analysis-choice--ai">
+          <span className="analysis-choice__icon"><CloudUpload /></span>
+          <div><span className="eyebrow">Secure AI upload</span><h3>AI Analysis</h3><p>Use the connected AI service for deeper figure, table, and equation coverage—and unlock Ask Sift for this paper.</p></div>
+          <ul><li>High-detail visual and technical interpretation</li><li>Richer synthesis across the complete paper</li><li>Required for contextual paper chat</li></ul>
+          <button type="button" className="button button--primary button--full" disabled={!paper.availableLocal} onClick={control.onAnalyzeAi}><Sparkles /> Run AI Analysis</button>
+          {quota && <div className="analysis-choice__notice"><ShieldAlert /><span><strong>API credits need attention</strong>Local Analysis on the left still works now.</span></div>}
+        </article>
+      </div>
       {!paper.availableLocal && <small>Reattach the PDF before starting a new analysis.</small>}
-      {control.error && <div className="inline-error" role="alert"><AlertCircle />{control.error}</div>}
     </section>
   );
+}
+
+function LocalAnalysisBanner({ paper, control }: { paper: UiPaper; control: AnalysisControl }) {
+  return <section className="local-analysis-banner">
+    <span className="local-analysis-banner__icon"><HardDrive /></span>
+    <div><span className="eyebrow">Local brief · no PDF upload</span><h2>Analyzed privately on this device</h2><p>Upgrade with AI for deeper visual and equation interpretation. Ask Sift also requires the paper’s secure AI upload.</p></div>
+    <button type="button" className="button button--primary button--small" disabled={!paper.availableLocal} onClick={control.onAnalyzeAi}><Sparkles />{paper.openaiFileId ? 'Refresh with AI' : 'Upgrade with AI'}</button>
+  </section>;
+}
+
+function AnalysisIssueBanner({ paper, control }: { paper: UiPaper; control: AnalysisControl }) {
+  if (!control.error) return null;
+  return <section className="analysis-warning analysis-warning--saved-brief" role="alert">
+    <AlertCircle />
+    <div><strong>The latest analysis attempt paused</strong><p>{control.error}</p><p>Your existing brief remains available below.</p></div>
+    <span className="analysis-warning__actions">
+      <button type="button" className="button button--secondary button--small" disabled={!paper.availableLocal} onClick={control.onAnalyzeLocal}><HardDrive /> Retry locally</button>
+      <button type="button" className="button button--primary button--small" disabled={!paper.availableLocal} onClick={control.onAnalyzeAi}><Sparkles /> Retry with AI</button>
+    </span>
+  </section>;
 }
 
 function BriefView({ summary, onEvidence }: { summary: UiSummary; onEvidence: (evidence: EvidenceRef) => void }) {
@@ -155,19 +193,33 @@ export function ContextWorkspace({ paper, notes, activeTab, page, analysis, onTa
 }) {
   const activeMeta = useMemo(() => TABS.find((tab) => tab.id === activeTab) ?? TABS[0], [activeTab]);
   const summary = paper.summary;
+  const moveTab = (event: ReactKeyboardEvent<HTMLButtonElement>, index: number) => {
+    let next = index;
+    if (event.key === 'ArrowRight' || event.key === 'ArrowDown') next = (index + 1) % TABS.length;
+    else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') next = (index - 1 + TABS.length) % TABS.length;
+    else if (event.key === 'Home') next = 0;
+    else if (event.key === 'End') next = TABS.length - 1;
+    else return;
+    event.preventDefault();
+    onTabChange(TABS[next]!.id);
+    event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>('[role="tab"]')[next]?.focus();
+  };
   return <section className="context-workspace" aria-label="Paper context workspace">
-    <nav className="context-tabs" aria-label="Paper context tabs">
-      {TABS.map(({ id, label, shortLabel, icon: Icon }) => <button type="button" role="tab" aria-selected={activeTab === id} key={id} className={activeTab === id ? 'is-active' : ''} onClick={() => onTabChange(id)}><Icon /><span className="tab-label-full">{label}</span><span className="tab-label-short">{shortLabel}</span>{id === 'ledger' && summary?.ledger.length ? <small>{summary.ledger.length}</small> : null}{id === 'notes' && notes.length ? <small>{notes.length}</small> : null}</button>)}
+    <nav className="context-tabs" role="tablist" aria-label="Paper context tabs">
+      {TABS.map(({ id, label, shortLabel, icon: Icon }, index) => <button type="button" role="tab" id={`context-tab-${id}`} aria-controls="context-panel" aria-selected={activeTab === id} tabIndex={activeTab === id ? 0 : -1} key={id} className={activeTab === id ? 'is-active' : ''} onKeyDown={(event) => moveTab(event, index)} onClick={() => onTabChange(id)}><Icon /><span className="tab-label-full">{label}</span><span className="tab-label-short">{shortLabel}</span>{id === 'ledger' && summary?.ledger.length ? <small>{summary.ledger.length}</small> : null}{id === 'notes' && notes.length ? <small>{notes.length}</small> : null}</button>)}
     </nav>
     <div className="context-mobile-heading"><activeMeta.icon /><span>{activeMeta.label}</span></div>
-    <div className="context-scroll">
-      {!summary && activeTab !== 'notes' ? <AnalyzeCard paper={paper} control={analysis} /> : null}
+    <div className="context-scroll" role="tabpanel" id="context-panel" aria-labelledby={`context-tab-${activeTab}`} tabIndex={0}>
+      {analysis.busy && <AnalyzeCard key="analysis-progress" paper={paper} control={analysis} />}
+      {!analysis.busy && summary && <AnalysisIssueBanner paper={paper} control={analysis} />}
+      {!analysis.busy && summary && isLocalAnalysis(paper.analysisModel) && <LocalAnalysisBanner paper={paper} control={analysis} />}
+      {!analysis.busy && !summary && activeTab !== 'notes' ? <AnalyzeCard paper={paper} control={analysis} /> : null}
       {summary && activeTab === 'brief' && <BriefView summary={summary} onEvidence={onEvidence} />}
       {summary && activeTab === 'sections' && <SectionsView summary={summary} onEvidence={onEvidence} />}
       {summary && activeTab === 'visuals' && <VisualsView summary={summary} onEvidence={onEvidence} />}
       {summary && activeTab === 'equations' && <EquationsView summary={summary} onEvidence={onEvidence} />}
       {summary && activeTab === 'ledger' && <LedgerView summary={summary} onEvidence={onEvidence} />}
-      {activeTab === 'notes' && <NotesView notes={notes} page={page} onAdd={onAddNote} onDelete={onDeleteNote} onEvidence={onEvidence} />}
+      {activeTab === 'notes' && <NotesView key="notes" notes={notes} page={page} onAdd={onAddNote} onDelete={onDeleteNote} onEvidence={onEvidence} />}
       {summary && activeTab === 'sources' && <SourcesView paper={paper} summary={summary} onEvidence={onEvidence} />}
     </div>
   </section>;

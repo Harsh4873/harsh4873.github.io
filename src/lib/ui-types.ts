@@ -109,6 +109,7 @@ export interface UiPaper {
   analysisStatus: AnalysisStage;
   analysisProgress?: number;
   analysisError?: string;
+  analysisModel?: string;
   openaiFileId?: string;
   summary?: UiSummary;
 }

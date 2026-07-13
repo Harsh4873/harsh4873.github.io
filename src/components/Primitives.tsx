@@ -8,7 +8,7 @@ import {
   LoaderCircle,
   X,
 } from 'lucide-react';
-import { forwardRef, type ReactNode, useEffect, useRef } from 'react';
+import { forwardRef, type ReactNode, useEffect, useId, useRef } from 'react';
 import type { EvidenceRef } from '../lib/ui-types';
 
 export const IconButton = forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement> & { label: string; children: ReactNode }>(function IconButton({
@@ -111,27 +111,59 @@ export function Modal({ open, onClose, title, description, children, footer, wid
   footer?: ReactNode;
   width?: 'small' | 'medium' | 'large';
 }) {
+  const dialogRef = useRef<HTMLElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
+  const onCloseRef = useRef(onClose);
+  const titleId = useId();
+  const descriptionId = useId();
+  onCloseRef.current = onClose;
   useEffect(() => {
     if (!open) return;
     const previous = document.activeElement as HTMLElement | null;
+    const dialog = dialogRef.current;
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     closeRef.current?.focus();
-    const onKey = (event: KeyboardEvent) => { if (event.key === 'Escape') onClose(); };
-    window.addEventListener('keydown', onKey);
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        onCloseRef.current();
+        return;
+      }
+      if (event.key !== 'Tab' || !dialog) return;
+      const focusable = [...dialog.querySelectorAll<HTMLElement>('button:not([disabled]), a[href], input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])')];
+      if (!focusable.length) {
+        event.preventDefault();
+        dialog.focus();
+        return;
+      }
+      const first = focusable[0]!;
+      const last = focusable.at(-1)!;
+      const current = document.activeElement;
+      if (!dialog.contains(current)) {
+        event.preventDefault();
+        (event.shiftKey ? last : first).focus();
+      } else if (event.shiftKey && current === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && current === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener('keydown', onKey);
     return () => {
       document.body.style.overflow = originalOverflow;
-      window.removeEventListener('keydown', onKey);
-      previous?.focus();
+      document.removeEventListener('keydown', onKey);
+      if (previous?.isConnected && previous !== document.body) previous.focus();
     };
-  }, [open, onClose]);
+  }, [open]);
   if (!open) return null;
   return (
     <div className="modal-layer" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
-      <section className={`modal modal--${width}`} role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <section ref={dialogRef} className={`modal modal--${width}`} role="dialog" aria-modal="true" aria-labelledby={titleId} aria-describedby={description ? descriptionId : undefined} tabIndex={-1}>
         <header className="modal__header">
-          <div><h2 id="modal-title">{title}</h2>{description && <p>{description}</p>}</div>
+          <div><h2 id={titleId}>{title}</h2>{description && <p id={descriptionId}>{description}</p>}</div>
           <IconButton label="Close" onClick={onClose} ref={closeRef}><X /></IconButton>
         </header>
         <div className="modal__body">{children}</div>

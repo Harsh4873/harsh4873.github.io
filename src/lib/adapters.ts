@@ -148,6 +148,7 @@ export function paperToUi(paper: Paper, availableLocal: boolean): UiPaper {
     analysisStatus: paper.analysisStatus,
     analysisProgress: paper.analysisProgress,
     analysisError: paper.analysisError,
+    analysisModel: paper.analysisModel,
     openaiFileId: paper.openaiFileId,
     summary: paper.summary ? analysisToUi(paper.summary) : undefined,
   };

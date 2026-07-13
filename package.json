@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
+    "evaluate:local": "vite-node scripts/evaluate-local-analysis.ts",
     "test": "vitest run",
     "test:rules": "firebase emulators:exec --project demo-research --only firestore \"vitest run tests/firestore.rules.test.ts\"",
     "typecheck": "tsc --noEmit",

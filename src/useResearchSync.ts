@@ -12,6 +12,7 @@ import {
   getDoc,
   getDocs,
   onSnapshot,
+  runTransaction,
   terminate,
   waitForPendingWrites,
   writeBatch,
@@ -20,10 +21,19 @@ import {
   type Unsubscribe,
 } from 'firebase/firestore';
 import { authPersistenceReady, firebaseAuth, googleProvider, researchFirestore } from './firebase';
-import { RESEARCH_ADMIN_EMAIL, parseResearchState, type ResearchState } from './model';
+import { PaperSchema, RESEARCH_ADMIN_EMAIL, parseResearchState, type Paper, type ResearchState } from './model';
+import {
+  analysisMutationHasConflict,
+  applyAnalysisPaperPatch,
+  pickAnalysisPaperPatch,
+  type AnalysisPaperMutationOperation,
+  type AnalysisPaperMutationResult,
+  type AnalysisPaperPatch,
+} from './lib/analysis-paper-coordinator';
 import {
   isCloudSingleton,
   materializeCloudState,
+  mergePaperRecords,
   resolveInitialSync,
   serializeEntityDocument,
   serializeSingletonDocument,
@@ -49,11 +59,21 @@ export interface ResearchSync {
   signIn: () => Promise<void>;
   signOut: () => Promise<void>;
   getIdToken: () => Promise<string | undefined>;
+  mutateAnalysisPaper: (
+    paper: Paper,
+    patch: AnalysisPaperPatch,
+    operation: AnalysisPaperMutationOperation,
+  ) => Promise<AnalysisPaperMutationResult>;
 }
 
 interface PendingWrite {
   reference: DocumentReference<DocumentData>;
   data: DocumentData;
+}
+
+interface SyncWritePlan {
+  writes: PendingWrite[];
+  papers: Paper[];
 }
 
 interface CloudReadResult {
@@ -256,6 +276,37 @@ export function useResearchSync(store: ResearchStore): ResearchSync {
       }
     }
 
+    async function commitPaperWrites(uid: string, papers: Paper[]) {
+      // Paper documents contain both ordinary metadata and transaction-owned
+      // analysis fields. Read/merge/write each paper transactionally so a
+      // stale title/tag edit can never replace a newer analysis generation.
+      const concurrency = 12;
+      for (let index = 0; index < papers.length; index += concurrency) {
+        await Promise.all(papers.slice(index, index + concurrency).map(async (candidate) => {
+          const proposed = PaperSchema.parse(candidate);
+          const reference = entityReference(uid, 'papers', proposed.id);
+          await runTransaction(researchFirestore, async (transaction) => {
+            const snapshot = await transaction.get(reference);
+            if (!snapshot.exists()) {
+              transaction.set(reference, serializeEntityDocument(proposed).data);
+              return;
+            }
+            const current = PaperSchema.parse(snapshot.data());
+            const merged = mergePaperRecords(current, proposed, { preferredActiveSide: 'left' });
+            if (stableStringify(merged) === stableStringify(current)) return;
+            transaction.set(reference, serializeEntityDocument(merged).data);
+          });
+        }));
+      }
+    }
+
+    async function commitWritePlan(uid: string, plan: SyncWritePlan) {
+      await Promise.all([
+        plan.writes.length ? commitWrites(plan.writes) : Promise.resolve(),
+        plan.papers.length ? commitPaperWrites(uid, plan.papers) : Promise.resolve(),
+      ]);
+    }
+
     function trackWrite(write: Promise<unknown>) {
       pendingWriteCount += 1;
       pendingWritesRef.current = pendingWriteCount;
@@ -275,13 +326,15 @@ export function useResearchSync(store: ResearchStore): ResearchSync {
 
     function queueMutation(uid: string, mutation: ResearchMutation) {
       if (mutation.type === 'replace') {
-        void trackWrite(commitWrites([
-          singletonWrite(uid, 'profile', mutation.state.profile),
-          singletonWrite(uid, 'settings', mutation.state.settings),
-          ...entityWrites(uid, 'papers', mutation.state.papers),
-          ...entityWrites(uid, 'notes', mutation.state.notes),
-          ...entityWrites(uid, 'messages', mutation.state.messages),
-        ])).catch(() => undefined);
+        void trackWrite(commitWritePlan(uid, {
+          writes: [
+            singletonWrite(uid, 'profile', mutation.state.profile),
+            singletonWrite(uid, 'settings', mutation.state.settings),
+            ...entityWrites(uid, 'notes', mutation.state.notes),
+            ...entityWrites(uid, 'messages', mutation.state.messages),
+          ],
+          papers: mutation.state.papers,
+        })).catch(() => undefined);
         return;
       }
       switch (mutation.type) {
@@ -292,7 +345,7 @@ export function useResearchSync(store: ResearchStore): ResearchSync {
           void trackWrite(commitWrites([singletonWrite(uid, 'settings', mutation.settings)])).catch(() => undefined);
           return;
         case 'papers':
-          void trackWrite(commitWrites(entityWrites(uid, 'papers', mutation.papers))).catch(() => undefined);
+          void trackWrite(commitPaperWrites(uid, mutation.papers)).catch(() => undefined);
           return;
         case 'notes':
           void trackWrite(commitWrites(entityWrites(uid, 'notes', mutation.notes))).catch(() => undefined);
@@ -307,14 +360,16 @@ export function useResearchSync(store: ResearchStore): ResearchSync {
       if (activeUid && !mutationsPausedRef.current) queueMutation(activeUid, mutation);
     });
 
-    function resolutionWrites(uid: string, resolution: ReturnType<typeof resolveInitialSync>): PendingWrite[] {
-      return [
-        ...(resolution.uploadProfile ? [singletonWrite(uid, 'profile', resolution.state.profile)] : []),
-        ...(resolution.uploadSettings ? [singletonWrite(uid, 'settings', resolution.state.settings)] : []),
-        ...entityWrites(uid, 'papers', resolution.uploadPapers),
-        ...entityWrites(uid, 'notes', resolution.uploadNotes),
-        ...entityWrites(uid, 'messages', resolution.uploadMessages),
-      ];
+    function resolutionWritePlan(uid: string, resolution: ReturnType<typeof resolveInitialSync>): SyncWritePlan {
+      return {
+        writes: [
+          ...(resolution.uploadProfile ? [singletonWrite(uid, 'profile', resolution.state.profile)] : []),
+          ...(resolution.uploadSettings ? [singletonWrite(uid, 'settings', resolution.state.settings)] : []),
+          ...entityWrites(uid, 'notes', resolution.uploadNotes),
+          ...entityWrites(uid, 'messages', resolution.uploadMessages),
+        ],
+        papers: resolution.uploadPapers,
+      };
     }
 
     function maybeApplyCloudState() {
@@ -345,9 +400,9 @@ export function useResearchSync(store: ResearchStore): ResearchSync {
         // Repair arrival-order cloud conflicts with the deterministic local
         // winner only after a complete server snapshot is quiet.
         if (activeUid && navigator.onLine && !fromCache && !hasPendingWrites) {
-          const repairs = resolutionWrites(activeUid, resolution);
-          if (repairs.length) {
-            void trackWrite(commitWrites(repairs)).catch(() => undefined);
+          const repairs = resolutionWritePlan(activeUid, resolution);
+          if (repairs.writes.length || repairs.papers.length) {
+            void trackWrite(commitWritePlan(activeUid, repairs)).catch(() => undefined);
             return;
           }
         }
@@ -461,13 +516,13 @@ export function useResearchSync(store: ResearchStore): ResearchSync {
         const resolution = resolveInitialSync(latestLocal, cloud.state);
         localStateRef.current = resolution.state;
         store.applySyncedState(resolution.state);
-        const writes = resolutionWrites(authUser.uid, {
+        const writes = resolutionWritePlan(authUser.uid, {
           ...resolution,
           uploadProfile: resolution.uploadProfile || cloud.missingSingletons.has('profile'),
           uploadSettings: resolution.uploadSettings || cloud.missingSingletons.has('settings'),
         });
-        if (writes.length) {
-          await trackWrite(commitWrites(writes));
+        if (writes.writes.length || writes.papers.length) {
+          await trackWrite(commitWritePlan(authUser.uid, writes));
           if (disposed || sequence !== bootstrapSequence) return;
         }
         startListeners(authUser.uid);
@@ -636,5 +691,71 @@ export function useResearchSync(store: ResearchStore): ResearchSync {
     return current.getIdToken();
   }, []);
 
-  return { status, user, lastSyncedAt, message, signingOut, signIn, signOut, getIdToken };
+  const mutateAnalysisPaper = useCallback(async (
+    paper: Paper,
+    patch: AnalysisPaperPatch,
+    operation: AnalysisPaperMutationOperation,
+  ): Promise<AnalysisPaperMutationResult> => {
+    let basePaper: Paper;
+    let localPaper: Paper;
+    const analysisPatch = pickAnalysisPaperPatch(patch);
+    try {
+      basePaper = PaperSchema.parse(paper);
+      localPaper = applyAnalysisPaperPatch(basePaper, analysisPatch);
+    } catch (error) {
+      return {
+        status: 'unavailable',
+        message: error instanceof Error ? error.message : 'The analysis update is invalid.',
+      };
+    }
+
+    const currentUser = activeUserRef.current;
+    if (!navigator.onLine || !currentUser || !isAuthorizedUser(currentUser)) {
+      if (analysisMutationHasConflict(basePaper, analysisPatch, operation)) {
+        return { status: 'conflict', paper: basePaper };
+      }
+      return { status: 'local-only', paper: localPaper };
+    }
+
+    setStatus('syncing');
+    setMessage(undefined);
+    try {
+      await waitForPendingWrites(researchFirestore);
+      const reference = doc(researchFirestore, 'research_users', currentUser.uid, 'papers', paper.id);
+      const result = await runTransaction<AnalysisPaperMutationResult>(researchFirestore, async (transaction) => {
+        const snapshot = await transaction.get(reference);
+        if (!snapshot.exists()) {
+          if (operation.type !== 'claim') return { status: 'conflict' };
+          if (analysisMutationHasConflict(basePaper, analysisPatch, operation)) {
+            return { status: 'conflict', paper: basePaper };
+          }
+          const created = applyAnalysisPaperPatch(basePaper, analysisPatch);
+          transaction.set(reference, serializeEntityDocument(created).data);
+          return { status: 'applied', paper: created };
+        }
+
+        const current = PaperSchema.parse(snapshot.data());
+        const nowMs = Date.now();
+        if (analysisMutationHasConflict(current, analysisPatch, operation, nowMs)) {
+          return { status: 'conflict', paper: current };
+        }
+        const next = applyAnalysisPaperPatch(current, analysisPatch, nowMs);
+        transaction.set(reference, serializeEntityDocument(next).data);
+        return { status: 'applied', paper: next };
+      });
+      if (pendingWritesRef.current === 0) {
+        setStatus('synced');
+        setLastSyncedAt(new Date().toISOString());
+      }
+      return result;
+    } catch (error) {
+      const unavailableMessage = friendlySyncError(error);
+      const offline = !navigator.onLine || errorCode(error).includes('unavailable');
+      setStatus(offline ? 'offline' : 'action-needed');
+      setMessage(unavailableMessage);
+      return { status: 'unavailable', message: unavailableMessage };
+    }
+  }, []);
+
+  return { status, user, lastSyncedAt, message, signingOut, signIn, signOut, getIdToken, mutateAnalysisPaper };
 }

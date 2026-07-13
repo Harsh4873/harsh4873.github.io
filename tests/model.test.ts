@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  AnalysisLeaseSchema,
   PaperAnalysisSchema,
   PaperSchema,
   ResearchMessageSchema,
@@ -74,6 +75,22 @@ describe('research model validation', () => {
     expect(PaperAnalysisSchema.parse(analysis()).methods[0].evidence.context).toBe('Methods');
     expect(PaperSchema.parse(paper({ analysisStatus: 'ready', summary: analysis() })).summary?.title)
       .toBe('A careful study');
+  });
+
+  it('accepts only the exact structured analysis-lease contract', () => {
+    const lease = {
+      runId: 'analysis-run-1',
+      ownerId: 'research-tab-1',
+      mode: 'local' as const,
+      heartbeatAt: STAMP,
+    };
+
+    expect(AnalysisLeaseSchema.parse(lease)).toEqual(lease);
+    expect(PaperSchema.parse(paper({ analysisLease: lease })).analysisLease).toEqual(lease);
+    expect(() => AnalysisLeaseSchema.parse({ ...lease, mode: 'remote' })).toThrow();
+    expect(() => AnalysisLeaseSchema.parse({ ...lease, heartbeatAt: 'not-a-date' })).toThrow();
+    expect(() => AnalysisLeaseSchema.parse({ ...lease, unexpected: true })).toThrow();
+    expect(() => AnalysisLeaseSchema.parse({ runId: lease.runId, ownerId: lease.ownerId, mode: lease.mode })).toThrow();
   });
 
   it('rejects ready papers without summaries, mismatched local keys, oversized files, and raw byte fields', () => {

@@ -14,6 +14,7 @@ const OWNER_UID = 'research-owner';
 const ALLOWED_EMAIL = 'hdav4873@gmail.com';
 const STAMP = '2026-07-13T10:00:00.000Z';
 const LATER = '2026-07-13T11:00:00.000Z';
+const FINAL = '2026-07-13T12:00:00.000Z';
 const EMULATOR_ADDRESS = process.env.FIRESTORE_EMULATOR_HOST;
 
 function authorizedContext(
@@ -66,6 +67,16 @@ function validPaper(overrides: Record<string, unknown> = {}) {
     favorite: false,
     archived: false,
     analysisStatus: 'local',
+    ...overrides,
+  };
+}
+
+function validAnalysisLease(overrides: Record<string, unknown> = {}) {
+  return {
+    runId: 'analysis-run-1',
+    ownerId: 'research-tab-1',
+    mode: 'local',
+    heartbeatAt: STAMP,
     ...overrides,
   };
 }
@@ -155,6 +166,85 @@ describe.skipIf(!EMULATOR_ADDRESS)('combined Firestore security rules', () => {
     await assertFails(setDoc(doc(firestore, 'research_users', OWNER_UID, 'messages', 'message-1'), {
       ...validMessage(), context: { tab: 'reader' },
     }));
+  });
+
+  it('allows only the exact optional structured analysis lease', async () => {
+    const firestore = authorizedContext(environment).firestore();
+    const reference = doc(firestore, 'research_users', OWNER_UID, 'papers', 'paper-1');
+
+    await assertSucceeds(setDoc(reference, validPaper({ analysisLease: validAnalysisLease() })));
+    await assertSucceeds(setDoc(reference, validPaper({
+      updatedAt: LATER,
+      analysisUpdatedAt: LATER,
+    })));
+    await assertFails(setDoc(reference, validPaper({
+      updatedAt: LATER,
+      analysisLease: validAnalysisLease({ mode: 'remote' }),
+    })));
+    await assertFails(setDoc(reference, validPaper({
+      updatedAt: LATER,
+      analysisLease: validAnalysisLease({ unexpected: true }),
+    })));
+    await assertFails(setDoc(reference, validPaper({
+      updatedAt: LATER,
+      analysisLease: validAnalysisLease({ runId: 'invalid run id' }),
+    })));
+    await assertFails(setDoc(reference, validPaper({
+      updatedAt: LATER,
+      analysisLease: { runId: 'analysis-run-1', ownerId: 'research-tab-1', mode: 'local' },
+    })));
+    await assertFails(setDoc(reference, validPaper({
+      updatedAt: LATER,
+      analysisLease: validAnalysisLease({ heartbeatAt: 'not-a-date' }),
+    })));
+    await assertFails(setDoc(reference, validPaper({
+      updatedAt: LATER,
+      analysisLease: validAnalysisLease({ heartbeatAt: '2026-99-99T99:99:99.999Z' }),
+    })));
+    await assertFails(setDoc(reference, validPaper({
+      updatedAt: LATER,
+      analysisUpdatedAt: FINAL,
+      analysisRunId: 'invalid run id',
+    })));
+  });
+
+  it('protects active analysis state while allowing concurrent metadata edits', async () => {
+    const firestore = authorizedContext(environment).firestore();
+    const reference = doc(firestore, 'research_users', OWNER_UID, 'papers', 'paper-1');
+    const activeAnalysis = {
+      analysisStatus: 'analyzing',
+      analysisProgress: 20,
+      analysisUpdatedAt: STAMP,
+      analysisRunId: 'analysis-run-1',
+      analysisLease: validAnalysisLease(),
+    };
+
+    await assertSucceeds(setDoc(reference, validPaper(activeAnalysis)));
+    await assertFails(setDoc(reference, validPaper({
+      updatedAt: LATER,
+      title: 'Stale tab edit without the active generation',
+    })));
+    await assertSucceeds(setDoc(reference, validPaper({
+      ...activeAnalysis,
+      updatedAt: LATER,
+      title: 'Metadata edit preserving the active generation',
+    })));
+    await assertFails(setDoc(reference, validPaper({
+      ...activeAnalysis,
+      updatedAt: FINAL,
+      analysisProgress: 21,
+    })));
+    await assertSucceeds(setDoc(reference, validPaper({
+      updatedAt: LATER,
+      analysisStatus: 'local',
+      analysisUpdatedAt: FINAL,
+      analysisRunId: 'analysis-run-1',
+    })));
+    await assertFails(setDoc(reference, validPaper({
+      ...activeAnalysis,
+      updatedAt: FINAL,
+      analysisUpdatedAt: LATER,
+    })));
   });
 
   it('enforces durable tombstones, immutable creation times, monotonic updates, and no hard deletes', async () => {

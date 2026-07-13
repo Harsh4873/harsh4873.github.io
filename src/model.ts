@@ -222,6 +222,14 @@ export const AnalysisStatusSchema = z.enum([
 ]);
 export type AnalysisStatus = z.infer<typeof AnalysisStatusSchema>;
 
+export const AnalysisLeaseSchema = z.object({
+  runId: entityId,
+  ownerId: entityId,
+  mode: z.enum(['local', 'ai']),
+  heartbeatAt: isoDateTime,
+}).strict();
+export type AnalysisLease = z.infer<typeof AnalysisLeaseSchema>;
+
 export const PaperSchema = z.object({
   ...entityStampShape,
   title: nonEmptyText(1_000),
@@ -242,6 +250,9 @@ export const PaperSchema = z.object({
   analysisError: boundedText(2_000).optional(),
   analysisModel: boundedText(200).optional(),
   analysisCompletedAt: isoDateTime.optional(),
+  analysisUpdatedAt: isoDateTime.optional(),
+  analysisRunId: entityId.optional(),
+  analysisLease: AnalysisLeaseSchema.optional(),
   openaiFileId: boundedText(512).optional(),
   summary: PaperAnalysisSchema.optional(),
 }).strict().superRefine((value, context) => {

@@ -62,8 +62,8 @@ export function AccountDialog({
         </div>
         <div className="settings-status-list">
           <div><span><Cloud /></span><div><strong>Google sync</strong><small>{syncStatus === 'synced' ? 'Analysis, notes, and paper details are current.' : syncStatus === 'offline' ? 'Offline changes will sync later.' : syncStatus === 'signed-out' ? 'Sign in to enable private sync.' : 'Sync is checking this workspace.'}</small></div><em className={`status-dot status-dot--${syncStatus}`} /></div>
-          <div><span><HardDrive /></span><div><strong>PDF storage</strong><small>Original library PDFs stay in this browser unless you explicitly analyze one.</small></div><em>{storageMode}</em></div>
-          <div><span><Database /></span><div><strong>AI processing</strong><small>Analyze and chat use the protected server; the API key is never in this app.</small></div><em><Check /> Protected</em></div>
+          <div><span><HardDrive /></span><div><strong>PDF storage</strong><small>Original library PDFs stay in this browser unless you explicitly run AI Analysis.</small></div><em>{storageMode}</em></div>
+          <div><span><Database /></span><div><strong>AI processing</strong><small>AI Analysis and chat use the protected server; the API key is never in this app.</small></div><em><Check /> Protected</em></div>
         </div>
         {email ? <button type="button" className="button button--secondary button--full" onClick={onSignOut} disabled={signingOut}>{signingOut ? <span className="button-spinner" /> : <LogOut />} {signingOut ? 'Finishing sync…' : 'Sign out + clear this device'}</button> : <button type="button" className="button button--primary button--full" onClick={onSignIn}><LogIn /> Sign in with Google</button>}
       </section>

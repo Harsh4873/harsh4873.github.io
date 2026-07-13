@@ -1,4 +1,5 @@
 import type { Note, Paper, ResearchMessage, ResearchState } from './model';
+import { ANALYSIS_PAPER_FIELDS } from './lib/analysis-paper-coordinator';
 
 interface Stamped {
   updatedAt: string;
@@ -83,15 +84,132 @@ export function mergeById<T extends SyncedEntity>(local: T[], remote: T[]): T[] 
   return [...merged.values()].sort((left, right) => left.id.localeCompare(right.id));
 }
 
-export function mergeStates(local: ResearchState, remote: ResearchState): ResearchState {
+function timestampOrZero(value?: string): number {
+  if (!value) return 0;
+  const timestamp = Date.parse(value);
+  return Number.isFinite(timestamp) ? timestamp : 0;
+}
+
+function analysisRevision(paper: Paper): number {
+  return Math.max(
+    timestampOrZero(paper.analysisUpdatedAt),
+    timestampOrZero(paper.analysisLease?.heartbeatAt),
+    timestampOrZero(paper.analysisCompletedAt),
+  );
+}
+
+function analysisProjection(paper: Paper): Partial<Paper> {
+  const projection: Partial<Paper> = {};
+  for (const field of ANALYSIS_PAPER_FIELDS) {
+    if (Object.prototype.hasOwnProperty.call(paper, field)) {
+      Object.assign(projection, { [field]: paper[field] });
+    }
+  }
+  return projection;
+}
+
+export interface PaperMergeOptions {
+  /** Protect one canonical side's active generation from a different run. */
+  preferredActiveSide?: 'left' | 'right';
+}
+
+function paperAnalysisRunId(paper: Paper): string | undefined {
+  return paper.analysisLease?.runId ?? paper.analysisRunId;
+}
+
+function preferredActiveWinner(
+  left: Paper,
+  right: Paper,
+  options: PaperMergeOptions,
+): Paper | undefined {
+  if (!options.preferredActiveSide) return undefined;
+  const preferred = options.preferredActiveSide === 'left' ? left : right;
+  const other = preferred === left ? right : left;
+  if (!preferred.analysisLease || !['queued', 'uploading', 'analyzing'].includes(preferred.analysisStatus)) {
+    return undefined;
+  }
+  return paperAnalysisRunId(other) === preferred.analysisLease.runId ? undefined : preferred;
+}
+
+function selectAnalysisWinner(
+  left: Paper,
+  right: Paper,
+  entityWinner: Paper,
+  options: PaperMergeOptions,
+): Paper {
+  const preferred = preferredActiveWinner(left, right, options);
+  if (preferred) return preferred;
+  const leftRevision = analysisRevision(left);
+  const rightRevision = analysisRevision(right);
+  if (leftRevision !== rightRevision) return leftRevision > rightRevision ? left : right;
+
+  // A lease cannot disappear at the same logical analysis revision. This also
+  // protects legacy in-flight leases that predate analysisUpdatedAt.
+  if (Boolean(left.analysisLease) !== Boolean(right.analysisLease)) {
+    return left.analysisLease ? left : right;
+  }
+
+  const leftText = stableStringify(analysisProjection(left));
+  const rightText = stableStringify(analysisProjection(right));
+  if (leftText === rightText) return entityWinner;
+  return leftText > rightText ? left : right;
+}
+
+/**
+ * Merge metadata by entity LWW while resolving analysis state with its own
+ * revision clock. A title/tag edit from a stale tab therefore cannot erase an
+ * active lease, and a later transactional completion can still clear it.
+ */
+export function mergePaperRecords(
+  left: Paper,
+  right: Paper,
+  options: PaperMergeOptions = {},
+): Paper {
+  const entityWinner = selectEntityWinner(left, right);
+  const analysisWinner = selectAnalysisWinner(left, right, entityWinner, options);
+  const merged: Record<string, unknown> = { ...entityWinner };
+  for (const field of ANALYSIS_PAPER_FIELDS) {
+    if (Object.prototype.hasOwnProperty.call(analysisWinner, field)) {
+      merged[field] = analysisWinner[field];
+    } else {
+      delete merged[field];
+    }
+  }
+  return merged as Paper;
+}
+
+export function mergePapersById(
+  local: Paper[],
+  remote: Paper[],
+  preferRemoteActive = false,
+): Paper[] {
+  const merged = new Map(local.map((paper) => [paper.id, paper]));
+  for (const paper of remote) {
+    const existing = merged.get(paper.id);
+    merged.set(paper.id, existing
+      ? mergePaperRecords(existing, paper, preferRemoteActive ? { preferredActiveSide: 'right' } : undefined)
+      : paper);
+  }
+  return [...merged.values()].sort((left, right) => left.id.localeCompare(right.id));
+}
+
+function mergeResearchStates(
+  local: ResearchState,
+  remote: ResearchState,
+  preferRemoteActivePapers: boolean,
+): ResearchState {
   return {
     version: 1,
     profile: selectNewer(local.profile, remote.profile),
     settings: selectNewer(local.settings, remote.settings),
-    papers: mergeById(local.papers, remote.papers),
+    papers: mergePapersById(local.papers, remote.papers, preferRemoteActivePapers),
     notes: mergeById(local.notes, remote.notes),
     messages: mergeById(local.messages, remote.messages),
   };
+}
+
+export function mergeStates(local: ResearchState, remote: ResearchState): ResearchState {
+  return mergeResearchStates(local, remote, false);
 }
 
 export function serializeSingletonDocument<T extends Stamped>(singleton: T): T {
@@ -159,7 +277,10 @@ export function resolveInitialSync(
       uploadMessages: local.messages,
     };
   }
-  const state = mergeStates(local, cloud);
+  // Cloud transactions are the coordination authority for active analysis.
+  // A different offline generation may still contribute newer metadata, but
+  // it cannot displace the cloud's in-flight analysis projection.
+  const state = mergeResearchStates(local, cloud, true);
   return {
     state,
     uploadProfile: stableStringify(state.profile) !== stableStringify(cloud.profile),

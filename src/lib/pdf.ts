@@ -6,7 +6,10 @@ import {
   type PDFPageProxy,
 } from 'pdfjs-dist';
 import workerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
+import { extractPdfTextLines } from './pdf-text-extraction';
 import type { PdfOutlineItem, PdfSearchHit } from './ui-types';
+
+export { extractPdfTextLines } from './pdf-text-extraction';
 
 GlobalWorkerOptions.workerSrc = workerUrl;
 
@@ -24,18 +27,22 @@ export interface PageRenderOptions {
   signal?: AbortSignal;
 }
 
+export interface ExtractedPdfPage {
+  page: number;
+  text: string;
+  lines: string[];
+}
+
 function normalizeWhitespace(value: string) {
   return value.replace(/\s+/g, ' ').trim();
 }
 
-function contentText(items: unknown[]) {
-  return normalizeWhitespace(items.map((item) => (
-    item && typeof item === 'object' && 'str' in item && typeof item.str === 'string' ? item.str : ''
-  )).join(' '));
-}
-
 function safeMetadataValue(value: unknown) {
   return typeof value === 'string' && value.trim() ? value.trim() : undefined;
+}
+
+function pdfAbortError() {
+  return new DOMException('PDF loading cancelled.', 'AbortError');
 }
 
 async function destinationPage(document: PDFDocumentProxy, destination: unknown) {
@@ -51,9 +58,11 @@ async function destinationPage(document: PDFDocumentProxy, destination: unknown)
 }
 
 export class PdfSession {
+  private static readonly EXTRACTION_CACHE_LIMIT = 12;
   readonly document: PDFDocumentProxy;
   private readonly loadingTask: PDFDocumentLoadingTask;
-  private readonly textCache = new Map<number, string>();
+  private readonly extractionCache = new Map<number, ExtractedPdfPage>();
+  private destruction?: Promise<void>;
 
   private constructor(document: PDFDocumentProxy, loadingTask: PDFDocumentLoadingTask) {
     this.document = document;
@@ -61,13 +70,28 @@ export class PdfSession {
   }
 
   static async open(blob: Blob, signal?: AbortSignal) {
-    if (signal?.aborted) throw new DOMException('PDF loading cancelled.', 'AbortError');
-    const bytes = await blob.arrayBuffer();
+    if (signal?.aborted) throw pdfAbortError();
+    let bytes: ArrayBuffer;
+    try {
+      bytes = await blob.arrayBuffer();
+    } catch (error) {
+      if (signal?.aborted) throw pdfAbortError();
+      throw error;
+    }
+    if (signal?.aborted) throw pdfAbortError();
     const task = getDocument({ data: bytes, useSystemFonts: true });
-    const abort = () => void task.destroy();
+    let destruction: Promise<void> | undefined;
+    const destroyTask = () => destruction ??= task.destroy();
+    const abort = () => void destroyTask();
     signal?.addEventListener('abort', abort, { once: true });
     try {
-      return new PdfSession(await task.promise, task);
+      const document = await task.promise;
+      if (signal?.aborted) throw pdfAbortError();
+      return new PdfSession(document, task);
+    } catch (error) {
+      await destroyTask().catch(() => undefined);
+      if (signal?.aborted) throw pdfAbortError();
+      throw error;
     } finally {
       signal?.removeEventListener('abort', abort);
     }
@@ -102,15 +126,41 @@ export class PdfSession {
     return result;
   }
 
-  async pageText(pageNumber: number) {
+  async extractedPage(pageNumber: number): Promise<ExtractedPdfPage> {
     const safePage = Math.min(Math.max(1, pageNumber), this.pageCount);
-    const cached = this.textCache.get(safePage);
-    if (cached !== undefined) return cached;
+    const cached = this.extractionCache.get(safePage);
+    if (cached !== undefined) {
+      this.extractionCache.delete(safePage);
+      this.extractionCache.set(safePage, cached);
+      return { ...cached, lines: [...cached.lines] };
+    }
     const page = await this.document.getPage(safePage);
-    const content = await page.getTextContent();
-    const text = contentText(content.items);
-    this.textCache.set(safePage, text);
-    return text;
+    try {
+      const content = await page.getTextContent();
+      const lines = extractPdfTextLines(content.items);
+      const extracted = { page: safePage, text: normalizeWhitespace(lines.join(' ')), lines };
+      this.extractionCache.set(safePage, extracted);
+      while (this.extractionCache.size > PdfSession.EXTRACTION_CACHE_LIMIT) {
+        const oldest = this.extractionCache.keys().next().value;
+        if (oldest === undefined) break;
+        this.extractionCache.delete(oldest);
+      }
+      return { ...extracted, lines: [...lines] };
+    } finally {
+      page.cleanup();
+    }
+  }
+
+  async pageLines(pageNumber: number) {
+    return (await this.extractedPage(pageNumber)).lines;
+  }
+
+  releaseExtractedPage(pageNumber: number) {
+    this.extractionCache.delete(Math.min(Math.max(1, pageNumber), this.pageCount));
+  }
+
+  async pageText(pageNumber: number) {
+    return (await this.extractedPage(pageNumber)).text;
   }
 
   async search(query: string, signal?: AbortSignal): Promise<PdfSearchHit[]> {
@@ -142,52 +192,63 @@ export class PdfSession {
 
   async renderPage({ canvas, page, scale, signal }: PageRenderOptions) {
     const pdfPage = await this.document.getPage(Math.min(Math.max(1, page), this.pageCount));
-    if (signal?.aborted) throw new DOMException('Page render cancelled.', 'AbortError');
-    const viewport = pdfPage.getViewport({ scale });
-    const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = Math.floor(viewport.width * pixelRatio);
-    canvas.height = Math.floor(viewport.height * pixelRatio);
-    canvas.style.width = `${Math.floor(viewport.width)}px`;
-    canvas.style.height = `${Math.floor(viewport.height)}px`;
-    const context = canvas.getContext('2d', { alpha: false });
-    if (!context) throw new Error('Your browser could not create a PDF canvas.');
-    const render = pdfPage.render({
-      canvasContext: context,
-      canvas,
-      viewport,
-      transform: pixelRatio === 1 ? undefined : [pixelRatio, 0, 0, pixelRatio, 0, 0],
-    });
-    const cancel = () => render.cancel();
-    signal?.addEventListener('abort', cancel, { once: true });
     try {
-      await render.promise;
-    } catch (error) {
-      if (signal?.aborted || (error instanceof Error && error.name === 'RenderingCancelledException')) return;
-      throw error;
+      if (signal?.aborted) throw new DOMException('Page render cancelled.', 'AbortError');
+      const viewport = pdfPage.getViewport({ scale });
+      const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.floor(viewport.width * pixelRatio);
+      canvas.height = Math.floor(viewport.height * pixelRatio);
+      canvas.style.width = `${Math.floor(viewport.width)}px`;
+      canvas.style.height = `${Math.floor(viewport.height)}px`;
+      const context = canvas.getContext('2d', { alpha: false });
+      if (!context) throw new Error('Your browser could not create a PDF canvas.');
+      const render = pdfPage.render({
+        canvasContext: context,
+        canvas,
+        viewport,
+        transform: pixelRatio === 1 ? undefined : [pixelRatio, 0, 0, pixelRatio, 0, 0],
+      });
+      const cancel = () => render.cancel();
+      signal?.addEventListener('abort', cancel, { once: true });
+      try {
+        await render.promise;
+      } catch (error) {
+        if (signal?.aborted || (error instanceof Error && error.name === 'RenderingCancelledException')) return;
+        throw error;
+      } finally {
+        signal?.removeEventListener('abort', cancel);
+      }
     } finally {
-      signal?.removeEventListener('abort', cancel);
       pdfPage.cleanup();
     }
   }
 
   async thumbnail(pageNumber: number, maxWidth = 132) {
     const page = await this.document.getPage(pageNumber);
-    const original = page.getViewport({ scale: 1 });
-    const scale = maxWidth / original.width;
-    const viewport = page.getViewport({ scale });
-    const canvas = document.createElement('canvas');
-    canvas.width = Math.floor(viewport.width);
-    canvas.height = Math.floor(viewport.height);
-    const context = canvas.getContext('2d', { alpha: false });
-    if (!context) return undefined;
-    await page.render({ canvasContext: context, canvas, viewport }).promise;
-    page.cleanup();
-    return canvas.toDataURL('image/jpeg', 0.72);
+    try {
+      const original = page.getViewport({ scale: 1 });
+      const scale = maxWidth / original.width;
+      const viewport = page.getViewport({ scale });
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.floor(viewport.width);
+      canvas.height = Math.floor(viewport.height);
+      const context = canvas.getContext('2d', { alpha: false });
+      if (!context) return undefined;
+      await page.render({ canvasContext: context, canvas, viewport }).promise;
+      return canvas.toDataURL('image/jpeg', 0.72);
+    } finally {
+      page.cleanup();
+    }
+  }
+
+  async close() {
+    this.extractionCache.clear();
+    this.destruction ??= this.loadingTask.destroy();
+    await this.destruction;
   }
 
   destroy() {
-    this.textCache.clear();
-    void this.loadingTask.destroy();
+    void this.close().catch(() => undefined);
   }
 }
 

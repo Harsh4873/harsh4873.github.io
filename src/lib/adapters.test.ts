@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import type { PaperAnalysis, ResearchMessage } from '../model';
-import { analysisToUi, messageToUi } from './adapters';
+import type { Paper, PaperAnalysis, ResearchMessage } from '../model';
+import { analysisToUi, messageToUi, paperToUi } from './adapters';
 
 const evidence = { quote: 'Source quote', paraphrase: 'Source paraphrase', context: 'Source context' };
 
@@ -58,6 +58,31 @@ describe('messageToUi', () => {
     expect(messageToUi(message)).toMatchObject({
       grounded: false,
       uncertainty: 'The study is observational.',
+    });
+  });
+});
+
+describe('paperToUi', () => {
+  it('exposes the analysis model so local briefs can be labeled and upgraded', () => {
+    const paper: Paper = {
+      id: 'paper-1',
+      title: 'A Test Paper',
+      authors: [],
+      file: { storageKey: 'paper-1', name: 'paper.pdf', sizeBytes: 123, mimeType: 'application/pdf' },
+      tags: [],
+      favorite: false,
+      archived: false,
+      analysisStatus: 'ready',
+      analysisModel: 'sift-local-v1',
+      summary: analysis,
+      createdAt: '2026-07-13T10:00:00.000Z',
+      updatedAt: '2026-07-13T10:00:00.000Z',
+    };
+
+    expect(paperToUi(paper, true)).toMatchObject({
+      analysisModel: 'sift-local-v1',
+      analysisStatus: 'ready',
+      availableLocal: true,
     });
   });
 });
