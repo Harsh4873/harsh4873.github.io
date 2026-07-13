@@ -27,7 +27,7 @@ The app does not display or redistribute product images. Public nutrition data r
 
 Foods, meal templates, and diary entries are individual Firestore documents under `fare_users/{uid}`. Profile, targets, and settings are independent singleton documents. Records merge by `updatedAt` with a deterministic tie-break, and deletes are durable tombstones so an offline device cannot resurrect them. Safe sign-out waits for pending writes before clearing this app's local copy and named Firestore cache.
 
-`firestore.rules` carries the complete shared ruleset for Daymark, Slate, and Fare because a Firebase rules deployment replaces the project-wide ruleset. Keep the file identical on all three branches.
+`firestore.rules` carries the complete shared ruleset for Daymark, Slate, Fare, and Sift because a Firebase rules deployment replaces the project-wide ruleset. Keep the file identical on all four branches.
 
 ## Development
 
