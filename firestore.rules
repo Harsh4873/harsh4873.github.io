@@ -7,8 +7,8 @@ rules_version = '2';
 //   - Slate   (schedule + to-do, `slate` branch) -> slate_users/**
 //
 // Deploying rules replaces the whole ruleset, so this file carries BOTH
-// apps' blocks. Keep it in lockstep with `firestore.rules` on the
-// `slate` branch whenever either app's rules change.
+// apps' blocks. Keep this file identical on the `daymark` and `slate`
+// branches whenever either app's rules change.
 
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -19,6 +19,9 @@ service cloud.firestore {
         && request.auth.token.firebase.sign_in_provider == 'google.com';
     }
 
+    // ---------------------------------------------------------------
+    // Daymark (habit tracker) — mirrored from the `daymark` branch.
+    // ---------------------------------------------------------------
     function ownsDaymarkData(userId) {
       return isAuthorizedGoogleAccount() && request.auth.uid == userId;
     }
@@ -41,6 +44,9 @@ service cloud.firestore {
       }
     }
 
+    // ---------------------------------------------------------------
+    // Slate (schedule + to-do) — owned by the `slate` branch.
+    // ---------------------------------------------------------------
     function ownsSlateData(userId) {
       return isAuthorizedGoogleAccount() && request.auth.uid == userId;
     }
