@@ -4737,6 +4737,7 @@
           "projected_total": 166.5,
           "raw_probability": 0.82,
           "raw_units": 1.25,
+          "result": "loss",
           "sample_games": 2,
           "selection": "Detroit Pistons",
           "source": "NBA Summer League",
@@ -5230,6 +5231,7 @@
           "decision": "BET",
           "edge": null,
           "game": "Minnesota Lynx vs Phoenix Mercury",
+          "game_start_time": "2026-07-14T01:00Z",
           "matchup": "Minnesota Lynx vs Phoenix Mercury",
           "odds": -115,
           "pick": "Lynx (-12.5) cover the spread (Lynx vs Mercury)",
@@ -5249,6 +5251,7 @@
           "probability": null,
           "source": "SportyTraderWNBA",
           "sport": "WNBA",
+          "start_time": "2026-07-14T01:00Z",
           "units": 1
         }
       ],
