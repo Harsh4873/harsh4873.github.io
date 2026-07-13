@@ -6,6 +6,7 @@ import {
   HardDrive,
   ListTodo,
   LoaderCircle,
+  LogIn,
   Moon,
   Settings2,
   ShieldCheck,
@@ -33,6 +34,7 @@ const SYNC_PRESENTATION: Record<SyncStatus, { label: string; icon: LucideIcon }>
   synced: { label: 'Synced', icon: Cloud },
   syncing: { label: 'Syncing', icon: LoaderCircle },
   offline: { label: 'Offline', icon: CloudOff },
+  'signed-out': { label: 'Sign in', icon: LogIn },
   'action-needed': { label: 'Action needed', icon: CircleAlert },
 };
 
@@ -135,7 +137,7 @@ export default function App() {
       <header className="app-header">
         <a className="brand-link" href="#schedule" aria-label="Slate schedule view">
           <SlateLogo />
-          <span><strong>Slate</strong><small>harsh.bet / todo</small></span>
+          <span><strong>Slate</strong><small>harsh.bet / slate</small></span>
         </a>
 
         <nav className="desktop-nav" aria-label="Planner views">

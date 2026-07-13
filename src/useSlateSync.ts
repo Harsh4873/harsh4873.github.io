@@ -45,7 +45,7 @@ const WRITE_BATCH_SIZE = 450;
 const ENTITY_COLLECTIONS = ['sections', 'tasks', 'blocks'] as const;
 type EntityCollection = (typeof ENTITY_COLLECTIONS)[number];
 
-export type SyncStatus = 'synced' | 'syncing' | 'offline' | 'action-needed';
+export type SyncStatus = 'synced' | 'syncing' | 'offline' | 'signed-out' | 'action-needed';
 
 export interface SlateSync {
   status: SyncStatus;
@@ -61,13 +61,13 @@ function friendlySyncError(error: unknown) {
   const code = typeof error === 'object' && error && 'code' in error ? String(error.code) : '';
   if (code.includes('popup-closed-by-user')) return 'Sign-in was cancelled. Your local planner is unchanged.';
   if (code.includes('popup-blocked')) return 'Allow the Google sign-in window, then try again.';
-  if (code.includes('permission-denied')) return 'This Google account is not allowed to access Slate.';
+  if (code.includes('permission-denied')) return 'Slate could not reach its private cloud record. Your local planner is still safe.';
   if (code.includes('unavailable') || !navigator.onLine) return 'You are offline. Changes stay on this device and will sync after reconnection.';
   return error instanceof Error ? error.message : 'Slate could not finish syncing. Your local data is still safe.';
 }
 
 export function useSlateSync(store: SlateStore): SlateSync {
-  const [status, setStatus] = useState<SyncStatus>(() => (navigator.onLine ? 'action-needed' : 'offline'));
+  const [status, setStatus] = useState<SyncStatus>(() => (navigator.onLine ? 'syncing' : 'offline'));
   const [user, setUser] = useState<User | null>(null);
   const [lastSyncedAt, setLastSyncedAt] = useState<string>();
   const [message, setMessage] = useState<string>();
@@ -412,7 +412,7 @@ export function useSlateSync(store: SlateStore): SlateSync {
       setUser(authUser);
 
       if (!authUser) {
-        setStatus(navigator.onLine ? 'action-needed' : 'offline');
+        setStatus(navigator.onLine ? 'signed-out' : 'offline');
         setMessage(navigator.onLine ? 'Sign in once on this device to turn on automatic sync.' : 'You are offline. Local planning is still available.');
         return;
       }
@@ -437,7 +437,7 @@ export function useSlateSync(store: SlateStore): SlateSync {
         setMessage(undefined);
       } else if (activeUserRef.current) void bootstrap(activeUserRef.current);
       else {
-        setStatus('action-needed');
+        setStatus('signed-out');
         setMessage('Sign in once on this device to turn on automatic sync.');
       }
     }

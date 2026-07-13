@@ -24,6 +24,7 @@ const SYNC_LABELS: Record<SyncStatus, string> = {
   synced: 'Synced',
   syncing: 'Syncing',
   offline: 'Offline',
+  'signed-out': 'Sign in',
   'action-needed': 'Action needed',
 };
 

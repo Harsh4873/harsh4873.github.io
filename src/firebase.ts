@@ -11,7 +11,7 @@ import {
   persistentMultipleTabManager,
 } from 'firebase/firestore';
 
-// Same Firebase project as Daymark (harsh.bet/tracker); Slate keeps its data
+// Same Firebase project as Daymark (harsh.bet/daymark); Slate keeps its data
 // under the separate `slate_users` collection. The app instance is NAMED so
 // Slate's auth session and Firestore offline cache stay isolated from
 // Daymark's on the shared harsh.bet origin — signing out of one app no longer

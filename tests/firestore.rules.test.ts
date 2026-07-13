@@ -95,7 +95,21 @@ describe.skipIf(!EMULATOR_ADDRESS)('Slate Firestore security rules', () => {
     await assertFails(setDoc(doc(anonymous, 'slate_users', OWNER_UID, 'tasks', 'task-1'), { id: 'task-1' }));
   });
 
-  it('still protects Daymark documents with the combined ruleset', async () => {
+  it('keeps authorized Daymark access working in the combined ruleset', async () => {
+    const firestore = authorizedContext(testEnvironment).firestore();
+    const root = doc(firestore, 'daymark_users', OWNER_UID);
+    const habit = doc(firestore, 'daymark_users', OWNER_UID, 'habits', 'read');
+
+    await assertSucceeds(setDoc(root, {
+      generationId: 'generation-1',
+      profileGenerationId: 'generation-1',
+    }));
+    await assertSucceeds(setDoc(habit, { generationId: 'generation-1', name: 'Read' }));
+    await assertSucceeds(getDoc(root));
+    await assertSucceeds(getDoc(habit));
+  });
+
+  it('still protects Daymark documents from anonymous access', async () => {
     const anonymous = testEnvironment.unauthenticatedContext().firestore();
     await assertFails(getDoc(doc(anonymous, 'daymark_users', 'daymark-owner')));
   });

@@ -1,4 +1,4 @@
-/* Slate — schedule + to-do. Same design family as Daymark (harsh.bet/tracker):
+/* Slate — schedule + to-do. Same design family as Daymark (harsh.bet/daymark):
    shared token system, graph-paper texture, ledger borders. Slate leads with
    violet; lime is reserved for "done". */
 
@@ -348,6 +348,7 @@ svg {
 .sync-status-synced { --sync-color: var(--green); }
 .sync-status-syncing { --sync-color: var(--cyan); }
 .sync-status-offline { --sync-color: var(--text-muted); }
+.sync-status-signed-out { --sync-color: var(--cyan); }
 .sync-status-action-needed { --sync-color: var(--coral); }
 
 .theme-toggle,
@@ -1413,6 +1414,7 @@ main:focus {
 .sync-state-synced { background: color-mix(in srgb, var(--green) 14%, var(--surface-2)); color: var(--green); }
 .sync-state-syncing { background: color-mix(in srgb, var(--cyan) 14%, var(--surface-2)); color: var(--cyan); }
 .sync-state-offline { background: var(--surface-2); color: var(--text-muted); }
+.sync-state-signed-out { background: color-mix(in srgb, var(--cyan) 14%, var(--surface-2)); color: var(--cyan); }
 .sync-state-action-needed { background: color-mix(in srgb, var(--coral) 14%, var(--surface-2)); color: var(--coral); }
 
 .account-row {

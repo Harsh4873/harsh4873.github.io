@@ -3,12 +3,12 @@ rules_version = '2';
 // Complete Firestore ruleset for the `pickledgerpro` project.
 //
 // Both harsh.bet apps store data in this one project:
-//   - Daymark (habit tracker, `tracker` branch)  -> daymark_users/**
-//   - Slate   (schedule + to-do, `todo` branch)  -> slate_users/**
+//   - Daymark (habit tracker, `daymark` branch) -> daymark_users/**
+//   - Slate   (schedule + to-do, `slate` branch) -> slate_users/**
 //
 // Deploying rules replaces the whole ruleset, so this file carries BOTH
 // apps' blocks. Keep it in lockstep with `firestore.rules` on the
-// `tracker` branch whenever either app's rules change.
+// `daymark` branch whenever either app's rules change.
 
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -20,7 +20,7 @@ service cloud.firestore {
     }
 
     // ---------------------------------------------------------------
-    // Daymark (habit tracker) — mirrored from the `tracker` branch.
+    // Daymark (habit tracker) — mirrored from the `daymark` branch.
     // ---------------------------------------------------------------
     function ownsDaymarkData(userId) {
       return isAuthorizedGoogleAccount() && request.auth.uid == userId;
@@ -45,7 +45,7 @@ service cloud.firestore {
     }
 
     // ---------------------------------------------------------------
-    // Slate (schedule + to-do) — owned by the `todo` branch.
+    // Slate (schedule + to-do) — owned by the `slate` branch.
     // ---------------------------------------------------------------
     function ownsSlateData(userId) {
       return isAuthorizedGoogleAccount() && request.auth.uid == userId;

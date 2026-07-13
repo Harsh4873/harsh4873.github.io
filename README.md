@@ -1,6 +1,6 @@
 # Slate
 
-Slate is the private, local-first daily planner published at `harsh.bet/todo/`. Its source is isolated on the `todo` branch of PickLedgerPro and assembled into the composite GitHub Pages artifact by `main` — the same model as Daymark (`tracker` branch → `harsh.bet/tracker/`).
+Slate is the private, local-first daily planner published at `harsh.bet/slate/`. Its source is isolated on the `slate` branch of PickLedgerPro and assembled into the composite GitHub Pages artifact by `main` — the same model as Daymark (`daymark` branch → `harsh.bet/daymark/`).
 
 ## Product model
 
@@ -23,7 +23,7 @@ Slate shares the `pickledgerpro` Firebase project with Daymark. **`firestore.rul
 firebase deploy --only firestore:rules
 ```
 
-Keep this file in lockstep with `firestore.rules` on the `tracker` branch whenever either app's rules change. **Sync will fail with permission-denied until the `slate_users` rules are deployed once.**
+Keep this file in lockstep with `firestore.rules` on the `daymark` branch whenever either app's rules change.
 
 ## Development
 
@@ -32,10 +32,10 @@ npm ci
 npm run dev        # local dev server
 npm test           # unit tests (sync merge, slot math, ordering, parsing, sign-out)
 npm run typecheck
-npm run build      # tsc + vite build with base /todo/
+npm run build      # tsc + vite build with base /slate/
 npm run test:rules # firestore rules tests (requires the firebase emulator)
 ```
 
 ## Publishing
 
-`main`'s `deploy-pages.yml` checks out this branch, runs `npm ci && npm run build`, and copies `dist/` into the site artifact at `/todo/`. Push `todo` first, then let the `main` deploy workflow publish.
+`main`'s `deploy-pages.yml` checks out this branch, runs `npm ci && npm run build`, and copies `dist/` into the site artifact at `/slate/`. Push `slate` first, then let the `main` deploy workflow publish.
