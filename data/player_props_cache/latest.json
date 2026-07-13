@@ -1,6 +1,6 @@
 {
   "date": "2026-07-13",
-  "generatedAt": "2026-07-13T13:19:18.490189Z",
+  "generatedAt": "2026-07-13T15:52:01.772203Z",
   "models": {
     "mlb_player_props": {
       "abstained": false,
@@ -24,7 +24,7 @@
       "note": "No MLB prop cleared the consensus publication gate.",
       "ok": true,
       "picks": [],
-      "ranking_epoch": "MLB:player_props_consensus_v2.0.0:published:fdd94840a8d0a360",
+      "ranking_epoch": "MLB:player_props_consensus_v2.0.0:published:dbfece801c95e50f",
       "scored_count": 0,
       "sport": "MLB"
     },
@@ -50,7 +50,7 @@
       "note": "No NBA prop cleared the consensus publication gate.",
       "ok": true,
       "picks": [],
-      "ranking_epoch": "NBA:player_props_consensus_v2.0.0:published:fdd94840a8d0a360",
+      "ranking_epoch": "NBA:player_props_consensus_v2.0.0:published:dbfece801c95e50f",
       "scored_count": 0,
       "sport": "NBA"
     },
@@ -60,14 +60,14 @@
       "consensus_rejected_count": 223,
       "consensus_rejection_reasons": {
         "failed: market_implied, history_probability, model_agreement, season_rate": 3,
-        "failed: market_implied, season_probability, history_probability": 8,
-        "failed: market_implied, season_probability, history_probability, model_agreement, season_rate": 6,
-        "failed: market_implied, season_probability, history_probability, season_rate": 22,
-        "failed: market_implied, season_probability, model_agreement, season_rate": 3,
+        "failed: market_implied, season_probability, history_probability, model_agreement": 4,
+        "failed: market_implied, season_probability, history_probability, season_rate": 24,
+        "failed: market_implied, season_probability, model_agreement": 4,
         "failed: market_implied, season_probability, season_rate": 7,
+        "failed: market_implied, season_rate": 4,
         "failed: meta_gate": 47,
         "failed: season_probability, history_probability, season_rate": 6,
-        "failed: season_rate": 7,
+        "failed: season_rate": 10,
         "points_assists has not cleared 70%": 28,
         "points_rebounds has not cleared 70%": 32,
         "totalRebounds has not cleared 70%": 54
@@ -76,7 +76,7 @@
         {
           "id": "pp_a56771a5bee6747b5c3f_season",
           "line": 17.5,
-          "odds": 102,
+          "odds": 111,
           "player_name": "Nneka Ogwumike",
           "reason": "failed: market_implied, season_probability, history_probability, season_rate",
           "selection": "Over",
@@ -94,7 +94,7 @@
         {
           "id": "pp_48576ce2fc9de8047844_season",
           "line": 3.5,
-          "odds": 143,
+          "odds": 139,
           "player_name": "Nneka Ogwumike",
           "reason": "failed: meta_gate",
           "selection": "Over",
@@ -103,7 +103,7 @@
         {
           "id": "pp_7a06caafc3853d55afdb_season",
           "line": 25.5,
-          "odds": -127,
+          "odds": -118,
           "player_name": "Nneka Ogwumike",
           "reason": "points_rebounds has not cleared 70%",
           "selection": "Over",
@@ -112,25 +112,25 @@
         {
           "id": "pp_0125b12ed1327d292838_season",
           "line": 19.5,
-          "odds": -129,
+          "odds": -121,
           "player_name": "Nneka Ogwumike",
           "reason": "points_assists has not cleared 70%",
           "selection": "Over",
           "stat_key": "points_assists"
         },
         {
-          "id": "pp_d744d47dca5dbe0f54eb_season",
-          "line": 16.5,
-          "odds": -102,
+          "id": "pp_cfa114014bcfbdc8ca3c_season",
+          "line": 17.5,
+          "odds": 127,
           "player_name": "Dearica Hamby",
-          "reason": "failed: market_implied, season_probability, history_probability, model_agreement, season_rate",
+          "reason": "failed: market_implied, season_probability, history_probability, season_rate",
           "selection": "Over",
           "stat_key": "points"
         },
         {
           "id": "pp_a1107730e25f4b0b9dd8_season",
           "line": 8.5,
-          "odds": -103,
+          "odds": 104,
           "player_name": "Dearica Hamby",
           "reason": "totalRebounds has not cleared 70%",
           "selection": "Over",
@@ -139,7 +139,7 @@
         {
           "id": "pp_f760dc07b90c0f51ea1e_season",
           "line": 2.5,
-          "odds": -136,
+          "odds": -138,
           "player_name": "Dearica Hamby",
           "reason": "failed: meta_gate",
           "selection": "Over",
@@ -148,7 +148,7 @@
         {
           "id": "pp_c17aeee043e775aa085e_season",
           "line": 24.5,
-          "odds": -118,
+          "odds": -116,
           "player_name": "Dearica Hamby",
           "reason": "points_rebounds has not cleared 70%",
           "selection": "Over",
@@ -157,7 +157,7 @@
         {
           "id": "pp_551268978d971ec7c2ed_season",
           "line": 19.5,
-          "odds": 100,
+          "odds": -101,
           "player_name": "Dearica Hamby",
           "reason": "points_assists has not cleared 70%",
           "selection": "Over",
@@ -166,7 +166,7 @@
         {
           "id": "pp_8c0ec433c0f6011de271_season",
           "line": 14.5,
-          "odds": -104,
+          "odds": 100,
           "player_name": "Rae Burrell",
           "reason": "failed: market_implied, season_probability, history_probability, season_rate",
           "selection": "Over",
@@ -175,7 +175,7 @@
         {
           "id": "pp_4020825d1548caa76f30_season",
           "line": 2.5,
-          "odds": 109,
+          "odds": 112,
           "player_name": "Rae Burrell",
           "reason": "totalRebounds has not cleared 70%",
           "selection": "Over",
@@ -198,10 +198,10 @@
       "note": "No WNBA prop cleared the consensus publication gate.",
       "ok": true,
       "picks": [],
-      "ranking_epoch": "WNBA:player_props_consensus_v2.0.0:published:fdd94840a8d0a360",
+      "ranking_epoch": "WNBA:player_props_consensus_v2.0.0:published:dbfece801c95e50f",
       "scored_count": 223,
       "sport": "WNBA"
     }
   },
-  "updatedAt": "2026-07-13T13:19:18.490189Z"
+  "updatedAt": "2026-07-13T15:52:01.772203Z"
 }
