@@ -68,6 +68,12 @@ jobs:
           ref: slate
           path: slate-app
 
+      - name: Checkout Fare
+        uses: actions/checkout@v4
+        with:
+          ref: fare
+          path: fare-app
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
@@ -82,6 +88,7 @@ jobs:
             portfolio-app/package-lock.json
             daymark-app/package-lock.json
             slate-app/package-lock.json
+            fare-app/package-lock.json
 
       - name: Install frontend dependencies
         run: npm ci
@@ -100,6 +107,10 @@ jobs:
 
       - name: Install Slate dependencies
         working-directory: slate-app
+        run: npm ci
+
+      - name: Install Fare dependencies
+        working-directory: fare-app
         run: npm ci
 
       - name: Build site artifact
@@ -140,6 +151,13 @@ jobs:
           mkdir -p ../dist/slate
           cp -R dist/. ../dist/slate/
 
+      - name: Build Fare artifact
+        working-directory: fare-app
+        run: |
+          npm run build
+          mkdir -p ../dist/fare
+          cp -R dist/. ../dist/fare/
+
       - name: Verify styled Pages artifact
         run: |
           grep -q 'rel="stylesheet"' dist/index.html
@@ -175,6 +193,16 @@ jobs:
           test -n "$(find dist/slate/assets -maxdepth 1 -name '*.js' -print -quit)"
           grep -q 'rel="apple-touch-icon"' dist/slate/index.html
           test -f dist/slate/apple-touch-icon.png
+          test -f dist/fare/index.html
+          grep -q '/fare/assets/' dist/fare/index.html
+          test -n "$(find dist/fare/assets -maxdepth 1 -name '*.css' -print -quit)"
+          test -n "$(find dist/fare/assets -maxdepth 1 -name '*.js' -print -quit)"
+          grep -q 'rel="apple-touch-icon"' dist/fare/index.html
+          test -f dist/fare/apple-touch-icon.png
+          test -f dist/fare/manifest.webmanifest
+          test -f dist/fare/icon-192.png
+          test -f dist/fare/icon-512.png
+          test -f dist/fare/sw.js
           python scripts/site_upcheck.py
 
       - name: Upload artifact
