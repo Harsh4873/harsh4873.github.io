@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180">
+  <!-- Full-bleed artwork; iOS supplies the device-appropriate corner mask. -->
+  <rect width="180" height="180" fill="#211733"/>
+  <path d="M0 0h180v10H0z" fill="#6547d6"/>
+  <path d="M0 170h180v10H0z" fill="#d8f36a"/>
+
+  <!-- Editorial atlas mark used throughout the Portfolio identity. -->
+  <circle cx="90" cy="89" r="59" fill="#35256e" stroke="#f5f0e6" stroke-width="6"/>
+  <path d="M31 89h118M90 30c22 23 22 95 0 118M90 30c-22 23-22 95 0 118"
+        fill="none" stroke="#f5f0e6" stroke-width="5" stroke-linecap="round"/>
+  <path d="M42 55c29 17 67 17 96 0M42 123c29-17 67-17 96 0"
+        fill="none" stroke="#f5f0e6" stroke-width="3" stroke-linecap="round" opacity=".72"/>
+
+  <!-- Citron coordinate and coral index tick echo the site map graphics. -->
+  <circle cx="121" cy="59" r="13" fill="#d8f36a" stroke="#211733" stroke-width="6"/>
+  <path d="M22 137h22" stroke="#ff8065" stroke-width="7" stroke-linecap="square"/>
+</svg>
