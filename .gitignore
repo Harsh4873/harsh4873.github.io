@@ -1,0 +1,14 @@
+node_modules
+dist
+.firebase
+firebase-debug.log
+firestore-debug.log
+*.local
+.env
+.env.*
+!.env.example
+backend/.vercel
+backend/node_modules
+backend/dist
+coverage
+.DS_Store

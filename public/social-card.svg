@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="80" y1="36" x2="1120" y2="594" gradientUnits="userSpaceOnUse"><stop stop-color="#17312E"/><stop offset="1" stop-color="#081311"/></linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientTransform="translate(978 82) rotate(126) scale(450 540)" gradientUnits="userSpaceOnUse"><stop stop-color="#6EA99C" stop-opacity=".35"/><stop offset="1" stop-color="#6EA99C" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1200" height="630" rx="38" fill="url(#bg)"/>
+  <rect width="1200" height="630" rx="38" fill="url(#glow)"/>
+  <g transform="translate(78 78) scale(1.75)">
+    <rect width="64" height="64" rx="17" fill="#0B1716"/>
+    <path d="M18 17.5h28v24.2c0 2.65-2.15 4.8-4.8 4.8H22.8a4.8 4.8 0 0 1-4.8-4.8V17.5Z" fill="#F5F0E5"/>
+    <path d="M18 17.5h28l-4.3 7.25H22.3L18 17.5Z" fill="#B7D8CF"/>
+    <path d="M24 29.3h16M24 34.8h12M24 40.3h7.4" stroke="#17312D" stroke-width="2.3" stroke-linecap="round"/>
+    <circle cx="40" cy="40.3" r="3.15" fill="#F2A65A"/>
+  </g>
+  <text x="78" y="276" fill="#F7F2E8" font-family="ui-serif, Georgia, serif" font-size="102" font-weight="700">Sift</text>
+  <text x="80" y="346" fill="#B8D9D0" font-family="ui-sans-serif, system-ui, sans-serif" font-size="34" letter-spacing="1">RESEARCH, WITH RECEIPTS.</text>
+  <text x="80" y="438" fill="#D7E2DE" font-family="ui-sans-serif, system-ui, sans-serif" font-size="30">Read papers. Trace claims. Keep the context.</text>
+  <g transform="translate(830 116) rotate(5)">
+    <rect x="-32" y="44" width="288" height="344" rx="24" fill="#21443F" opacity=".8"/>
+    <rect width="288" height="344" rx="24" fill="#F6F1E6"/>
+    <rect width="288" height="72" rx="24" fill="#B8D9D0"/>
+    <rect y="48" width="288" height="24" fill="#B8D9D0"/>
+    <path d="M42 122h204M42 166h160M42 210h204M42 254h105" stroke="#17312D" stroke-width="16" stroke-linecap="round" opacity=".82"/>
+    <circle cx="222" cy="254" r="24" fill="#F2A65A"/>
+  </g>
+  <text x="80" y="560" fill="#7FA69D" font-family="ui-sans-serif, system-ui, sans-serif" font-size="22">harsh.bet / research</text>
+</svg>

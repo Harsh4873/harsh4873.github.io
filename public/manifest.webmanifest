@@ -1,0 +1,36 @@
+{
+  "name": "Sift — Research, with receipts",
+  "short_name": "Sift",
+  "description": "A private, source-grounded research paper workspace with local PDF reading, traceable briefs, notes, and contextual questions.",
+  "id": "/research/",
+  "start_url": "/research/",
+  "scope": "/research/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#0B1514",
+  "theme_color": "#0B1514",
+  "categories": ["education", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/research/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/research/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Open library",
+      "short_name": "Library",
+      "url": "/research/#library",
+      "icons": [{ "src": "/research/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
