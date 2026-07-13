@@ -1,7 +1,7 @@
 {
   "date": "2026-07-13",
   "errors": [],
-  "externalFeedsUpdatedAt": "2026-07-13T13:09:42.841074Z",
+  "externalFeedsUpdatedAt": "2026-07-13T21:11:00.778580Z",
   "external_feeds": {
     "scores24_fifa_world_cup": {
       "date": "2026-07-13",
@@ -155,7 +155,7 @@
     "sportsgambler_fifa_world_cup": {
       "date": "2026-07-13",
       "errors": [],
-      "generatedAt": "2026-07-13T13:09:42.841074Z",
+      "generatedAt": "2026-07-13T21:11:00.778580Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-13",
@@ -164,17 +164,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-13T13:09:42.841074Z"
+        "updatedAt": "2026-07-13T21:11:00.778580Z"
       },
       "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-07-13T13:09:42.841074Z"
+      "updatedAt": "2026-07-13T21:11:00.778580Z"
     },
     "sportsgambler_mlb": {
       "date": "2026-07-13",
       "errors": [],
-      "generatedAt": "2026-07-13T13:09:42.841074Z",
+      "generatedAt": "2026-07-13T21:11:00.778580Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-13",
@@ -183,17 +183,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-13T13:09:42.841074Z"
+        "updatedAt": "2026-07-13T21:11:00.778580Z"
       },
       "note": "Scheduled sportsgambler_mlb refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-07-13T13:09:42.841074Z"
+      "updatedAt": "2026-07-13T21:11:00.778580Z"
     },
     "sportsgambler_nba": {
       "date": "2026-07-13",
       "errors": [],
-      "generatedAt": "2026-07-13T13:09:42.841074Z",
+      "generatedAt": "2026-07-13T21:11:00.778580Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-13",
@@ -202,17 +202,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-13T13:09:42.841074Z"
+        "updatedAt": "2026-07-13T21:11:00.778580Z"
       },
       "note": "Scheduled sportsgambler_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-07-13T13:09:42.841074Z"
+      "updatedAt": "2026-07-13T21:11:00.778580Z"
     },
     "sportsgambler_wnba": {
       "date": "2026-07-13",
       "errors": [],
-      "generatedAt": "2026-07-13T13:09:42.841074Z",
+      "generatedAt": "2026-07-13T21:11:00.778580Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-13",
@@ -221,7 +221,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 2,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-13T13:09:42.841074Z"
+        "updatedAt": "2026-07-13T21:11:00.778580Z"
       },
       "note": "Scheduled sportsgambler_wnba refresh returned 2 pick(s).",
       "ok": true,
@@ -279,12 +279,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-13T13:09:42.841074Z"
+      "updatedAt": "2026-07-13T21:11:00.778580Z"
     },
     "sportytrader_fifa_world_cup": {
       "date": "2026-07-13",
       "errors": [],
-      "generatedAt": "2026-07-13T13:09:42.841074Z",
+      "generatedAt": "2026-07-13T21:11:00.778580Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-13",
@@ -293,17 +293,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-13T13:09:42.841074Z"
+        "updatedAt": "2026-07-13T21:11:00.778580Z"
       },
       "note": "Scheduled sportytrader_fifa_world_cup refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-07-13T13:09:42.841074Z"
+      "updatedAt": "2026-07-13T21:11:00.778580Z"
     },
     "sportytrader_mlb": {
       "date": "2026-07-13",
       "errors": [],
-      "generatedAt": "2026-07-13T13:09:42.841074Z",
+      "generatedAt": "2026-07-13T21:11:00.778580Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-13",
@@ -312,17 +312,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-13T13:09:42.841074Z"
+        "updatedAt": "2026-07-13T21:11:00.778580Z"
       },
       "note": "Scheduled sportytrader_mlb refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-07-13T13:09:42.841074Z"
+      "updatedAt": "2026-07-13T21:11:00.778580Z"
     },
     "sportytrader_nba": {
       "date": "2026-07-13",
       "errors": [],
-      "generatedAt": "2026-07-13T13:09:42.841074Z",
+      "generatedAt": "2026-07-13T21:11:00.778580Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-13",
@@ -331,31 +331,58 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-13T13:09:42.841074Z"
+        "updatedAt": "2026-07-13T21:11:00.778580Z"
       },
       "note": "Scheduled sportytrader_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-07-13T13:09:42.841074Z"
+      "updatedAt": "2026-07-13T21:11:00.778580Z"
     },
     "sportytrader_wnba": {
       "date": "2026-07-13",
       "errors": [],
-      "generatedAt": "2026-07-13T13:09:42.841074Z",
+      "generatedAt": "2026-07-13T21:11:00.778580Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-13",
         "feed": "sportytrader_wnba",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 0,
+        "pick_count": 1,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-13T13:09:42.841074Z"
+        "updatedAt": "2026-07-13T21:11:00.778580Z"
       },
-      "note": "Scheduled sportytrader_wnba refresh returned 0 pick(s).",
+      "note": "Scheduled sportytrader_wnba refresh returned 1 pick(s).",
       "ok": true,
-      "picks": [],
-      "updatedAt": "2026-07-13T13:09:42.841074Z"
+      "picks": [
+        {
+          "date": "2026-07-13",
+          "decision": "BET",
+          "edge": null,
+          "game": "Minnesota Lynx vs Phoenix Mercury",
+          "matchup": "Minnesota Lynx vs Phoenix Mercury",
+          "odds": -115,
+          "pick": "Lynx (-12.5) cover the spread (Lynx vs Mercury)",
+          "pregame_snapshot": {
+            "date": "2026-07-13",
+            "decision": "BET",
+            "edge": null,
+            "game": "Minnesota Lynx vs Phoenix Mercury",
+            "matchup": "Minnesota Lynx vs Phoenix Mercury",
+            "odds": -115,
+            "pick": "Lynx (-12.5) cover the spread (Lynx vs Mercury)",
+            "probability": null,
+            "source": "SportyTraderWNBA",
+            "sport": "WNBA",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderWNBA",
+          "sport": "WNBA",
+          "units": 1
+        }
+      ],
+      "updatedAt": "2026-07-13T21:11:00.778580Z"
     }
   },
   "fifa_world_cup": {
@@ -4998,7 +5025,7 @@
     "sportsgambler_fifa_world_cup": {
       "date": "2026-07-13",
       "errors": [],
-      "generatedAt": "2026-07-13T13:09:42.841074Z",
+      "generatedAt": "2026-07-13T21:11:00.778580Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-13",
@@ -5007,17 +5034,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-13T13:09:42.841074Z"
+        "updatedAt": "2026-07-13T21:11:00.778580Z"
       },
       "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-07-13T13:09:42.841074Z"
+      "updatedAt": "2026-07-13T21:11:00.778580Z"
     },
     "sportsgambler_mlb": {
       "date": "2026-07-13",
       "errors": [],
-      "generatedAt": "2026-07-13T13:09:42.841074Z",
+      "generatedAt": "2026-07-13T21:11:00.778580Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-13",
@@ -5026,17 +5053,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-13T13:09:42.841074Z"
+        "updatedAt": "2026-07-13T21:11:00.778580Z"
       },
       "note": "Scheduled sportsgambler_mlb refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-07-13T13:09:42.841074Z"
+      "updatedAt": "2026-07-13T21:11:00.778580Z"
     },
     "sportsgambler_nba": {
       "date": "2026-07-13",
       "errors": [],
-      "generatedAt": "2026-07-13T13:09:42.841074Z",
+      "generatedAt": "2026-07-13T21:11:00.778580Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-13",
@@ -5045,17 +5072,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-13T13:09:42.841074Z"
+        "updatedAt": "2026-07-13T21:11:00.778580Z"
       },
       "note": "Scheduled sportsgambler_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-07-13T13:09:42.841074Z"
+      "updatedAt": "2026-07-13T21:11:00.778580Z"
     },
     "sportsgambler_wnba": {
       "date": "2026-07-13",
       "errors": [],
-      "generatedAt": "2026-07-13T13:09:42.841074Z",
+      "generatedAt": "2026-07-13T21:11:00.778580Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-13",
@@ -5064,7 +5091,7 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 2,
         "provider": "sportsgambler",
-        "updatedAt": "2026-07-13T13:09:42.841074Z"
+        "updatedAt": "2026-07-13T21:11:00.778580Z"
       },
       "note": "Scheduled sportsgambler_wnba refresh returned 2 pick(s).",
       "ok": true,
@@ -5140,12 +5167,12 @@
           "units": 1
         }
       ],
-      "updatedAt": "2026-07-13T13:09:42.841074Z"
+      "updatedAt": "2026-07-13T21:11:00.778580Z"
     },
     "sportytrader_fifa_world_cup": {
       "date": "2026-07-13",
       "errors": [],
-      "generatedAt": "2026-07-13T13:09:42.841074Z",
+      "generatedAt": "2026-07-13T21:11:00.778580Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-13",
@@ -5154,17 +5181,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-13T13:09:42.841074Z"
+        "updatedAt": "2026-07-13T21:11:00.778580Z"
       },
       "note": "Scheduled sportytrader_fifa_world_cup refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-07-13T13:09:42.841074Z"
+      "updatedAt": "2026-07-13T21:11:00.778580Z"
     },
     "sportytrader_mlb": {
       "date": "2026-07-13",
       "errors": [],
-      "generatedAt": "2026-07-13T13:09:42.841074Z",
+      "generatedAt": "2026-07-13T21:11:00.778580Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-13",
@@ -5173,17 +5200,17 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-13T13:09:42.841074Z"
+        "updatedAt": "2026-07-13T21:11:00.778580Z"
       },
       "note": "Scheduled sportytrader_mlb refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-07-13T13:09:42.841074Z"
+      "updatedAt": "2026-07-13T21:11:00.778580Z"
     },
     "sportytrader_nba": {
       "date": "2026-07-13",
       "errors": [],
-      "generatedAt": "2026-07-13T13:09:42.841074Z",
+      "generatedAt": "2026-07-13T21:11:00.778580Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-13",
@@ -5192,31 +5219,58 @@
         "leagues": "nba,mlb,wnba,fifa_world_cup",
         "pick_count": 0,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-13T13:09:42.841074Z"
+        "updatedAt": "2026-07-13T21:11:00.778580Z"
       },
       "note": "Scheduled sportytrader_nba refresh returned 0 pick(s).",
       "ok": true,
       "picks": [],
-      "updatedAt": "2026-07-13T13:09:42.841074Z"
+      "updatedAt": "2026-07-13T21:11:00.778580Z"
     },
     "sportytrader_wnba": {
       "date": "2026-07-13",
       "errors": [],
-      "generatedAt": "2026-07-13T13:09:42.841074Z",
+      "generatedAt": "2026-07-13T21:11:00.778580Z",
       "generatedBy": "github-actions:external-feed-refresh",
       "meta": {
         "date": "2026-07-13",
         "feed": "sportytrader_wnba",
         "from": "github-actions",
         "leagues": "nba,mlb,wnba,fifa_world_cup",
-        "pick_count": 0,
+        "pick_count": 1,
         "provider": "sportytrader",
-        "updatedAt": "2026-07-13T13:09:42.841074Z"
+        "updatedAt": "2026-07-13T21:11:00.778580Z"
       },
-      "note": "Scheduled sportytrader_wnba refresh returned 0 pick(s).",
+      "note": "Scheduled sportytrader_wnba refresh returned 1 pick(s).",
       "ok": true,
-      "picks": [],
-      "updatedAt": "2026-07-13T13:09:42.841074Z"
+      "picks": [
+        {
+          "date": "2026-07-13",
+          "decision": "BET",
+          "edge": null,
+          "game": "Minnesota Lynx vs Phoenix Mercury",
+          "matchup": "Minnesota Lynx vs Phoenix Mercury",
+          "odds": -115,
+          "pick": "Lynx (-12.5) cover the spread (Lynx vs Mercury)",
+          "pregame_snapshot": {
+            "date": "2026-07-13",
+            "decision": "BET",
+            "edge": null,
+            "game": "Minnesota Lynx vs Phoenix Mercury",
+            "matchup": "Minnesota Lynx vs Phoenix Mercury",
+            "odds": -115,
+            "pick": "Lynx (-12.5) cover the spread (Lynx vs Mercury)",
+            "probability": null,
+            "source": "SportyTraderWNBA",
+            "sport": "WNBA",
+            "units": 1
+          },
+          "probability": null,
+          "source": "SportyTraderWNBA",
+          "sport": "WNBA",
+          "units": 1
+        }
+      ],
+      "updatedAt": "2026-07-13T21:11:00.778580Z"
     },
     "wnba": {
       "ok": true,
@@ -7506,7 +7560,7 @@
   "sportsgambler_fifa_world_cup": {
     "date": "2026-07-13",
     "errors": [],
-    "generatedAt": "2026-07-13T13:09:42.841074Z",
+    "generatedAt": "2026-07-13T21:11:00.778580Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-13",
@@ -7515,17 +7569,17 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 0,
       "provider": "sportsgambler",
-      "updatedAt": "2026-07-13T13:09:42.841074Z"
+      "updatedAt": "2026-07-13T21:11:00.778580Z"
     },
     "note": "Scheduled sportsgambler_fifa_world_cup refresh returned 0 pick(s).",
     "ok": true,
     "picks": [],
-    "updatedAt": "2026-07-13T13:09:42.841074Z"
+    "updatedAt": "2026-07-13T21:11:00.778580Z"
   },
   "sportsgambler_mlb": {
     "date": "2026-07-13",
     "errors": [],
-    "generatedAt": "2026-07-13T13:09:42.841074Z",
+    "generatedAt": "2026-07-13T21:11:00.778580Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-13",
@@ -7534,17 +7588,17 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 0,
       "provider": "sportsgambler",
-      "updatedAt": "2026-07-13T13:09:42.841074Z"
+      "updatedAt": "2026-07-13T21:11:00.778580Z"
     },
     "note": "Scheduled sportsgambler_mlb refresh returned 0 pick(s).",
     "ok": true,
     "picks": [],
-    "updatedAt": "2026-07-13T13:09:42.841074Z"
+    "updatedAt": "2026-07-13T21:11:00.778580Z"
   },
   "sportsgambler_nba": {
     "date": "2026-07-13",
     "errors": [],
-    "generatedAt": "2026-07-13T13:09:42.841074Z",
+    "generatedAt": "2026-07-13T21:11:00.778580Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-13",
@@ -7553,17 +7607,17 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 0,
       "provider": "sportsgambler",
-      "updatedAt": "2026-07-13T13:09:42.841074Z"
+      "updatedAt": "2026-07-13T21:11:00.778580Z"
     },
     "note": "Scheduled sportsgambler_nba refresh returned 0 pick(s).",
     "ok": true,
     "picks": [],
-    "updatedAt": "2026-07-13T13:09:42.841074Z"
+    "updatedAt": "2026-07-13T21:11:00.778580Z"
   },
   "sportsgambler_wnba": {
     "date": "2026-07-13",
     "errors": [],
-    "generatedAt": "2026-07-13T13:09:42.841074Z",
+    "generatedAt": "2026-07-13T21:11:00.778580Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-13",
@@ -7572,7 +7626,7 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 2,
       "provider": "sportsgambler",
-      "updatedAt": "2026-07-13T13:09:42.841074Z"
+      "updatedAt": "2026-07-13T21:11:00.778580Z"
     },
     "note": "Scheduled sportsgambler_wnba refresh returned 2 pick(s).",
     "ok": true,
@@ -7644,12 +7698,12 @@
         "units": 1
       }
     ],
-    "updatedAt": "2026-07-13T13:09:42.841074Z"
+    "updatedAt": "2026-07-13T21:11:00.778580Z"
   },
   "sportytrader_fifa_world_cup": {
     "date": "2026-07-13",
     "errors": [],
-    "generatedAt": "2026-07-13T13:09:42.841074Z",
+    "generatedAt": "2026-07-13T21:11:00.778580Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-13",
@@ -7658,17 +7712,17 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 0,
       "provider": "sportytrader",
-      "updatedAt": "2026-07-13T13:09:42.841074Z"
+      "updatedAt": "2026-07-13T21:11:00.778580Z"
     },
     "note": "Scheduled sportytrader_fifa_world_cup refresh returned 0 pick(s).",
     "ok": true,
     "picks": [],
-    "updatedAt": "2026-07-13T13:09:42.841074Z"
+    "updatedAt": "2026-07-13T21:11:00.778580Z"
   },
   "sportytrader_mlb": {
     "date": "2026-07-13",
     "errors": [],
-    "generatedAt": "2026-07-13T13:09:42.841074Z",
+    "generatedAt": "2026-07-13T21:11:00.778580Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-13",
@@ -7677,17 +7731,17 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 0,
       "provider": "sportytrader",
-      "updatedAt": "2026-07-13T13:09:42.841074Z"
+      "updatedAt": "2026-07-13T21:11:00.778580Z"
     },
     "note": "Scheduled sportytrader_mlb refresh returned 0 pick(s).",
     "ok": true,
     "picks": [],
-    "updatedAt": "2026-07-13T13:09:42.841074Z"
+    "updatedAt": "2026-07-13T21:11:00.778580Z"
   },
   "sportytrader_nba": {
     "date": "2026-07-13",
     "errors": [],
-    "generatedAt": "2026-07-13T13:09:42.841074Z",
+    "generatedAt": "2026-07-13T21:11:00.778580Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-13",
@@ -7696,33 +7750,60 @@
       "leagues": "nba,mlb,wnba,fifa_world_cup",
       "pick_count": 0,
       "provider": "sportytrader",
-      "updatedAt": "2026-07-13T13:09:42.841074Z"
+      "updatedAt": "2026-07-13T21:11:00.778580Z"
     },
     "note": "Scheduled sportytrader_nba refresh returned 0 pick(s).",
     "ok": true,
     "picks": [],
-    "updatedAt": "2026-07-13T13:09:42.841074Z"
+    "updatedAt": "2026-07-13T21:11:00.778580Z"
   },
   "sportytrader_wnba": {
     "date": "2026-07-13",
     "errors": [],
-    "generatedAt": "2026-07-13T13:09:42.841074Z",
+    "generatedAt": "2026-07-13T21:11:00.778580Z",
     "generatedBy": "github-actions:external-feed-refresh",
     "meta": {
       "date": "2026-07-13",
       "feed": "sportytrader_wnba",
       "from": "github-actions",
       "leagues": "nba,mlb,wnba,fifa_world_cup",
-      "pick_count": 0,
+      "pick_count": 1,
       "provider": "sportytrader",
-      "updatedAt": "2026-07-13T13:09:42.841074Z"
+      "updatedAt": "2026-07-13T21:11:00.778580Z"
     },
-    "note": "Scheduled sportytrader_wnba refresh returned 0 pick(s).",
+    "note": "Scheduled sportytrader_wnba refresh returned 1 pick(s).",
     "ok": true,
-    "picks": [],
-    "updatedAt": "2026-07-13T13:09:42.841074Z"
+    "picks": [
+      {
+        "date": "2026-07-13",
+        "decision": "BET",
+        "edge": null,
+        "game": "Minnesota Lynx vs Phoenix Mercury",
+        "matchup": "Minnesota Lynx vs Phoenix Mercury",
+        "odds": -115,
+        "pick": "Lynx (-12.5) cover the spread (Lynx vs Mercury)",
+        "pregame_snapshot": {
+          "date": "2026-07-13",
+          "decision": "BET",
+          "edge": null,
+          "game": "Minnesota Lynx vs Phoenix Mercury",
+          "matchup": "Minnesota Lynx vs Phoenix Mercury",
+          "odds": -115,
+          "pick": "Lynx (-12.5) cover the spread (Lynx vs Mercury)",
+          "probability": null,
+          "source": "SportyTraderWNBA",
+          "sport": "WNBA",
+          "units": 1
+        },
+        "probability": null,
+        "source": "SportyTraderWNBA",
+        "sport": "WNBA",
+        "units": 1
+      }
+    ],
+    "updatedAt": "2026-07-13T21:11:00.778580Z"
   },
-  "updatedAt": "2026-07-13T17:35:36.385923Z",
+  "updatedAt": "2026-07-13T21:11:00.778580Z",
   "wnba": {
     "ok": true,
     "picks": [
