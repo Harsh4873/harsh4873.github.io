@@ -892,6 +892,28 @@
     border-color: var(--accent3);
     background: rgba(77,166,255,0.22);
   }
+  .board-date-notice {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 18px;
+    padding: 11px 16px;
+    border: 1px solid rgba(255,215,0,0.28);
+    border-radius: 14px;
+    background: linear-gradient(180deg, rgba(255,215,0,0.10), rgba(255,215,0,0.03));
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    line-height: 1.45;
+  }
+  .board-date-notice-icon { font-size: 16px; line-height: 1; flex-shrink: 0; }
+  .board-date-notice-text { letter-spacing: 0.1px; }
+  .board-date-notice-text strong { color: var(--gold); font-weight: 600; white-space: nowrap; }
+  body[data-theme="light"] .board-date-notice {
+    border-color: rgba(171,132,0,0.35);
+    background: linear-gradient(180deg, rgba(171,132,0,0.10), rgba(171,132,0,0.03));
+  }
+
   .pick-feed-empty {
     padding: 54px 20px;
     text-align: center;

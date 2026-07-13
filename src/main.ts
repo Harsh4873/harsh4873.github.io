@@ -755,6 +755,23 @@ function ensureSelection(): void {
   if (!calendarMonth) calendarMonth = selectedDate.slice(0, 7);
 }
 
+// When the viewer is following "today" but today has no picks/props for the
+// active mode, ensureSelection() falls back to the most recent populated slate.
+// This banner makes that fallback explicit so an empty slate (e.g. an MLB
+// All-Star break) does not look like the date toggle is stuck on a past day.
+// Returns '' when we are genuinely on today, or when the user has manually
+// navigated to a past date (followCentralToday is false in that case).
+function boardDateFallbackHtml(): string {
+  const today = centralDateKey();
+  if (!followCentralToday || !selectedDate || selectedDate === today) return '';
+  if (getAllPicks().some(pick => pickDateKey(pick) === today)) return '';
+  const itemLabel = activePickMode === 'player' ? 'player props' : 'team picks';
+  return `<div class="board-date-notice" role="status">
+    <span class="board-date-notice-icon" aria-hidden="true">&#128197;</span>
+    <span class="board-date-notice-text">No ${itemLabel} scheduled for today (${escapeHtml(dateLabel(today, true))}). Showing the most recent slate: <strong>${escapeHtml(dateLabel(selectedDate, true))}</strong>.</span>
+  </div>`;
+}
+
 function filteredPicks(): Pick[] {
   return getAllPicks().filter(pick => (
     activeFilters.size === 0 ||
@@ -912,6 +929,8 @@ function bindInlineDatePicker(prefix: 'daily' | 'parlay' | 'profit'): void {
 function renderHome(): void {
   ensureSelection();
   renderFilters();
+  const boardNotice = document.getElementById('home-board-notice');
+  if (boardNotice) boardNotice.innerHTML = boardDateFallbackHtml();
   const picks = boardPicks();
   const stats = statsFor(picks);
   const selectedAll = filteredPicks().filter(pick => pickDateKey(pick) === selectedDate);
@@ -2203,7 +2222,7 @@ function renderDaily(): void {
         ? dailySection('Hot Sources', 'Recent three-slate form plus each source’s unique BET/LEAN calls today.', hotForms.length ? `<div class="daily-model-grid">${hotForms.map(dailyHotModelCard).join('')}</div>` : '<div class="daily-empty"><div class="daily-empty-title">No hot source has a published call today</div><div class="daily-empty-sub">This view appears when a source has enough recent decisions and a current greenlight.</div></div>', `${hotForms.length} active sources`)
         : dailySection('Research Queue', researchSubtitle, dailyPickGrid(researchGroups), `${researchGroups.length} unique markets`);
 
-  container.innerHTML = `<div class="daily-hero"><div class="daily-hero-row"><div><div class="daily-eyebrow">TODAY'S QUICK READ</div><div class="daily-title">The Shortlist</div><div class="daily-sub">${escapeHtml(dateLabel(key, true))} | Each unique market appears once. Choose a view to focus on ${dailyFocus}.</div></div><div class="daily-clock-wrap"><div class="daily-clock-label">PICKS FOR</div><div class="daily-clock">${escapeHtml(key)}</div></div></div></div>
+  container.innerHTML = `${boardDateFallbackHtml()}<div class="daily-hero"><div class="daily-hero-row"><div><div class="daily-eyebrow">TODAY'S QUICK READ</div><div class="daily-title">The Shortlist</div><div class="daily-sub">${escapeHtml(dateLabel(key, true))} | Each unique market appears once. Choose a view to focus on ${dailyFocus}.</div></div><div class="daily-clock-wrap"><div class="daily-clock-label">PICKS FOR</div><div class="daily-clock">${escapeHtml(key)}</div></div></div></div>
     <div class="daily-view-shell">
       <div class="daily-view-copy"><div class="daily-view-eyebrow">CHOOSE A VIEW</div><div class="daily-view-title">${escapeHtml(activeView.label)}</div><div class="daily-view-description">${escapeHtml(activeView.description)}. Sorted ${escapeHtml(activeSort.label.toLowerCase())}; ${stats.pending} picks remain open and ${priceyCount} are pricey favorites.</div></div>
       <div class="daily-view-nav" role="tablist" aria-label="Daily shortlist categories">${viewOptions.map(option => `<button class="daily-view-tab ${dailyView === option.key ? 'active' : ''}" type="button" role="tab" aria-selected="${dailyView === option.key}" onclick="setDailyView('${option.key}')"><span class="daily-view-tab-count">${option.count}</span><span class="daily-view-tab-label">${option.label}</span><span class="daily-view-tab-desc">${option.description}</span></button>`).join('')}</div>
@@ -2284,7 +2303,7 @@ function renderProfit(): void {
   const selected = numericSummary(modeSummary?.portfolioCandidates ?? modeSummary?.selected, cardCandidates.length);
   const evidenceRows = numericSummary(modeSummary?.evidenceRows, 0);
 
-  container.innerHTML = `<div class="profit-desk-shell">
+  container.innerHTML = `${boardDateFallbackHtml()}<div class="profit-desk-shell">
     <section class="profit-decision ${payload ? 'has-data' : 'is-missing'}" aria-labelledby="profit-desk-decision">
       <div class="profit-decision-copy">
         <div class="profit-kicker">${payload ? 'LIVE DECISION' : 'PIPELINE STATUS'} • ALL MARKETS</div>
@@ -2363,7 +2382,7 @@ function renderParlays(): void {
   const activeBody = noDatePayloadBody || emptyModeBody || parlaySections(visibleCards, parlayView, payload);
   const rankingsPanel = payload ? parlayRankingsPanel(parlayRankingsForCards(parlayRankingCardsForDate(key, modeCards, payload.engineVersion), payload)) : '';
 
-  container.innerHTML = `<div class="daily-hero"><div class="daily-hero-row"><div><div class="daily-eyebrow">PARLAY BOARD</div><div class="daily-title">${escapeHtml(boardLabel)} Parlays</div><div class="daily-sub">${escapeHtml(dateLabel(key, true))} | ${escapeHtml(boardDescription)}</div></div><div class="daily-clock-wrap"><div class="daily-clock-label">SLATE</div><div class="daily-clock">${escapeHtml(key)}</div><div class="daily-countdown">Updated ${escapeHtml(generatedAt)}</div></div></div></div>
+  container.innerHTML = `${boardDateFallbackHtml()}<div class="daily-hero"><div class="daily-hero-row"><div><div class="daily-eyebrow">PARLAY BOARD</div><div class="daily-title">${escapeHtml(boardLabel)} Parlays</div><div class="daily-sub">${escapeHtml(dateLabel(key, true))} | ${escapeHtml(boardDescription)}</div></div><div class="daily-clock-wrap"><div class="daily-clock-label">SLATE</div><div class="daily-clock">${escapeHtml(key)}</div><div class="daily-countdown">Updated ${escapeHtml(generatedAt)}</div></div></div></div>
     <div class="daily-stats-strip">
       <div class="daily-stat"><div class="daily-stat-val accent">${twoLegCards}</div><div class="daily-stat-label">Shown 2-Leg Slips</div></div>
       <div class="daily-stat"><div class="daily-stat-val">${visibleCards.length}</div><div class="daily-stat-label">Shown Slips</div></div>
