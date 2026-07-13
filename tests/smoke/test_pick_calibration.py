@@ -273,6 +273,78 @@ def test_player_prop_snapshots_remain_available_to_outcome_ledger(tmp_path: Path
     assert ledger["summary"]["total_picks"] == 2
 
 
+def test_model_cache_pass_decisions_stay_out_of_outcome_ledger(tmp_path: Path):
+    model_dir = tmp_path / "data" / "model_cache"
+    props_dir = tmp_path / "data" / "player_props_cache"
+    model_dir.mkdir(parents=True)
+    props_dir.mkdir(parents=True)
+    downgraded = _pick(result="win", decision="PASS")
+    downgraded["pregame_snapshot"] = {"decision": "BET", "probability": 0.7, "sport": "MLB"}
+    native_pass = _pick(id="pick-2", pick="Cubs ML", decision="PASS", result="loss")
+    kept = _pick(id="pick-3", pick="Guardians ML", decision="LEAN", result="win")
+    payload = {"date": "2026-07-01", "models": {"scores24_mlb": {"picks": [downgraded, native_pass, kept]}}}
+    (model_dir / "2026-07-01.json").write_text(json.dumps(payload), encoding="utf-8")
+
+    ledger = build_outcome_ledger(tmp_path)
+
+    assert ledger["summary"]["total_picks"] == 1
+    assert ledger["records"][0]["pick"] == "Guardians ML"
+    assert ledger["records"][0]["decision"] == "LEAN"
+
+
+def test_player_prop_pass_abstentions_remain_in_outcome_ledger(tmp_path: Path):
+    model_dir = tmp_path / "data" / "model_cache"
+    props_dir = tmp_path / "data" / "player_props_cache"
+    model_dir.mkdir(parents=True)
+    props_dir.mkdir(parents=True)
+    abstention = _pick(
+        date="2026-06-21",
+        decision="PASS",
+        units=0,
+        result="win",
+        probability_source="player_props_ml_v1",
+        ml_calibration_excluded=True,
+    )
+    payload = {
+        "date": "2026-06-21",
+        "generatedAt": "2026-06-21T18:00:00Z",
+        "models": {"mlb_player_props": {"picks": [abstention]}},
+    }
+    (props_dir / "2026-06-21.json").write_text(json.dumps(payload), encoding="utf-8")
+
+    ledger = build_outcome_ledger(tmp_path)
+
+    assert ledger["summary"]["total_picks"] == 1
+    assert ledger["records"][0]["decision"] == "PASS"
+    assert ledger["summary"]["trainable_decided_picks"] == 0
+
+
+def test_certified_team_record_excludes_recalibration_pass_downgrades():
+    from scripts.pick_calibration import _certified_team_record
+
+    def certified(decision: str) -> dict:
+        return {
+            "id": f"team-{decision.lower()}",
+            "slate_date": "2026-07-01",
+            "model_key": "mlb_new",
+            "calibration_eligible": True,
+            "certification": {"status": "certified"},
+            "raw_probability": 0.62,
+            "observed_american_odds": -115,
+            "result": "win",
+            "stake": 1.0,
+            "decision": decision,
+            "raw_decision": "BET",
+            "sport": "MLB",
+            "source": "MLB Team Model",
+            "market": "moneyline",
+            "pregame_snapshot": {"decision": "BET", "pick": "Cubs ML"},
+        }
+
+    assert _certified_team_record(certified("BET")) is not None
+    assert _certified_team_record(certified("PASS")) is None
+
+
 def test_trainer_waits_for_100_new_decisions_then_force_evaluates(tmp_path: Path):
     calibration_dir = tmp_path / "calibration"
     calibration_dir.mkdir()
