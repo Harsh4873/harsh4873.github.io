@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180">
+  <!-- Full-bleed terracotta field; iOS supplies the device corner mask. -->
+  <rect width="180" height="180" fill="#c96442"/>
+  <path d="M0 150 30 180H0zM150 0h30v30z" fill="#a6472f" opacity=".8"/>
+
+  <!-- A compact local training ledger. -->
+  <rect x="23" y="18" width="134" height="144" rx="20" fill="#a6472f" opacity=".4"/>
+  <rect x="28" y="14" width="124" height="146" rx="18" fill="#faf9f5"/>
+  <path d="M51 14v13M90 14v13M129 14v13" stroke="#1f1e1d" stroke-width="7" stroke-linecap="round"/>
+  <path d="M45 52h90M45 109h90M45 139h90" stroke="#d9d6cb" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Terracotta dumbbell, deliberately oversized for small home-screen sizes. -->
+  <path d="M55 81h70" stroke="#1f1e1d" stroke-width="8" stroke-linecap="round"/>
+  <path d="M48 68v26M59 64v34M121 64v34M132 68v26"
+        stroke="#c96442" stroke-width="10" stroke-linecap="round"/>
+
+  <!-- A completed set and its ledger line. -->
+  <path d="m47 126 8 8 15-18" fill="none" stroke="#7a8b6f" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M82 125h51" stroke="#1f1e1d" stroke-width="6" stroke-linecap="round"/>
+</svg>
