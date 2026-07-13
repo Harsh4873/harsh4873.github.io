@@ -5779,6 +5779,7 @@
           "decision": "LEAN",
           "edge": 8.02,
           "game": "Los Angeles Sparks @ Atlanta Dream",
+          "game_start_time": "2026-07-13T23:00Z",
           "guardrail_reasons": [
             "new totals market capped at LEAN while its live record is established"
           ],
@@ -5850,6 +5851,7 @@
           "selection": "Under",
           "source": "WNBA Model",
           "sport": "WNBA",
+          "start_time": "2026-07-13T23:00Z",
           "units": 0.01,
           "vegas": 181.5
         },

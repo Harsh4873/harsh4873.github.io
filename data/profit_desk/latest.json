@@ -669,7 +669,7 @@
       "game": "Los Angeles Sparks @ Atlanta Dream",
       "gradeSupportSource": "repository_grader_default",
       "gradeSupported": true,
-      "id": "profit-9b05fccf0a506ce7551f3947",
+      "id": "profit-574f20b7069dd94cff8df3d3",
       "lane": null,
       "laneBlockers": {
         "edge": [
@@ -690,19 +690,19 @@
           "value_probability_positive_ev_below_0.70"
         ]
       },
-      "line": 180.5,
+      "line": 181.5,
       "liveQualified": false,
       "market": "totals",
       "marketFamily": "totals",
-      "marketIdentity": "market:0b5a815a14b967b95b8f317b",
+      "marketIdentity": "market:d76c328d525df8c107a8ed3c",
       "mode": "team",
       "modelVersion": "source_identity:wnba",
       "oddsAmerican": -112,
-      "pick": "Under 180.5 (Los Angeles Sparks vs Atlanta Dream)",
+      "pick": "Under 181.5 (Los Angeles Sparks vs Atlanta Dream)",
       "player": null,
       "policyVersion": "profit_desk_policy_v2",
       "price": {
-        "ageHours": 9.809,
+        "ageHours": 6.227,
         "breakEvenProbability": 0.528302,
         "decimalOdds": 1.892857,
         "eligibleForAlphaEstimate": true,
@@ -725,12 +725,12 @@
         "startTime": "2026-07-13T23:00Z",
         "tier": "B",
         "tierLabel": "posted_two_sided",
-        "timestamp": "2026-07-13T13:11:28.310455Z",
+        "timestamp": "2026-07-13T16:46:21.956277Z",
         "timestampField": "pick.market_updated_at",
         "twoSided": true,
-        "updatedAt": "2026-07-13T13:11:28.310455Z"
+        "updatedAt": "2026-07-13T16:46:21.956277Z"
       },
-      "rawModelProbabilityIgnored": 0.6973,
+      "rawModelProbabilityIgnored": 0.7164,
       "result": "pending",
       "shadowQualified": false,
       "source": "WNBA Model",
@@ -742,7 +742,6 @@
     },
     {
       "blockers": [
-        "missing_or_invalid_game_start_time",
         "edge_insufficient_source_samples",
         "edge_insufficient_segment_samples",
         "edge_insufficient_distinct_prior_dates",
@@ -822,7 +821,7 @@
       "game": "Los Angeles Sparks @ Atlanta Dream",
       "gradeSupportSource": "repository_grader_default",
       "gradeSupported": true,
-      "id": "profit-574f20b7069dd94cff8df3d3",
+      "id": "profit-9b05fccf0a506ce7551f3947",
       "lane": null,
       "laneBlockers": {
         "edge": [
@@ -834,9 +833,7 @@
           "edge_conservative_probability_margin_below_0.02",
           "edge_non_positive_conservative_ev"
         ],
-        "structural": [
-          "missing_or_invalid_game_start_time"
-        ],
+        "structural": [],
         "value": [
           "value_insufficient_source_samples",
           "value_insufficient_distinct_prior_dates",
@@ -845,24 +842,24 @@
           "value_probability_positive_ev_below_0.70"
         ]
       },
-      "line": 181.5,
+      "line": 180.5,
       "liveQualified": false,
       "market": "totals",
       "marketFamily": "totals",
-      "marketIdentity": "market:d76c328d525df8c107a8ed3c",
+      "marketIdentity": "market:0b5a815a14b967b95b8f317b",
       "mode": "team",
       "modelVersion": "source_identity:wnba",
       "oddsAmerican": -112,
-      "pick": "Under 181.5 (Los Angeles Sparks vs Atlanta Dream)",
+      "pick": "Under 180.5 (Los Angeles Sparks vs Atlanta Dream)",
       "player": null,
       "policyVersion": "profit_desk_policy_v2",
       "price": {
-        "ageHours": null,
+        "ageHours": 9.809,
         "breakEvenProbability": 0.528302,
         "decimalOdds": 1.892857,
         "eligibleForAlphaEstimate": true,
-        "fresh": false,
-        "freshPregame": false,
+        "fresh": true,
+        "freshPregame": true,
         "maxAgeHours": 24.0,
         "noVigInputs": {
           "hold": 1.047533,
@@ -877,22 +874,22 @@
         "quality": "verified_two_sided",
         "source": "espn_scoreboard:DraftKings",
         "sourceField": "pick.price_source",
-        "startTime": null,
+        "startTime": "2026-07-13T23:00Z",
         "tier": "B",
         "tierLabel": "posted_two_sided",
-        "timestamp": "2026-07-13T16:46:21.956277Z",
+        "timestamp": "2026-07-13T13:11:28.310455Z",
         "timestampField": "pick.market_updated_at",
         "twoSided": true,
-        "updatedAt": "2026-07-13T16:46:21.956277Z"
+        "updatedAt": "2026-07-13T13:11:28.310455Z"
       },
-      "rawModelProbabilityIgnored": 0.7164,
+      "rawModelProbabilityIgnored": 0.6973,
       "result": "pending",
       "shadowQualified": false,
       "source": "WNBA Model",
       "sourceKey": "wnba",
       "sport": "WNBA",
       "stakeUnits": 0.0,
-      "tier": "avoid",
+      "tier": "watch",
       "valueQualified": false
     },
     {
@@ -2772,7 +2769,7 @@
     }
   ],
   "summary": {
-    "avoid": 7,
+    "avoid": 6,
     "candidateCount": 12,
     "candidatesEvaluated": 12,
     "deduplicatedPicks": 0,
@@ -2825,7 +2822,7 @@
         "watchlist": 0
       },
       "team": {
-        "avoid": 7,
+        "avoid": 6,
         "candidateCount": 12,
         "candidates": 12,
         "candidatesEvaluated": 12,
@@ -2838,7 +2835,7 @@
         "selected": 0,
         "shadowQualified": 0,
         "valueQualified": 0,
-        "watchlist": 5
+        "watchlist": 6
       }
     },
     "observedPriceCandidates": 6,
@@ -2873,6 +2870,6 @@
     },
     "sourcesTracked": 25,
     "valueQualified": 0,
-    "watchlist": 5
+    "watchlist": 6
   }
 }
