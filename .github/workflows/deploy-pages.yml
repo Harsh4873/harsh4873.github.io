@@ -53,20 +53,20 @@ jobs:
       - name: Checkout personal portfolio
         uses: actions/checkout@v4
         with:
-          ref: me
-          path: me-app
+          ref: portfolio
+          path: portfolio-app
 
-      - name: Checkout habit tracker
+      - name: Checkout Daymark
         uses: actions/checkout@v4
         with:
-          ref: tracker
-          path: tracker-app
+          ref: daymark
+          path: daymark-app
 
-      - name: Checkout Slate planner
+      - name: Checkout Slate
         uses: actions/checkout@v4
         with:
-          ref: todo
-          path: todo-app
+          ref: slate
+          path: slate-app
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -79,9 +79,9 @@ jobs:
           cache-dependency-path: |
             package-lock.json
             gym-app/package-lock.json
-            me-app/package-lock.json
-            tracker-app/package-lock.json
-            todo-app/package-lock.json
+            portfolio-app/package-lock.json
+            daymark-app/package-lock.json
+            slate-app/package-lock.json
 
       - name: Install frontend dependencies
         run: npm ci
@@ -91,15 +91,15 @@ jobs:
         run: npm ci
 
       - name: Install portfolio dependencies
-        working-directory: me-app
+        working-directory: portfolio-app
         run: npm ci
 
-      - name: Install tracker dependencies
-        working-directory: tracker-app
+      - name: Install Daymark dependencies
+        working-directory: daymark-app
         run: npm ci
 
       - name: Install Slate dependencies
-        working-directory: todo-app
+        working-directory: slate-app
         run: npm ci
 
       - name: Build site artifact
@@ -120,25 +120,25 @@ jobs:
           cp -R dist/. ../dist/gym/
 
       - name: Build personal portfolio artifact
-        working-directory: me-app
+        working-directory: portfolio-app
         run: |
           npm run build
-          mkdir -p ../dist/me
-          cp -R dist/. ../dist/me/
+          mkdir -p ../dist/portfolio
+          cp -R dist/. ../dist/portfolio/
 
-      - name: Build habit tracker artifact
-        working-directory: tracker-app
+      - name: Build Daymark artifact
+        working-directory: daymark-app
         run: |
           npm run build
-          mkdir -p ../dist/tracker
-          cp -R dist/. ../dist/tracker/
+          mkdir -p ../dist/daymark
+          cp -R dist/. ../dist/daymark/
 
-      - name: Build Slate planner artifact
-        working-directory: todo-app
+      - name: Build Slate artifact
+        working-directory: slate-app
         run: |
           npm run build
-          mkdir -p ../dist/todo
-          cp -R dist/. ../dist/todo/
+          mkdir -p ../dist/slate
+          cp -R dist/. ../dist/slate/
 
       - name: Verify styled Pages artifact
         run: |
@@ -154,18 +154,18 @@ jobs:
           grep -q '/gym/assets/' dist/gym/index.html
           test -n "$(find dist/gym/assets -maxdepth 1 -name '*.css' -print -quit)"
           test -n "$(find dist/gym/assets -maxdepth 1 -name '*.js' -print -quit)"
-          test -f dist/me/index.html
-          grep -q '/me/assets/' dist/me/index.html
-          test -n "$(find dist/me/assets -maxdepth 1 -name '*.css' -print -quit)"
-          test -n "$(find dist/me/assets -maxdepth 1 -name '*.js' -print -quit)"
-          test -f dist/tracker/index.html
-          grep -q '/tracker/assets/' dist/tracker/index.html
-          test -n "$(find dist/tracker/assets -maxdepth 1 -name '*.css' -print -quit)"
-          test -n "$(find dist/tracker/assets -maxdepth 1 -name '*.js' -print -quit)"
-          test -f dist/todo/index.html
-          grep -q '/todo/assets/' dist/todo/index.html
-          test -n "$(find dist/todo/assets -maxdepth 1 -name '*.css' -print -quit)"
-          test -n "$(find dist/todo/assets -maxdepth 1 -name '*.js' -print -quit)"
+          test -f dist/portfolio/index.html
+          grep -q '/portfolio/assets/' dist/portfolio/index.html
+          test -n "$(find dist/portfolio/assets -maxdepth 1 -name '*.css' -print -quit)"
+          test -n "$(find dist/portfolio/assets -maxdepth 1 -name '*.js' -print -quit)"
+          test -f dist/daymark/index.html
+          grep -q '/daymark/assets/' dist/daymark/index.html
+          test -n "$(find dist/daymark/assets -maxdepth 1 -name '*.css' -print -quit)"
+          test -n "$(find dist/daymark/assets -maxdepth 1 -name '*.js' -print -quit)"
+          test -f dist/slate/index.html
+          grep -q '/slate/assets/' dist/slate/index.html
+          test -n "$(find dist/slate/assets -maxdepth 1 -name '*.css' -print -quit)"
+          test -n "$(find dist/slate/assets -maxdepth 1 -name '*.js' -print -quit)"
           python scripts/site_upcheck.py
 
       - name: Upload artifact
