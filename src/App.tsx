@@ -233,11 +233,13 @@ function TodayView({ state, store, dateKey, onDateChange, onAdd, onEdit, onToast
                       <button type="button" className="food-row__main" onClick={() => onEdit(entry)}>
                         <span className="food-row__icon"><Utensils /></span>
                         <span className="food-row__copy">
-                          <strong className="food-row__title">{entry.snapshot.name}</strong>
+                          <span className="food-row__heading">
+                            <strong className="food-row__title">{entry.snapshot.name}</strong>
+                            <span className="food-row__value">{formatNumber(entry.snapshot.nutrition.calories)}<small> kcal</small></span>
+                          </span>
                           <span className="food-row__detail">{entry.snapshot.brand ? `${entry.snapshot.brand} · ` : ''}{formatNumber(entry.snapshot.servings, 2)} × {entry.snapshot.serving.label}</span>
-                          {sourceBadge(entry)}
+                          <span className="food-row__source">{sourceBadge(entry)}</span>
                         </span>
-                        <span className="food-row__value">{formatNumber(entry.snapshot.nutrition.calories)}<small> kcal</small></span>
                       </button>
                       <div className="food-row__quick-actions">
                         <IconButton label={`Repeat ${entry.snapshot.name}`} size="small" onClick={() => {
@@ -580,7 +582,7 @@ export default function App() {
         {route === 'insights' && <InsightsView state={state} />}
         {route === 'profile' && <ProfileView state={state} store={store} sync={sync} onToast={setToast} />}
       </main>
-      <nav className="bottom-nav" aria-label="Fare views">{NAVIGATION.map(({ id, label, icon: Icon }) => <a href={`#${id}`} key={id} className={route === id ? 'is-active' : ''} aria-current={route === id ? 'page' : undefined}><Icon /><span>{label}</span></a>)}</nav>
+      <nav className="bottom-nav" aria-label="Fare views">{NAVIGATION.map(({ id, label, icon: Icon }) => <a href={`#${id}`} key={id} className={`bottom-nav__item${route === id ? ' is-active' : ''}`} aria-current={route === id ? 'page' : undefined}><Icon /><span>{label}</span></a>)}</nav>
       <button type="button" className="floating-add" onClick={() => openAdd()} aria-label="Log food"><Plus /></button>
       <AddFoodSheet open={addOpen} onClose={() => setAddOpen(false)} state={state} store={store} dateKey={dateKey} defaultMealSlot={defaultMeal} onToast={setToast} />
       <EntryEditor entry={editingEntry} store={store} onClose={() => setEditingEntry(null)} />

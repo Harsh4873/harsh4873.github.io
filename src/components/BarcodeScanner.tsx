@@ -1,6 +1,7 @@
 import type { IScannerControls } from '@zxing/browser';
-import { Camera, Keyboard, LoaderCircle, ScanLine, X } from 'lucide-react';
+import { Camera, Keyboard, LoaderCircle, ScanLine } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { Modal, SegmentedControl } from '../ui';
 
 function normalizeBarcode(value: string) {
   const digits = value.replace(/\D/g, '');
@@ -96,36 +97,40 @@ export function BarcodeScanner({ open, onClose, onScan }: BarcodeScannerProps) {
   }
 
   return (
-    <div className="modal-backdrop" role="presentation" onMouseDown={(event) => {
-      if (event.target === event.currentTarget) onClose();
-    }}>
-      <section className="modal scanner-modal" role="dialog" aria-modal="true" aria-labelledby="scanner-title">
-        <header className="modal-header">
-          <div><span className="eyebrow">Packaged food</span><h2 id="scanner-title">Scan a barcode</h2></div>
-          <button type="button" className="icon-button" onClick={onClose} aria-label="Close barcode scanner"><X /></button>
-        </header>
+    <Modal
+      open={open}
+      onClose={onClose}
+      title="Scan a barcode"
+      description="Use the rear camera or enter the digits printed on the package."
+      width="large"
+      className="scanner-modal"
+    >
+      <SegmentedControl
+        value={mode}
+        options={[
+          { value: 'camera', label: 'Camera', icon: <Camera /> },
+          { value: 'manual', label: 'Type code', icon: <Keyboard /> },
+        ]}
+        onChange={setMode}
+        label="Barcode entry method"
+        fullWidth
+      />
 
-        <div className="segmented-control" role="tablist" aria-label="Barcode entry method">
-          <button type="button" className={mode === 'camera' ? 'active' : ''} onClick={() => setMode('camera')}><Camera /> Camera</button>
-          <button type="button" className={mode === 'manual' ? 'active' : ''} onClick={() => setMode('manual')}><Keyboard /> Type code</button>
+      {mode === 'camera' ? (
+        <div className="scanner-stage">
+          <video ref={videoRef} muted playsInline aria-label="Live barcode camera" />
+          <span className="scanner-frame" aria-hidden="true"><ScanLine /></span>
+          {status === 'starting' && <span className="scanner-loading"><LoaderCircle className="spin" /> Starting camera</span>}
         </div>
+      ) : (
+        <form className="manual-barcode" onSubmit={submitManual}>
+          <label>Barcode digits<input inputMode="numeric" autoComplete="off" value={manual} onChange={(event) => setManual(event.target.value)} placeholder="0643843716686" autoFocus /></label>
+          <button type="submit" className="button button--primary">Look up product</button>
+        </form>
+      )}
 
-        {mode === 'camera' ? (
-          <div className="scanner-stage">
-            <video ref={videoRef} muted playsInline aria-label="Live barcode camera" />
-            <span className="scanner-frame" aria-hidden="true"><ScanLine /></span>
-            {status === 'starting' && <span className="scanner-loading"><LoaderCircle className="spin" /> Starting camera</span>}
-          </div>
-        ) : (
-          <form className="manual-barcode" onSubmit={submitManual}>
-            <label>Barcode digits<input inputMode="numeric" autoComplete="off" value={manual} onChange={(event) => setManual(event.target.value)} placeholder="0643843716686" autoFocus /></label>
-            <button type="submit" className="button primary">Look up product</button>
-          </form>
-        )}
-
-        <p className={`scanner-status ${status}`} role="status">{message}</p>
-        <p className="fine-print">Camera video stays on this device and stops as soon as you close the scanner or a code is found.</p>
-      </section>
-    </div>
+      <p className={`scanner-status ${status}`} role="status">{message}</p>
+      <p className="fine-print">Camera video stays on this device and stops as soon as you close the scanner or a code is found.</p>
+    </Modal>
   );
 }

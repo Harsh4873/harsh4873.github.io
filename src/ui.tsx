@@ -5,6 +5,7 @@ import {
   type ReactNode,
   useEffect,
   useId,
+  useRef,
 } from 'react';
 
 export type MacroTone = 'calories' | 'protein' | 'carbs' | 'fat';
@@ -145,6 +146,57 @@ export interface ModalProps {
   width?: 'small' | 'medium' | 'large';
 }
 
+const openModalIds: string[] = [];
+let documentLockCount = 0;
+let lockedScrollY = 0;
+let previousDocumentOverflow = '';
+let previousDocumentOverscroll = '';
+let previousBodyOverflow = '';
+let previousBodyPosition = '';
+let previousBodyTop = '';
+let previousBodyRight = '';
+let previousBodyLeft = '';
+let previousBodyWidth = '';
+
+function lockDocumentScroll() {
+  if (documentLockCount === 0) {
+    lockedScrollY = window.scrollY;
+    previousDocumentOverflow = document.documentElement.style.overflow;
+    previousDocumentOverscroll = document.documentElement.style.overscrollBehavior;
+    previousBodyOverflow = document.body.style.overflow;
+    previousBodyPosition = document.body.style.position;
+    previousBodyTop = document.body.style.top;
+    previousBodyRight = document.body.style.right;
+    previousBodyLeft = document.body.style.left;
+    previousBodyWidth = document.body.style.width;
+
+    document.documentElement.style.overflow = 'hidden';
+    document.documentElement.style.overscrollBehavior = 'none';
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${lockedScrollY}px`;
+    document.body.style.right = '0';
+    document.body.style.left = '0';
+    document.body.style.width = '100%';
+  }
+  documentLockCount += 1;
+}
+
+function unlockDocumentScroll() {
+  documentLockCount = Math.max(0, documentLockCount - 1);
+  if (documentLockCount !== 0) return;
+
+  document.documentElement.style.overflow = previousDocumentOverflow;
+  document.documentElement.style.overscrollBehavior = previousDocumentOverscroll;
+  document.body.style.overflow = previousBodyOverflow;
+  document.body.style.position = previousBodyPosition;
+  document.body.style.top = previousBodyTop;
+  document.body.style.right = previousBodyRight;
+  document.body.style.left = previousBodyLeft;
+  document.body.style.width = previousBodyWidth;
+  window.scrollTo(0, lockedScrollY);
+}
+
 export function Modal({
   open,
   onClose,
@@ -157,24 +209,29 @@ export function Modal({
   variant = 'modal',
   width = 'medium',
 }: ModalProps) {
+  const modalId = useId();
   const titleId = useId();
   const descriptionId = useId();
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
 
   useEffect(() => {
     if (!open) return undefined;
 
-    const previousOverflow = document.body.style.overflow;
+    openModalIds.push(modalId);
+    lockDocumentScroll();
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose();
+      if (event.key === 'Escape' && openModalIds.at(-1) === modalId) onCloseRef.current();
     };
 
-    document.body.style.overflow = 'hidden';
     window.addEventListener('keydown', onKeyDown);
     return () => {
-      document.body.style.overflow = previousOverflow;
+      const stackIndex = openModalIds.lastIndexOf(modalId);
+      if (stackIndex >= 0) openModalIds.splice(stackIndex, 1);
+      unlockDocumentScroll();
       window.removeEventListener('keydown', onKeyDown);
     };
-  }, [onClose, open]);
+  }, [modalId, open]);
 
   if (!open) return null;
 
