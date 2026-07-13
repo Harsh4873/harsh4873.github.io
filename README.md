@@ -1,42 +1,44 @@
-# Fare
+# MtbScope
 
-Fare is Harsh Dave's private, local-first calorie and macro tracker, published at `harsh.bet/fare/` from the isolated `fare` branch of PickLedgerPro.
+MtbScope is a fast, comparison-first browser for the *Mycobacterium tuberculosis* H37Rv genome, published at
+`harsh.bet/genes/`. It is an independent reimagining of the [TB Genome Portal](https://orca2.tamu.edu/U19/) with instant
+search, multi-facet browsing, and a side-by-side panel for four or more genes at once.
 
-## Product model
+## Features
 
-- **Usuals first:** personal suggestions rank query match, meal/time context, frequency, recency, weekday, and pins before any public-database result.
-- **Immutable history:** every diary entry stores its own nutrition and serving snapshot. Editing a saved food or an upstream catalog record never rewrites an earlier day.
-- **Flexible logging:** repeat a food, copy a meal or day, quick-add calories/macros, create custom foods, save meal templates, scan or type a barcode, or explicitly search Open Food Facts.
-- **Useful review:** day totals, remaining targets, macro bars, meal contribution, weekly averages, logged-day completeness, and frequently reused foods.
-- **Private sync:** the local IndexedDB/localStorage mirror works signed out. Optional Google sign-in syncs only the approved account through Firebase and keeps Fare isolated from the other harsh.bet apps.
-- **Portable data:** JSON backup/import plus CSV diary export.
+- **Whole-genome search** — every one of the 4,018 protein-coding genes, searchable by Rv id, gene symbol, or product
+  description with ranked autocomplete. Press <kbd>/</kbd> anywhere to focus it.
+- **Gene browser** — multi-facet filtering (functional class, strand, essentiality) and sortable columns across the whole
+  genome, paginated for speed.
+- **Gene pages** — genomic neighbourhood map, per-study essentiality table, transcriptional-response chart, TnSeq fitness and
+  protein stats, GO terms, and live links to Mycobrowser, KEGG, UniProt, STRING, AlphaFold and NCBI.
+- **Comparison panel** — pin up to eight genes into aligned columns and read their essentiality, an expression heatmap across
+  14 conditions, fitness and protein data together. Shareable and bookmarkable by URL.
+- **Light / dark themes**, responsive layout, no backend and no tracking.
 
-Targets are always user-entered. Fare does not prescribe calorie deficits, macro plans, or medical nutrition guidance.
+## Data
 
-## Food data
-
-Fare searches personal history instantly. Public search happens only after an explicit request because Open Food Facts limits searches and specifically warns against search-as-you-type. Barcode reads use the current product endpoint. Every imported result keeps its source, serving basis, fetch time, and a data-quality note so it can be reviewed before logging.
-
-- Open Food Facts API: <https://openfoodfacts.github.io/documentation/docs/Product-Opener/api/>
-- Open Food Facts database licensing/attribution: <https://openfoodfacts.github.io/documentation/docs/Product-Opener/api/tutorials/license-be-on-the-legal-side/>
-- USDA FoodData Central is not called from the browser because its API key must remain private: <https://fdc.nal.usda.gov/api-guide/>
-
-The app does not display or redistribute product images. Public nutrition data remains visually separated from the private diary and saved-food collection.
-
-## Sync model
-
-Foods, meal templates, and diary entries are individual Firestore documents under `fare_users/{uid}`. Profile, targets, and settings are independent singleton documents. Records merge by `updatedAt` with a deterministic tie-break, and deletes are durable tombstones so an offline device cannot resurrect them. Safe sign-out waits for pending writes before clearing this app's local copy and named Firestore cache.
-
-`firestore.rules` carries the complete shared ruleset for Daymark, Slate, Fare, and Sift because a Firebase rules deployment replaces the project-wide ruleset. Keep the file identical on all four branches.
+- The gene **catalog** — locus (Rv id), gene symbol, coordinates, strand, protein length, and product description — is the
+  H37Rv reference annotation, shipped as a static asset (`public/data/genes.json`).
+- Analytical panels — essentiality, expression, TnSeq fitness, protein biophysics, vulnerability and selection — are
+  **representative demonstration data** generated deterministically from each gene (`src/lib/derive.ts`). They are seeded from
+  real properties so patterns are plausible and stable, but they are not experimental measurements. The UI labels them as
+  representative; see the About page.
 
 ## Development
 
 ```sh
 npm ci
+npm run build:data   # regenerate public/data/genes.json from scripts/source/
 npm test
-npm run test:rules
 npm run typecheck
 npm run build
+npm run dev
 ```
 
-The Vite base, manifest scope, service worker scope, canonical URL, and app icons all use `/fare/`. Main's Pages workflow checks out the `fare` branch, builds it, verifies the app artifact and touch icon, and copies it into `dist/fare/`.
+The Vite base, manifest scope and canonical URL all use `/genes/`.
+
+## Credit
+
+Original portal and annotation curation by the TB Genome Portal team (Texas A&M, Harvard, Weill Cornell, UMass, Broad
+Institute) and Mycobrowser (EPFL). This is an independent educational reimplementation and is not affiliated with those groups.

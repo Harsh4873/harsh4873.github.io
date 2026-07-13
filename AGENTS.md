@@ -1,25 +1,21 @@
-# Fare Maintenance
+# MtbScope Maintenance
 
-This branch and worktree are for Harsh Dave's private calorie and nutrition tracker only.
+This branch hosts MtbScope, a browser for the *M. tuberculosis* H37Rv genome, published under `/genes/`.
 
-## Product Boundary
+## Product boundary
 
-- Fare lives on the `fare` branch and publishes under `/fare/`.
-- Do not add or modify PickLedger, betting, prediction, scraper, grading, model-cache, player-prop, Gym, Daymark, Slate, or Portfolio source from this branch.
-- Keep Fare local-first. Food history, custom foods, saved meals, targets, and preferences stay on the device unless the user signs in for private sync or explicitly exports them.
-- Open Food Facts reads are for product discovery only. Preserve the nutrition snapshot stored with each logged entry, show source/quality cues, and never silently rewrite history when upstream data changes.
-- `firestore.rules` intentionally carries the complete shared ruleset for Daymark, Slate, Fare, and Sift and must remain identical on those app branches.
-- Main publishes Fare by checking out this branch during the Pages workflow and copying the built app into `/fare/`.
+- MtbScope is a static, client-only React + TypeScript single-page app. No backend, no auth, no Firebase.
+- Keep dependencies minimal (React, lucide-react icons). Charts are hand-drawn SVG in `src/components/Charts.tsx` — prefer that
+  over adding a charting library.
+
+## Data integrity
+
+- The gene catalog (`public/data/genes.json`) is real reference annotation; regenerate it with `npm run build:data`.
+- Everything in `src/lib/derive.ts` is representative demonstration data generated deterministically from the ORF id. Do not
+  present it as experimental measurement, and keep the representative-data labels on any panel that shows it.
+- Functional-class assignment is a keyword heuristic in `scripts/build-dataset.mjs`; it approximates, not reproduces, curated
+  TubercuList categories.
 
 ## Verification
 
-- Never open the deployed site, a browser preview, rendered output, or live URL to verify Fare. The user confirms production behavior.
-- Agents may inspect source, image metadata, build output paths as text, tests, GitHub Actions, and APIs.
-- Before publishing, run `npm test`, `npm run test:rules`, `npm run typecheck`, and `npm run build`.
-
-## GitHub Publish
-
-- Commit and push `fare` before changing `main` deployment plumbing.
-- Commits and pushes must come from the currently logged-in GitHub user.
-- Never add AI co-author trailers, `Co-authored-by:` lines, or AI/Cursor/Codex taglines.
-- Do not overwrite or revert unrelated user changes.
+- Run `npm test`, `npm run typecheck`, and `npm run build` before publishing.
