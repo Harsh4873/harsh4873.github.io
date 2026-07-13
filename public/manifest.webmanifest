@@ -1,0 +1,28 @@
+{
+  "name": "Fare — Calorie + Macro Tracker",
+  "short_name": "Fare",
+  "description": "A private, local-first calorie and macro tracker with fast repeat-food memory and optional Google sync.",
+  "id": "/fare/",
+  "start_url": "/fare/",
+  "scope": "/fare/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait-primary",
+  "background_color": "#1B1714",
+  "theme_color": "#1B1714",
+  "categories": ["health", "fitness", "lifestyle"],
+  "icons": [
+    {
+      "src": "/fare/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/fare/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

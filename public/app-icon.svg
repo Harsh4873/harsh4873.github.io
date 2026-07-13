@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Fare app icon</title>
+  <desc id="desc">A warm plate divided into colorful nutrition segments on a dark espresso background.</desc>
+  <rect width="1024" height="1024" fill="#1B1714"/>
+  <circle cx="512" cy="512" r="426" fill="#F4E9D3"/>
+  <circle cx="512" cy="512" r="374" fill="#251E19"/>
+  <path d="M512 512 328 194.6A366 366 0 0 1 878 512Z" fill="#F36A2E"/>
+  <path d="M512 512h366a366 366 0 0 1-183 317Z" fill="#3568D4"/>
+  <path d="M512 512 695 829a366 366 0 0 1-366 0Z" fill="#F1B94F"/>
+  <path d="M512 512 329 829A366 366 0 0 1 328 194.6Z" fill="#7557C8"/>
+  <g fill="none" stroke="#251E19" stroke-width="24" stroke-linecap="round">
+    <path d="M512 512 328 194.6"/>
+    <path d="M512 512h366"/>
+    <path d="M512 512 695 829"/>
+    <path d="M512 512 329 829"/>
+  </g>
+  <circle cx="512" cy="512" r="51" fill="#251E19"/>
+  <circle cx="512" cy="512" r="18" fill="#F4E9D3"/>
+</svg>

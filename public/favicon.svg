@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">Fare</title>
+  <rect width="64" height="64" rx="14" fill="#1B1714"/>
+  <circle cx="32" cy="32" r="25" fill="#F4E9D3"/>
+  <circle cx="32" cy="32" r="21" fill="#251E19"/>
+  <path d="M32 32 21.5 13.8A21 21 0 0 1 53 32Z" fill="#F36A2E"/>
+  <path d="M32 32h21a21 21 0 0 1-10.5 18.2Z" fill="#3568D4"/>
+  <path d="M32 32 42.5 50.2a21 21 0 0 1-21 0Z" fill="#F1B94F"/>
+  <path d="M32 32 21.5 50.2a21 21 0 0 1 0-36.4Z" fill="#7557C8"/>
+  <g fill="none" stroke="#251E19" stroke-width="2" stroke-linecap="round">
+    <path d="M32 32 21.5 13.8"/>
+    <path d="M32 32h21"/>
+    <path d="M32 32 42.5 50.2"/>
+    <path d="M32 32 21.5 50.2"/>
+  </g>
+  <circle cx="32" cy="32" r="3" fill="#251E19"/>
+</svg>
