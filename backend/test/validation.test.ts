@@ -1,105 +1,75 @@
-import { afterEach, describe, expect, it } from "vitest";
-import { DEFAULT_MAX_PDF_BYTES, DEFAULT_MAX_UPLOAD_PART_BYTES, getMaxUploadPartBytes } from "../lib/config.js";
+import { describe, expect, it } from "vitest";
 import { HttpError } from "../lib/http.js";
-import {
-  parseAsk,
-  parseFileId,
-  parseSummarize,
-  parseUploadComplete,
-  parseUploadStart,
-} from "../lib/validation.js";
-
-afterEach(() => {
-  delete process.env.MAX_PDF_BYTES;
-  delete process.env.MAX_UPLOAD_PART_BYTES;
-});
+import { parseAsk, parsePaperPages, parseSummarize } from "../lib/validation.js";
 
 describe("request validation", () => {
-  it("accepts a PDF at the 50 MiB boundary", () => {
-    expect(
-      parseUploadStart({
-        bytes: DEFAULT_MAX_PDF_BYTES,
-        filename: "Attention Is All You Need.pdf",
-        mimeType: "application/pdf",
-      }),
-    ).toEqual({
-      bytes: DEFAULT_MAX_PDF_BYTES,
-      filename: "Attention Is All You Need.pdf",
-      mimeType: "application/pdf",
-    });
-  });
-
-  it("normalizes path-safe local-model filenames to a PDF upload name", () => {
-    expect(
-      parseUploadStart({ bytes: 100, filename: "Research notes", mimeType: "application/pdf" }),
-    ).toEqual({ bytes: 100, filename: "Research notes.pdf", mimeType: "application/pdf" });
-
-    const maximumLengthName = "x".repeat(1_000);
-    const parsed = parseUploadStart({ bytes: 100, filename: maximumLengthName, mimeType: "application/pdf" });
-    expect(parsed.filename).toHaveLength(1_000);
-    expect(parsed.filename.endsWith(".pdf")).toBe(true);
-  });
-
-  it.each([
-    { bytes: DEFAULT_MAX_PDF_BYTES + 1, filename: "paper.pdf", mimeType: "application/pdf" },
-    { bytes: 100, filename: "../paper.pdf", mimeType: "application/pdf" },
-    { bytes: 100, filename: "x".repeat(1_001), mimeType: "application/pdf" },
-    { bytes: 100, filename: "paper.pdf", mimeType: "text/plain" },
-  ])("rejects an invalid PDF descriptor", (value) => {
-    expect(() => parseUploadStart(value)).toThrowError(HttpError);
-  });
-
-  it("caps upload parts at 2.75 MiB even when an environment value is larger", () => {
-    process.env.MAX_UPLOAD_PART_BYTES = String(DEFAULT_MAX_UPLOAD_PART_BYTES + 1);
-    expect(() => getMaxUploadPartBytes()).toThrow(/outside its allowed range/);
-  });
-
-  it("validates upload completion order and uniqueness", () => {
-    expect(
-      parseUploadComplete({ uploadId: "upload_abcdef123", partIds: ["part_abcdef123", "part_abcdef456"] }),
-    ).toEqual({ uploadId: "upload_abcdef123", partIds: ["part_abcdef123", "part_abcdef456"] });
-    expect(() =>
-      parseUploadComplete({ uploadId: "upload_abcdef123", partIds: ["part_abcdef123", "part_abcdef123"] }),
-    ).toThrowError(HttpError);
-  });
-
-  it("bounds summarize context while preserving the canonical file id", () => {
+  it("accepts summarize input with page-delimited paper text", () => {
     expect(
       parseSummarize({
-        fileId: "file-abcdef123",
+        pages: [{ page: 1, text: "Intro text" }, { page: 2, text: "Methods text" }],
         metadata: { title: "Paper" },
         localOutline: ["Abstract", "Methods"],
       }),
     ).toEqual({
-      fileId: "file-abcdef123",
+      pages: [{ page: 1, text: "Intro text" }, { page: 2, text: "Methods text" }],
       metadata: { title: "Paper" },
+      truncated: false,
       localOutline: ["Abstract", "Methods"],
     });
+  });
+
+  it("carries the client truncation flag through to the model request", () => {
+    const parsed = parseSummarize({ pages: [{ page: 1, text: "Body" }], metadata: {}, truncated: true });
+    expect(parsed.truncated).toBe(true);
+  });
+
+  it("rejects oversized summarize metadata", () => {
     expect(() =>
-      parseSummarize({ fileId: "file-abcdef123", metadata: { text: "x".repeat(20_000) } }),
+      parseSummarize({ pages: [{ page: 1, text: "Body" }], metadata: { text: "x".repeat(20_000) } }),
     ).toThrowError(HttpError);
   });
 
-  it("normalizes bounded contextual questions", () => {
+  it("strips forbidden control characters from page text while keeping order", () => {
+    const pages = parsePaperPages([{ page: 1, text: `a${String.fromCharCode(0)}b` }, { page: 2, text: "second" }]);
+    expect(pages).toEqual([{ page: 1, text: "a b" }, { page: 2, text: "second" }]);
+  });
+
+  it.each([
+    ["missing pages", { metadata: {} }],
+    ["an empty page list", { pages: [], metadata: {} }],
+    ["an invalid page number", { pages: [{ page: 0, text: "Body" }], metadata: {} }],
+  ])("rejects summarize input with %s", (_description, value) => {
+    expect(() => parseSummarize(value)).toThrowError(HttpError);
+  });
+
+  it("flags a PDF with no selectable text so the client can explain image-only papers", () => {
+    expect(() => parsePaperPages([{ page: 1, text: "   " }])).toThrowError(
+      expect.objectContaining({ status: 422, code: "no_extractable_text" }),
+    );
+  });
+
+  it("normalizes a bounded contextual question with paper pages", () => {
     expect(
       parseAsk({
-        fileId: "file-abcdef123",
+        pages: [{ page: 4, text: "Figure 2 shows the throughput curve." }],
         paperId: "paper:01",
         question: "  What does Figure 2 establish?  ",
         context: { currentTab: "visuals", currentPage: 4, selectedText: "caption" },
         recentMessages: [{ role: "assistant", content: "Earlier answer" }],
       }),
     ).toEqual({
-      fileId: "file-abcdef123",
+      pages: [{ page: 4, text: "Figure 2 shows the throughput curve." }],
       paperId: "paper:01",
       question: "What does Figure 2 establish?",
       context: { currentTab: "visuals", currentPage: 4, selectedText: "caption" },
       recentMessages: [{ role: "assistant", content: "Earlier answer" }],
+      truncated: false,
     });
   });
 
-  it("rejects malformed OpenAI identifiers", () => {
-    expect(() => parseFileId("https://example.com/file-id")).toThrowError(HttpError);
-    expect(() => parseFileId("file-x")).toThrowError(HttpError);
+  it("requires paper pages before answering a question", () => {
+    expect(() =>
+      parseAsk({ paperId: "paper:01", question: "What is supported?", context: {}, recentMessages: [] }),
+    ).toThrowError(HttpError);
   });
 });

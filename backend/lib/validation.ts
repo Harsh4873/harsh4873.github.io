@@ -1,20 +1,21 @@
-import { getMaxPdfBytes } from "./config.js";
 import { HttpError } from "./http.js";
 
-export interface UploadStartInput {
-  bytes: number;
-  filename: string;
-  mimeType: "application/pdf";
-}
+// The frontend extracts selectable text on the device and sends it per page so
+// the model keeps 1-indexed PDF page provenance. These ceilings are defence in
+// depth; the client trims the paper to a smaller budget before it uploads.
+export const MAX_PAPER_PAGES = 3_000;
+export const MAX_PAGE_TEXT_CHARS = 200_000;
+export const MAX_TOTAL_PAPER_TEXT_CHARS = 500_000;
 
-export interface UploadCompleteInput {
-  uploadId: string;
-  partIds: string[];
+export interface PaperPage {
+  page: number;
+  text: string;
 }
 
 export interface SummarizeInput {
-  fileId: string;
+  pages: PaperPage[];
   metadata: Record<string, unknown>;
+  truncated: boolean;
   localOutline?: unknown;
 }
 
@@ -32,15 +33,33 @@ export interface AskMessage {
 }
 
 export interface AskInput {
-  fileId: string;
+  pages: PaperPage[];
   paperId?: string;
   question: string;
   context: AskContext;
   recentMessages: AskMessage[];
+  truncated: boolean;
 }
 
-export interface DeleteFileInput {
-  fileId: string;
+// Reject C0 control characters other than tab, newline, and carriage return,
+// which could otherwise corrupt prompts or logs.
+function isForbiddenControlCode(code: number): boolean {
+  return code < 0x20 && code !== 0x09 && code !== 0x0a && code !== 0x0d;
+}
+
+function hasForbiddenControlChars(value: string): boolean {
+  for (let index = 0; index < value.length; index += 1) {
+    if (isForbiddenControlCode(value.charCodeAt(index))) return true;
+  }
+  return false;
+}
+
+function stripForbiddenControlChars(value: string): string {
+  let result = "";
+  for (let index = 0; index < value.length; index += 1) {
+    result += isForbiddenControlCode(value.charCodeAt(index)) ? " " : value.charAt(index);
+  }
+  return result;
 }
 
 function objectValue(value: unknown): Record<string, unknown> {
@@ -60,7 +79,7 @@ function requiredString(
     throw new HttpError(400, "invalid_request", `${key} must be text.`);
   }
   const normalized = value.trim();
-  if (!normalized || normalized.length > maximumLength || /[\u0000-\u0008\u000B\u000C\u000E-\u001F]/.test(normalized)) {
+  if (!normalized || normalized.length > maximumLength || hasForbiddenControlChars(normalized)) {
     throw new HttpError(400, "invalid_request", `${key} is invalid.`);
   }
   return normalized;
@@ -89,67 +108,49 @@ function boundedJson(value: unknown, maximumBytes: number, fieldName: string): u
   return value;
 }
 
-export function parseUploadStart(value: unknown): UploadStartInput {
-  const body = objectValue(value);
-  const requestedFilename = requiredString(body, "filename", 1_000);
-  const mimeType = requiredString(body, "mimeType", 100).toLowerCase();
-  const bytes = body.bytes;
-  if (
-    mimeType !== "application/pdf" ||
-    /[\\/]/.test(requestedFilename) ||
-    typeof bytes !== "number" ||
-    !Number.isSafeInteger(bytes) ||
-    bytes < 1 ||
-    bytes > getMaxPdfBytes()
-  ) {
-    throw new HttpError(400, "invalid_pdf", "Choose a PDF no larger than 50 MiB.");
+export function parsePaperPages(value: unknown): PaperPage[] {
+  if (!Array.isArray(value) || value.length < 1 || value.length > MAX_PAPER_PAGES) {
+    throw new HttpError(400, "invalid_request", "The paper text is missing or has too many pages.");
   }
-  const filename = requestedFilename.toLowerCase().endsWith(".pdf")
-    ? requestedFilename
-    : `${requestedFilename.slice(0, 996).trimEnd()}.pdf`;
-  return { filename, mimeType: "application/pdf", bytes };
-}
 
-export function parseUploadId(value: unknown): string {
-  if (typeof value !== "string" || !/^upload[_-][A-Za-z0-9_-]{6,180}$/.test(value)) {
-    throw new HttpError(400, "invalid_upload_id", "The upload identifier is invalid.");
-  }
-  return value;
-}
-
-export function parseFileId(value: unknown): string {
-  if (typeof value !== "string" || !/^file-[A-Za-z0-9_-]{6,180}$/.test(value)) {
-    throw new HttpError(400, "invalid_file_id", "The file identifier is invalid.");
-  }
-  return value;
-}
-
-export function parseUploadComplete(value: unknown): UploadCompleteInput {
-  const body = objectValue(value);
-  const uploadId = parseUploadId(body.uploadId);
-  if (!Array.isArray(body.partIds) || body.partIds.length < 1 || body.partIds.length > 512) {
-    throw new HttpError(400, "invalid_parts", "One or more upload parts are invalid.");
-  }
-  const partIds = body.partIds.map((partId) => {
-    if (typeof partId !== "string" || !/^part[_-][A-Za-z0-9_-]{6,180}$/.test(partId)) {
-      throw new HttpError(400, "invalid_parts", "One or more upload parts are invalid.");
+  let totalChars = 0;
+  const pages = value.map((entry): PaperPage => {
+    const record = objectValue(entry);
+    const page = record.page;
+    if (typeof page !== "number" || !Number.isSafeInteger(page) || page < 1 || page > 100_000) {
+      throw new HttpError(400, "invalid_request", "A paper page number is invalid.");
     }
-    return partId;
+    if (typeof record.text !== "string") {
+      throw new HttpError(400, "invalid_request", "A paper page is missing its text.");
+    }
+    const text = stripForbiddenControlChars(record.text);
+    if (text.length > MAX_PAGE_TEXT_CHARS) {
+      throw new HttpError(400, "invalid_request", "A paper page is too large.");
+    }
+    totalChars += text.length;
+    if (totalChars > MAX_TOTAL_PAPER_TEXT_CHARS) {
+      throw new HttpError(400, "invalid_request", "The paper text is too large.");
+    }
+    return { page, text };
   });
-  if (new Set(partIds).size !== partIds.length) {
-    throw new HttpError(400, "invalid_parts", "Upload part identifiers must be unique and ordered.");
+
+  if (!pages.some((entry) => entry.text.trim().length > 0)) {
+    throw new HttpError(
+      422,
+      "no_extractable_text",
+      "No selectable text could be read from this PDF. It may be scanned or image-only.",
+    );
   }
-  return { uploadId, partIds };
+  return pages;
 }
 
 export function parseSummarize(value: unknown): SummarizeInput {
   const body = objectValue(value);
-  const fileId = parseFileId(body.fileId);
-  const metadataRaw = body.metadata ?? {};
-  const metadata = objectValue(metadataRaw);
+  const pages = parsePaperPages(body.pages);
+  const metadata = objectValue(body.metadata ?? {});
   boundedJson(metadata, 16 * 1024, "metadata");
 
-  const result: SummarizeInput = { fileId, metadata };
+  const result: SummarizeInput = { pages, metadata, truncated: body.truncated === true };
   if (body.localOutline !== undefined && body.localOutline !== null) {
     result.localOutline = boundedJson(body.localOutline, 32 * 1024, "localOutline");
   }
@@ -158,7 +159,7 @@ export function parseSummarize(value: unknown): SummarizeInput {
 
 export function parseAsk(value: unknown): AskInput {
   const body = objectValue(value);
-  const fileId = parseFileId(body.fileId);
+  const pages = parsePaperPages(body.pages);
   const paperId = optionalString(body, "paperId", 180);
   const question = requiredString(body, "question", 4_000);
   const rawContext = body.context === undefined ? {} : objectValue(body.context);
@@ -199,12 +200,7 @@ export function parseAsk(value: unknown): AskInput {
     } satisfies AskMessage;
   });
 
-  const result: AskInput = { fileId, question, context, recentMessages };
+  const result: AskInput = { pages, question, context, recentMessages, truncated: body.truncated === true };
   if (paperId) result.paperId = paperId;
   return result;
-}
-
-export function parseDeleteFile(value: unknown): DeleteFileInput {
-  const body = objectValue(value);
-  return { fileId: parseFileId(body.fileId) };
 }

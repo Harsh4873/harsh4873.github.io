@@ -20,7 +20,8 @@ import { PdfReader } from './components/PdfReader';
 import { EmptyState, LoadingState, Toast } from './components/Primitives';
 import { UploadDialog } from './components/UploadDialog';
 import { WorkspaceHeader } from './components/WorkspaceHeader';
-import { SiftApiClient, ApiError, type UploadProgress } from './lib/api';
+import { SiftApiClient, ApiError, AI_TEXT_CONTEXT_MARKER } from './lib/api';
+import { collectPaperPages } from './lib/paper-text';
 import { messageToUi, noteToUi, paperToUi } from './lib/adapters';
 import {
   canFallBackToLocalAnalysis,
@@ -536,25 +537,6 @@ export default function App() {
     return runningJob;
   }
 
-  async function clearUnavailableAiFile(paperId: string, expectedFileId: string) {
-    const latest = papersRef.current.find((paper) => paper.id === paperId && !paper.deleted);
-    if (!latest || latest.openaiFileId !== expectedFileId || paperAnalysisIsWorking(latest)) return 'changed' as const;
-    const result = await sync.mutateAnalysisPaper(
-      latest,
-      { openaiFileId: undefined },
-      { type: 'idle-file-clear', expectedFileId },
-    );
-    if (result.status === 'applied') {
-      const installed = installCanonicalPaper(result.paper);
-      return installed?.openaiFileId === undefined ? 'cleared' as const : 'changed' as const;
-    }
-    if (result.status === 'conflict') {
-      const installed = result.paper ? installCanonicalPaper(result.paper) : undefined;
-      return installed?.openaiFileId === undefined ? 'cleared' as const : 'changed' as const;
-    }
-    return 'unavailable' as const;
-  }
-
   async function unlockStaleAnalysis() {
     if (!activeDomainPaper || !paperAnalysisIsWorking(activeDomainPaper)
       || isAnalysisLeaseFresh(activeDomainPaper.analysisLease, Date.now(), ANALYSIS_LEASE_TIMEOUT_MS)) return;
@@ -717,7 +699,7 @@ export default function App() {
     }
   }
 
-  async function analyzePaperWithAi(forceFreshUpload = false, expectedPriorRunId?: string) {
+  async function analyzePaperWithAi(expectedPriorRunId?: string) {
     if (!activeDomainPaper) {
       setReattachOpen(true);
       return;
@@ -754,19 +736,9 @@ export default function App() {
     analysisAbortRef.current?.abort();
     const controller = new AbortController();
     analysisAbortRef.current = controller;
-    const { job, analysisLease } = claimAnalysisRun(startedPaper, 'ai', 1, 'Preparing the secure upload…');
+    const { job, analysisLease } = claimAnalysisRun(startedPaper, 'ai', 1, 'Preparing the paper text…');
     const isControllerCurrent = () => analysisAbortRef.current === controller;
     const client = apiClient();
-    let fileId = forceFreshUpload ? undefined : startedPaper.openaiFileId;
-    let uploadedFileId: string | undefined;
-    const cleanupUploadedFileIfUnreferenced = async () => {
-      if (!uploadedFileId) return;
-      const uploadedId = uploadedFileId;
-      const current = papersRef.current.find((paper) => paper.id === startedPaper.id && !paper.deleted);
-      if (current?.openaiFileId === uploadedId) return;
-      uploadedFileId = undefined;
-      await client.deleteFile(uploadedId).catch(() => undefined);
-    };
     setChatError(undefined);
     const runningJob = await coordinateAnalysisClaim(startedPaper, job, {
       analysisStatus: 'queued',
@@ -780,55 +752,46 @@ export default function App() {
     }
     try {
       if (controller.signal.aborted) throw new DOMException('AI analysis cancelled.', 'AbortError');
-      if (!fileId) {
-        updateAnalysisJob({ ...runningJob, progress: 3, stage: 'Starting the secure upload…' });
-        const source = new File([sourcePdf], startedPaper.file.name, { type: 'application/pdf' });
-        const uploaded = await client.uploadPdf(source, (progress: UploadProgress) => {
+      updateAnalysisJob({ ...runningJob, progress: 3, stage: 'Reading the paper text on this device…' });
+      const extracted = await collectPaperPages(sourcePdf, {
+        signal: controller.signal,
+        onProgress: (page, pageCount) => {
           if (controller.signal.aborted || !isControllerCurrent()) return;
           if (!ownsAnalysisRun(startedPaper.id, job.runId)) {
             controller.abort();
             return;
           }
-          const fraction = progress.totalBytes ? progress.uploadedBytes / progress.totalBytes : 0;
-          const mapped = progress.stage === 'finishing' ? 58 : Math.max(3, Math.round(3 + fraction * 52));
-          const stage = progress.stage === 'finishing' ? 'Verifying the complete paper…' : `Uploading part ${Math.max(1, progress.completedParts)} of ${progress.totalParts}…`;
-          updateAnalysisJob({ ...runningJob, progress: mapped, stage });
-        }, controller.signal);
-        uploadedFileId = uploaded.fileId;
-        if (!isControllerCurrent()) {
-          await cleanupUploadedFileIfUnreferenced();
-          return;
-        }
-        if (!ownsAnalysisRun(startedPaper.id, job.runId)) {
-          await cleanupUploadedFileIfUnreferenced();
-          updateAnalysisJob(undefined);
-          return;
-        }
-        if (controller.signal.aborted) throw new DOMException('AI analysis cancelled.', 'AbortError');
-        fileId = uploaded.fileId;
+          const fraction = pageCount ? page / pageCount : 0;
+          const mapped = Math.min(58, Math.max(3, Math.round(3 + fraction * 55)));
+          updateAnalysisJob({ ...runningJob, progress: mapped, stage: `Reading page ${page} of ${pageCount}…` });
+        },
+      });
+      if (!isControllerCurrent()) return;
+      if (!ownsAnalysisRun(startedPaper.id, job.runId)) {
+        updateAnalysisJob(undefined);
+        return;
+      }
+      if (controller.signal.aborted) throw new DOMException('AI analysis cancelled.', 'AbortError');
+      if (extracted.pages.length === 0) {
+        throw new ApiError('Sift could not read selectable text from this PDF. It may be scanned or image-only.', 422, 'no_extractable_text');
       }
       const phasePaper = papersRef.current.find((paper) => paper.id === startedPaper.id && !paper.deleted);
       if (!phasePaper || !await persistOwnedAnalysisPatch(phasePaper, runningJob, {
-        openaiFileId: fileId,
+        openaiFileId: AI_TEXT_CONTEXT_MARKER,
         analysisStatus: 'analyzing',
         analysisProgress: 62,
       })) {
-        await cleanupUploadedFileIfUnreferenced();
         updateAnalysisJob(undefined);
         return;
       }
       updateAnalysisJob({ ...runningJob, progress: 64, stage: 'Reading every page, figure, and equation…' });
-      const response = await client.analyze(fileId, {
+      const response = await client.analyze(extracted.pages, {
         title: startedPaper.title,
         authors: startedPaper.authors,
         pageCount: startedPaper.pageCount,
-      }, controller.signal);
-      if (!isControllerCurrent()) {
-        await cleanupUploadedFileIfUnreferenced();
-        return;
-      }
+      }, extracted.truncated, controller.signal);
+      if (!isControllerCurrent()) return;
       if (!ownsAnalysisRun(startedPaper.id, job.runId)) {
-        await cleanupUploadedFileIfUnreferenced();
         updateAnalysisJob(undefined);
         return;
       }
@@ -836,15 +799,13 @@ export default function App() {
       const analysis = response.analysis;
       const latestPaper = papersRef.current.find((paper) => paper.id === startedPaper.id && !paper.deleted);
       if (!latestPaper) {
-        await cleanupUploadedFileIfUnreferenced();
         updateAnalysisJob(undefined);
         return;
       }
       if (!await persistOwnedAnalysisPatch(latestPaper, runningJob, {
         ...completedAnalysisPatch(latestPaper, analysis, response.model),
-        openaiFileId: fileId,
+        openaiFileId: AI_TEXT_CONTEXT_MARKER,
       })) {
-        await cleanupUploadedFileIfUnreferenced();
         updateAnalysisJob(undefined);
         return;
       }
@@ -856,18 +817,13 @@ export default function App() {
       }
       setToast({ message: 'Brief ready. Every major claim includes a page receipt.', tone: 'success' });
     } catch (error) {
-      if (!isControllerCurrent()) {
-        await cleanupUploadedFileIfUnreferenced();
-        return;
-      }
+      if (!isControllerCurrent()) return;
       if (!ownsAnalysisRun(startedPaper.id, job.runId)) {
-        await cleanupUploadedFileIfUnreferenced();
         updateAnalysisJob(undefined);
         return;
       }
       const latestPaper = papersRef.current.find((paper) => paper.id === startedPaper.id && !paper.deleted);
       if (!latestPaper) {
-        await cleanupUploadedFileIfUnreferenced();
         updateAnalysisJob(undefined);
         return;
       }
@@ -880,20 +836,6 @@ export default function App() {
           analysisLease: undefined,
         });
         updateAnalysisJob(undefined);
-      } else if (error instanceof ApiError && error.code === 'ai_file_unavailable' && !forceFreshUpload) {
-        if (!await persistOwnedAnalysisPatch(latestPaper, runningJob, {
-          openaiFileId: undefined,
-          analysisStatus: 'uploading',
-          analysisProgress: 2,
-          analysisError: undefined,
-        })) {
-          await cleanupUploadedFileIfUnreferenced();
-          updateAnalysisJob(undefined);
-          return;
-        }
-        await cleanupUploadedFileIfUnreferenced();
-        updateAnalysisJob({ ...runningJob, progress: 2, stage: 'Refreshing the private PDF copy…' });
-        await analyzePaperWithAi(true, runningJob.runId);
       } else {
         if (!await persistOwnedAnalysisPatch(latestPaper, runningJob, {
           analysisStatus: 'error',
@@ -956,12 +898,30 @@ export default function App() {
     setChatBusy(true);
     setChatError(undefined);
     try {
+      let sourcePdf = activePdf;
+      if (!sourcePdf) {
+        sourcePdf = await getLocalPdf(paper.file.storageKey);
+        if (!isCurrent() || controller.signal.aborted) return;
+        if (sourcePdf) setActivePdfSource({ paperId: paper.id, blob: sourcePdf });
+      }
+      if (!sourcePdf) {
+        setLocalAvailability((value) => ({ ...value, [paper.id]: false }));
+        setChatError('Reattach this paper’s PDF on this device before asking a paper-context question.');
+        return;
+      }
+      const extracted = await collectPaperPages(sourcePdf, { signal: controller.signal });
+      if (!isCurrent() || controller.signal.aborted) return;
+      if (extracted.pages.length === 0) {
+        setChatError('Sift could not read selectable text from this PDF. It may be scanned or image-only.');
+        return;
+      }
       const answer = await apiClient().ask({
-        fileId: paper.openaiFileId!,
+        pages: extracted.pages,
         paperId: paper.id,
         question,
         context,
         recentMessages: chatMessages.slice(-10).map(({ role, content }) => ({ role, content })),
+        truncated: extracted.truncated,
       }, controller.signal);
       if (!isCurrent() || controller.signal.aborted || activePaperIdRef.current !== paper.id) return;
       saveMessage({ paperId: paper.id, role: 'assistant', content: answer.answer, context, citations: answer.citations }, {
@@ -972,17 +932,8 @@ export default function App() {
       });
     } catch (error) {
       if (!isCurrent() || controller.signal.aborted) return;
-      if (error instanceof ApiError && error.code === 'ai_file_unavailable') {
-        const disposition = await clearUnavailableAiFile(paper.id, paper.openaiFileId!);
-        if (!isCurrent() || controller.signal.aborted) return;
-        setChatError(disposition === 'cleared'
-          ? 'The private PDF copy expired. Run AI Analysis again, then ask once more. Your existing brief and notes are unchanged.'
-          : disposition === 'changed'
-            ? 'The private PDF copy changed while that question was running. Wait for any active analysis to finish, then ask again.'
-            : 'The private PDF copy expired, but Sift could not safely update sync. Reconnect, then run AI Analysis again.');
-      } else {
-        setChatError(readableError(error));
-      }
+      if (error instanceof DOMException && error.name === 'AbortError') return;
+      setChatError(readableError(error));
     } finally {
       if (isCurrent()) {
         chatAbortRef.current = undefined;
@@ -1004,14 +955,6 @@ export default function App() {
     chatAbortRef.current?.abort();
     chatAbortRef.current = undefined;
     setChatBusy(false);
-    if (activeDomainPaper.openaiFileId) {
-      try {
-        await apiClient().deleteFile(activeDomainPaper.openaiFileId);
-      } catch (error) {
-        setToast({ message: `The AI copy could not be removed yet, so Sift kept the paper. ${readableError(error)}`, tone: 'warning' });
-        return;
-      }
-    }
     store.deletePaper(activeDomainPaper.id);
     setPaperDialogOpen(false);
     setActivePaperId(undefined);

@@ -8,15 +8,12 @@ export interface AuthConfig {
   adminUid: string;
 }
 
-export interface OpenAIConfig {
+export interface GroqConfig {
   apiKey: string;
   model: string;
+  baseUrl: string;
   timeoutMs: number;
 }
-
-export const MIB = 1024 * 1024;
-export const DEFAULT_MAX_PDF_BYTES = 50 * MIB;
-export const DEFAULT_MAX_UPLOAD_PART_BYTES = Math.floor(2.75 * MIB);
 
 function integerFromEnv(
   name: string,
@@ -52,6 +49,17 @@ function normalizeOrigin(value: string): string {
   return url.origin;
 }
 
+function normalizeBaseUrl(value: string): string {
+  const url = new URL(value);
+  if (url.protocol !== "https:") {
+    throw new Error("GROQ_BASE_URL must be HTTPS");
+  }
+  if (url.search || url.hash || url.username || url.password) {
+    throw new Error("GROQ_BASE_URL must contain only a scheme, host, optional port, and path");
+  }
+  return `${url.origin}${url.pathname.replace(/\/+$/, "")}`;
+}
+
 export function getPublicConfig(): PublicConfig {
   return {
     allowedOrigin: normalizeOrigin(process.env.ALLOWED_ORIGIN?.trim() || "https://harsh.bet"),
@@ -70,27 +78,18 @@ export function getAuthConfig(): AuthConfig {
   return { projectId, adminEmail, adminUid };
 }
 
-export function getOpenAIConfig(): OpenAIConfig {
-  const apiKey = requiredEnv("OPENAI_API_KEY");
-  const model = process.env.OPENAI_MODEL?.trim() || "gpt-5.6-terra";
-  if (!/^gpt-[A-Za-z0-9._-]{1,80}$/.test(model)) throw new Error("Invalid OPENAI_MODEL");
+export function getGroqConfig(): GroqConfig {
+  const apiKey = requiredEnv("GROQ_API_KEY");
+  const model = process.env.GROQ_MODEL?.trim() || "openai/gpt-oss-120b";
+  // Groq model ids include a vendor prefix (for example "openai/gpt-oss-120b"),
+  // so the slash is intentionally part of the allowed character set.
+  if (!/^[A-Za-z0-9][A-Za-z0-9._/-]{1,120}$/.test(model)) throw new Error("Invalid GROQ_MODEL");
+  const baseUrl = normalizeBaseUrl(process.env.GROQ_BASE_URL?.trim() || "https://api.groq.com/openai/v1");
 
   return {
     apiKey,
     model,
-    timeoutMs: integerFromEnv("OPENAI_TIMEOUT_MS", 285_000, 5_000, 290_000),
+    baseUrl,
+    timeoutMs: integerFromEnv("GROQ_TIMEOUT_MS", 285_000, 5_000, 290_000),
   };
-}
-
-export function getMaxPdfBytes(): number {
-  return integerFromEnv("MAX_PDF_BYTES", DEFAULT_MAX_PDF_BYTES, MIB, DEFAULT_MAX_PDF_BYTES);
-}
-
-export function getMaxUploadPartBytes(): number {
-  return integerFromEnv(
-    "MAX_UPLOAD_PART_BYTES",
-    DEFAULT_MAX_UPLOAD_PART_BYTES,
-    64 * 1024,
-    DEFAULT_MAX_UPLOAD_PART_BYTES,
-  );
 }

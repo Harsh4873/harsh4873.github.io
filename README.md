@@ -16,9 +16,9 @@ Sift is Harsh Dave's private, source-grounded research-paper workspace. It is pu
 
 The original PDF stays in the browser's IndexedDB on each device. Sift does not put the PDF Blob in Firestore. **Local Analysis** runs entirely on the device with PDF.js and deterministic extractive heuristics; it never uploads the PDF and does not require sign-in or API credits. The resulting structured brief can sync as ordinary workspace metadata.
 
-When the signed-in owner chooses **AI Analysis** or asks the assistant a question, the frontend uploads the PDF to the protected backend in small chunks. The backend authenticates the Firebase ID token, permits only the configured verified Google account, and calls OpenAI without exposing the API key to browser code. Ask Sift requires this private AI copy; a local brief alone does not upload or enable chat.
+When the signed-in owner chooses **AI Analysis** or asks the assistant a question, the frontend extracts the paper's selectable text on the device with PDF.js and sends that text (trimmed to a context-window budget) to the protected backend. The original PDF Blob never leaves the device. The backend authenticates the Firebase ID token, permits only the configured verified Google account, and calls Groq without exposing the API key to browser code. Ask Sift requires that AI Analysis has run and that the paper's PDF is present on the device; a local brief alone does not enable chat.
 
-Sift stores the resulting OpenAI file ID with the paper record so grounded follow-up questions can work across signed-in devices. Deleting a paper requests deletion of that remote file and writes a sync tombstone for the paper record.
+Because the model receives extracted text rather than images, any figure, table, or equation detail that cannot be recovered from the text layer is reported in the brief's warnings instead of guessed. The AI provider keeps no copy of the paper between requests, so there is no remote file to store or delete; the paper record only notes that AI analysis has run. Deleting a paper writes a sync tombstone and removes its local PDF.
 
 ## Local development
 

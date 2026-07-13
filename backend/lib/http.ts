@@ -54,7 +54,7 @@ function applyCors(req: ApiRequest, res: ApiResponse): void {
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   res.setHeader(
     "Access-Control-Allow-Headers",
-    "Authorization, Content-Type, X-Upload-Id, X-Requested-With",
+    "Authorization, Content-Type, X-Requested-With",
   );
   res.setHeader("Access-Control-Max-Age", "600");
 }

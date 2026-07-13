@@ -10,15 +10,16 @@ PDF selected
   │     └─> on-device text/layout extraction
   │           └─> deterministic extractive brief + page receipts
   └─> explicit AI Analysis action
-        └─> authenticated Vercel API
-              ├─> chunked OpenAI Upload
-              └─> Responses API structured paper analysis
-                    └─> Firestore metadata + analysis sync
+        └─> on-device PDF.js text extraction (per page, budgeted)
+              └─> authenticated Vercel API
+                    └─> Groq Chat Completions structured paper analysis
+                          └─> Firestore metadata + analysis sync
 
 Contextual question
   └─> active paper + tab + page + selected text + recent chat
-        └─> authenticated Vercel API
-              └─> Responses API grounded in uploaded PDF
+        └─> on-device PDF.js text extraction (per page, budgeted)
+              └─> authenticated Vercel API
+                    └─> Groq Chat Completions grounded in the extracted text
 ```
 
 ## Paper analysis contract
@@ -46,11 +47,11 @@ The source-only evaluation harness pins the exact SHA-256 bytes of three officia
 
 ## Security invariants
 
-- OpenAI credentials exist only in the serverless environment.
+- Groq credentials exist only in the serverless environment.
 - All non-health API routes require a valid Firebase ID token.
 - Token claims must match the Firebase project, issuer, verified Google provider, configured UID owner, and configured email owner.
 - CORS accepts only the configured frontend origin.
-- OpenAI Responses use `store: false`; Sift stores only the result it needs.
-- PDF chunks and JSON payloads have explicit size limits.
+- The AI provider keeps no copy of the paper between requests; Sift stores only the result it needs.
+- Extracted paper text and JSON payloads have explicit size limits.
 - Prompts treat paper text and user-selected text as data, never instructions.
 - Firestore rejects unknown collections and all non-owner access.
