@@ -393,6 +393,18 @@ def ledger_record(
     }
 
 
+def _current_decision(pick: dict[str, Any]) -> str:
+    """Return the latest decision for a pick, including recalibration downgrades.
+
+    Recalibration may retroactively flip a graded BET/LEAN to PASS.  Team-model
+    ledger rows filter on this value so never-wagered PASS rows cannot train
+    calibration; player-prop PASS abstentions intentionally stay recorded.
+    """
+
+    snapshot = pick.get("pregame_snapshot") if isinstance(pick.get("pregame_snapshot"), dict) else {}
+    return str(pick.get("decision") or snapshot.get("decision") or "").strip().upper()
+
+
 def _certified_team_record(record: dict[str, Any]) -> dict[str, Any] | None:
     """Convert one certified, price-verified team snapshot for calibration.
 
@@ -408,6 +420,8 @@ def _certified_team_record(record: dict[str, Any]) -> dict[str, Any] | None:
         return None
     model_key = str(record.get("model_key") or "").strip()
     if model_key not in TEAM_PROP_MODEL_KEYS or model_key in CALIBRATION_EXCLUDED_MODEL_KEYS:
+        return None
+    if _current_decision(record) == "PASS":
         return None
     raw_probability = normalize_probability(record.get("raw_probability"))
     if raw_probability is None:
@@ -480,6 +494,7 @@ def _iter_bucket_records(
                     isinstance(pick, dict)
                     and not pick.get("calibration_excluded")
                     and (cache_type != "player_props_cache" or is_ml_era_pick(pick, fallback_timestamp))
+                    and (cache_type != "model_cache" or _current_decision(pick) != "PASS")
                 ):
                     yield ledger_record(
                         pick,
@@ -493,6 +508,7 @@ def _iter_bucket_records(
             isinstance(pick, dict)
             and not pick.get("calibration_excluded")
             and (cache_type != "player_props_cache" or is_ml_era_pick(pick, fallback_timestamp))
+            and (cache_type != "model_cache" or _current_decision(pick) != "PASS")
         ):
             yield ledger_record(
                 pick,

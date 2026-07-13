@@ -116,3 +116,11 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh workflow run deploy-pages.yml --ref main
+
+      - name: Notify Profit Desk
+        # Pushes made with GITHUB_TOKEN never emit push events, so the
+        # profit-desk-notify push trigger cannot fire on its own.
+        if: steps.commit-feeds.outputs.changed == 'true' && steps.commit-feeds.outputs.deployable == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run profit-desk-notify.yml --ref main
