@@ -1,14 +1,9 @@
 rules_version = '2';
 
-// Complete Firestore ruleset for the `pickledgerpro` project.
-//
-// Both harsh.bet apps store data in this one project:
-//   - Daymark (habit tracker, `daymark` branch) -> daymark_users/**
-//   - Slate   (schedule + to-do, `slate` branch) -> slate_users/**
-//
-// Deploying rules replaces the whole ruleset, so this file carries BOTH
-// apps' blocks. Keep this file identical on the `daymark` and `slate`
-// branches whenever either app's rules change.
+// Complete Firestore ruleset for every private harsh.bet app in the shared
+// `pickledgerpro` Firebase project. Deploying one rules file replaces the
+// project rules, so this file must be kept identical on Daymark, Slate, and
+// Fare branches whenever any block changes.
 
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -19,9 +14,7 @@ service cloud.firestore {
         && request.auth.token.firebase.sign_in_provider == 'google.com';
     }
 
-    // ---------------------------------------------------------------
-    // Daymark (habit tracker) — mirrored from the `daymark` branch.
-    // ---------------------------------------------------------------
+    // Daymark (habit tracker) ---------------------------------------
     function ownsDaymarkData(userId) {
       return isAuthorizedGoogleAccount() && request.auth.uid == userId;
     }
@@ -44,9 +37,7 @@ service cloud.firestore {
       }
     }
 
-    // ---------------------------------------------------------------
-    // Slate (schedule + to-do) — owned by the `slate` branch.
-    // ---------------------------------------------------------------
+    // Slate (schedule + to-do) -------------------------------------
     function ownsSlateData(userId) {
       return isAuthorizedGoogleAccount() && request.auth.uid == userId;
     }
@@ -66,6 +57,68 @@ service cloud.firestore {
 
       match /blocks/{blockId} {
         allow read, write: if ownsSlateData(userId);
+      }
+    }
+
+    // Fare (calorie + nutrition tracker) ---------------------------
+    function ownsFareData(userId) {
+      return isAuthorizedGoogleAccount() && request.auth.uid == userId;
+    }
+
+    function isValidFareSingleton(documentId) {
+      return documentId == 'current'
+        && request.resource.data.updatedAt is string;
+    }
+
+    function isValidFareEntity(entityId) {
+      return request.resource.data.id == entityId
+        && request.resource.data.updatedAt is string
+        && (
+          (!('deleted' in request.resource.data) && !('deletedAt' in request.resource.data))
+          || (request.resource.data.deleted == true && request.resource.data.deletedAt is string)
+        );
+    }
+
+    function keepsFareTombstone() {
+      return !('deleted' in resource.data)
+        || resource.data.deleted != true
+        || (('deleted' in request.resource.data) && request.resource.data.deleted == true);
+    }
+
+    match /fare_users/{userId} {
+      // Fare has no root document. Explicit subcollection rules below are
+      // intentionally the only access path.
+      match /profile/{documentId} {
+        allow read: if ownsFareData(userId) && documentId == 'current';
+        allow create, update: if ownsFareData(userId) && isValidFareSingleton(documentId);
+      }
+
+      match /targets/{documentId} {
+        allow read: if ownsFareData(userId) && documentId == 'current';
+        allow create, update: if ownsFareData(userId) && isValidFareSingleton(documentId);
+      }
+
+      match /settings/{documentId} {
+        allow read: if ownsFareData(userId) && documentId == 'current';
+        allow create, update: if ownsFareData(userId) && isValidFareSingleton(documentId);
+      }
+
+      match /foods/{foodId} {
+        allow read: if ownsFareData(userId);
+        allow create: if ownsFareData(userId) && isValidFareEntity(foodId);
+        allow update: if ownsFareData(userId) && isValidFareEntity(foodId) && keepsFareTombstone();
+      }
+
+      match /meals/{mealId} {
+        allow read: if ownsFareData(userId);
+        allow create: if ownsFareData(userId) && isValidFareEntity(mealId);
+        allow update: if ownsFareData(userId) && isValidFareEntity(mealId) && keepsFareTombstone();
+      }
+
+      match /entries/{entryId} {
+        allow read: if ownsFareData(userId);
+        allow create: if ownsFareData(userId) && isValidFareEntity(entryId);
+        allow update: if ownsFareData(userId) && isValidFareEntity(entryId) && keepsFareTombstone();
       }
     }
 

@@ -113,4 +113,18 @@ describe.skipIf(!EMULATOR_ADDRESS)('Slate Firestore security rules', () => {
     const anonymous = testEnvironment.unauthenticatedContext().firestore();
     await assertFails(getDoc(doc(anonymous, 'daymark_users', 'daymark-owner')));
   });
+
+  it('keeps authorized Fare access working in the combined ruleset', async () => {
+    const firestore = authorizedContext(testEnvironment).firestore();
+    const profile = doc(firestore, 'fare_users', OWNER_UID, 'profile', 'current');
+    const entry = doc(firestore, 'fare_users', OWNER_UID, 'entries', 'entry-1');
+
+    await assertSucceeds(setDoc(profile, { updatedAt: '2026-07-12T10:00:00.000Z' }));
+    await assertSucceeds(setDoc(entry, {
+      id: 'entry-1',
+      updatedAt: '2026-07-12T10:00:00.000Z',
+    }));
+    await assertSucceeds(getDoc(profile));
+    await assertSucceeds(getDoc(entry));
+  });
 });
