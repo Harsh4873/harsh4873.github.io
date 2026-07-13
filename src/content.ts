@@ -35,11 +35,11 @@ export const navigation: NavigationItem[] = [
 ];
 
 export const routeTitles: Record<RouteId, string> = {
-  start: 'Harsh Dave — Software, data & research',
-  experience: 'Experience — Harsh Dave',
-  research: 'Research — Harsh Dave',
-  projects: 'Projects — Harsh Dave',
-  about: 'About — Harsh Dave',
+  start: 'Portfolio — Harsh Dave',
+  experience: 'Experience · Portfolio — Harsh Dave',
+  research: 'Research · Portfolio — Harsh Dave',
+  projects: 'Projects · Portfolio — Harsh Dave',
+  about: 'About · Portfolio — Harsh Dave',
 };
 
 export const proofPoints = [
