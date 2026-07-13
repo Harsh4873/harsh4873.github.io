@@ -147,6 +147,7 @@ jobs:
           test -n "$(find dist/assets -maxdepth 1 -name '*.css' -print -quit)"
           test -n "$(find dist/assets -maxdepth 1 -name '*.js' -print -quit)"
           ! grep -q 'src/main.ts' dist/index.html
+          grep -q 'rel="apple-touch-icon"' dist/index.html
           test -f dist/data/model_cache/index.json
           test -f dist/data/profit_desk/index.json
           test -f dist/data/profit_desk/latest.json
@@ -154,18 +155,26 @@ jobs:
           grep -q '/gym/assets/' dist/gym/index.html
           test -n "$(find dist/gym/assets -maxdepth 1 -name '*.css' -print -quit)"
           test -n "$(find dist/gym/assets -maxdepth 1 -name '*.js' -print -quit)"
+          grep -q 'rel="apple-touch-icon"' dist/gym/index.html
+          test -f dist/gym/apple-touch-icon.png
           test -f dist/portfolio/index.html
           grep -q '/portfolio/assets/' dist/portfolio/index.html
           test -n "$(find dist/portfolio/assets -maxdepth 1 -name '*.css' -print -quit)"
           test -n "$(find dist/portfolio/assets -maxdepth 1 -name '*.js' -print -quit)"
+          grep -q 'rel="apple-touch-icon"' dist/portfolio/index.html
+          test -f dist/portfolio/apple-touch-icon.png
           test -f dist/daymark/index.html
           grep -q '/daymark/assets/' dist/daymark/index.html
           test -n "$(find dist/daymark/assets -maxdepth 1 -name '*.css' -print -quit)"
           test -n "$(find dist/daymark/assets -maxdepth 1 -name '*.js' -print -quit)"
+          grep -q 'rel="apple-touch-icon"' dist/daymark/index.html
+          test -f dist/daymark/apple-touch-icon.png
           test -f dist/slate/index.html
           grep -q '/slate/assets/' dist/slate/index.html
           test -n "$(find dist/slate/assets -maxdepth 1 -name '*.css' -print -quit)"
           test -n "$(find dist/slate/assets -maxdepth 1 -name '*.js' -print -quit)"
+          grep -q 'rel="apple-touch-icon"' dist/slate/index.html
+          test -f dist/slate/apple-touch-icon.png
           python scripts/site_upcheck.py
 
       - name: Upload artifact
