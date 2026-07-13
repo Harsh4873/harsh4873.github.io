@@ -7,8 +7,8 @@ rules_version = '2';
 //   - Slate   (schedule + to-do, `slate` branch) -> slate_users/**
 //
 // Deploying rules replaces the whole ruleset, so this file carries BOTH
-// apps' blocks. Keep it in lockstep with `firestore.rules` on the
-// `daymark` branch whenever either app's rules change.
+// apps' blocks. Keep this file identical on the `daymark` and `slate`
+// branches whenever either app's rules change.
 
 service cloud.firestore {
   match /databases/{database}/documents {
