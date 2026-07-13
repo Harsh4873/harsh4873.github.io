@@ -182,4 +182,18 @@ describe.skipIf(!EMULATOR_ADDRESS)('Daymark Firestore security rules', () => {
     await assertSucceeds(getDoc(root));
     await assertSucceeds(getDoc(task));
   });
+
+  it('keeps authorized Fare access working in the combined ruleset', async () => {
+    const firestore = authorizedContext(testEnvironment).firestore();
+    const profile = doc(firestore, 'fare_users', OWNER_UID, 'profile', 'current');
+    const entry = doc(firestore, 'fare_users', OWNER_UID, 'entries', 'entry-1');
+
+    await assertSucceeds(setDoc(profile, { updatedAt: '2026-07-12T10:00:00.000Z' }));
+    await assertSucceeds(setDoc(entry, {
+      id: 'entry-1',
+      updatedAt: '2026-07-12T10:00:00.000Z',
+    }));
+    await assertSucceeds(getDoc(profile));
+    await assertSucceeds(getDoc(entry));
+  });
 });
