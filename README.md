@@ -17,13 +17,13 @@ Slate is the private, local-first daily planner published at `harsh.bet/slate/`.
 
 ## Firestore rules
 
-Slate shares the `pickledgerpro` Firebase project with Daymark and Fare. **`firestore.rules` in this branch carries the complete project ruleset (`daymark_users`, `slate_users`, and `fare_users`)** because deploying rules replaces the whole ruleset. Deploy from this branch with:
+Slate shares the `pickledgerpro` Firebase project with Daymark, Fare, and Sift. **`firestore.rules` in this branch carries the complete project ruleset (`daymark_users`, `slate_users`, `fare_users`, and `research_users`)** because deploying rules replaces the whole ruleset. Deploy from this branch with:
 
 ```
 firebase deploy --only firestore:rules
 ```
 
-Keep this file identical to `firestore.rules` on the `daymark` and `fare` branches whenever any app's rules change.
+Keep this file identical to `firestore.rules` on the `daymark`, `fare`, and `research` branches whenever any app's rules change.
 
 ## Development
 
