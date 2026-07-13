@@ -754,6 +754,8 @@ p {
   border: 1px solid var(--border-strong);
   border-radius: 12px;
   outline: none;
+  /* ≥16px keeps iOS Safari from auto-zooming the viewport when a field gains focus */
+  font-size: 16px;
   transition: border-color 160ms var(--ease), box-shadow 160ms var(--ease), background 160ms var(--ease);
 }
 
@@ -1098,7 +1100,23 @@ p {
 .modal-shell__body { min-height: 0; padding: 21px 23px; overflow-y: auto; overscroll-behavior: contain; }
 .modal-shell__footer { display: flex; align-items: center; justify-content: flex-end; gap: 10px; padding: 15px 23px max(15px, env(safe-area-inset-bottom)); background: var(--surface); border-top: 1px solid var(--border); }
 
-.add-food-sheet__search { position: sticky; z-index: 2; top: -21px; padding: 0 0 14px; background: var(--surface-raised); }
+.add-food-sheet__search {
+  position: sticky;
+  z-index: 2;
+  top: 0;
+  margin-bottom: -10px;
+  padding-bottom: 10px;
+  background: var(--surface-raised);
+}
+
+.add-food-sheet__search-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
 .add-food-sheet__tabs { margin-bottom: 15px; }
 .add-food-sheet__results { min-height: 160px; }
 
@@ -1426,7 +1444,42 @@ p {
   .modal-shell__body { padding: 17px; -webkit-overflow-scrolling: touch; }
   .modal-shell--sheet .modal-shell__body { padding-bottom: max(22px, env(safe-area-inset-bottom)); }
   .modal-shell__footer { padding: 13px 17px max(13px, env(safe-area-inset-bottom)); }
-  .add-food-sheet__search { top: -17px; }
+
+  .add-food-sheet__tabs {
+    display: flex;
+    width: 100%;
+  }
+
+  .add-food-sheet__tabs .segmented-control__option {
+    flex: 1 1 0;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+    min-height: 56px;
+    padding: 7px 4px 6px;
+    font-size: 11px;
+  }
+
+  .add-food-sheet__tabs .segmented-control__option > span:last-child {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .add-food-sheet__tabs .segmented-control__icon svg { width: 17px; height: 17px; }
+
+  .add-food-sheet .segmented-control--small .segmented-control__option {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 34px;
+    padding-inline: 5px;
+    font-size: 11px;
+  }
+
+  .add-food-sheet .segmented-control--small .segmented-control__option span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
   .scanner-view { aspect-ratio: 3 / 4; max-height: 62dvh; }
 
@@ -1452,8 +1505,8 @@ p {
   .meal-section__items,
   .meal-section__footer { padding-inline: 14px; }
   .segmented-control { max-width: 100%; }
-  .food-result { grid-template-columns: minmax(0, 1fr); }
-  .food-result__actions { justify-content: flex-start; }
+  .add-food-sheet__search-actions { display: grid; }
+  .add-food-sheet__search-actions .button { width: 100%; min-height: 42px; }
 }
 
 @media (hover: none) {
@@ -1636,7 +1689,7 @@ p {
 .scanner-loading { position: absolute; inset: 0; display: flex; gap: 8px; align-items: center; justify-content: center; color: white; background: rgb(0 0 0 / 42%); }
 .manual-barcode { display: grid; gap: 14px; padding: 16px 0; }
 .manual-barcode label { display: grid; gap: 6px; color: var(--text); font-size: 12px; font-weight: 700; }
-.manual-barcode input { min-height: 46px; padding: 0 13px; color: var(--text-strong); background: var(--surface-soft); border: 1px solid var(--border); border-radius: 12px; }
+.manual-barcode input { min-height: 46px; padding: 0 13px; color: var(--text-strong); background: var(--surface-soft); border: 1px solid var(--border); border-radius: 12px; font-size: 16px; }
 .scanner-status.error { color: var(--red); }
 
 @media (max-width: 900px) {

@@ -235,6 +235,12 @@ function mealNutrition(meal: SavedMeal): Nutrition {
   ));
 }
 
+function shouldAutoFocusSearch() {
+  // On touch devices auto-focus pops the keyboard mid sheet animation, so only desktop pointers get it.
+  return typeof window !== 'undefined'
+    && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+}
+
 function friendlyApiError(error: unknown) {
   if (!navigator.onLine) return 'You are offline. Local foods and Usuals still work.';
   if (error instanceof OpenFoodFactsRateLimitError) {
@@ -762,21 +768,25 @@ export function AddFoodSheet({
             {lane === 'search' ? (
               <div style={stack}>
                 <form onSubmit={searchDatabase} style={compactStack}>
-                  <div className="input-shell">
-                    <Search aria-hidden="true" />
-                    <input
-                      className="input"
-                      value={query}
-                      onChange={(event) => {
-                        setQuery(event.target.value);
-                        setError(undefined);
-                      }}
-                      placeholder="Search your foods, meals, or a product"
-                      autoComplete="off"
-                      autoFocus
-                    />
+                  <div className="add-food-sheet__search">
+                    <div className="input-shell">
+                      <Search aria-hidden="true" />
+                      <input
+                        className="input"
+                        value={query}
+                        onChange={(event) => {
+                          setQuery(event.target.value);
+                          setError(undefined);
+                        }}
+                        placeholder="Search foods, meals, or products"
+                        autoComplete="off"
+                        inputMode="search"
+                        enterKeyHint="search"
+                        autoFocus={shouldAutoFocusSearch()}
+                      />
+                    </div>
                   </div>
-                  <div style={row}>
+                  <div className="add-food-sheet__search-actions">
                     <button type="button" className="button button--secondary button--small" onClick={() => setScannerOpen(true)}>
                       <ScanBarcode size={17} /> Scan barcode
                     </button>
