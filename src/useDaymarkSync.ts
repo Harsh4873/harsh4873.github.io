@@ -72,7 +72,7 @@ function timestampOrder(left: string, right: string) {
 
 function friendlySyncError(error: unknown) {
   const code = typeof error === 'object' && error && 'code' in error ? String(error.code) : '';
-  if (code.includes('popup-closed-by-user')) return 'Sign-in was cancelled. Your local tracker is unchanged.';
+  if (code.includes('popup-closed-by-user')) return 'Sign-in was cancelled. Your local Daymark data is unchanged.';
   if (code.includes('popup-blocked')) return 'Allow the Google sign-in window, then try again.';
   if (code.includes('permission-denied')) return 'This Google account is not allowed to access Daymark.';
   if (code.includes('unavailable') || !navigator.onLine) return 'You are offline. Changes stay on this device and will sync after reconnection.';

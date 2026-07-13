@@ -142,16 +142,16 @@ export default function App() {
           document.getElementById('main-content')?.focus();
         }}
       >
-        Skip to tracker
+        Skip to Daymark
       </a>
 
       <header className="app-header">
         <a className="brand-link" href="#daily" aria-label="Daymark daily view">
           <DaymarkLogo />
-          <span><strong>Daymark</strong><small>harsh.bet / tracker</small></span>
+          <span><strong>Daymark</strong><small>harsh.bet / daymark</small></span>
         </a>
 
-        <nav className="desktop-nav" aria-label="Tracker views">
+        <nav className="desktop-nav" aria-label="Daymark views">
           {NAVIGATION.map(({ id, label, icon: Icon }) => (
             <a href={`#${id}`} className={view === id ? 'active' : ''} aria-current={view === id ? 'page' : undefined} key={id}>
               <Icon aria-hidden="true" />
@@ -227,7 +227,7 @@ export default function App() {
         </div>
       </footer>
 
-      <nav className="mobile-nav" aria-label="Tracker views">
+      <nav className="mobile-nav" aria-label="Daymark views">
         {NAVIGATION.map(({ id, shortLabel, icon: Icon }) => (
           <a href={`#${id}`} className={view === id ? 'active' : ''} aria-current={view === id ? 'page' : undefined} key={id}>
             <Icon aria-hidden="true" />

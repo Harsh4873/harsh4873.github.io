@@ -1,6 +1,6 @@
 # Daymark
 
-Daymark is the private, local-first habit tracker published at `harsh.bet/tracker/`. Its source is isolated on the `tracker` branch of PickLedgerPro and assembled into the composite GitHub Pages artifact by `main`.
+Daymark is the private, local-first habit app published at `harsh.bet/daymark/`. Its source is isolated on the `daymark` branch of PickLedgerPro and assembled into the composite GitHub Pages artifact by `main`.
 
 ## Product model
 
@@ -17,7 +17,7 @@ Daymark is the private, local-first habit tracker published at `harsh.bet/tracke
 
 Google sign-in is restricted to the verified `hdav4873@gmail.com` account. Authentication persists on each device until explicit sign-out, so the normal experience remains automatic after signing in once.
 
-Firestore data is isolated under `daymark_users/{uid}` with separate habit and entry documents. This keeps unrelated check-ins from overwriting one another, while a generation ID makes reset and JSON-import replacements propagate cleanly. Firestore rules deny access to signed-out users, other accounts, mismatched UIDs, and every non-Daymark collection. Firebase Analytics is not enabled.
+Firestore data is isolated under `daymark_users/{uid}` with separate habit and entry documents. This keeps unrelated check-ins from overwriting one another, while a generation ID makes reset and JSON-import replacements propagate cleanly. The combined Firestore rules preserve Slate's separate `slate_users/{uid}` namespace while denying signed-out users, other accounts, mismatched UIDs, and every unrelated collection. Firebase Analytics is not enabled.
 
 The browser mirror remains the first read and write path for instant startup and offline use. Cloud sync aligns devices; JSON export remains the portable backup the user controls. Signing out waits for pending writes, then removes Daymark's local copy from that device.
 
@@ -30,9 +30,9 @@ npm run typecheck
 npm run build
 ```
 
-Vite's public base is `/tracker/`. Navigation is hash-based so every view remains safe on GitHub Pages without a server rewrite.
+Vite's public base is `/daymark/`. Navigation is hash-based so every view remains safe on GitHub Pages without a server rewrite.
 
-Deploy the scoped Firestore rules separately with:
+Deploy the combined Daymark + Slate Firestore rules separately with:
 
 ```sh
 firebase deploy --only firestore:rules --project pickledgerpro

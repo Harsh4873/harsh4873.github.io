@@ -171,4 +171,15 @@ describe.skipIf(!EMULATOR_ADDRESS)('Daymark Firestore security rules', () => {
     await assertFails(getDoc(unexpected));
     await assertFails(setDoc(unexpected, { value: 'not allowed' }));
   });
+
+  it('keeps authorized Slate access working in the combined ruleset', async () => {
+    const firestore = authorizedContext(testEnvironment).firestore();
+    const root = doc(firestore, 'slate_users', OWNER_UID);
+    const task = doc(firestore, 'slate_users', OWNER_UID, 'tasks', 'task-1');
+
+    await assertSucceeds(setDoc(root, { schemaVersion: 1 }));
+    await assertSucceeds(setDoc(task, { id: 'task-1' }));
+    await assertSucceeds(getDoc(root));
+    await assertSucceeds(getDoc(task));
+  });
 });

@@ -557,7 +557,7 @@ export function ProfileView({
     <div className="view-shell profile-view">
       <SectionHeading
         eyebrow="Profile + system"
-        title="Build a tracker that fits the life."
+        title="Shape Daymark around your life."
         copy="Change the goal, unit, rhythm, visual marker, and ordering. Your record stays available offline and syncs privately between your devices."
         action={<button type="button" className="button button-primary" onClick={() => setEditor({ habit: createHabit(), locked: false })}><Plus aria-hidden="true" /> New habit</button>}
       />
@@ -565,7 +565,7 @@ export function ProfileView({
       <section className="profile-hero-grid">
         <article className="panel identity-panel">
           <div className="profile-monogram">{(state.profile.displayName || 'H').slice(0, 1).toUpperCase()}</div>
-          <div><span>Tracker profile</span><h2>{state.profile.displayName || 'Your'}’s Daymark</h2><p>{active.length} active habits · {entryCount} lifetime entries</p></div>
+          <div><span>Daymark profile</span><h2>{state.profile.displayName || 'Your'}’s Daymark</h2><p>{active.length} active habits · {entryCount} lifetime entries</p></div>
           <Sparkles aria-hidden="true" />
         </article>
         <article className="panel privacy-panel">
