@@ -283,7 +283,7 @@ def test_upcheck_reports_raw_and_visible_pick_counts(tmp_path: Path):
     today = datetime.now(ZoneInfo("America/Chicago")).strftime("%Y-%m-%d")
     script = _upcheck_repo(tmp_path, today)
     (tmp_path / "index.html").write_text(
-        '<link rel="stylesheet" href="./src/styles/pickledger.css">'
+        '<link rel="stylesheet" href="./src/styles/landing.css">'
         '<script type="module" src="./src/main.ts"></script>',
         encoding="utf-8",
     )

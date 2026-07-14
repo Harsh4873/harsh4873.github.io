@@ -1,19 +1,22 @@
-# PickLedgerPro Maintenance
+# harsh.bet Platform Maintenance
 
 For any coding or production-maintenance task in this repository:
 
 ## Product Boundaries
 
-- PickLedgerPro stays on `main` in `/Users/harshdave/Documents/PickLedgerPro`.
+- The minimal `harsh.bet` landing site and the composite Pages deployment live on `main`.
+- PickLedger's frontend lives on the `pickledger` branch and publishes under `/pickledger/`.
+- PickLedger's model, grading, cache, and automation code remains on `main` during the repository split.
 - Gym lives on the `gym` branch in `/Users/harshdave/Documents/Gym` and publishes under `/gym/`.
 - Slate lives on the `slate` branch and publishes under `/slate/`.
 - Daymark lives on the `daymark` branch and publishes under `/daymark/`.
 - Portfolio lives on the `portfolio` branch and publishes under `/portfolio/`.
 - Fare lives on the `fare` branch and publishes under `/fare/`.
+- MtbScope lives on the `genome` branch and publishes under `/genes/`.
 - Sift lives on the `research` branch and publishes under `/research/`.
 - Do not touch Gym unless the user asks for Gym work.
 - Do not touch PickLedger, gambling, prediction, scraper, grading, model-cache, player-prop, or betting code from the Gym worktree.
-- Work on these app branches is isolated; `main` only owns the Pages deployment plumbing that assembles their built artifacts under their named paths.
+- Work on these app branches is isolated; `main` owns the landing page, shared Pages assembly, and the still-coupled PickLedger data pipeline.
 
 ## Verification (agents only — not the user)
 

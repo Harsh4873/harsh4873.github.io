@@ -44,6 +44,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Checkout PickLedger app
+        uses: actions/checkout@v4
+        with:
+          ref: pickledger
+          path: pickledger-app
+
       - name: Checkout Gym app
         uses: actions/checkout@v4
         with:
@@ -96,6 +102,7 @@ jobs:
           cache: npm
           cache-dependency-path: |
             package-lock.json
+            pickledger-app/package-lock.json
             gym-app/package-lock.json
             portfolio-app/package-lock.json
             daymark-app/package-lock.json
@@ -105,6 +112,10 @@ jobs:
             research-app/package-lock.json
 
       - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Install PickLedger dependencies
+        working-directory: pickledger-app
         run: npm ci
 
       - name: Install Gym dependencies
@@ -144,6 +155,19 @@ jobs:
           cp ipl/ipl_styles.css dist/ipl/ || true
           cp ipl/ipl_frontend.js dist/ipl/ || true
           cp -R data/. dist/data/ || true
+
+      - name: Build PickLedger artifact
+        working-directory: pickledger-app
+        run: |
+          npm run build
+          mkdir -p ../dist/pickledger/data ../dist/pickledger/ipl
+          cp -R dist/. ../dist/pickledger/
+          cp ipl/ipl_styles.css ../dist/pickledger/ipl/ || true
+          cp ipl/ipl_frontend.js ../dist/pickledger/ipl/ || true
+          cp -R ../data/model_cache ../dist/pickledger/data/
+          cp -R ../data/player_props_cache ../dist/pickledger/data/
+          cp -R ../data/parlay_cards ../dist/pickledger/data/
+          cp -R ../data/profit_desk ../dist/pickledger/data/
 
       - name: Build Gym artifact
         working-directory: gym-app
@@ -204,10 +228,26 @@ jobs:
           test -n "$(find dist/assets -maxdepth 1 -name '*.css' -print -quit)"
           test -n "$(find dist/assets -maxdepth 1 -name '*.js' -print -quit)"
           ! grep -q 'src/main.ts' dist/index.html
-          grep -q 'rel="apple-touch-icon"' dist/index.html
+          grep -q 'Pick a door' dist/index.html
+          test -f dist/CNAME
+          test "$(tr -d '\r\n' < dist/CNAME)" = "harsh.bet"
+          test -f dist/.nojekyll
           test -f dist/data/model_cache/index.json
           test -f dist/data/profit_desk/index.json
           test -f dist/data/profit_desk/latest.json
+          test -f dist/pickledger/index.html
+          ! grep -q 'src/main.ts' dist/pickledger/index.html
+          test -n "$(find dist/pickledger/assets -maxdepth 1 -name '*.css' -print -quit)"
+          test -n "$(find dist/pickledger/assets -maxdepth 1 -name '*.js' -print -quit)"
+          test -f dist/pickledger/data/model_cache/index.json
+          test -f dist/pickledger/data/model_cache/latest.json
+          test -f dist/pickledger/data/player_props_cache/index.json
+          test -f dist/pickledger/data/player_props_cache/latest.json
+          test -f dist/pickledger/data/parlay_cards/index.json
+          test -f dist/pickledger/data/parlay_cards/latest.json
+          test -f dist/pickledger/data/profit_desk/index.json
+          test -f dist/pickledger/data/profit_desk/latest.json
+          test ! -f dist/pickledger/CNAME
           test -f dist/gym/index.html
           grep -q '/gym/assets/' dist/gym/index.html
           test -n "$(find dist/gym/assets -maxdepth 1 -name '*.css' -print -quit)"

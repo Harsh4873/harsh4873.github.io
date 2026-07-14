@@ -464,8 +464,8 @@ def main() -> int:
         return 0
 
     source_html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
-    if 'href="./src/styles/pickledger.css"' not in source_html:
-        failures.append("source HTML is missing the main stylesheet")
+    if 'href="./src/styles/landing.css"' not in source_html:
+        failures.append("source HTML is missing the landing stylesheet")
     if 'type="module" src="./src/main.ts"' not in source_html:
         failures.append("source HTML is missing the Vite module entrypoint")
 
