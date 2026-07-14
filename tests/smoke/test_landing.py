@@ -48,10 +48,9 @@ def test_landing_has_personal_metadata_and_accessible_structure():
         for script in parser.scripts
     )
     assert "fonts.googleapis.com" not in html
-    assert "PickLedger — Daily Sports Picks" not in html
 
 
-def test_landing_routes_every_project_to_its_own_tab():
+def test_landing_routes_every_project_to_a_standalone_site():
     _, parser = _landing()
     expected_paths = {
         "/daymark/",
@@ -64,9 +63,7 @@ def test_landing_routes_every_project_to_its_own_tab():
         "/portfolio/",
     }
     project_links = [
-        link
-        for link in parser.links
-        if "project-card" in link.get("class", "").split()
+        link for link in parser.links if "project-card" in link.get("class", "").split()
     ]
 
     assert {link.get("href") for link in project_links} == expected_paths
@@ -76,7 +73,17 @@ def test_landing_routes_every_project_to_its_own_tab():
     assert all(link.get("aria-label", "").endswith("in a new tab") for link in project_links)
 
 
-def test_landing_source_is_small_and_progressively_enhanced():
+def test_landing_uses_the_accessible_aggie_maroon_palette():
+    html, _ = _landing()
+    css = (ROOT / "src" / "styles" / "landing.css").read_text(encoding="utf-8")
+
+    assert '<meta name="theme-color" content="#500000"' in html
+    assert "--accent: #500000;" in css
+    assert "--paper-strong: #d6d3c4;" in css
+    assert "--white: #ffffff;" in css
+
+
+def test_landing_is_small_and_progressively_enhanced():
     script = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
     css = (ROOT / "src" / "styles" / "landing.css").read_text(encoding="utf-8")
 
@@ -86,20 +93,19 @@ def test_landing_source_is_small_and_progressively_enhanced():
     assert "prefers-reduced-motion" in css
     assert ":focus-visible" in css
     assert "@media (max-width: 720px)" in css
-    assert not (ROOT / "src" / "data.ts").exists()
-    assert not (ROOT / "src" / "settings.ts").exists()
-    assert not (ROOT / "src" / "styles" / "pickledger.css").exists()
+    assert not (ROOT / "data").exists()
+    assert not (ROOT / "models").exists()
+    assert not (ROOT / "player_props").exists()
 
 
-def test_pages_workflow_preserves_pickledger_as_a_subpath_app():
+def test_pages_workflow_deploys_only_the_landing_artifact():
     workflow = (ROOT / ".github" / "workflows" / "deploy-pages.yml").read_text(encoding="utf-8")
 
-    assert "ref: pickledger" in workflow
-    assert "path: pickledger-app" in workflow
-    assert "working-directory: pickledger-app" in workflow
-    assert "mkdir -p ../dist/pickledger/data ../dist/pickledger/ipl" in workflow
-    assert "cp -R ../data/model_cache ../dist/pickledger/data/" in workflow
-    assert "cp -R ../data/player_props_cache ../dist/pickledger/data/" in workflow
-    assert "test -f dist/pickledger/index.html" in workflow
-    assert "test ! -f dist/pickledger/CNAME" in workflow
-    assert "test -f dist/CNAME" in workflow
+    assert "actions/checkout@v5" in workflow
+    assert "actions/setup-node@v5" in workflow
+    assert "npm run build" in workflow
+    assert "python3 scripts/site_upcheck.py" in workflow
+    assert "actions/upload-pages-artifact@v3" in workflow
+    assert "actions/deploy-pages@v4" in workflow
+    assert "ref: pickledger" not in workflow
+    assert "working-directory:" not in workflow

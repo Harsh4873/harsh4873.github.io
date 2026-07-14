@@ -3,78 +3,43 @@
 ## Production shape
 
 ```text
-main
-  ├─ harsh.bet landing
-  ├─ PickLedger models, grading, and committed cache data
-  └─ GitHub Pages assembly workflow
-
-app branches
-  ├─ pickledger ───────────────> /pickledger/
-  ├─ portfolio ────────────────> /portfolio/
-  ├─ daymark ──────────────────> /daymark/
-  ├─ slate ────────────────────> /slate/
-  ├─ gym ──────────────────────> /gym/
-  ├─ fare ─────────────────────> /fare/
-  ├─ genome ───────────────────> /genes/
-  └─ research ─────────────────> /research/
+Harsh4873/harsh4873.github.io  ──> harsh.bet/
+Harsh4873/pickledger           ──> harsh.bet/pickledger/
+Harsh4873/portfolio            ──> harsh.bet/portfolio/
+Harsh4873/daymark              ──> harsh.bet/daymark/
+Harsh4873/slate                ──> harsh.bet/slate/
+Harsh4873/gym                  ──> harsh.bet/gym/
+Harsh4873/fare                 ──> harsh.bet/fare/
+Harsh4873/genes                ──> harsh.bet/genes/
+Harsh4873/research             ──> harsh.bet/research/
 ```
 
-The root landing is a small Vite + TypeScript site. It has no framework, persistence,
-authentication, or runtime API dependency. Project links are normal anchors and remain
-useful without JavaScript; `src/main.ts` adds only the current year and optional reduced-
-motion-aware reveal behavior.
+The root is a small Vite + TypeScript landing page with no framework, persistence, authentication, model pipeline, or runtime API dependency. Its anchors work without JavaScript; `src/main.ts` only supplies the current year and reduced-motion-aware reveal behavior.
 
-## Pages assembly
+Each project repository builds and deploys its own `dist/` artifact through GitHub Actions. The user-site repository is the only repository with `CNAME`; GitHub Pages inherits that custom domain for project-site paths.
 
-`.github/workflows/deploy-pages.yml` runs on pushes to `main` and manual dispatches.
+## Landing deployment
 
-1. The readiness job checks the current PickLedger cache contract.
-2. The deploy job checks out `main` and every app branch.
-3. The root landing builds into `dist/`.
-4. Each app builds into its matching `dist/<path>/` directory.
-5. Current PickLedger viewer data is copied from `main` into
-   `dist/pickledger/data/`; its frontend resolves data relative to that path.
-6. Source-level checks verify CSS/JavaScript assets, required app files, `CNAME`,
-   `.nojekyll`, and the four PickLedger data manifests.
-7. The composite artifact deploys through GitHub Actions Pages.
+`.github/workflows/deploy-pages.yml` runs on pushes to `main` and manual dispatches:
 
-The workflow deliberately retains the root `/data/` and `/ipl/` copies for backwards
-compatibility during the transition.
+1. Install the locked Node dependencies.
+2. Type-check and build the landing.
+3. Copy `CNAME` and `.nojekyll` into `dist/` through the package `postbuild` step.
+4. Validate compiled CSS/JavaScript, metadata, project paths, and the absence of bundled project directories.
+5. Upload and deploy the artifact through GitHub Pages.
 
-## PickLedger data flow
+## Repository split
 
-```text
-model/feed Actions
-      |
-      v
-committed JSON on main
-      |
-      +--> scheduled ESPN auto-grader --> committed results
-      |
-      +--> Profit Desk and parlay builders
-      |
-      v
-Pages copies public viewer caches --> /pickledger/data/
-```
+The previous composite site stored apps on branches and assembled every build in one workflow. The V1 split gave each app a clean `main` branch and an independent Pages boundary while retaining the original branches and rollback tag in this repository.
 
-PickLedger's public frontend reads these directories:
-
-- `data/model_cache/`
-- `data/player_props_cache/`
-- `data/parlay_cards/`
-- `data/profit_desk/`
-
-The scheduled cache writers continue to share the `pick-cache-writer` concurrency group.
-Only one writer may modify committed data at a time.
+PickLedger's models, schedules, grading, committed data, and viewer now live together in `Harsh4873/pickledger`. Research keeps its frontend and backend together in `Harsh4873/research`; its Pages workflow builds only the frontend, while its backend remains a separate hosting boundary.
 
 ## Verification
 
 ```bash
-npm run build
 npm run typecheck
-python3 -m pytest tests/smoke/test_landing.py tests/smoke/test_pickledger_pipeline.py tests/smoke/test_site_upcheck.py -q
 npm run upcheck
+python3 -m pytest tests/smoke/test_landing.py -q
 ```
 
-Validation is source-, build-, and workflow-based. Browser or deployed-site inspection is
-left to the repository owner.
+Validation is source-, build-, workflow-, and API-based. Browser and deployed-output inspection is left to the repository owner.

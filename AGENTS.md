@@ -1,47 +1,31 @@
-# harsh.bet Platform Maintenance
+# harsh.bet Landing Maintenance
 
-For any coding or production-maintenance task in this repository:
+This repository owns only the `harsh.bet` landing site. Each linked project has its own repository and GitHub Pages workflow.
 
-## Product Boundaries
+## Project boundaries
 
-- The minimal `harsh.bet` landing site and the composite Pages deployment live on `main`.
-- PickLedger's frontend lives on the `pickledger` branch and publishes under `/pickledger/`.
-- PickLedger's model, grading, cache, and automation code remains on `main` during the repository split.
-- Gym lives on the `gym` branch in `/Users/harshdave/Documents/Gym` and publishes under `/gym/`.
-- Slate lives on the `slate` branch and publishes under `/slate/`.
-- Daymark lives on the `daymark` branch and publishes under `/daymark/`.
-- Portfolio lives on the `portfolio` branch and publishes under `/portfolio/`.
-- Fare lives on the `fare` branch and publishes under `/fare/`.
-- MtbScope lives on the `genome` branch and publishes under `/genes/`.
-- Sift lives on the `research` branch and publishes under `/research/`.
-- Do not touch Gym unless the user asks for Gym work.
-- Do not touch PickLedger, gambling, prediction, scraper, grading, model-cache, player-prop, or betting code from the Gym worktree.
-- Work on these app branches is isolated; `main` owns the landing page, shared Pages assembly, and the still-coupled PickLedger data pipeline.
+- Landing: `Harsh4873/harsh4873.github.io`
+- PickLedger: `Harsh4873/pickledger`
+- Portfolio: `Harsh4873/portfolio`
+- Daymark: `Harsh4873/daymark`
+- Slate: `Harsh4873/slate`
+- Gym: `Harsh4873/gym`
+- Fare: `Harsh4873/fare`
+- MtbScope: `Harsh4873/genes`
+- Sift: `Harsh4873/research`
 
-## Verification (agents only — not the user)
+Do not add app source, model code, data pipelines, or composite app builds back to this repository. Historical app branches remain only as rollback snapshots.
 
-- Never open the deployed site, a browser, rendered Pages output, or live URLs to verify that a change worked. The user confirms production behavior.
-- Agents may review source, run builds/tests, read GitHub Actions logs, and inspect GitHub API/workflow state — but must not visually inspect the running site.
-- Run `npm run upcheck` before declaring the site healthy. If it fails because today's model cache is missing or a model bucket failed, dispatch `model-cache-refresh.yml`, wait for it, and investigate any remaining failure.
-- Inspect the latest relevant GitHub Actions runs for model refreshes, player props, external feeds, auto-grading, and Pages deployment.
+## Verification
 
-## GitHub publish workflow (required after coding changes)
+- Never open the deployed site, a browser, rendered output, screenshot, or live URL to verify changes. The repository owner confirms the visual result.
+- Review source, run tests/builds, and inspect GitHub Actions and Pages API state.
+- Run `npm run upcheck` and `python3 -m pytest tests/smoke/test_landing.py -q` before publishing.
 
-- After any PickLedgerPro coding change: run focused tests and `npm run upcheck`, then **commit, push to `main`, and deploy through `deploy-pages.yml`** — do not leave fixes local-only unless the user explicitly asks not to publish.
-- Commits and pushes must come from the **currently logged-in GitHub user** (`gh auth status` / `git log -1 --format='%an %ae'`).
-- **Never** add AI co-author trailers, `Co-authored-by:` lines, or any AI/Cursor/Codex tagline to commit messages or pushes.
-- Keep GitHub Pages configured for GitHub Actions deployment (`build_type: workflow`), never legacy branch deployment.
+## Publishing
+
+- Commit and push landing changes to `main`, then deploy through `.github/workflows/deploy-pages.yml`.
+- Commits and pushes must use the currently logged-in GitHub user.
+- Never add AI co-author trailers, `Co-authored-by:` lines, or AI/Cursor/Codex taglines to commits.
+- Keep Pages on GitHub Actions (`build_type: workflow`) and keep `CNAME` only in this user-site repository.
 - Do not overwrite or revert unrelated user changes.
-- For app coding changes, commit and push the app branch first, then commit and push any required `main` deployment updates, and deploy through `deploy-pages.yml`.
-
-## Cursor Automations
-
-- Scores24 must run off GitHub Actions IPs. Scheduled cloud automations should call `scripts/scrapers/scores24_publish.sh` — see `docs/cursor-automations.md` for schedules and prompts.
-- Optional daily sanity automation prompt is also in that doc. Never open the deployed site to verify; use `npm run upcheck` and Actions logs.
-
-## Parlay engine (v5, "market excess")
-
-- `scripts/build_parlay_cards.py` anchors leg probabilities to market no-vig prices and adjusts only by each source's trailing excess over market (per source, market-probability band, and Over/Under direction for props), with shrinkage. Raw model probabilities are never trusted directly.
-- Cards: up to 2 disjoint team "Edge Double" slips + 1 player "Prop Double" per slate, 2 legs each, leg odds −320..+160, card odds −160..+320. No same-game / same-player / same-side legs — game and side keys are canonicalized across sources so reworded duplicates collide.
-- `ENGINE_CUTOVER_DATE = 2026-07-01`: dated parlay files before it are never rebuilt (published v3 history stays); the UI separates records by `engineVersion`.
-- Weak slates may show fewer or zero cards. Do not loosen gates to force daily action.

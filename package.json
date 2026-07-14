@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
+    "postbuild": "cp .nojekyll CNAME dist/",
     "upcheck": "npm run build && python3 scripts/site_upcheck.py",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit"
