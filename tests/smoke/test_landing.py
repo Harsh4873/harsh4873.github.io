@@ -51,7 +51,7 @@ def test_landing_has_personal_metadata_and_accessible_structure():
 
 
 def test_landing_routes_every_project_to_a_standalone_site():
-    _, parser = _landing()
+    html, parser = _landing()
     expected_paths = {
         "/daymark/",
         "/slate/",
@@ -70,7 +70,8 @@ def test_landing_routes_every_project_to_a_standalone_site():
     assert len(project_links) == len(expected_paths)
     assert all(link.get("target") == "_blank" for link in project_links)
     assert all({"noopener", "noreferrer"} <= set(link.get("rel", "").split()) for link in project_links)
-    assert all(link.get("aria-label", "").endswith("in a new tab") for link in project_links)
+    assert all("aria-label" not in link for link in project_links)
+    assert html.count('<span class="sr-only"> (opens in a new tab)</span>') >= len(expected_paths)
 
 
 def test_landing_uses_the_accessible_aggie_maroon_palette():

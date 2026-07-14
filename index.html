@@ -6,13 +6,13 @@
     <title>Harsh — Projects, experiments, and things I’m building</title>
     <meta
       name="description"
-      content="The front door to Harsh Dave’s projects across planning, habits, health, research, data, and the web."
+      content="Harsh Dave is a computer scientist, statistician, computational genomics researcher, and builder turning complicated systems into useful tools."
     />
     <meta name="theme-color" content="#500000" />
-    <meta property="og:title" content="Harsh — Things I’m building" />
+    <meta property="og:title" content="Harsh Dave — Systems, software, and useful experiments" />
     <meta
       property="og:description"
-      content="A small collection of focused tools, experiments, and products by Harsh Dave."
+      content="Research, software, sports data, and personal tools—connected by a need to understand how systems work and make them better."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://harsh.bet/" />
@@ -23,15 +23,18 @@
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
+    <div class="scroll-progress" aria-hidden="true"><span></span></div>
 
     <div class="site-shell">
       <header class="site-header" aria-label="Primary navigation">
         <a class="wordmark" href="#top" aria-label="harsh.bet home">
           harsh<span>.</span>bet
         </a>
+        <p class="header-status"><i aria-hidden="true"></i> Texas A&amp;M <span>·</span> Systems in progress</p>
         <nav class="site-nav" aria-label="Main navigation">
-          <a href="#about">About</a>
+          <a href="#profile">Profile</a>
           <a href="#projects">Projects</a>
+          <a href="#curiosities">Curiosities</a>
           <a href="/portfolio/" target="_blank" rel="noopener noreferrer">
             Portfolio <span aria-hidden="true">↗</span>
             <span class="sr-only">(opens in a new tab)</span>
@@ -40,229 +43,242 @@
       </header>
 
       <main id="main-content">
-        <section class="hero" id="top" aria-labelledby="hero-title">
+        <section class="hero site-section" id="top" aria-labelledby="hero-title">
           <div class="hero-copy">
-            <p class="eyebrow">Harsh Dave · Product builder</p>
+            <p class="eyebrow"><span>Harsh Dave</span> CS · Statistics · Computational genomics</p>
             <h1 id="hero-title">
-              A home for things
-              <em>I’m building.</em>
+              I like complicated systems.
+              <em>I build useful ways through them.</em>
             </h1>
-          </div>
-
-          <div class="hero-intro">
-            <p>
-              Hey, I’m Harsh. I make software for the parts of life I want to
-              understand, organize, or improve—from habits and training to
-              research and data.
+            <p class="hero-lede">
+              I’m a researcher and product builder who wants to know what happens underneath the interface—then turn that understanding into software people can actually use.
             </p>
             <div class="hero-actions">
-              <a class="button button--primary" href="#projects">Explore the projects</a>
-              <a
-                class="button button--quiet"
-                href="/portfolio/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                More about me <span aria-hidden="true">↗</span>
+              <a class="button button--primary" href="#projects">Explore the systems <span aria-hidden="true">↓</span></a>
+              <a class="button button--quiet" href="/portfolio/" target="_blank" rel="noopener noreferrer">
+                Read the full story <span aria-hidden="true">↗</span>
                 <span class="sr-only">(opens in a new tab)</span>
               </a>
             </div>
           </div>
 
-          <div class="hero-index" aria-label="Site summary">
-            <div>
-              <span class="hero-index__value">08</span>
-              <span class="hero-index__label">Projects</span>
+          <aside class="systems-card" aria-labelledby="systems-card-title">
+            <div class="card-kicker">
+              <span id="systems-card-title">Personal systems atlas</span>
+              <span>Live / 2026</span>
             </div>
-            <div>
-              <span class="hero-index__value">01</span>
-              <span class="hero-index__label">Home base</span>
+            <div class="systems-map" aria-hidden="true">
+              <span class="map-orbit map-orbit--one"></span>
+              <span class="map-orbit map-orbit--two"></span>
+              <span class="map-core">HD<small>Ask why</small></span>
+              <span class="map-node map-node--software">Software</span>
+              <span class="map-node map-node--data">Data</span>
+              <span class="map-node map-node--biology">Biology</span>
+              <span class="map-node map-node--sport">Sport</span>
             </div>
+            <p class="systems-card__summary">
+              Four different subjects, one recurring instinct: inspect the system, test the assumptions, and make the next version more useful.
+            </p>
+            <div class="now-signal">
+              <span><i aria-hidden="true"></i> Current signal</span>
+              <p>Studying positive selection in <i>Mycobacterium tuberculosis</i> at the Ioerger Lab.</p>
+            </div>
+          </aside>
+        </section>
+
+        <section class="signal-strip" aria-label="At a glance">
+          <article><span>01</span><strong>2× B.S.</strong><p>Computer Science + Statistics</p></article>
+          <article><span>02</span><strong>3.92</strong><p>GPA · Summa Cum Laude</p></article>
+          <article><span>03</span><strong>≈4,000</strong><p>Genes in current analysis</p></article>
+          <article><span>04</span><strong>08</strong><p>Destinations in this hub</p></article>
+        </section>
+
+        <section class="profile site-section" id="profile" aria-labelledby="profile-title">
+          <div class="section-rail">
+            <p class="section-label">01 / Profile</p>
+            <span>From question<br />to working system</span>
+          </div>
+          <div class="profile-statement">
+            <h2 id="profile-title">I rarely stop at<br /><em>“that’s just how it works.”</em></h2>
+            <p>
+              Computer science taught me to build. Statistics taught me to question the evidence. Biology made the problems feel urgent and real. Sports and training made improvement measurable. Most of what I make lives somewhere between those lessons.
+            </p>
+          </div>
+          <div class="question-stack" aria-label="Questions Harsh returns to">
+            <p class="mini-label">Questions I default to</p>
+            <ol>
+              <li><span>01</span>What are we actually measuring?</li>
+              <li><span>02</span>Which assumption could break this?</li>
+              <li><span>03</span>How would we know the result is real?</li>
+              <li><span>04</span>Can the useful version be simpler?</li>
+            </ol>
           </div>
         </section>
 
-        <section class="about" id="about" aria-labelledby="about-title">
-          <p class="section-label">01 / About</p>
-          <h2 id="about-title">The index, not the whole story.</h2>
-          <div class="about-copy">
-            <p>
-              I like taking a messy problem and turning it into a focused,
-              useful product. This site is the front door: a short introduction
-              here, with every project free to have its own identity elsewhere.
-            </p>
-            <p>
-              For the longer version—work, experience, and how these projects
-              connect—the portfolio is still its own place.
-            </p>
-          </div>
-        </section>
-
-        <section class="projects" id="projects" aria-labelledby="projects-title">
+        <section class="projects site-section" id="projects" aria-labelledby="projects-title">
           <div class="section-heading">
             <div>
-              <p class="section-label">02 / Projects</p>
-              <h2 id="projects-title">Pick a door.</h2>
+              <p class="section-label">02 / Project index</p>
+              <h2 id="projects-title">Built from the friction I notice.</h2>
             </div>
-            <p>Each project opens in its own tab.</p>
+            <p>Each project has its own job and identity. Together, they show what I pay attention to.</p>
+          </div>
+
+          <div class="project-controls" data-project-filters hidden>
+            <div class="filter-buttons" role="group" aria-label="Filter projects by lens">
+              <button type="button" data-filter="all" aria-pressed="true">All systems</button>
+              <button type="button" data-filter="daily" aria-pressed="false">Daily life</button>
+              <button type="button" data-filter="evidence" aria-pressed="false">Evidence</button>
+              <button type="button" data-filter="research" aria-pressed="false">Research</button>
+            </div>
+            <p class="filter-count" aria-live="polite"><span data-filter-count>8</span> systems in view</p>
           </div>
 
           <div class="project-grid">
-            <a
-              class="project-card"
-              href="/daymark/"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Open Daymark in a new tab"
-            >
-              <span class="project-card__number">01</span>
-              <span class="project-card__category">Habits</span>
+            <a class="project-card" data-lens="daily" href="/daymark/" target="_blank" rel="noopener noreferrer">
+              <div class="project-card__top"><span class="project-card__number">01</span><span class="project-card__status"><i></i> Live</span></div>
+              <p class="project-card__category">Habits · Local first</p>
               <h3>Daymark</h3>
-              <p>
-                A local-first habit tracker for flexible goals, streaks,
-                reviews, notes, and cross-device sync.
-              </p>
-              <span class="project-card__open">Open project <span aria-hidden="true">↗</span></span>
+              <p class="project-card__summary">Flexible goals, streaks, reviews, notes, and sync without turning a missed day into a broken system.</p>
+              <p class="project-card__why"><span>Why it exists</span>Consistency is easier when progress is visible and forgiving.</p>
+              <div class="project-card__footer"><span>Routines · Reflection · Firebase</span><b>Open ↗<span class="sr-only"> (opens in a new tab)</span></b></div>
             </a>
 
-            <a
-              class="project-card"
-              href="/slate/"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Open Slate in a new tab"
-            >
-              <span class="project-card__number">02</span>
-              <span class="project-card__category">Planning</span>
+            <a class="project-card" data-lens="daily" href="/slate/" target="_blank" rel="noopener noreferrer">
+              <div class="project-card__top"><span class="project-card__number">02</span><span class="project-card__status"><i></i> Live</span></div>
+              <p class="project-card__category">Planning · Local first</p>
               <h3>Slate</h3>
-              <p>
-                A local-first daily planner that pairs a time-boxed schedule
-                with flexible, organized to-do lists.
-              </p>
-              <span class="project-card__open">Open project <span aria-hidden="true">↗</span></span>
+              <p class="project-card__summary">A time-boxed daily schedule beside flexible, organized to-do lists—the plan and the reality in one place.</p>
+              <p class="project-card__why"><span>Why it exists</span>A useful day needs structure without becoming rigid.</p>
+              <div class="project-card__footer"><span>Timeboxing · Tasks · Focus</span><b>Open ↗<span class="sr-only"> (opens in a new tab)</span></b></div>
             </a>
 
-            <a
-              class="project-card"
-              href="/pickledger/"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Open PickLedger in a new tab"
-            >
-              <span class="project-card__number">03</span>
-              <span class="project-card__category">Sports intelligence</span>
+            <a class="project-card project-card--dark" data-lens="evidence" href="/pickledger/" target="_blank" rel="noopener noreferrer">
+              <div class="project-card__top"><span class="project-card__number">03</span><span class="project-card__status"><i></i> Daily</span></div>
+              <p class="project-card__category">Sports intelligence · Accountability</p>
               <h3>PickLedger</h3>
-              <p>
-                A public daily board for sports picks, source records,
-                consensus signals, player props, and graded results.
-              </p>
-              <span class="project-card__open">Open project <span aria-hidden="true">↗</span></span>
+              <p class="project-card__summary">Automated team and player-prop models with immutable pregame records, consensus signals, grading, and calibration.</p>
+              <p class="project-card__why"><span>Why it exists</span>A prediction should remember what it claimed before the result was known.</p>
+              <div class="project-card__footer"><span>Models · Brier score · CI/CD</span><b>Open ↗<span class="sr-only"> (opens in a new tab)</span></b></div>
             </a>
 
-            <a
-              class="project-card"
-              href="/genes/"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Open MtbScope in a new tab"
-            >
-              <span class="project-card__number">04</span>
-              <span class="project-card__category">Genomics</span>
+            <a class="project-card project-card--maroon" data-lens="research evidence" href="/genes/" target="_blank" rel="noopener noreferrer">
+              <div class="project-card__top"><span class="project-card__number">04</span><span class="project-card__status"><i></i> Live</span></div>
+              <p class="project-card__category">Genomics · Comparison</p>
               <h3>MtbScope</h3>
-              <p>
-                A comparison-first browser for 4,018 tuberculosis genes, with
-                fast search, rich gene pages, and multi-gene comparison.
-              </p>
-              <span class="project-card__open">Open project <span aria-hidden="true">↗</span></span>
+              <p class="project-card__summary">A comparison-first browser for 4,018 tuberculosis genes, with fast search, rich gene pages, and multi-gene comparison.</p>
+              <p class="project-card__why"><span>Why it exists</span>Thousands of genes need an interface that makes differences legible.</p>
+              <div class="project-card__footer"><span>Genomics · Search · Evidence</span><b>Open ↗<span class="sr-only"> (opens in a new tab)</span></b></div>
             </a>
 
-            <a
-              class="project-card"
-              href="/research/"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Open Sift in a new tab"
-            >
-              <span class="project-card__number">05</span>
-              <span class="project-card__category">Research</span>
+            <a class="project-card" data-lens="research" href="/research/" target="_blank" rel="noopener noreferrer">
+              <div class="project-card__top"><span class="project-card__number">05</span><span class="project-card__status"><i></i> Live</span></div>
+              <p class="project-card__category">Research · Source grounded</p>
               <h3>Sift</h3>
-              <p>
-                A source-grounded paper workspace for reading PDFs, structured
-                briefs, claim tracking, notes, and contextual analysis.
-              </p>
-              <span class="project-card__open">Open project <span aria-hidden="true">↗</span></span>
+              <p class="project-card__summary">A paper workspace for PDFs, structured briefs, claim tracking, notes, and contextual analysis.</p>
+              <p class="project-card__why"><span>Why it exists</span>Reading research should not separate a claim from its source.</p>
+              <div class="project-card__footer"><span>Papers · Claims · Context</span><b>Open ↗<span class="sr-only"> (opens in a new tab)</span></b></div>
             </a>
 
-            <a
-              class="project-card"
-              href="/fare/"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Open Fare in a new tab"
-            >
-              <span class="project-card__number">06</span>
-              <span class="project-card__category">Nutrition</span>
+            <a class="project-card" data-lens="daily evidence" href="/fare/" target="_blank" rel="noopener noreferrer">
+              <div class="project-card__top"><span class="project-card__number">06</span><span class="project-card__status"><i></i> Personal</span></div>
+              <p class="project-card__category">Nutrition · Durable history</p>
               <h3>Fare</h3>
-              <p>
-                A private calorie and macro tracker built around fast logging,
-                personal foods, barcode search, and durable history.
-              </p>
-              <span class="project-card__open">Open project <span aria-hidden="true">↗</span></span>
+              <p class="project-card__summary">Fast calorie and macro logging with personal foods, barcode search, and a history built to last.</p>
+              <p class="project-card__why"><span>Why it exists</span>Tracking only works when logging is faster than guessing.</p>
+              <div class="project-card__footer"><span>Nutrition · Search · Trends</span><b>Open ↗<span class="sr-only"> (opens in a new tab)</span></b></div>
             </a>
 
-            <a
-              class="project-card"
-              href="/gym/"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Open Gym in a new tab"
-            >
-              <span class="project-card__number">07</span>
-              <span class="project-card__category">Training</span>
+            <a class="project-card project-card--sand" data-lens="daily evidence" href="/gym/" target="_blank" rel="noopener noreferrer">
+              <div class="project-card__top"><span class="project-card__number">07</span><span class="project-card__status"><i></i> In use</span></div>
+              <p class="project-card__category">Training · Progress</p>
               <h3>Gym</h3>
-              <p>
-                A personal workout log for programs, sets, supersets,
-                calendars, weekly progress, and milestones.
-              </p>
-              <span class="project-card__open">Open project <span aria-hidden="true">↗</span></span>
+              <p class="project-card__summary">Programs, sets, supersets, calendars, weekly progress, and milestones in one personal training record.</p>
+              <p class="project-card__why"><span>Why it exists</span>Progress deserves better evidence than scattered notes.</p>
+              <div class="project-card__footer"><span>Strength · Volume · History</span><b>Open ↗<span class="sr-only"> (opens in a new tab)</span></b></div>
             </a>
 
-            <a
-              class="project-card project-card--portfolio"
-              href="/portfolio/"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Open Harsh’s portfolio in a new tab"
-            >
-              <span class="project-card__number">08</span>
-              <span class="project-card__category">Work &amp; experience</span>
+            <a class="project-card project-card--portfolio" data-lens="daily evidence research" href="/portfolio/" target="_blank" rel="noopener noreferrer">
+              <div class="project-card__top"><span class="project-card__number">08</span><span class="project-card__status"><i></i> Profile</span></div>
+              <p class="project-card__category">Work · Research · Story</p>
               <h3>Portfolio</h3>
-              <p>
-                The full record of my work across software, statistics, AI,
-                and computational genomics.
-              </p>
-              <span class="project-card__open">Open portfolio <span aria-hidden="true">↗</span></span>
+              <p class="project-card__summary">The deeper record: experience, research, projects, education, tools, interests, and the thinking that connects them.</p>
+              <p class="project-card__why"><span>Why it exists</span>A résumé lists the pieces. This explains the through line.</p>
+              <div class="project-card__footer"><span>Experience · Research · About</span><b>Enter ↗<span class="sr-only"> (opens in a new tab)</span></b></div>
             </a>
+          </div>
+        </section>
+
+        <section class="curiosities site-section" id="curiosities" aria-labelledby="curiosities-title">
+          <div class="curiosity-intro">
+            <p class="section-label light">03 / Current curiosities</p>
+            <h2 id="curiosities-title">The tabs that stay open in my head.</h2>
+            <p>My interests look broad from far away. Up close, each one is another system with feedback, uncertainty, and room to improve.</p>
+          </div>
+          <div class="curiosity-grid">
+            <article>
+              <span>01 / Biology</span>
+              <h3>From sequence to disease.</h3>
+              <p>Positive selection, drug resistance, patient cohorts, protein interactions, and how computation can make biological discovery more precise.</p>
+              <small>Genomics · Bayesian inference · HPC</small>
+            </article>
+            <article>
+              <span>02 / AI systems</span>
+              <h3>What happens after Enter?</h3>
+              <p>Models and agents are interesting; so are the chips, clusters, scheduling, data centers, and failure modes underneath the answer.</p>
+              <small>Infrastructure · Agents · Applied ML</small>
+            </article>
+            <article>
+              <span>03 / Movement</span>
+              <h3>Practice with a scoreboard.</h3>
+              <p>Lifting, badminton, soccer, basketball, boxing, swimming, cricket, and jump rope—different ways to study technique, recovery, and consistency.</p>
+              <small>Strength · Competition · Recovery</small>
+            </article>
+            <article>
+              <span>04 / Useful friction</span>
+              <h3>Tools for the everyday loop.</h3>
+              <p>I build around the moments where planning, nutrition, training, reading, or tracking becomes just annoying enough to stop doing.</p>
+              <small>Habits · Product thinking · Automation</small>
+            </article>
+          </div>
+        </section>
+
+        <section class="trajectory" aria-labelledby="trajectory-title">
+          <div class="trajectory-heading">
+            <p class="section-label">04 / Coordinates</p>
+            <h2 id="trajectory-title">Now, next, and the direction of travel.</h2>
+          </div>
+          <div class="trajectory-list">
+            <article><span>Now</span><div><strong>Computational genomics</strong><p>Building reproducible Python and Slurm workflows for positive-selection research in the Ioerger Lab at Texas A&amp;M.</p></div></article>
+            <article><span>Next</span><div><strong>M.S. Computer Science · Expected 2028</strong><p>Going deeper where computing, statistics, artificial intelligence, and biology meet.</p></div></article>
+            <article><span>Long horizon</span><div><strong>Research × engineering × biotechnology</strong><p>Helping build tools for biological discovery, better research infrastructure, and eventually biotechnology products of my own.</p></div></article>
+          </div>
+        </section>
+
+        <section class="contact-band" aria-label="Contact Harsh">
+          <div>
+            <p class="section-label light">Open line</p>
+            <h2>Have a difficult system<br />worth understanding?</h2>
+          </div>
+          <div>
+            <p>I’m always interested in research, engineering, data, AI, and the unusually specific question behind a good project.</p>
+            <a href="mailto:hdav3228@gmail.com">Compare notes <span aria-hidden="true">↗</span></a>
           </div>
         </section>
       </main>
 
       <footer class="site-footer">
-        <div>
+        <div class="footer-identity">
           <span class="footer-mark" aria-hidden="true">H.</span>
-          <p>Built and maintained by Harsh Dave.</p>
+          <div><strong>Harsh Dave</strong><p>Computer scientist · Statistician · Researcher · Builder</p></div>
         </div>
         <div class="footer-links">
+          <a href="mailto:hdav3228@gmail.com">Email ↗</a>
+          <a href="https://github.com/Harsh4873" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+          <a href="https://devpost.com/hdav3228" target="_blank" rel="noopener noreferrer">Devpost ↗</a>
           <a href="#top">Back to top ↑</a>
-          <a
-            href="https://github.com/Harsh4873"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            GitHub <span aria-hidden="true">↗</span>
-            <span class="sr-only">(opens in a new tab)</span>
-          </a>
         </div>
-        <p class="copyright">© <span id="current-year">2026</span> harsh.bet</p>
+        <p class="copyright">© <span id="current-year">2026</span> harsh.bet · Made with questions, code, and Aggie maroon.</p>
       </footer>
     </div>
 
