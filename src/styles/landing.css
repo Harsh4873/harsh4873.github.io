@@ -1,13 +1,13 @@
 :root {
   color-scheme: light;
-  --paper: #f2efe7;
-  --paper-strong: #e8e3d8;
+  --paper: #f6f6f6;
+  --paper-strong: #d6d3c4;
   --ink: #181815;
   --ink-soft: #5e5b54;
-  --line: #cec8bb;
-  --accent: #b8321f;
-  --accent-soft: #f7c9bc;
-  --white: #fffdf8;
+  --line: #d6d3c4;
+  --accent: #500000;
+  --accent-soft: #e7d9d9;
+  --white: #ffffff;
   --sans: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --serif: "Iowan Old Style", "Baskerville", "Times New Roman", serif;
   --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
