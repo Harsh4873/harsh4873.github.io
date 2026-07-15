@@ -37,7 +37,7 @@ def _landing() -> tuple[str, LandingParser]:
 def test_landing_has_personal_metadata_and_accessible_structure():
     html, parser = _landing()
 
-    assert "<title>Harsh — Projects, experiments, and things I’m building</title>" in html
+    assert "<title>Harsh Dave — Research, software, and useful systems</title>" in html
     assert 'content="https://harsh.bet/"' in html
     assert '<link rel="canonical" href="https://harsh.bet/"' in html
     assert 'class="skip-link" href="#main-content"' in html
@@ -50,7 +50,7 @@ def test_landing_has_personal_metadata_and_accessible_structure():
     assert "fonts.googleapis.com" not in html
 
 
-def test_landing_routes_every_project_to_a_standalone_site():
+def test_landing_routes_every_independent_system_to_its_site():
     html, parser = _landing()
     expected_paths = {
         "/daymark/",
@@ -60,31 +60,47 @@ def test_landing_routes_every_project_to_a_standalone_site():
         "/research/",
         "/fare/",
         "/gym/",
-        "/portfolio/",
     }
-    project_links = [
-        link for link in parser.links if "project-card" in link.get("class", "").split()
-    ]
+    project_links = [link for link in parser.links if "data-project-link" in link]
 
     assert {link.get("href") for link in project_links} == expected_paths
     assert len(project_links) == len(expected_paths)
-    assert all(link.get("target") == "_blank" for link in project_links)
-    assert all({"noopener", "noreferrer"} <= set(link.get("rel", "").split()) for link in project_links)
-    assert all("aria-label" not in link for link in project_links)
-    assert html.count('<span class="sr-only"> (opens in a new tab)</span>') >= len(expected_paths)
+    assert all(link.get("target") in (None, "") for link in project_links)
+    assert 'class="portfolio-row" href="/portfolio/"' in html
+    assert "Independent systems / 07" in html
 
 
-def test_landing_uses_the_accessible_aggie_maroon_palette():
+def test_landing_uses_the_hybrid_rail_and_quiet_theme_tokens():
     html, _ = _landing()
     css = (ROOT / "src" / "styles" / "landing.css").read_text(encoding="utf-8")
+    script = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
 
-    assert '<meta name="theme-color" content="#500000"' in html
-    assert "--accent: #500000;" in css
-    assert "--paper-strong: #d6d3c4;" in css
-    assert "--white: #ffffff;" in css
+    assert 'class="identity-rail"' in html
+    assert ".identity-rail:hover" in css
+    assert ".identity-rail:focus-within" in css
+    assert "transform: translateX" in css
+    assert ':root[data-theme="light"]' in css
+    assert "--accent-deep: #500000;" in css
+    assert "--bg: #151515;" in css
+    assert "harsh-theme" in script
+    assert 'data-theme-option="light"' in html
+    assert 'data-theme-option="dark"' in html
+    assert "linear-gradient" not in css
+    assert "radial-gradient" not in css
 
 
-def test_landing_is_small_and_progressively_enhanced():
+def test_landing_publishes_the_plain_labelled_resume():
+    html, _ = _landing()
+    resume = ROOT / "public" / "resume.pdf"
+
+    assert resume.is_file()
+    assert resume.stat().st_size > 100_000
+    assert html.count('href="/resume.pdf">Resume</a>') >= 3
+    assert "Résumé" not in html
+    assert "résumé" not in html
+
+
+def test_landing_is_responsive_and_progressively_enhanced():
     script = (ROOT / "src" / "main.ts").read_text(encoding="utf-8")
     css = (ROOT / "src" / "styles" / "landing.css").read_text(encoding="utf-8")
 
@@ -93,7 +109,7 @@ def test_landing_is_small_and_progressively_enhanced():
     assert "IntersectionObserver" in script
     assert "prefers-reduced-motion" in css
     assert ":focus-visible" in css
-    assert "@media (max-width: 720px)" in css
+    assert "@media (max-width: 760px), (hover: none)" in css
     assert not (ROOT / "data").exists()
     assert not (ROOT / "models").exists()
     assert not (ROOT / "player_props").exists()

@@ -1,135 +1,104 @@
-const year = document.querySelector<HTMLElement>('#current-year');
+type Theme = 'light' | 'dark';
 
+const root = document.documentElement;
+const themeMeta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+const themeButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-theme-option]'));
+const systemTheme = window.matchMedia('(prefers-color-scheme: light)');
+
+function storedTheme(): Theme | null {
+  try {
+    const value = window.localStorage.getItem('harsh-theme');
+    return value === 'light' || value === 'dark' ? value : null;
+  } catch {
+    return null;
+  }
+}
+
+function applyTheme(theme: Theme, persist = false): void {
+  root.dataset.theme = theme;
+  root.style.colorScheme = theme;
+  themeMeta?.setAttribute('content', theme === 'light' ? '#f7f7f5' : '#151515');
+
+  themeButtons.forEach((button) => {
+    button.setAttribute('aria-pressed', String(button.dataset.themeOption === theme));
+  });
+
+  if (persist) {
+    try {
+      window.localStorage.setItem('harsh-theme', theme);
+    } catch {
+      // The selected theme still applies for this visit when storage is unavailable.
+    }
+  }
+}
+
+const initialTheme = root.dataset.theme === 'light' || root.dataset.theme === 'dark'
+  ? root.dataset.theme
+  : storedTheme() ?? (systemTheme.matches ? 'light' : 'dark');
+
+applyTheme(initialTheme);
+
+themeButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    const requestedTheme = button.dataset.themeOption;
+    if (requestedTheme === 'light' || requestedTheme === 'dark') {
+      applyTheme(requestedTheme, true);
+    }
+  });
+});
+
+systemTheme.addEventListener('change', (event) => {
+  if (!storedTheme()) {
+    applyTheme(event.matches ? 'light' : 'dark');
+  }
+});
+
+const year = document.querySelector<HTMLElement>('#current-year');
 if (year) {
   year.textContent = String(new Date().getFullYear());
 }
 
-let scrollTicking = false;
+const sectionLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-section-link]'));
+const trackedSections = sectionLinks
+  .map((link) => document.getElementById(link.dataset.sectionLink ?? ''))
+  .filter((section): section is HTMLElement => Boolean(section));
 
-function updateScrollProgress() {
-  const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-  const percentage = scrollable > 0 ? Math.min(100, Math.max(0, (window.scrollY / scrollable) * 100)) : 0;
-  document.documentElement.style.setProperty('--scroll-progress', `${percentage}%`);
-  scrollTicking = false;
-}
-
-function requestScrollUpdate() {
-  if (scrollTicking) return;
-  scrollTicking = true;
-  window.requestAnimationFrame(updateScrollProgress);
-}
-
-updateScrollProgress();
-window.addEventListener('scroll', requestScrollUpdate, { passive: true });
-window.addEventListener('resize', requestScrollUpdate);
-
-const filterPanel = document.querySelector<HTMLElement>('[data-project-filters]');
-const filterButtons = [...document.querySelectorAll<HTMLButtonElement>('[data-filter]')];
-const projectCards = [...document.querySelectorAll<HTMLElement>('.project-card')];
-const filterCount = document.querySelector<HTMLElement>('[data-filter-count]');
-
-if (filterPanel && filterButtons.length > 0) {
-  filterPanel.hidden = false;
-
-  filterButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      const selected = button.dataset.filter ?? 'all';
-      let visibleCount = 0;
-
-      filterButtons.forEach(candidate => {
-        candidate.setAttribute('aria-pressed', String(candidate === button));
-      });
-
-      projectCards.forEach(card => {
-        const lenses = (card.dataset.lens ?? '').split(/\s+/);
-        const matches = selected === 'all' || lenses.includes(selected);
-        card.hidden = !matches;
-        card.classList.toggle('is-filtered-in', matches);
-        if (matches) visibleCount += 1;
-      });
-
-      if (filterCount) filterCount.textContent = String(visibleCount);
-      requestScrollUpdate();
-    });
+function markCurrentSection(sectionId: string): void {
+  sectionLinks.forEach((link) => {
+    if (link.dataset.sectionLink === sectionId) {
+      link.setAttribute('aria-current', 'page');
+    } else {
+      link.removeAttribute('aria-current');
+    }
   });
 }
 
-const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const revealTargets = [
-  ...document.querySelectorAll<HTMLElement>(
-    '.profile, .section-heading, .project-card, .curiosity-grid article, .trajectory-list article',
-  ),
-];
+if ('IntersectionObserver' in window && trackedSections.length > 0) {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
 
-if (reducedMotion || !('IntersectionObserver' in window)) {
-  revealTargets.forEach(target => target.classList.add('is-visible'));
-} else {
-  document.documentElement.classList.add('has-reveal-motion');
-
-  const revealObserver = new IntersectionObserver(
-    entries => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add('is-visible');
-        revealObserver.unobserve(entry.target);
-      });
+      if (visible?.target.id) {
+        markCurrentSection(visible.target.id);
+      }
     },
-    { rootMargin: '0px 0px -8% 0px', threshold: 0.1 },
+    { rootMargin: '-20% 0px -60%', threshold: [0, 0.2, 0.6] },
   );
 
-  revealTargets.forEach(target => revealObserver.observe(target));
+  trackedSections.forEach((section) => observer.observe(section));
 }
 
-const sectionLinks = [...document.querySelectorAll<HTMLAnchorElement>('.site-nav a[href^="#"]')];
-const sections = [...document.querySelectorAll<HTMLElement>('.site-section[id]')];
+document.addEventListener('keydown', (event) => {
+  if (event.key !== 'Escape') return;
 
-if ('IntersectionObserver' in window && sectionLinks.length > 0) {
-  const sectionObserver = new IntersectionObserver(
-    entries => {
-      const active = entries
-        .filter(entry => entry.isIntersecting)
-        .sort((left, right) => right.intersectionRatio - left.intersectionRatio)[0];
+  const rail = document.querySelector<HTMLElement>('.identity-rail');
+  const activeElement = document.activeElement;
+  if (rail && activeElement instanceof HTMLElement && rail.contains(activeElement)) {
+    activeElement.blur();
+  }
+});
 
-      if (!active) return;
-      const activeId = `#${active.target.id}`;
-      sectionLinks.forEach(link => {
-        if (link.getAttribute('href') === activeId && activeId !== '#top') {
-          link.dataset.active = '';
-        } else {
-          delete link.dataset.active;
-        }
-      });
-    },
-    { rootMargin: '-25% 0px -58% 0px', threshold: [0, 0.2, 0.5] },
-  );
-
-  sections.forEach(section => sectionObserver.observe(section));
-}
-
-if (!reducedMotion && window.matchMedia('(pointer: fine)').matches) {
-  projectCards.forEach(card => {
-    let pointerFrame: number | undefined;
-    let pointerX = 0;
-    let pointerY = 0;
-
-    card.addEventListener('pointermove', event => {
-      pointerX = event.clientX;
-      pointerY = event.clientY;
-      if (pointerFrame !== undefined) return;
-
-      pointerFrame = window.requestAnimationFrame(() => {
-        const bounds = card.getBoundingClientRect();
-        card.style.setProperty('--spot-x', `${pointerX - bounds.left}px`);
-        card.style.setProperty('--spot-y', `${pointerY - bounds.top}px`);
-        pointerFrame = undefined;
-      });
-    });
-
-    card.addEventListener('pointerleave', () => {
-      if (pointerFrame !== undefined) window.cancelAnimationFrame(pointerFrame);
-      pointerFrame = undefined;
-      card.style.removeProperty('--spot-x');
-      card.style.removeProperty('--spot-y');
-    });
-  });
-}
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+root.dataset.motion = reducedMotion.matches ? 'reduced' : 'full';

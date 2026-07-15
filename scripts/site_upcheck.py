@@ -37,9 +37,10 @@ def main() -> int:
 
     source_contract = (
         ('<link rel="canonical" href="https://harsh.bet/"', "canonical URL"),
-        ('<meta name="theme-color" content="#500000"', "A&M maroon theme color"),
+        ('<meta name="theme-color" content="#151515"', "dark theme color"),
         ('href="./src/styles/landing.css"', "landing stylesheet entry"),
         ('src="./src/main.ts"', "TypeScript module entry"),
+        ('href="/resume.pdf">Resume</a>', "plain-labelled resume link"),
     )
     for marker, label in source_contract:
         if marker not in source:
@@ -68,13 +69,16 @@ def main() -> int:
         failures.append("dist/CNAME must contain harsh.bet")
     if not (DIST / ".nojekyll").is_file():
         failures.append("dist/.nojekyll is missing")
+    resume = DIST / "resume.pdf"
+    if not resume.is_file() or resume.stat().st_size < 100_000:
+        failures.append("dist/resume.pdf is missing or unexpectedly small")
 
     if failures:
         for failure in failures:
             print(f"[upcheck] {failure}")
         return 1
 
-    print(f"[upcheck] healthy landing with {len(PROJECT_PATHS)} standalone project routes")
+    print(f"[upcheck] healthy landing with {len(PROJECT_PATHS) - 1} systems, Portfolio, and Resume")
     return 0
 
 
