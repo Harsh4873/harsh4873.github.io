@@ -40,7 +40,7 @@ def main() -> int:
         ('<meta name="theme-color" content="#151515"', "dark theme color"),
         ('href="./src/styles/landing.css"', "landing stylesheet entry"),
         ('src="./src/main.ts"', "TypeScript module entry"),
-        ('href="/resume.pdf">Resume</a>', "plain-labelled resume link"),
+        ('href="/resume.pdf" target="_blank" rel="noopener noreferrer">Resume</a>', "plain-labelled resume link that opens separately"),
     )
     for marker, label in source_contract:
         if marker not in source:

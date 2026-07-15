@@ -95,7 +95,7 @@ def test_landing_publishes_the_plain_labelled_resume():
 
     assert resume.is_file()
     assert resume.stat().st_size > 100_000
-    assert html.count('href="/resume.pdf">Resume</a>') >= 3
+    assert html.count('href="/resume.pdf" target="_blank" rel="noopener noreferrer">Resume</a>') >= 3
     assert "Résumé" not in html
     assert "résumé" not in html
 
