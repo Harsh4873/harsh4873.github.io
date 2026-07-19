@@ -42,11 +42,13 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: pickledger
 
       - name: Sync latest main
         run: |
-          git fetch origin main
-          git reset --hard origin/main
+          git fetch origin pickledger
+          git reset --hard origin/pickledger
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -78,7 +80,7 @@ jobs:
           ACTOR_EMAIL="${GITHUB_ACTOR_ID:-41898282}+${GITHUB_ACTOR}@users.noreply.github.com"
           git config user.name  "${GITHUB_ACTOR}"
           git config user.email "${ACTOR_EMAIL}"
-          BRANCH="${GITHUB_REF_NAME:-main}"
+          BRANCH="${GITHUB_REF_NAME:-pickledger}"
           if [ -z "$(git status --porcelain -- data/model_cache data/parlay_cards data/profit_desk data/calibration/team_prop_pregame_ledger.json)" ]; then
             echo "No model-cache, parlay-card, Profit Desk, or team-prop ledger change — skipping commit."
             echo "changed=false" >> "$GITHUB_OUTPUT"

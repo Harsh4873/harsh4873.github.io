@@ -23,6 +23,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: pickledger
 
       - name: Check committed cache date
         id: cache
@@ -114,7 +116,7 @@ jobs:
         run: |
           ACTIVE_RUNS="$(gh run list \
             --workflow model-cache-refresh.yml \
-            --branch main \
+            --branch pickledger \
             --limit 20 \
             --json status \
             --jq '[.[] | select(.status == "queued" or .status == "in_progress" or .status == "waiting" or .status == "pending" or .status == "requested")] | length')"
@@ -122,7 +124,7 @@ jobs:
             echo "Model cache refresh already queued or running; not dispatching another one."
             exit 0
           fi
-          gh workflow run model-cache-refresh.yml --ref main -f date="$TARGET_DATE"
+          gh workflow run model-cache-refresh.yml --ref pickledger -f date="$TARGET_DATE"
 
       - name: Dispatch player-props refresh if stale
         if: steps.cache.outputs.player_fresh != 'true'
@@ -132,7 +134,7 @@ jobs:
         run: |
           ACTIVE_RUNS="$(gh run list \
             --workflow player-props-refresh.yml \
-            --branch main \
+            --branch pickledger \
             --limit 20 \
             --json status \
             --jq '[.[] | select(.status == "queued" or .status == "in_progress" or .status == "waiting" or .status == "pending" or .status == "requested")] | length')"
@@ -140,4 +142,4 @@ jobs:
             echo "Player-props refresh already queued or running; not dispatching another one."
             exit 0
           fi
-          gh workflow run player-props-refresh.yml --ref main -f date="$TARGET_DATE"
+          gh workflow run player-props-refresh.yml --ref pickledger -f date="$TARGET_DATE"

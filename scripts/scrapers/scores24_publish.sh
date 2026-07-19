@@ -79,7 +79,7 @@ REMOTE_URL="$(git -C "${REPO_ROOT}" remote get-url origin)"
 GIT_NAME="$(git -C "${REPO_ROOT}" config user.name)"
 GIT_EMAIL="$(git -C "${REPO_ROOT}" config user.email)"
 
-git clone --quiet --depth 1 "${REMOTE_URL}" "${TEMP_REPO}"
+git clone --quiet --depth 1 --branch pickledger "${REMOTE_URL}" "${TEMP_REPO}"
 git -C "${TEMP_REPO}" config user.name "${GIT_NAME}"
 git -C "${TEMP_REPO}" config user.email "${GIT_EMAIL}"
 
@@ -167,8 +167,8 @@ PY
 cp "${SCORES24_CACHE_FILE}" "${GENERATED_CACHE}"
 
 for attempt in 1 2 3; do
-  git -C "${TEMP_REPO}" fetch --quiet origin main
-  git -C "${TEMP_REPO}" reset --hard --quiet origin/main
+  git -C "${TEMP_REPO}" fetch --quiet origin pickledger
+  git -C "${TEMP_REPO}" reset --hard --quiet origin/pickledger
   MERGE_RESULT="$(
     cd "${TEMP_REPO}"
     "${PYTHON_BIN}" scripts/merge_external_feed_cache_payload.py "${GENERATED_CACHE}"
@@ -188,9 +188,9 @@ for attempt in 1 2 3; do
     git -C "${TEMP_REPO}" add data/parlay_cards
   fi
   git -C "${TEMP_REPO}" commit -m "chore(feeds): refresh Scores24 feeds for ${DATE_ISO}"
-  if git -C "${TEMP_REPO}" push origin HEAD:main; then
+  if git -C "${TEMP_REPO}" push origin HEAD:pickledger; then
     if [[ "${DEPLOYABLE}" == "true" ]]; then
-      "${GH_BIN}" workflow run deploy-pages.yml --repo Harsh4873/PickLedgerPro --ref main
+      "${GH_BIN}" workflow run deploy-pages.yml --repo Harsh4873/PickLedgerPro --ref main || true
     else
       echo "Skipped Pages deploy until the full ${DATE_ISO} team-model cache is available."
     fi
