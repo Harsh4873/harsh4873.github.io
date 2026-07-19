@@ -670,10 +670,10 @@ def test_refresh_timing_and_pages_deploy_are_deterministic():
     assert "cron: '*/15 * * * *'" in grader
     assert 'cron: "45 12 * * *"' in model
     assert 'cron: "10,40 14 * * *"' in feeds
-    assert "gh workflow run calibration-refresh.yml --ref main" in grader
+    assert "gh workflow run calibration-refresh.yml --ref pickledger" in grader
     assert "decided - last >= 100" in grader
     assert "python scripts/train_pick_calibration.py" in calibration
-    assert "gh workflow run player-props-refresh.yml --ref main" in calibration
+    assert "gh workflow run player-props-refresh.yml --ref pickledger" in calibration
     for workflow in (model, props, feeds, grader, calibration):
         assert "gh workflow run deploy-pages.yml --ref main" in workflow
         assert "actions: write" in workflow
