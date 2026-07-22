@@ -2,6 +2,146 @@
   "candidates": [
     {
       "blockers": [
+        "price_not_pregame",
+        "edge_insufficient_segment_samples",
+        "edge_insufficient_distinct_prior_dates",
+        "edge_negative_chronological_evidence_half",
+        "edge_probability_positive_ev_below_0.80",
+        "edge_conservative_probability_margin_below_0.02",
+        "edge_non_positive_conservative_ev"
+      ],
+      "canonicalGame": "2026-07-22:mlb:new york yankees|pittsburgh pirates",
+      "consensusSources": [],
+      "date": "2026-07-22",
+      "decimalOdds": 1.613497,
+      "decision": "BET",
+      "dedupeRule": "exact_market_identity_best_executable_price",
+      "direction": "under",
+      "duplicateCount": 1,
+      "duplicateSources": [
+        "MLBPlayerProps"
+      ],
+      "edgeQualified": false,
+      "estimate": {
+        "alpha": -0.003541,
+        "alphaStdError": 0.078548,
+        "breakEvenProbability": 0.619772,
+        "conservativeExpectedValue": -0.225044,
+        "expectedValue": -0.062625,
+        "lowerProbability": 0.480296,
+        "marketProbability": 0.5845,
+        "method": "market_baseline_plus_hierarchically_shrunk_prior_residual",
+        "probability": 0.580959,
+        "probabilityPositiveEv": 0.310607,
+        "sourceAlpha": 0.018498,
+        "value": {
+          "alpha": 0.018498,
+          "alphaStdError": 0.026072,
+          "conservativeExpectedValue": -0.024064,
+          "expectedValue": 0.029847,
+          "lowerProbability": 0.604858,
+          "method": "source_flat_roi_shrunk_residual_vs_break_even",
+          "probability": 0.63827,
+          "probabilityPositiveEv": 0.760997
+        }
+      },
+      "evidence": {
+        "chronologicalHalvesNonnegative": false,
+        "cutoffExclusive": "2026-07-22",
+        "distinctDates": 9,
+        "firstHalfFlatNetUnits": 1.1558,
+        "flatNetUnits": -1.9144,
+        "flatRoi": -0.127626,
+        "losses": 7,
+        "modelVersion": "player_props_consensus_v2.0.0",
+        "policyVersion": "profit_desk_policy_v2",
+        "priorOnly": true,
+        "pushes": 0,
+        "secondHalfFlatNetUnits": -3.0702,
+        "segmentDistinctDates": 9,
+        "segmentEvidenceKey": "player|mlb_player_props|mlb|player_props_consensus_v2.0.0|strikeouts|under|0.55_0.60",
+        "segmentSamples": 15,
+        "sourceChronologicalHalvesNonnegative": true,
+        "sourceDistinctDates": 22,
+        "sourceEvidenceKey": "player|mlb_player_props|mlb",
+        "sourceFirstHalfFlatNetUnits": 12.1083,
+        "sourceFlatNetUnits": 20.6201,
+        "sourceFlatRoi": 0.064237,
+        "sourceLosses": 169,
+        "sourceSamples": 321,
+        "sourceSecondHalfFlatNetUnits": 8.5118,
+        "sourceWins": 152,
+        "wins": 8
+      },
+      "game": "Pittsburgh Pirates @ New York Yankees",
+      "gradeSupportSource": "repository_grader_default",
+      "gradeSupported": true,
+      "id": "profit-9403296954a5bb0eb7973dc2",
+      "lane": null,
+      "laneBlockers": {
+        "edge": [
+          "edge_insufficient_segment_samples",
+          "edge_insufficient_distinct_prior_dates",
+          "edge_negative_chronological_evidence_half",
+          "edge_probability_positive_ev_below_0.80",
+          "edge_conservative_probability_margin_below_0.02",
+          "edge_non_positive_conservative_ev"
+        ],
+        "structural": [
+          "price_not_pregame"
+        ],
+        "value": []
+      },
+      "line": 4.5,
+      "liveQualified": false,
+      "market": "Total Strikeouts",
+      "marketFamily": "strikeouts",
+      "marketIdentity": "market:04bdb90366b7f6e72fc9a8d0",
+      "mode": "player",
+      "modelVersion": "player_props_consensus_v2.0.0",
+      "oddsAmerican": -163,
+      "pick": "Mitch Keller Under 4.5 Strikeouts",
+      "player": "Mitch Keller",
+      "policyVersion": "profit_desk_policy_v2",
+      "price": {
+        "ageHours": -0.3,
+        "breakEvenProbability": 0.619772,
+        "decimalOdds": 1.613497,
+        "eligibleForAlphaEstimate": true,
+        "fresh": false,
+        "freshPregame": false,
+        "maxAgeHours": 24.0,
+        "noVigInputs": {
+          "field": "market_no_vig_selected_probability"
+        },
+        "noVigMethod": "explicit:pick.market_no_vig_selected_probability",
+        "noVigProbability": 0.5845,
+        "noVigVerified": true,
+        "observedExecutable": true,
+        "oddsAmerican": -163,
+        "quality": "verified_two_sided",
+        "source": "posted_market",
+        "sourceField": "pick.odds_source",
+        "startTime": "2026-07-22T17:05:00Z",
+        "tier": "B",
+        "tierLabel": "posted_two_sided",
+        "timestamp": "2026-07-22T17:23Z",
+        "timestampField": "pick.market_updated_at",
+        "twoSided": true,
+        "updatedAt": "2026-07-22T17:23Z"
+      },
+      "rawModelProbabilityIgnored": 0.7167,
+      "result": "pending",
+      "shadowQualified": false,
+      "source": "MLBPlayerProps",
+      "sourceKey": "mlb_player_props",
+      "sport": "MLB",
+      "stakeUnits": 0.0,
+      "tier": "avoid",
+      "valueQualified": false
+    },
+    {
+      "blockers": [
         "missing_or_invalid_game_start_time",
         "edge_insufficient_source_samples",
         "edge_insufficient_segment_samples",
@@ -1040,7 +1180,7 @@
   "date": "2026-07-22",
   "engineVersion": "profit_desk_v2_live",
   "firstLiveDate": "2026-07-11",
-  "generatedAt": "2026-07-22T14:30:03.534655Z",
+  "generatedAt": "2026-07-22T14:38:40.180279Z",
   "notices": [
     "Qualified picks carry real flat stakes: EDGE 1.0u, VALUE 0.5u; everything else stays 0u.",
     "The market price is the baseline; historical residual alpha is shrunk and uncertainty-adjusted.",
@@ -1108,7 +1248,7 @@
   "sources": [
     {
       "alpha": 0.018498,
-      "candidatesToday": 0,
+      "candidatesToday": 1,
       "distinctDates": 22,
       "evidenceQualified": true,
       "flatNetUnits": 20.6201,
@@ -1147,7 +1287,7 @@
       "mode": "player",
       "probabilityPositiveEv": 0.760997,
       "samples": 321,
-      "source": "mlb_player_props",
+      "source": "MLBPlayerProps",
       "sourceKey": "mlb_player_props",
       "sport": "mlb",
       "wins": 152
@@ -2258,13 +2398,13 @@
     }
   ],
   "summary": {
-    "avoid": 7,
-    "candidateCount": 7,
-    "candidatesEvaluated": 7,
+    "avoid": 8,
+    "candidateCount": 8,
+    "candidatesEvaluated": 8,
     "deduplicatedPicks": 0,
     "edgeQualified": 0,
     "evidenceRows": 1562,
-    "inputPicks": 7,
+    "inputPicks": 8,
     "livePortfolioCandidates": 0,
     "liveQualified": 0,
     "liveRecord": {
@@ -2295,14 +2435,14 @@
     },
     "modes": {
       "player": {
-        "avoid": 0,
-        "candidateCount": 0,
-        "candidates": 0,
-        "candidatesEvaluated": 0,
+        "avoid": 1,
+        "candidateCount": 1,
+        "candidates": 1,
+        "candidatesEvaluated": 1,
         "edgeQualified": 0,
         "evidenceRows": 542,
         "liveQualified": 0,
-        "observedPriceCandidates": 0,
+        "observedPriceCandidates": 1,
         "portfolioCandidates": 0,
         "researchQualified": 0,
         "selected": 0,
@@ -2327,7 +2467,7 @@
         "watchlist": 0
       }
     },
-    "observedPriceCandidates": 6,
+    "observedPriceCandidates": 7,
     "portfolioCandidates": 0,
     "researchQualified": 0,
     "researchRecord": {
