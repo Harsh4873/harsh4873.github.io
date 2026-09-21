@@ -69,6 +69,7 @@ def test_landing_routes_every_app_without_new_tabs():
         "/pickledger/",
         "/genes/",
         "/research/",
+        "/quizlet/",
         "/notes/",
         "/fare/",
         "/recipes/",
@@ -168,7 +169,7 @@ def test_robots_and_sitemap_index_only_public_routes():
 
     assert "User-agent: *" in robots
     assert "Sitemap: https://harsh.bet/sitemap.xml" in robots
-    for private in ("/today/", "/daymark/", "/slate/", "/fare/", "/recipes/", "/gym/", "/notes/", "/degree/", "/research/", "/radar/"):
+    for private in ("/today/", "/daymark/", "/slate/", "/fare/", "/recipes/", "/gym/", "/notes/", "/degree/", "/research/", "/quizlet/", "/radar/"):
         assert f"Disallow: {private}" in robots
     assert "Disallow: /\n" not in robots
     assert "Disallow: /portfolio/" not in robots

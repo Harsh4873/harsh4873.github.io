@@ -15,6 +15,7 @@ Harsh4873/fare                 ──> harsh.bet/fare/
 Harsh4873/recipes              ──> harsh.bet/recipes/
 Harsh4873/genes                ──> harsh.bet/genes/
 Harsh4873/research             ──> harsh.bet/research/
+Harsh4873/quizlet              ──> harsh.bet/quizlet/
 Harsh4873/notes                ──> harsh.bet/notes/
 Harsh4873/shotlab              ──> harsh.bet/shotlab/
 Harsh4873/degree               ──> harsh.bet/degree/

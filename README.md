@@ -17,7 +17,8 @@
 | `/fare/` | Fare | `Harsh4873/fare` |
 | `/recipes/` | Recipes | `Harsh4873/recipes` |
 | `/genes/` | MtbScope | `Harsh4873/genes` |
-| `/research/` | Recall | `Harsh4873/research` |
+| `/research/` | Recall (papers) | `Harsh4873/research` |
+| `/quizlet/` | Quizlet (exam flashcards) | `Harsh4873/quizlet` |
 | `/notes/` | Notes | `Harsh4873/notes` |
 | `/shotlab/` | ShotLab | `Harsh4873/shotlab` |
 | `/degree/` | Degree Canvas | `Harsh4873/degree` |
